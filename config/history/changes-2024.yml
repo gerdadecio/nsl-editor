@@ -1,3 +1,7 @@
+- :date: 21-Jun-2024
+  :jira_id: '5120'
+  :description: |-
+    Loader: Typeahead for Taxonomy Parent on the Matched Name tab now offers scientific names only - common names are no longer offered
 - :date: 19-Jun-2024
   :jira_id: '5114'
   :description: |-
