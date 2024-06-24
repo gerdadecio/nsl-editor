@@ -1,3 +1,7 @@
+- :date: 24-Jun-2024
+  :jira_id: '5121'
+  :description: |-
+    New Record navigation: Fix keyboard arrow navigation into and out of new records after save
 - :date: 21-Jun-2024
   :jira_id: '5120'
   :description: |-
