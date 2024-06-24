@@ -1,4 +1,8 @@
 - :date: 24-Jun-2024
+  :jira_id: '5122'
+  :description: |-
+    Name Element: Ensure <code>Name.name_element</code> is never null - set a default if field is blank
+- :date: 24-Jun-2024
   :jira_id: '5121'
   :description: |-
     New Record navigation: Fix keyboard arrow navigation into and out of new records after save
