@@ -1,3 +1,7 @@
+- :date: 26-Jun-2024
+  :jira_id: '5121'
+  :description: |-
+    New Record navigation: Extend fix to new Loader Name records i.e. when cursor is placed in the new Loader Name record to start with
 - :date: 24-Jun-2024
   :jira_id: '5122'
   :description: |-
