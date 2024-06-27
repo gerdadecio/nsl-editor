@@ -26,7 +26,7 @@
 
     <div class="form-group">
       <label for="simple_name">Simple Name<span class='red'>*</span></label>
-      <%= f.text_field :simple_name, class: 'form-control', required: true, title: "Enter simple name - the value of simple name, as loaded is retained in simple name as loaded", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_field :simple_name, class: 'form-control', required: true, title: "Enter simple name - the value of simple name, as loaded is retained in simple name as loaded", tabindex: increment_tab_index %>
       <% unless loader_name.simple_name == loader_name.simple_name_as_loaded %>
         <p>As originally loaded: <%= loader_name.simple_name_as_loaded %></p>
         <p>Simple Name is used for matching with name records, so editing it will likely change the matches.</p>

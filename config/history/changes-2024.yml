@@ -1,4 +1,8 @@
 - :date: 26-Jun-2024
+  :jira_id: '5114'
+  :description: |-
+    Loader: Move record type near top of accepted/excluded record form; set focus on full name for synonym/misapp record forms
+- :date: 26-Jun-2024
   :jira_id: '5121'
   :description: |-
     New Record navigation: Extend fix to new Loader Name records i.e. when cursor is placed in the new Loader Name record to start with
