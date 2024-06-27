@@ -1,4 +1,8 @@
-- :date: 26-Jun-2024
+- :date: 27-Jun-2024
+  :jira_id: '5126'
+  :description: |-
+    Loader: When a batch is created the GUI elements now adjust correctly to indicate success
+- :date: 27-Jun-2024
   :jira_id: '5114'
   :description: |-
     Loader: Move record type near top of accepted/excluded record form; set focus on full name for synonym/misapp record forms
