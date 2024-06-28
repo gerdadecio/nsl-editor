@@ -1,3 +1,7 @@
+- :date: 28-Jun-2024
+  :jira_id: '5114'
+  :description: |-
+    Loader: Set focus on <code>full_name</code> for accepted/excluded/syn/misapp edit - unless preferred match, in which case focus goes to <code>status</code> field
 - :date: 27-Jun-2024
   :jira_id: '5126'
   :description: |-
