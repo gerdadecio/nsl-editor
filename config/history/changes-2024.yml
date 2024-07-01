@@ -1,4 +1,6 @@
 - :date: 01-Jul-2024
+  :release: true
+- :date: 01-Jul-2024
   :jira_id: '5127'
   :description: |-
     New Records: Cancelling a new record form removes it completely from the page
