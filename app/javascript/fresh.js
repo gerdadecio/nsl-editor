@@ -230,8 +230,8 @@
   };
 
   window.cancelNewRecord = function(event, $element) {
-    $("#search-result-details").addClass('hidden');
-    $(`#${$element.attr('data-element-id')}`).addClass('hidden');
+    $('#search-result-details').html('');
+    $(`#${$element.attr('data-element-id')}`).remove();
     return false;
   };
 
