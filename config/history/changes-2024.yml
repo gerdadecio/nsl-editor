@@ -1,3 +1,7 @@
+- :date: 02-Jul-2024
+  :jira_id:
+  :description: |-
+    Ruby: Upgrade to Ruby 3.3.3
 - :date: 01-Jul-2024
   :release: true
 - :date: 01-Jul-2024
