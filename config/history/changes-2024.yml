@@ -1,4 +1,8 @@
 - :date: 02-Jul-2024
+  :jira_id: 
+  :description: |-
+    Rails: Switch on <code>Turbo.session.drive</code> and add <code>data-turbo-track: reload</code> setting for JavaScript
+- :date: 02-Jul-2024
   :jira_id:
   :description: |-
     Ruby: Upgrade to Ruby 3.3.3
