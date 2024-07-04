@@ -10,7 +10,7 @@ ruby "3.3.3"
 if next?
   gem 'rails', '~> 7.1.3.4'
 else
-  gem "rails", "~> 7.0.8"
+  gem "rails", "~> 7.1.3.4"
 end
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
@@ -81,9 +81,6 @@ end
 # Added
 gem "active_type"
 gem "cancancan"
-unless next?
-  gem "composite_primary_keys"
-end
 gem "net-ldap"
 gem "pg_search"
 gem "strip_attributes"
