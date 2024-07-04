@@ -118,5 +118,5 @@ else
   Rails.configuration.resolved_editor_config_file = "#{ENV.fetch('HOME', nil)}/.nsl/editor-r7-config.rb"
 end
 
-puts "loading config from #{Rails.configuration.resolved_edit
+puts "loading config from #{Rails.configuration.resolved_edit}"
 
