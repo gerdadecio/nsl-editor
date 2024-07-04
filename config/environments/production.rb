@@ -49,7 +49,7 @@ Rails.application.configure do
   # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # config.force_ssl = true
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -118,5 +118,7 @@ else
   Rails.configuration.resolved_editor_config_file = "#{ENV.fetch('HOME', nil)}/.nsl/editor-r7-config.rb"
 end
 
-puts "loading config from #{Rails.configuration.resolved_edit}"
+puts "loading config from #{Rails.configuration.resolved_editor_config_file}"
+load "#{Rails.configuration.resolved_editor_config_file}"
+
 
