@@ -22,7 +22,7 @@
       <script> debugSwitch = false; </script>
     <% end %>
 
-    <% if ['development','test','production'].include?(Rails.configuration.try('environment'))  %>
+    <% if ['development','test','production','staging'].include?(Rails.configuration.try('environment'))  %>
       <%= favicon_link_tag "favicon-#{Rails.configuration.try('environment')}.png?v=1", :rel => 'shortcut icon' %>
     <% else %>
       <%= favicon_link_tag 'favicon-fallback.png?v=1', :rel => 'shortcut icon' %>
