@@ -1,4 +1,8 @@
 - :date: 05-Jul-2024
+  :jira_id: '5134'
+  :description: |-
+    Editor: Fixes for Rails 7.1.3.4 upgrade
+- :date: 05-Jul-2024
   :jira_id: 
   :description: |-
     Editor: Tweak favicon per environment - set up for print pages and add one for staging.

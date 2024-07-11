@@ -2,7 +2,7 @@
 // import "@hotwired/turbo-rails";
 // https://github.com/hotwired/turbo-rails - notes on disabling by default
 import { Turbo } from "@hotwired/turbo-rails"
-//Turbo.session.drive = false
+// Turbo.session.drive = false
 import "controllers"
 import "jQuery"; // select2 needs this case-sensitive version of jQuery - "jquery" gives error
 import "select2"; // this import first
