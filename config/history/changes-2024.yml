@@ -1,4 +1,8 @@
 - :date: 05-Jul-2024
+  :jira_id: '5139'
+  :description: |-
+    Reviewer tab click: Stop rogue navigation to another record
+- :date: 05-Jul-2024
   :jira_id: '5134'
   :description: |-
     Editor: Fixes for Rails 7.1.3.4 upgrade
