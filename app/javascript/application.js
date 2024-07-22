@@ -35,14 +35,14 @@ import "cancel_new_record";
 import "position_on_the_right";
 import "set_dependents";
 import "change_name_category_on_edit_tab";
-import "tree_refresh_tab_refresh_page";
+import "tree_refresh_tree_tab_refresh_page";
 import "tree_init_dist_select";
 import "tree_load_report";
+import "tree_markdown";
 import "load_check_synonymy_report";
 import "jquery-dateformat.min";
 import "new_search";
 import "tabs";
-import "markdown";
 import "typeahead_bundle";
 import "typeaheads_for_author_duplicate_of";
 
