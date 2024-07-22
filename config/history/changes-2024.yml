@@ -1,3 +1,7 @@
+- :date: 23-Jul-2024
+  :jira_id: '5143'
+  :description: |-
+    Refactoring: Break up JavaScript code into functional files using import map under Rails 7.1 - fixed import map details
 - :date: 22-Jul-2024
   :jira_id: '5143'
   :description: |-
