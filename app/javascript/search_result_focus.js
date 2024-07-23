@@ -31,6 +31,11 @@
     $('a.show-details-link[tabindex]').focus(function(event) {
       return clickOnFocus(event, $(this));
     });
+
+    $('body').on('click', '.edit-details-tab', function(event) {
+      return loadDetails(event, $(this), true);
+    });
+
     optionalFocusOnPageLoad();
     return debug('End of search_result_focus.js document ready.');
   });

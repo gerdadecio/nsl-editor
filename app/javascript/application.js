@@ -9,6 +9,7 @@ import "jQuery"; // select2 needs this case-sensitive version of jQuery - "jquer
 import "select2"; // this import first
 import "dropdown";
 //import "fresh";
+//// start of fresh replacements
 import "debug";
 import "search_result_focus";
 import "keyboard_nav";
@@ -40,6 +41,7 @@ import "tree_init_dist_select";
 import "tree_load_report";
 import "tree_markdown";
 import "load_check_synonymy_report";
+// end of fresh replacements
 import "jquery-dateformat.min";
 import "new_search";
 import "tabs";

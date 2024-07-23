@@ -4,9 +4,6 @@
   $(document).on("turbo:load", function() {
     debug('Start of fresh-left-overs.js turbo loaded');
     debug('jQuery version: ' + $().jquery);
-    $('body').on('click', '.edit-details-tab', function(event) {
-      return loadDetails(event, $(this), true);
-    });
 
     $('tr.review-result').keydown(function(event) {
       return reviewResultKeyNavigation(event, $(this));
