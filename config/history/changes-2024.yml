@@ -1,4 +1,8 @@
 - :date: 24-Jul-2024
+  :jira_id: '5148'
+  :description: |-
+    Rails Upgrade: Fix tag insert for names due to Rails 7.1 detecting a minor code discrepancy
+- :date: 24-Jul-2024
   :jira_id: '5143'
   :description: |-
     Refactoring: Fix detail tabs not working in re-factored code
