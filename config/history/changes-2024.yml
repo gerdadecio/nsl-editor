@@ -1,4 +1,8 @@
 - :date: 23-Jul-2024
+  :jira_id: '5147'
+  :description: |-
+    Deprecated methods: Remove some aliases set up for tree-related associations that were triggering deprecation warnings
+- :date: 23-Jul-2024
   :jira_id: ''
   :description: |-
     Security: Update gems, including rexml, which had a security alert
