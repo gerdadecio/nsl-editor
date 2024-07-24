@@ -42,6 +42,7 @@ import "tree_load_report";
 import "tree_markdown";
 import "load_check_synonymy_report";
 // end of fresh replacements
+import "details_focus_on_field";
 import "jquery-dateformat.min";
 import "new_search";
 import "tabs";

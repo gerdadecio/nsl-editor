@@ -1,4 +1,8 @@
 - :date: 24-Jul-2024
+  :jira_id: '5150'
+  :description: |-
+    Javascript: Fix console error noticed occasionally when clicking on detail (RHS) tabs
+- :date: 24-Jul-2024
   :jira_id: '5149'
   :description: |-
     Javascript: Fix intermittent Javascript error about a perf constant showing up in the JS console
