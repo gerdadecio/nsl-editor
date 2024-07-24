@@ -35,6 +35,7 @@ pin "set_dependents", preload: true
 pin "change_name_category_on_edit_tab", preload: true
 
 pin "details_focus_on_field", to: "details/focus_on_field.js", preload: true
+pin "utilities_page_load_performance", to: "utilities/page_load_performance.js", preload: true
 pin "tree_refresh_tree_tab_refresh_page", to: "tree/refresh_tree_tab_refresh_page.js", preload: true
 pin "tree_load_report", to: "tree/load_report.js", preload: true
 pin "tree_init_dist_select", to: "tree/init_dist_select.js", preload: true
