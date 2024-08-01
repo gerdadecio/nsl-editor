@@ -557,7 +557,6 @@ Rails.application.routes.draw do
   match "switch_off_review_mode", as: "switch_off_review_mode", to: "loader/batch/review/mode#switch_off", via: :post
 
   match "/clear-connections", as: "clear_connections", to: "services#clear_connections", via: :get
-  mount PgHero::Engine, at: "pghero"
   root to: "search#search"
   match "/*random", to: "search#search", via: %i[get post delete patch]
 end
