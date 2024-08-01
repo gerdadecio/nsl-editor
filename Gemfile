@@ -113,4 +113,6 @@ group :development do
 end
 
 gem 'next_rails'
+gem 'pghero'
+gem "pg_query", ">= 2"
 
