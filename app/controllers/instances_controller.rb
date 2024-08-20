@@ -31,7 +31,7 @@ class InstancesController < ApplicationController
         @tab = tab_or_default_tab
     @tab_index = (params[:tabIndex] || "1").to_i
     @tabs_to_offer = tabs_to_offer
-    @row_type = row_params['row-type']
+    @row_type = params["row-type"]
     # Really only need to do this if the "classification" tab is chosen.
     unless @working_draft.blank?
       @tree_version_element = @working_draft.name_in_version(@instance.name)
@@ -306,10 +306,6 @@ class InstancesController < ApplicationController
                                      :draft,
                                      :parent_id,
                                      :instance_id)
-  end
-
-  def row_params
-    params.permit('row-type')
   end
 
   def instance_name_params
