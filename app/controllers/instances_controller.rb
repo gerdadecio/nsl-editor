@@ -337,6 +337,7 @@ class InstancesController < ApplicationController
           can?('loader/names', 'update') &&
           offer_loader_tab?
         offer << "tab_batch_loader" 
+        offer << "tab_batch_loader_2" 
     end
     offer
   end

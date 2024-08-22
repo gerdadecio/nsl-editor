@@ -183,9 +183,18 @@ class Loader::NamesController < ApplicationController
     end
 
     ActiveRecord::Base.transaction do
-      @loader_name = Loader::Name.create(loader_name_params, current_user.username)
-      unless loader_name_params["loaded_from_instance_id"].blank?
+
+      if params["form-task"] == "supplement-existing-concept"
+        @loader_name = Loader::Name.find(embedded_parent_typeahead_id(loader_name_params[:parent_typeahead]))
+      else
+        @loader_name = Loader::Name.create(loader_name_params, current_user.username)
         @loader_name.create_match_to_loaded_from_instance_name(current_user.username)
+      end
+
+      unless loader_name_params["loaded_from_instance_id"].blank?
+        if params["form-task"] == "supplement-existing-concept"
+          main_supplement = @loader_name.create_flipped_synonym_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
+        end
         if loader_name_params["add_sibling_synonyms"] == 'true'
           siblings = @loader_name.create_sibling_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
         end
@@ -242,7 +251,8 @@ class Loader::NamesController < ApplicationController
                                         :loaded_from_instance_id,
                                         :add_sibling_synonyms,
                                         :add_sourced_synonyms,
-                                        :original_text)
+                                        :original_text,
+                                        :parent_typeahead)
   end
 
   def set_tab
@@ -284,5 +294,9 @@ class Loader::NamesController < ApplicationController
     @loader_name.batch.reviews&.first&.periods&.first&.reviewers&.select do |x|
       x.user.userid == @current_user.username
     end&.first
+  end
+
+  def embedded_parent_typeahead_id(typeahead_value)
+    typeahead_value.sub(/.*\(/,'').sub(/\).*/,'') 
   end
 end
