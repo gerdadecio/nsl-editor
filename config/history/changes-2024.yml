@@ -1,4 +1,8 @@
 - :date: 23-Aug-2024
+  :jira_id: '5167'
+  :description: |-
+    Batch Review: Fix bugs in reviewer output that were misplacing or hiding distribution/comments at family borders and similar
+- :date: 23-Aug-2024
   :jira_id: '5056'
   :description: |-
     Loader Name: New workflow to aggregate multiple concepts into one concept - first cut
