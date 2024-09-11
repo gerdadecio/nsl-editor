@@ -1,3 +1,7 @@
+- :date: 11-Sep-2024
+  :jira_id: '5173'
+  :description: |-
+    Name update: Restore error messages by restoring commented error handling code
 - :date: 23-Aug-2024
   :jira_id: '5167'
   :description: |-
