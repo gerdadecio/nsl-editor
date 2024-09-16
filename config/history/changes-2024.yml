@@ -1,3 +1,7 @@
+- :date: 16-Sep-2024
+  :jira_id: '5179'
+  :description: |-
+    Loader: Fix problem creating loader-name synonym which was a side-effect of NSL-5056
 - :date: 11-Sep-2024
   :jira_id: '5173'
   :description: |-

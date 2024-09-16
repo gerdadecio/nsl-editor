@@ -176,34 +176,17 @@ class Loader::NamesController < ApplicationController
     render json: typeahead.suggestions
   end
 
+  # Note: this is (too) complicated
+  # The reason is it complicated: it is handling creates coming from 
+  # simple actions in the loader interface, but it's also handling
+  # creates from over in apni data.
   def create
-    if session[:default_loader_batch_name].blank? && 
-        loader_name_params[:loader_batch_id].blank?
-      raise "Please set a default batch"
-    end
-
-    ActiveRecord::Base.transaction do
-
-      if params["form-task"] == "supplement-existing-concept"
-        @loader_name = Loader::Name.find(embedded_parent_typeahead_id(loader_name_params[:parent_typeahead]))
-      else
-        @loader_name = Loader::Name.create(loader_name_params, current_user.username)
-        @loader_name.create_match_to_loaded_from_instance_name(current_user.username)
-      end
-
-      unless loader_name_params["loaded_from_instance_id"].blank?
-        if params["form-task"] == "supplement-existing-concept"
-          main_supplement = @loader_name.create_flipped_synonym_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
-        end
-        if loader_name_params["add_sibling_synonyms"] == 'true'
-          siblings = @loader_name.create_sibling_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
-        end
-        if loader_name_params["add_sourced_synonyms"] == 'true'
-          siblings = @loader_name.create_sourced_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
-        end
-      end
-    end
-
+    insist_on_a_batch
+    if loader_name_params["loaded_from_instance_id"].blank?
+      @loader_name = Loader::Name.create(loader_name_params, current_user.username)
+    else 
+      create_when_loaded_from_existing_instance
+    end 
     render "create"
   rescue StandardError => e
     logger.error("Controller:Loader::Names:create:rescuing exception #{e}")
@@ -235,6 +218,36 @@ class Loader::NamesController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the loader name record."
     redirect_to loader_names_path
+  end
+
+  def insist_on_a_batch
+    if session[:default_loader_batch_name].blank? && 
+        loader_name_params[:loader_batch_id].blank?
+      raise "Please set a default batch"
+    end
+  end 
+
+  # This is for creates started over in the Name records.
+  # It has more complicated requirements than a simple create inside the loader.
+  def create_when_loaded_from_existing_instance
+    ActiveRecord::Base.transaction do
+      if params["form-task"] == "supplement-existing-concept"
+        @loader_name = Loader::Name.find(embedded_parent_typeahead_id(loader_name_params[:parent_typeahead]))
+      else
+        @loader_name = Loader::Name.create(loader_name_params, current_user.username)
+          @loader_name.create_match_to_loaded_from_instance_name(current_user.username)
+      end
+
+      if params["form-task"] == "supplement-existing-concept"
+        main_supplement = @loader_name.create_flipped_synonym_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
+      end
+      if loader_name_params["add_sibling_synonyms"] == 'true'
+        siblings = @loader_name.create_sibling_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
+      end
+      if loader_name_params["add_sourced_synonyms"] == 'true'
+        siblings = @loader_name.create_sourced_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
+      end
+    end
   end
 
   def loader_name_params
