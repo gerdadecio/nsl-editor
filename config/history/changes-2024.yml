@@ -1,4 +1,8 @@
 - :date: 16-Sep-2024
+  :jira_id: '5176'
+  :description: |-
+    Loader Name Details tab for Reviewer: Switch off nonsense links and target current batch for other links
+- :date: 16-Sep-2024
   :jira_id: '5175'
   :description: |-
     Loader: Display taxonomy comment for reviewer where it wasn't showing up - in first name of a result set if it was excluded
