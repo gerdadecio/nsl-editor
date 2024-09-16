@@ -1,7 +1,7 @@
 
 <% if @previous_record_type.blank? then %>
    <% @previous_record_type = search_result.record_type %>
-   <% if search_result.record_type == 'accepted' then %>
+   <% if search_result.record_type == 'accepted' or search_result.record_type == 'excluded' then %>
      <%  @stored_distribution = search_result.distribution %>
      <%  @stored_comment = search_result.comment %>
      <%  @stored_id = search_result.id %>
