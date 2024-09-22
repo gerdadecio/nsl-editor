@@ -1,3 +1,7 @@
+- :date: 23-Sep-2024
+  :jira_id: ''
+  :description: |-
+    Security: Upgrade puma
 - :date: 20-Sep-2024
   :jira_id: '5191'
   :description: |-
