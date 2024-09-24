@@ -2,18 +2,18 @@
 FROM ruby:3.3.3-slim-bullseye
 
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
-    build-essential \
-    gnupg2 \
-    less \
-    libssl-dev \
-    bash \
-    git \
-    telnet \
-    wget \
-    nodejs \
-    iproute2 \
-    curl
-    
+  build-essential \
+  gnupg2 \
+  less \
+  libssl-dev \
+  bash \
+  git \
+  telnet \
+  wget \
+  nodejs \
+  iproute2 \
+  curl
+
 
 RUN apt-get update -qq && apt-get install -y \
   libpq-dev
@@ -33,7 +33,7 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 
 RUN mkdir vpn
-COPY ./vpn/ibis-openvpn.ovpn ./vpn/
+COPY vpn/ibis-openvpn.ovpn ./vpn/ibis-openvpn.ovpn
 
 # Install gems
 RUN bundle install
@@ -50,7 +50,7 @@ RUN chmod 600 .pgpass
 # RUN bundle exec rake assets:precompile
 
 # Expose port 3000 to the outside world
-EXPOSE 3000
+EXPOSE 3000 3001
 
 # Start the Rails server
-CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"]
+#CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"]
