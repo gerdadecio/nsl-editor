@@ -19,7 +19,7 @@ services:
     env_file:
       - .env
 
-  db_dev:
+  db_dev: &db_dev
     image: postgres:15.7-bullseye
     shm_size: '512MB'
     volumes:
@@ -44,8 +44,6 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    volumes:
-      - ./initdb/:/docker-entrypoint-initdb.d/
     ports:
       - "8080:80"
     depends_on:
@@ -53,12 +51,14 @@ services:
     networks:
       - vpn_network
 
-  app_dev:
-    build: .
+  app_dev: &app_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
+      - app_dev:/app
       - gem_cache:/usr/local/bundle/gems
     stdin_open: true # docker run -i
     tty: true
@@ -78,10 +78,37 @@ services:
       - db_dev
     networks:
       - vpn_network
-    
+    command: bash -c "rm -f ./tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
+
+  # app_dean_dev:
+  #   <<: *app_dev
+  #   build:
+  #     context: ../dean-editor
+  #     dockerfile: Dockerfile.dev
+  #   ports:
+  #     - "3001:3001"
+  #   volumes:
+  #     - app_dean:/app_dean
+  #     - gem_dean_cache:/usr/local/bundle/gems
+  #   environment:
+  #     DB_USERNAME: ${POSTGRES_USER_DEV}
+  #     DB_PASSWORD: ${POSTGRES_PASSWORD_DEV}
+  #     DB_NAME: ${POSTGRES_DB_DEAN}
+  #     EDITOR_CONFIG_FILE: ${EDITOR_CONFIG_FILE}
+  #     EDITOR_CONFIGDB_FILE: ${EDITOR_CONFIGDB_FILE}
+  #     DB_HOST: db_dev
+  #     RAILS_ENV: development
+  #   env_file:
+  #     - .env
+  #   command: bash -c "rm -f ./tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3001"
+
 volumes:
   gem_cache:
+  gem_dean_cache:
+  app_dean:
+  app_dev:
   db_data_dev:
+
 
 networks:
   vpn_network:
