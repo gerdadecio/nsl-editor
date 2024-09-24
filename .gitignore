@@ -39,3 +39,12 @@ tags
 coverage
 hs_err*.log
 .vscode
+.pgpass
+.nsl
+
+# Ignore env configs
+.env*
+
+# Ignore vpn configs
+*.ovpn
+/vpn
