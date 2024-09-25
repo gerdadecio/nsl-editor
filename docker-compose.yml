@@ -60,7 +60,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - app_dev:/app
+      - .:/app
       - gem_cache:/usr/local/bundle/gems
     stdin_open: true # docker run -i
     tty: true
@@ -90,7 +90,7 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - app_dean:/app
+      - ../dean-editor:/app_dean
       - gem_dean_cache:/usr/local/bundle/gems
     environment:
       DB_USERNAME: ${POSTGRES_USER_DEV}
@@ -108,8 +108,6 @@ volumes:
   pgadmin_data:
   gem_cache:
   gem_dean_cache:
-  app_dean:
-  app_dev:
   db_data_dev:
 
 
