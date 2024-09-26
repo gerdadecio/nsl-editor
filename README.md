@@ -83,6 +83,61 @@ You'll need a user registered in that LDAP, ideally with appropriate group membe
 cd [app home]
 rails s
 
+## Development
+
+Pre-requisites:
+- Acquire the following:
+    - vpn config
+    - database.yml and editor-config.rb files 
+
+### 🐳 Setup with Docker
+
+There are a couple of files/folders you need to acquire from the team before you can start running the docker containers:
+
+All of these live in the root directory of the `editor`
+
+- `.env` (see the template.env and acquire the necessary information from the team)
+- `vpn` folder containing the vpn configuration
+- `.nsl` folder containing the database.yml and editor-config.rb
+- `.pgpass` file with the postgress password
+
+Run
+```bash
+# build the containers
+docker-compose build
+
+# run the postgres db container 
+# create the necessary database
+# and restore the db dump from this container
+# e.g psql -U user -d database
+docker-compose run db_dev bash
+
+# run the containers
+docker-compose up -d
+```
+### 💪🏻 Non-Docker
+Pre-requisite
+- Postgres database installed on your machine
+- Config files in the right directory. [External Configuration Files](https://github.com/bio-org-au/editor?tab=readme-ov-file#external-configuration-files)
+
+#### Intall Ruby with the following:
+- [Using RVM](https://rvm.io/rvm/install) or with
+- [the asdf version manager](https://github.com/asdf-vm/asdf-ruby)
+
+
+Run
+```bash
+# Create database and restore data
+psql -U user -d databasename
+pgrestore -U user -d databasename path/to/the/source.dmp
+
+# install the gems
+bundle install
+
+# run the server
+rails s
+```
+
 ## Release notes
 
 There is a longish trail of release notes in annuallly rolled-over yaml files held in
