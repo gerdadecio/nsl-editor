@@ -8,6 +8,7 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
   libssl-dev \
   bash \
   git \
+  postgresql-client \
   telnet \
   wget \
   nodejs \
