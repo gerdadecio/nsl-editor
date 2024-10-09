@@ -1,0 +1,27 @@
+<%= turbo_stream.replace "message_#{@profile_item.product_item_config.display_html.parameterize}" do %>
+  <div id="message_<%= @profile_item.product_item_config.display_html.parameterize %>" class="message-container">
+    <%= @message %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "profile_text_form_#{@profile_item.product_item_config.display_html.parameterize}" do %>
+  <div id="profile_text_form_<%= @profile_item.product_item_config.display_html.parameterize %>" >
+    <%= render partial: "profile_texts/form", 
+      locals: {
+        profile_text: @profile_text,
+        url: profile_text_path(id: @profile_text.id),
+        method: :put,
+        product_item_config: @profile_text.product_item_config,
+        instance_id: @profile_item.instance_id,
+        profile_item: @profile_item
+      }  
+    %>
+  </div>
+  <script>
+    element_id = "editor_<%= @profile_text.product_item_config.display_html.parameterize %><%= @profile_text.id %>"
+    elem = document.getElementById(element_id);
+    if (elem) {
+      renderEditor(elem);
+    }
+  </script>
+<% end %>

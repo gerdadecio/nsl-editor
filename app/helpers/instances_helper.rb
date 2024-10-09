@@ -59,7 +59,7 @@ module InstancesHelper
   end
 
   def tab_for_instance_type(tab, row_type)
-    if %w[tab_show_1 tab_edit tab_edit_notes tab_comments].include?(tab)
+    if %w[tab_show_1 tab_edit tab_edit_notes tab_comments tab_foa_profile].include?(tab)
       tab
     elsif %w[tab_profile_details tab_edit_profile tab_batch_loader].include?(tab) && @tabs_to_offer.include?(tab)
       tab
