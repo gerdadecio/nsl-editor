@@ -1,0 +1,56 @@
+name: Run Minitests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+          
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
+      RAILS_ENV: test
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+      OTHER_ENV_VAR: ${{ secrets.OTHER_ENV_VAR }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3.5'
+
+    - name: Install dependencies
+      run: |
+        bundle install
+        yarn install # if you're using Webpacker or any JS toolchain
+
+    - name: Set up the database
+      run: |
+        bin/rails db:structure:load
+
+    - name: Run tests
+      run: |
+        bundle exec rake test
