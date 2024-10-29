@@ -43,8 +43,8 @@ jobs:
         run: |
           bundle install
 
-      - name: Run rubocop
-        run: rubocop
+      - name: Run Standardrb
+        run: standardrb
 
       - name: Run brakeman
         if: always() # Run both checks, even if the first failed
