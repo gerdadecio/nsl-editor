@@ -14,24 +14,27 @@ jobs:
 
     services:
       db:
-        image: postgres:15
+        image: postgres:15.7-bullseye
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: nsl
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: test_db
         options: >-
-          --health-cmd="pg_isready -U postgres"
+          --health-cmd="pg_isready -U nsl"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
           
     env:
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
+      DATABASE_URL: postgres://nsl:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/test_db
       RAILS_ENV: test
-      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-      OTHER_ENV_VAR: ${{ secrets.OTHER_ENV_VAR }}
+      EDITOR_CONFIGDB_FILE: ".nsl-test-configs/database.yml"
+      EDITOR_CONFIG_FILE: ".nsl-test-configs/editor-config.rb"
+      DB: test_db
+      DB_USER: nsl
+      DB_PASS: ${{ secrets.POSTGRES_PASSWORD }}
 
     steps:
     - name: Checkout code
@@ -45,12 +48,15 @@ jobs:
     - name: Install dependencies
       run: |
         bundle install
-        yarn install # if you're using Webpacker or any JS toolchain
 
     - name: Set up the database
       run: |
-        bin/rails db:structure:load
+        bin/rails db:schema:load
 
-    - name: Run tests
+    - name: Run Unit Tests
       run: |
-        bundle exec rake test
+        bundle exec rails test test:models
+    
+    - name: Run Controller Tests
+      run: |
+        bundle exec rails test test:controllers
