@@ -53,10 +53,6 @@ jobs:
       run: |
         bin/rails db:schema:load
 
-    - name: Run Unit Tests
+    - name: Run Tests
       run: |
-        bundle exec rails test test:models
-    
-    - name: Run Controller Tests
-      run: |
-        bundle exec rails test test:controllers
+        bundle exec rails test
