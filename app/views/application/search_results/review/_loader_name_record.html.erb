@@ -136,7 +136,7 @@
       <% end %>
       <% unless search_result.remark_to_reviewers.blank? %>
         <%# style text and link as well as we can %>
-        
+
         <span class="review loader-name remark-to-reviewers">
           <%= search_result.remark_to_reviewers
             .gsub(/<a/, "<a class='remark-to-reviewers'")
@@ -145,7 +145,7 @@
         </span>
       <% end %>
       <% unless search_result.higher_rank_comment.blank? %>
-        <span class="review loader-name remark-to-reviewers"><%= h(search_result.higher_rank_comment.html_safe) %></span>
+        <span class="review loader-name remark-to-reviewers"><%= search_result.higher_rank_comment.html_safe %></span>
       <% end %>
     </a>
   </td>
