@@ -135,8 +135,6 @@
         <% end %>
       <% end %>
       <% unless search_result.remark_to_reviewers.blank? %>
-        <%# style text and link as well as we can %>
-        
         <span class="review loader-name remark-to-reviewers">
           <%= search_result.remark_to_reviewers
             .gsub(/<a/, "<a class='remark-to-reviewers'")
