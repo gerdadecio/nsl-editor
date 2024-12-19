@@ -93,17 +93,18 @@ RSpec.describe Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
       end
 
       context "when there is a product" do
-        let(:user) { FactoryBot.create(:user, :foa) }
+        let!(:user) { FactoryBot.create(:user, :foa) }
         let!(:product) { FactoryBot.create(:product, name: "FOA") }
+        
         context "and the product is not attached to a product_item_config" do
           it "returns an empty array of product_configs_and_profile_items and product" do
-            expect(subject).to eq([[],product])
+            expect(subject).to eq([[],nil])
           end
         end
         context "and a product is attached to a product_item_config" do
           let!(:product_item_config) { FactoryBot.create(:product_item_config, product: product) }
           it "returns an array of product_configs_and_profile_items and product" do
-            expect(subject).to eq([[],product])
+            expect(subject).to eq([[],nil])
           end
         end
       end

@@ -88,7 +88,7 @@ class Instance::AsCopier < Instance
     new = nil
     raise "Need a reference" if params[:reference_id].blank?
     raise "Unrecognized reference id" if params[:reference_id].to_i <= 0
-    raise "No such ref" if Reference.find(params[:reference_id].to_i).blank?
+    raise "No such ref" if Reference.find_by(id: params[:reference_id].to_i).blank?
 
     new_reference_id_string = params[:reference_id]
     new_instance_type_id = params[:instance_type_id]

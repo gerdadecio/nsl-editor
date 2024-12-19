@@ -5,7 +5,7 @@ FactoryBot.define do
     deprecated { true }
     doubtful { true }
     misapplied { true }
-    name { "Sample Name" }
+    sequence(:name) {|n| "Instance Type Name #{n}" }
     nomenclatural { true }
     primary_instance { true }
     pro_parte { true }

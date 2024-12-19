@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :author do
     lock_version { 1 }
-    abbrev { "Sample Abbrev" }
+    sequence(:abbrev) {|n| "Sample Abbrev #{n}" }
     created_by { "Sample Created by" }
     date_range { "Sample Date range" }
     full_name { "Sample Full name" }
@@ -12,7 +12,7 @@ FactoryBot.define do
     source_system { "Sample Source system" }
     updated_by { "Sample Updated by" }
     valid_record { true }
-    uri { "Sample Uri" }
+    sequence(:uri) {|n| "Sample Uri #{n}" }
 
     association :namespace
   end
