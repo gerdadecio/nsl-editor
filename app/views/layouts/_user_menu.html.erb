@@ -33,6 +33,15 @@
              </li>
           <% end %>
           <% if @current_registered_user.present? %>
+            <% @current_registered_user.products.uniq.each_with_index do |product, index| %>
+              <% if index == 0 %>
+                  <li role="presentation" class="divider"></li>
+                <% end %>
+              <li role="presentation">
+                <%= link_to "#{editor_icon('shuffle')} Switch to #{product.name.upcase} context".html_safe, switch_product_context_path(product_name: product.name), method: :post, class: "rebeccapurple", title: "#{product.name.upcase} context switch" %>
+              </li>
+            <% end %>
+
             <% @current_registered_user.product_roles.includes(:product, :role_type).each_with_index do |product_role, index| %>
               <% if index == 0 %>
                 <li role="presentation" class="divider"></li>
