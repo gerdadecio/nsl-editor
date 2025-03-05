@@ -10,12 +10,20 @@ class ApplicationController < ActionController::Base
   #  around_action :user_tagged_logging
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :show_login_page
-  rescue_from CanCan::AccessDenied do |_exception|
+  rescue_from CanCan::AccessDenied do |ex|
     logger.error("Access Denied")
-    head :forbidden
+    details = "#{ex.message} #{ex.action.to_sym} #{ex.subject.class.name}"
+    logger.error("User #{@current_user.username} #{details}")
+    flash[:alert] = "Access Denied"
+    respond_to do |format|
+      format.turbo_stream { render "search/flash_message", locals: {flash: flash} }
+      format.html { redirect_to request.referrer || root_path, status: :forbidden, alert: "Access Denied" }
+    end
   end
 
   protected
+
+  attr_reader :current_user, :current_registered_user
 
   def show_login_page
     logger.error("Invalid Authenticity Token.")
