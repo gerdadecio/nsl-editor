@@ -1,0 +1,9 @@
+<div id="flashMessage" data-controller="flash">
+  <% if flash.present? %>
+    <div id="broadcast" style="top: auto; left: auto; position: relative; " class="">
+      <% flash.each do |key, value| %>
+        <%= value %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

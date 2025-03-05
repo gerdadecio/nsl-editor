@@ -10,12 +10,24 @@ class ApplicationController < ActionController::Base
   #  around_action :user_tagged_logging
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :show_login_page
-  rescue_from CanCan::AccessDenied do |_exception|
-    logger.error("Access Denied")
-    head :forbidden
+  rescue_from CanCan::AccessDenied do |ex|
+    details = "#{ex.message} #{ex.action.to_sym} #{ex.subject.class.name}"
+    logger.error("User #{@current_user.username} #{details}")
+
+    alert_message = "Access Denied! Please contact the admin for proper permissions."
+    flash[:alert] = alert_message
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("flashMessage", partial: "layouts/shared/flash_message", locals: {flash: flash}, status: :forbidden)
+      end
+      format.js { render "layouts/shared/flash_message", locals: {flash: flash}, status: :forbidden }
+      format.html { redirect_to request.referrer || root_path, status: :forbidden, alert: alert_message }
+    end
   end
 
   protected
+
+  attr_reader :current_user, :current_registered_user
 
   def show_login_page
     logger.error("Invalid Authenticity Token.")
@@ -201,7 +213,7 @@ end
 class Hash
   def to_html_list
     s = '<ul>'
-    self.sort.to_h.each do |key, value| 
+    self.sort.to_h.each do |key, value|
 
       if value.nil?
       #  s += "<li>#{key}</li>"

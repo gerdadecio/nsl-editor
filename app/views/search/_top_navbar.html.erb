@@ -18,13 +18,10 @@
       <div id="broadcast" style="padding-top: 3px; height: 1.5em;" class="col-xs-12 col-sm-11 col-md-10 col-lg-8">
         <%= @system_broadcast.html_safe %>
       </div>
-    <% elsif flash.present? %>
-      <div id="broadcast" style="padding-top: 3px; height: 1.5em;" class="">
-        <% flash.each do |key, value| %>
-          <%= value %>
-        <% end %>
-      </div>
     <% end %>
+    <div id="flashMessage" data-controller="flash">
+      <%= render partial: "layouts/shared/flash_message", locals: { flash: flash } %>
+    </div>
     <div id="search-summary-row" class="row">
       <div id="search-summary" class="col-sm-12 col-md-12 col-lg-12">
         <%= yield :search_result_summary %>
@@ -97,7 +94,7 @@
                       remote: true,
                       title: "Batch Loader work area" %>
         </li>
-      <% end %> 
+      <% end %>
 
 
     </ul>
