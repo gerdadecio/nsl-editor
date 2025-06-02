@@ -12,7 +12,7 @@
     debug('turbo:load, search_result_focus.js');
   });
 
-  $(window).on('load', function(){ 
+  $(window).on('load', function(){
     debug('jquery window loaded, search_result_focus.js');
   });
 
@@ -33,6 +33,21 @@
     });
 
     $('body').on('click', '.edit-details-tab', function(event) {
+      const proceed = () => {
+        window.formChanged = false;
+        loadDetails(event, $(this), true);
+      };
+
+      if (window.enablePromptUnsavedChanges && (window.hasUnsavedFormChanges ? window.hasUnsavedFormChanges() : window.formChanged)) {
+        event.preventDefault();
+        if (window.showUnsavedChangesModal) {
+          window.showUnsavedChangesModal(proceed);
+        } else if (confirm("You have unsaved changes. Continue?")) {
+          proceed();
+        }
+        return false;
+      }
+
       return loadDetails(event, $(this), true);
     });
 
@@ -165,7 +180,7 @@
       changeFocus(event, $this);
       $('#search-results.nothing-selected').removeClass('nothing-selected').addClass('something-selected');
       $('div#search-result-details').show();
-    } 
+    }
     return event.preventDefault();
   };
 
