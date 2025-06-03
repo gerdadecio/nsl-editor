@@ -1,5 +1,5 @@
 (function() {
-  var changeFocus, clickOnFocus, currentActiveTab, optionalFocusOnPageLoad, recordCurrentActiveTab, searchResultFocus, unconfirmedActionLinkClick;
+  var changeFocus, clickOnFocus, currentActiveTab, promptFormUnsavedChanges, optionalFocusOnPageLoad, recordCurrentActiveTab, searchResultFocus, unconfirmedActionLinkClick;
 
 
   $(document).on("load", function() {
@@ -29,31 +29,47 @@
 
     // When tabbing to search-result record, need to click to trigger retrieval of details.
     $('a.show-details-link[tabindex]').focus(function(event) {
-      return clickOnFocus(event, $(this));
+      const proceed = () => {
+        clickOnFocus(event, $(this));
+      };
+
+      if(window.enablePromptUnsavedChanges == true) {
+        promptFormUnsavedChanges(event, proceed);
+      } else {
+        return proceed();
+      }
     });
 
     $('body').on('click', '.edit-details-tab', function(event) {
       const proceed = () => {
-        window.formChanged = false;
         loadDetails(event, $(this), true);
       };
 
-      if (window.enablePromptUnsavedChanges && (window.hasUnsavedFormChanges ? window.hasUnsavedFormChanges() : window.formChanged)) {
-        event.preventDefault();
-        if (window.showUnsavedChangesModal) {
-          window.showUnsavedChangesModal(proceed);
-        } else if (confirm("You have unsaved changes. Continue?")) {
-          proceed();
-        }
+      if(window.enablePromptUnsavedChanges == true) {
+        promptFormUnsavedChanges(event, proceed);
         return false;
+      } else {
+        return proceed();
       }
-
-      return loadDetails(event, $(this), true);
     });
 
     optionalFocusOnPageLoad();
     return debug('End of search_result_focus.js document ready.');
   });
+
+  promptFormUnsavedChanges = function(event, proceedCallback) {
+    if (window.enablePromptUnsavedChanges == true && (window.hasUnsavedFormChanges ? window.hasUnsavedFormChanges() : window.formChanged)) {
+      event.preventDefault();
+      if (window.showUnsavedChangesModal) {
+        window.showUnsavedChangesModal(proceedCallback);
+      } else if (confirm("You have unsaved changes. Continue?")) {
+        window.formChanged = false;
+        if(proceedCallback) proceedCallback();
+      }
+      return false;
+    }
+   proceedCallback();
+  };
 
   optionalFocusOnPageLoad = function() {
     try {

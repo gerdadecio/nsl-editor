@@ -13,48 +13,85 @@ function hasFormChanged(form) {
   return getFormState(form) !== form.dataset.initialState;
 }
 
+function resetFormChanged(form) {
+  form.dataset.changed = "false";
+  setInitialFormState(form);
+}
+
+function showUnsavedChangesModal(onContinue, onBack, message) {
+  const modal = document.getElementById('unsaved-changes-modal');
+  const continueBtn = document.getElementById('unsaved-continue');
+  const backBtn = document.getElementById('unsaved-back');
+  const messageElem = document.getElementById('unsaved-changes-message');
+  const defaultMsg = "You have unsaved changes. Continue?";
+
+  if (modal) modal.style.display = 'flex';
+  if (messageElem) messageElem.textContent = message || defaultMsg;
+
+  if (continueBtn) {
+    continueBtn.onclick = () => {
+      modal.style.display = 'none';
+      if (messageElem) messageElem.textContent = defaultMsg;
+      if (typeof onContinue === "function") onContinue();
+    };
+  }
+  if (backBtn) {
+    backBtn.onclick = () => {
+      modal.style.display = 'none';
+      if (messageElem) messageElem.textContent = defaultMsg;
+      if (typeof onBack === "function") onBack();
+    };
+  }
+}
+
 window.renderFormPrompt = function() {
+  if (!window.enablePromptUnsavedChanges) {
+    debug('Prompt unsaved changes feature is disabled.');
+    return;
+  }
+
   const forms = document.querySelectorAll("form.prompt-form-save");
   forms.forEach(form => {
     setInitialFormState(form);
 
-    form.addEventListener("input", () => {
-      form.dataset.changed = hasFormChanged(form);
-    });
+    ["input", "change"].forEach(evt =>
+      form.addEventListener(evt, () => {
+        form.dataset.changed = hasFormChanged(form);
+      })
+    );
 
-    form.addEventListener("change", () => {
-      form.dataset.changed = hasFormChanged(form);
-    });
-
-    form.addEventListener("submit", () => {
-      if (hasFormChanged(form)) {
-        event.preventDefault();
-        const submitMsg = "Are you sure you want to submit? This action will save your changes.";
-        if (window.showUnsavedChangesModal) {
-          window.showUnsavedChangesModal(() => {
-            form.dataset.changed = "false";
-            setInitialFormState(form);
-            form.requestSubmit ? form.requestSubmit() : form.submit();
-          }, submitMsg);
-        } else if (confirm(submitMsg)) {
-          form.dataset.changed = "false";
-          setInitialFormState(form);
-          form.requestSubmit ? form.requestSubmit() : form.submit();
-        }
-        return false;
+    form.addEventListener("submit", function(event) {
+      if (!hasFormChanged(form)) {
+        resetFormChanged(form);
+        return;
       }
-      form.dataset.changed = "false";
-      setInitialFormState(form);
+
+      event.preventDefault();
+      const submitBtn = form.querySelector('[type="submit"]');
+      const submitMsg = "Are you sure you want to submit? This action will save your changes.";
+
+      const doSubmit = () => {
+        resetFormChanged(form);
+        form.requestSubmit ? form.requestSubmit() : form.submit();
+      };
+      const onCancel = () => {
+        if (submitBtn) submitBtn.disabled = false;
+      };
+
+      if (window.showUnsavedChangesModal) {
+        window.showUnsavedChangesModal(doSubmit, onCancel, submitMsg);
+      } else if (confirm(submitMsg)) {
+        doSubmit();
+      } else {
+        onCancel();
+      }
     });
   });
 
   const modal = document.getElementById('unsaved-changes-modal');
-  const continueBtn = document.getElementById('unsaved-continue');
-  const backBtn = document.getElementById('unsaved-back');
-
   document.querySelectorAll('a.tab').forEach(tab => {
     tab.addEventListener('click', event => {
-      if (hasUnsavedFormChanges()) {
+      if (window.hasUnsavedFormChanges && window.hasUnsavedFormChanges()) {
         event.preventDefault();
         pendingHref = tab.getAttribute('href');
         if (modal) modal.style.display = 'flex';
@@ -62,6 +99,8 @@ window.renderFormPrompt = function() {
     });
   });
 
+  const continueBtn = document.getElementById('unsaved-continue');
+  const backBtn = document.getElementById('unsaved-back');
   if (continueBtn) {
     continueBtn.onclick = () => {
       if (modal) modal.style.display = 'none';
@@ -71,39 +110,16 @@ window.renderFormPrompt = function() {
       }
     };
   }
-
   if (backBtn) {
     backBtn.onclick = () => {
       if (modal) modal.style.display = 'none';
       pendingHref = null;
     };
   }
-}
+};
 
-window.showUnsavedChangesModal = function(onContinue, message) {
-  const modal = document.getElementById('unsaved-changes-modal');
-  const continueBtn = document.getElementById('unsaved-continue');
-  const backBtn = document.getElementById('unsaved-back');
-  const messageElem = document.getElementById('unsaved-changes-message');
-  if (modal) modal.style.display = 'flex';
-  if (messageElem && message) messageElem.textContent = message;
-
-  if (continueBtn) {
-    continueBtn.onclick = () => {
-      modal.style.display = 'none';
-      if (messageElem) messageElem.textContent = "You have unsaved changes. Continue?"; // reset
-      if (onContinue) onContinue();
-    };
-  }
-  if (backBtn) {
-    backBtn.onclick = () => {
-      modal.style.display = 'none';
-      if (messageElem) messageElem.textContent = "You have unsaved changes. Continue?"; // reset
-    };
-  }
-}
-
+window.showUnsavedChangesModal = showUnsavedChangesModal;
 window.hasUnsavedFormChanges = function() {
   return Array.from(document.querySelectorAll("form.prompt-form-save"))
     .some(form => hasFormChanged(form));
-}
+};
