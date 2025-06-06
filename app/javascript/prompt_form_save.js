@@ -1,3 +1,10 @@
+$(window).on('beforeunload', function (e) {
+  if (window.hasUnsavedFormChanges && window.hasUnsavedFormChanges()) {
+    e.preventDefault();
+    return false;
+  }
+});
+
 let pendingHref = null;
 
 function getFormState(form) {
