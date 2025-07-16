@@ -1,0 +1,1092 @@
+{
+  "products": {
+    "FOA": {
+      "name": {
+        "tabs": [
+          {
+            "id": "tab_details",
+            "text": "Details",
+            "link_id": "name-details-tab",
+            "title": "See details of the name",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit",
+            "dynamic_text_type": "edit",
+            "fallback_text": "Edit Flora Entry",
+            "link_id": "name-edit-tab",
+            "title": "Edit details of the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_instances_profile_v2",
+            "text": "New instance",
+            "link_id": "name-instances-profile-v2-tab",
+            "title": "Create an instance for the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_instances",
+            "text": "New instance",
+            "link_id": "name-instances-tab",
+            "title": "Create an instance for the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_copy",
+            "dynamic_text_type": "copy",
+            "fallback_text": "Copy to Flora",
+            "link_id": "name-copy-tab",
+            "title": "Copy the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_delete",
+            "text": "Delete",
+            "link_id": "name-delete-tab",
+            "title": "Delete name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_more",
+            "text": "More",
+            "link_id": "name-more-tab",
+            "title": "Show more tabs",
+            "use_increment": true
+          }
+        ]
+      },
+      "reference": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "reference-edit-show-1-tab",
+            "title": "View a summary",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_1",
+            "text": "Edit Flora Reference",
+            "link_id": "reference-edit-1-tab",
+            "title": "Main edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_2",
+            "text": "Edit..",
+            "link_id": "reference-edit-2-tab",
+            "title": "Second edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_3",
+            "text": "Edit...",
+            "link_id": "reference-edit-3-tab",
+            "title": "Links edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_comments",
+            "text": "Comments",
+            "link_id": "reference-comments-tab",
+            "title": "Edit comments.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_new_instance",
+            "text": "New instance",
+            "link_id": "reference-new-instance-tab",
+            "title": "New instance form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_copy",
+            "text": "Copy Flora Reference",
+            "link_id": "reference-copy-tab",
+            "title": "Copy the reference to a new reference ready to modify and save.",
+            "use_increment": true,
+            "last": true,
+            "next_tab": ".search-result.showing-details"
+          }
+        ]
+      },
+      "profile_items": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "profile-item-edit-show-1-tab",
+            "title": "View a summary",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit",
+            "text": "Edit",
+            "link_id": "profile-item-edit-tab",
+            "title": "Main edit form for the profile item].",
+            "use_increment": true
+          }
+        ]
+      },
+      "instances": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "instance-show-tab",
+            "title": "Details",
+            "prev_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_edit",
+            "text": "Edit",
+            "link_id": "instance-edit-tab",
+            "title": "Edit",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_profile_v2",
+            "text": "Edit",
+            "link_id": "instance-edit-tab-profile-v2-tab",
+            "title": "Edit",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_notes",
+            "text": "Notes",
+            "link_id": "instance-edit-notes-tab",
+            "title": "Notes",
+            "use_increment": true
+          },
+          {
+            "id": "tab_synonymy",
+            "text": "Syn",
+            "link_id": "instance-cite-this-instance-tab",
+            "title": "Synonym",
+            "use_increment": true
+          },
+          {
+            "id": "tab_synonymy_for_profile_v2",
+            "text": "Syn",
+            "link_id": "instance-cite-this-instance-for-profile-v2-tab",
+            "title": "Synonym",
+            "use_increment": true
+          },
+          {
+            "id": "tab_unpublished_citation",
+            "text": "Unpub",
+            "link_id": "unpublished-citation-tab",
+            "title": "Unpublished citation",
+            "use_increment": true
+          },
+          {
+            "id": "tab_unpublished_citation_for_profile_v2",
+            "text": "Unpub",
+            "link_id": "unpublished-citation-for-profile-v2-tab",
+            "title": "Unpublished citation",
+            "use_increment": true
+          },
+          {
+            "id": "tab_classification",
+            "text": "Tree",
+            "link_id": "instance-classification-tab",
+            "title": "Tree placement",
+            "use_increment": true
+          },
+          {
+            "id": "tab_comments",
+            "text": "Adnot",
+            "link_id": "instance-comments-tab",
+            "title": "Adnot",
+            "use_increment": true,
+            "last": true
+          },
+          {
+            "id": "tab_copy_to_new_reference",
+            "text": "Copy",
+            "link_id": "instance-copy-to-new-reference-tab",
+            "title": "Copy the instance",
+            "use_increment": true,
+            "prev_tab": "instance-comments-tab",
+            "next_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_copy_to_new_profile_v2",
+            "text": "Copy",
+            "link_id": "instance-copy-to-new-profile-v2-tab",
+            "title": "Copy the instance",
+            "use_increment": true,
+            "prev_tab": "instance-comments-tab",
+            "next_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_profile_details",
+            "text": "Profile",
+            "link_id": "instance-profile-tab",
+            "title": "Profile details",
+            "use_increment": true,
+            "prev_tab": "instance-copy-to-new-reference-tab",
+            "next_tab": "instance-edit-profile-tab"
+          },
+          {
+            "id": "tab_edit_profile",
+            "text": "Edit Profile",
+            "link_id": "instance-edit-profile-tab",
+            "title": "Edit Profile",
+            "use_increment": true,
+            "prev_tab": "instance-profile-tab",
+            "next_tab": "instance-batch-loader-tab",
+            "last": true
+          },
+          {
+            "id": "tab_batch_loader",
+            "text": "Loader 1",
+            "link_id": "instance-batch-loader-tab",
+            "title": "Batch Loader operations",
+            "use_increment": true,
+            "prev_tab": "instance-edit-profile-tab",
+            "next_tab": "instance-batch-loader-tab-2",
+            "last": true
+          },
+          {
+            "id": "tab_batch_loader_2",
+            "text": "Loader 2",
+            "link_id": "instance-batch-loader-tab-2",
+            "title": "More batch Loader operations",
+            "use_increment": true,
+            "prev_tab": "instance-batch-tab-loader",
+            "next_tab": "instance-show-tab",
+            "last": true
+          },
+          {
+            "id": "tab_profile_v2",
+            "text": "Profile",
+            "link_id": "instance-profile-v2-tab",
+            "title": "Profile",
+            "use_increment": true,
+            "prev_tab": "instance-edit-profile-v2-tab",
+            "next_tab": ".search-result.show-details",
+            "last": true
+          }
+        ]
+      }
+    },
+    "APC": {
+      "name": {
+        "tabs": [
+          {
+            "id": "tab_details",
+            "text": "Details",
+            "link_id": "name-details-tab",
+            "title": "See details of the name",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit",
+            "dynamic_text_type": "edit",
+            "fallback_text": "Edit Census Entry",
+            "link_id": "name-edit-tab",
+            "title": "Edit details of the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_instances_profile_v2",
+            "text": "New instance",
+            "link_id": "name-instances-profile-v2-tab",
+            "title": "Create an instance for the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_instances",
+            "text": "New instance",
+            "link_id": "name-instances-tab",
+            "title": "Create an instance for the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_copy",
+            "dynamic_text_type": "copy",
+            "fallback_text": "Copy to Census",
+            "link_id": "name-copy-tab",
+            "title": "Copy the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_delete",
+            "text": "Delete",
+            "link_id": "name-delete-tab",
+            "title": "Delete name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_more",
+            "text": "More",
+            "link_id": "name-more-tab",
+            "title": "Show more tabs",
+            "use_increment": true
+          }
+        ]
+      },
+      "reference": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "reference-edit-show-1-tab",
+            "title": "View a summary",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_1",
+            "text": "Edit Census Reference",
+            "link_id": "reference-edit-1-tab",
+            "title": "Main edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_2",
+            "text": "Edit..",
+            "link_id": "reference-edit-2-tab",
+            "title": "Second edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_3",
+            "text": "Edit...",
+            "link_id": "reference-edit-3-tab",
+            "title": "Links edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_comments",
+            "text": "Comments",
+            "link_id": "reference-comments-tab",
+            "title": "Edit comments.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_new_instance",
+            "text": "New instance",
+            "link_id": "reference-new-instance-tab",
+            "title": "New instance form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_copy",
+            "text": "Copy Census Reference",
+            "link_id": "reference-copy-tab",
+            "title": "Copy the reference to a new reference ready to modify and save.",
+            "use_increment": true,
+            "last": true,
+            "next_tab": ".search-result.showing-details"
+          }
+        ]
+      },
+      "profile_items": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "profile-item-edit-show-1-tab",
+            "title": "View a summary",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit",
+            "text": "Edit",
+            "link_id": "profile-item-edit-tab",
+            "title": "Main edit form for the profile item].",
+            "use_increment": true
+          }
+        ]
+      },
+      "instances": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "instance-show-tab",
+            "title": "Details",
+            "prev_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_edit",
+            "text": "Edit",
+            "link_id": "instance-edit-tab",
+            "title": "Edit",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_profile_v2",
+            "text": "Edit",
+            "link_id": "instance-edit-tab-profile-v2-tab",
+            "title": "Edit",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_notes",
+            "text": "Notes",
+            "link_id": "instance-edit-notes-tab",
+            "title": "Notes",
+            "use_increment": true
+          },
+          {
+            "id": "tab_synonymy",
+            "text": "Syn",
+            "link_id": "instance-cite-this-instance-tab",
+            "title": "Synonym",
+            "use_increment": true
+          },
+          {
+            "id": "tab_synonymy_for_profile_v2",
+            "text": "Syn",
+            "link_id": "instance-cite-this-instance-for-profile-v2-tab",
+            "title": "Synonym",
+            "use_increment": true
+          },
+          {
+            "id": "tab_unpublished_citation",
+            "text": "Unpub",
+            "link_id": "unpublished-citation-tab",
+            "title": "Unpublished citation",
+            "use_increment": true
+          },
+          {
+            "id": "tab_unpublished_citation_for_profile_v2",
+            "text": "Unpub",
+            "link_id": "unpublished-citation-for-profile-v2-tab",
+            "title": "Unpublished citation",
+            "use_increment": true
+          },
+          {
+            "id": "tab_classification",
+            "text": "Tree",
+            "link_id": "instance-classification-tab",
+            "title": "Tree placement",
+            "use_increment": true
+          },
+          {
+            "id": "tab_comments",
+            "text": "Adnot",
+            "link_id": "instance-comments-tab",
+            "title": "Adnot",
+            "use_increment": true,
+            "last": true
+          },
+          {
+            "id": "tab_copy_to_new_reference",
+            "text": "Copy",
+            "link_id": "instance-copy-to-new-reference-tab",
+            "title": "Copy the instance",
+            "use_increment": true,
+            "prev_tab": "instance-comments-tab",
+            "next_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_copy_to_new_profile_v2",
+            "text": "Copy",
+            "link_id": "instance-copy-to-new-profile-v2-tab",
+            "title": "Copy the instance",
+            "use_increment": true,
+            "prev_tab": "instance-comments-tab",
+            "next_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_profile_details",
+            "text": "Profile",
+            "link_id": "instance-profile-tab",
+            "title": "Profile details",
+            "use_increment": true,
+            "prev_tab": "instance-copy-to-new-reference-tab",
+            "next_tab": "instance-edit-profile-tab"
+          },
+          {
+            "id": "tab_edit_profile",
+            "text": "Edit Profile",
+            "link_id": "instance-edit-profile-tab",
+            "title": "Edit Profile",
+            "use_increment": true,
+            "prev_tab": "instance-profile-tab",
+            "next_tab": "instance-batch-loader-tab",
+            "last": true
+          },
+          {
+            "id": "tab_batch_loader",
+            "text": "Loader 1",
+            "link_id": "instance-batch-loader-tab",
+            "title": "Batch Loader operations",
+            "use_increment": true,
+            "prev_tab": "instance-edit-profile-tab",
+            "next_tab": "instance-batch-loader-tab-2",
+            "last": true
+          },
+          {
+            "id": "tab_batch_loader_2",
+            "text": "Loader 2",
+            "link_id": "instance-batch-loader-tab-2",
+            "title": "More batch Loader operations",
+            "use_increment": true,
+            "prev_tab": "instance-batch-tab-loader",
+            "next_tab": "instance-show-tab",
+            "last": true
+          },
+          {
+            "id": "tab_profile_v2",
+            "text": "Profile",
+            "link_id": "instance-profile-v2-tab",
+            "title": "Profile",
+            "use_increment": true,
+            "prev_tab": "instance-edit-profile-v2-tab",
+            "next_tab": ".search-result.show-details",
+            "last": true
+          }
+        ]
+      }
+    },
+    "APNI": {
+      "name": {
+        "tabs": [
+          {
+            "id": "tab_details",
+            "text": "Details",
+            "link_id": "name-details-tab",
+            "title": "See details of the name",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit",
+            "dynamic_text_type": "edit",
+            "fallback_text": "Edit Index Entry",
+            "link_id": "name-edit-tab",
+            "title": "Edit details of the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_instances_profile_v2",
+            "text": "New instance",
+            "link_id": "name-instances-profile-v2-tab",
+            "title": "Create an instance for the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_instances",
+            "text": "New instance",
+            "link_id": "name-instances-tab",
+            "title": "Create an instance for the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_copy",
+            "dynamic_text_type": "copy",
+            "fallback_text": "Copy to Index",
+            "link_id": "name-copy-tab",
+            "title": "Copy the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_delete",
+            "text": "Delete",
+            "link_id": "name-delete-tab",
+            "title": "Delete name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_more",
+            "text": "More",
+            "link_id": "name-more-tab",
+            "title": "Show more tabs",
+            "use_increment": true
+          }
+        ]
+      },
+      "reference": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "reference-edit-show-1-tab",
+            "title": "View a summary",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_1",
+            "text": "Edit Index Reference",
+            "link_id": "reference-edit-1-tab",
+            "title": "Main edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_2",
+            "text": "Edit..",
+            "link_id": "reference-edit-2-tab",
+            "title": "Second edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_3",
+            "text": "Edit...",
+            "link_id": "reference-edit-3-tab",
+            "title": "Links edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_comments",
+            "text": "Comments",
+            "link_id": "reference-comments-tab",
+            "title": "Edit comments.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_new_instance",
+            "text": "New instance",
+            "link_id": "reference-new-instance-tab",
+            "title": "New instance form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_copy",
+            "text": "Copy Index Reference",
+            "link_id": "reference-copy-tab",
+            "title": "Copy the reference to a new reference ready to modify and save.",
+            "use_increment": true,
+            "last": true,
+            "next_tab": ".search-result.showing-details"
+          }
+        ]
+      },
+      "profile_items": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "profile-item-edit-show-1-tab",
+            "title": "View a summary",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit",
+            "text": "Edit",
+            "link_id": "profile-item-edit-tab",
+            "title": "Main edit form for the profile item].",
+            "use_increment": true
+          }
+        ]
+      },
+      "instances": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "instance-show-tab",
+            "title": "Details",
+            "prev_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_edit",
+            "text": "Edit",
+            "link_id": "instance-edit-tab",
+            "title": "Edit",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_profile_v2",
+            "text": "Edit",
+            "link_id": "instance-edit-tab-profile-v2-tab",
+            "title": "Edit",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_notes",
+            "text": "Notes",
+            "link_id": "instance-edit-notes-tab",
+            "title": "Notes",
+            "use_increment": true
+          },
+          {
+            "id": "tab_synonymy",
+            "text": "Syn",
+            "link_id": "instance-cite-this-instance-tab",
+            "title": "Synonym",
+            "use_increment": true
+          },
+          {
+            "id": "tab_synonymy_for_profile_v2",
+            "text": "Syn",
+            "link_id": "instance-cite-this-instance-for-profile-v2-tab",
+            "title": "Synonym",
+            "use_increment": true
+          },
+          {
+            "id": "tab_unpublished_citation",
+            "text": "Unpub",
+            "link_id": "unpublished-citation-tab",
+            "title": "Unpublished citation",
+            "use_increment": true
+          },
+          {
+            "id": "tab_unpublished_citation_for_profile_v2",
+            "text": "Unpub",
+            "link_id": "unpublished-citation-for-profile-v2-tab",
+            "title": "Unpublished citation",
+            "use_increment": true
+          },
+          {
+            "id": "tab_classification",
+            "text": "Tree",
+            "link_id": "instance-classification-tab",
+            "title": "Tree placement",
+            "use_increment": true
+          },
+          {
+            "id": "tab_comments",
+            "text": "Adnot",
+            "link_id": "instance-comments-tab",
+            "title": "Adnot",
+            "use_increment": true,
+            "last": true
+          },
+          {
+            "id": "tab_copy_to_new_reference",
+            "text": "Copy",
+            "link_id": "instance-copy-to-new-reference-tab",
+            "title": "Copy the instance",
+            "use_increment": true,
+            "prev_tab": "instance-comments-tab",
+            "next_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_copy_to_new_profile_v2",
+            "text": "Copy",
+            "link_id": "instance-copy-to-new-profile-v2-tab",
+            "title": "Copy the instance",
+            "use_increment": true,
+            "prev_tab": "instance-comments-tab",
+            "next_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_profile_details",
+            "text": "Profile",
+            "link_id": "instance-profile-tab",
+            "title": "Profile details",
+            "use_increment": true,
+            "prev_tab": "instance-copy-to-new-reference-tab",
+            "next_tab": "instance-edit-profile-tab"
+          },
+          {
+            "id": "tab_edit_profile",
+            "text": "Edit Profile",
+            "link_id": "instance-edit-profile-tab",
+            "title": "Edit Profile",
+            "use_increment": true,
+            "prev_tab": "instance-profile-tab",
+            "next_tab": "instance-batch-loader-tab",
+            "last": true
+          },
+          {
+            "id": "tab_batch_loader",
+            "text": "Loader 1",
+            "link_id": "instance-batch-loader-tab",
+            "title": "Batch Loader operations",
+            "use_increment": true,
+            "prev_tab": "instance-edit-profile-tab",
+            "next_tab": "instance-batch-loader-tab-2",
+            "last": true
+          },
+          {
+            "id": "tab_batch_loader_2",
+            "text": "Loader 2",
+            "link_id": "instance-batch-loader-tab-2",
+            "title": "More batch Loader operations",
+            "use_increment": true,
+            "prev_tab": "instance-batch-tab-loader",
+            "next_tab": "instance-show-tab",
+            "last": true
+          },
+          {
+            "id": "tab_profile_v2",
+            "text": "Profile",
+            "link_id": "instance-profile-v2-tab",
+            "title": "Profile",
+            "use_increment": true,
+            "prev_tab": "instance-edit-profile-v2-tab",
+            "next_tab": ".search-result.show-details",
+            "last": true
+          }
+        ]
+      }
+    },
+    "default": {
+      "name": {
+        "tabs": [
+          {
+            "id": "tab_details",
+            "text": "Details",
+            "link_id": "name-details-tab",
+            "title": "See details of the name",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit",
+            "dynamic_text_type": "edit",
+            "fallback_text": "Edit",
+            "link_id": "name-edit-tab",
+            "title": "Edit details of the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_instances_profile_v2",
+            "text": "New instance",
+            "link_id": "name-instances-profile-v2-tab",
+            "title": "Create an instance for the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_instances",
+            "text": "New instance",
+            "link_id": "name-instances-tab",
+            "title": "Create an instance for the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_copy",
+            "dynamic_text_type": "copy",
+            "fallback_text": "Copy",
+            "link_id": "name-copy-tab",
+            "title": "Copy the name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_delete",
+            "text": "Delete",
+            "link_id": "name-delete-tab",
+            "title": "Delete name.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_more",
+            "text": "More",
+            "link_id": "name-more-tab",
+            "title": "Show more tabs",
+            "use_increment": true
+          }
+        ]
+      },
+      "reference": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "reference-edit-show-1-tab",
+            "title": "View a summary",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_1",
+            "text": "Edit.",
+            "link_id": "reference-edit-1-tab",
+            "title": "Main edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_2",
+            "text": "Edit..",
+            "link_id": "reference-edit-2-tab",
+            "title": "Second edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_3",
+            "text": "Edit...",
+            "link_id": "reference-edit-3-tab",
+            "title": "Links edit form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_comments",
+            "text": "Comments",
+            "link_id": "reference-comments-tab",
+            "title": "Edit comments.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_new_instance",
+            "text": "New instance",
+            "link_id": "reference-new-instance-tab",
+            "title": "New instance form for the reference.",
+            "use_increment": true
+          },
+          {
+            "id": "tab_copy",
+            "text": "Copy",
+            "link_id": "reference-copy-tab",
+            "title": "Copy the reference to a new reference ready to modify and save.",
+            "use_increment": true,
+            "last": true,
+            "next_tab": ".search-result.showing-details"
+          }
+        ]
+      },
+      "profile_items": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "profile-item-edit-show-1-tab",
+            "title": "View a summary",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit",
+            "text": "Edit",
+            "link_id": "profile-item-edit-tab",
+            "title": "Main edit form for the profile item].",
+            "use_increment": true
+          }
+        ]
+      },
+      "instances": {
+        "tabs": [
+          {
+            "id": "tab_show_1",
+            "text": "Details",
+            "link_id": "instance-show-tab",
+            "title": "Details",
+            "prev_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_edit",
+            "text": "Edit",
+            "link_id": "instance-edit-tab",
+            "title": "Edit",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_profile_v2",
+            "text": "Edit",
+            "link_id": "instance-edit-tab-profile-v2-tab",
+            "title": "Edit",
+            "use_increment": true
+          },
+          {
+            "id": "tab_edit_notes",
+            "text": "Notes",
+            "link_id": "instance-edit-notes-tab",
+            "title": "Notes",
+            "use_increment": true
+          },
+          {
+            "id": "tab_synonymy",
+            "text": "Syn",
+            "link_id": "instance-cite-this-instance-tab",
+            "title": "Synonym",
+            "use_increment": true
+          },
+          {
+            "id": "tab_synonymy_for_profile_v2",
+            "text": "Syn",
+            "link_id": "instance-cite-this-instance-for-profile-v2-tab",
+            "title": "Synonym",
+            "use_increment": true
+          },
+          {
+            "id": "tab_unpublished_citation",
+            "text": "Unpub",
+            "link_id": "unpublished-citation-tab",
+            "title": "Unpublished citation",
+            "use_increment": true
+          },
+          {
+            "id": "tab_unpublished_citation_for_profile_v2",
+            "text": "Unpub",
+            "link_id": "unpublished-citation-for-profile-v2-tab",
+            "title": "Unpublished citation",
+            "use_increment": true
+          },
+          {
+            "id": "tab_classification",
+            "text": "Tree",
+            "link_id": "instance-classification-tab",
+            "title": "Tree placement",
+            "use_increment": true
+          },
+          {
+            "id": "tab_comments",
+            "text": "Adnot",
+            "link_id": "instance-comments-tab",
+            "title": "Adnot",
+            "use_increment": true,
+            "last": true
+          },
+          {
+            "id": "tab_copy_to_new_reference",
+            "text": "Copy",
+            "link_id": "instance-copy-to-new-reference-tab",
+            "title": "Copy the instance",
+            "use_increment": true,
+            "prev_tab": "instance-comments-tab",
+            "next_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_copy_to_new_profile_v2",
+            "text": "Copy",
+            "link_id": "instance-copy-to-new-profile-v2-tab",
+            "title": "Copy the instance",
+            "use_increment": true,
+            "prev_tab": "instance-comments-tab",
+            "next_tab": ".search-result.show-details"
+          },
+          {
+            "id": "tab_profile_details",
+            "text": "Profile",
+            "link_id": "instance-profile-tab",
+            "title": "Profile details",
+            "use_increment": true,
+            "prev_tab": "instance-copy-to-new-reference-tab",
+            "next_tab": "instance-edit-profile-tab"
+          },
+          {
+            "id": "tab_edit_profile",
+            "text": "Edit Profile",
+            "link_id": "instance-edit-profile-tab",
+            "title": "Edit Profile",
+            "use_increment": true,
+            "prev_tab": "instance-profile-tab",
+            "next_tab": "instance-batch-loader-tab",
+            "last": true
+          },
+          {
+            "id": "tab_batch_loader",
+            "text": "Loader 1",
+            "link_id": "instance-batch-loader-tab",
+            "title": "Batch Loader operations",
+            "use_increment": true,
+            "prev_tab": "instance-edit-profile-tab",
+            "next_tab": "instance-batch-loader-tab-2",
+            "last": true
+          },
+          {
+            "id": "tab_batch_loader_2",
+            "text": "Loader 2",
+            "link_id": "instance-batch-loader-tab-2",
+            "title": "More batch Loader operations",
+            "use_increment": true,
+            "prev_tab": "instance-batch-tab-loader",
+            "next_tab": "instance-show-tab",
+            "last": true
+          },
+          {
+            "id": "tab_profile_v2",
+            "text": "Profile",
+            "link_id": "instance-profile-v2-tab",
+            "title": "Profile",
+            "use_increment": true,
+            "prev_tab": "instance-edit-profile-v2-tab",
+            "next_tab": ".search-result.show-details",
+            "last": true
+          }
+        ]
+      }
+    }
+  }
+}
