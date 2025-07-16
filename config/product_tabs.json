@@ -12,8 +12,7 @@
           },
           {
             "id": "tab_edit",
-            "dynamic_text_type": "edit",
-            "fallback_text": "Edit Flora Entry",
+            "text": "FOA Edit",
             "link_id": "name-edit-tab",
             "title": "Edit details of the name.",
             "use_increment": true
@@ -34,8 +33,7 @@
           },
           {
             "id": "tab_copy",
-            "dynamic_text_type": "copy",
-            "fallback_text": "Copy to Flora",
+            "text": "FOA Copy",
             "link_id": "name-copy-tab",
             "title": "Copy the name.",
             "use_increment": true
@@ -284,8 +282,7 @@
           },
           {
             "id": "tab_edit",
-            "dynamic_text_type": "edit",
-            "fallback_text": "Edit Census Entry",
+            "text": "APC Edit",
             "link_id": "name-edit-tab",
             "title": "Edit details of the name.",
             "use_increment": true
@@ -306,8 +303,7 @@
           },
           {
             "id": "tab_copy",
-            "dynamic_text_type": "copy",
-            "fallback_text": "Copy to Census",
+            "text": "APC Copy",
             "link_id": "name-copy-tab",
             "title": "Copy the name.",
             "use_increment": true
@@ -556,8 +552,7 @@
           },
           {
             "id": "tab_edit",
-            "dynamic_text_type": "edit",
-            "fallback_text": "Edit Index Entry",
+            "text": "APNI Edit",
             "link_id": "name-edit-tab",
             "title": "Edit details of the name.",
             "use_increment": true
@@ -578,8 +573,7 @@
           },
           {
             "id": "tab_copy",
-            "dynamic_text_type": "copy",
-            "fallback_text": "Copy to Index",
+            "text": "APNI copy",
             "link_id": "name-copy-tab",
             "title": "Copy the name.",
             "use_increment": true
@@ -828,8 +822,7 @@
           },
           {
             "id": "tab_edit",
-            "dynamic_text_type": "edit",
-            "fallback_text": "Edit",
+            "text": "APNI edit",
             "link_id": "name-edit-tab",
             "title": "Edit details of the name.",
             "use_increment": true
@@ -850,8 +843,7 @@
           },
           {
             "id": "tab_copy",
-            "dynamic_text_type": "copy",
-            "fallback_text": "Copy",
+            "text": "Copy",
             "link_id": "name-copy-tab",
             "title": "Copy the name.",
             "use_increment": true

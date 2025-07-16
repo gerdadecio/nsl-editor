@@ -3,13 +3,13 @@
 class Tabs::Permissions::PermissionResolverService < BaseService
   validate :validate_params
 
-  attr_reader :product, :resource_type, :user, :resource, :result
+  attr_reader :product, :resource_type, :session_user, :resource, :result
 
-  def initialize(product:, resource_type:, user:, resource: nil)
+  def initialize(product:, resource_type:, session_user:, resource: nil)
     super({})
     @product = product
     @resource_type = resource_type
-    @user = user
+    @session_user = session_user
     @resource = resource
   end
 
@@ -21,7 +21,7 @@ class Tabs::Permissions::PermissionResolverService < BaseService
   private
 
   def validate_params
-    errors.add(:user, "User is required") if user.nil?
+    errors.add(:session_user, "SessionUser is required") if session_user.nil?
     errors.add(:resource_type, "Resource type is required") if resource_type.blank?
   end
 
@@ -37,7 +37,7 @@ class Tabs::Permissions::PermissionResolverService < BaseService
 
   def product_specific_service_exists?
     return false if product.blank?
-    
+
     class_name = product_service_class_name
     begin
       Object.const_get(class_name)
@@ -49,30 +49,30 @@ class Tabs::Permissions::PermissionResolverService < BaseService
 
   def build_product_service
     service_class = product_service_class_name.constantize
-    service = service_class.call(user: user, resource: resource)
-    
+    service = service_class.call(session_user: session_user, resource: resource)
+
     if service.errors.any?
       Rails.logger.error "Product permission service errors: #{service.errors.full_messages}"
       return build_default_service
     end
-    
+
     service.result
   end
 
   def build_default_service
     service_class = default_service_class_name.constantize
-    service = service_class.call(user: user, resource: resource)
-    
+    service = service_class.call(session_user: session_user, resource: resource)
+
     if service.errors.any?
       Rails.logger.error "Default permission service errors: #{service.errors.full_messages}"
       return nil
     end
-    
+
     service.result
   end
 
   def product_service_class_name
-    "Tabs::Permissions::Products::#{normalize_product_name}::#{normalize_resource_name}PermissionService"
+    "Tabs::Permissions::Products::#{normalize_product_name&.titleize}::#{normalize_resource_name}PermissionService"
   end
 
   def default_service_class_name

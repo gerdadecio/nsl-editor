@@ -3,10 +3,11 @@
 class Tabs::Permissions::Registry
   PERMISSIONS = {
     'name' => {
+      'tab_details' => {}, # No permissions required - always show
       'tab_edit' => { ability: 'names', action: 'update' },
       'tab_instances_profile_v2' => { ability: :create_with_product_reference, resource: 'Instance' },
-      'tab_instances' => { 
-        ability: :create, 
+      'tab_instances' => {
+        ability: :create,
         resource: 'Instance',
         exclude: { ability: :create_with_product_reference, resource: 'Instance' }
       },
@@ -15,6 +16,7 @@ class Tabs::Permissions::Registry
       'tab_more' => { ability: 'names', action: 'update' }
     },
     'reference' => {
+      'tab_show_1' => {}, # No permissions required - always show
       'tab_edit_1' => { ability: :update, resource: '@resource' },
       'tab_edit_2' => { ability: :update, resource: '@resource' },
       'tab_edit_3' => { ability: :update, resource: '@resource' },
@@ -38,14 +40,15 @@ class Tabs::Permissions::Registry
       'tab_profile_details' => { ability: 'classification', action: 'place' },
       'tab_edit_profile' => { ability: 'classification', action: 'place' },
       'tab_batch_loader' => { ability: 'loader/batches', action: 'process' },
-      'tab_batch_loader_2' => { 
-        ability: 'loader/batches', 
+      'tab_batch_loader_2' => {
+        ability: 'loader/batches',
         action: 'process',
         additional: { ability: 'loader/instances-loader-2', action: 'use' }
       },
       'tab_profile_v2' => { ability: :manage_profile, resource: '@resource' }
     },
     'profile_items' => {
+      'tab_show_1' => {}, # No permissions required - always show
       'tab_edit' => { ability: :manage, resource: '@resource' }
     }
   }.freeze

@@ -3,11 +3,11 @@
 class Tabs::Permissions::BasePermissionService < BaseService
   validate :validate_params
 
-  attr_reader :user, :resource, :result
+  attr_reader :session_user, :resource, :result
 
-  def initialize(user:, resource: nil)
+  def initialize(session_user:, resource: nil)
     super({})
-    @user = user
+    @session_user = session_user
     @resource = resource
   end
 
@@ -21,7 +21,7 @@ class Tabs::Permissions::BasePermissionService < BaseService
     return true if tab_id.blank?
 
     permission = registry.permission_for(resource_type_key, tab_id)
-    return true unless permission
+    return true if permission.blank?
 
     evaluate_permission(permission)
   end
@@ -39,7 +39,7 @@ class Tabs::Permissions::BasePermissionService < BaseService
   private
 
   def validate_params
-    errors.add(:user, "User is required") if user.nil?
+    errors.add(:session_user, "SessionUser is required") if session_user.nil?
   end
 
   def evaluate_permission(permission)
@@ -69,16 +69,18 @@ class Tabs::Permissions::BasePermissionService < BaseService
   end
 
   def check_permission(permission)
+    ability = Ability.new(@session_user)
+
     if permission[:resource] == '@resource'
       return false unless @resource
-      @user.can?(permission[:ability], @resource)
+      ability.can?(permission[:ability], @resource)
     elsif permission[:resource]
       resource_class = permission[:resource].constantize
-      @user.can?(permission[:ability], resource_class)
+      ability.can?(permission[:ability], resource_class)
     elsif permission[:action]
-      @user.can?(permission[:ability], permission[:action])
+      ability.can?(permission[:ability], permission[:action])
     else
-      @user.can?(permission[:ability])
+      ability.can?(permission[:ability])
     end
   rescue NameError => e
     Rails.logger.error "Permission check failed: #{e.message} for permission: #{permission}"
