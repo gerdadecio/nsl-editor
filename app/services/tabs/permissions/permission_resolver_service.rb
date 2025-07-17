@@ -5,6 +5,15 @@ class Tabs::Permissions::PermissionResolverService < BaseService
 
   attr_reader :product, :resource_type, :session_user, :resource, :result
 
+  RESOURCE_NAMES = {
+    name: "Names",
+    reference: "References",
+    instances: "Instances",
+    instance: "Instances",
+    profile_items: "ProfileItems",
+    profile_item: "ProfileItems"
+  }.freeze
+
   def initialize(product:, resource_type:, session_user:, resource: nil)
     super({})
     @product = product
@@ -26,11 +35,9 @@ class Tabs::Permissions::PermissionResolverService < BaseService
   end
 
   def resolve_permission_service
-    # Try product-specific service first
     if product_specific_service_exists?
       build_product_service
     else
-      # Fall back to default service
       build_default_service
     end
   end
@@ -84,17 +91,6 @@ class Tabs::Permissions::PermissionResolverService < BaseService
   end
 
   def normalize_resource_name
-    case resource_type.to_s.downcase
-    when 'name'
-      'Names'
-    when 'reference'
-      'References'
-    when 'instances', 'instance'
-      'Instances'
-    when 'profile_items', 'profile_item'
-      'ProfileItems'
-    else
-      resource_type.to_s.classify.pluralize
-    end
+    RESOURCE_NAMES[resource_type.to_s.downcase] || resource_type.to_s.classify.pluralize
   end
 end

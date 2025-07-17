@@ -23,26 +23,6 @@ class ProductTabConfigService < BaseService
     @result = get_accessible_tabs_config
   end
 
-  # Legacy singleton support for backwards compatibility
-  # def self.instance
-  #   @legacy_instance ||= new_legacy_instance
-  # end
-
-  # def self.new_legacy_instance
-  #   instance = allocate
-  #   instance.send(:initialize_legacy)
-  #   instance
-  # end
-
-  # def initialize_legacy
-  #   @user = nil
-  #   @resource_type = nil
-  #   @resource = nil
-  #   @tabs_to_offer = nil
-  #   @product_name = nil
-  #   load_configuration
-  # end
-
   def get_tab_label(product_name, resource_type, tab_type)
     product_config = configuration.dig('products', product_name&.upcase) ||
                     configuration.dig('products', 'default')
@@ -59,13 +39,11 @@ class ProductTabConfigService < BaseService
     label = get_tab_label(product_name, resource_type, tab_type)
     return label if label
 
-    # Try default product configuration
     if product_name&.upcase != 'DEFAULT'
       label = get_tab_label('default', resource_type, tab_type)
       return label if label
     end
 
-    # Final fallback
     fallback || tab_type.to_s.humanize
   end
 
@@ -80,7 +58,6 @@ class ProductTabConfigService < BaseService
 
     tabs = resource_config['tabs'] || []
 
-    # Convert string keys to symbols for consistency
     tabs.map do |tab|
       tab.transform_keys { |key| key.to_sym }
     end
@@ -90,27 +67,14 @@ class ProductTabConfigService < BaseService
     tabs = get_tabs_config(product_name, resource_type)
     return [] if tabs.empty?
 
-    # Filter tabs based on user permissions
     tabs.select do |tab|
       should_show_tab?(tab)
     end
   end
 
-  def get_tabs_config_with_fallback(product_name, resource_type)
-    tabs = get_tabs_config(product_name, resource_type)
-    return tabs if tabs.any?
-
-    # Try default product configuration
-    if product_name&.upcase != 'DEFAULT'
-      tabs = get_tabs_config('default', resource_type)
-      return tabs if tabs.any?
-    end
-
-    # Final fallback to empty array
-    []
-  end
-
   private
+
+  attr_reader :configuration
 
   def validate_params
     errors.add(:user, "User is required") if user.nil?
@@ -118,12 +82,10 @@ class ProductTabConfigService < BaseService
   end
 
   def should_show_tab?(tab)
-    # Check if tab should be offered
     if tabs_to_offer&.is_a?(Array)
       return false unless tabs_to_offer.include?(tab[:id])
     end
 
-    # Use permission service to check tab visibility
     permission_service = get_permission_service
     return true unless permission_service
 
@@ -157,10 +119,6 @@ class ProductTabConfigService < BaseService
   rescue Errno::ENOENT => e
     Rails.logger.error "Product tabs configuration file not found: #{e.message}"
     @configuration = default_configuration
-  end
-
-  def configuration
-    @configuration
   end
 
   def default_configuration

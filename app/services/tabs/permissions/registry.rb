@@ -58,7 +58,7 @@ class Tabs::Permissions::Registry
   end
 
   def self.has_permission?(resource_type, tab_id)
-    PERMISSIONS.dig(resource_type.to_s, tab_id.to_s).present?
+    !PERMISSIONS.dig(resource_type.to_s, tab_id.to_s).nil?
   end
 
   def self.resource_types
