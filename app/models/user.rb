@@ -42,8 +42,8 @@ class User < ActiveRecord::Base
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer"
-  has_many :user_product_roles, class_name: "User::ProductRole"
+  has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer", foreign_key: :user_id
+  has_many :user_product_roles, class_name: "User::ProductRole", foreign_key: :user_id
   has_many :product_roles, through: :user_product_roles
   has_many :products, through: :product_roles
   has_many :roles, through: :product_roles
