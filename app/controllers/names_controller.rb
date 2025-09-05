@@ -153,10 +153,18 @@ class NamesController < ApplicationController
 
   def refresh_children
     if @name.combined_children.size > 50
-      NameChildrenRefresherJob.new.perform(@name.id)
+      if Rails.configuration.try(:rails_8_upgrade)
+        NameChildrenRefresherActiveJob.perform_now(@name.id)
+      else
+        NameChildrenRefresherJob.new.perform(@name.id)
+      end
       render "names/refresh_children/job_started"
     else
-      @total = NameChildrenRefresherJob.new.perform(@name.id)
+      @total = if Rails.configuration.try(:rails_8_upgrade)
+        NameChildrenRefresherActiveJob.perform_now(@name.id)
+      else
+        NameChildrenRefresherJob.new.perform(@name.id)
+      end
       render "names/refresh_children/ok"
     end
   rescue StandardError => e
@@ -246,7 +254,11 @@ class NamesController < ApplicationController
 
   def refresh_names
     refreshed_names_tally = 0
-    refreshed_names_tally = NameChildrenRefresherJob.new.perform(@name.id)
+    refreshed_names_tally = if Rails.application.config.rails_8_upgrade
+      NameChildrenRefresherActiveJob.perform_now(@name.id)
+    else
+      NameChildrenRefresherJob.new.perform(@name.id)
+    end
     if refreshed_names_tally > 0
       @message += "; also updated \
       #{ActionController::Base.helpers.pluralize(refreshed_names_tally,\
