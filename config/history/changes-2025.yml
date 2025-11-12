@@ -1,4 +1,9 @@
 - :date: 13-Nov-2025
+  :jira_id: '158'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Improve logging in tree controller
+- :date: 13-Nov-2025
   :jira_id: '1619'
   :description: |-
     Instance display: Avoid displaying "legitimate" name status for misapplied cross-references
