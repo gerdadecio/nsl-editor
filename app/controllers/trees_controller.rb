@@ -280,7 +280,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_cas_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_cas_error", status: :bad_request 
+    render "trees/reports/run_cas_error", status: :bad_request
   end
 
   def show_diff
@@ -307,7 +307,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_diff_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_diff_error", status: :bad_request 
+    render "trees/reports/run_diff_error", status: :bad_request
   end
 
   def show_valrep
@@ -330,13 +330,13 @@ class TreesController < ApplicationController
     render "trees/reports/run_valrep_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_valrep_error", status: :bad_request 
+    render "trees/reports/run_valrep_error", status: :bad_request
   end
 
   private
 
   def json_error(err)
-    logger.error(err)
+    logger.error("Tree error: #{err}")
     json = JSON.parse(err.http_body, object_class: OpenStruct)
     if json&.error
       logger.error(json.error)
