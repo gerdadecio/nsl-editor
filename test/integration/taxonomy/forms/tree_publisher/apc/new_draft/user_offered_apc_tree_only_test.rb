@@ -30,6 +30,17 @@ require "test_helper"
 class TaxFormsTreePubAPCNewDraftUserOferedAPCTreeOnlyTest < ActionController::TestCase
   tests TreeVersionsController
 
+  def setup
+    publish_existing_draft
+  end
+
+  # We need to have no draft versions for this test case
+  def publish_existing_draft
+    draft_tree_version = tree_versions(:apc_draft_version)
+    draft_tree_version.published = true
+    draft_tree_version.save!
+  end
+
   #<option value="51209179">APC</option>
   # comes out like this:
   # "<option value=\\\"460813214\\\">APC<\\/option>"

@@ -48,7 +48,7 @@ class TaxFormsTreePubAPCUserCanCreateAPCDraftTest < ActionController::TestCase
   end
 
   def publish_existing_draft
-    # We needto have no draft versions for this test case
+    # We need to have no draft versions for this test case
     draft_tree_version = tree_versions(:apc_draft_version)
     draft_tree_version.published = true
     draft_tree_version.save!

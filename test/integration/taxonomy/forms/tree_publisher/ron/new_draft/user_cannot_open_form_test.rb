@@ -27,34 +27,30 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning: 
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubFOANewDraftUserOferedFOATreeOnlyTest < ActionController::TestCase
+class TaxFormsTreePubRONNewDraftUserCannotOpenFormTest < ActionController::TestCase
   tests TreeVersionsController
 
   def setup
-    publish_existing_draft
   end
 
   # We need to have no draft versions for this test case
   def publish_existing_draft
-    draft_tree_version = tree_versions(:foa_draft_version)
+    draft_tree_version = tree_versions(:ron_draft_version)
     draft_tree_version.published = true
     draft_tree_version.save!
   end
 
-  test "FOA tree publisher user offered FOA tree only" do
-    user = users(:foa_tax_publisher)
-    get(:new_draft,
-        params: {tree_id: trees(:FOA)},
+  test "RON tree publisher user cannot open new draft form for read only tree" do
+    user = users(:ron_tax_publisher)
+    error = assert_raises(RuntimeError) {
+      get(:new_draft,
+        params: {tree_id: trees(:RON)},
         format: :js,
         xhr: true,
         session: { username: user.user_name,
                    user_full_name: user.full_name,
                    groups: ["login"]})
-    assert_response :success, "This test assumes the new draft form will open for foa_tax_publisher"
-    assert_dom 'form', true, 'Should be a form element'
-    assert_dom "input:match('id', ?)", /tree_id/, true, 'Should be a tree_id input element'
-    assert_no_match(/APC/i, response.body, 'Should be no APC option')
+    }
+    assert_equal 'RON tree is read only - cannot create any drafts', error.message
   end
 end
-
-

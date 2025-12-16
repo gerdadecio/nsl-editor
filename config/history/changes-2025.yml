@@ -1,4 +1,8 @@
 - :date: 16-Dec-2025
+  :jira_id: '5587'
+  :description: |-
+    Taxonomy: Do not offer Create Draft for read-only Trees
+- :date: 16-Dec-2025
   :jira_id: '5547'
   :description: |-
     Name Resource: Initial backend models for the resource tab in Name records
