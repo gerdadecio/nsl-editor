@@ -1,3 +1,7 @@
+- :date: 17-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Controller and routes for the resource tab in Name records
 - :date: 16-Dec-2025
   :jira_id: '5587'
   :description: |-
