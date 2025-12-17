@@ -100,10 +100,12 @@
       return event.preventDefault();
     }
 
-    // Get the ResourceHost data (we'll need to store this or fetch it)
-    // For now, we'll populate what we can
+    // Populate the form fields
     $('#new-resource-host').val(selectedResourceText);
     $('#new-resource-host').data('resource-host-id', selectedResourceId);
+
+    // Set the hidden resource_host_id field for form submission
+    $('#resource-host-id-hidden').val(selectedResourceId);
 
     // Get the resolving URL from the selected option's data attribute
     const resolvingUrl = $('#resource-type-select option:selected').data('resolving-url') || '';
@@ -152,26 +154,11 @@
   saveNewResource = function(event) {
     debug('saveNewResource');
 
-    // TODO: Add AJAX call to create the resource
-    // For now, just show a message and hide the form
-
-    const resourceHostId = $('#new-resource-host').data('resource-host-id');
     const resourceValue = $('#new-resource-value').val();
-    const resourceNote = $('#new-resource-note').val();
-
-    // Validate
     if (!resourceValue) {
       $('#search-result-details-error-message-container').html('Resource value is required');
       return event.preventDefault();
     }
-
-    // Hide the form
-    hideAddResourceForm(event);
-
-    // Show success message
-    $('#search-result-details-info-message-container').html('Resource added successfully (save not yet implemented)');
-
-    return event.preventDefault();
   };
 
 }).call(this);
