@@ -192,7 +192,9 @@ Rails.application.routes.draw do
   match "names/:id/copy", as: "name_copy", to: "names#copy", via: :post
   match "names/new/:category/:random_id",
         as: "new_name_with_category_and_random_id", to: "names#new", via: :get
-  resources :names, only: %i[create update destroy]
+  resources :names, only: %i[create update destroy] do
+    resources :name_resources, only: %i[new create update destroy], module: :names
+  end
   match "names/:id",
         as: "name_show",
         to: "names#show",

@@ -1,5 +1,6 @@
 (function() {
   var showResourceEditForm, hideResourceEditForm, saveResourceEdit;
+  var showAddResourceForm, hideAddResourceForm, saveNewResource;
 
   $(document).on("turbo:load", function() {
 
@@ -16,6 +17,21 @@
     // Save resource edit
     $('body').on('click', 'a.save-resource-btn', function(event) {
       return saveResourceEdit(event, $(this));
+    });
+
+    // Show add resource form when clicking Add Resource button
+    $('body').on('click', '#add-resource-button', function(event) {
+      return showAddResourceForm(event, $(this));
+    });
+
+    // Cancel adding new resource
+    $('body').on('click', '#cancel-new-resource-btn', function(event) {
+      return hideAddResourceForm(event);
+    });
+
+    // Save new resource
+    $('body').on('click', '#save-new-resource-btn', function(event) {
+      return saveNewResource(event);
     });
 
   });
@@ -67,6 +83,93 @@
 
     // Show success message
     $('#search-result-details-info-message-container').html('Resource updated successfully');
+
+    return event.preventDefault();
+  };
+
+  showAddResourceForm = function(event, $element) {
+    debug('showAddResourceForm');
+
+    // Get selected resource type from dropdown
+    const selectedResourceId = $('#resource-type-select').val();
+    const selectedResourceText = $('#resource-type-select option:selected').text();
+
+    // Validate selection
+    if (!selectedResourceId) {
+      $('#search-result-details-error-message-container').html('Please select a resource type first');
+      return event.preventDefault();
+    }
+
+    // Get the ResourceHost data (we'll need to store this or fetch it)
+    // For now, we'll populate what we can
+    $('#new-resource-host').val(selectedResourceText);
+    $('#new-resource-host').data('resource-host-id', selectedResourceId);
+
+    // Get the resolving URL from the selected option's data attribute
+    const resolvingUrl = $('#resource-type-select option:selected').data('resolving-url') || '';
+    $('#new-resource-url').val(resolvingUrl);
+
+    // Clear previous values
+    $('#new-resource-value').val('');
+    $('#new-resource-note').val('');
+
+    // Hide the dropdown and button
+    $('.add-resource-form').addClass('hidden');
+
+    // Show the add form
+    $('#add-resource-form-container').removeClass('hidden');
+
+    // Focus on the value field
+    $('#new-resource-value').focus();
+
+    // Clear messages
+    $('.message-container').html('');
+
+    return event.preventDefault();
+  };
+
+  hideAddResourceForm = function(event) {
+    debug('hideAddResourceForm');
+
+    // Hide the add form
+    $('#add-resource-form-container').addClass('hidden');
+
+    // Show the dropdown and button again
+    $('.add-resource-form').removeClass('hidden');
+
+    // Clear form fields
+    $('#new-resource-host').val('');
+    $('#new-resource-value').val('');
+    $('#new-resource-note').val('');
+    $('#new-resource-url').val('');
+
+    // Clear messages
+    $('.message-container').html('');
+
+    return event.preventDefault();
+  };
+
+  saveNewResource = function(event) {
+    debug('saveNewResource');
+
+    // TODO: Add AJAX call to create the resource
+    // For now, just show a message and hide the form
+
+    const resourceHostId = $('#new-resource-host').data('resource-host-id');
+    const resourceValue = $('#new-resource-value').val();
+    const resourceNote = $('#new-resource-note').val();
+
+    // Validate
+    if (!resourceValue) {
+      $('#search-result-details-error-message-container').html('Resource value is required');
+      return event.preventDefault();
+    }
+
+    // Hide the form
+    hideAddResourceForm(event);
+
+    // Show success message
+    $('#search-result-details-info-message-container').html('Resource added successfully (save not yet implemented)');
 
     return event.preventDefault();
   };
