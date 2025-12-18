@@ -105,9 +105,15 @@ RSpec.describe Names::NameResourcesController, type: :controller do
         expect(assigns(:message)).to eq("Resource host must exist")
       end
 
-      it "renders the update_failed template" do
+      it "logs the error" do
+        allow(Rails.logger).to receive(:error).with("Failed to create NameResource: Resource host must exist")
         subject
-        expect(response).to render_template("update_failed")
+        expect(Rails.logger).to have_received(:error).with("Failed to create NameResource: Resource host must exist")
+      end
+
+      it "renders the create_failed template" do
+        subject
+        expect(response).to render_template("create_failed")
       end
 
       it "returns unprocessable_content status" do
@@ -151,9 +157,9 @@ RSpec.describe Names::NameResourcesController, type: :controller do
       }
     end
 
-    context "with valid parameters" do
-      subject { patch :update, params: update_params, format: :turbo_stream }
+    subject { patch :update, params: update_params, format: :turbo_stream }
 
+    context "with valid parameters" do
       it "assigns @name" do
         subject
         expect(assigns(:name)).to eq(name)
@@ -198,6 +204,45 @@ RSpec.describe Names::NameResourcesController, type: :controller do
       end
     end
 
+    context "when no changes are made" do
+      let!(:name_resource) do
+        FactoryBot.create(:name_resource, name: name, value: "updated-resource-id", note: "testing", resource_host: resource_host)
+      end
+
+      let(:update_params) do
+        {
+          name_id: name.id,
+          id: name_resource.id,
+          name_resource: {
+            value: "updated-resource-id",
+            note: "testing"
+          }
+        }
+      end
+
+      it "assigns 'No change' message" do
+        subject
+        expect(assigns(:message)).to eq("No change")
+      end
+
+      it "renders the update template" do
+        subject
+        expect(response).to render_template(:update)
+      end
+
+      it "returns successful status" do
+        subject
+        expect(response).to have_http_status(:success)
+      end
+
+      it "does not modify the database" do
+        initial_updated_at = name_resource.updated_at
+        subject
+        name_resource.reload
+        expect(name_resource.updated_at.to_i).to eq(initial_updated_at.to_i)
+      end
+    end
+
     context "with invalid parameters" do
       subject { patch :update, params: update_params, format: :turbo_stream }
 
@@ -216,6 +261,12 @@ RSpec.describe Names::NameResourcesController, type: :controller do
       it "assigns error message" do
         subject
         expect(assigns(:message)).to eq("Validation failed")
+      end
+
+      it "logs the error" do
+        allow(Rails.logger).to receive(:error).with("Failed to update NameResource: Validation failed")
+        subject
+        expect(Rails.logger).to have_received(:error).with("Failed to update NameResource: Validation failed")
       end
 
       it "renders the update_failed template" do
@@ -333,6 +384,12 @@ RSpec.describe Names::NameResourcesController, type: :controller do
       it "assigns error message" do
         subject
         expect(assigns(:message)).to eq("Cannot delete resource")
+      end
+
+      it "logs the error" do
+        allow(Rails.logger).to receive(:error).with("Failed to delete NameResource: Cannot delete resource")
+        subject
+        expect(Rails.logger).to have_received(:error).with("Failed to delete NameResource: Cannot delete resource")
       end
 
       it "renders the destroy_failed template" do

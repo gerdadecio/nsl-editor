@@ -1,4 +1,4 @@
-<div class="resource-list-item">
+<div id="name-resource-<%= name_resource.id %>" class="resource-list-item">
   <!-- Resource display view -->
   <div id="resource-display-<%= name_resource.id %>" class="resource-display">
     <div class="resource-info">
@@ -49,12 +49,15 @@
   <!-- Confirm/Cancel delete container -->
   <div id="confirm-or-cancel-link-container-<%= name_resource.id %>" class="confirm-or-cancel-delete-link hidden">
     <%= link_to "Confirm delete",
-      '#',
+      name_name_resources_path(name_id: name_resource.name_id, id: name_resource.id),
+      id: "resource-confirm-delete-link-#{name_resource.id}",
       class: "btn btn-danger btn-sm resource-btn-lg",
       title: "Really delete this resource",
       tabindex: increment_tab_index,
-      remote: true,
-      method: :delete
+      data: {
+        turbo_method: :delete,
+        turbo_stream: true
+      }
     %>
 
     <%= link_to "Cancel",
