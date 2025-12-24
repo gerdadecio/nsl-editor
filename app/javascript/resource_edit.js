@@ -34,7 +34,6 @@
 
   clearMessages = function() {
     $('.message-container').html('');
-    $('.error-container').html('');
   };
 
   showResourceEditForm = function(event, $element) {
