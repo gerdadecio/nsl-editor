@@ -26,15 +26,28 @@
 class Search::OnName::WithInstances
   attr_reader :names_with_instances
 
-  def initialize(names)
+  def initialize(names, parsed_request = nil)
     results = []
+    @parsed_request = parsed_request
     names.each do |name|
       name.display_as_part_of_concept
       results << name
-      Instance::AsArray::ForName.new(name).results.each do |usage_rec|
+      instances_to_show(name).each do |usage_rec|
         results << usage_rec
       end
     end
     @names_with_instances = results
+  end
+
+  private
+
+  def instances_to_show(name)
+    instances = Instance::AsArray::ForName.new(name).results
+    # Filter to only draft instances if draft: directive is present
+    if @parsed_request && @parsed_request.query_string.to_s.include?("draft:")
+      instances.select { |instance| instance.respond_to?(:draft?) && instance.draft? }
+    else
+      instances
+    end
   end
 end

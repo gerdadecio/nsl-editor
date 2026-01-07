@@ -151,6 +151,13 @@ class Name < ApplicationRecord
     !primary_instances.empty?
   end
 
+  def with_draft_instance?
+    instances.exists?(draft: true)
+  end
+
+  # Alias for compatibility with search result display partials
+  alias_method :draft?, :with_draft_instance?
+
   def save_with_username(username)
     set_defaults # under rails 6 the before_create was not getting called (in time)
     self.created_by = self.updated_by = username

@@ -81,7 +81,7 @@ class Search::OnName::Base
 
   def include_instances
     @results = if @parsed_request.include_instances && @parsed_request.show_instances
-                 Search::OnName::WithInstances.new(@names).names_with_instances
+                 Search::OnName::WithInstances.new(@names, @parsed_request).names_with_instances
                else
                  @names.to_a
                end

@@ -839,13 +839,13 @@ select instance.name_id
        ))"
 'first-instance-is-syn:':
   :takes_no_arg: true,
-  :where_clause: " id in 
+  :where_clause: " id in
 (select n.id
 from name n
 join instance i
      on n.id = i.name_id
 join instance_type t
-     on i.instance_type_id = t.id 
+     on i.instance_type_id = t.id
 join reference r
      on i.reference_id = r.id
 where t.relationship
@@ -859,4 +859,8 @@ where t.relationship
     where i2.name_id = n.id
       and t2.primary_instance
   ) )"
+'draft:':
+  :where_clause: " exists (select null from instance i where i.name_id = name.id and i.draft = true) "
+'not-draft:':
+  :where_clause: " exists (select null from instance i where i.name_id = name.id and i.draft = false) "
 
