@@ -96,13 +96,16 @@ class TreesController < ApplicationController
     profile.update_comment(move_name_params[:comment])
     profile.update_distribution(move_name_params[:distribution])
 
-    replacement = Tree::Workspace::Replacement.new(username: current_user.username,
-                                                   target: target,
-                                                   parent: parent,
-                                                   instance_id: move_name_params[:instance_id],
-                                                   excluded: move_name_params[:excluded],
-                                                   profile: profile.profile_data)
-    response = replacement.replace
+    if @working_draft.tree.config.present?
+      replacement = Tree::Workspace::Replacement.new(username: current_user.username,
+                                                    target: target,
+                                                    parent: parent,
+                                                    instance_id: move_name_params[:instance_id],
+                                                    excluded: move_name_params[:excluded],
+                                                    profile: profile.profile_data)
+      response = replacement.replace
+    end
+
     @html_out = process_problems(replacement_json_result(response))
     render "moved_placement"
   rescue RestClient::Unauthorized, RestClient::Forbidden => e
@@ -277,7 +280,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_cas_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_cas_error", status: :bad_request 
+    render "trees/reports/run_cas_error", status: :bad_request
   end
 
   def show_diff
@@ -304,7 +307,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_diff_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_diff_error", status: :bad_request 
+    render "trees/reports/run_diff_error", status: :bad_request
   end
 
   def show_valrep
@@ -327,7 +330,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_valrep_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_valrep_error", status: :bad_request 
+    render "trees/reports/run_valrep_error", status: :bad_request
   end
 
   private
