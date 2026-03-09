@@ -53,17 +53,42 @@ class Instance::AsArray::ForName < Array
   end
 
   def sorted_instances(instances)
-    all = instances.to_a
-    drafts, non_drafts = all.partition(&:draft?)
-    non_drafts.sort { |i1, i2| sort_fields(i1) <=> sort_fields(i2) } +
-      drafts.sort_by { |i| author_name(i) }.reverse
+    instances.to_a.sort { |i1, i2| sort_fields(i1) <=> sort_fields(i2) }
   end
 
+  # Sort order:
+  # 1. Whether instance has a year (dated before undated)
+  # 2. Year (chronologically, earliest first)
+  # 3. Draft status (non-drafts before drafts within same year)
+  # 4. Primary instance type first
+  # 5. ISO publication date
+  # 6. Author name (alphabetically)
   def sort_fields(instance)
-    [instance.reference.year || instance.reference.try("parent").try("year") || NO_YEAR,
-     instance.instance_type.primaries_first,
-     instance.reference.iso_publication_date || instance.reference.try("parent").try("iso_publication_date") || NO_YEAR,
-     author_name(instance)]
+    ref = instance.reference
+    year = ref.year || parent_attr(ref, :year)
+    iso_date = ref.iso_publication_date || parent_attr(ref, :iso_publication_date)
+
+    [
+      dated_first(year),
+      year || NO_YEAR,
+      draft_sort_order(instance),
+      instance.instance_type.primaries_first,
+      iso_date || NO_YEAR,
+      author_name(instance).downcase
+    ]
+  end
+
+  def parent_attr(reference, attribute)
+    reference.try(:parent).try(attribute)
+  end
+
+  def dated_first(year)
+    year.present? ? 0 : 1
+  end
+
+  # Non-drafts sort before drafts (A < B)
+  def draft_sort_order(instance)
+    instance.draft? ? "B" : "A"
   end
 
   def author_name(instance)
