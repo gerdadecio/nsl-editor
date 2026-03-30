@@ -88,7 +88,7 @@ group :development, :test do
 end
 
 # Added
-gem "active_type"
+gem "active_type", ">= 2.7.0"
 gem "cancancan"
 gem "net-ldap"
 gem "pg_search"
