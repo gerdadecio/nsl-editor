@@ -1,0 +1,27 @@
+<%= divider %>
+Change the name for this draft instance.
+<br>
+<br>
+<%= form_for(@instance,
+             url: instance_name_path(@instance),
+             html: { id: "change-name-form", method: :patch, remote: true }) do |f| %>
+  <input id="instance-name-change-typeahead"
+         name="instance[name_typeahead]"
+         class="typeahead form-control"
+         placeholder="<%= @instance.name.try('full_name') %>"
+         tabindex="<%= increment_tab_index %>"
+         title="Enter a name. Must be same type and rank as the current name."
+         type="text"
+         value="<%= @instance.name.try('full_name') %>"/>
+  <%= hidden_field_tag "instance[name_id]", "", id: "instance-change-name-id" %>
+  <script>setUpInstanceNameChange(<%= @instance.id %>);</script>
+  <br>
+  <%= f.submit "Change Name",
+               class: "btn btn-primary pull-right no-right-margin",
+               title: "Save changed name.",
+               tabindex: increment_tab_index %>
+  <br>
+  <br>
+  <div id="change-name-info-message-container" class="message-container"></div>
+  <div id="change-name-error-message-container" class="message-container error-container"></div>
+<% end %>
