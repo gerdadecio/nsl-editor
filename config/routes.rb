@@ -121,7 +121,11 @@ Rails.application.routes.draw do
         as: "copy_standalone", to: "instances#copy_standalone", via: :post
   match "instances/:id/standalone/copy_for_profile_v2",
         as: "copy_for_profile_v2", to: "instances#copy_for_profile_v2", via: :post
-  resources :instances, only: %i[new create update destroy]
+  resources :instances, only: %i[new create update destroy] do
+    resource :name, only: [:update], controller: "instances/change_name" do
+      get :typeahead
+    end
+  end
   match "instances/:id",
         as: "instance_show",
         to: "instances#show",
