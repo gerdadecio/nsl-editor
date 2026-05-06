@@ -64,6 +64,7 @@ FactoryBot.define do
     trait :draft do
       is_draft { true }
       published_date { nil }
+      end_date { nil }
     end
 
     trait :published do

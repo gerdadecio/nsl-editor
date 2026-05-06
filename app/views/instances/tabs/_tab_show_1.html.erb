@@ -73,11 +73,15 @@
   <dl class="dl-horizontal">
     <% @instance.profile_items.includes(:product_item_config, :profile_text).each do |profile_item| %>
       <dt><%= profile_item.product_item_config.try(:display_html) %></dt>
-      <dd>
-        <%= link_to(
-          truncate(profile_item.profile_text&.value_md, length: 100),
-          search_path(query_string: "id: #{@instance.id} show-profiles: ",focus_id: profile_item.id, query_target: 'instance'),
-          title: profile_item.product_item_config.try(:display_html)) || '' %>
+      <dd style="padding-bottom: 10px;">
+        <a title="<%= profile_item.product_item_config.try(:display_html)%>"
+           href="<%= search_path(query_string: "id: #{@instance.id} show-profiles: ",focus_id: profile_item.id, query_target: 'instance') %>"
+        >
+          <%= truncate(profile_item.profile_text&.value_md, length: 100) %>
+          <% if profile_item.end_date.present? %>
+            <span class="pill pill-ended">Ended: <%= profile_item.end_date.strftime("%d-%b-%Y") %></span>
+          <% end %>
+        </a>
       </dd>
     <% end %>
   </dl>

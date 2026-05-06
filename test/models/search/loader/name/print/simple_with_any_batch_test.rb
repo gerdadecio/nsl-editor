@@ -33,8 +33,8 @@ class SearchLoaderNameAndPrintSimpleWithAnyBatchTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(Array),
       "Results should be an Array."
-    assert_equal 3,
+    assert_equal 9,
                  search.executed_query.results.size,
-                 "Exactly 1 result is expected."
+                 "Exactly 9 results expected."
   end
 end

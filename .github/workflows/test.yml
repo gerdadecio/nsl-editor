@@ -78,6 +78,10 @@ jobs:
         run: |
           bundle exec rails test
 
+      - name: Reset database for RSpec
+        run: |
+          bin/rails db:drop db:create db:schema:load
+
       - name: Run RSpec tests
         run: |
           bundle exec rspec --profile 10 --format progress --no-color --backtrace

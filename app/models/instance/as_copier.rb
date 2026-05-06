@@ -119,6 +119,8 @@ class Instance::AsCopier < Instance
       end
       if copy_profile_items
         self.profile_items.each do |profile_item|
+          next if profile_item.end_date.present?
+
           new_profile_item = profile_item.dup
           new_profile_item.published_date = nil
           new_profile_item.instance_id = new.id

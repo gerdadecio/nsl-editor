@@ -103,5 +103,47 @@ RSpec.describe(ApplicationHelper, type: :helper) do
       end
     end
   end
+
+  describe "#safe_uncapitalize" do
+    it "lowercases the first character of a string" do
+      expect(helper.safe_uncapitalize("Hello")).to eq("hello")
+    end
+
+    it "preserves the rest of the string" do
+      expect(helper.safe_uncapitalize("Hello World")).to eq("hello World")
+    end
+
+    it "handles already lowercase strings" do
+      expect(helper.safe_uncapitalize("hello")).to eq("hello")
+    end
+
+    it "handles single character strings" do
+      expect(helper.safe_uncapitalize("H")).to eq("h")
+    end
+
+    it "handles single lowercase character" do
+      expect(helper.safe_uncapitalize("a")).to eq("a")
+    end
+
+    it "returns blank string as-is" do
+      expect(helper.safe_uncapitalize("")).to eq("")
+    end
+
+    it "returns nil as-is" do
+      expect(helper.safe_uncapitalize(nil)).to be_nil
+    end
+
+    it "handles strings with leading numbers" do
+      expect(helper.safe_uncapitalize("123ABC")).to eq("123ABC")
+    end
+
+    it "handles strings with special characters" do
+      expect(helper.safe_uncapitalize("@Hello")).to eq("@Hello")
+    end
+
+    it "handles all uppercase strings" do
+      expect(helper.safe_uncapitalize("HELLO")).to eq("hELLO")
+    end
+  end
 end
 

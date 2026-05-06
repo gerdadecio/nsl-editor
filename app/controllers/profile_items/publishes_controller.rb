@@ -1,7 +1,7 @@
 module ProfileItems
   class PublishesController < ProfileItemsController
 
-    before_action :set_profile_item
+    prepend_before_action :set_profile_item
     before_action :authorise_user!, only: [:create]
 
     def create

@@ -44,5 +44,20 @@
 <br>
 <%= divider %>
 <h5>Profile item: #<%= @profile_item.id %></h5>
-<%= created_by_whom_and_when(@profile_item).html_safe %>
-<br>
+
+<% if @profile_item.fact? %>
+  Original content
+  <p style="padding-left: 20px;">
+    <%= safe_uncapitalize(profile_item_created_audit(@profile_item)).html_safe %>
+    <br>
+    <%= safe_uncapitalize(profile_item_updated_audit(@profile_item)).html_safe %>
+  </p>
+<% else %>
+  Quote of content originally
+  <p style="padding-left: 20px;">
+    <%= safe_uncapitalize(profile_item_created_audit(@profile_item)).html_safe %>
+    <br>
+    <%= safe_uncapitalize(profile_item_updated_audit(@profile_item)).html_safe %>
+  </p>
+<% end %>
+<%= published_by_whom_and_when(@profile_item).html_safe %>

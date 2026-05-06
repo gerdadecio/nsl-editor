@@ -92,16 +92,8 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
-  # Include the DatabaseCleaner gem
-  config.before(:suite) do
-    # Use the appropriate database strategy
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
+  # NOTE: DatabaseCleaner configuration removed for Rails 8.1 compatibility.
+  # Rails 8.1 changed connection pool handling which conflicts with DatabaseCleaner's
+  # transaction strategy. Using Rails' built-in transactional fixtures instead
+  # (config.use_transactional_fixtures = true in rails_helper.rb).
 end

@@ -1,8 +1,169 @@
+- :date: 16-Apr-2026
+  :jira_id: '2144'
+  :description: |-
+    Search: Allow for count as a directive i.e. <code>count:</code>
+- :date: 15-Apr-2026
+  :jira_id: '2144'
+  :description: |-
+    Search: Offer a link to an increased limit when there are more records to list
+- :date: 14-Apr-2026
+  :jira_id: '5786'
+  :description: |-
+    Duplicate badge css style for duplicate name in the search results
+- :date: 14-Apr-2026
+  :jira_id: '5788'
+  :description: |-
+    Duplicate badge css style for duplicate author name in the search results
+- :date: 14-Apr-2026
+  :jira_id: '200'
+  :jira_project: FLOR
+  :description: |-
+    Fixup incorrect end_date handling for related profile items in service object during publish.
 - :date: 13-Apr-2026
   :jira_id: '204'
   :jira_project: FLOR
   :description: |-
-    Fixup the undefined manages_profile for nil error in name instance search results when context is nil
+    Hotfix: Fixup the undefined manages_profile for nil error in name instance search results when context is nil - promoted to production as hotfix
+- :date: 10-Apr-2026
+  :jira_id: '200'
+  :jira_project: FLOR
+  :description: |-
+    Fix the profile_item not being set in the publish profile item controller by prepending the set_profile_item callback
+- :date: 10-Apr-2026
+  :jira_id: '201'
+  :jira_project: FLOR
+  :description: |-
+    Draft badge in profile items
+- :date: 10-Apr-2026
+  :jira_id: '742'
+  :description: |-
+    Code removal: Small code removal related to name rank and name parents - code was not called, so expect no user impact
+- :date: 10-Apr-2026
+  :jira_id: '200'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the issue whenn publish PI is incorrectly setting the end_date of related profile items
+- :date: 09-Apr-2026
+  :jira_id: '200'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the issue where the created version copy is incorrectly setting the end_date of related profile items
+- :date: 09-Apr-2026
+  :jira_id: '5790'
+  :description: |-
+    Batch Loader: Add "trade name" to the synonym type dropdown
+- :date: 08-Apr-2026
+  :jira_id: '196'
+  :jira_project: FLOR
+  :description: |-
+    Include the draft working tree in the instance results
+- :date: 08-Apr-2026
+  :jira_id: '3257'
+  :description: |-
+    Tweak the message on the Instances tab for common and vernacular Names
+- :date: 08-Apr-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot bump rack-session 2.1.1 to 2.1.2
+- :date: 08-Apr-2026
+  :jira_id: '184'
+  :jira_project: FLOR
+  :description: |-
+    Change the "Ended" pill with "replaced" badge for profile items in search results
+- :date: 08-Apr-2026
+  :jira_id: '5622'
+  :description: |-
+    Allow reviewers to see details of matched name in loader batches
+- :date: 07-Apr-2026
+  :jira_id: '180'
+  :jira_project: FLOR
+  :description: |-
+    Display profile item audit info for fact and linked profile items
+- :date: 07-Apr-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot bump rack 3.2.5 to 3.2.6
+- :date: 02-Apr-2026
+  :jira_id: '196'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the create version copy stale form issue where the form was not being replaced with the success message
+- :date: 02-Apr-2026
+  :jira_id: '5782'
+  :description: |-
+    History of Changes page: Needs to handle malformed Jira-IDs without crashing
+- :date: 31-Mar-2026
+  :jira_id: '5707'
+  :description: |-
+    Rails 8.1 upgrade along with associated gems
+- :date: 30-Mar-2026
+  :jira_id: '5766'
+  :description: |-
+    Batch Review: Prevent review comments when two or more overlapping review periods apply
+- :date: 30-Mar-2026
+  :jira_id: '196'
+  :jira_project: FLOR
+  :description: |-
+    Extend the display of the taxon concept 'in classification' to instance results
+- :date: 26-Mar-2026
+  :jira_id: '5773'
+  :description: |-
+    Give a clearer, simpler error message when Loader gets confused about instance type
+- :date: 26-Mar-2026
+  :jira_id: '194'
+  :jira_project: FLOR
+  :description: |-
+    Exclude ended profile items in query
+- :date: 26-Mar-2026
+  :jira_id: '195'
+  :jira_project: FLOR
+  :description: |-
+    Fixup current profile item not being copied when copying an instance with profile items
+- :date: 25-Mar-2026
+  :jira_id: '184'
+  :jira_project: FLOR
+  :description: |-
+    Display ended date label of profile item in the details tab of the instance view
+- :date: 25-Mar-2026
+  :jira_id: '192'
+  :jira_project: FLOR
+  :description: |-
+    When a profile item is to be copied, only copy current items
+- :date: 25-Mar-2026
+  :jira_id: '5761'
+  :description: |-
+    Batch Loader: Allow for cases where a loader_name record has no family string yet in the Loader2 tab
+- :date: 24-Mar-2026
+  :jira_id: '5438'
+  :description: |-
+    Display the batch reviewer list and organisation in the menu if available for the user
+- :date: 24-Mar-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot updates Activesupport from 8.0.4 to 8.0.4.1, Actionview from 8.0.4 to 8.0.4.1, and Activestorage from 8.0.4 to 8.0.4.1
+- :date: 24-Mar-2026
+  :jira_id: '173'
+  :jira_project: FLOR
+  :description: |-
+    Display the profile item annotation in print view
+- :date: 24-Mar-2026
+  :jira_id: '180'
+  :jira_project: FLOR
+  :description: |-
+    Audit display for profile item details tab
+- :date: 20-Mar-2026
+  :jira_id: '5761'
+  :description: |-
+    Batch Loader: Allow for cases where a loader_name record has no family string yet
+- :date: 13-Apr-2026
+  :release: true
+- :date: 13-Apr-2026
+  :jira_id: '204'
+  :jira_project: FLOR
+  :description: |-
+    Hotfix: Fixup the undefined manages_profile for nil error in name instance search results when context is nil
+- :date: 9-Apr-2026
+  :release: true
 - :date: 19-Mar-2026
   :jira_id: '5740'
   :description: |-
@@ -114,6 +275,8 @@
   :jira_id: '5719'
   :description: |-
     Enable use of product tree reviewer role
+- :date: 20-Mar-2026
+  :release: true
 - :date: 20-Feb-2026
   :jira_id: ''
   :description: |-

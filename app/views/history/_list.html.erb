@@ -41,21 +41,25 @@
         <%= val[:date] %>
         &mdash;
         <% if val[:jira_id].present? %>
-          <%= val[:jira_project]||'NSL' %>-<%= val[:jira_id] %>:&nbsp;
+          <% canonical_jira_id = ((val[:jira_project]||'NSL')+'-'+val[:jira_id]) %>
+        <% else %> 
+          <% canonical_jira_id = nil %>
         <% end %>
+        <%= "#{canonical_jira_id}:&nbsp;".html_safe unless canonical_jira_id.blank? %> 
         <%= (val[:description]).html_safe %>
         <% jira_status = 'Unknown' %>
-          <% if val[:jira_id].present? %>
-            <% jira_status = Jira.new((val[:jira_project]||'NSL')+'-'+val[:jira_id]).status if params[:show_status] == 'true' %>
-            <span class="badge jira <%= jira_status&.downcase&.gsub(/ /,'-') %>">
-             <%= link_to "(#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}) 
-               #{editor_icon('external-link fa-lg')}".html_safe, 
-             "https://ibis-cloud.atlassian.net/browse/#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}",
-               class:"white hover-white",
-               title: "Status: #{jira_status} - #{title_text}",
-               target: "other" %>
-             
-           </span>
+          <% if canonical_jira_id.present? %>
+            <% unless canonical_jira_id.match(/-.*-/) %>
+              <% jira_status = Jira.new(canonical_jira_id).status if params[:show_status] == 'true' %>
+              <span class="badge jira <%= jira_status&.to_s&.downcase&.gsub(/ /,'-') %>">
+               <%= link_to "(#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}) 
+                 #{editor_icon('external-link fa-lg')}".html_safe, 
+               "https://ibis-cloud.atlassian.net/browse/#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}",
+                 class:"white hover-white",
+                 title: "Status: #{jira_status} - #{title_text}",
+                 target: "other" %>
+              </span>
+            <% end %>
          <% end %>
        <% end %>
        </li>

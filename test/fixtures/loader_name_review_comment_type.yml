@@ -1,0 +1,48 @@
+_fixture:
+  model_class: Loader::Name::Review::Comment::Type
+
+general_comment_type:
+  name: general
+  for_reviewer: true
+  for_compiler: false
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+other_comment_type:
+  name: other
+  for_reviewer: true
+  for_compiler: false
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+concept_note_comment_type:
+  name: concept-note
+  for_reviewer: true
+  for_compiler: false
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+distribution_comment_type:
+  name: distribution
+  for_reviewer: true
+  for_compiler: false
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+compiler_comment_type:
+  name: compiler
+  for_reviewer: false
+  for_compiler: true
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+

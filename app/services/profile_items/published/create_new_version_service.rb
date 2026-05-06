@@ -50,6 +50,7 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
     @new_profile_item = profile_item.dup.tap do |pt|
       pt.is_draft = true
       pt.published_date = nil
+      pt.end_date = nil
       pt.created_by = user.user_name
       pt.updated_by = user.user_name
       pt.source_system = nil

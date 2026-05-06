@@ -11,7 +11,7 @@ describe ProfileItems::PublishesController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:profile_item) { create(:profile_item) }
+    let(:profile_item) { create(:profile_item, :draft) }
     let(:instance) { profile_item.instance }
     let(:service_errors) { ActiveModel::Errors.new("Some error") }
     let(:mock_service_result) { double("ProfileItems::Published::MarkPublishService", new_profile_item: profile_item, errors: {}) }
@@ -38,6 +38,41 @@ describe ProfileItems::PublishesController, type: :controller do
         expect(assigns(:product_configs_and_profile_items)).to eq([])
       end
 
+      context "when it has existing published profile item" do
+        let(:existing_published_profile_item) { create(:profile_item, end_date: nil, is_draft: false, instance: instance) }
+        let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [[existing_published_profile_item], nil]) }
+
+        before do
+          allow(ProfileItems::Published::MarkPublishService).to receive(:call).and_return(mock_service_result)
+        end
+
+        it "calls the publish service" do
+          subject
+          expect(ProfileItems::Published::MarkPublishService).to have_received(:call).with(
+            user: current_user,
+            profile_item: profile_item,
+            params: hash_including(instance_id: instance.id.to_s, id: profile_item.id.to_s)
+          )
+        end
+      end
+
+      context "when it does not have existing published profile item" do
+        let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [[], nil]) }
+
+        before do
+          allow(ProfileItems::Published::MarkPublishService).to receive(:call).and_return(mock_service_result)
+        end
+
+        it "does not raise error" do
+          expect { subject }.not_to raise_error
+        end
+
+        it "does not mark any profile item as ended" do
+          expect(profile_item.end_date).to be_nil
+          subject
+          expect(profile_item.reload.end_date).to be_nil
+        end
+      end
     end
 
     context 'when publish fails' do

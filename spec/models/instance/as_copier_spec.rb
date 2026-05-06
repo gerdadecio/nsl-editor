@@ -90,18 +90,18 @@ RSpec.describe Instance::AsCopier, type: :model do
         end
 
         context "when copy_profile_items? is true" do
-          let(:profile_item) { FactoryBot.create(:profile_item, instance: instance) }
+          let(:current_profile_item) { FactoryBot.create(:profile_item, instance: instance, end_date: nil) }
           before do
             allow(subject).to receive(:copy_profile_items).and_return(true)
-            allow(subject).to receive(:profile_items).and_return([profile_item])
+            allow(subject).to receive(:profile_items).and_return([current_profile_item])
             allow_any_instance_of(Profile::ProfileItem).to receive(:fact?).and_return(true)
           end
 
-          it "copies the profile items" do
+          it "copies the profile items when end_date is nil (current items)" do
             copied_instance = subject.copy_with_product_reference(params, username)
             copied_profile_item = copied_instance.profile_items.first
-            expect(copied_profile_item.source_profile_item_id).to eq profile_item.id
-            expect(copied_profile_item.product_item_config_id).to eq profile_item.product_item_config_id
+            expect(copied_profile_item.source_profile_item_id).to eq current_profile_item.id
+            expect(copied_profile_item.product_item_config_id).to eq current_profile_item.product_item_config_id
             expect(copied_profile_item.is_draft).to be true
             expect(copied_profile_item.statement_type).to eq "link"
             expect(copied_profile_item.source_id).to be_nil
@@ -122,6 +122,19 @@ RSpec.describe Instance::AsCopier, type: :model do
               copied_instance = subject.copy_with_product_reference(params, username)
               copied_profile_item = copied_instance.profile_items.first
               expect(copied_profile_item.source_profile_item_id).to eq nil
+            end
+          end
+
+          context "when profile item has an end_date (ended items)" do
+            let(:ended_profile_item) { FactoryBot.create(:profile_item, instance: instance, end_date: Time.current) }
+
+            before do
+              allow(subject).to receive(:profile_items).and_return([ended_profile_item])
+            end
+
+            it "skips copying the profile item" do
+              copied_instance = subject.copy_with_product_reference(params, username)
+              expect(copied_instance.profile_items).to be_empty
             end
           end
         end

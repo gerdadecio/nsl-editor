@@ -76,7 +76,7 @@ class Loader::Batch::Review < ApplicationRecord
   end
 
   def reviewer_id(username)
-    reviewers.includes([:user]).select { |r| r.user.user_name.downcase == username.downcase }.first.id
+    reviewers.find_by(user_id: User.find_by_user_name(username)).id
   end
 
   private

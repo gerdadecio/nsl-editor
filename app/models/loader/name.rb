@@ -327,11 +327,11 @@ class Loader::Name < ApplicationRecord
     elsif InstanceType.where(name: synonym_type).size == 1
       return InstanceType.find_by_name(synonym_type).id
     elsif synonym_type.blank?
-      throw "The loader-name is a synonym with no synonym type - please set a synonym type in 'Edit Raw' then try again."
+      raise "The loader-name is a synonym with no synonym type - please set a synonym type in 'Edit Raw' then try again."
     else
-      throw "LoaderName#riti cannot work out an instance type for loader-name: #{id}: #{simple_name} #{record_type} #{synonym_type}"
+      raise "That synonym type is not recognised -- try another one if possible."
     end
-    throw "LoaderName#riti is stuck with no relationship instance type id for loader-name: #{id}: #{simple_name}"
+    raise "LoaderName#riti cannot work out the relationship instance type id for loader-name: #{id}: #{simple_name}"
   end
 
   def taxonomic?

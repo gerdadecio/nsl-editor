@@ -1,5 +1,4 @@
 <% increment_tab_index(0) %>
-
 <%= render partial: 'detail_line',
       locals: {label: 'Batch',
                info: @loader_name.batch.name} %>
@@ -12,6 +11,24 @@
                title:"Query the family",class:'blue')} %>
 <%= render partial: 'detail_line', locals: {label: 'Rank', info: "#{@loader_name.rank}"} %>
 <%= render partial: 'detail_line', locals: {label: 'Record Type', info: "#{@loader_name.record_type}"} %>
+
+<% if ["accepted", "excluded", "synonym", "misapplied"].include?(params[:component]) %>
+  <%= render partial: 'detail_line', locals: {label: 'Preferred Match', info: "No preferred match chosen"} unless @loader_name.preferred_match? %>
+  <% @loader_name.preferred_matches.each do |preferred_match| %>
+    <%= render partial: 'detail_line', locals: {label: 'Preferred Match', info: "#{preferred_match.name.simple_name}"} %>
+    <%= render partial: 'detail_line', locals: {label: 'in', info: "#{preferred_match.instance.reference.citation}"} %>
+    <br>
+    <% preferred_match_link = link_to("#{sanitize(ShardConfig.name_space)} #{external_link_square_icon}".html_safe,
+                 "#{Rails.configuration.try('nsl_links')}apniFormat/display/#{preferred_match.name.id}",
+                 title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
+                 class: "rebeccapurple",
+                 target: "_editor_to_apni",
+                 tabindex: increment_tab_index) %>
+    <%= render partial: 'detail_line', locals: {label: 'View Preferred Match', info: preferred_match_link} %>
+  <% end %>
+<% end %>
+
+
 <% if @loader_name.partly? %>
   <%= render partial: 'detail_line', locals: {label: 'Synonym Type', info: "#{@loader_name.synonym_type}"} %>
   <%= render partial: 'detail_line', locals: {label: 'Partly', info: "#{@loader_name.partly}"} %>

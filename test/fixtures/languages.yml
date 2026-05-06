@@ -14,15 +14,15 @@
 #  uk_hghw87nl0ho38f166atlpw2hy  (iso6391code) UNIQUE
 #  uk_rpsahneqboogcki6p1bpygsua  (iso6393code) UNIQUE
 #
-multiple languages:
+multiple_languages:
   name: Multiple languages
   iso6391code: 
   iso6393code: mul
-no linguistic content:
+no_linguistic_content:
   name: No linguistic content
   iso6391code: 
   iso6393code: zxx
-uncoded languages:
+uncoded_languages:
   name: Uncoded languages
   iso6391code: 
   iso6393code: mis
@@ -66,7 +66,7 @@ aleut:
   name: Aleut
   iso6391code: 
   iso6393code: ale
-southern altai:
+southern_altai:
   name: Southern Altai
   iso6391code: 
   iso6393code: alt
@@ -190,7 +190,7 @@ caddo:
   name: Caddo
   iso6391code: 
   iso6393code: cad
-galibi carib:
+galibi_carib:
   name: Galibi Carib
   iso6391code: 
   iso6393code: car
@@ -218,7 +218,7 @@ chuukese:
   name: Chuukese
   iso6391code: 
   iso6393code: chk
-chinook jargon:
+chinook_jargon:
   name: Chinook jargon
   iso6391code: 
   iso6393code: chn
@@ -250,7 +250,7 @@ corsican:
   name: Corsican
   iso6391code: co
   iso6393code: cos
-crimean tatar:
+crimean_tatar:
   name: Crimean Tatar
   iso6391code: 
   iso6393code: crh
@@ -286,7 +286,7 @@ dhivehi:
   name: Dhivehi
   iso6391code: dv
   iso6393code: div
-lower sorbian:
+lower_sorbian:
   name: Lower Sorbian
   iso6391code: 
   iso6393code: dsb
@@ -362,15 +362,15 @@ french:
   name: French
   iso6391code: fr
   iso6393code: fra
-northern frisian:
+northern_frisian:
   name: Northern Frisian
   iso6391code: 
   iso6393code: frr
-eastern frisian:
+eastern_frisian:
   name: Eastern Frisian
   iso6391code: 
   iso6393code: frs
-western frisian:
+western_frisian:
   name: Western Frisian
   iso6391code: fy
   iso6393code: fry
@@ -390,7 +390,7 @@ gilbertese:
   name: Gilbertese
   iso6391code: 
   iso6393code: gil
-scottish gaelic:
+scottish_gaelic:
   name: Scottish Gaelic
   iso6391code: gd
   iso6393code: gla
@@ -410,7 +410,7 @@ gorontalo:
   name: Gorontalo
   iso6391code: 
   iso6393code: gor
-swiss german:
+swiss_german:
   name: Swiss German
   iso6391code: 
   iso6393code: gsw
@@ -450,7 +450,7 @@ hindi:
   name: Hindi
   iso6391code: hi
   iso6393code: hin
-hiri motu:
+hiri_motu:
   name: Hiri Motu
   iso6391code: ho
   iso6393code: hmo
@@ -458,7 +458,7 @@ croatian:
   name: Croatian
   iso6391code: hr
   iso6393code: hrv
-upper sorbian:
+upper_sorbian:
   name: Upper Sorbian
   iso6391code: 
   iso6393code: hsb
@@ -482,7 +482,7 @@ igbo:
   name: Igbo
   iso6391code: ig
   iso6393code: ibo
-sichuan yi:
+sichuan_yi:
   name: Sichuan Yi
   iso6391code: ii
   iso6393code: iii
@@ -514,11 +514,11 @@ japanese:
   name: Japanese
   iso6391code: ja
   iso6393code: jpn
-judeo-persian:
+judeo_persian:
   name: Judeo-Persian
   iso6391code: 
   iso6393code: jpr
-kara-kalpak:
+kara_kalpak:
   name: Kara-Kalpak
   iso6391code: 
   iso6393code: kaa
@@ -562,7 +562,7 @@ khasi:
   name: Khasi
   iso6391code: 
   iso6393code: kha
-central khmer:
+central_khmer:
   name: Central Khmer
   iso6391code: km
   iso6393code: khm
@@ -590,7 +590,7 @@ kosraean:
   name: Kosraean
   iso6391code: 
   iso6393code: kos
-karachay-balkar:
+karachay_balkar:
   name: Karachay-Balkar
   iso6391code: 
   iso6393code: krc
@@ -658,11 +658,11 @@ luxembourgish:
   name: Luxembourgish
   iso6391code: lb
   iso6393code: ltz
-luba-lulua:
+luba_lulua:
   name: Luba-Lulua
   iso6391code: 
   iso6393code: lua
-luba-katanga:
+luba_katanga:
   name: Luba-Katanga
   iso6391code: lu
   iso6393code: lub
@@ -730,7 +730,7 @@ mende:
   name: Mende
   iso6391code: 
   iso6393code: men
-mi'kmaq:
+mi_kmaq:
   name: Mi'kmaq
   iso6391code: 
   iso6393code: mic
@@ -794,11 +794,11 @@ navajo:
   name: Navajo
   iso6391code: nv
   iso6393code: nav
-south ndebele:
+south_ndebele:
   name: South Ndebele
   iso6391code: nr
   iso6393code: nbl
-north ndebele:
+north_ndebele:
   name: North Ndebele
   iso6391code: nd
   iso6393code: nde
@@ -806,7 +806,7 @@ ndonga:
   name: Ndonga
   iso6391code: ng
   iso6393code: ndo
-low german:
+low_german:
   name: Low German
   iso6391code: 
   iso6393code: nds
@@ -826,11 +826,11 @@ dutch:
   name: Dutch
   iso6391code: nl
   iso6393code: nld
-norwegian nynorsk:
+norwegian_nynorsk:
   name: Norwegian Nynorsk
   iso6391code: nn
   iso6393code: nno
-norwegian bokmål:
+norwegian_bokmål:
   name: Norwegian Bokmål
   iso6391code: nb
   iso6393code: nob
@@ -838,7 +838,7 @@ nogai:
   name: Nogai
   iso6391code: 
   iso6393code: nog
-n'ko:
+n_ko:
   name: N'Ko
   iso6391code: 
   iso6393code: nqo
@@ -930,7 +930,7 @@ rundi:
   name: Rundi
   iso6391code: rn
   iso6393code: run
-macedo-romanian:
+macedo_romanian:
   name: Macedo-Romanian
   iso6391code: 
   iso6393code: rup
@@ -990,19 +990,19 @@ slovenian:
   name: Slovenian
   iso6391code: sl
   iso6393code: slv
-southern sami:
+southern_sami:
   name: Southern Sami
   iso6391code: 
   iso6393code: sma
-northern sami:
+northern_sami:
   name: Northern Sami
   iso6391code: se
   iso6393code: sme
-lule sami:
+lule_sami:
   name: Lule Sami
   iso6391code: 
   iso6393code: smj
-inari sami:
+inari_sami:
   name: Inari Sami
   iso6391code: 
   iso6393code: smn
@@ -1010,7 +1010,7 @@ samoan:
   name: Samoan
   iso6391code: sm
   iso6393code: smo
-skolt sami:
+skolt_sami:
   name: Skolt Sami
   iso6391code: 
   iso6393code: sms
@@ -1030,7 +1030,7 @@ somali:
   name: Somali
   iso6391code: so
   iso6393code: som
-southern sotho:
+southern_sotho:
   name: Southern Sotho
   iso6391code: st
   iso6393code: sot
@@ -1038,7 +1038,7 @@ spanish:
   name: Spanish
   iso6391code: es
   iso6393code: spa
-sranan tongo:
+sranan_tongo:
   name: Sranan Tongo
   iso6391code: 
   iso6393code: srn
@@ -1130,15 +1130,15 @@ tlingit:
   name: Tlingit
   iso6391code: 
   iso6393code: tli
-tonga (nyasa):
+tonga__nyasa_:
   name: Tonga (Nyasa)
   iso6391code: 
   iso6393code: tog
-tonga (tonga islands):
+tonga__tonga_islands_:
   name: Tonga (Tonga Islands)
   iso6391code: to
   iso6393code: ton
-tok pisin:
+tok_pisin:
   name: Tok Pisin
   iso6391code: 
   iso6393code: tpi
@@ -1362,7 +1362,7 @@ inupiaq:
   name: Inupiaq
   iso6391code: ik
   iso6393code: ipk
-judeo-arabic:
+judeo_arabic:
   name: Judeo-Arabic
   iso6391code: 
   iso6393code: jrb

@@ -1,4 +1,9 @@
 <%= search_result[:full_name] %>
 <%= "[#{search_result.name_status.name_without_brackets}]" unless search_result.name_status.legitimate? || search_result.name_status.manuscript? %>
 <%= search_result.name_tags.collect{|name_tag| name_tag.name}.join(', ') %>
-<% if search_result.duplicate? %> [Duplicate] <% end %>
+<% if search_result.duplicate? %>
+  <span
+    title="Record flagged as duplicate"
+    class="badge badge-duplicate"
+  >duplicate</span>
+<% end %>

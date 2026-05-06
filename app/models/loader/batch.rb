@@ -56,7 +56,7 @@ class Loader::Batch < ApplicationRecord
   end
 
   def all_periods_of_all_reviews
-    reviews.collect { |r| r.periods }.sort { |x, y| x.start_date <=> y.start_date }.flatten
+    reviews.collect { |r| r.periods }.flatten.sort { |x, y| x.start_date <=> y.start_date }
   end
 
   def all_active_periods_of_all_reviews
@@ -104,5 +104,13 @@ class Loader::Batch < ApplicationRecord
 
   def families
     loader_names.distinct.pluck(:family).sort
+  end
+
+  def review_periods_in_any_review
+    reviews.map { |br| br.periods}.flatten
+  end
+
+  def active_review_periods
+    review_periods_in_any_review.select {|p| p.active?}
   end
 end

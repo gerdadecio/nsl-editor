@@ -49,6 +49,29 @@
       </li>
     <% end %>
 
+    <% if @current_registered_user&.batch_reviewers&.any? %>
+      <li class="dropdown-submenu">
+        <a tabindex="-1"
+           href="#"
+           title="Batch reviews you are assigned to">
+          <%= pluralize(@current_registered_user.batch_reviewers.size, 'Batch Review') %>
+        </a>
+        <ul class="dropdown-menu">
+          <% @current_registered_user.batch_reviewers.includes(:batch_review_role, :org, :batch_review).each do |batch_reviewer| %>
+            <li role="presentation">
+              <a title="<%= batch_reviewer.batch_review&.name %>">
+                <%= editor_icon('clipboard-list') %>
+                <strong><%= batch_reviewer.role&.name&.titleize %></strong>
+                <% if batch_reviewer.org.present? %>
+                  <span class="text-muted">(<%= batch_reviewer.org.abbrev.presence || batch_reviewer.org.name %>)</span>
+                <% end %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+
 <li role="presentation" class="divider"></li>
 
 <% if Rails.configuration.try(:batch_loader_aware) %>

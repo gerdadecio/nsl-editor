@@ -4,7 +4,7 @@
  name_review_comment = @loader_name.name_review_comments.new(
         batch_reviewer_id: period.batch_review.reviewer_id(@current_user.username),
         loader_name_id: @loader_name.id,
-        context:  "#{params[:component].gsub(/ /,'-')}",
+        context:  "#{params[:component]&.gsub(/ /,'-')}",
         batch_review_period_id: period.id)
  %>
 

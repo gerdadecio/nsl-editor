@@ -18,3 +18,12 @@ batch_two:
   updated_by: tester
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+
+batch_three:
+  name: "Batch Three"
+  description: A third batch
+  use_sort_key_for_ordering: false
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

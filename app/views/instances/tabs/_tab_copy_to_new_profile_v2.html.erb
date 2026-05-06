@@ -51,8 +51,12 @@
         <%= f.check_box(:copy_profile_items,{title: "Copy profile items"}) %>
         Copy profile items:
       </label>
+      <% current_items = @instance.profile_items.where(end_date: nil).count %>
+      <% if current_items > 0 %>
+        <p>Will only copy the <%= current_items %> current profile items.</p>
+      <% end %>
       <ul>
-        <% @instance.profile_items.includes(:product_item_config).each do |profile_item| %>
+        <% @instance.profile_items.includes(:product_item_config).where(end_date: nil).each do |profile_item| %>
           <li><%= profile_item.product_item_config.display_html %></li>
         <% end %>
       </ul>

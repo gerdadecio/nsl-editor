@@ -4,7 +4,7 @@ RSpec.describe ProfileItems::Published::CreateNewVersionService, type: :service 
   let(:instance) { create(:instance) }
   let(:user) { create(:user) }
   let(:product_item_config) { create(:product_item_config) }
-  let(:profile_item) { create(:profile_item, instance: instance, product_item_config: product_item_config, is_draft: false) }
+  let(:profile_item) { create(:profile_item, instance: instance, product_item_config: product_item_config, is_draft: false, end_date: nil) }
   let!(:profile_text) { create(:profile_text, profile_item: profile_item) }
   let!(:profile_item_annotation) { create(:profile_item_annotation, profile_item: profile_item) }
   let!(:profile_item_reference) { create(:profile_item_reference, profile_item: profile_item) }
@@ -37,6 +37,7 @@ RSpec.describe ProfileItems::Published::CreateNewVersionService, type: :service 
         new_draft = Profile::ProfileItem.where(is_draft: true).last
         expect(new_draft.is_draft).to be true
         expect(new_draft.published_date).to be_nil
+        expect(new_draft.end_date).to be_nil
         expect(new_draft.created_by).to eq(user.user_name)
         expect(new_draft.updated_by).to eq(user.user_name)
         expect(new_draft.source_system).to be_nil

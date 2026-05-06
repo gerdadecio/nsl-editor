@@ -18,9 +18,17 @@
       profile item:
       <%= truncate(profile_text_content, length: 100) %>
       <strong><%= "[#{search_result.product_item_config.display_html.presence || search_result.product_item_config.profile_item_type.name.presence}]" %></strong>
-      <%= "[DRAFT]" if search_result.is_draft?%>
+      <% if search_result.is_draft? %>
+        <span
+          class="badge badge-muted-orange"
+          title="A draft profile item"
+        >draft</span>
+      <% end %>
       <% if search_result.end_date %>
-        <span class="pill pill-ended">Ended: <%= search_result.end_date.strftime("%d-%b-%Y") %></span>
+        <span
+          class="badge badge-muted-red"
+          title="This version has been replaced by a subsequent update"
+        >replaced</span>
       <% end %>
     </a>
 

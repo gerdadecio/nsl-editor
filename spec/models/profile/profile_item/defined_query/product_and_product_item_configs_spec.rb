@@ -80,6 +80,48 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
 
             expect(subject).to(eq(result))
           end
+
+          context "when an existing profile item has an end_date (ended item)" do
+            let!(:ended_profile_item) do
+              FactoryBot.create(
+                :profile_item,
+                product_item_config: product_item_config,
+                instance: instance,
+                end_date: Time.current
+              )
+            end
+
+            it "excludes ended profile items and initializes a new one" do
+              profile_item = double("ProfileItem")
+              allow(Profile::ProfileItem).to(receive(:new).and_return(profile_item))
+              result = [
+                [{ product_item_config: product_item_config, profile_item: profile_item }],
+                product
+              ]
+
+              expect(subject).to(eq(result))
+            end
+          end
+
+          context "when an existing profile item has no end_date (current item)" do
+            let!(:current_profile_item) do
+              FactoryBot.create(
+                :profile_item,
+                product_item_config: product_item_config,
+                instance: instance,
+                end_date: nil
+              )
+            end
+
+            it "returns the existing current profile item" do
+              result_configs, result_product = subject
+
+              expect(result_product).to(eq(product))
+              expect(result_configs.length).to(eq(1))
+              expect(result_configs.first[:product_item_config]).to(eq(product_item_config))
+              expect(result_configs.first[:profile_item]).to(eq(current_profile_item))
+            end
+          end
         end
       end
 

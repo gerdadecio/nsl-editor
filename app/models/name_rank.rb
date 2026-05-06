@@ -314,10 +314,6 @@ class NameRank < ApplicationRecord
     find_by(name: FAMILY)
   end
 
-  def takes_parent?
-    unranked? || parent.real_parent?
-  end
-
   def real_parent?
     true
   end

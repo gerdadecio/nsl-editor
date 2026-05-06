@@ -11,7 +11,7 @@ module Loader::Name::FlippedSynonym
                                simple_name: instance.name.simple_name,
                                simple_name_as_loaded: instance.name.simple_name,
                                full_name: instance.name.full_name,
-                               family: instance.name.family.simple_name,
+                               family: instance.name.family&.simple_name || 'Unknown',
                                rank: instance.name.name_rank.name.downcase,
                                name_status: instance.name.name_status.name.downcase,
                                doubtful: false,

@@ -1,0 +1,21 @@
+<%= turbo_stream.update "edit-tab-profile-item" do %>
+  <div class="alert alert-success" role="alert" style="padding: 10px; margin: 10px 0;">
+    <%= @message %>
+    <% refresh_page_link = link_to("Refresh to view the new version", '#',
+        class: "btn btn-success refresh-page-link",
+        title: "Refresh to view the new version",
+        style: "margin-left: 10px;",
+        data: {
+          id: @instance.try('id'),
+          show_profiles: "",
+          focus_id: @new_profile_item.id,
+          query_target: "instance"
+        }
+      )
+    %>
+    <%= refresh_page_link %>
+  </div>
+<% end %>
+
+<%= turbo_stream.update "profile_item_actions_#{@profile_item.product_item_config_id}" do %>
+<% end %>

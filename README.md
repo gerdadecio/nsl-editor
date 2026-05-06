@@ -138,8 +138,8 @@ rails s
 ## Development
 
 Current stack:
-- Ruby version 3.4.5
-- Rails version 8.0.0
+- Ruby version 3.4.x
+- Rails version 8.1.x
 - Postgresql version 15.7
 
 Pre-requisites:

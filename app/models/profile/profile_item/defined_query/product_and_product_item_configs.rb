@@ -77,6 +77,7 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
       .where(
         product_item_config_id: product_item_configs.select(:id),
         instance_id: @instance.id,
+        end_date: nil
       )
       .includes(
         :sourced_in_profile_items,

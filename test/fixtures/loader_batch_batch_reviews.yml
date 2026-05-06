@@ -18,3 +18,12 @@ review_one_on_batch_two:
   updated_by: tester
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+
+review_one_on_batch_three:
+  name: "WG Review"
+  loader_batch: batch_three
+  allow_voting: false
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

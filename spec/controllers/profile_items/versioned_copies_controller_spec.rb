@@ -14,7 +14,6 @@ describe ProfileItems::VersionedCopiesController, type: :controller do
     let(:profile_item) { instance_double("Profile::ProfileItem", id: 1, profile_text_id: 1, product_item_config_id: 1, fact?: true) }
     let(:new_profile_item) { instance_double("Profile::ProfileItem", id: 2, product_item_config_id: 1) }
     let(:mock_service_result) { double("ProfileItems::Published::CreateNewVersionService", new_profile_item: new_profile_item, errors: {}) }
-    let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [[], nil]) }
     let(:params) { { instance_id: instance.id, id: profile_item.id } }
 
     subject { post :create, params: params, format: :turbo_stream }
@@ -22,7 +21,6 @@ describe ProfileItems::VersionedCopiesController, type: :controller do
     before do
       allow(Instance).to receive(:find).with(params[:instance_id].to_s).and_return(instance)
       allow(Profile::ProfileItem).to receive(:find).with(profile_item.id.to_s).and_return(profile_item)
-      allow(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs).to receive(:new).and_return(mock_product_and_product_item_config_result)
     end
 
     context 'when service succeeds' do
@@ -41,19 +39,14 @@ describe ProfileItems::VersionedCopiesController, type: :controller do
         expect(assigns(:new_profile_item)).to eq(new_profile_item)
       end
 
-       it "renders the profile_items/index" do
+      it "assigns a success message to @message" do
         subject
-        expect(response).to render_template("profile_items/index")
+        expect(assigns(:message)).to eq("Versioned copy created successfully.")
       end
 
       it "does not render create_failed" do
         subject
         expect(response).not_to render_template("create_failed")
-      end
-
-      it "assigns @product_configs_and_profile_items" do
-        subject
-        expect(assigns(:product_configs_and_profile_items)).to eq([])
       end
     end
 

@@ -24,12 +24,24 @@ module AuditHelper
     by #{record.created_by} #{formatted_timestamp(record.created_at)})
   end
 
+  def quoted_original_content_created_by_whom_and_when(record)
+    %(created <span class="purple"
+    >#{time_ago_in_words(record.created_at)}&nbsp;ago</span>
+    by #{record.created_by} #{formatted_timestamp(record.created_at)})
+  end
+
+  def quoted_original_content_updated_by_whom_and_when(record)
+    %(updated <span class="purple"
+    >#{time_ago_in_words(record.updated_at)}&nbsp;ago</span>
+    by #{record.updated_by} #{formatted_timestamp(record.updated_at)})
+  end
+
   # Only show updated_at if a meaningful time after created_at.
   def updated_by_whom_and_when(record)
-    if (record.created_at.to_f / 10).to_i == (record.updated_at.to_f / 10).to_i
-      "Not updated since it was created."
-    else
+    if record_updated?(record)
       meaningful_update(record)
+    else
+      "Not updated since it was created."
     end
   end
 
@@ -49,9 +61,54 @@ module AuditHelper
     )})
   end
 
+  def profile_item_created_audit(profile_item)
+    record = profile_item.profile_text
+    if profile_item.fact?
+      "#{created_by_whom_and_when(record)} as original content"
+    else
+      quoted_original_content_created_by_whom_and_when(record)
+    end
+  end
+
+  def profile_item_updated_audit(profile_item)
+    record = profile_item.profile_text
+    return quoted_original_content_updated_by_whom_and_when(record) unless profile_item.fact?
+
+    if record_updated?(record)
+      "#{meaningful_update(record)} as original content"
+    else
+      "Not updated since it was created."
+    end
+  end
+
   def published_by_whom_and_when(record)
+    published = published_timestamp(record)
+    return "" if published.nil?
+
     %(Published <span class="purple"
-    >#{time_ago_in_words(record.published_at)}&nbsp;ago</span>
-    by #{record.published_by} #{formatted_timestamp(record.published_at)})
+    >#{time_ago_in_words(published)}&nbsp;ago</span>
+    by #{published_author(record)} #{formatted_timestamp(published)})
+  end
+
+  private
+
+  def record_updated?(record)
+    (record.created_at.to_f / 10).to_i != (record.updated_at.to_f / 10).to_i
+  end
+
+  def published_timestamp(record)
+    if record.respond_to?(:published_at) && record.published_at
+      record.published_at
+    elsif record.respond_to?(:published_date) && record.published_date
+      record.published_date
+    end
+  end
+
+  def published_author(record)
+    if record.respond_to?(:published_by) && record.published_by
+      record.published_by
+    else
+      record.updated_by
+    end
   end
 end

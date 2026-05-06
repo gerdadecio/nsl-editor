@@ -48,3 +48,22 @@ review_period_starts_today:
   updated_by: fixture
   created_at: <%= Time.now.last_month.beginning_of_day %>
   updated_at: <%= Time.now.last_month.beginning_of_day %>
+
+review_period_overlapping_one:
+  name: "Review Period Overlapping One"
+  batch_review: review_one_on_batch_three
+  start_date: <%= Date.current.yesterday %>
+  created_by: fixture
+  updated_by: fixture
+  created_at: <%= Time.now.last_year.beginning_of_day %>
+  updated_at: <%= Time.now.last_year.beginning_of_day %>
+
+review_period_overlapping_two:
+  name: "Review Period Overlapping Two"
+  batch_review: review_one_on_batch_three
+  start_date: <%= Date.current %>
+  created_by: fixture
+  updated_by: fixture
+  created_at: <%= Time.now.last_year.beginning_of_day %>
+  updated_at: <%= Time.now.last_year.beginning_of_day %>
+

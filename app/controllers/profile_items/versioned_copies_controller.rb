@@ -18,12 +18,7 @@ module ProfileItems
         @message = "Error creating versioned copy of a profile item: #{result.errors.full_messages.to_sentence}"
         render "create_failed"
       else
-        @product_configs_and_profile_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
-          .new(@current_user, @instance, {
-            instance_id: @instance.id,
-            product_item_config_id: @new_profile_item.product_item_config_id
-          }).run_query
-        render "profile_items/index"
+        @message = "Versioned copy created successfully."
       end
     end
 

@@ -257,6 +257,12 @@ class Search::ParsedRequest
     elsif tokens.first =~ /\Alist\z/i
       tokens = tokens.drop(1)
       listing
+    elsif tokens.include?("count:")
+      tokens.delete_if { |x| x.match(/count:/) }
+      counting
+    elsif tokens.include?("list:")
+      tokens.delete_if { |x| x.match(/list:/) }
+      listing
     else
       default_list_and_count
     end

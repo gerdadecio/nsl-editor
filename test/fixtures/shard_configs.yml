@@ -16,12 +16,12 @@
 #  use_notes  :string(255)
 #  value      :string(5000)     not null
 #
-name-parent-rank-restriction: 
+name_parent_rank_restriction: 
   name: name parent rank restriction 
   value: "on"
-classification-tree-key:
+classification_tree_key:
   name: classification tree key
   value: APC
-name-space:
+name_space:
   name: name space
   value: anamespace

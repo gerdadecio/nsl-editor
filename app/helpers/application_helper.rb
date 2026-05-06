@@ -122,6 +122,11 @@ module ApplicationHelper
     end + ":" + (params["query_target"] || "Editor").tr("_", " ").titleize
   end
 
+  def safe_uncapitalize(string)
+    return string if string.blank? || string.length < 1
+    string[0].downcase + (string.length > 1 ? string[1..-1] : "")
+  end
+
   def development?
     Rails.configuration.try("environment", /^development/i)
   end
