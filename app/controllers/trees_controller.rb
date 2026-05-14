@@ -90,7 +90,7 @@ class TreesController < ApplicationController
     authorize! :replace_placement, @working_draft,
       :message => "You are not authorized to replace a taxon in #{@working_draft.tree.name} draft"
     target = TreeVersionElement.find(move_name_params[:element_link])
-    parent = TreeVersionElement.find(move_name_params[:parent_element_link])
+    parent = resolve_parent_to_version(TreeVersionElement.find(move_name_params[:parent_element_link]), target.tree_version)
 
     profile = Tree::ProfileData.new(current_user, target.tree_version, {})
     profile.update_comment(move_name_params[:comment])
@@ -239,7 +239,7 @@ class TreesController < ApplicationController
     authorize! :update_tree_parent, @working_draft,
       :message => "Not authorized to update or delete #{@working_draft.tree.name} draft taxon parent"
     target = TreeVersionElement.find(update_parent_params[:element_link])
-    parent = TreeVersionElement.find(update_parent_params[:parent_element_link])
+    parent = resolve_parent_to_version(TreeVersionElement.find(update_parent_params[:parent_element_link]), target.tree_version)
     reparent = Tree::Workspace::Reparent.new(username: current_user.username,
                                              target: target,
                                              parent: parent)
@@ -277,7 +277,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_cas_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_cas_error", status: :bad_request 
+    render "trees/reports/run_cas_error", status: :bad_request
   end
 
   def show_diff
@@ -304,7 +304,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_diff_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_diff_error", status: :bad_request 
+    render "trees/reports/run_diff_error", status: :bad_request
   end
 
   def show_valrep
@@ -327,7 +327,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_valrep_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_valrep_error", status: :bad_request 
+    render "trees/reports/run_valrep_error", status: :bad_request
   end
 
   private
@@ -438,6 +438,11 @@ class TreesController < ApplicationController
 
   def remove_name_placement_params
     params.require(:remove_placement).permit(:taxon_uri, :delete)
+  end
+
+  def resolve_parent_to_version(parent, version)
+    return parent if parent.tree_version_id == version.id
+    version.tree_version_elements.find_by!(tree_element_id: parent.tree_element_id)
   end
 
   def find_tree
