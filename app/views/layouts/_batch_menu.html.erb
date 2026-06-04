@@ -4,7 +4,7 @@
      class="dropdown-toggle"
      tabindex="5"
      title="Batch loader menu"
-     data-toggle="dropdown"><%= default_batch||'Batch' %><span class="caret"></span></a>
+     <%= bs_toggle(:dropdown) %>><%= default_batch||'Batch' %><span class="caret"></span></a>
   <ul id="batch-dropdown-menu" class="dropdown-menu width-15em" role="menu"> 
       <% Loader::Batch.all.order(:name).each do |batch| %>
         <li role="presentation">

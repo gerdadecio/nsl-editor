@@ -20,16 +20,17 @@
     return event.stopPropagation();
   };
 
+  // BS3 marks an open dropdown with .open; BS5 uses .show. Match both.
   showSearchResultDetailsIfMenusClosed = function() {
     debug('showSearchResultDetailsIfMenusClosed');
-    if ($('li.dropdown.open').length === 0) {
+    if ($('li.dropdown.open, li.dropdown.show').length === 0) {
       return $('#search-result-details').show();
     }
   };
 
   hideSearchResultDetailsIfMenusOpen = function() {
     debug('hideSearchResultDetailsIfMenusOpen');
-    if ($('li.dropdown.open').length > 0) {
+    if ($('li.dropdown.open, li.dropdown.show').length > 0) {
       return $('#search-result-details').hide();
     }
   };

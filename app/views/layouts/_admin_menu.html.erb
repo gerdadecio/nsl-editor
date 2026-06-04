@@ -5,7 +5,7 @@
      class="dropdown-toggle"
      tabindex="5"
      <%= 'active' if params[:controller].match(/admin/) %>
-     data-toggle="dropdown">Admin<span class="caret"></span></a>
+     <%= bs_toggle(:dropdown) %>>Admin<span class="caret"></span></a>
   <ul id="admin-dropdown-menu" class="dropdown-menu" role="menu"> 
     <li class=""
         role="presentation">
