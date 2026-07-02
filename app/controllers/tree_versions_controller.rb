@@ -122,10 +122,10 @@ class TreeVersionsController < ApplicationController
       @working_draft = nil
       render "publish"
     else
-      @message = json_result(response)
+      @message = json&.error || 'Unknown error trying to publish tree'
       render "publish_error"
     end
-  rescue Unauthorized, RestClient::Unauthorized, RestClient::Forbidden => e
+  rescue ::Unauthorized, ::RestClient::Unauthorized, ::RestClient::Forbidden => e
     @message = json_error(e)
     render "publish_error", status: :forbidden
   rescue RestClient::ExceptionWithResponse => e
