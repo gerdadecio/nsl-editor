@@ -1,6 +1,10 @@
 - :date: 02-July-2026
   :jira_id: '5846'
   :description: |-
+    Tree Version Draft Creation: Add a json_error method to handle a broader set of error cases
+- :date: 02-July-2026
+  :jira_id: '5846'
+  :description: |-
     Tree Version Draft Creation: Fix error handling code so error messages show clearly to users
 - :date: 01-July-2026
   :jira_id: '5402'

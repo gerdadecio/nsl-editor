@@ -170,4 +170,17 @@ class TreeVersionsController < ApplicationController
     json = json(result)
     json&.payload
   end
+
+  def json_error(err)
+    logger.error(err)
+    json = JSON.parse(err.http_body, object_class: OpenStruct)
+    if json&.error
+      logger.error(json.error)
+      json.error
+    else
+      "Tree Version Error: #{json&.to_s || err.to_s}"
+    end
+  rescue StandardError
+    err.to_s
+  end
 end
