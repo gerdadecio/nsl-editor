@@ -13,13 +13,73 @@
          {field_name: 'page-qualifier:', description: "page-qualifier *"},
          {field_name: 'note:', description: "note, leading and trailing wildcards added automatically  **"},
          {field_name: 'note-exact:', description: "note  **"},
-         {field_name: 'verbatim-name:', description: "Verbatim name string, leading and trailing wildcards added automatically *"},
-         {field_name: 'verbatim-name-exact:', description: "Verbatim name string *"},
          {field_name: 'bhl:', description: "bhl *"},
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+      </td>
+      <td><%= val[:description].html_safe %></td>
+      <% if val[:partial].present? %>
+        <td><%= render partial: val[:partial] %></td>
+      <% else %>
+        <td></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<h4>Verbatim Name String Searches</h4>
+<table class="table table-striped">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+  </tr>
+  <% [
+         {field_name: 'verbatim-name:', description: "Verbatim name string, leading and trailing wildcards added automatically *"},
+         {field_name: 'verbatim-name-exact:', description: "Verbatim name string *"},
+         {field_name: 'verbatim-name-matches-full-name:', description: "Verbatim name string is the same as the instance name full name."},
+         {field_name: 'verbatim-name-does-not-match-full-name:', description: "Verbatim name string is <b><u>not</u></b> the same as the instance name full name."},
+         {field_name: 'verbatim-name-matches-full-name-ignoring-hybrid-x:', description: "Instances in which the verbatim name is the same as the referenced Name's full name, regardless of case, and with hybrid 'x' characters removed.  Takes no argument, but you can prefix it with a string that will be matched against the name."},
+         {field_name: 'verbatim-name-matches-full-name-ignoring-orth-var:', description: "Instances in which the verbatim name is the same as the referenced Name's full name, regardless of case, and with the string 'orth. var.' removed.  Takes no argument, but you can prefix it with a string that will be matched against the name."},
+     ].each do |val| %>
+    <tr>
+      <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+      </td>
+      <td><%= val[:description].html_safe %></td>
+      <% if val[:partial].present? %>
+        <td><%= render partial: val[:partial] %></td>
+      <% else %>
+        <td></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<h4>Name Status Searches</h4>
+<table class="table table-striped">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+  </tr>
+  <% [
+         {field_name: 'name-status:', description: "Instances representing the usage of a name that has the name status you supply as an argument. Takes wildcards."},
+         {field_name: 'name-status-not:', description: "Instances representing the usage of a name that does <b><u>not</u></b> have the name status you supply as an argument. Takes wildcards."},
+     ].each do |val| %>
+    <tr>
+      <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
       </td>
@@ -43,7 +103,7 @@ of the instance notes that exist in a given database.
 <p>Each search directive can only search one note of a given kind ("note-key")
 but multiple directives can be included in a search, where they will be ANDed.</p>
 
-<p>e.g. 
+<p>e.g.
     <pre>etymology-note-matches: Darwin</pre>
 <p>In this example "etymology" is a type of instance note for the database.</p>
 
@@ -57,7 +117,7 @@ but multiple directives can be included in a search, where they will be ANDed.</
 
 <pre>apc-dist.-note-matches: Darwin .*bark</pre>
 
-<p>This would retrieve instances with an APC Dist. note that contains the 
+<p>This would retrieve instances with an APC Dist. note that contains the
 word "darwin" followed by a space, one or more other characters followed by "bark".</p>
 
 <p>These searches use regular expressions, so use ".*" instead of '%'.</p>
@@ -81,6 +141,18 @@ word "darwin" followed by a space, one or more other characters followed by "bar
     <pre>type-note-matches: PERTH\."\Z</pre>
 
 
+<h5>Regular Expression Reminders:</h5>
+<ol>
+  <li/>Regex expressions a different to our usual "like" searches, and different rules apply.
+  <li/>Regex expressions derive much of their power from special characters, and it's hard to know what those characters are without being familiar with posix regex.
+  <li/>The asterisk '*' is one such a special character - subtley different to '*' in our normal searches
+  <li/>To specify "any number of any characters" in regex, use '.*'
+  <li/>You do not need to add a wildcard to the start or end of regex patterns - that is assumed
+  <li/>Parentheses, '(' and ')' are special characters - replace them with a dot (any character) or escape them by prefixing with a backslash eg. '\('.
+  <li/>Other special characters include ., \, ?, [, ].  This list isn't exhaustive.
+  <li/>Regex expressions are probably best for advanced searching and you may need technical advice from the NSL team
+  <li/>See the examples tab too
+</ol>
 <br>
 
 <h4>Special Note Searches</h4>
@@ -93,9 +165,9 @@ word "darwin" followed by a space, one or more other characters followed by "bar
          {field_name: 'note-key-type-note:', description: "Instances with the specified text in a note with a key of 'type'."},
          {field_name: 'apc-dist-note-matches:', description: "Regular expression matches on the APC Dist. instance note.  Case-sensitive."},
          {field_name: 'apc-comment-note-matches:', description: "Regular expression matches on the APC Comment instance note.  Case-sensitive."},
-         {field_name: 'tree-dist-matches:', description: "Regular expression matches on the Distribution profile on the accepted tree.  Case-sensitive."},
-         {field_name: 'tree-comment-matches:', description: "Regular expression matches on the Comment profile on the accepted tree.  Case-sensitive."},
          {field_name: 'non-tree-drafts:', description: "Find draft instances that are not on any tree."},
+         {field_name: 'not-draft:', description: "Find non-draft instances."},
+         {field_name: 'draft:', description: "Find draft instances."},
          {field_name: 'syn-with-note:', description: "Synonyms with at least one note."},
          {field_name: 'syn-with-adnot:', description: "Synonyms with at least one adnot."},
          {field_name: 'note-has-carriage-return:', description: "Find instances that have at least one instance note containing at least one carriage return. No argument is allowed or required for this directive."},
@@ -103,7 +175,38 @@ word "darwin" followed by a space, one or more other characters followed by "bar
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+      </td>
+      <td><%= val[:description].html_safe %></td>
+      <% if val[:partial].present? %>
+        <td><%= render partial: val[:partial] %></td>
+      <% else %>
+        <td></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<h4>Tree distribution and comment searches, other tree searches</h4>
+<table class="table table-striped">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+  </tr>
+  <% [
+         {field_name: 'tree-dist-matches:', description: "Regular expression matches on the Distribution profile on the accepted tree.  Case-insensitive."},
+         {field_name: 'tree-comment-matches:', description: "Regular expression matches on the Comment profile on the accepted tree.  Case-insensitive."},
+         {field_name: 'syn-conflicts-with-loader-batch:', description: "A special loader-related search for synonyms in the current accepted tree that match accepted/excluded names in a loader batch. Note: loader is not activated for all databases."},
+     ].each do |val| %>
+    <tr>
+      <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
       </td>
@@ -129,7 +232,9 @@ word "darwin" followed by a space, one or more other characters followed by "bar
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
       </td>
@@ -154,17 +259,20 @@ word "darwin" followed by a space, one or more other characters followed by "bar
          {field_name: 'is-cited-by-an-instance:', description: ""},
          {field_name: 'does-not-cite-an-instance:', description: ""},
          {field_name: 'is-not-cited-by-an-instance:', description: ""},
-         {field_name: 'verbatim-name-matches-full-name:', description: "Verbatim name string is the same as the instance name full name."},
-         {field_name: 'verbatim-name-does-not-match-full-name:', description: "Verbatim name string is the same as the instance name full name."},
          {field_name: 'is-novelty:', description: "Primary instance type e.g. tax. nov.."},
+         {field_name: 'is-standalone:', description: "Instance type is standalone"},
+         {field_name: 'is-not-standalone:', description: "Instance type is not standalone"},
          {field_name: 'is-tax-nov-for-orth-var-name:', description: "Instance is a tax. nov. type but the name is an orth. var."},
          {field_name: 'species-or-below-syn-with-genus-or-above:',
-          description: "Instance synonymises a name ranked species or below with
-       a name that is genus or above."},
+          description: "Instance synonymises a name ranked species or below with a name that is genus or above."},
+         {field_name: 'nov-lacks-replaced-syn:',
+          description: "Instances of the type 'nom. nov.' or 'nom. et stat. nov.' that do not have a 'replaced synonym' relationship associated with them"},
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
       </td>
@@ -189,10 +297,14 @@ word "darwin" followed by a space, one or more other characters followed by "bar
          {field_name: 'ref-type:', description: "Type of reference the instance refers to."},
          {field_name: 'ref-exact:', description: "Matches against the reference citation - add your own wildcards."},
          {field_name: 'parent-ref-exact:', description: "Matches against the reference parent's citation - add your own wildcards."},
+         {field_name: 'ref-id:', description: "Matches against the reference ID."},
+         {field_name: 'parent-ref-id:', description: "Matches against the parent reference ID."},
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
       </td>
@@ -213,12 +325,14 @@ word "darwin" followed by a space, one or more other characters followed by "bar
     <th>Description</th>
   </tr>
   <% [
-         {field_name: 'rank:', description: "Name rank e.g. species.
-       Case-insensitive.  Allows wildcards, but not lists."},
+         {field_name: 'rank:', description: "Name rank e.g. species.  Case-insensitive.  Allows wildcards, but not lists."},
+         {field_name: 'name-type:', description: "Type of name the instance refers to.  Can take a single arguement with wildcards, or comma-separated multiples without wildcards. Case insensitive."},
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
       </td>
@@ -232,6 +346,7 @@ word "darwin" followed by a space, one or more other characters followed by "bar
   <% end %>
 </table>
 
+<%= render partial: 'instances/advanced_search/profile_help' %>
 <%= render partial: 'instances/advanced_search/adnot_help' %>
 <%= render partial: 'help/id_search_help' %>
 <%= render partial: 'help/case_and_wildcards_search' %>

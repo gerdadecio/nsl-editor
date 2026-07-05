@@ -1,0 +1,505 @@
+---
+- :date: 26-Oct-2017
+  :release: true
+- :date: 24-Oct-2017
+  :jira_id: '2177'
+  :description: |-
+    Add a page-sort directive for instance searches.
+- :date: 24-Oct-2017
+  :jira_id: '2361'
+  :description: |-
+    Prevent author with an abbreviation being marked as a duplicate of an author without an abbreviation.
+- :date: 21-Sep-2017
+  :release: true
+- :date: 20-Sep-2017
+  :jira_id: '2476'
+  :description: |-
+    Added assertion query for names with multiple basionyms.
+- :date: 14-Sep-2017
+  :release: true
+- :date: 13-Sep-2017
+  :jira_id: '1922'
+  :description: |-
+    Removed unsourced instance types from the Syn tab instance type dropdown.
+- :date: 07-Sep-2017
+  :release: true
+- :date: 06-Sep-2017
+  :jira_id: '1488'
+  :description: |-
+    Added new search directives for names: nom-inval, name-nom-inval, nom-inval-with-orth-var, nom-illeg
+- :date: 31-Aug-2017
+  :release: true
+- :date: 29-Aug-2017
+  :jira_id: '2482'
+  :description: |-
+   Add an instance-offset option for reference search that show-instances.
+- :date: 28-Aug-2017
+  :jira_id: '2485'
+  :description: |-
+   Moss shard can now create instance notes.
+- :date: 09-Aug-2017
+  :release: true
+- :date: 09-Aug-2017
+  :jira_id: '2470'
+  :description: |-
+   Name search should now return named hybrids regardless of whether you supply
+   the leading 'x'.
+- :date: 07-Aug-2017
+  :jira_id: '2472'
+  :description: |-
+    Add search directive on names for associated instance note text.
+- :date: 07-Aug-2017
+  :jira_id: '2472'
+  :description: |-
+    Add search directive on names for name-status-nom-illeg.
+- :date: 07-Aug-2017
+  :jira_id: '2471'
+  :description: |-
+   Trying to create a duplicate synonym now an error message.
+- :date: 04-Aug-2017
+  :jira_id: '2432'
+  :description: |-
+   Apply UTF-16LE encoding and byte order marker to csv files.
+- :date: 03-Aug-2017
+  :release: true
+- :date: 02-Aug-2017
+  :jira_id: '2469'
+  :description: |-
+   Fix Instance search CSV error.
+- :date: 27-Jul-2017
+  :release: true
+- :date: 17-Jul-2017
+  :jira_id: '2460'
+  :description: |-
+   Unsourced misapplication now does not cause display error when showing
+   instances
+- :date: 12-Jul-2017
+  :jira_id: '2430'
+  :description: |-
+   Do not include references marked as duplicates in the validation of
+   uniqueness
+- :date: 06-Jul-2017
+  :release: true
+- :date: 05-Jul-2017
+  :jira_id: '2399'
+  :description: |-
+   Relax locking of fields on Unpub tab to allow rapid entry of common names.
+- :date: 05-Jul-2017
+  :jira_id: '2416'
+  :description: |-
+   Show nomenclatural status tags in synonym (cross reference) instances,
+   without brackets!
+- :date: 28-Jun-2017
+  :jira_id: '2289'
+  :description: |-
+    Search for no data in author, instance, name and reference comments/adnots.
+- :date: 28-Jun-2017
+  :jira_id: '2256'
+  :description: |-
+    Make the taxonomic tree for the APC tab configurable so that ABRSL can be
+    edited with the current instance editor.
+- :date: 22-Jun-2017
+  :release: true
+- :date: 21-Jun-2017
+  :jira_id: '2401'
+  :description: |-
+    Allow phrase names to be changed to scientific names so additional authors
+    can be edited or removed.
+- :date: 21-Jun-2017
+  :jira_id: '2403'
+  :description: |-
+    Allow search for references with a match on a language or on a list of
+    languages.  Also allow search on not-language i.e references that don't
+    match on a language or on a list of languages.
+- :date: 21-Jun-2017
+  :jira_id: '2402'
+  :description: |-
+    Change default reference language to Undetermined.
+- :date: 16-Jun-2017
+  :jira_id: '2398'
+  :description: |-
+    Do not allow duplicate references to be created or to result from editing.
+- :date: 16-Jun-2017
+  :release: true
+- :date: 08-Jun-2017
+  :jira_id: '2394'
+  :description: |-
+    Add a reference tab to easily edit and save a copy of the current record.
+- :date: 08-Jun-2017
+  :jira_id: '2393'
+  :description: |-
+    Suppress verbatim rank field on phrase name entry form; also add
+    verbatim-rank query directive.
+- :date: 05-Jun-2017
+  :jira_id: '2384'
+  :description: |-
+    Synonym typeahead suggestions now only include names with standalone
+    instances.  That is, names that are just recorded as synonyms are not 
+    suggested.
+- :date: 05-Jun-2017
+  :jira_id: '2391'
+  :description: |-
+    Speed up synonym typeahead suggestions.
+- :date: 05-Jun-2017
+  :jira_id: '2383'
+  :description: |-
+    Slight change to search error message for unknown field (directive).
+- :date: 31-May-2017
+  :release: true
+- :date: 23-May-2017
+  :jira_id: '2380'
+  :description: |-
+    Hide search error messages that show database details.
+- :date: 19-May-2017
+  :release: true
+- :date: 11-May-2017
+  :jira_id: '2362'
+  :description: |-
+    Instance tree tab typeahead now checks for names in the current workspace.
+- :date: 11-May-2017
+  :release: true
+- :date: 11-May-2017
+  :jira_id: '474'
+  :description: |-
+    Do not restrict synonym suggestions by rank for names ranked above family.
+- :date: 10-May-2017
+  :jira_id: '2342'
+  :description: |-
+    Make it easier to tell duplicate authors apart by adding abbrev to 
+    suggestions.
+- :date: 09-May-2017
+  :jira_id: '2352'
+  :description: |-
+    Added bhl search directive for instances. It understands how to search for
+    empty fields too.
+- :date: 09-May-2017
+  :jira_id: '2334'
+  :description: |-
+    Added generalised search for empty fields.
+- :date: 08-May-2017
+  :jira_id: '474'
+  :description: |-
+    Synonyms offered to unranked names can come from any rank.  Unranked names
+    are offered as synonyms to all ranks.
+- :date: 08-May-2017
+  :jira_id: '2243'
+  :description: |-
+    Name parent rank restriction can now be configured off only for ranks of
+    genus and above.
+- :date: 04-May-2017
+  :jira_id: '2140'
+  :description: |-
+    Phrase name status now defaults to n/a.
+- :date: 03-May-2017
+  :jira_id: '2288'
+  :description: |-
+    Added new search directives on names for duplicate simple names and
+    duplicate full names.
+- :date: 03-May-2017
+  :jira_id: '2297'
+  :description: |-
+    Added 'has-no-direct-or-child-instances:' query which finds all references
+    with no instances and with no direct children that have instances.
+- :date: 02-May-2017
+  :jira_id: '2296'
+  :description: |-
+    Corrected reference field help by changing "pub-date-matches-year" to 
+    the correct directive "pub-date-is-year:".
+- :date: 01-May-2017
+  :jira_id: '2243'
+  :description: |-
+    Name parent rank restriction can be switched off by shard configuration.
+- :date: 01-May-2017
+  :jira_id: '2321'
+  :description: |-
+    Disable new instance fields after create to avoid near duplicates.
+- :date: 01-May-2017
+  :jira_id: '2263'
+  :description: |-
+    Parent options now work consistently on APC Tree tab.
+- :date: 01-May-2017
+  :jira_id: '2140'
+  :description: |-
+    Added button to convert scientific name to phrase name.
+- :date: 27-Apr-2017
+  :jira_id: '474'
+  :description: |-
+    Infraspecies, infragenera, infrafamilies synonym options match latest
+    requirement.
+- :date: 27-Apr-2017
+  :release: true
+- :date: 26-Apr-2017
+  :jira_id: '474'
+  :description: |-
+    Added basic infrageneric functions for synonymy typeahead rank restrictions
+- :date: 24-Apr-2017
+  :release: true
+- :date: 24-Apr-2017
+  :jira_id: '474'
+  :description: |-
+    Adjusted synonymy typeahead - partial fix, but definite improvement.
+- :date: 24-Apr-2017
+  :jira_id: '2340'
+  :description: |-
+    Synonymy typeahead now working with wildcards.
+- :date: 20-Apr-2017
+  :jira_id: '1061'
+  :description: |-
+    Added rules to restrict possible ranks for parents of [infrafamily],
+    [infragenus] and [infraspecies] names.
+- :date: 20-Apr-2017
+  :release: true
+- :date: 19-Apr-2017
+  :jira_id: '2339'
+  :description: |-
+    Common name with a colour in its name (e.g. 'red') no longer appears in that
+    colour.
+- :date: 18-Apr-2017
+  :jira_id: '2324'
+  :description: |-
+    Autonym reports: autonym-does-not-exist, autonym-does-not-exist-sibling-rule.
+- :date: 13-Apr-2017
+  :jira_id: '474'
+  :description: |-
+    Restrict synonyms offered to those of appropriate ranks.
+- :date: 13-Apr-2017
+  :release: true
+- :date: 12-Apr-2017
+  :jira_id: '2333'
+  :description: |-
+    Can now search Author notes field.
+- :date: 11-Apr-2017
+  :jira_id: '2311'
+  :description: |-
+    Fixed bug preventing author being marked as a duplicate if more than one
+    author name matches the selected master author's name.
+- :date: 11-Apr-2017
+  :jira_id: '2324'
+  :description: |-
+    Added report for autonym-has-invalid-rank.
+- :date: 11-Apr-2017
+  :jira_id: '2324'
+  :description: |-
+    Added report for autonym-does-not-exist.
+- :date: 07-Apr-2017
+  :jira_id: '2319'
+  :description: |-
+    A "Show instances for name" button appears after you create an instance for
+    a name record on the "New instances" tab.
+- :date: 07-Apr-2017
+  :jira_id: '2321'
+  :description: |-
+    Prevent near duplicate instances by removing create button after success.
+- :date: 07-Apr-2017
+  :jira_id: '2331'
+  :description: |-
+    Hide the "extra primary instance" warning and checkbox on successful save.
+- :date: 07-Apr-2017
+  :jira_id: '2329'
+  :description: |-
+    Add comma between name and status in reference listing.
+- :date: 06-Apr-2017
+  :jira_id: '2320'
+  :description: |-
+    Change name details tab heading of "Instance" to "New instance".
+- :date: 06-Apr-2017
+  :jira_id: '2325'
+  :description: |-
+    Cursor now starts in name field on tab for creating synonym from Reference.
+- :date: 06-Apr-2017
+  :release: true
+- :date: 06-Apr-2017
+  :jira_id: '2328'
+  :description: |-
+    Fix problem creating synonym due to null value in instance.draft
+- :date: 06-Apr-2017
+  :release: true
+- :date: 05-Apr-2017
+  :jira_id: '2315'
+  :description: |-
+    Name search now respects embedded spaces e.g. * sp. * type: scientific
+- :date: 04-Apr-2017
+  :jira_id: '2058'
+  :description: |-
+   Allow draft instances to be created.  Indicate draft in the display.
+- :date: 04-Apr-2017
+  :jira_id: '2276'
+  :description: |-
+   Do not hide details panel when drop-down menus at top of page are opened.
+- :date: 27-Mar-2017
+  :jira_id: '2205'
+  :description: |-
+   Improve sorting for references of type part - use year of parent reference.
+- :date: 27-Mar-2017
+  :jira_id: '2302'
+  :description: |-
+   Show non-legitimate nomenclatural status after names in reference listing 
+- :date: 24-Mar-2017
+  :jira_id: '2285'
+  :description: |-
+    Name comment search is now case-insensitive.
+- :date: 02-Mar-2017
+  :release: true
+- :date: 01-Mar-2017
+  :jira_id: '2064'
+  :description: |-
+    Remove phrase name from scientific name entry dropdown.
+- :date: 01-Mar-2017
+  :jira_id: '2239'
+  :description: |-
+    Warn on entry of more than one primary instance.
+- :date: 27-Feb-2017
+  :jira_id: '2252'
+  :description: |-
+    Made adnot searching consistent with comments searching.
+    <br>Set up auto-wildcarding, provided new directive for adnot-exact search,
+    and added field help.
+- :date: 24-Feb-2017
+  :jira_id: '2257'
+  :description: |-
+    Added suggestion to check search target in error message for 
+    unrecognised field name.
+- :date: 23-Feb-2017
+  :release: true
+- :date: 22-Feb-2017
+  :jira_id: '2263'
+  :description: |-
+    Instance tree tab parent typeahead fixed for new placement.
+- :date: 21-Feb-2017
+  :jira_id: '2242'
+  :description: |-
+    Added search assertions for the absence of name authors e.g. has-no-author:.
+- :date: 21-Feb-2017
+  :jira_id: '2261'
+  :description: |-
+    Remove the History tab.
+- :date: 20-Feb-2017
+  :jira_id: '2248'
+  :description: |-
+    Remove the Advanced search tab.
+- :date: 16-Feb-2017
+  :jira_id: '2252'
+  :description: |-
+    The search for Adnot works for upper-case terms - it is now 
+    correctly case-insensitive.
+- :date: 16-Feb-2017
+  :release: true
+- :date: 15-Feb-2017
+  :jira_id: '2245'
+  :description: |-
+    The Reference Shared Name search examples are now marked as specific to
+    APNI.  The queries now also show a sensible error message if the reference
+    IDs supplied do not exist.
+- :date: 14-Feb-2017
+  :jira_id: '2240'
+  :description: |-
+    Do not offer a delete button for names that have any duplicates. Show a
+    link to the duplicates instead.
+- :date: 10-Feb-2017
+  :jira_id: '2226'
+  :description: |-
+    Latin now appears fifth on the drop-down list of Reference languages.
+- :date: 09-Feb-2017
+  :jira_id: '2198'
+  :description: |-
+    Compress multiple embedded spaces in author name and abbreviation.
+- :date: 09-Feb-2017
+  :jira_id: '2186'
+  :description: |-
+    Set colour scheme for staging environment based on setting in configuration
+    file.
+- :date: 02-Feb-2017
+  :release: true
+- :date: 30-Jan-2017
+  :jira_id: '2195'
+  :description: |-
+    Move author options in search dropdown and new record menu. 
+    Remove brackets.
+- :date: 30-Jan-2017
+  :jira_id: '2196'
+  :description: |-
+    Change label of the first Name tab to from "Detail" to "Details".
+- :date: 30-Jan-2017
+  :jira_id: '2176'
+  :description: |-
+    Reference search with show-instances set applies limit to the instances too.
+- :date: 25-Jan-2017
+  :jira_id: '2181'
+  :description: |-
+    Copy standalone instance no longer restricted to QA role.
+- :date: 24-Jan-2017
+  :jira_id: '2173'
+  :description: |-
+    Don't show Delete button for Instance in APC.
+- :date: 24-Jan-2017
+  :jira_id: '2173'
+  :description: |-
+    Show informative error message when instance delete fails.
+- :date: 19-Jan-2017
+  :release: true
+- :date: 18-Jan-2017
+  :jira_id: '2069'
+  :description: |-
+    The APC Tree heading for a Name on the details tab is no longer a link to
+    display the tree in the Instance Editor.
+- :date: 17-Jan-2017
+  :jira_id: '2081'
+  :description: |-
+    Tree classification menu now has links to the Tree Editor.
+- :date: 16-Jan-2017
+  :jira_id: '1741'
+  :description: |-
+   Make year mandatory for some reference types.
+- :date: 16-Jan-2017
+  :jira_id: '2133'
+  :description: |-
+   Maximum value for a reference year is now evaluated at run time - will 
+   not need re-starting in the new year.
+- :date: 13-Jan-2017
+  :release: true
+- :date: 13-Jan-2017
+  :jira_id: ''
+  :description: |-
+   Change dash to slash in URL.  This change is now possible and will match
+   other URLs.
+- :date: 11-Jan-2017
+  :jira_id: '2143'
+  :description: |-
+   Fine tune "References, names, full synonymy" search to show more instances.
+- :date: 11-Jan-2017
+  :jira_id: '2141'
+  :description: |-
+   Added instance searches for "ref-exact" and "parent-ref-exact".
+- :date: 10-Jan-2017
+  :jira_id: '2143'
+  :description: |-
+   Fix "References, names, full synonymy" search 
+- :date: 10-Jan-2017
+  :jira_id: '2128'
+  :description: |-
+    Remove requirement to confirm changes of reference for names with synonyms.
+- :date: 10-Jan-2017
+  :jira_id: '2142'
+  :description: |-
+    Do not offer "nom. inval., nom. dub." as a nomenclatural status
+    for editing a name.
+- :date: 05-Jan-2017
+  :release: true
+- :date: 04-Jan-2017
+  :jira_id: '2129'
+  :description: |-
+    Minor fix during testing to handle empty @name_node_tree_link.
+- :date: 04-Jan-2017
+  :jira_id: '2118'
+  :description: |-
+    Allow focus on specific search result record via focus_id param.
+- :date: 04-Jan-2017
+  :jira_id: '2129'
+  :description: |-
+    Tree edit typeahead offers accepted names up to next higher major rank.
+    Also has checkbox to include "higher" ranks.
+- :date: 04-Jan-2017
+  :jira_id: '2079'
+  :description: |-
+    Integrate new tree editing facilities - new Tree tab for instances, 
+    choose a workspace, show workspace status.

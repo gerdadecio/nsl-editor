@@ -1,16 +1,28 @@
-FROM tomcat:8.5.46
+# NOTE: This is primarily for TeamCity use atm.
+#
+# Use the official Ruby image as a base image
+FROM ruby:3.4.8-bookworm
 
-RUN echo "Australia/ACT" > /etc/timezone \
-    && cp /usr/share/zoneinfo/Australia/ACT /etc/localtime \
-    && sed -i 's/\<Connector /& URIEncoding="UTF-8" /' /usr/local/tomcat/conf/server.xml \
-    && apt-get update && apt-get --assume-yes install node.js \
-    && apt-get clean
-    
-RUN  addgroup --gid 5000 nsl_user; adduser --system --quiet --disabled-login --disabled-password --uid 5000 --no-create-home nsl_user --ingroup nsl_user
-COPY  nsl-editor.war /usr/local/tomcat/webapps/"nsl#editor.war"
-RUN chown -R nsl_user:nsl_user "$CATALINA_HOME"
-VOLUME /etc/nsl
-EXPOSE 8080/tcp
-USER nsl_user
-#CMD /bin/bash
-CMD  ["catalina.sh", "run"]
+RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
+  build-essential \
+  bash \
+  wget \
+  curl \
+  ed
+
+RUN apt-get update -qq && apt-get install -y \
+  libpq-dev
+
+# Copy the Gemfile and Gemfile.lock
+COPY ./Gemfile ./Gemfile.lock ./
+
+# Install gems
+RUN bundle install
+
+WORKDIR /ruby-editor
+
+# Copy the rest of the application code
+COPY . ./
+Run cp -r .nsl/ /root/
+
+CMD ["/bin/bash", "-c", "echo 'Container started!' && echo 'Running post-start commands...' && RAILS_ENV=production rake build_prod && cd .. && pwd && ls -l && tar cfz ruby-editor.tgz ruby-editor && mv /ruby-editor.tgz /output/"]

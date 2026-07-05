@@ -25,11 +25,11 @@ class SearchRefsOutputFormatWithInstancesTest < ActionController::TestCase
   test "output format of reference search with instances" do
     ref = references(:bucket_reference_for_default_instances)
     get(:search,
-        { query_target: "reference",
-          query_string: "citation: #{ref.citation} show-instances:" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "reference",
+                  query_string: "citation: #{ref.citation} show-instances:" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "a.show-details-link.indent-level-1",
                   /Metrosideros costata Gaertn./,
@@ -40,7 +40,7 @@ class SearchRefsOutputFormatWithInstancesTest < ActionController::TestCase
                     "Orth var. name formatted incorrectly"
     end
     assert_select "#search-results-summary",
-                  /36 records\b/,
-                  "Should find 36 records"
+                  /37 records\b/,
+                  "Should find 37 records"
   end
 end

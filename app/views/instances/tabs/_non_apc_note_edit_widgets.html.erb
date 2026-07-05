@@ -5,7 +5,7 @@
         <div id="container-for-instance-note-<%= instance_note.id %>">
           <%= render partial: 'instance_notes/form', 
                      locals: {instance_note: instance_note,
-                              options: InstanceNoteKey.options} %>
+                              edit_options: InstanceNoteKey.edit_options} %>
         </div>
     <% end %>
 

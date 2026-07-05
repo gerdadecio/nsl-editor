@@ -9,13 +9,17 @@
       {field_name: 'name-exact:', description: "name, supply your own wildcards *"},
       {field_name: 'abbrev:', description: "abbreviation, with leading and trailing wildcards added automatically *"},
       {field_name: 'abbrev-exact:', description: "abbreviation, supply your own wildcards *"},
-      {field_name: 'full-name:', description: "fully qualified author name or additional identifying information, leading and trailing wildcards added automatically *"},
-      {field_name: 'full-name-exact:', description: "fully qualified author name or additional identifying information, supply your own wildcards *"},
+      {field_name: 'extra-information:', description: "extra identifying information, leading and trailing wildcards added automatically *"},
+      {field_name: 'extra-information-exact:', description: "extra identifying information, supply your own wildcards *"},
       {field_name: 'notes:', description: "search on notes, add your own wildcards *"},
+      {field_name: 'duplicate-of-id:', description: "ID of the master record for records marked as a duplicate"},
+      {field_name: 'master-id:', description: "the master via its ID and all its duplicates; no arguments"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span>
       </a>
     </td>
@@ -36,6 +40,7 @@
   <% [
       {field_name: 'is-a-duplicate:', description: "marked as a duplicate"},
       {field_name: 'is-not-a-duplicate:', description: "not marked as a duplicate"},
+      {field_name: 'is-a-duplicate-and-master:', description: "records marked as both a master and a duplicate - nested duplication; no arguments"},
       {field_name: 'has-abbrev:', description: "has an abbreviation"},
       {field_name: 'has-no-abbrev:', description: "has no abbreviation"},
       {field_name: 'has-name:', description: "has a name"},
@@ -43,7 +48,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -64,7 +71,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -72,6 +81,25 @@
   </tr>
   <% end %>
 </table>
+
+<h5>Quality Checks</h5>
+<table class="table table-striped">
+  <% [
+      {field_name: 'missed-diacritics:', description: "name or abbrev has diacritics not handled by the unaccent function"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+
 
 <%= render partial: 'comments/advanced_search/help' %>
 <%= render partial: 'help/id_search_help' %>

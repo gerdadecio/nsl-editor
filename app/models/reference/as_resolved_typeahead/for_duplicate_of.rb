@@ -22,8 +22,8 @@ class Reference::AsResolvedTypeahead::ForDuplicateOf
   attr_reader :value
 
   def initialize(id_string, param_text, field_name = "Duplicate Of")
-    @text = param_text.sub(/ *\|.*\z/, "")
-    @text.rstrip!
+    @text = extract_delimited_string(param_text)
+    @text.rstrip! unless @text.blank?
     @id_string = id_string
     @field_name = field_name
     run
@@ -88,10 +88,8 @@ class Reference::AsResolvedTypeahead::ForDuplicateOf
     possibles_with_id = ::Reference
                         .where(id: @id_string.to_i)
                         .lower_citation_equals(@text)
-    if possibles_with_id.size == 1
-      @value = possibles_with_id.first.id
-    else
-      raise "please choose #{@field_name} from suggestions (> 1 match)"
-    end
+    raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
+
+    @value = possibles_with_id.first.id
   end
 end

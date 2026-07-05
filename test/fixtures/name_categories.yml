@@ -1,3 +1,33 @@
+# == Schema Information
+#
+# Table name: name_category
+#
+#  id                            :bigint           not null, primary key
+#  description_html              :text
+#  lock_version                  :bigint           default(0), not null
+#  max_parents_allowed           :integer          default(0), not null
+#  min_parents_required          :integer          default(0), not null
+#  name                          :string(50)       not null
+#  parent_1_help_text            :text
+#  parent_2_help_text            :text
+#  requires_family               :boolean          default(FALSE), not null
+#  requires_higher_ranked_parent :boolean          default(FALSE), not null
+#  requires_name_element         :boolean          default(FALSE), not null
+#  sort_order                    :integer          default(0), not null
+#  takes_author_only             :boolean          default(FALSE), not null
+#  takes_authors                 :boolean          default(FALSE), not null
+#  takes_cultivar_scoped_parent  :boolean          default(FALSE), not null
+#  takes_hybrid_scoped_parent    :boolean          default(FALSE), not null
+#  takes_name_element            :boolean          default(FALSE), not null
+#  takes_rank                    :boolean          default(FALSE), not null
+#  takes_verbatim_rank           :boolean          default(FALSE), not null
+#  rdf_id                        :string(50)
+#
+# Indexes
+#
+#  name_category_rdfid           (rdf_id)
+#  uk_rxqxoenedjdjyd4x7c98s59io  (name) UNIQUE
+#
 phrase:
   name: phrase name
   sort_order: 20
@@ -134,6 +164,26 @@ cultivar_hybrid:
   requires_name_element: t
   requires_higher_ranked_parent: f
   parent_2_help_text: cultivar - genus and below, or unranked if unranked
+  takes_cultivar_scoped_parent: t
+  takes_rank: t
+  takes_verbatim_rank: t
+
+named_hybrid:
+  name: named hybrid
+  sort_order: 60
+  description_html: names entered and edited as named hybrids 
+  rdf_id:
+  min_parents_required: 1
+  max_parents_allowed: 2
+  parent_1_help_text: first parent is required
+  takes_hybrid_scoped_parent: f
+  requires_family: t
+  takes_name_element: t
+  takes_authors: t
+  takes_author_only: f
+  requires_name_element: t
+  requires_higher_ranked_parent: f
+  parent_2_help_text: second parent is optional
   takes_cultivar_scoped_parent: t
   takes_rank: t
   takes_verbatim_rank: t

@@ -69,12 +69,14 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
 
   def post_update
     post(:update,
-         { "random_id" => "",
-           "category" => "",
-           "name" => name_hash,
-           "commit" => "Save",
-           "id" => @grevillea.id },
-         username: "fred", user_full_name: "Fred Jones", groups: ["edit"])
+         params: { "random_id" => "",
+                   "category" => "",
+                   "name" => name_hash,
+                   "commit" => "Save",
+                   "id" => @grevillea.id },
+         session: { username: "fred",
+                    user_full_name: "Fred Jones",
+                    groups: ["edit"] })
   end
 
   def asserts2

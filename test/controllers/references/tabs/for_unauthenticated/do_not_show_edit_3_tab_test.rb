@@ -27,7 +27,9 @@ class ReferenceUnauthenticatedDoNotShowEdit3est < ActionController::TestCase
 
   test "should not show unauthenticated user reference edit 3 tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show, { id: @reference.id, tab: "tab_edit_3" }, {})
-    assert response.body.match(/window.location.assign.".sign_in"./)
+    get(:show,
+        params: { id: @reference.id, tab: "tab_edit_3" },
+        session: {})
+    assert response.body.match(/Your session may have expired.  Please reload the whole page before continuing/)
   end
 end

@@ -28,10 +28,10 @@ class ReferenceEditorShowAllTabsTest < ActionController::TestCase
 
   test "should show all tab links if editor requests details tab" do
     get(:show,
-        { id: @reference.id, tab: "tab_show_1" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @reference.id, tab: "tab_show_1" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     asserts1
     asserts2
     asserts3

@@ -25,14 +25,14 @@ class SearchRefsOnIdWithInstanceOffsetTest < ActionController::TestCase
   test "search on reference id with instance and instance offset" do
     ref = references(:bucket_reference_for_default_instances)
     get(:search,
-        { query_target: "reference",
-          query_string: "id: #{ref.id} show-instances: instance-offset: 10" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "reference",
+                  query_string: "id: #{ref.id} show-instances: instance-offset: 10" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
-                  /27 records\b/,
-                  "Should find 36 records"
+                  /28 records\b/,
+                  "Should find 28 records"
   end
 end

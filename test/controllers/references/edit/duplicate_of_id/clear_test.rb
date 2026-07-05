@@ -32,9 +32,12 @@ class ReferencesEditDuplicateOfIdClearTest < ActionController::TestCase
     reference_params["author_typeahead"] = reference.author.name
     reference_params["duplicate_of_id"] = reference.duplicate_of_id
     reference_params["duplicate_of_typeahead"] = "" # should clear it
-    post(:update, { reference: reference_params,
-                    id: reference.id },
-         username: username, user_full_name: "Fred Jones", groups: ["edit"])
+    post(:update,
+         params: { reference: reference_params,
+                   id: reference.id },
+         session: { username: username,
+                    user_full_name: "Fred Jones",
+                    groups: ["edit"] })
     assert_response :success
     changed = Reference.find(reference.id)
     assert !reference.duplicate_of_id.blank?, "Should have been a duplicate."

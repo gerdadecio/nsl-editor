@@ -30,16 +30,22 @@ class HelpControllerTest < ActionController::TestCase
   end
 
   test "should get index for reader" do
-    get(:index, {}, username: "fred", user_full_name: "Fred Jones", groups: [])
+    get(:index,
+        params: {},
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] },
+        xhr: true)
     assert_response :success
   end
 
   test "should get index for editor" do
     get(:index,
-        {},
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:edit])
+        params: {},
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [:edit] },
+        xhr: true)
     assert_response :success
   end
 end

@@ -24,10 +24,10 @@ class ReaderSearchControllerNamesCommentsListTest < ActionController::TestCase
 
   test "reader can search for a name with comments" do
     get(:search,
-        { query_target: "name", query_string: "comments: *" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "name", query_string: "comments: *" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /\b1 name\b/,

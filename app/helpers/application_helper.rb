@@ -1,43 +1,26 @@
 # frozen_string_literal: true
 
-#   Copyright 2015 Australian National Botanic Gardens
-#
-#   This file is part of the NSL Editor.
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
-#
 module ApplicationHelper
   def disable_common_cultivar_checkbox
     !(params[:query_on].nil? || params[:query_on].match(/\Aname\z/i))
   end
 
-  def parse_markdown(markdown)
+  def sorted_product_roles(user = nil)
+    return [] unless user
+
+    user
+      .product_roles
+      .includes(:product, :role)
+      .sort_by { |pr| [pr.product.name, pr.role.name] }
+  end
+
+  def markdown_to_html(markdown)
     Kramdown::Document.new(markdown).to_html.html_safe
   end
 
   def nav_link(text, icon_name)
     "<div class='icon-for-menu'>#{menu_icon(icon_name)}</div>
     <div class='text-for-link'>#{text}</div>".html_safe
-  end
-
-  def increment_tab_index(increment = 1)
-    @tab_index ||= 1
-    @tab_index += increment
-  end
-
-  def tab_index(offset = 0)
-    tabi = @tab_index || 1
-    tabi + offset
   end
 
   def treated_label(label, treatment = :description)
@@ -86,7 +69,7 @@ module ApplicationHelper
 
   def formatted_date(date)
     date
-    #date.strftime("%d-%b-%Y")
+    # date.strftime("%d-%b-%Y")
   end
 
   def ext_mapper_url
@@ -94,9 +77,9 @@ module ApplicationHelper
   end
 
   def mapper_link(type, id)
-    #this is brittle. Replace with getting the URI from the object or the mapper directly.
-    #see name and instance examples below.
-    %(<a href="#{ext_mapper_url}#{type}/#{ShardConfig.name_space.downcase}/#{id}" title="#{type.capitalize} #{id}"><i class="fa fa-link"></i></a>).html_safe
+    # this is brittle. Replace with getting the URI from the object or the mapper directly.
+    # see name and instance examples below.
+    %(<a href="#{ext_mapper_url}#{type}/#{sanitize(ShardConfig.name_space.downcase)}/#{id}" title="#{type.capitalize} #{id}"><i class="fa fa-link"></i></a>).html_safe
   end
 
   def mapper_instance_link(instance)
@@ -107,14 +90,16 @@ module ApplicationHelper
     %(<a href="#{ext_mapper_url}#{name.uri}" title="NAME #{name.id}"><i class="fa fa-link"></i></a>).html_safe
   end
 
-  def page_title
+  def badge
+    return "#{Rails.configuration.try('tag')}" unless Rails.configuration.try("tag").blank?
+
     case Rails.configuration.try("environment")
     when /\Adev/i
       "Dev Editor"
     when /^test/i
       "Test Editor"
     when /^stag/i
-      "Staging Ed"
+      "Stage Editor"
     when /^prod/i
       "#{ShardConfig.shard_group_name} Editor"
     else
@@ -122,12 +107,28 @@ module ApplicationHelper
     end
   end
 
-  def badge
-    page_title
+  def page_title
+    case Rails.configuration.try("environment")
+    when /\Adev/i
+      "Dev"
+    when /^test/i
+      "Test"
+    when /^stag/i
+      "Stage"
+    when /^prod/i
+      "#{ShardConfig.shard_group_name}"
+    else
+      "#{ShardConfig.shard_group_name}"
+    end + ":" + (params["query_target"] || "Editor").tr("_", " ").titleize
+  end
+
+  def safe_uncapitalize(string)
+    return string if string.blank? || string.length < 1
+    string[0].downcase + (string.length > 1 ? string[1..-1] : "")
   end
 
   def development?
-    Rails.configuration.try("environment").match(/^development/i)
+    Rails.configuration.try("environment", /^development/i)
   end
 end
 

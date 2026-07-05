@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Name validations
 module NameValidatable
   extend ActiveSupport::Concern
@@ -11,13 +10,13 @@ module NameValidatable
     validates :name_status_id, presence: true
     validates :ex_base_author,
               absence: { message: "cannot be set if there is no base author.",
-                         if: "base_author_id.nil?" }
+                         if: -> { base_author_id.nil? } }
     validates :base_author,
               absence: { message: "cannot be set if there is no author.",
-                         if: "author_id.nil?" }
+                         if: -> { author_id.nil? } }
     validates :ex_author,
               absence: { message: "cannot be set if there is no author.",
-                         if: "author_id.nil?" }
+                         if: -> { author_id.nil? } }
     validates :name_element, presence: true, if: :requires_name_element?
     validate :name_element_is_stripped
     validates :parent_id, presence: true, if: :requires_parent? # tested
@@ -44,8 +43,8 @@ module NameValidatable
                            in: ->(name) { [name.parent_id] },
                            allow_blank: true,
                            message: "cannot be the same as the first parent",
-                           unless: "cultivar_hybrid?"
-    validates :second_parent_id, absence: true, unless: :requires_parent_2?
+                           unless: -> { cultivar_hybrid? }
+    validates :second_parent_id, absence: true, unless: -> { takes_parent_2? }
     validates :verbatim_rank, length: { maximum: 50 }
     validates :published_year,
               numericality: { greater_than_or_equal_to: 1700,
@@ -53,11 +52,41 @@ module NameValidatable
                               only_integer: true },
               allow_blank: true
     validates :uri, uniqueness: true, allow_blank: true
+    validate :genus_parent_must_match_family_if_both_ranked_family
+    validates :name_path, presence: true
+    validate :name_type_autonym_for_restricted_ranks_only
   end
 
   def name_element_is_stripped
     return unless name_element.present?
     return if name_element == name_element.strip
+
     errors.add(:name_element, "has whitespace")
+  end
+
+  def name_type_must_match_category
+    return if NameType.option_ids_for_category(category_for_edit)
+                      .include?(name_type_id)
+
+    errors.add(:name_type_id,
+               "Wrong name type for category! Category: #{category_for_edit} vs
+               name type: #{name_type.name}.")
+  end
+
+  def name_type_autonym_for_restricted_ranks_only
+    return unless name_type.autonym?
+    return if name_rank.compatible_with_autonym?
+
+    errors.add(:name_type_id, "autonym cannot be this rank")
+  end
+
+  def genus_parent_must_match_family_if_both_ranked_family
+    return unless name_rank.genus?
+    return if parent_id == family_id
+    return unless parent.name_rank.family? && family.name_rank.family?
+
+    errors.add(
+      :parent_id,
+      "Family mismatch: for genus names with family-ranked parent, parent and family fields should match")
   end
 end

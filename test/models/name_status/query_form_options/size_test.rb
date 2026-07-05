@@ -21,7 +21,7 @@ require "test_helper"
 # Nam status options test.
 class NameStatusQueryFormOptionsSizeTest < ActiveSupport::TestCase
   test "name status query form options size" do
-    expected = 37
+    expected = 36
     assert_equal expected,
                  NameStatus.query_form_options.size,
                  "Should be #{expected} Name Status query form options"

@@ -29,10 +29,10 @@ class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
   # would be better to test the controller method
   test "do not show copy tab links unless part of concept record" do
     get(:show,
-        { id: @instance.id, tab: "tab_show_1", "row-type" => "instance" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["qa"])
+        params: { id: @instance.id, tab: "tab_show_1", "row-type" => "instance" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["qa"] })
     asserts
   end
 

@@ -27,15 +27,15 @@ class NamesNewRowCultivarNameSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    xhr(:get, :new_row,
-        { type: "cultivar" },
-        {},
+    get(:new_row,
+        params: { type: "cultivar" },
+        session: {},
         xhr: true)
     assert_response :success, "Cannot start new row for a cultivar name"
     assert_match(/search-results-table/,
                  response.body.to_s,
                  "Missing expected element")
-    assert_match(/names.new.category=cultivar/,
+    assert_match(/New Cultivar Name/,
                  response.body.to_s,
                  "Missing expected element")
   end

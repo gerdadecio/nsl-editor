@@ -17,12 +17,11 @@
 #   limitations under the License.
 #
 class NameTagsController < ApplicationController
-  before_action :set_name_tag, only: [:show, :edit, :update, :destroy]
+  before_action :set_name_tag, only: %i[show edit update destroy]
 
   # GET /name_tags/1
   # GET /name_tags/1.json
-  def show
-  end
+  def show; end
 
   # GET /name_tags/new
   def new
@@ -41,7 +40,7 @@ class NameTagsController < ApplicationController
         format.html { render :new }
         format.json do
           render json: @name_tag.errors,
-                 status: :unprocessable_entity
+                 status: :unprocessable_content
         end
       end
     end

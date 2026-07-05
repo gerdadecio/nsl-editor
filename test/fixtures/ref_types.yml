@@ -1,61 +1,83 @@
 
+# == Schema Information
+#
+# Table name: ref_type
+#
+#  id                 :bigint           not null, primary key
+#  description_html   :text
+#  lock_version       :bigint           default(0), not null
+#  name               :string(50)       not null
+#  parent_optional    :boolean          default(FALSE), not null
+#  use_parent_details :boolean          default(FALSE), not null
+#  parent_id          :bigint
+#  rdf_id             :string(50)
+#
+# Indexes
+#
+#  ref_type_rdfid                (rdf_id)
+#  uk_4fp66uflo7rgx59167ajs0ujv  (name) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_51alfoe7eobwh60yfx45y22ay  (parent_id => ref_type.id)
+#
 book: 
   name: Book 
   parent: series
-  parent_optional: Y
+  parent_optional: true
 
 chapter: 
   name: Chapter 
   parent: book
-  parent_optional: N
+  parent_optional: false
 
 database: 
   name: Database 
-  parent_optional: N
+  parent_optional: false
 
 database_record: 
   name: Database Record 
   parent: database
-  parent_optional: N 
+  parent_optional: false
 
 herbarium_annotation: 
   name: Herbarium annotation 
-  parent_optional: N
+  parent_optional: false
 
 index: 
   name: Index 
-  parent_optional: N
+  parent_optional: false
 
 journal: 
   name: Journal 
-  parent_optional: N
+  parent_optional: false
 
 personal_communication: 
   name: Personal Communication 
-  parent_optional: N
+  parent_optional: false
 
 series: 
   name: Series 
-  parent_optional: N
+  parent_optional: false
 
 paper: 
   name: Paper 
-  parent_optional: N 
+  parent_optional: false
   parent: journal
 
 section: 
   name: Section 
-  parent_optional: N 
+  parent_optional: false 
   parent: book
 
 unknown: 
   name: Unknown 
-  parent_optional: Y 
+  parent_optional: true
   parent: unknown
 
 part: 
   name: Part 
-  parent_optional: N 
+  parent_optional: false
   parent: paper
 
 

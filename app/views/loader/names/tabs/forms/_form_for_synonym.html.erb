@@ -1,0 +1,78 @@
+<%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |f| %>
+    <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em pull-right', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+    <div id="search-result-details-info-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container error-container"></div>
+    <br>
+
+    <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
+
+    <%= render partial: "loader/names/tabs/forms/simple_name_full_name", locals: {loader_name: loader_name, f: f} %>
+
+    <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
+
+    <div class="form-group">
+      <label for="rank">Rank*</label>
+      <%= f.text_field :rank, class: 'form-control', required: true, title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+    <%= f.hidden_field :record_type, value: 'synonym' %>
+
+    <%= render partial: "loader/names/tabs/forms/synonym_type", locals: {f: f, loader_name: loader_name} %>
+
+    <% unless loader_name.new_record? %>
+
+    <div class="form-group">
+      <label for="loader-name-parent-typeahead">Parent</label>
+      <input id="loader-name-parent-typeahead"
+             name="loader_name[parent_typeahead]"
+             class="typeahead form-control"
+             data-loader-name-id="<%= loader_name.id %>"
+             data-loader-batch-id="<%= loader_name.loader_batch_id %>"
+             type="text" 
+             tabindex="<%= increment_tab_index %>"
+             title="Raw loader name taxon that contains this loader name"
+             value="<%= loader_name.parent.try('simple_name') %>"/>
+     <p>If you change the parent, please also consider changing the seq field.</p>
+    </div>
+    <script>setUpLoaderNameParentTypeahead();</script>
+
+    <% end %>
+    <%= f.hidden_field(:parent_id, {}) %>
+    <%= f.hidden_field(:loader_batch_id, {}) %>
+
+    <div class="form-group">
+      <label for="family">Family*</label>
+      <%= f.text_field :family, class: 'form-control', required: true, title: "Enter family name", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <div class="form-group">
+      <label for="remark_to_reviewers">Remark to reviewers</label>
+      <%= f.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <%= divider %>
+
+    <% unless loader_name.new_record? %>
+        <% if loader_name&.preferred_match&.relationship_instance? %>
+          <% disabled = true %>
+          Note: this record already has an associated instance - you cannot switch off bulk processing while that relationship instance is attached.
+        <% else %>
+          <% disabled = false %>
+        <% end %>
+
+        <div class="form-group">
+        <label class="form-check-label">
+          <%= f.check_box(:no_further_processing, {class: 'xform-control',
+                                                   disabled: disabled,
+                                                   title: 'Prevent further bulk processing of this record.'}) %>
+          Stop further bulk processing of this record
+        </label>
+        </div>
+    <% end %>
+
+    <%= f.submit "Save", id: 'loader-name-save2', class: 'btn btn-primary width-5em pull-right', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+<% end %>

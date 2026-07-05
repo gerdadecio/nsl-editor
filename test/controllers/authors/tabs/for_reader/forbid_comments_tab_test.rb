@@ -28,10 +28,10 @@ class AuthorReaderNotShowCommentsTabTest < ActionController::TestCase
   test "should not show reader author comments tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @author.id, tab: "tab_comments" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { id: @author.id, tab: "tab_comments" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :forbidden
   end
 end

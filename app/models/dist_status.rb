@@ -17,7 +17,19 @@
 #   limitations under the License.
 
 #  Distribution Region
-class DistStatus < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: dist_status
+#
+#  id               :bigint           not null, primary key
+#  def_link         :string(255)
+#  deprecated       :boolean          default(FALSE), not null
+#  description_html :text
+#  lock_version     :bigint           default(0), not null
+#  name             :string(255)      not null
+#  sort_order       :integer          default(0), not null
+#
+class DistStatus < ApplicationRecord
   self.table_name = "dist_status"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -33,8 +45,7 @@ class DistStatus < ActiveRecord::Base
 
   def self.status_names
     DistStatus.all
-        .sort {|a, b| a.sort_order <=> b.sort_order}
-        .collect {|ds| ds.name}
+              .sort { |a, b| a.sort_order <=> b.sort_order }
+              .collect { |ds| ds.name }
   end
-
 end

@@ -22,8 +22,8 @@ class Author::AsResolvedTypeahead::ForDuplicateOf
   attr_reader :value
 
   def initialize(id_string, param_text, author)
-    @text = param_text.sub(/ *\|.*\z/, "")
-    @text.rstrip!
+    @text = extract_delimited_string(param_text)
+    @text.rstrip! unless @text.blank?
     @id_string = id_string
     @field_name = "duplicate of"
     @author = author
@@ -89,10 +89,8 @@ class Author::AsResolvedTypeahead::ForDuplicateOf
     possibles_with_id = Author
                         .where(id: @id_string.to_i)
                         .lower_name_like(@text)
-    if possibles_with_id.size == 1
-      @value = possibles_with_id.first.id
-    else
-      raise "please choose #{@field_name} from suggestions (> 1 match)"
-    end
+    raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
+
+    @value = possibles_with_id.first.id
   end
 end

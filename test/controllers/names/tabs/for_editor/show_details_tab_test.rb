@@ -28,10 +28,10 @@ class NameShowDetailsTabForEditor < ActionController::TestCase
   test "should show name to editor" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @name, tab: "tab_details" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:edit])
+        params: { id: @name, tab: "tab_details" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [:edit] })
     assert_response :success
   end
 end

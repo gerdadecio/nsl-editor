@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -37,10 +36,10 @@ class SecondPrimaryNotAllowedTest < ActionController::TestCase
   test "cannot create duplicate primary instance" do
     assert_no_difference("Instance.count") do
       post(:create,
-           { instance: @instance_params },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
+           params: { instance: @instance_params },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     end
     check_assertions
   end

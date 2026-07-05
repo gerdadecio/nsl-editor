@@ -23,6 +23,7 @@ class SearchParsedRequestListAllTest < ActiveSupport::TestCase
   test "search parse query list all" do
     query_string = "list limit:10000"
     params = ActiveSupport::HashWithIndifferentAccess.new(query_target: "name",
+                                                          canonical_query_target: "names",
                                                           query_string:
                                                           query_string)
     parsed_request = Search::ParsedRequest.new(params)

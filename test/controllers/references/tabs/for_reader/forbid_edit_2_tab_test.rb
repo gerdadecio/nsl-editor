@@ -28,10 +28,10 @@ class ReferenceEditorNotShowEdit2Test < ActionController::TestCase
   test "should not show reader reference edit 2 tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @reference.id, tab: "tab_edit_2" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { id: @reference.id, tab: "tab_edit_2" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :forbidden
   end
 end

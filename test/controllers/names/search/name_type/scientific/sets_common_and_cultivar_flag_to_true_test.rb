@@ -26,13 +26,13 @@ class NameTypeSrchScientificSetsCommCultFlagTrueT < ActionController::TestCase
     skip # Expect this to be no longer needed under revised search.
     # Set the common-and-cultivar flag to false.
     get(:index,
-        { "query_on" => "name",
-          "query" => "nt:scientific",
-          "query_common_and_cultivar" => "f",
-          "query_limit" => "100" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { "query_on" => "name",
+                  "query" => "nt:scientific",
+                  "query_common_and_cultivar" => "f",
+                  "query_limit" => "100" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     assert_select "input.checkbox[type=checkbox]
                   [id=query_common_and_cultivar][value=t]",

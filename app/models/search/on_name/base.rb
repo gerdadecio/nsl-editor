@@ -73,29 +73,18 @@ class Search::OnName::Base
     @limited = list_query.limited
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
-    consider_instances
+    include_instances
     @count = @results.size
     calculate_total
     @summary = build_summary
   end
 
-  def consider_instances
-    if @parsed_request.show_instances
-      show_instances
-    else
-      @results = @names.to_a
-    end
-  end
-
-  def show_instances
-    @results = []
-    @names.each do |name|
-      name.display_as_part_of_concept
-      @results << name
-      Instance::AsArray::ForName.new(name).results.each do |usage_rec|
-        @results << usage_rec
-      end
-    end
+  def include_instances
+    @results = if @parsed_request.include_instances && @parsed_request.show_instances
+                 Search::OnName::WithInstances.new(@names).names_with_instances
+               else
+                 @names.to_a
+               end
   end
 
   def debug(s)
@@ -113,6 +102,7 @@ class Search::OnName::Base
   def build_summary
     return "No names found" if @names.size.zero?
     return "1 name of #{@total}" if @names.size == 1
+
     "#{@names.size} names of #{@total}"
   end
 end

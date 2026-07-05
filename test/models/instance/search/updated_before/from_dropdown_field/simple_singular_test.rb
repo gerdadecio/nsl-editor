@@ -26,9 +26,8 @@ class InstSrchUpdBeforeFromDropdownSimpleSingularTest < ActiveSupport::TestCase
     # search = Search::Base.new({query_string: "updated-before: 1,
     #                            instances-only:",
     #                            query_target: 'Instance'})
-    # assert_equal search.results.class,
-    #              Instance::ActiveRecord_Relation,
-    #              "Results should be an Array"
+    # assert search.executed_query.results.is_a?(ActiveRecord::Relation),
+    #   "Results should be an ActiveRecord::Relation."
     # assert search.results.size > 0, "At least 1 record expected."
     # assert_match /Search for instances updated more than 1 day ago./,
     #              search.info.join

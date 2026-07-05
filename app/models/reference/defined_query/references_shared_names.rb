@@ -26,11 +26,13 @@ class Reference::DefinedQuery::ReferencesSharedNames
               :relation,
               :count,
               :show_csv,
-              :total
+              :total,
+              :do_count_totals
 
   def initialize(parsed_request)
     debug("start")
     @parsed_request = parsed_request
+    @do_count_totals = true
     run_query
   end
 
@@ -54,7 +56,8 @@ class Reference::DefinedQuery::ReferencesSharedNames
 
   def build_args
     @args = @parsed_request.where_arguments.split(",")
-    raise "Exactly 2 reference IDs are expected." unless @args.size == 2
+    raise "Exactly 2 reference IDs are expected in @args: #{@args}." unless @args.size == 2
+
     @ref_id_1 = @args.first.to_i
     @ref_id_2 = @args.last.to_i
   end

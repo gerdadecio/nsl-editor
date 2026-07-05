@@ -27,9 +27,8 @@ class ForInstanceTypeUnknown < ActiveSupport::TestCase
                   .new(query_string: "type: [unknown]",
                        query_target: "Instance",
                        current_user: build_edit_user))
-    assert_equal Instance::ActiveRecord_Relation,
-                 search.executed_query.results.class,
-                 "Results should be an Instance::ActiveRecord_Relation"
+    assert search.executed_query.results.is_a?(ActiveRecord::Relation),
+           "Results should be an ActiveRecord::Relation."
     assert search.executed_query.results.size.positive?,
            "At least one record expected."
   end

@@ -22,17 +22,33 @@ require "test_helper"
 class SearchRefsOnIdWithInstancesTest < ActionController::TestCase
   tests SearchController
 
-  test "search on reference id with instances" do
+  test "search on reference id with show-instances" do
+    run_search("show-instances:")
+  end
+
+  test "search on reference id with s-i abbrev" do
+    run_search("s-i:")
+  end
+
+  test "search on reference id with si abbrev" do
+    run_search("si:")
+  end
+
+  test "search on reference id with i abbrev" do
+    run_search("i:")
+  end
+
+  def run_search(directive)
     ref = references(:bucket_reference_for_default_instances)
     get(:search,
-        { query_target: "reference",
-          query_string: "id: #{ref.id} show-instances:" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "reference",
+                  query_string: "id: #{ref.id} #{directive}" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
-                  /36 records\b/,
-                  "Should find 36 records"
+                  /37 records\b/,
+                  "Should find 37 records"
   end
 end

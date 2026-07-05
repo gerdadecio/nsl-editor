@@ -24,11 +24,11 @@ class SearchOnInstanceRefExact < ActionController::TestCase
 
   test "reader can search for an instance by ref citation exact" do
     get(:search,
-        { query_target: "instance",
-          query_string: "ref-exact: b*" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "instance",
+                  query_string: "ref-exact: b*" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9][0-9] records\b/,

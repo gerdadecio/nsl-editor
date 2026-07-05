@@ -1,0 +1,40 @@
+
+<%= render partial: 'loader/names/tabs/details/core_data' %>
+<%= divider %>
+<%= render partial: 'loader/names/tabs/details/name_matches' %>
+<%= divider %>
+<%= render partial: 'loader/names/tabs/details/core_data_2' %>
+<%= divider %>
+
+<h5>Metadata</h5>
+<%= render partial: 'detail_line', locals: {info: @loader_name.id, label: 'ID'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.raw_id, label: 'raw ID (from the CSV data)'} %>
+<% if @loader_name.batch.use_sort_key_for_ordering %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.seq, label: 'seq (not used for this batch)'} %>
+<% else %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.seq, label: 'seq (for sorted display)'} %>
+<% end %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.record_type, label: 'record type'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.parent_id, label: 'parent_id'} unless @loader_name.parent_id.blank? %>
+<% unless @loader_name.loaded_from_instance_id.blank? %>
+  <%= render partial: 'detail_line',
+      locals: {label: 'loaded from instance',
+               info: link_to(@loader_name.loaded_from_instance_id,
+                        search_path(
+                          query_target: 'instances',
+                          query_string: "id: #{@loader_name.loaded_from_instance_id}"),
+               title:"Query the instance this was loaded from",
+               class:'blue')} %>
+<% end %>
+<%= render partial: 'detail_line',
+      locals: {label: 'batch',
+               info: link_to(@loader_name.batch.name,
+                        search_path(
+                          query_target: 'loader batch',
+                          query_string: "id: #{@loader_name.batch.id}"),
+               title:"Query the loader batch",class:'blue')} %>
+
+<%= created_by_whom_and_when(@loader_name).html_safe %>
+<br>
+<%= updated_by_whom_and_when(@loader_name).html_safe %>
+

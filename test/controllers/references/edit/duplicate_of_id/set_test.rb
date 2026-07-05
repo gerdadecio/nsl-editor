@@ -36,9 +36,12 @@ class ReferencesEditDuplicateOfIdSetTest < ActionController::TestCase
   end
 
   test "references edit duplicate of id set" do
-    post(:update, { reference: @reference_params,
-                    id: @reference.id },
-         username: @username, user_full_name: "Fred Jones", groups: ["edit"])
+    post(:update,
+         params: { reference: @reference_params,
+                   id: @reference.id },
+         session: { username: @username,
+                    user_full_name: "Fred Jones",
+                    groups: ["edit"] })
     assert_response :success
     changed = Reference.find(@reference.id)
     assert @reference.duplicate_of_id.blank?, "Should not have been a duplicate"

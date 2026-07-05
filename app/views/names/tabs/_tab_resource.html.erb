@@ -1,0 +1,24 @@
+<% increment_tab_index %>
+
+<div>
+  <h5>Name Resource</h5>
+
+  <div id="name-resource-list-container">
+    <!-- Example resource item - will be replaced with dynamic data -->
+    <% @name.name_resources.includes(:resource_host).each do |name_resource| %>
+      <%= render partial: "names/name_resources/list", locals: { name: @name, name_resource: name_resource } %>
+    <% end %>
+
+    <!-- Add more resource items here when dynamic -->
+  </div>
+
+  <!-- Add new resource section -->
+  <div id="add-resource-section" class="add-resource-section">
+    <h6>Add New Resource</h6>
+    <%= render partial: "names/name_resources/resource_host_dropdown_form", locals: { name: @name } %>
+    <%= render partial: "names/name_resources/add_resource_form", locals: { name: @name } %>
+  </div>
+</div>
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>

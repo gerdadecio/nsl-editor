@@ -62,3 +62,10 @@
   <%= divider %>
 <% end %>
 
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      $('.instance-note-key-id-select.form-control.give-me-focus').focus();
+    })
+  </script>
+<% end %>

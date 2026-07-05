@@ -16,21 +16,49 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class InstanceNoteKey < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: instance_note_key
+#
+#  id               :bigint           not null, primary key
+#  deprecated       :boolean          default(FALSE), not null
+#  description_html :text
+#  lock_version     :bigint           default(0), not null
+#  name             :string(255)      not null
+#  sort_order       :integer          default(0), not null
+#  rdf_id           :string(50)
+#
+# Indexes
+#
+#  instance_note_key_rdfid       (rdf_id)
+#  uk_a0justk7c77bb64o6u1riyrlh  (name) UNIQUE
+#
+class InstanceNoteKey < ApplicationRecord
   self.table_name = "instance_note_key"
   self.primary_key = "id"
   APC_DIST = "APC Dist."
-  NOTE_MATCHES = '-note-matches:'
+  NOTE_MATCHES = "-note-matches:"
   has_many :instance_notes
   scope :apc, -> { where(name: ["APC Comment", "APC Dist."]) }
   scope :apc_comment, -> { where(name: ["APC Comment"]) }
   scope :apc_dist, -> { where(name: [APC_DIST]) }
   scope :non_apc, -> { where.not(name: ["APC Comment", "APC Dist."]) }
 
-  def self.options
-    all.where(deprecated: false)
-       .order(:sort_order)
-       .collect { |n| [n.name, n.id] }
+  def self.edit_options
+    all.order(:sort_order)
+       .collect do |key|
+      [decorated_dep(key),
+       key.id,
+       { disabled: key.deprecated? }]
+    end
+  end
+
+  def self.decorated_dep(key)
+    if key.deprecated
+      "#{key.name} (deprecated)"
+    else
+      key.name
+    end
   end
 
   def self.apc_options
@@ -60,7 +88,7 @@ class InstanceNoteKey < ActiveRecord::Base
   def self.query_form_options
     all.where(deprecated: false)
        .sort_by(&:name)
-       .collect { |n| [n.name, n.name.downcase, class: ""] }
+       .collect { |n| [n.name, n.name.downcase, { class: "" }] }
   end
 
   def apc_dist?
@@ -69,8 +97,8 @@ class InstanceNoteKey < ActiveRecord::Base
 
   def self.string_has_embedded_note_key?(str)
     if str.match(/#{NOTE_MATCHES}\z/i)
-      possible_key = str.sub(/#{NOTE_MATCHES}\z/i,'').gsub(/-/,' ')
-      self.where(['lower(name) = lower(?)', possible_key]).size == 1
+      possible_key = str.sub(/#{NOTE_MATCHES}\z/i, "").gsub("-", " ")
+      where(["lower(name) = lower(?)", possible_key]).size == 1
     else
       false
     end

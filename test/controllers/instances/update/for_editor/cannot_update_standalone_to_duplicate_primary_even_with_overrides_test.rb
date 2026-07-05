@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -32,15 +31,15 @@ class CannotUpdateStandaloneToDupPrimEvenWOverrides < ActionController::TestCase
 
   test "ed cannot update standalone inst 2 xtra primary even with overrides" do
     put(:update,
-        { id: @instance.id,
-          instance: { "reference_id" => @target.reference_id,
-                      "instance_type_id" => @target.instance_type_id,
-                      "page" => @target.page,
-                      "duplicate_instance_override" => "1",
-                      "multiple_primary_override" => "1" } },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @instance.id,
+                  instance: { "reference_id" => @target.reference_id,
+                              "instance_type_id" => @target.instance_type_id,
+                              "page" => @target.page,
+                              "duplicate_instance_override" => "1",
+                              "multiple_primary_override" => "1" } },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert Instance.find(@instance.id).name_id == @target.name_id
     check_assertions
   end

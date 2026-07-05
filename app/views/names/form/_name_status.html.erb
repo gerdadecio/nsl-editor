@@ -8,7 +8,7 @@
     <%= select('name',
                'name_status_id',
                @name.status_options,
-               {include_blank: @name.status_options.size > 1,
+               {include_blank: true,
                 prompt: ''},
                title: 'Select status',
                tabindex: increment_tab_index,

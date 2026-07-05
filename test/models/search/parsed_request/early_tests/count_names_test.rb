@@ -23,6 +23,7 @@ class SearchParsedRequestCountName < ActiveSupport::TestCase
   test "search parse query count name" do
     query_string = "count"
     params = ActiveSupport::HashWithIndifferentAccess.new(query_target: "name",
+                                                          canonical_query_target: "names",
                                                           query_string:
                                                           query_string)
     parsed_request = Search::ParsedRequest.new(params)

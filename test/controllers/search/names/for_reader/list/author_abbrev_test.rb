@@ -24,10 +24,10 @@ class ReaderSearchControllerNamesForAuthorListTest < ActionController::TestCase
 
   test "reader can search for a name by author abbrev" do
     get(:search,
-        { query_target: "name", query_string: "author: bent*" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "name", query_string: "author: bent*" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9][0-9] names\b/,

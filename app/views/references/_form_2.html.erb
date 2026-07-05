@@ -69,3 +69,10 @@
 <% end %>
 
 <script> setUpReferenceDuplicateOf(); </script>
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      focusOnField('reference_publisher');
+    })
+  </script>
+<% end %>

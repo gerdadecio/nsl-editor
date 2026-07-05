@@ -1,0 +1,120 @@
+
+h1.showme {
+  color: blue;
+}
+
+table.search-results.for-print {
+  padding-left: 3em;
+}
+xtable.search-results.for-print tr td {
+  border: 1px solid black;
+}
+
+tr.search-result.instance .profile-details-header {
+  margin-top: 1.2em;
+  margin-bottom: 0;
+}
+
+tr.search-result.profile-item .profile-item-header {
+  background: #D9D9D9;
+  padding: 10px 5px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+tr.search-result.heading {
+  font-weight: bold;
+  font-size: 15pt;
+  height: 2em;
+}
+
+tr.search-result.heading td.text {
+  text-align: center;
+}
+
+tr.search-result span.loader-name.remark-to-reviewers {
+  background: yellow;
+}
+
+tr.in-batch-note {
+}
+
+
+tr.in-batch-compiler-note {
+  background: lightgreen;
+}
+
+tr.search-result span.loader-name.full-name.accepted {
+  font-weight: bold;
+}
+
+tr.search-result span.loader-name.full-name.excluded {
+  font-style: italic;
+}
+
+tr.search-result span.loader-name.full-name.synonym {
+  font-style: italic;
+}
+
+tr.search-result span.loader-name.full-name.misapplied {
+  font-style: italic;
+}
+
+tr.search-result span.name-status {
+  font-style: italic;
+}
+
+tr.search-result.distribution span.distribution-inset {
+  width: 6em;
+  display: inline-block;
+}
+
+tr.search-result.distribution td.indent,
+tr.search-result.compiler-comment td.indent,
+{
+  width: 6em;
+}
+
+tr.search-result.review-comment td.indent {
+  width: 8em;
+  background: white;
+}
+
+tr.search-result.review-comment span.main-content {
+}
+tr.search-result.review-comment span.even {
+  background: lightsteelblue;
+  border-bottom: 4px solid lightsteelblue;
+}
+
+tr.search-result.review-comment span.odd {
+  background: lightgray;
+  border-bottom: 4px solid lightgray;
+}
+
+tr.search-result.excluded-header {
+  font-weight: bold;
+  font-size: 12pt;
+  height: 4em;
+}
+
+span.compiler-note {
+  background: lightgreen;
+  color: black;
+}
+
+span.bggreen {
+  background: lightgreen;
+}
+
+span.bgred {
+  background: tomato;
+}
+
+.vote-agree {
+  color: green;
+}
+
+.vote-disagree {
+  color: firebrick;
+}

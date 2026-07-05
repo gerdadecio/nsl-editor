@@ -26,11 +26,13 @@ class Reference::DefinedQuery::ReferencesNamesFullSynonymy
               :relation,
               :count,
               :show_csv,
-              :total
+              :total,
+              :do_count_totals
 
   TAG = "Reference::DefinedQuery::ReferencesNamesFullSynonymy"
   def initialize(parsed_request)
     @parsed_request = parsed_request
+    @do_count_totals = true
     run_query
   end
 
@@ -54,7 +56,7 @@ class Reference::DefinedQuery::ReferencesNamesFullSynonymy
   def ref_query_for_count
     force_list = true
     @limited = false
-    @ref_query = Search::OnReference::Base.new(@parsed_request, force_list)
+    @ref_query = Search::Reference::DefinedQuery.new(@parsed_request, force_list)
   end
 
   def count_query
@@ -64,16 +66,14 @@ class Reference::DefinedQuery::ReferencesNamesFullSynonymy
       @count += 1
       ref.instances.each do |instance|
         @count += 1
-        if instance.name.present?
-          @count += Instance::AsArray::ForName.new(instance.name).results.size
-        end
+        @count += Instance::AsArray::ForName.new(instance.name).results.size if instance.name.present?
       end
     end
     @results = []
   end
 
   def list_query
-    @ref_query = Search::OnReference::Base.new(@parsed_request)
+    @ref_query = Search::Reference::DefinedQuery.new(@parsed_request)
     @results = []
     @limited = false
     @ref_query.results.each do |ref|

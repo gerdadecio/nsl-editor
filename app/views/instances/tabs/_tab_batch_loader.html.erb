@@ -1,0 +1,6 @@
+<% if @instance.standalone? %>
+<%= render partial: "instances/tabs/batch_loader/standalone_ops" %>
+<% else %>
+<%= render partial: "instances/tabs/batch_loader/synonym_ops" %>
+<% end %>
+

@@ -1,0 +1,100 @@
+<%= render partial: 'detail_line', locals: {info: @loader_name.ex_base_author, label: 'ex_base_author'} unless @loader_name.ex_base_author.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.base_author, label: 'base_author'} unless @loader_name.base_author.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.ex_author, label: 'ex_author'} unless @loader_name.ex_author.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.author, label: 'author'} unless @loader_name.author.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.rank, label: 'rank'} %>
+<% unless @loader_name.tribe.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.tribe, label: 'tribe'} %>
+<% end %>
+<% unless @loader_name.subtribe.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.subtribe, label: 'subtribe'} %>
+<% end %>
+<% unless @loader_name.rank_nsl.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.rank_nsl, label: 'nsl rank'} %>
+<% end %>
+<% unless @loader_name.author_rank.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.author_rank, label: 'author rank'} %>
+<% end %>
+<% unless @loader_name.name_comment.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.name_comment, label: 'name comment'} %>
+<% end %>
+<% unless @loader_name.partly.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.partly, label: 'partly'} %>
+<% end %>
+<% unless @loader_name.isonym.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.isonym, label: 'isonym'} %>
+<% end %>
+<% unless @loader_name.publ_count.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.publ_count, label: 'publ count'} %>
+<% end %>
+
+<% unless @loader_name.hybrid.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.hybrid, label: 'hybrid'} %>
+<% end %>
+<% unless @loader_name.auct_non.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.auct_non, label: 'auct_non'} %>
+<% end %>
+<% unless @loader_name.doubtful.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.doubtful, label: 'doubtful'} %>
+<% end %>
+<% unless @loader_name.article_author.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.article_author, label: 'article author'} %>
+<% end %>
+<% unless @loader_name.article_title.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.article_title, label: 'article title'} %>
+<% end %>
+<% unless @loader_name.article_title_full.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.article_title_full, label: 'article title full'} %>
+<% end %>
+<% unless @loader_name.in_flag.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.in_flag, label: 'in flag'} %>
+<% end %>
+<% unless @loader_name.second_author.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.second_author, label: 'second_author j'} %>
+<% end %>
+<% unless @loader_name.title.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.title, label: 'title'} %>
+<% end %>
+<% unless @loader_name.title_full.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.title_full, label: 'title full'} %>
+<% end %>
+<% unless @loader_name.edition.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.edition, label: 'edition'} %>
+<% end %>
+<% unless @loader_name.volume.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.volume, label: 'volume'} %>
+<% end %>
+<% unless @loader_name.page.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.page, label: 'page'} %>
+<% end %>
+<% unless @loader_name.year.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.year, label: 'year'} %>
+<% end %>
+<% unless @loader_name.date_.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.date_, label: 'date_'} %>
+<% end %>
+<% unless @loader_name.publ_partly.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.publ_partly, label: 'publ_partly'} %>
+<% end %>
+<% unless @loader_name.publ_note.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.publ_note, label: 'publ_note'} %>
+<% end %>
+<% unless @loader_name.notes.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.notes, label: 'notes'} %>
+<% end %>
+<% unless @loader_name.footnote.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.footnote, label: 'footnote'} %>
+<% end %>
+<% unless @loader_name.distribution.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.distribution, label: 'distribution'} %>
+<% end %>
+<% unless @loader_name.comment.blank? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.comment, label: 'comment'} %>
+<% end %>
+<% unless @loader_name.original_text.blank? %>
+  <%= divider %>
+  <h5>Original Text (HTML)</h5>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.original_text.html_safe, label: ''} %>
+  <h5>Literally:</h5>
+  <%= @loader_name.original_text %>
+<% end %>

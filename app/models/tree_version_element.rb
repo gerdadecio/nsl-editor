@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -23,22 +22,57 @@
 #  identifier called taxon_link
 
 #  A Tree Version Element is a link between the tree version and the tree element.
-class TreeVersionElement < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: tree_version_element
+#
+#  depth           :integer          not null
+#  element_link    :text             not null, primary key
+#  merge_conflict  :boolean          default(FALSE), not null
+#  name_path       :text             not null
+#  taxon_link      :text             not null
+#  tree_path       :text             not null
+#  updated_by      :string(255)      not null
+#  updated_at      :timestamptz      not null
+#  parent_id       :text
+#  taxon_id        :bigint           not null
+#  tree_element_id :bigint           not null
+#  tree_version_id :bigint           not null
+#
+# Indexes
+#
+#  tree_name_path_index                   (name_path)
+#  tree_path_index                        (tree_path)
+#  tree_version_element_element_index     (tree_element_id)
+#  tree_version_element_link_index        (element_link)
+#  tree_version_element_parent_index      (parent_id)
+#  tree_version_element_taxon_id_index    (taxon_id)
+#  tree_version_element_taxon_link_index  (taxon_link)
+#  tree_version_element_version_index     (tree_version_id)
+#
+# Foreign Keys
+#
+#  fk_80khvm60q13xwqgpy43twlnoe  (tree_version_id => tree_version.id)
+#  fk_8nnhwv8ldi9ppol6tg4uwn4qv  (parent_id => tree_version_element.element_link)
+#  fk_ufme7yt6bqyf3uxvuvouowhh   (tree_element_id => tree_element.id)
+#
+class TreeVersionElement < ApplicationRecord
   self.table_name = "tree_version_element"
   self.primary_key = "element_link"
   self.sequence_name = "nsl_global_seq"
 
   belongs_to :tree_version,
              foreign_key: "tree_version_id",
-             class_name: TreeVersion
+             class_name: "TreeVersion"
 
   belongs_to :tree_element,
              foreign_key: "tree_element_id",
-             class_name: TreeElement
+             class_name: "Tree::Element"
 
   belongs_to :parent,
              foreign_key: "parent_id",
-             class_name: TreeVersionElement
+             class_name: "TreeVersionElement",
+             optional: true
 
   def count_children
     pattern = "^#{tree_path}/.*"
@@ -46,7 +80,7 @@ class TreeVersionElement < ActiveRecord::Base
     TreeVersionElement.find_by_sql(["select count(tve) c
 from tree_version_element tve
 where tve.tree_version_id = ?
-  and tve.tree_path ~ ?", tree_version_id, pattern]).first['c']
+  and tve.tree_path ~ ?", tree_version_id, pattern]).first["c"]
   end
 
   def tree_ordered_name_ids
@@ -71,7 +105,7 @@ select name_id from walk", element_link])
 
   def tree_ordered_names
     name_ids = tree_ordered_name_ids
-    name_ids.reverse.collect {|nameId| Name.includes(:name_rank).find(nameId.name_id)}
+    name_ids.reverse.collect { |nameId| Name.includes(:name_rank).find(nameId.name_id) }
   end
 
   def comment_key
@@ -136,6 +170,4 @@ select name_id from walk", element_link])
     record.multiline = false
     record
   end
-
-
 end

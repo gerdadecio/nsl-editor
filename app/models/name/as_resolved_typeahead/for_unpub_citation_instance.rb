@@ -24,8 +24,8 @@ class Name::AsResolvedTypeahead::ForUnpubCitationInstance
   attr_reader :value
 
   def initialize(id_string, param_text)
-    @text = param_text.sub(/ *\|.*\z/, "")
-    @text.rstrip!
+    @text = extract_delimited_string(param_text)
+    @text.rstrip! unless @text.blank?
     @id_string = id_string
     @field_name = "name"
     run
@@ -86,10 +86,8 @@ class Name::AsResolvedTypeahead::ForUnpubCitationInstance
     possibles_with_id = Name
                         .where(id: @id_string.to_i)
                         .lower_full_name_like(@text)
-    if possibles_with_id.size == 1
-      @value = possibles_with_id.first.id
-    else
-      raise "More than one name match for '#{@text}' and ID"
-    end
+    raise "More than one name match for '#{@text}' and ID" unless possibles_with_id.size == 1
+
+    @value = possibles_with_id.first.id
   end
 end

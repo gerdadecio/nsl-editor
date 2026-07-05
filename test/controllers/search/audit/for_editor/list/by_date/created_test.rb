@@ -25,10 +25,10 @@ class SearchAuditForEditorListByDateCreatedTest < ActionController::TestCase
   test "search for records created on a specific date" do
     skip "date arithmetic is test not working"
     get(:search,
-        { query_target: "review", query_string: "date-created: 2015-11-17" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "review", query_string: "date-created: 2015-11-17" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9][0-9] records\b/,

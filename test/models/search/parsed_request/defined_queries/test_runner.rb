@@ -20,6 +20,7 @@
 def run_test(input_query_target, expected_defined_query)
   params = ActiveSupport::HashWithIndifferentAccess.new
   params[:query_target] = input_query_target
+  params[:canonical_query_target] = input_query_target
   params[:query_string] = ""
   parsed_request = Search::ParsedRequest.new(params)
   assert parsed_request.defined_query,

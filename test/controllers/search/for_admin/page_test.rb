@@ -24,10 +24,10 @@ class SearchControllerForAdminPageTest < ActionController::TestCase
 
   test "admin should get search with correct elements" do
     get(:search,
-        {},
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["admin"])
+        params: {},
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["admin"] })
     assert_response :success
     assert_select "a#new-dropdown-menu-link.dropdown-toggle",
                   false,

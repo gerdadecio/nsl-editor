@@ -1,0 +1,39 @@
+<% increment_tab_index(0) %>
+
+<%= @loader_name.batch.name %>
+<br>
+
+<%= divider %>
+reviews: <%= @loader_name.batch.reviews.size %>
+<br>
+active reviews: <%= @loader_name.batch.active_reviews.map {|x| x.name} %>
+<br>
+active review periods: <%= @loader_name.batch.active_review_periods.size %>
+<br>
+
+<div id="create-one-comment-container">
+
+<% if @loader_name.batch.reviews.empty? %>
+  No review in place for this batch of records.
+<% elsif @loader_name.batch.active_review_periods.size > 1 %>
+  There is more than one active review period for the batch.
+  <br>
+  Please contact the Batch administrator.
+<% elsif @loader_name.batch.active_reviews.size == 1 %>
+  <%= render partial: 'loader/names/review/tabs/main/details/periods_for_comments' %>
+<% else %>
+  There are no active reviews for this record.
+<% end %>
+
+</div>
+
+
+
+<div id="show-one-comment-container">
+<br>
+<br>
+
+</div>
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>

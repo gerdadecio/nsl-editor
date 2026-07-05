@@ -27,11 +27,11 @@ class NamesNewScientHybridFormulaUnk2ParSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    xhr(:get, :new,
-        { category: 'hybrid formula unknown 2nd parent',
-          random_id: "123445",
-          tabIndex: "107" },
-        {},
+    get(:new,
+        params: { category: "hybrid formula unknown 2nd parent",
+                  random_id: "123445",
+                  tabIndex: "107" },
+        session: {},
         xhr: true)
     assert_response :success,
                     "Cannot open form for a new scientific hybrid formula

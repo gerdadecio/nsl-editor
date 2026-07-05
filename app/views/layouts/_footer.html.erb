@@ -4,9 +4,7 @@
     <span id="media-screen-md" class="media-spec ">md</span>
     <span id="media-screen-lg" class="media-spec ">lg</span>
     <span id="media-screen-xl" class="media-spec ">xl</span>
-    <% elapsed_time = @start_time ? (Time.now - @start_time).round(3) : '?' %>
-    <span class='page-response-time'><%= "(#{elapsed_time}s)" if @start_time %></span>
-    <% logger.info {"Page footer - elapsed time: #{elapsed_time}"} %> 
+    <span>config: <%= Rails.configuration.try('config_file_tag') %>;</span>
     <% unless Rails.env.match(/production/i) %>
       <span id="media-max-width-1536px" class="media-spec">media-max-width-1536px;</span>
       <span id="media-max-width-1200px" class="media-spec">media-max-width-1200px;</span>
@@ -35,4 +33,9 @@
       <span id="media-height-351-400" class="media-spec">media-max-height-351-400</span>
       <span id="media-ipad" class="media-spec">media-ipad</span>
     <% end %>
+    view_mode: <%= @view_mode %>
+    <% elapsed_time = @start_time ? (Time.now - @start_time).round(3) : '?' %>
+    <span class='page-response-time'><%= "(server: #{elapsed_time}s" if @start_time %></span>
+    <span class='js-perf' ></span>)
+    <% logger.info {"Page footer - elapsed time: #{elapsed_time}"} %> 
     </p>

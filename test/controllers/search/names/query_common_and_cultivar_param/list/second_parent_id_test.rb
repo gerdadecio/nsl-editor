@@ -25,12 +25,12 @@ class SearchNamesCommNCultivarParamList2ndParentId < ActionController::TestCase
   test "search names second parent id with common and cultivar param true" do
     name = names(:another_species)
     get(:search,
-        { query_target: "name",
-          query_string: "second-parent-id: #{name.id}",
-          query_common_and_cultivar: "t" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "name",
+                  query_string: "second-parent-id: #{name.id}",
+                  query_common_and_cultivar: "t" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /7 names\b/,

@@ -1,0 +1,14 @@
+_fixture:
+  model_class: Loader::Batch::Reviewer
+
+
+name_reviewer_for_batch_one:
+  user: :reviewer_one
+  org:
+  batch_review_role: :name_reviewer
+  batch_review: :review_one_on_batch_two
+  active: true
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

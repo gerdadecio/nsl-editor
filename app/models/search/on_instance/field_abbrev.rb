@@ -34,5 +34,6 @@ class Search::OnInstance::FieldAbbrev
     "ty:" => "type:",
     "ref-year:" => "year:",
     "y:" => "year:",
+    "pages:" => "page:",
   }.freeze
 end

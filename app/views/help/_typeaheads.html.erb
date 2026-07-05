@@ -1,0 +1,531 @@
+<% content_for :search_result_summary do %>
+   <%= render partial: 'search/header' %>
+<% end %>
+<div id="search-results" class="col-xs-12 col-sm-12 col-md-12 col-lg-10 nothing-selected stylish-scrollbar">
+  <div id="search-results-inner" class="no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 search-results-inner">
+    <h4>Typeaheads in the NSL Editor</h4>
+    <table  id="search-results-table" class="table table-condensed search-results" data-summary="Results of the latest search.">
+      <tr><td>
+
+      <%= markdown_to_html(%Q(
+
+Data entry forms in the NSL Editor often require users to identify components such as Authors, Names, References, or Instances.
+
+Users cannot select such components from a drop-down control because the list of options is too large (typically, thousands) and therefore outside the range that dropdowns are designed to handle.
+
+Users also cannot simply enter free text in these cases, because they may not know the exact text that identifies the record they want.
+
+The Editor provides "typeahead" fields for this type of data.  These are important and powerful controls for quickly identifying a single existing record out of many thousands without having to give its ID.
+
+#### Understanding and using typeahead fields
+
+
+#####Starting
+
+Typeaheads look like normal text fields, but as you start typing in one, you will see a list of possible choices, or suggestions, appear below the field.
+
+The list of suggestions appears because the Editor is using what you have typed to search for records in the database.
+
+As you type, the Editor will keep searching and showing you the results.  The list of suggestions therefore responds to further typing into the field.
+
+If no list of suggestions appears, the first few characters may have excluded all options, so delete some characters and start again.
+
+##### Selecting
+
+If you see the component you want in the suggestion list, you can arrow down to the item and select it by pressing enter.  
+
+You can also select it with your mouse.
+
+##### Text Recognition (new)
+
+Text recognition is now the primary way the Editor deals with saving a typeahead field. 
+
+The Editor has to find out which record you meant so it can store the ID.  It uses the text in the typeahead field to search the database and if it finds a single record it will assume that is the record you were referring to.
+
+This means that in typeaheads with text recognition you can simply type enough text to identify a single record and move onto the next field or save the record.
+
+It also means you can paste text into a typeahead field and, providing it uniquely identifies a record, you're finished.
+
+The Editor implements **text recognition** as follows:
+
+1. First it searches using just the text you entered, including any wildcards you supply, but not adding any of its own.  
+1. If it finds exactly one record, it has succeeded and will use that record.
+1. If it finds more than one record it will report an error (unless you have supplied an ID).
+1. If it finds nothing, the Editor treats your text as a **partial match**, adds a trailing wildcard to it, and searches again.
+1. If the **partial match** returns exactly one record, it has succeeded and will use that record.
+1. If the partial search returns no records it will report an error.
+1. If the partial search returns more than one record it will report an error (unless you have supplied an Id).
+
+The 2-step approach just described means that, for example, 'acacia mill.' is enough to recognise Acacia Mill., even though it also matches a section and a subgenus that start out with the same string.  This would **not** be the case if it applied a trailing wildcard right from the start.
+
+
+##### Removing
+
+Removing data from a typeahead field works just like any other field - simply remove the text and save. 
+
+##### You have to select from the list sometimes
+
+Sometimes you cannot identify a single record with text alone, and in those cases you do need to select a suggestion with keyboard or mouse.  Having to select from the suggestion list should be rare, but it is important to know about.  Selecting from the suggestions puts the record's ID in a place the Editor can use, so it resolves any ambiguity in text recognition.
+
+##### Wildcards
+
+You can include wildcards (percent, asterisk) as you type and this will be used in the suggestion search.
+
+In some cases, the suggestion search will automatically include wildcards between the words you type - this is called **autowildcarding**.  Note - wildcards are not automatically included in Name abbreviation suggestion searches.
+
+The suggestion search engine does not generally apply a leading wildcard to the whole search term since this slows the search and often produces confusing results.  **Orderless fragment searching** is the exception, see below.
+
+##### Not case sensitive
+
+The search for typeahead suggestions is **never** case-sensitive.  After you save a record, the typeahead field value will appear in its canonical version, including correct case.
+
+##### Duplicates
+
+Duplicates are not included in typeahead suggestions.
+
+##### Orderless Fragment Searching
+
+References often have long citations, and many references may share long sections of citation text, and this has made it hard to quickly type enough to reduce the suggestion list to a good, small size.  Often the term you want to use to reduce the suggestion occurs further back from your cursor, making it cumbersome to insert the term in the right place quickly.
+
+Reference typeaheads have a special feature called **orderless fragment searching** that helps solve this problem.
+
+Orderless fragment searching means that any words you enter are used in the search independent of the order you enter them.  For example, "1840 system" would be the same as "system 1840", and so on, for any number of terms you enter.  The suggestion will include any records that have "1840" and "system" anywhere in the target field. This means you can keep typing terms you see in the suggestion list even if they appear after terms you've already entered in the database record the Editor is searching.
+
+Orderless fragment searching may slow some searching down, especially because it uses leading wildcards, so it is not used in all typeaheads - only in cases where the trade-off is worthwhile.  So far, that has only been for reference citations. (Now requested for author names.)
+
+##### Frequency searching
+
+When we originally added orderless fragment searching it didn't matter how many times you entered a search term.  For example, 'walsh walsh' just searched for '%walsh%' and '%walsh%' in the field.  Users found that frustrating and pointed to cases where searching for the same term occurring twice could quickly reduce a suggestion list.
+
+Orderless fragment searching is now generally combined with **frequency searching**, which means that if you include a term twice e.g. 'walsh walsh' the search will look for results with two occurrences of the string.  As predicted, this can be helpful in quickly narrowing down a set of suggestions.  A slightly amusing example that helps give a feel for this feature is to type 'und und und und' - to see how many citations have 4 occurrences of 'und'.
+
+Frequency searching cannot be applied without ordeless fragment searching.
+
+##### What happens without Orderless Fragment Searching?
+
+The default arrangement for searching is for **strings** of text - not for **orderless fragments**.
+
+**String** searching may be combined with **autowildcarding** and you can always add your own wildcards.
+
+For example, if you type 'walsh jones' in a **normal** typeahead i.e. one that does not use **orderless fragment searching**, here is what will happen:
+
+ - Without autowildcarding, the search will look for "walsh jones%" in the target field.  
+    - Records that start with 'walsh jones', followed by anything, will be found.
+ - With autowildcarding, the search will look for "walsh%jones%" in the target field.  
+    - Records that start with 'walsh', followed by anything, followed by 'jones', followed by anything, will be found.
+
+In both cases, the order is important.
+
+If you type 'walsh walsh' in a **normal** typeahead, here is what will happen:
+
+ - Without autowildcarding, the search will look for "walsh walsh%" in the target field. 
+    - Records that start with 'walsh walsh', followed by anything, will be found.
+ - With autowildcarding, the search will look for "walsh%walsh%" in the target field. 
+    - Records that start with 'walsh', followed by anything, followed by 'walsh', followed by anything, will be found.
+
+
+##### Extra information in the suggestion list  
+
+Typeahead field suggestions often show extra information about the suggested records - types and counts for example.  That extra information is shown on the right-hand side of a vertical bar or pipe symbol ("&#124;") in the list.  Don't try to type that extra information because it will mislead the Editor as it searches for suggestions.
+
+##### Identifying an ID
+
+Typeahead fields ultimately store the ID of the component.  You might be typing a reference citation, but you are actually giving the Editor enough information to find a single unique ID in the database.  Sometimes that might help you understand why the typeaheads work in a particular way.
+
+                         
+))
+    %>
+
+
+<h4 id="namerecord">Name record</h4>
+
+<table class='table table-condensed table-striped table-bordered'>
+<colgroup>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th class="left">Tab</th>
+	<th class="left">Field</th>
+	<th class="left">Suggestions</th>
+	<th class="left">Search fields</th>
+	<th class="left">Auto Wildcarding</th>
+	<th class="left">Text Recognition</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td class="left">Edit</td>
+	<td class="left">Duplicate Of</td>
+	<td class="left">Author</td>
+	<td class="left">Name</td>
+	<td class="left"></td>
+	<td class="left">Yes</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="namerecord">Name record</h4>
+
+<table class='table table-condensed table-striped table-bordered'>
+<colgroup>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th class="left">Tab</th>
+	<th class="left">Field</th>
+	<th class="left">Suggestions</th>
+	<th class="left">Search fields</th>
+	<th class="left">Auto Wildcarding</th>
+	<th class="left">Text Recognition</th>
+	<th class="left">Orderless Fragment Search</th>
+	<th class="left">Frequency Search</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td class="left">Edit</td>
+	<td class="left">Parent</td>
+	<td class="left">Name</td>
+	<td class="left">Full Name</td>
+	<td class="left"></td>
+	<td class="left">Yes</td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+<tr>
+	<td class="left"></td>
+	<td class="left">Ex&nbsp;Base&nbsp;Author</td>
+	<td class="left">Author</td>
+	<td class="left">Abbreviation</td>
+	<td class="left"></td>
+	<td class="left">Yes</td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+<tr>
+	<td class="left"></td>
+	<td class="left">Base&nbsp;Author</td>
+	<td class="left">Author</td>
+	<td class="left">Abbreviation</td>
+	<td class="left"></td>
+	<td class="left">Yes</td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+<tr>
+	<td class="left"></td>
+	<td class="left">Ex&nbsp;Author</td>
+	<td class="left">Author</td>
+	<td class="left">Abbreviation</td>
+	<td class="left"></td>
+	<td class="left">Yes</td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+<tr>
+	<td class="left"></td>
+	<td class="left">Author</td>
+	<td class="left">Author</td>
+	<td class="left">Abbreviation</td>
+	<td class="left"></td>
+	<td class="left">Yes</td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+<tr>
+	<td class="left"></td>
+	<td class="left">Sanctioning&nbsp;Author</td>
+	<td class="left">Author</td>
+	<td class="left">Abbreviation</td>
+	<td class="left"></td>
+	<td class="left">Yes</td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+<tr>
+	<td class="left"></td>
+	<td class="left">Duplicate&nbsp;Of</td>
+	<td class="left">Name</td>
+	<td class="left">Full Name</td>
+	<td class="left"></td>
+	<td class="left">Yes</td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+<tr>
+	<td class="left">Instance</td>
+	<td class="left">appears in</td>
+	<td class="left">Reference</td>
+	<td class="left">Citation</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="referencerecord">Reference record</h4>
+
+<table class='table table-condensed table-striped table-bordered'>
+<colgroup>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th class="left">Tab</th>
+	<th class="left">Field</th>
+	<th class="left">Suggestions</th>
+	<th class="left">Search fields</th>
+	<th class="left">Auto Wildcarding</th>
+	<th class="left">Text Recognition</th>
+	<th class="left">Orderless Fragment Search</th>
+	<th class="left">Frequency Search</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td class="left">Edit.</td>
+	<td class="left">Parent</td>
+	<td class="left">Reference</td>
+	<td class="left">Citation</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+</tr>
+<tr>
+	<td class="left"></td>
+	<td class="left">Author</td>
+	<td class="left">Author</td>
+	<td class="left">Name</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Requested</td>
+	<td class="left">Requested</td>
+</tr>
+<tr>
+	<td class="left">Edit..</td>
+	<td class="left">Duplicate&nbsp;Of</td>
+	<td class="left">Reference</td>
+	<td class="left">Citation</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="standaloneinstancerecord">Standalone Instance record</h4>
+
+<table class='table table-condensed table-striped table-bordered'>
+<colgroup>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th class="left">Tab</th>
+	<th class="left">Field</th>
+	<th class="left">Suggestions</th>
+	<th class="left">Search fields</th>
+	<th class="left">Auto Wildcarding</th>
+	<th class="left">Text Recognition</th>
+	<th class="left">Orderless Fragment Search</th>
+	<th class="left">Frequency Search</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td class="left">Syn</td>
+	<td class="left">Instance</td>
+	<td class="left">Instance</td>
+	<td class="left">Name, Year*</td>
+	<td class="left"></td>
+	<td class="left"></td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+<tr>
+	<td class="left">Unpub</td>
+	<td class="left">Instance</td>
+	<td class="left">Instance</td>
+	<td class="left">Name</td>
+	<td class="left"></td>
+	<td class="left"></td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li>Any digits entered are treated as a year and excluded from the search for a name.</li>
+</ul>
+
+<h4 id="standaloneinstancerecordwithsynonyms">Standalone Instance record with synonyms</h4>
+
+<table class='table table-condensed table-striped table-bordered'>
+<colgroup>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th class="left">Tab</th>
+	<th class="left">Field</th>
+	<th class="left">Suggestions</th>
+	<th class="left">Search fields</th>
+	<th class="left">Auto Wildcarding</th>
+	<th class="left">Text Recognition</th>
+	<th class="left">Orderless Fragment Search</th>
+	<th class="left">Frequency Search</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td class="left">Edit</td>
+	<td class="left">Change&nbsp;Reference</td>
+	<td class="left">Reference</td>
+	<td class="left">Citation</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="standaloneinstancerecordwithoutsynonyms">Standalone Instance record without synonyms</h4>
+
+<table class='table table-condensed table-striped table-bordered'>
+<colgroup>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th class="left">Tab</th>
+	<th class="left">Field</th>
+	<th class="left">Suggestions</th>
+	<th class="left">Search fields</th>
+	<th class="left">Auto</th>
+	<th class="left">Text</th>
+	<th class="left">Orderless Fragment Search</th>
+	<th class="left">Frequency Search</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td class="left">Edit</td>
+	<td class="left">appears&nbsp;in</td>
+	<td class="left">Reference</td>
+	<td class="left">Citation</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+	<td class="left">Yes</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="synonymyinstancerecord">Synonymy Instance record</h4>
+
+<table class='table table-condensed table-striped table-bordered'>
+<colgroup>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+<col class="left"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th class="left">Tab</th>
+	<th class="left">Field</th>
+	<th class="left">Suggestions</th>
+	<th class="left">Search fields</th>
+	<th class="left">Auto Wildcarding</th>
+	<th class="left">Text</th>
+	<th class="left">Orderless Fragment Search</th>
+	<th class="left">Frequency Search</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td class="left">Edit</td>
+	<td class="left">in</td>
+	<td class="left">Instances</td>
+	<td class="left">Citation of references attached to instances of the current instance&#8217;s name</td>
+	<td class="left"></td>
+	<td class="left"></td>
+	<td class="left"></td>
+	<td class="left"></td>
+</tr>
+</tbody>
+</table>
+        </td></tr>
+    </table>
+    <br> <br> <br>
+    <br> <br> <br>
+    <br> <br> <br>
+  </div>
+</div>
+

@@ -24,13 +24,13 @@ class Search4NameTypeNRankWildcardTypeThenRankTest < ActionController::TestCase
 
   test "editor search for name type and rank wildcard type then rank test" do
     get(:search,
-        { query_target: "name",
-          "query_string" => "nt:* nr:*",
-          "controller" => "new_search",
-          "action" => "search" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { query_target: "name",
+                  "query_string" => "nt:* nr:*",
+                  "controller" => "new_search",
+                  "action" => "search" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     assert_select "span#search-results-summary", true, "Should have summary "
     assert_select "span#search-results-summary",

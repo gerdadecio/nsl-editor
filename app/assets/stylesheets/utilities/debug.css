@@ -1,0 +1,58 @@
+/*
+body * {
+  border: 1px solid gray;
+}
+
+*[tabindex] {
+  color: red;
+}
+
+a::after {
+    content: " (" attr(href) ")";
+}
+
+textarea[tabindex], 
+input[tabindex] { 
+  background: purple;
+}
+
+textarea.form-control[tabindex], 
+input.form-control[tabindex], 
+select.form-control[tabindex] {
+  background: yellow;
+}
+
+*[tabindex]::after {
+  content:attr(tabindex);
+}
+
+a:focus {
+  border: 1px solid purple;
+}
+
+#search-form-container {
+  border: 1px solid black;
+}
+
+form {
+  border: 1px solid pink;
+}
+
+div#toolbar {
+  border: 1px solid red;
+}
+
+table tr td {
+  border: 1px solid black;
+}
+
+span.server-response-time {
+  display: inline;
+  color: purple;
+}
+
+.cited-by-instance-within-full-synonymy {
+  background: purple;
+}
+
+*/

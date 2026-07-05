@@ -28,12 +28,12 @@ class InstanceForEditorShowMostTabsTest < ActionController::TestCase
 
   test "should show all tab links if editor requests details tab" do
     get(:show,
-        { id: @instance.id,
-          tab: "tab_show_1",
-          "row-type" => "instance_as_part_of_concept_record" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @instance.id,
+                  tab: "tab_show_1",
+                  "row-type" => "instance_as_part_of_concept_record" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     asserts
   end
 
@@ -41,6 +41,7 @@ class InstanceForEditorShowMostTabsTest < ActionController::TestCase
     asserts1
     asserts2
     asserts3
+    asserts4
   end
 
   def asserts1
@@ -75,5 +76,11 @@ class InstanceForEditorShowMostTabsTest < ActionController::TestCase
     assert_select "a#instance-copy-to-new-reference-tab",
                   /Copy/,
                   "Should show 'Copy' tab link."
+  end
+
+  def asserts4
+    assert_select "a#instance-profile-v2-tab",
+                  false
+                  "Should not show 'FOA Profile' tab link"
   end
 end

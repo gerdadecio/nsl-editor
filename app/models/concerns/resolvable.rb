@@ -47,4 +47,17 @@ module Resolvable
       ID_AND_TEXT
     end
   end
+
+  # param_text can be empty (signalling removal) or of the form:
+  #
+  #      text for matching record | extra info for user
+  #
+  # We need to extract the first part
+  # ie. "text for matching record"
+  # from param_text while allowing for the empty string
+  def extract_delimited_string(param_text)
+    return param_text if param_text.blank?
+
+    param_text.split("|").first
+  end
 end

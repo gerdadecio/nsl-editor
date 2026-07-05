@@ -43,19 +43,23 @@ module IconHelper
     when "author" then "rgba(52,114,218,1.0)"
     when "reference" then "rgba(245,172,0,1.0)"
     when "instance" then "rgba(197,151,203,1.0)"
-    when "orchid" then "rgba(121,7,242,1.0)"
+    when "loader" then "rgba(121,7,242,1.0)"
     else "rgba(197,151,203,1.0)"
     end
   end
 
-  def icon(icon, text = "", html_options = {})
+  def editor_icon(icon, text = "", html_options = {})
     html_options[:class] = icon_content_class(icon, html_options)
     html = if text.blank?
              content_tag(:i, nil, html_options)
            else
-             "content_tag(:i, nil, html_options) #{text}"
+             "#{content_tag(:i, nil, html_options)} #{text}"
            end
     html.html_safe
+  end
+
+  def external_link_square_icon
+    editor_icon("external-link-square")
   end
 
   def icon_content_class(icon, html_options = {})
@@ -67,10 +71,10 @@ module IconHelper
   end
 
   def search_icon_on_tab
-    icon("search")
+    editor_icon("search")
   end
 
   def gray_search_icon
-    icon("search", "", class: "darkgray")
+    editor_icon("search", "", class: "darkgray")
   end
 end

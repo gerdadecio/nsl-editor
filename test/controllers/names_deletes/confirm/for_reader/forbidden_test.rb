@@ -26,12 +26,12 @@ class NamesDeleteConfirmForReaderSimpleTest < ActionController::TestCase
     name = names(:name_to_delete)
     @request.headers["Accept"] = "application/javascript"
     delete(:confirm,
-           { names_delete: { name_id: name.id,
-                             reason: "some reason",
-                             extra_info: "" } },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: [])
+           params: { names_delete: { name_id: name.id,
+                                     reason: "some reason",
+                                     extra_info: "" } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: [] })
     assert_response :forbidden, "Reader should not be able to delete"
   end
 end

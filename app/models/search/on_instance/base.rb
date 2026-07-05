@@ -27,10 +27,12 @@ class Search::OnInstance::Base
               :id,
               :count,
               :show_csv,
-              :total
+              :total,
+              :do_count_totals
 
   def initialize(parsed_request)
     run_query(parsed_request)
+    @do_count_totals = true
   end
 
   def run_query(parsed_request)
@@ -61,6 +63,7 @@ class Search::OnInstance::Base
     list_query = Search::OnInstance::ListQuery.new(parsed_request)
     @relation = list_query.sql
     @results = relation.all
+    @results = include_profile_items(@results) if parsed_request.show_profiles
     @limited = list_query.limited
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
@@ -79,5 +82,20 @@ class Search::OnInstance::Base
 
   def calculate_total
     @total = @relation.except(:offset, :limit, :order).count
+  end
+
+  def include_profile_items(instances)
+    results = []
+    instances.each do |instance|
+      results << instance
+      results << instance
+        .profile_items
+        .where(profile_object_rdf_id: "text")
+        .includes([:profile_text])
+
+      results.flatten!
+    end
+
+    results
   end
 end

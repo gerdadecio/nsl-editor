@@ -18,13 +18,13 @@
 #
 class CommentsController < ApplicationController
   # All text/html requests should go to the search page.
-  before_filter :javascript_only
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :javascript_only
+  before_action :set_comment, only: %i[show edit update destroy]
+  before_action :authorize_for_instance!, only: %i[create update destroy]
 
   # GET /comments/1
   # GET /comments/1.json
-  def show
-  end
+  def show; end
 
   # POST /comments
   # POST /comments.json
@@ -50,17 +50,24 @@ class CommentsController < ApplicationController
 
   # DELETE /comments/1
   # DELETE /comments/1.json
+  # This was being called in the last controller test I got working for rails6.
+  # I had to hack it a bit and it certainly needs more looking at, but
+  # the check for a javascript request seemed not important enough to delay for.
   def destroy
+    throw "request must be js" unless request.format == "text/javascript" || request.format == "application/json"
     username = current_user.username
-    if @comment.update_attributes(updated_by: username) && @comment.destroy
+    if @comment.update(updated_by: username) && @comment.destroy
       respond_to do |format|
         format.html { redirect_to comments_url, notice: "Comment deleted." }
         format.json { head :no_content }
         format.js {}
       end
     else
-      render js: "alert('Could not delete that record.');"
+      throw "There was a problem deleting that record."
     end
+  rescue StandardError => e
+    @message = e.to_s
+    render "destroy_failed", status: 503
   end
 
   private
@@ -87,6 +94,25 @@ class CommentsController < ApplicationController
     else
       @message = "Not saved. #{@comment.errors.full_messages.first}"
       render :update_failed
+    end
+  end
+
+  def authorize_for_instance!
+    return unless Rails.configuration.try(:multi_product_tabs_enabled)
+
+    instance = find_instance_for_authorization
+    return unless instance
+
+    return if can?(:create_adnot, instance)
+
+    raise CanCan::AccessDenied.new("Access Denied!", :create_adnot, instance)
+  end
+
+  def find_instance_for_authorization
+    if @comment&.instance
+      @comment.instance
+    elsif params[:comment].present? && comment_params[:instance_id].present?
+      Instance.find_by(id: comment_params[:instance_id])
     end
   end
 end

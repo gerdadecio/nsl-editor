@@ -1,0 +1,27 @@
+debug('show_cas');
+
+$('ul.tree-report-tabs li').removeClass('active');
+$('ul.tree-report-tabs li#synonymy-tab').addClass('active');
+
+$('#treeDiff').addClass('fade');
+$('#treeDiff').hide();
+$('.tree-container').hide();
+$('.tree-container').addClass('fade');
+
+$('#validation-content').addClass('hidden');
+$('#validation-content').addClass('fade');
+$('#validation-content').hide();
+
+$('#treeValidation').addClass('hidden');
+$('#treeValidation').addClass('fade');
+$('#treeValidation').hide();
+
+$('#validation-content').removeClass('fade');
+$('#validation-content').show();
+
+$('#treeValidateSyn').removeClass('fade');
+$('#treeValidateSyn').show();
+$('#treeValidateSyn').removeClass('hidden');
+
+$('#validate-synonymy-content').removeClass('fade');
+$('#validate-synonymy-content').show();

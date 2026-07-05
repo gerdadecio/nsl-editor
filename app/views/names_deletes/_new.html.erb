@@ -41,7 +41,10 @@
     </div>
     <div class="form-group">
       <label for="names_delete_extra_info">Extra information</label>
-      <%= f.text_field :extra_info, title: "Enter any extra information about the reason for delete. Up to 100 characters long. Field is required if you choose reason of 'Other'.", maxlength: 100, tabindex: increment_tab_index, class: 'form-control pull-left' %>
+      <%= f.text_area :extra_info,
+        title: "Enter any extra information about the reason for delete. Up to 500 characters long. Field is required if you choose reason of 'Other'.", 
+        style: 'width: 100%; height: 8lh;',
+        maxlength: 500, tabindex: increment_tab_index, class: 'form-control pull-left' %>
     </div>
     <br>
     <br>

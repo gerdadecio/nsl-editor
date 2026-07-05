@@ -1,0 +1,101 @@
+
+a {
+  color: #606060;
+}
+
+input.btn.btn-primary:hover,
+input.btn.btn-primary:focus,
+input.btn.btn-primary:active {
+  background: #474747;
+}
+
+a.show-details-link:hover,
+a.tab:hover {
+  color: black;
+}
+
+.main-body-container {
+  margin: 3em 0 0 0;
+}
+
+input#query-string-field {
+  padding: 0 0 0 0.8em;
+  border-style: none;
+  height: 25px;
+  margin-top: 3px;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+
+input#query-submit {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-bottom: 3px;
+  margin-left: -4px;
+  height: 25px;
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+}
+
+.dropdown-menu > li {
+  padding: 3px 20px;
+  color: grey;
+}
+
+#new-name-form-container .form-group {
+  line-height: 10px;
+}
+
+#new-name-form-container .typeahead {
+  line-height: 20px;
+}
+
+.tt-dropdown-menu {
+  line-height: 20px;
+}
+
+.form-control {
+  height: 26px;
+}
+
+.btn-primary {
+  background: #606060;
+  border-color: #606060;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: #474747;
+  border-color: #474747;
+}
+
+/* override the bootstrap default */
+ul#tree-report-tabs.nav-tabs li a {
+  line-height: 7px;
+}
+
+ul#tree-report-tabs {
+  margin-top: 1.2em;
+}
+
+ul#tree-report-tabs.nav-tabs li a:focus {
+  outline: 0;
+}
+
+.rule-added-to-bust-cache {
+  color: purple;
+}
+
+a.btn-danger[disabled],
+a.btn-default[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+a.btn-danger[disabled] {
+  background-color: #a94442;
+  border-color: #843534;
+}
+

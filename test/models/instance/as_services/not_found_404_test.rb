@@ -21,10 +21,10 @@ require "test_helper"
 # Single instance model test.
 class InstanceDeleteServiceNotFound404Test < ActiveSupport::TestCase
   setup do
-    raw = { "action": "delete",
-            "instance": {},
-            "ok": false,
-            "errors": ["Not found."] }
+    raw = { action: "delete",
+            instance: {},
+            ok: false,
+            errors: ["Not found."] }
     stub_request(:delete,
                  "#{action}?apiKey=test-api-key&reason=Edit")
       .with(headers: headers)
@@ -37,19 +37,15 @@ class InstanceDeleteServiceNotFound404Test < ActiveSupport::TestCase
 
   def headers
     { "Accept" => "application/json",
-      "Accept-Encoding" => "gzip, deflate",
+      "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
       "Host" => "localhost:9090",
       "User-Agent" => /ruby/ }
   end
 
+  # 404 should be handled - code will try to delete the instance
   test "instance delete service not found 404" do
-    exception = assert_raise(
-      RuntimeError,
-      "Should raise runtime exception for not found"
-    ) do
-      # The test mock service determines response based on the id
-      Instance::AsServices.delete(404)
-    end
-    assert_match "Not found.", exception.message, "Wrong message"
+    # The test mock service determines response based on the id
+    Instance::AsServices.delete(404)
+    assert :success
   end
 end

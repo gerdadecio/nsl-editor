@@ -1,9 +1,0 @@
-extends: standard
-plugins:
-  - standard
-rules:
-  semi: 0
-  "space-before-function-paren": 0
-env:
-  browser: true
-  jquery: true

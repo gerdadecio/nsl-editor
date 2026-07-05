@@ -40,21 +40,20 @@ class NamesDeleteConfirmForEditorSimpleTest < ActionController::TestCase
   def stub_it
     stub_request(:delete, "#{a}#{b}")
       .with(headers: { "Accept" => "application/json",
-                       "Accept-Encoding" => "gzip, deflate",
-                       "Host" => "localhost:9090",
-                       "User-Agent" => /ruby/ })
+                       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+                       "Host" => "localhost:9090"})
       .to_return(status: 200, body: "", headers: {})
   end
 
   test "editor should be able to confirm name delete" do
     @request.headers["Accept"] = "application/javascript"
     delete(:confirm,
-           { names_delete: { name_id: @name.id,
-                             reason: @reason,
-                             extra_info: @extra_info } },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
+           params: { names_delete: { name_id: @name.id,
+                                     reason: @reason,
+                                     extra_info: @extra_info } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     assert_response :success, "Reader should be able to delete"
   end
 end

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -32,13 +31,13 @@ class CannotUpdateStandaloneToDuplicatePrimary < ActionController::TestCase
 
   test "editor cannot update standalone instance to extra primary" do
     put(:update,
-        { id: @instance.id,
-          instance: { "reference_id" => @target.reference_id,
-                      "instance_type_id" => @target.instance_type_id,
-                      "page" => @target.page} },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @instance.id,
+                  instance: { "reference_id" => @target.reference_id,
+                              "instance_type_id" => @target.instance_type_id,
+                              "page" => @target.page } },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert Instance.find(@instance.id).name_id == @target.name_id
     check_assertions
   end

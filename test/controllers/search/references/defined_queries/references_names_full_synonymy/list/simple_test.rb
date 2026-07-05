@@ -23,12 +23,12 @@ class SearchRefsDefinedQRefsNamesFullSynonymyTest < ActionController::TestCase
   tests SearchController
   test "search references names full synonymy" do
     get(:search,
-        { query_target: "References, names, full synonymy",
-          query_string: "G*",
-          query_submit: "Search" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "References, names, full synonymy",
+                  query_string: "G*",
+                  query_submit: "Search" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9] records\b/,

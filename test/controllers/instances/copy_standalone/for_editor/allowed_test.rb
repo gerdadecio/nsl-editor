@@ -29,13 +29,13 @@ class InstancesCopyStandaloneForbidnForEditUserTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Instance.count", 1) do
       post(:copy_standalone,
-           { id: instance.id,
-             instance: { "reference_id" => reference.id,
-                         "name_id" => name.id,
-                         "instance_type_id" => instance_types(:basionym) } },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
+           params: { id: instance.id,
+                     instance: { "reference_id" => reference.id,
+                                 "name_id" => name.id,
+                                 "instance_type_id" => instance_types(:basionym) } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     end
     assert_response :success
   end

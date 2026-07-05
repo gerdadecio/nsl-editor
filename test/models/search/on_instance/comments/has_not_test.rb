@@ -25,12 +25,10 @@ class SearchOnInstanceHasNoCommentsTest < ActiveSupport::TestCase
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "instance",
                    query_string: "comments: ",
-                   include_common_and_cultivar_session: true,
                    current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert_equal Instance::ActiveRecord_Relation,
-                 search.executed_query.results.class,
-                 "Results should be a Instance::ActiveRecord_Relation."
+    assert search.executed_query.results.is_a?(ActiveRecord::Relation),
+           "Results should be an ActiveRecord::Relation."
     assert !search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|
       assert_equal 0, r.comments.size, "Should be no comments"

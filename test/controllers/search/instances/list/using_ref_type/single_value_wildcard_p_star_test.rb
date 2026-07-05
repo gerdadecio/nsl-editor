@@ -24,10 +24,10 @@ class SearchInstanceListRefTypeWildcardPStarTest < ActionController::TestCase
 
   test "search instances for ref type p star" do
     get(:search,
-        { query_target: "instance", query_string: "ref-type: p*" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "instance", query_string: "ref-type: p*" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9][0-9] records\b/,

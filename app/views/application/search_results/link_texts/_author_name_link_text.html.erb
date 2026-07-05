@@ -1,0 +1,11 @@
+<% if search_result.extra_information.present? %>
+  <%= "#{search_result.name} (#{search_result.extra_information})" %>
+<% else %>
+  <%= "#{search_result.name}" %>
+<% end %>
+<% if search_result.duplicate? %>
+  <span
+    title="Record flagged as duplicate"
+    class="badge badge-duplicate"
+  >duplicate</span>
+<% end %>

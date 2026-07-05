@@ -28,10 +28,12 @@ class InstancesCreateCitedByForbiddenForReaderTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Instance.count") do
       post(:create,
-           { instance: { "name_id" => name.id,
-                         "reference_id" => reference.id,
-                         "instance_type_id" => instance_types(:basionym) } },
-           username: "fred", user_full_name: "Fred Jones", groups: [])
+           params: { instance: { "name_id" => name.id,
+                                 "reference_id" => reference.id,
+                                 "instance_type_id" => instance_types(:basionym) } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: [] })
     end
     assert_response :forbidden
   end

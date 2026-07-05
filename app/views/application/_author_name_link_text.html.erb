@@ -1,8 +1,0 @@
-<% if search_result.full_name.present? %>
-  <%= "#{search_result.name} (#{search_result.full_name})" %>
-<% else %>
-  <%= "#{search_result.name}" %>
-<% end %>
-<% if search_result.duplicate? %> [Duplicate] <% end %>
-
-

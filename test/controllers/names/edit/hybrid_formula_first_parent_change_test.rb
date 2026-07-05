@@ -29,8 +29,7 @@ class HybridFormulaFirstParentChangeTest < ActionController::TestCase
     @nfp_typeahead_string = "Angophora costata (Gaertn.) Britten | Species"
     @request.headers["Accept"] = "application/javascript"
     @expected_name_element = "costata x another-species"
-    @expected_name_path = "Plantae/Magnoliophyta/a_family/a_genus/thing/" +
-                          @expected_name_element
+    @expected_name_path = "Plantae/Magnoliophyta/a_family/a_genus/thingbb/#{@expected_name_element}"
   end
   def a
     "localhost:9090"
@@ -40,14 +39,10 @@ class HybridFormulaFirstParentChangeTest < ActionController::TestCase
     "name-strings"
   end
 
-  def user_agent
-    "Ruby"
-  end
-
   def stub_it
     stub_request(:get, %r{#{a}.nsl/services.rest.name.apni.[0-9]*.api.#{b}})
       .with(headers: { "Accept" => "text/json", "Accept-Encoding" => /.*/,
-                       "User-Agent" => user_agent })
+                       "User-Agent" => /rest-client.*ruby.*/ })
       .to_return(status: 200, body: %({ "class": "silly name class",
       "_links": { "permalink": [ ] }, "name_element":
       "redundant name element for id 91755", "action": "unnecessary action",
@@ -59,12 +54,12 @@ class HybridFormulaFirstParentChangeTest < ActionController::TestCase
 
   test "hybrid formula 1st parent change flows to name element and name path" do
     post(:update,
-         { name: { "parent_id" => @new_first_parent.id.to_s,
-                   "parent_typeahead" => @nfp_typeahead_string },
-           id: @hybrid_formula.id },
-         username: "fred",
-         user_full_name: "Fred Jones",
-         groups: ["edit"])
+         params: { name: { "parent_id" => @new_first_parent.id.to_s,
+                           "parent_typeahead" => @nfp_typeahead_string },
+                   id: @hybrid_formula.id },
+         session: { username: "fred",
+                    user_full_name: "Fred Jones",
+                    groups: ["edit"] })
     assert_response :success
     sleep(2) # to allow for the asynch job
     hybrid_after_change = Name.find(@hybrid_formula.id)

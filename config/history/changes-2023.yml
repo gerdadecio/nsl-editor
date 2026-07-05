@@ -1,0 +1,1037 @@
+- :date: 15-Dec-2023
+  :jira_id: '3319'
+  :description: |-
+    Instance adnots: Fix adnot spelling and show reference context on the Adnot tab
+- :date: 13-Dec-2023
+  :jira_id: '4818'
+  :description: |-
+    Names: Adjust error message
+- :date: 08-Dec-2023
+  :jira_id: '4819'
+  :description: |-
+    Names: Document Name search directive <code>bad-name-path:</code>, confirm bad-name-paths found in Name records can be fixed by Name update or <code>Refresh name path</code>
+- :date: 08-Dec-2023
+  :jira_id: '4818'
+  :description: |-
+    Names: Apply validation rule to detect parent != family when names of rank genus are saved with a parent ranked as a family
+- :date: 07-Dec-2023
+  :jira_id: '4816'
+  :description: |-
+    Names: Add query directive <code>parent-different-to-family:</code>, intended to be combined with <code>rank: genus</code> to find genera whose family isn't the same as their parent
+- :date: 07-Dec-2023
+  :jira_id: '4817'
+  :description: |-
+    Loader: Fix Name parent editing typeahead bug which set family based on parent but only if typeahead was selected, not if typeahead was autocompleted
+- :date: 15-Dec-2023
+  :release: true
+- :date: 07-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Refinement to previous change - offer to carry across sibling synonyms only if there are any sibling synonyms - don't offer to carry zero synonyms
+- :date: 06-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: The synonym-to-loader-accepted-or-excluded flipper form now offers the option to also carry across the flipped synonym's sibling synonyms (first cut)
+- :date: 05-Dec-2023
+  :jira_id: '4797'
+  :description: |-
+    Loader: Improve robustness of loader against nonsense directives - reject invalid directives and halt operation with message
+- :date: 04-Dec-2023
+  :jira_id: '4786'
+  :description: |-
+    Loader: Allow access to misapplication modifiers at point of creation - via the synonym type field labelled Misapplied type
+- :date: 04-Dec-2023
+  :jira_id: '3319'
+  :description: |-
+    Instance notes and adnots: Make the Name context for notes and adnots clear
+- :date: 04-Dec-2023
+  :jira_id: '4812'
+  :description: |-
+    Loader: Do not offer Create Synonym or Create Misapp forms when the current (highlighted) record is neither accepted nor excluded.
+- :date: 08-Dec-2023
+  :release: true
+- :date: 04-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Add appropriate misapp instance types to the synonym type drop down on the instance-to-synonym flipper form
+- :date: 01-Dec-2023
+  :jira_id: '4811'
+  :description: |-
+    Loader: Fix error preventing addition of synonym/misapplication without a default batch, and allow successful creation of synonym/misapplication record
+- :date: 01-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Gather comment and distribution data from the accepted concept (or excluded concept for comment) into the synonym add-to-batch flipper form when appropriate
+- :date: 01-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Tighten controls on when an add-to-batch Loader tab is offered: user must be a batch loader and not offered for unpub synonyms
+- :date: 30-Nov-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: When creating a loader_name record from an existing name/instance, automatically also create a preferred match to that name/instance
+- :date: 30-Nov-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: After adding a loader_name record from an existing instance the Loader (details) tab will be automatically refreshed after about 1 second
+- :date: 29-Nov-2023
+  :jira_id: '4807'
+  :description: |-
+    Loader: Problem with <code>family-id:</code> directive fixed
+- :date: 29-Nov-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Add fields for Notes and Remarks to citing-record-as-syn add-to-batch form - more to come
+- :date: 29-Nov-2023
+  :jira_id: '4807'
+  :description: |-
+    Loader: Fix bug preventing normal <code>loader_name</code> searching with default batch in place
+- :date: 29-Nov-2023
+  :jira_id: '4802'
+  :description: |-
+    Loader: Allow synonym instance data to be flipped into a batch as an accepted/excluded name; allow citing name to become its synonym in the loader
+- :date: 29-Nov-2023
+  :jira_id: '4807'
+  :description: |-
+    Loader: Searches on <code>loader_name</code> with <code>id:</code> or <code>id-with-syn:</code> directives do not get the <code>default-batch:</code> directive imposed on them
+- :date: 28-Nov-2023
+  :jira_id: '4801'
+  :description: |-
+    Loader: Fix seq handling for create synonym and misapplied - broken by previous change
+- :date: 27-Nov-2023
+  :jira_id: '4801'
+  :description: |-
+    Loader: Extend add-to-batch for a standalone instance to all batches, including seq-ordered batches - determine an approximate initial sequence
+- :date: 24-Nov-2023
+  :jira_id: '4800'
+  :description: |-
+    Loader: Add <code>full_name</code> field to form for creating a <code>loader_name</code> heading record; add name fields to details tab
+- :date: 24-Nov-2023
+  :jira_id: '4796'
+  :description: |-
+    Synonymy: Further improvements to synonymy sorting for reference queries showing instances
+- :date: 24-Nov-2023
+  :release: true
+- :date: 22-Nov-2023
+  :jira_id: '4794'
+  :description: |-
+    Synonymy: Can now list instances by name in Hershkovitz (2020) reference - and can now also list instances in other cases affected by this problem
+- :date: 21-Nov-2023
+  :jira_id: '4793'
+  :description: |-
+    Synonymy: Sort nomenclatural synonyms before taxonomic synonyms
+- :date: 21-Nov-2023
+  :jira_id: '4790'
+  :description: |-
+    Loader: Provide an add-to-batch form on a new "Loader" tab for a standalone instance - first cut, with minor adjustment
+- :date: 17-Nov-2023
+  :jira_id: '4779'
+  :description: |-
+    Loader: Bulk jobs: Provide informative job summaries, especially reasons for declines and errors, on the page and in the log
+- :date: 16-Nov-2023
+  :jira_id: '4779'
+  :description: |-
+    Loader: Bulk jobs: Provide summary of declined additions in loader logs "end" message - first cut for create preferred match and create draft instances
+- :date: 15-Nov-2023
+  :release: true
+- :date: 15-Nov-2023
+  :jira_id: '4782'
+  :description: |- 
+    Name query with instances: "Unpublished" relationship instances are again being displayed
+- :date: 14-Nov-2023
+  :jira_id: '4763'
+  :description: |- 
+    Loader: Bulk jobs: the trailing log entry for each job now includes the job's search criteria
+- :date: 14-Nov-2023
+  :jira_id: '4778'
+  :description: |- 
+    Loader: Display "Handmade" on manually created <code>loader_name</code> records only for batches parsed from Word docs
+- :date: 13-Nov-2023
+  :jira_id: '4777'
+  :description: |- 
+    Loader: Update Ruby libraries to latest versions, including Rails from 7.0.7.2 to 7.0.8
+- :date: 13-Nov-2023
+  :jira_id: '4775'
+  :description: |- 
+    Loader: Don't show the "Too Many Matches" message on <code>loader_name</code> details tab when a preferred match has been chosen
+- :date: 10-Nov-2023
+  :jira_id: '3323'
+  :description: |- 
+    Instances: Make page field full width to avoid scrolling for long entries
+- :date: 10-Nov-2023
+  :jira_id: '4761'
+  :description: |- 
+    Loader: Handle use of html tags for italics and hyperlinks in remarks to reviewers in print: and Editor display
+- :date: 09-Nov-2023
+  :jira_id: '4770'
+  :description: |- 
+    Loader: Make <code>seq</code> number field available when adding <code>loader_name</code> records to batches that order by <code>seq</code>
+- :date: 09-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Fix bug preventing access to Create Synonym or Create Misapp tabs for batches ordered by seq
+- :date: 09-Nov-2023
+  :jira_id: '4760'
+  :description: |- 
+    Loader: Print output: distribution and comments for the last record in a print out now display. 
+- :date: 08-Nov-2023
+  :jira_id: '4769'
+  :description: |- 
+    General: Ran rubocop auto-correction -a options - testing needs to confirm BAU for main workflows.
+- :date: 08-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Fixed case of <code>loader_name</code> records in batches that don't use <code>sort_key</code> being allocated a <code>sort_key</code> value on update.
+- :date: 08-Nov-2023
+  :jira_id: '4761'
+  :description: |- 
+    Loader: Handle use of html tags for italics and hyperlinks in compiler comments (not review comments)
+- :date: 08-Nov-2023
+  :jira_id: '4759'
+  :description: |- 
+    Loader: Set record type to accepted by default for top-level names (accepted/misapplied)
+- :date: 08-Nov-2023
+  :jira_id: '4758'
+  :description: |- 
+    Loader: Set default rank to species for record creation
+- :date: 08-Nov-2023
+  :jira_id: '4738'
+  :description: |- 
+    Loader: The <code>any-batch:</code> directive now works even if you have set a default batch.
+- :date: 09-Nov-2023
+  :release: true
+- :date: 06-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Allow optional entry of Family and Simple Name for <code>in-batch-notes</code> and, if entered, use them in the <code>sort_key</code>
+- :date: 06-Nov-2023
+  :jira_id: '4757'
+  :description: |- 
+    Loader: Allow users to add and save full name on create
+- :date: 03-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Fix the <code>sort_key</code> component for taxonomic synonyms so they do really sort after nomenclatural synonyms, and update misapp <code>sort_key</code> to still sort to the bottom.
+- :date: 03-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Sorting - make <code>rank</code> a required field for heading records, but also give it a default value of 'family'.
+- :date: 02-Nov-2023
+  :jira_id: '4720'
+  :description: |- 
+    Loader: On insert <code>loader_name.simple_name</code> is now not copied over the top of <code>full_name</code>.
+- :date: 02-Nov-2023
+  :jira_id: '4756'
+  :description: |- 
+    Loader: Misapplication names now re-appearing in print output.
+- :date: 02-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Adjust the algorithm for the synonymy sort key to match revised synonym ordering spec. Rename <code>sort_col</code> to <code>sort_key</code>.
+- :date: 01-Nov-2023
+  :jira_id: '4747'
+  :description: |- 
+    Loader: Allow conversion between excluded and accepted statuses
+- :date: 31-Oct-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Add a new sorting mechanism for loader_name records, an alternative to plain sequence sorting; with adjustments. Added some refinements.
+- :date: 27-Oct-2023
+  :jira_id: '4744'
+  :description: |- 
+    Loader: Add clash search <code>syn-clash-with-syn:</code>. Second cut: shows synonyms in question as well.
+- :date: 27-Oct-2023
+  :jira_id: '4743'
+  :description: |- 
+    Loader: Improve the ordering of synonymy when the <code>show-instance:</code> directive is used
+- :date: 26-Oct-2023
+  :jira_id: '4740'
+  :description: |- 
+    Loader: Fix create-draft error triggered by "use existing instance" when synonymy contains misapplication/s (revised)
+- :date: 24-Oct-2023
+  :jira_id: '4735'
+  :description: |- 
+    Loader: Link from any loader_name details tab to its family and the family's members
+- :date: 24-Oct-2023
+  :jira_id: '4734'
+  :description: |- 
+    Loader: Improve the link to loader names on the batch details tab
+- :date: 03-Nov-2023
+  :release: true
+- :date: 24-Oct-2023
+  :jira_id: '4736'
+  :description: |- 
+    Loader: Allow tabbing to the <code>record_type</code> field in natural order when adding or editing <code>loader_name</code> records
+- :date: 24-Oct-2023
+  :jira_id: '4737'
+  :description: |- 
+    Loader: Allow entry of <code>remark_to_reviewers</code>
+- :date: 24-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: Print - concept notes and distributions now appear with or without the <code>src:</code> (<code>show-review-comments:</code>) directive
+- :date: 23-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: Print - comments on excluded names now appear
+- :date: 23-Oct-2023
+  :jira_id: '4731'
+  :description: |- 
+    Loader: Freshen and refine the appearance of the processing flags - reduce their height, standardise capitalisation, abbreviate long text
+- :date: 20-Oct-2023
+  :jira_id: '4728'
+  :description: |- 
+    Loader: Fix <code>instance-is-cited:</code> query
+- :date: 20-Oct-2023
+  :jira_id: '4727'
+  :description: |- 
+    Loader: Remove loader code dependencies on orchid code in the Editor
+- :date: 19-Oct-2023
+  :jira_id: '4725'
+  :description: |- 
+    Loader: Show notes (for compilers) on the LHS and on printout, but not for reviewers. Highlight in green.
+- :date: 19-Oct-2023
+  :jira_id: ''
+  :description: |- 
+    Loader: Change history pages - heading for these pages now matches the menu label ie. "Changes 9999" rather than "9999 Changes"
+- :date: 19-Oct-2023
+  :jira_id: '4722'
+  :description: |- 
+    Loader: Remove comment field from input forms for synonyms, misapplieds, and headings
+- :date: 19-Oct-2023
+  :jira_id: '4721'
+  :description: |- 
+    Loader: Features based on rank should match case-insensitively - e.g. family heading records should work with 'family' or 'Family'
+- :date: 19-Oct-2023
+  :jira_id: '4720'
+  :description: |- 
+    Loader: Allow entry of full name when creating a new loader name record
+- :date: 19-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: Further improvements to print output based on review yesterday as noted in Jira
+- :date: 18-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: Second cut of print output showing review comments etc, with layout fixes and logic fixes (before any user testing)
+- :date: 18-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: First cut of print output showing review comments, including for distribution and concept notes placed after synonymy
+- :date: 17-Oct-2023
+  :jira_id: '4715'
+  :description: |- 
+    Loader: Loader Name note records are now called in-batch-notes; fixed loader-name detail tabbing bug
+- :date: 16-Oct-2023
+  :jira_id: '4707'
+  :description: |- 
+    Loader: Copy-and-Append synonymy creation now completes even if a copied synonym fails validation - error is logged, but process continues
+- :date: 16-Oct-2023
+  :jira_id: '4677'
+  :description: |- 
+    Loader: Allow note records to print and print them with a yellow background
+- :date: 13-Oct-2023
+  :jira_id: '4712'
+  :description: |- 
+    Loader: Do not print genus names twice (even) when they have no authority 
+- :date: 20-Oct-2023
+  :release: true
+- :date: 13-Oct-2023
+  :jira_id: '4669'
+  :description: |- 
+    Loader: Give a more understandable error message if user tries to create a loader_name record without setting a default batch
+- :date: 13-Oct-2023
+  :jira_id: '4713'
+  :description: |- 
+    Loader: Correct the query used on the loader_name detail tab to detect and warn about name-match-in-synonymy cases.
+- :date: 12-Oct-2023
+  :jira_id: '4641'
+  :description: |- 
+    Loader: New, revised and faster query for <code>name-match-in-syn</code> which excludes misapplications and pro parte synonyms from the results.
+- :date: 12-Oct-2023
+  :jira_id: ''
+  :description: |- 
+    Loader: Fix detail tab not displaying for loader name records with no preferred match - for accepted names, and also for excluded names
+- :date: 11-Oct-2023
+  :jira_id: '4660'
+  :description: |- 
+    Loader: Adjust Reference Instance tab wording as requested
+- :date: 10-Oct-2023
+  :jira_id: '4709'
+  :description: |- 
+    Loader: Correctly record context of name review comments when created - so we know if the comment was for a distribution, synonym, etc
+- :date: 10-Oct-2023
+  :jira_id: '4654'
+  :description: |- 
+    Change History: Adjust colors to show different Jira statuses more clearly
+- :date: 09-Oct-2023
+  :jira_id: '4654'
+  :description: |- 
+    Change History: Set up change history page to report the status of jiras
+- :date: 05-Oct-2023
+  :jira_id: '4670'
+  :description: |- 
+    Loader: Allow user to insert new top-level record (ie. accepted or excluded record) at a defined point
+- :date: 05-Oct-2023
+  :jira_id: '4661'
+  :description: |- 
+    Loader: Make conditional text about undo options for synonyms/misapps of drafted names, with copy-and-append chosen, consistent with other choices
+- :date: 05-Oct-2023
+  :jira_id: '4641'
+  :description: |- 
+    Loader: Adjust <code>name-match-in-syn</code> and associated detail logic to ignore drafted and manually drafted matched records
+- :date: 29-Sep-2023
+  :jira_id: '4688'
+  :description: |- 
+    Loader: Order batch stack by batch create date
+- :date: 29-Sep-2023
+  :jira_id: '4682'
+  :description: |- 
+    Taxonomy: Replace hard-coded reference to 'APC' with appropriate term for the local taxonomy on the instance details tab
+- :date: 29-Sep-2023
+  :jira_id: '4682'
+  :description: |- 
+    Taxonomy: Replace hard-coded reference to 'APC' with appropriate term for the local taxonomy when reporting an instance is not eligible for deletion.
+- :date: 16-Oct-2023
+  :release: true
+- :date: 28-Sep-2023
+  :jira_id: '4671'
+  :description: |- 
+    Loader: Fix queries for <code>acc:</code> and <code>exc:</code> so they include results for synonms and misapplications
+- :date: 27-Sep-2023
+  :jira_id: '4678'
+  :description: |- 
+    Loader: Prevent alternative match being selected after first selected match has been drafted - covers accepted, excluded, synonyms record types
+- :date: 27-Sep-2023
+  :jira_id: '4677'
+  :description: |- 
+    Loader: Allow entry, edit, and display of a <code>loader_name</code> note record type within a batch.
+- :date: 27-Sep-2023
+  :jira_id: '4674'
+  :description: |- 
+    Loader: Fix bug stopping details tab displaying in cases where the matching name has no primary instance
+- :date: 26-Sep-2023
+  :jira_id: '4671'
+  :description: |- 
+    Loader: Allow for <code>acc:</code> and <code>exc:</code> directives to be combined with <code>family:</code> directive in Loader tab searches
+- :date: 22-Sep-2023
+  :jira_id: '4669'
+  :description: |- 
+    Loader: Allow entry of heading records - from the menu path <code>New</code> > <code>Loader Name heading record</code> (Second cut)
+- :date: 21-Sep-2023
+  :jira_id: '4663'
+  :description: |- 
+    Loader: Allow rank to be entered for <code>loader_name</code> records, including accepted, excluded, synonym, and misapplication types.
+- :date: 21-Sep-2023
+  :jira_id: '4661'
+  :description: |- 
+    Loader: Reference Instance tab no longer offers instance delete as an undo option for synonym or misapplication <code>loader_name</code> records if the parent record is marked as drafted or manually drafted
+- :date: 20-Sep-2023
+  :jira_id: '4623'
+  :description: |- 
+    Loader: Reference Instance tab - manually drafted accepted or excluded names are no longer offered an undo option
+- :date: 20-Sep-2023
+  :jira_id: '4660'
+  :description: |- 
+    Loader: Reference Instance tab for synonym is no longer blank if parent has preferred match, parent has no decision made, synonym has no preferred match.
+- :date: 19-Sep-2023
+  :jira_id: '4623'
+  :description: |- 
+    Loader: Reference Instance tab - fix the undo message for accepted and excluded names once drafted i.e. make clear they cannot be undone
+- :date: 19-Sep-2023
+  :jira_id: '4657'
+  :description: |- 
+    Loader: Fix <code>loader_name</code> search directive <code>use-existing-instance:</code>
+- :date: 18-Sep-2023
+  :jira_id: '4641'
+  :description: |- 
+    Loader: Change <code>syn-match-in-tree:</code> directive to query using <code>taxon_mv</code> instead of <code>tree_join_v</code> - should be faster
+- :date: 18-Sep-2023
+  :jira_id: '4653'
+  :description: |- 
+    Search: Build a programmer switch for slow searches that omits totals and thereby speeds up the total search time - apply to <code>syn-match-in-tree:</code> and <code>name-match-in-syn:</code>
+- :date: 12-Sep-2023
+  :jira_id: '4641'
+  :description: |- 
+    Loader: Warn on detail tab when a loader name match conflicts with the current tree; add <code>syn-match-in-tree:</code> and <code>name-match-in-syn:</code> directives to list such cases
+- :date: 28-Sep-2023
+  :release: true
+- :date: 11-Sep-2023
+  :jira_id: '4643'
+  :description: |- 
+    Loader: Manually added excluded names are now flagged as Excluded in search results
+- :date: 08-Sep-2023
+  :jira_id: '4642'
+  :description: |- 
+    Loader: Add rescue clauses to log_to_table methods - will avoid any unforeseen logging problems falsely reporting a transaction failed - :date: 08-Sep-2023
+- :date: 08-Sep-2023
+  :jira_id: '4523'
+  :description: |-
+    Reference ISSN: Fix display and link
+- :date: 08-Sep-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: Printable version - genera name portion only should now be upper-case (also applied upper-case to excluded genera names)
+- :date: 08-Sep-2023
+  :jira_id: '4528'
+  :description: |-
+    Loader: List the usage references of the preferred match on the Reference Instance tab, if no reference choice yet made
+- :date: 07-Sep-2023
+  :jira_id: '4640'
+  :description: |-
+    Loader: Trial query that allows for 'MS' suffixes on Name simple-names
+- :date: 06-Sep-2023
+  :jira_id: '4639'
+  :description: |-
+    Loader: Reference Instance tab now displays for synonyms and misapplications
+- :date: 06-Sep-2023
+  :jira_id: '4636'
+  :description: |-
+    Loader: Fix method name bug introduced yesterday when adding elapsed time to bulk processing log entries
+- :date: 05-Sep-2023
+  :jira_id: '4636'
+  :description: |-
+    Loader: Add elapsed time to the log entry for each task recorded in the bulk processing log
+- :date: 18-Sep-2023
+  :release: true
+- :date: 04-Sep-2023
+  :jira_id: '4634'
+  :description: |-
+    Loader: Fix <code>acc:</code> search directive
+- :date: 31-Aug-2023
+  :jira_id: '4627'
+  :description: |-
+    Loader: Add INFO logs statements in Editor to show calls to Services API for Tree ops - for tracing current Tree-op problems
+- :date: 30-Aug-2023
+  :jira_id: '4625'
+  :description: |-
+    Security patch: Update Editor to Rails 7.0.7.2 and matching gems
+- :date: 30-Aug-2023
+  :jira_id: ''
+  :description: |-
+    Loader: Write an error log entry when Services reports a Rest Request error - e.g. for taxonomy changes
+- :date: 28-Aug-2023
+  :jira_id: '4623'
+  :description: |-
+    Loader: Tighten up Reference Instance tab Undo Choice display and validations, including for "use an existing instance" case once drafted to taxonomy
+- :date: 25-Aug-2023
+  :jira_id: '4621'
+  :description: |-
+    Loader: Further adjust taxonomy instance choice query <code>no-nomination:</code> to include excluded names too
+- :date: 24-Aug-2023
+  :jira_id: '4621'
+  :description: |-
+    Loader: Fix taxonomy instance choice queries <code>no-nomination:</code> and <code>copy-and-append:</code>
+- :date: 22-Aug-2023
+  :jira_id: '4619'
+  :description: |-
+    Loader: First cut of printable output showing review comments
+- :date: 21-Aug-2023
+  :jira_id: '4615'
+  :description: |-
+    Reference search: Internal technical changes to Reference special searches in the Search Target list
+- :date: 18-Aug-2023
+  :jira_id: '4475'
+  :description: |-
+    Reference search: Changes to standardise and clarify citation search directives and related help text - no change to the default reference search
+- :date: 17-Aug-2023
+  :jira_id: '4611'
+  :description: |-
+    Reference search: Allow for accented characters in <code>citation:</code> and <code>citation-exact:</code> searches
+- :date: 16-Aug-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: Print output -- display accepted genus names in upper-case
+- :date: 15-Aug-2023
+  :jira_id: '4594'
+  :description: |-
+    Tree tab: Add extra help text pointing users to the Edit Profile tab
+- :date: 15-Aug-2023
+  :jira_id: '4523'
+  :description: |-
+    ISSN, ISBN: Display ISSN link in style of BHL, don't rely on RHS label for ISBN, validate field lengths of 16 chars
+- :date: 15-Aug-2023
+  :release: true
+- :date: 10-Aug-2023
+  :jira_id: '4608'
+  :description: |-
+    Code Quality: Alter a regular expression in the search parser to be more precise
+- :date: 10-Aug-2023
+  :jira_id: '4606'
+  :description: |-
+    Batch Review: Revive the reviewer search - seems I broke it when working on NSL-4581
+- :date: 10-Aug-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: Print output -- remove dist/comments instrumentation and move family heading further away from end of preceding section
+- :date: 08-Aug-2023
+  :jira_id: '4605'
+  :description: |-
+    Code Quality: Mitigate Incomplete multi-character sanitization alert on instance tree tab workspace parent typeahead
+- :date: 08-Aug-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: Print output for loader-names - prevent duplicate display of notes-to-compilers for misapplications (which display original html)
+- :date: 08-Aug-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: Print output for loader-names - distribution/comment to appear after synonymy (instrumented version with dist/comm in both places)
+- :date: 07-Aug-2023
+  :jira_id: '4523'
+  :description: |-
+    ISSN, ISBN: Display ISSN as link to portal.issn.org, and display ISBN as plain text value since there's nowhere to look it up
+- :date: 04-Aug-2023
+  :jira_id: '4601'
+  :description: |-
+    Tree tab: Avoid 1 + n query generated by Tree tab for displaying Distribution options (technical - distribution options should be unchanged) 
+- :date: 04-Aug-2023
+  :jira_id: '4520'
+  :description: |-
+    Search: Allow wildcards in Instance <code>name-status:</code> searches
+- :date: 04-Aug-2023
+  :jira_id: '4598'
+  :description: |-
+    Loader: Do not pass tree placement requests to Services without a confirmed tree parent - log error instead
+- :date: 03-Aug-2023
+  :jira_id: '4600'
+  :description: |-
+    Loader: search string will stay in the search/operation field when you refresh the Loader tab
+- :date: 03-Aug-2023
+  :jira_id: '4599'
+  :description: |-
+    Loader: Add validation to prevent misapplications having preferred instances from more than one name record
+- :date: 02-Aug-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: Print output changes after review: taxonomic comment italic styling will now work, excluded name status will follow a comment and be italicised 
+- :date: 02-Aug-2023
+  :jira_id: '4594'
+  :description: |-
+    Taxonomy: For the Tree and Edit Profile tabs add text that clarifies where data updates occur - on the draft or published tree
+- :date: 01-Aug-2023
+  :jira_id: '4596'
+  :description: |-
+    General: Make tab titles more informative to help when using multiple tabs
+- :date: 01-Aug-2023
+  :jira_id: '4593'
+  :description: |-
+    Bulk Processing Logs: Query Help and Query Example tabs are no longer blank and are showing relevant help
+- :date: 01-Aug-2023
+  :jira_id: '4589'
+  :description: |-
+    Loader: Excluded names are now handled on the Matched Name tab and have a link to verify the drafted flag, as for accepted names
+- :date: 31-Jul-2023
+  :jira_id: '4591'
+  :description: |-
+    Loader Query: Fix hybrid-flag queries (e.g. <code>:is-hybrid:</code>, <code>is-intergrade:</code>, <code>is-mso-normal:</code> etc) carried over from orchid code (needed improvement)
+- :date: 31-Jul-2023
+  :jira_id: '4592'
+  :description: |-
+    Field Help: Clean up code to make it more consistent, change the function that runs when you click a help field so it only copies the field once.
+- :date: 28-Jul-2023
+  :jira_id: '4586'
+  :description: |-
+    Loader: Added verify link on the Matched Name tab - will verify the drafted flag and remove the flag if not correct
+- :date: 28-Jul-2023
+  :jira_id: '4588'
+  :description: |-
+    Tree view: Replace references to <code>tree_vw</code> with references to <code>tree_join_v</code> - no change to behaviour
+- :date: 27-Jul-2023
+  :jira_id: '4585'
+  :description: |-
+    Loader: Add a note on the loader tab to remind users they need to add their own wildcards
+- :date: 27-Jul-2023
+  :jira_id: '4581'
+  :description: |-
+    Loader: Loader-name <code>batch-name:</code> directive now accepts wildcards, so <code>batch-name: *</code> works.
+- :date: 26-Jul-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: More loader-name print features and adjustments including simpler name styling, misapplied names by-whom-and-where details
+- :date: 26-Jul-2023
+  :jira_id: '4584'
+  :description: |-
+    Code Quality: Change affecting Tree-change-difference display (alerts added for likely unused code) - no change to behaviour
+- :date: 26-Jul-2023
+  :jira_id: '4584'
+  :description: |-
+    Code Quality: Change affecting Tree operations (remove unused function) -  no change to behaviour
+- :date: 26-Jul-2023
+  :jira_id: '4584'
+  :description: |-
+    Code Quality: Changes affecting Service calls for Reference create, edit -  no change to behaviour
+- :date: 26-Jul-2023
+  :jira_id: '4584'
+  :description: |-
+    Code Quality: Changes affecting Service calls for Name create, edit, refresh -  no change to behaviour
+- :date: 25-Jul-2023
+  :jira_id: '4583'
+  :description: |-
+    Code Quality: Mitigate code scanning alerts for reflected cross-site scripting - no change to behaviour
+- :date: 25-Jul-2023
+  :jira_id: '4582'
+  :description: |-
+    Code Quality: Mitigate code scanning alerts for cross-site scripting involving font-awesome icons and link text from database - no change to behaviour
+- :date: 25-Jul-2023
+  :jira_id: '4581'
+  :description: |-
+    Loader: Reject loader-name queries that don't specify a batch unless the user explicitly requests an any-batch search
+- :date: 24-Jul-2023
+  :jira_id: '4474'
+  :description: |-
+    Loader: "Stop further bulk processing" flag now available even if no match has been selected
+- :date: 21-Jul-2023
+  :jira_id: '4580'
+  :description: |-
+    Code Quality: mitigate code scanning alert on an external link by adding rel="noopener noreferrer" attribute - no change to behaviour
+- :date: 21-Jul-2023
+  :jira_id: '4579'
+  :description: |-
+    Code Quality: mitigate code scanning alert in JavaScript code that puts search-direcives into the search field if you click the field name in help - no change to behaviour
+- :date: 21-Jul-2023
+  :jira_id: '4578'
+  :description: |-
+    Code Quality: mitigate regex substitution code scanning alert for query defaults - no change to behaviour
+- :date: 21-Jul-2023
+  :jira_id: '4577'
+  :description: |-
+    Code Quality: mitigate regex substitution code scanning alert for loader name match - no change to behaviour
+- :date: 21-Jul-2023
+  :jira_id: '4576'
+  :description: |-
+    Code Quality: mitigate regex substitution code scanning alert for orchids names - no change to behaviour
+- :date: 21-Jul-2023
+  :jira_id: '4575'
+  :description: |-
+    Code Quality: mitigate regex substitution code scanning alert for help param (second attempt) - no change to behaviour
+- :date: 21-Jul-2023
+  :jira_id: '4574'
+  :description: |-
+    Code Quality: remove uncalled function that was generating a (spurious) code warning - no change to behaviour
+- :date: 18-Jul-2023
+  :jira_id: '4567'
+  :description: |-
+    Code Quality: ran <code>rubocop -a</code> to automatically fix problems detected by linting - no change to behaviour
+- :date: 17-Jul-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: filling out more loader-name <code>print:</code> requirements since progress review last week
+- :date: 17-Jul-2023
+  :release: true
+- :date: 14-Jul-2023
+  :jira_id: '4566'
+  :description: |-
+    Remove Javascript warning message: correct the format of the integrity attribute - no change to behaviour expected
+- :date: 14-Jul-2023
+  :jira_id: '4565'
+  :description: |-
+    Firefox problem fix: the Editor now works again in Firefox v115
+- :date: 13-Jul-2023
+  :jira_id: '4564'
+  :description: |-
+    Version and build ID (system use): add service to report build time and fine-tune the service reporting version - no user testing required
+- :date: 13-Jul-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: upgrades to loader name print output based on yesterday's review: excluded names heading and format, phrase name not duplicated
+- :date: 13-Jul-2023
+  :jira_id: '4563'
+  :description: |-
+    Loader: remove duplicated 'Drafted' indicator from Loader Name record display
+- :date: 12-Jul-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: first cut of loader name output intended for printing
+- :date: 11-Jul-2023
+  :jira_id: '4562'
+  :description: |-
+    Code clean up: change underlying code for adding a Name Tag - no behaviour should change
+- :date: 11-Jul-2023
+  :jira_id: '4561'
+  :description: |-
+    Code clean up: change underlying code for Name <q>Refresh descendents names...</q> button  - no behaviour should change
+- :date: 11-Jul-2023
+  :jira_id: '4560'
+  :description: |-
+    Code clean up: fix problem created as a side-effect of yesterday's JavaScript changes - no behaviour should change.
+- :date: 10-Jul-2023
+  :jira_id: '4560'
+  :description: |-
+    Code clean up: remove dead JavaScript code originally intended for multi-record processing - no behaviour should change
+- :date: 10-Jul-2023
+  :jira_id: '4558'
+  :description: |-
+    Security: replace regex in typeahead save processing for <code>name:</code> <code>parent</code>, <code>family</code>, <code>duplicate-of</code>, <code>author</code>, <code>unpub-cit-instance</code>, and <code>author:</code> <code>duplicate-of</code>
+- :date: 10-Jul-2023
+  :jira_id: '4558'
+  :description: |-
+    Security: replace regex in typeahead save processing for <code>reference: duplicate-of</code>, <code>parent</code>, <code>author</code> - no behaviour should change
+- :date: 07-Jul-2023
+  :jira_id: '4556'
+  :description: |-
+    Rails 7 upgrade: remove some overlooked Rails 6 remnants - testing will be to confirm no Editor behaviour has changed
+- :date: 07-Jul-2023
+  :release: true
+- :date: 05-Jul-2023
+  :jira_id: '4549'
+  :description: |-
+    Software upgrades: patch libraries (following on from patching Rails) - testing will be to confirm no Editor behaviour has changed and can ideally be combined for the 3 jiras
+- :date: 05-Jul-2023
+  :jira_id: '4548'
+  :description: |-
+    Rails upgrade (minor): upgrade Rails from 7.0.4.3 to the latest which is 7.0.6 - testing will be to confirm no Editor behaviour has changed
+- :date: 05-Jul-2023
+  :jira_id: '4547'
+  :description: |-
+    Postgres library upgrade: upgrade pg gem - testing will be to confirm no Editor behaviour has changed
+- :date: 18-May-2023
+  :release: true
+- :date: 17-May-2023
+  :jira_id: '4516'
+  :description: |-
+    Common/Cultivar checkbox: remove the flash of the check box field when a non-Name search result loads
+- :date: 17-May-2023
+  :jira_id: '4514'
+  :description: |-
+    Technical: clean up JS console debug - no affect on user interface
+- :date: 16-May-2023
+  :jira_id: '4511'
+  :description: |-
+    Errors in log: removed errant code - these errors were being handled and did not affect record processing for users
+- :date: 16-May-2023
+  :jira_id: '4510'
+  :description: |-
+    Icons: switch to the latest font-awesome-kit - this fixes the Common/Cultivar checkbox display and all icons should display correctly now
+- :date: 11-May-2023
+  :release: true
+- :date: 04-May-2023
+  :jira_id: '4506'
+  :description: |-
+    Services error messages: reverse the escaping of tags in tree error messages done under NSL-4493
+- :date: 04-May-2023
+  :jira_id: '4499'
+  :description: |-
+    Services error messages: restore the code that extracts json errors from Services responses - this leaves us vulnerable to silent 500 errors, so triaged that by prefixing possible silent/XML errors with "Tree error:", but currently no way to generate 500 errors from Services on demand for testing.
+- :date: 04-May-2023
+  :jira_id: '4136'
+  :description: |-
+    Added short-hand variants of the <code>show-instances:</code> directive for Name and Reference searches
+- :date: 04-May-2023
+  :jira_id: '4460'
+  :description: |-
+    Refined the error message to make clear it's referring to the Name of a Review for a Batch rather than a Name per se
+- :date: 03-May-2023
+  :jira_id: '4460'
+  :description: |-
+    Improved error message when Loader Batch Review already exists
+- :date: 03-May-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade branch: configuration change to fix form submit problems in Rails 7
+- :date: 01-May-2023
+  :jira_id: '4498'
+  :description: |-
+    Upgrade to Ruby 3.2.2
+- :date: 28-Apr-2023
+  :jira_id: ''
+  :description: |-
+    Security: Integrity comments and changes.
+- :date: 27-Apr-2023
+  :jira_id: ''
+  :description: |-
+    Restored csv output for Instance search results
+- :date: 26-Apr-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade branch: On the Draft Taxonomies menu, any of the listed drafts should now be ticked if and only if they are the selected draft
+- :date: 21-Apr-2023
+  :release: true
+- :date: 20-Apr-2023
+  :jira_id: '4493'
+  :description: |-
+    Tree Profile Edit Errors: Make tree error messages simple strings, without xml/html tags - improving their visibility and legibility.
+- :date: 20-Apr-2023
+  :jira_id: '4493'
+  :description: |-
+    Tree Profile Edit Errors: Make hidden tree profile update errors visible by no longer treating xml tags as (non-displayed) html; the errors were logged but invisible in GUI because wrapped in &lt; and &gt; glyphs.
+- :date: 19-Apr-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade Branch: More rendering fixes - removing hard-coded file suffixes - ".js" first noticed on tree menu; also, tree menu fix for icon.  <b>(Branch was not in prod release 21 Apr)</b>
+- :date: 19-Apr-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade Branch: Fix problem preventing the create-reference action showing a form  <b>(Branch was not in prod release 21 Apr)</b>
+- :date: 13-Apr-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade Branch: Upgrade to Rails 7  <b>(Branch was not in prod release 21 Apr)</b>
+- :date: 06-Apr-2023
+  :release: true
+- :date: 31-Mar-2023
+  :jira_id: '4471'
+  :description: |-
+    Loader: Links to <q>Editor name query</q> and <q>Editor simple name query</q> open queries that now also show instances.
+- :date: 30-Mar-2023
+  :jira_id: '4471'
+  :description: |-
+    Loader: Improve Details display for misapps with long Original HTML data
+- :date: 30-Mar-2023
+  :jira_id: '4471'
+  :description: |-
+    Loader: Added link to <q>Editor simple name query</q> on Misapps Details tab - compare with existing <q>Editor [full] name query</q> link result for autonyms
+- :date: 30-Mar-2023
+  :jira_id: '4471'
+  :description: |-
+    Loader: Remove unnecessary, unhelpful data fields from the Matches tab, leaving the form for changing the instance type clearly visible
+- :date: 30-Mar-2023
+  :jira_id: '4471'
+  :description: |-
+    Loader: For synonyms and misapps, the link to a context view, via a parent query, is now the actual parent's name - a small convenience improvement
+- :date: 30-Mar-2023
+  :jira_id: ''
+  :description: |-
+    Admin: Make the admin page more verifiably resilient against missing config values - no visible change 
+- :date: 22-Mar-2023
+  :jira_id: ''
+  :description: |-
+    Security: Various patches and upgrade Rails to 6.1.7.3
+- :date: 22-Mar-2023
+  :release: true
+- :date: 21-Mar-2023
+  :jira_id: '4466'
+  :description: |-
+    Loader: Minor adjustment to Batch Summary Counts to include <code>excluded</code> record comments in the comment tally
+- :date: 28-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Fix bug preventing Loader Name detail tab displaying when <code>original_text</code> is empty
+- :date: 28-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Show a hint in red on the Batch details tab about setting a batch default reference; tweak boilerplate on the edit tab
+- :date: 27-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Fix Batch Summary Counts on the Loader tab - largely untouched since copied from Orchids equivalent
+- :date: 27-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Repair refactoring bugs preventing access to the Loader tab and to Summary Statistics on that tab
+- :date: 27-Feb-2023
+  :jira_id: '4452'
+  :description: |-
+    Loader-side-issue: Rename 'Review' to 'Activity' in the search targets dropdown.
+- :date: 24-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Bulk processing code re-factoring - expect no change to features or functions.
+- :date: 23-Feb-2023
+  :jira_id: '4447'
+  :description: |-
+    Taxonomy: Toggling a taxonomy draft on/off from the menu now doesn't reload the page - instead, the menu display and tab availability are changed via JavaScript.
+- :date: 22-Feb-2023
+  :jira_id: '4426'
+  :description: |-
+    LDAP: Now verifying SimpleAD TLS certificate when logging users in
+- :date: 21-Feb-2023
+  :jira_id: '4434'
+  :description: |-
+    Loader: Label seq field consistently
+- :date: 21-Feb-2023
+  :jira_id: '4434'
+  :description: |-
+    Loader: Exclude names marked as duplicates from loader_name matches.
+- :date: 21-Feb-2023
+  :jira_id: '4434'
+  :description: |-
+    Loader: Allow synonyms and misapplications to be created from existing synonyms and misapplications; make sequencing easier; correct positon of success message
+- :date: 21-Feb-2023
+  :jira_id: '4434'
+  :description: |-
+    Loader: Fix <code>name-match-no-primary:</code> query
+- :date: 17-Feb-2023
+  :jira_id: '4433'
+  :description: |-
+    LDAP: Added two more layers of protection to prevent a 'generic' SimpleAD user trying to change their password via the Editor
+- :date: 15-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Added member count to details for loader_name Family records
+- :date: 15-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Added loader name convenience query directive <code>families:</code>, which is equivalent to <code>rank: family</code>
+- :date: 14-Feb-2023
+  :jira_id: '4425'
+  :description: |-
+    Loader: Any logged in user can see the configuration page - no need to make people administrators to see this page
+- :date: 14-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: the bulk-ops query can now handle the family: directive - by turning it into a bulk-ops-family: directive
+- :date: 13-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Disable no-further-processing flag field for loader name records once a standalone or relationship instance has been associated
+- :date: 13-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Details tab for header entries (typically family records) now has a link to query members of the family, if the record's rank is 'family'
+- :date: 13-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Show the loader name seq as a list item number at the top of the details - this is clearer; also visually separate and gray the batch name
+- :date: 10-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Add a /version get end point - currently just returns the app version
+- :date: 10-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Display the loader name sequence number at the top of the detail tabs
+- :date: 10-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: <q>Not drafted</q> text no longer appears on loader name records which have been allocated an existing instance
+- :date: 10-Feb-2023
+  :jira_id: '4423'
+  :description: |-
+    Loader: bulk operations search now similar to the Orchids one - top-level matches only; added an equivalent <code>bulk-ops:</code> search directive which is linked from the Loader tab
+- :date: 08-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: improve log entries, make them more consistent
+- :date: 06-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: first cut of bulk add to taxonomy (tree)
+- :date: 07-Feb-2023
+  :release: true
+  :description: Released to staging - production release will follow
+- :date: 19-Jan-2023
+  :jira_id: ''
+  :description: |-
+    Update Rails to 6.1.7.1 security patch
+- :date: 19-Jan-2023
+  :jira_id: '4396'
+  :description: |-
+    Choosing menu options like Admin > Configuration should no longer throw away search results or disable other tabs.
+- :date: 18-Jan-2023
+  :jira_id: '4078'
+  :description: |-
+    Set up the <code>Enable Add to draft tree</code> button referencing a new feature flag: <code>allow_batch_loader_tree_operations</code>
+- :date: 05-Jan-2023
+  :jira_id: '4375'
+  :description: |-
+    Upgrade to Ruby 3.1.3
+- :date: 05-Jan-2023
+  :release: true
+- :date: 04-Jan-2023
+  :jira_id: '4374'
+  :description: |-
+    Set up history file for 2023
+- :date: 04-Jan-2023
+  :jira_id: '4374'
+  :description: |-
+    Security patches

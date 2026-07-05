@@ -27,13 +27,13 @@ class NameSearchForNameTypeWithWildCardsSimpleTest < ActionController::TestCase
     common = names(:argyle_apple)
     # Set the common-and-cultivar flag to false.
     get(:search,
-        { "search_from" => "string",
-          "query" => "count D* nt:*",
-          "controller" => "new_search",
-          "action" => "search" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { "search_from" => "string",
+                  "query" => "count D* nt:*",
+                  "controller" => "new_search",
+                  "action" => "search" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     # assert_select "input.checkbox[type=checkbox]
     #               [id=query_common_and_cultivar][value=t]",

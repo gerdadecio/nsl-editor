@@ -24,10 +24,10 @@ class NamesSearchListPlusInstancesSimpleTest < ActionController::TestCase
 
   test "search for a name plus instances" do
     get(:search,
-        { query_target: "Names plus instances", query_string: "author: bent*" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "Names plus instances", query_string: "author: bent*" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9][0-9] names\b/,

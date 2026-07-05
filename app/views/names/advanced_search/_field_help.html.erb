@@ -1,3 +1,15 @@
+  <h4>Showing Instances</h4>
+  A successful Name search returns a list of names by default.
+  <p>
+  <p>
+  You can ask for Instances as well as Names in the results by adding the <code>show-instances:</code> directive to the search.
+  <p>
+  This directive takes no argument.
+  <p>
+  The <code>show-instances:</code> directive also has abbreviations: <code>s-i:</code>, <code>si:</code>, and <code>i:</code> that all do the same thing.
+
+<br>
+<br>
   <h4>Searchable Name fields</h4>
   <% link_example = link_to('*costata', search_path(query_string: '*costata', query_target: 'name'),class:'blue', title:"Run the described search.") %>
   <h5>Name</h5>
@@ -34,7 +46,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent" 
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span>
       </a>
     </td>
@@ -54,14 +68,23 @@
   <h5>Coded fields</h5>
 <table class="table table-striped">
   <tr><th>Field</th><th>Description</th><th>Values</th></tr>
+  <tr><td></td><td></td><td>(The lists below are for convenient viewing of values - selecting them doesn't add them to the search)</td></tr>
   <% [
-      {field_name: 'rank:', description: "name rank, allows comma-separated multiple values",partial: "name_ranks/list_for_search_help"},
-      {field_name: 'status:', description: "name status, allows comma-separated multiple values",partial: "name_statuses/list_for_search_help"},
-      {field_name: 'type:', description: "name type, allows comma-separated multiple values",partial: "name_types/list_for_search_help"}
+      {field_name: 'rank:', description: "name rank, allows comma-separated multiple values, single values, and single values with wildcards",partial: "name_ranks/list_for_search_help"},
+      {field_name: 'above-rank:', description: "search for names above a specified taxon rank (single value only)"},
+      {field_name: 'below-rank:', description: "search for names below a specified taxon rank (single value only)"},
+      {field_name: 'status:', description: "name status, allows comma-separated (or semi-colon-separated) multiple values, single values, and single values with wildcards",partial: "name_statuses/list_for_search_help"},
+      {field_name: '', description: "Note for searching name status - some values include a comma, and these will be treated as two values",partial: "name_statuses/list_for_search_help"},
+      {field_name: '', description: "To avoid a search for one name status that includes a comma being treated as two values, replace the comma with an underscore",partial: "name_statuses/list_for_search_help"},
+      {field_name: '', description: "To search for a list of name statuses, including any with a comma, use semi-colons instead of commas to separate the values",partial: "name_statuses/list_for_search_help"},
+      {field_name: '', description: "If your list of name statuses contains any semi-colons, that will be used as the value separator",partial: "name_statuses/list_for_search_help"},
+      {field_name: 'type:', description: "name type, allows comma-separated multiple values, single values, and single values with wildcards",partial: "name_types/list_for_search_help"}
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent" 
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span>
       </a>
     </td>
@@ -88,7 +111,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent" 
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -113,7 +138,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent" 
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -127,14 +154,18 @@
 <h6>Duplication Assertions</h6>
 <table class="table table-striped">
   <% [
-      {field_name: 'is-a-duplicate:', description: "marked as a duplicate"},
-      {field_name: 'is-not-a-duplicate:', description: "not marked as a duplicate"},
+      {field_name: 'is-a-duplicate:', description: "marked as a duplicate; no arguments"},
+      {field_name: 'is-not-a-duplicate:', description: "not marked as a duplicate; no arguments"},
       {field_name: 'duplicate-simple-names:', description: "not actually an assertion, but related: more than one name with the same 'simple' name value"},
-      {field_name: 'duplicate-full-names:', description: "not actually an assertion, but related: more than one name with the same 'full' name value"},
+      {field_name: 'duplicate-full-names:', description: "not actually an assertion, but related: more than one name with the same 'full' name value; no arguments"},
+      {field_name: 'master-id:', description: "the master via its ID and all its duplicates; no arguments"},
+      {field_name: 'is-a-duplicate-and-master:', description: "records marked as both a master and a duplicate - nested duplication; no arguments, includes common and cultivars"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -145,7 +176,7 @@
 <br>
 
 
-<h6>Parent-Child Assertions</h6>
+<h6>Parent-Child Queries</h6>
 <table class="table table-striped">
   <% [
       {field_name: 'is-a-parent:', description: "records exist with this marked as their parent"},
@@ -153,10 +184,14 @@
       {field_name: 'has-no-parent:', description: "has no parent"},
       {field_name: 'is-a-child:', description: "has a parent"},
       {field_name: 'is-not-a-child:', description: "has no parent"},
+      {field_name: 'first-parent-descendants-of-id:', description: "descendant names via parent_id (not second_parent_id - not implemented yet)"},
+      {field_name: 'descendants-of-id:', description: "descendant names via parent_id (not second_parent_id - not implemented yet)"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -177,7 +212,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -202,10 +239,15 @@
       {field_name: "has-multiple-basionyms:",
        description: "name has at least one standalone instance which is itself \
        cited by more than 1 basionym usage"},
+      {field_name: "first-instance-is-syn:",
+       description: "name's earliest instance is a synonym - can include false \
+       positives when a year-only date is compared to a full date; query can be slow; combine with <code>si:</code> to also see instances"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -219,11 +261,14 @@
 <h5>Associated Reference Search</h5>
 <table class="table table-striped">
   <% [
-      {field_name: 'ref-title:', description: "exact search on refence title associated with the name (supply your own wildcards)"},
+      {field_name: 'ref-title:', description: "exact search on reference title associated with the name (supply your own wildcards)"},
+      {field_name: 'novel-names-for-ref:', description: "for any supplied Reference ID, find all names associated with that reference as novelties - runs from link on Reference Details tab"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -240,7 +285,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -248,6 +295,27 @@
   </tr>
   <% end %>
 </table>
+
+<h5>Name Tag Search</h5>
+<table class="table table-striped">
+  <% [
+      {field_name: 'tag:', description: "find names that have a name tag matching the value you enter after the directive. Leading and trailing wildcards are added to your search term. With no value, finds names that have no tags"},
+      {field_name: 'has-tags:', description: "find names that have at least one name tag; no argument"},
+      {field_name: 'has-no-tags:', description: "find names that have no name tags at all; no argument"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
 
 <h5>Name Status Assertion or Category Search</h5>
 <table class="table table-striped">
@@ -260,7 +328,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -270,17 +340,68 @@
 </table>
 <br>
 
-<h5>Accepted Tree Search</h5>
+<h5>Accepted Taxonomy Search</h5>
 <table class="table table-striped">
   <% [
       {field_name: 'in-accepted-tree:', description: "restrict names to those explicitly accepted in or excluded from the accepted tree"},
       {field_name: 'accepted-in-accepted-tree:', description: "restrict names to those explicitly accepted in the accepted tree"},
-      {field_name: 'excluded-in-accepted-tree:', description: "restrict names to those explicitly excluded from the accepted tree"},
+      {field_name: 'excluded-from-accepted-tree:', description: "restrict names to those explicitly excluded from the accepted tree"},
       {field_name: 'not-in-accepted-tree:', description: "restrict names to those not explicitly accepted in or excluded from the accepted tree"},
+      {field_name: 'accepted-name-without-distribution:', description: "accepted names in the current accepted taxonomy with no profile distribution - mostly higher taxa"},
+      {field_name: 'accepted-name-with-dist-but-no-bubbles:', description: "accepted names in the current accepted taxonomy with a profile distribution, but no 'bubbles. Show instances on results to drill in.'"},
+      {field_name: 'genus-accepted-in-accepted-tree-no-children:', description: "accepted genus names in current accepted taxonomy with no children in the tree'"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
+
+<h5>Quality Control Checks</h5>
+<table class="table table-striped">
+  <% [
+      {field_name: 'possibly-malformed:', description: "search for names attached to a genus that don't start with the genus name - they might be malformed"},
+      {field_name: 'bad-name-path:', description: "search for names that have a malformed name-path i.e. based on comparison with its parent's name-path"},
+      {field_name: 'has-basionym-but-no-base-author:', description: "search for names that have a basionym in synonymy but no base author entry"},
+      {field_name: 'isonym-has-early-secondary:', description: "search for names with status isonym who's earliest citation is from a secondary reference"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
+
+
+<h5>Family queries</h5>
+<table class="table table-striped">
+  <% [
+      {field_name: 'family-id:', description: "search for names attached directly to a family"},
+      {field_name: 'no-family-id:', description: "search for names not attached directly to a family -- tip: combine this with a name-rank: query "},
+      {field_name: 'in-own-family:', description: "search for names not attached directly to themselves as a family"},
+      {field_name: 'fam-in-other-family:', description: "search for family names in a family but not their own family - that is, name.id != name.family_id"},
+      {field_name: 'parent-different-to-family:', description: "search for names whose family is different to their parent - ideally combined with rank: genus to find interesting cases"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
         </a>
     </td>
@@ -292,4 +413,29 @@
 
 <%= render partial: 'comments/advanced_search/help' %>
 <%= render partial: 'help/id_search_help' %>
+<h5>Source of migrated records</h5>
+<p>Useful for records imported from other systems where the source details have been retained.</p>
+<p>When the data exists for a record it is displayed at the bottom of the Details tab as "Migrated from source-system #source-id".</p>
+<table class="table table-striped">
+  <% [
+      {field_name: 'source-id:', description: "numeric ID of the source record, needs an argument, takes multiple arguments, no wildcards because it's numeric"},
+      {field_name: 'source-system:', description: "source system shown at bottom of Details tab, case-insensitive, needs an argument, takes only one argument, allows wildcards"},
+      {field_name: 'source-id-string:', description: "numeric ID as a string - so it takes wildcards and has a wildcard added to the tail, needs an argument"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent"><a href="javascript:void(0)" 
+                                    data-search-directive="<%= val[:field_name] %>" 
+                                    class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span></a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
+
 <%= render partial: 'help/case_and_wildcards_search' %>
+
+
+Note: When searches return Name records with their instances and synonymy, the <code>limit:</code> and <code>offset:</code> directives apply only to the 
+Name records.

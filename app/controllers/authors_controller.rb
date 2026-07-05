@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class AuthorsController < ApplicationController
-  before_filter :find_author, only: [:show, :destroy, :tab]
+  before_action :find_author, only: %i[show destroy tab]
 
   # GET /authors/1
   # GET /authors/1/tab/:tab
@@ -26,6 +26,8 @@ class AuthorsController < ApplicationController
   def show
     set_tab
     set_tab_index
+    copy if @tab == "tab_copy"
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 
@@ -34,10 +36,15 @@ class AuthorsController < ApplicationController
   # GET /authors/new_row
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    respond_to do |format|
-      format.html { redirect_to new_search_path }
-      format.js {}
-    end
+    render :new_row,
+       locals: {partial: 'new_row',
+                locals_for_partial:
+           {tab_path: "#{new_author_with_random_id_path(@random_id)}",
+            link_id: "link-new-author-#{@random_id}",
+            link_title: "New Author",
+            link_text: "New Author"
+           }
+               }
   end
 
   # GET /authors/new
@@ -45,10 +52,7 @@ class AuthorsController < ApplicationController
     @author = Author.new
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
-    respond_to do |format|
-      format.html {}
-      format.js {}
-    end
+    render :new
   end
 
   # POST /authors
@@ -56,23 +60,26 @@ class AuthorsController < ApplicationController
     @author = Author::AsEdited.create(author_params,
                                       typeahead_params,
                                       current_user.username)
-    render "create.js"
-  rescue => e
+    render "create"
+  rescue StandardError => e
     logger.error("Controller:Authors:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error.js", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   def update
     @author = Author::AsEdited.find(params[:id])
+
+    raise CanCan::AccessDenied.new("Access Denied!", :update, @author) unless can? :update, @author
+
     @message = @author.update_if_changed(author_params,
                                          typeahead_params,
                                          current_user.username)
-    render "update.js"
-  rescue => e
+    render "update"
+  rescue StandardError => e
     logger.error("Author#update rescuing #{e}")
     @message = e.to_s
-    render "update_error.js", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_content
   end
 
   # DELETE /authors/1
@@ -99,9 +106,7 @@ class AuthorsController < ApplicationController
   def typeahead_on_name_duplicate_of_current
     authors = []
     typeahead = Author::AsTypeahead
-    unless params[:term].blank?
-      authors = typeahead.on_name_duplicate_of(params[:term], params[:id])
-    end
+    authors = typeahead.on_name_duplicate_of(params[:term], params[:id]) unless params[:term].blank?
     render json: authors
   end
 
@@ -111,6 +116,11 @@ class AuthorsController < ApplicationController
     typeahead = Author::AsTypeahead
     authors = typeahead.on_abbrev(params[:term]) unless params[:term].blank?
     render json: authors
+  end
+
+  def copy
+    author = @author
+    @author = Author.new author.attributes
   end
 
   private
@@ -123,7 +133,7 @@ class AuthorsController < ApplicationController
   end
 
   def author_params
-    params.require(:author).permit(:name, :full_name, :abbrev, :notes)
+    params.require(:author).permit(:name, :extra_information, :abbrev, :notes)
   end
 
   def typeahead_params

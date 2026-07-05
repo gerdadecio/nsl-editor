@@ -1,0 +1,66 @@
+<h1>Index</h1>
+<div id="search-results" class="col-xs-12 col-sm-8 col-md-9 col-lg-9 nothing-selected stylish-scrollbar">
+  <div id="search-results-inner" class="no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 search-results-inner">
+    <table  id="search-results-table" class="table table-condensed search-results" data-summary="Results of the latest search.">
+    <tr><td colspan="99" width="80-percent">
+        
+    <h2>Configuration</h2>
+
+    <p><%= Time.now %></p>
+    <h4>Application environment</h4>
+    <table class="table table-condensed search-results width-100-percent">
+
+    <tr><td class="width-40-percent min-width-10em">Rails.env</td><td> <%= Rails.env %> </td></tr>
+
+    <tr><td>Ruby platform</td><td> <%= RUBY_PLATFORM %> </td></tr>
+    <% if RUBY_PLATFORM =~ /jruby/i %>
+      <tr><td>JRuby version</td><td> <%= JRUBY_VERSION %> </td></tr>
+    <% end %>
+    <tr><td>Ruby version</td><td> <%= RUBY_VERSION %> </td></tr>
+
+    <tr><td>Rails</td><td> <%= Rails::VERSION::STRING %> </td></tr>
+
+    <tr><td>Database</td><td> <%= Rails.configuration.database_configuration[Rails.env]["database"] %> </td></tr>
+
+    <tr><td>Schema version</td><td> <%#= DbVersion.current %> </td></tr>
+    <tr><td>Application version</td><td> <%= Rails.configuration.try('version') %> </td></tr>
+    <tr><td>Path to broadcast file</td><td> <%= Rails.configuration.try(:path_to_broadcast_file) %> </td></tr>
+    <tr><td>Namespace</td><td> <%#= Namespace.try(:default).try(:name) %> </td></tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+
+    <h4>Rails timezone</h4>
+    <table class="table table-condensed search-results width-100-percent">
+    <tr><td class="width-40-percent min-width-10em">Time.zone</td><td nowrap="nowrap" > <%= Time.zone %> </td></tr>
+    <tr><td>Time.zone.now</td><td nowrap="nowrap" > <%= Time.zone.now %> </td></tr>
+    <tr><td>Time.now</td><td nowrap="nowrap"> <%= Time.now %> </td></tr>
+    <tr><td>Rails.configuration.active_record.default_timezone</td><td nowrap="nowrap"> <%= Rails.configuration.try(:active_record).try(:default_timezone) %> </td></tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+
+    <h4>Rails configuration</h4>
+
+    <table class="table table-condensed search-results width-100-percent">
+
+    <tr><td class="width-40-percent min-width-10em">Rails.configuration.relative_url_root</td><td> <%= Rails.configuration.try(:relative_url_root) %> </td></tr>
+
+    <tr><td>Rails.configuration.session_key_tag</td><td> <%= Rails.configuration.try(:session_key_tag) %> </td></tr>
+
+    <tr><td>Rails.configuration.environment</td><td> <%= Rails.configuration.try(:environment) %> </td></tr>
+
+    <tr><td>Rails.configuration.action_controller.perform_caching</td><td> <%= Rails.configuration.action_controller.try(:perform_caching) %> </td></tr>
+
+    <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+
+
+    <table>
+    <tr><td>Database</td><td> <%= Rails.configuration.database_configuration[Rails.env]["database"] %> </td></tr>
+    <tr><td>Database user</td><td> <%= Rails.configuration.database_configuration[Rails.env]["username"] %> </td></tr>
+    <tr><td>Names</td><td> <%= Name.all.count %> </td></tr>
+    </table>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,265 @@
+*.blue           { color: blue; }
+*.brown          { color: brown; }
+*.gray           { color: gray; }
+*.lightgray      { color: lightgray; }
+*.darkgray       { color: darkgray; }
+*.darkred        { color: darkred; }
+*.darkslateblue  { color: darkslateblue; }
+*.green          { color: green; }
+*.orange         { color: orange }
+*.purple         { color: purple; }
+*.rebeccapurple  { color: #663399; }
+*.red            { color: red; }
+*.sienna         { color: sienna; }
+*.white          { color: white; }
+*.yellow         { color: yellow; }
+*.darkorchid     { color: darkorchid; }
+*.blueviolet     { color: blueviolet; }
+*.darkmagenta    { color: darkmagenta; }
+*.darkviolet     { color: darkviolet; }
+*.firebrick      { color: firebrick; }
+*.mediumslateblue { color: mediumslateblue; }
+*.darkgreen      { color: darkgreen; }
+*.darkolivegreen { color: darkolivegreen; }
+
+/* Prevent full_name_html class setting color */
+
+common element.blue {color: #606060;}
+common element.brown {color: #606060;}
+common element.gray {color: #606060;}
+common element.green {color: #606060;}
+common element.orange {color: #606060;}
+common element.purple {color: #606060;}
+common element.red {color: #606060;}
+common element.sienna {color: #606060;}
+common element.white {color: #606060;}
+common element.yellow {color: #606060;}
+
+.showing-details common element.blue {
+  color: white;
+  background-color: #808080;
+}
+.showing-details common element.brown {
+  color: white;
+  background-color: #808080;
+}
+.showing-details common element.gray {
+  color: white;
+  background-color: #808080;
+}
+.showing-details common element.green {
+  color: white;
+  background-color: #808080;
+}
+.showing-details common element.orange {
+  color: white;
+  background-color: #808080;
+}
+.showing-details common element.purple {
+  color: white;
+  background-color: #808080;
+}
+.showing-details common element.red {
+  color: white;
+  background-color: #808080;
+}
+.showing-details common element.sienna {
+  color: white;
+  background-color: #808080;
+}
+.showing-details common element.white {
+  color: white;
+  background-color: #808080;
+}
+.showing-details common element.yellow {
+  color: white;
+  background-color: #808080;
+}
+
+*.bgblue           { background-color: blue; }
+*.bgbrown          { background-color: brown; }
+*.bggray           { background-color: gray; }
+*.bglightgray      { background-color: lightgray; }
+*.bgdarkgray       { background-color: darkgray; }
+*.bgdarkred        { background-color: darkred; }
+*.bgdarkslateblue  { background-color: darkslateblue; }
+*.bggreen          { background-color: green; }
+*.bgorange         { background-color: orange }
+*.bglavender       { background-color: lavender; }
+*.bgpurple         { background-color: purple; }
+*.bgmediumpurple   { background-color: mediumpurple; }
+*.bgrebeccapurple  { background-color: #663399; }
+*.bgred            { background-color: red; }
+*.bgsienna         { background-color: sienna; }
+*.bgwhite          { background-color: white; }
+*.bgyellow         { background-color: yellow; }
+*.bgdarkorchid     { background-color: darkorchid; }
+*.bgblueviolet     { background-color: blueviolet; }
+*.bgfirebrick      { background-color: firebrick; }
+*.bgdarkgreen      { background-color: darkgreen; }
+*.bgdarkolivegreen { background-color: darkolivegreen; }
+*.bgdarkslategray  { background-color: darkslategray; }
+
+
+*.hover-white:hover    {color: white}
+a:hover.blue           { color: blue; }
+
+*.big-vertical-padding  { padding: 0.6em 0.4em 0.6em 0.4em; }
+.search-result .no-matches {
+  background: chocolate;
+  color: white;
+}
+.search-result .too-many-matches {
+  background: maroon;
+  color: white;
+}
+.search-result .no-primary {
+  background: chocolate;
+  color: white;
+}
+.search-result .misapplied {
+  background: #555569;
+  color: white;
+}
+.search-result span.flag.excluded {
+  background: purple;
+  color: white;
+}
+.search-result .hybrid-cross {
+  background: darkseagreen;
+  color: white;
+}
+.search-result .preferred-name {
+  background: mediumslateblue;
+  color: white;
+}
+
+.search-result .isonym-has-preferred-name,
+.search-result .orth-var-has-preferred-name{
+  background: gray;
+  color: white;
+}
+
+.standalone-count {
+  background: darkslateblue;
+  color: white;
+}
+
+.use-default-ref,
+.use-batch-default-reference {
+  background: mediumvioletred;
+  color: white;
+}
+
+.use-existing-instance-count ,
+.use-an-existing-instance {
+  background: darkred;
+  color: white;
+}
+
+.copy-and-append-count,
+.copy-and-append {
+  background: orangered;
+  color: white;
+}
+
+.relationship-statement {
+  background: darkslateblue;
+  color: white;
+}
+
+.standalone-statement {
+  background: darkslateblue;
+  color: white;
+}
+
+.on-tree-indicator {
+  background: blueviolet;
+  color: white;
+}
+
+.exclude-from-further-processing {
+  background: sienna;
+  color: white;
+}
+
+.in-batch-note {
+  background: lightgray;
+  color: black;
+}
+
+.in-batch-compiler-note {
+  background: lightgreen;
+  color: black;
+}
+
+.compiler-note {
+  background: darkgreen;
+  color: white;
+}
+
+.search-result .flag,
+.search-result .fat {
+  padding: 0.1em 0.3em 0.1em 0.4em;
+}
+
+
+.search-result span.isonym {
+  background: peru;
+  color: white;
+}
+
+.search-result .orth-var {
+  background: firebrick;
+  color: white;
+}
+
+.accepted-taxon {
+  font-weight: bold;
+}
+
+.has-parent {
+  padding-left: 2em;
+}
+
+.vote-agree {
+  color: green;
+}
+
+.vote-disagree {
+  color: firebrick;
+}
+/*
+.synonym-taxon {
+}
+
+.misapplied-taxon {
+}
+*/
+
+/*
+*.name,name-hover {color: darkgreen;}
+*.ref,ref-hover  {color: brown;}
+* .instance,.instance-hover {color: darkslateblue;}
+*.author,author-hover {color: darkblue;}
+*/
+
+/* Common badge colors */
+.badge {
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge.badge-muted-red,
+.badge.badge-duplicate {
+  background: #FCEBEB;
+  border: 0.5px solid #F09595;
+  color: #791F1F;
+}
+
+.badge.badge-muted-orange {
+  background: #fce2b7;
+  border: 0.5px solid #f0cb95;
+  color: #79551f;
+}

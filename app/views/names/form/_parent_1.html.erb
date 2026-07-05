@@ -20,6 +20,7 @@
       </p>
     </div>
     <%= hidden_field(:name,:parent_id, value: @name.parent_id) %>
+
     <% if @name.category_for_edit.takes_hybrid_scoped_parent? %>   
       <script>setUpNameHybridParentTypeahead();</script>
     <% elsif @name.category_for_edit.takes_cultivar_scoped_parent? %>   

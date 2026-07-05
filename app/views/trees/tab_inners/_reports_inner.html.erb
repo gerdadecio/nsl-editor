@@ -1,49 +1,63 @@
 <div id="tree-reports-inner" class="width-95-percent reports-inner">
-  <ul class="nav nav-tabs" id="tree-report-tabs" role="tablist">
-    <li class="nav-item active">
-      <a class="nav-link"
-         id="diff-tab"
-         data-toggle="tab"
-         href="#treeDiff"
-         role="tab"
-         title="Diff"
-         aria-controls="diff"
-         aria-selected="true"
-         onclick="loadReport($('#diff-content'), '<%= @diff_link.html_safe %>');"
-      >Diff <span title="click to refresh" class="text-muted "><i class="fa fa-refresh"></i></span></a>
+  <h4><%= "#{@working_draft.tree.name} #{@working_draft.draft_name}" %> is the selected draft</h4>
+  <ul class="nav nav-tabs tree-report-tabs" id="tree-report-tabs" role="tablist">
+    <li id="synonymy-tab" class="nav-item active">
+      <%= link_to "Synonymy",
+        show_cas_path,
+        id: "val-syn-tab-extra-new",
+        class: 'nav-link tab',
+        remote: true,
+        method: :get,
+        title: 'Check All Synonymy',
+        "aria-controls": "Synonymy",
+        "aria-selected": "false"
+      %>
     </li>
-    <li class="nav-item">
-      <a class="nav-link"
-         id="validation-tab"
-         data-toggle="tab"
-         href="#treeValidation"
-         role="tab"
-         title="Tree validation report"
-         aria-controls="Tree validation"
-         aria-selected="false"
-         onclick="loadReport($('#validation-content'), '<%= @val_link.html_safe %>');"
-      >Validation Report <span title="click to refresh" class="text-muted "><i class="fa fa-refresh"></i></span></a>
+    <li id="changes-tab" class="nav-item">
+      <%= link_to "Changes",
+        show_diff_path,
+        id: "diff-tab-new",
+        class: 'nav-link tab',
+        remote: true,
+        method: :get,
+        title: 'Draft Changes Report',
+        "aria-controls": "Draft Changes Report",
+        "aria-selected": "false"
+      %>
     </li>
-    <li class="nav-item">
-      <a class="nav-link"
-         id="val-syn-tab"
-         data-toggle="tab"
-         href="#treeValidateSyn"
-         role="tab"
-         title="Validate all Synonymy"
-         aria-controls="Validate all Synonymy"
-         aria-selected="false"
-         onclick="loadCheckSynonymyReport($('#validate-synonymy-content'), '<%= @val_syn_link.html_safe %>');"
-      >Check all Synonymy <span title="click to refresh" class="text-muted "><i class="fa fa-refresh"></i></span></a>
+    <li id="valrep-tab" class="nav-item">
+      <%= link_to "Validation",
+        show_valrep_path,
+        id: "valrep-tab-new",
+        class: 'nav-link tab',
+        remote: true,
+        method: :get,
+        title: 'Validation Report',
+        "aria-controls": "Validation Report",
+        "aria-selected": "false"
+      %>
     </li>
-  </ul>
+  </ul> 
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade active in" id="treeDiff" role="tabpanel" aria-labelledby="diff-tab">
-      <div id="diff-content" class="tree-container">
-        Loading diff report...
-      </div>
+    <div class="tab-pane fade active in hidden" id="treeDiff" role="tabpanel" aria-labelledby="diff-tab">
+      <%= link_to "Run the Changes Report",
+                      run_diff_path,
+                      id: 'link-to-run-diff',
+                      remote: true,
+                      class: 'btn btn-primary',
+                      title: 'Run the Changes Report' %>
+      <h5 id="diff-is-running-indicator" class="hidden"></h5>
+      <br>
+      <br>
+      <%= link_to 'Alternative link to the Report',
+                  @diff_link_raw,
+                  class: 'btn btn-primary',
+                  title: 'An alternative way of running the same report directly (as a work-around for intermittent problems with the standard link)'
+      %>
+      <div id="diff-content" class="tree-container"> </div>
     </div>
-    <div class="tab-pane fade" id="treeAltSyn" role="tabpanel" aria-labelledby="alt-syn-tab">
+
+    <div class="red tab-pane fade" id="treeAltSyn" role="tabpanel" aria-labelledby="alt-syn-tab">
       <form action="<%= trees_update_synonymy_path %>" data-remote="true" method="post">
         <div id="synonymy-content" class="tree-container">
           Loading altered synonymy report...
@@ -57,16 +71,45 @@
         </button>
       </form>
     </div>
+
     <div class="tab-pane fade" id="treeValidation" role="tabpanel" aria-labelledby="validation-tab">
+      <%= link_to "Run the Validation Report",
+                      run_valrep_path,
+                      id: 'link-to-run-valrep',
+                      remote: true,
+                      class: 'btn btn-primary',
+                      title: 'Run the Validation Report' %>
+      <h5 id="val-report-is-running-indicator" class="hidden"></h5>
+      <br>
+      <br>
+      <%= link_to 'Alternative link to the Report',
+                  @val_link_raw,
+                  class: 'btn btn-primary',
+                  title: 'An alternative way of running the same report directly (as a work-around for intermittent problems with the standard link)'
+      %>
       <div id="validation-content" class="tree-container">
-        Loading validation report...
       </div>
     </div>
-    <div class="tab-pane fade" id="treeValidateSyn" role="tabpanel" aria-labelledby="val-syn-tab">
+
+    <div class="tab-panefade" id="treeValidateSyn" role="tabpanel" aria-labelledby="val-syn-tab">
+      <%= link_to "Run the Synonymy Report",
+                      run_cas_path,
+                      id: 'link-to-run-cas',
+                      remote: true,
+                      method: :get,
+                      class: 'btn btn-primary',
+                      title: 'Run or re-run the Synonymy Report.  It validates all synonyms.' %>
+      <h5 id="cas-report-is-running-indicator" class="hidden"></h5>
+      <br>
+      <br>
+      <%= link_to 'Alternative link to the Report',
+                  @val_syn_link_raw,
+                  class: 'btn btn-primary',
+                  title: 'An alternative way of running the same report directly (as a work-around for intermittent problems with the standard link)'
+      %>
+
       <form action="<%= trees_update_synonymy_by_instance_path %>" data-remote="true" method="post">
-        <div id="validate-synonymy-content" class="tree-container">
-          Loading validate all synonymy report...
-        </div>
+        <div id="validate-synonymy-content" class="tree-container"> </div>
         <button type="submit"
                 id="update_checked_synonymy"
                 name="update_checked_synonymy"

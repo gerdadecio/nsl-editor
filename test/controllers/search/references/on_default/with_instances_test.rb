@@ -24,11 +24,11 @@ class SearchRefsOnDefaultWithInstancesTest < ActionController::TestCase
 
   test "search on reference default with instances" do
     get(:search,
-        { query_target: "reference",
-          query_string: "de fructibus show-instances:" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "reference",
+                  query_string: "de fructibus show-instances:" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /6 records\b/,

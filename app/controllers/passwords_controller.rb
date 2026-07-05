@@ -18,24 +18,52 @@
 #
 # Administrator Actions
 class PasswordsController < ApplicationController
-  before_filter :hide_details, :empty_search
+  before_action :hide_details, :empty_search
 
   def edit
-    @password = Password.new
+    if session[:generic_active_directory_user]
+      render :edit_error
+    else
+      edit_inner
+    end
+  rescue StandardError => e
+    logger.error("Password change error: #{e}")
+    render :edit_error
   end
 
   def update
-    Rails.logger.debug("Now in change_password")
+    if session[:generic_active_directory_user]
+      render :edit_error
+    else
+      update_inner
+    end
+  end
+
+  def show_password_form
+    @password = Password.new
+  end
+
+  private
+
+  def edit_inner
+    @password = Password.new
+    redirect_to action: :show_password_form
+  end
+
+  def update_inner
     @password = Password.new
     @password.current_password = params[:password]["current_password"]
     @password.new_password = params[:password]["new_password"]
     @password.new_password_confirmation = params[:password]["new_password_confirmation"]
     @password.username = @current_user.username
+    @password.user_cn = session[:user_cn]
     if @password.save!
-      render :updated
+      redirect_to :password_changed
     else
-      render :edit
+      render :show_password_form, status: :unprocessable_content
     end
+  rescue StandardError => e
+    Rails.logger.error(e.to_s)
+    render :show_password_form, status: :unprocessable_content
   end
 end
-

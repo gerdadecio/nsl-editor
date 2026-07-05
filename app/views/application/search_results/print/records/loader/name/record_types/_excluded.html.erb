@@ -1,0 +1,63 @@
+
+<tr class="search-result excluded top-spacer"><td colspan="5">&nbsp;</td></tr>
+
+<%# Show this heading once per family at most and only on the first occurrence %>
+<%# Presumes excludeds etc are grouped at the end of a family %>
+<% if !(defined? @family_excluded_header_shown) || (@family_excluded_header_shown != search_result.family) %>
+  <tr class="search-result excluded-header">
+    <td colspan="5">UNPLACED, DOUBTFUL AND EXCLUDED NAMES</td>
+  </tr>
+  <% @family_excluded_header_shown = search_result.family %>
+<% end %>
+
+
+<tr id="search-result-<%= search_result.id %>" 
+    class="search-result <%= search_result.record_type %> ">
+  <td class="text name main-content" colspan="5" >
+
+
+    <span class='loader-name <%= search_result.record_type %> full-name'>
+        <% if search_result.rank&.downcase == 'genus'  %>
+         <%= search_result.full_name.split(/ /).first.upcase %>
+         <%= search_result.full_name.split(/ /).drop(1).join(' ') %><%= ',' unless search_result.name_status.blank? %>
+        <% else %>
+          <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
+        <% end %>
+
+        <% unless search_result.name_status.blank? %>
+          <%= "#{search_result.name_status}" %>
+        <% end %>
+    </span>
+
+    <% unless search_result.remark_to_reviewers.blank? %>
+        <span class="review loader-name remark-to-reviewers">
+           <%= search_result.remark_to_reviewers.html_safe %>
+        </span>
+    <% end %>
+
+    <% unless search_result.notes.blank? %>
+      <% if can?("batches", :index) %>
+        <span class="review loader-name compiler-note">
+           <%= search_result.notes.html_safe %>
+        </span>
+      <% end %>
+    <% end %>
+
+    <% unless search_result.higher_rank_comment.blank? %>
+        <span class="review loader-name remark-to-reviewers">
+          <%= search_result.higher_rank_comment.html_safe %>
+        </span>
+    <% end %>
+
+    <span class="review loader-name votes">
+      <% batch_review_id = -1 %>
+      <% search_result.votes.order(:created_at).each do |vote| %>
+        <% unless batch_review_id == vote.batch_review %>
+          <%= vote.batch_review.name %>
+          <% batch_review_id = vote.batch_review %>
+        <% end %>
+        <span class='<%= vote.vote ? "bggreen" : "bgred" %>'><%= vote.vote ? '✓' : 'X' %>&nbsp;<%= vote.org.abbrev %>&nbsp;</span>
+      <% end %>
+    </span>
+  </td>
+</tr>

@@ -1,0 +1,67 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line',
+      locals: {label: 'Batch',
+               info: @loader_name.batch.name} %>
+<%= render partial: 'detail_line',
+      locals: {label: 'Family',
+               info: link_to("#{@loader_name.family}",
+                        search_path(
+                          query_target: @loader_name.batch.name,
+                          query_string: "family: #{@loader_name.family}"),
+               title:"Query the family",class:'blue')} %>
+<%= render partial: 'detail_line', locals: {label: 'Rank', info: "#{@loader_name.rank}"} %>
+<%= render partial: 'detail_line', locals: {label: 'Record Type', info: "#{@loader_name.record_type}"} %>
+
+<% if ["accepted", "excluded", "synonym", "misapplied"].include?(params[:component]) %>
+  <%= render partial: 'detail_line', locals: {label: 'Preferred Match', info: "No preferred match chosen"} unless @loader_name.preferred_match? %>
+  <% @loader_name.preferred_matches.each do |preferred_match| %>
+    <%= render partial: 'detail_line', locals: {label: 'Preferred Match', info: "#{preferred_match.name.simple_name}"} %>
+    <%= render partial: 'detail_line', locals: {label: 'in', info: "#{preferred_match.instance.reference.citation}"} %>
+    <br>
+    <% preferred_match_link = link_to("#{sanitize(ShardConfig.name_space)} #{external_link_square_icon}".html_safe,
+                 "#{Rails.configuration.try('nsl_links')}apniFormat/display/#{preferred_match.name.id}",
+                 title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
+                 class: "rebeccapurple",
+                 target: "_editor_to_apni",
+                 tabindex: increment_tab_index) %>
+    <%= render partial: 'detail_line', locals: {label: 'View Preferred Match', info: preferred_match_link} %>
+  <% end %>
+<% end %>
+
+
+<% if @loader_name.partly? %>
+  <%= render partial: 'detail_line', locals: {label: 'Synonym Type', info: "#{@loader_name.synonym_type}"} %>
+  <%= render partial: 'detail_line', locals: {label: 'Partly', info: "#{@loader_name.partly}"} %>
+  <%= render partial: 'detail_line', locals: {label: 'Publ Partly', info: "#{@loader_name.publ_partly}"} %>
+<% end %>
+<% if @loader_name.no_further_processing? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.no_further_processing, label: 'no further processing'} %>
+<% end %>
+<%= divider %>
+<% if @loader_name.no_further_processing? %>
+  <div class="bggray big-vertical-padding" >
+    <h4 class="white">No Further Processing</h4>
+    <p class="white">This record is flagged for no further processing.</p>
+  </div>
+<% end %>
+<% if @loader_name.try('parent').try('no_further_processing?') %>
+  <div class="bggray big-vertical-padding" >
+    <h4 class="white">No Further Processing via parent</h4>
+    <p class="white">This record is flagged for no further processing.</p>
+  </div>
+<% end %>
+
+
+<%= render partial: 'loader/names/review/tabs/common/vote_and_comments', locals: {scope: 'unrestricted'} %>
+
+<%= render partial: 'detail_line', locals: {label: 'Loader Name ID', info: @loader_name.id} %>
+<%= created_by_whom_and_when(@loader_name).html_safe %>
+<br>
+<%= updated_by_whom_and_when(@loader_name).html_safe %>
+
+<%= divider %>
+<%= link_to('Show record in context',
+            search_path(
+              query_target: @loader_name.batch.name,
+              query_string: "id: #{@loader_name.parent_id || @loader_name.id}"),
+               title:"Query the loader name in context",class:'blue') %>

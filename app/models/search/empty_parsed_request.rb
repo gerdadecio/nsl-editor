@@ -34,17 +34,22 @@ class Search::EmptyParsedRequest
               :where_arguments,
               :query_target,
               :target_button_text,
-              :show_instances
+              :show_instances,
+              :print,
+              :display
 
   def initialize(params)
     @params = params
     @empty = true
     @defined_query = false
-    @target_button_text = "Names"
+    @target_button_text = params[:query_target] || "Names"
     @count = false
     @list = false
     @limited = false
     @common_and_cultivar = false
     @order = ""
+    @query_string = params[:query_string]
+    @print = false
+    @display = !@print
   end
 end

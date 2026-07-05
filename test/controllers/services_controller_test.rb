@@ -23,13 +23,19 @@ class ServicesControllerTest < ActionController::TestCase
   setup do
   end
 
-  test "unauthenticated user should get index" do
-    get(:index, {}, {})
-    assert_response :success
+  test "no user should get index" do
+    assert_raises(ActionController::UrlGenerationError) {
+    get(:index, params: {}, session: {})
+    }
   end
 
   test "unauthenticated user should get ping" do
-    get(:ping, {}, {})
+    get(:ping, params: {}, session: {})
+    assert_response :success
+  end
+
+  test "unauthenticated user should get build" do
+    get(:build, params: {}, session: {})
     assert_response :success
   end
 end

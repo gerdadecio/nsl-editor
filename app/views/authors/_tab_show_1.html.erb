@@ -2,7 +2,7 @@
 
 <%= render partial: 'detail_line', locals: {info: @author.name, label: 'name'} %>
 <%= render partial: 'detail_line', locals: {info: @author.abbrev, label: 'abbrev'} %>
-<%= render partial: 'detail_line', locals: {info: @author.full_name, label: 'extra name info'} %>
+<%= render partial: 'detail_line', locals: {info: @author.extra_information, label: 'extra name info'} %>
 <% if @author.notes.present? && @author.notes.length > 0 %>
   <%= divider %>
   Notes
@@ -10,34 +10,38 @@
   <%= @author.notes %>
 <% end %>
 <%= divider %>
+<%= render partial: 'detail_line', locals: {info: @author.normalised_name, label: 'name without diacritics', warn: !@author&.normalised_name&.match(/[^ -~]/).nil?} %>
+<%= render partial: 'detail_line', locals: {info: @author.normalised_abbrev, label: 'abbrev without diacritics', warn: !@author&.normalised_abbrev&.match(/[^ -~]/).nil?} %>
+
+<%= divider %>
 
 <% search_count = @author.master_of.try('count') || 0 %>
 <% if search_count > 0 %>
   <% @author.master_of.each do |duplicate| %>
-    <%= render partial: 'detail_line', 
+    <%= render partial: 'detail_line',
                locals: {info: link_to(duplicate.name_and_or_abbrev,
                                       search_path(query_target: "author", query_string: "id:#{duplicate.id}"),
-                                      title: 'See duplicate of'), 
+                                      title: 'See duplicate'),
                         label: 'duplicate'} %>
-    <%= divider %>
   <% end %>
+  <%= divider %>
 <% end %>
 
 <% if @author.duplicate_of_id.present? %>
-    <%= render partial: 'detail_line', 
+    <%= render partial: 'detail_line',
                locals: {info: link_to(@author.duplicate_of.name_and_or_abbrev,
                         search_path(query_target: "author", query_string: "id:#{@author.duplicate_of_id}"),
-                        title: 'See duplicate'), 
+                        title: 'See master record'),
                         label: 'duplicate of'} %>
     <%= divider %>
 <% end %>
 
 <% search_count = @author.references.count %>
 <% if search_count > 0 %>
-<%= render partial: 'detail_line', 
+<%= render partial: 'detail_line',
            locals: {info: link_to("#{pluralize(search_count,'authored reference')} ",
                                   search_path(query_target: "reference", query_string: "author-id:#{@author.id}"),
-                                  title: 'See references'), 
+                                  title: 'See references'),
                     label: ''} %>
 <% else %>
   No authored references.
@@ -94,15 +98,16 @@
 <% end %>
 
 <h5>Author #<%= @author.id %></h5>
-<% if @author.duplicate_of_id.present? %>
-<h5>Duplicate of author #<%= @author.duplicate_of_id %></h5>
-<% end %>
 
 <%= created_by_whom_and_when(@author).html_safe %>
 <br>
 <%= updated_by_whom_and_when(@author).html_safe %>
 
-<%= render partial: 'detail_line', locals: {label: 'System', info: "#{@author.namespace.try('name')}#{%Q(.#{@author.source_system.try('downcase')}.#{@author.source_id}) if @author.source_system}"} %>
+<% if @author.source_system %>
+  <br>Migrated from <%= "#{@author.source_system.downcase} ##{@author.source_id}" %>
+<% end %>
 
-
+<% if @author.api_name && @author.api_at %>
+  <br>Record changed by: <%= "#{@author.api_name} #{formatted_timestamp(@author.api_at)}"%>
+<% end %>
 

@@ -16,11 +16,33 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class RefType < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: ref_type
+#
+#  id                 :bigint           not null, primary key
+#  description_html   :text
+#  lock_version       :bigint           default(0), not null
+#  name               :string(50)       not null
+#  parent_optional    :boolean          default(FALSE), not null
+#  use_parent_details :boolean          default(FALSE), not null
+#  parent_id          :bigint
+#  rdf_id             :string(50)
+#
+# Indexes
+#
+#  ref_type_rdfid                (rdf_id)
+#  uk_4fp66uflo7rgx59167ajs0ujv  (name) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_51alfoe7eobwh60yfx45y22ay  (parent_id => ref_type.id)
+#
+class RefType < ApplicationRecord
   self.table_name = "ref_type"
   self.primary_key = "id"
 
-  belongs_to :parent, class_name: "RefType", foreign_key: "parent_id"
+  belongs_to :parent, class_name: "RefType", foreign_key: "parent_id", optional: true
   has_many :children, class_name: "RefType", foreign_key: "parent_id",
                       dependent: :restrict_with_exception
 
@@ -44,8 +66,7 @@ class RefType < ActiveRecord::Base
   end
 
   def self.unknown
-    RefType.where(name: "Unknown")
-           .push(RefType.order("name").limit(1).first).first
+    RefType.where(name: "Unknown").first
   end
 
   def self.options
@@ -54,11 +75,9 @@ class RefType < ActiveRecord::Base
 
   def self.options_for_parent_of(children_ref_types)
     children_ref_types.uniq.each do |rt|
-      if rt.parent_id.present?
-        return options_with_preference(rt.parent.name)
-      else
-        return options
-      end
+      return options_with_preference(rt.parent.name) if rt.parent_id.present?
+
+      return options
     end
   end
 
@@ -75,7 +94,7 @@ class RefType < ActiveRecord::Base
 
   def self.query_form_options
     all.sort_by(&:name)
-       .collect { |n| [n.name, n.name.downcase, class: ""] }
+       .collect { |n| [n.name, n.name.downcase, { class: "" }] }
   end
 
   def rule
@@ -102,11 +121,11 @@ class RefType < ActiveRecord::Base
   end
 
   def part?
-    name.match(/\APart\z/)
+    name == "Part"
   end
 
   def reference_year_required?
-    %w(chapter database\ record herbarium\ annotation personal\ communication
-       paper section).include? name.downcase
+    ["chapter", "database record", "herbarium annotation", "personal communication", "paper",
+     "section"].include? name.downcase
   end
 end

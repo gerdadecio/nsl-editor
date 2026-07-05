@@ -1,0 +1,13 @@
+
+<% if @loader_name.accepted? || @loader_name.excluded? %>
+  <h5>Create synonym for <%= @loader_name.simple_name %></h5>
+  <% loader_name = @loader_name.new_synonym %>
+  <%= render partial: 'loader/names/tabs/forms/form_for_synonym', locals: {loader_name: loader_name} %>
+  <% if @take_focus %>
+    <script>
+      $(document).ready(function () { focusOnField('loader_name_full_name'); })
+    </script>
+  <% end %>
+<% else %>
+  This tab doesn't apply to the current record.
+<% end %>

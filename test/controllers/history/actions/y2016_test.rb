@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 #   Copyright 2015 Australian National Botanic Gardens
 #
@@ -25,15 +26,21 @@ class HistoryActionsY2016Test < ActionController::TestCase
   # @comment = comments(:author_comment)
   # end
 
-  test "history actions y2016 page" do
-    get("y2016", {}, username: "fred", user_full_name: "Fred Jones", groups: [])
+  test "history actions for 2016 page" do
+    get("for_year",
+        params: { "year" => "2016" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] },
+        xhr: true)
     assert_response :success
     assert_select "h3",
-                  /\b2016 Changes\b/,
-                  "Should find heading for 2016 Changes"
-    assert_select "li.list-group-item", /\b04-Jan-2016/,
-                  "Should find NSL-1505 a"
-    assert_select "li.list-group-item", /\bNSL-1505:/,
-                  "Should find NSL-1505 b"
+                  /\bChanges 2016\b/,
+                  "Should find heading for Changes 2016"
+    assert_select "body", /\b24-Oct-2016/,
+                  "Should find 24-Oct-2016 a"
+    assert_select "body", /24-Oct.2016/
+    assert_select "body", /NSL-478/
+    "Should find NSL-478"
   end
 end

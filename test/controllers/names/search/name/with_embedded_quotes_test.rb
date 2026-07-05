@@ -26,10 +26,11 @@ class NameSearchOnNameWithEmbeddedQuotesTest < ActionController::TestCase
   test "name search on name with embedded quotes" do
     name = names(:boronia_lipstick)
     get(:search,
-        { "query_target" => "name", "query_string" => "*lipstick nt:*" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { "query_target" => "name",
+                  "query_string" => "*lipstick nt:*" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "span#search-results-summary",
                   /\b1 name\b/,

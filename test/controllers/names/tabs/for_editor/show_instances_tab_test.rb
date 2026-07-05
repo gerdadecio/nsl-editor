@@ -19,7 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameShowInstanceTabForReadOnlyTest < ActionController::TestCase
+class NameShowInstanceTabForEditorTest < ActionController::TestCase
   tests NamesController
   setup do
     @name = names(:a_species)
@@ -28,10 +28,11 @@ class NameShowInstanceTabForReadOnlyTest < ActionController::TestCase
   test "should show new instance tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @name.id, tab: "tab_instances" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @name.id, tab: "tab_instances" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] },
+        xhr: true)
     assert_response :success
     assert_select "li.active a#name-instances-tab",
                   "New instance",

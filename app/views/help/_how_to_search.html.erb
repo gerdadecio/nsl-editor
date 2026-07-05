@@ -1,0 +1,88 @@
+
+<% content_for :search_result_summary do %>
+   <%= render partial: 'search/header' %>
+<% end %>
+
+
+<div id="search-results" class="col-xs-12 col-sm-8 col-md-9 col-lg-9 nothing-selected stylish-scrollbar">
+  <div id="search-results-inner" class="no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 search-results-inner">
+    <table  id="search-results-table" class="table table-condensed search-results" data-summary="Results of the latest search.">
+      <% unless @search.parsed_request.count %>
+        <% increment_tab_index(1000) %>
+        <%= render partial: 'search/standard/results' unless @search.executed_query.blank? || @search.executed_query.results.blank? %>
+      <% end %>
+      <tr><td class="width-100-percent">
+
+<h4>How to Search</h4>
+
+<h5>Summary</h5>
+
+<ol>
+  <li/>Choose a search target from the drop-down list at top left of screen
+  <li/>Searches use directives you enter in the search field to direct the search on the target you've chosen
+  <li/>Directives end with a colon (":")
+  <li/>Most search directives need an argument after the colon, some are simple assertions
+  <li/>Every search target has a default directive
+  <li/>You can use more than one search directive, but they are then all "anded"
+  <li/>There are detailed Query Help and Query Examples for every search target
+  <li/>Searching is not case-sensitive
+  <li/>You can generally use wildcards ('*') in text searches - but not on number searches (like id:)
+  <li/>In many searches trailing wildcards are added automatically
+  <li/>Most search directives are specific to a given search target
+  <li/>There are some globally available search directives, such as <code>limit:</code> and <code>offset:</code>
+  <li/>The <code>limit:</code> directive limits the search results
+  <li/>The <code>offset:</code> directive tells the Editor to skip search results before displaying them
+</ol>
+
+<br>
+<h5>Details</h5>
+The main page offers a general search engine for the Editor.  
+<p/>
+The search engine lets you choose a search target, describe what to search for in that target, and run the search.
+<p/>
+<h5>Search Target</h5>
+The search target is the drop-down list on the top left of the screen - "Names" is the default target, but you can choose from several others.
+<p/>
+The Search Field, just to the right of the Target drop-down, accepts search directives - these are names of fields or similar, and they tell the search engine where to look.
+<p/>
+You can recognise Search Directives because they have a colon at the end of a single word (with dashes).
+<p/>
+Each Search Target has a default search directive - so you can search without entering a directive in many cases, but the search behaves as if you had entered a directive.
+<p/>
+Most search directives take an argument after the colon.
+<p/>
+e.g. name: Angophora
+<p/>
+Here "name:" is the directive, and "Angophora" is the argument (sometimes called a parameter).
+<p/>
+The combination works for a Search Target "Names", and it tells the Editor search engine for find Name records with a fully qualified name that starts with "Angophora"
+<p/>
+Some search directives are more like assertions, and take no argument. e.g. has-no-author:
+<p/>
+The Name target directive "has-no-author:" looks for Name records that have no value in the author field.
+<p/>
+The rules for search directives are detailed on the Query Help tab, with specific directives and rules for each Search Target.
+<p/>
+Once you select a Search Target the Query Help will automatically adjust to show you Query Help for that target.
+<p/>
+There also some directives that work for every Search Target.
+<p/>
+For example, you can add a <code>limit:</code> directive to searches.  e.g. <code>limit: 50</code>
+<p/>
+This would retrieve the first 50 records found in the search.
+<p/>
+You can also add an <code>offset:</code> directive to search.  e.g. <code>offset: 20</code>
+<p/>
+This would skip over the first 20 records found in the search.
+<p/>
+You can combine <code>limit:</code> and <code>offset:</code>  e.g. <code>limit: 100 offset: 100</code>
+<p/>
+This would skip the first 100 records found, and show the second 100 records found.
+<p/>
+      </td>
+      </tr>
+    </table>
+  <br> <br> <br> <br> <br> <br> <br>
+  </div>
+</div>
+

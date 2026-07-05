@@ -43,6 +43,13 @@
   :where_clause: " sanctioning_author_id is null"
 'has-no-authors:':
   :where_clause: " author_id is null and base_author_id is null and ex_author_id is null and ex_base_author_id is null and sanctioning_author_id is null"
+'has-basionym-but-no-base-author:':
+  :where_clause: " base_author_id is null and id in (select i.name_id
+                                                       from instance i
+                                                       join instance_type it on i.instance_type_id = it.id
+                                                       join instance syn on i.id = syn.cited_by_id
+                                                       join instance_type syntype on syn.instance_type_id = syntype.id
+                                                       where syntype.name = 'basionym')"
 'is-a-child:':
   :where_clause: " parent_id is not null"
 'is-not-a-child:':
@@ -57,6 +64,14 @@
 'is-not-a-second-parent:':
   :where_clause: " not exists       (select null from name child where child.second_parent_id
     = name.id) "
+'family-id:':
+  :where_clause: " family_id = ?"
+'no-family-id:':
+  :where_clause: " family_id is null"
+'in-own-family:':
+  :where_clause: " family_id = id"
+'fam-in-other-family:':
+  :where_clause: " family_id is not null and family_id != id and name_rank_id in (select id from name_rank where lower(name) like 'fam%')"
 'has-no-instances:':
   :where_clause: " not exists (select null from instance i where i.name_id = name.id)"
 'has-instances:':
@@ -98,6 +113,15 @@ from comment where comment.name_id = name.id)"
   :where_clause: " id = ? "
   :allow_common_and_cultivar: true
   :multiple_values_where_clause: " id in (?)"
+'source-system:':
+  :where_clause: 'lower(source_system) like ?'
+'source-id:':
+  :multiple_values: true
+  :where_clause: " source_id = ? "
+  :allow_common_and_cultivar: true
+  :multiple_values_where_clause: " source_id in (?)"
+'source-id-string:':
+  :where_clause: "lower(source_id_string) like ?||'%'"
 'author-id:':
   :where_clause: 'author_id = ? '
 'base-author-id:':
@@ -129,7 +153,9 @@ from comment where comment.name_id = name.id)"
   :where_clause: "lower(f_unaccent(full_name)) like lower(f_unaccent(?))
    or lower(f_unaccent(full_name)) like lower(f_unaccent('x '||?))
    or lower(f_unaccent(full_name)) like
-   lower(f_unaccent(regexp_replace(?,'^x','x ')))"
+   lower(f_unaccent(regexp_replace(?,'^x','x ')))
+   or lower(f_unaccent(full_name)) like
+   lower(f_unaccent(regexp_replace(?,' x ',' %x ')))"
   :wildcard_embedded_spaces: false
   :trailing_wildcard: true
   :convert_multiply_to_x: true
@@ -170,6 +196,7 @@ from comment where comment.name_id = name.id)"
   :where_clause: name_status_id in       (select id from name_status where lower(name)
     like ?)
   :multiple_values: true
+  :allow_split_on_semicolon: true
   :multiple_values_where_clause: |-
     name_status_id in (select id from name_status where lower(name)
           in (?))
@@ -275,6 +302,88 @@ from comment where comment.name_id = name.id)"
                           and (it3.primary_instance or it3.name = 'autonym')
                           and r3.iso_publication_date = r.iso_publication_date)
           )
+'earliest-instance-not-primary-year-strict:':
+  :where_clause: |-
+    id in  (select n.id
+      from name n
+     inner join instance i
+        on n.id = i.name_id
+     inner join instance_type it
+        on i.instance_type_id = it.id
+     inner join reference r
+        on i.reference_id = r.id
+     inner join name_type nt
+        on n.name_type_id = nt.id
+     inner join name_status ns
+        on n.name_status_id = ns.id
+     where not (it.primary_instance or it.name in ('autonym','implicit autonym'))
+       and nt.scientific
+       and not ns.nom_inval
+       and ns.name != 'isonym'
+       and r.iso_publication_date = (select min(iso_publication_date)
+                       from name n2
+                      inner join instance i2
+                         on n2.id = i2.name_id
+                      inner join instance_type it2
+                         on i2.instance_type_id = it2.id
+                      inner join reference r2
+                         on i2.reference_id = r2.id
+                      where n2.id = n.id)
+       and not exists (select null
+                         from name n3
+                        inner join instance i3
+                           on n3.id = i3.name_id
+                        inner join instance_type it3
+                           on i3.instance_type_id = it3.id
+                        inner join reference r3
+                           on i3.reference_id = r3.id
+                        where n3.id = n.id
+                          and (it3.primary_instance or it3.name = 'autonym')
+                          and substr(r3.iso_publication_date,1,4) = substr(r.iso_publication_date,1,4)
+                      )
+          )
+'earliest-instance-not-primary-faster:':
+  :where_clause: |-
+    id in  (select n.id
+      from name n
+     inner join instance i
+        on n.id = i.name_id
+     inner join instance_type it
+        on i.instance_type_id = it.id
+     inner join reference r
+        on i.reference_id = r.id
+         inner join name_type nt
+        on n.name_type_id = nt.id
+     inner join name_status ns
+        on n.name_status_id = ns.id
+     where not (it.primary_instance or it.name in ('autonym','implicit autonym'))
+       and nt.scientific
+       and not ns.nom_inval
+       and ns.name != 'isonym'
+       and r.iso_publication_date is not null
+         and not exists 
+                       (select null
+                          from name n2
+                         inner join instance i2
+                            on n2.id = i2.name_id
+                         inner join instance_type it2
+                            on i2.instance_type_id = it2.id
+                         inner join reference r2
+                            on i2.reference_id = r2.id
+                         where n2.id = n.id
+                           and substring(r2.iso_publication_date,1,4) < substring(r.iso_publication_date,1,4))
+         and not exists (select null
+                         from name n3
+                        inner join instance i3
+                           on n3.id = i3.name_id
+                        inner join instance_type it3
+                           on i3.instance_type_id = it3.id
+                        inner join reference r3
+                           on i3.reference_id = r3.id
+                        where n3.id = n.id
+                          and (it3.primary_instance or it3.name = 'autonym')
+                          and substring(r3.iso_publication_date,1,4) = substring(r.iso_publication_date,1,4))
+          )
 'ref-title:':
   :where_clause: |-
     exists (select null
@@ -318,6 +427,25 @@ from comment where comment.name_id = name.id)"
                                 JOIN shard_config conf ON conf.name = 'classification tree key' AND t.name = conf.value
                                 JOIN tree_element te ON tve.tree_element_id = te.id
                               WHERE te.name_id = name.id)
+'genus-accepted-in-accepted-tree-no-children:':
+  :takes_no_arg: true,
+  :where_clause: |2-
+     id in ( select name.id
+                from tree_join_v tj 
+                     join name 
+                     on tj.name_id = name.id 
+                     join name_rank r 
+                     on name.name_rank_id = r.id  
+               where current_tree_version_id = tree_version_id
+                 and tj.accepted_tree 
+                 and not excluded
+                 and r.name = 'Genus'
+                 and not exists (select null
+                                   from tree_join_v tv2 
+                                  where  tv2.current_tree_version_id = tv2.tree_version_id
+                                    and tv2.accepted_tree
+                                    and tv2.parent_id = tj.element_link)
+            )
 'bad-relationships-974:':
   :where_clause: |2-
      name.id in
@@ -419,8 +547,8 @@ from comment where comment.name_id = name.id)"
   :where_clause: name.id in (SELECT te.name_id
                             FROM tree_version_element tve
                               JOIN tree t ON tve.tree_version_id = t.current_tree_version_id
-                              JOIN shard_config config ON t.name = config.value AND config.name = 'tree label'
-                              join tree_element te on tve.tree_element_id = te.id)
+                              join tree_element te on tve.tree_element_id = te.id
+                            where t.accepted_tree and tve.depth = 1)
 'excluded-name-with-distribution:':
   :where_clause: name.id in (SELECT te.name_id from tree t
     join tree_version_element tve on tve.tree_version_id = t.current_tree_version_id
@@ -429,6 +557,23 @@ from comment where comment.name_id = name.id)"
     and te.excluded
     and te.profile -> (t.config ->> 'distribution_key') is not null)
   :order: name.sort_name
+'accepted-name-without-distribution:':
+  :where_clause: name.id in (SELECT te.name_id from tree t
+    join tree_version_element tve on tve.tree_version_id = t.current_tree_version_id
+    join tree_element te on tve.tree_element_id = te.id
+    where t.accepted_tree
+    and not te.excluded
+    and te.profile -> (t.config ->> 'distribution_key') is null)
+  :order: name.sort_name
+'accepted-name-with-dist-but-no-bubbles:':
+  :where_clause: name.id in (SELECT te.name_id from tree t
+    join tree_version_element tve on tve.tree_version_id = t.current_tree_version_id
+    join tree_element te on tve.tree_element_id = te.id
+    where t.accepted_tree
+    and not te.excluded
+    and te.profile -> (t.config ->> 'distribution_key') is not null
+    and not exists (select null from tree_element_distribution_entries tede
+                     where tede.tree_element_id = te.id))
 'autonym-does-not-exist:':
   :where_clause: " name.id in (select id from name
  where name_type_id in (
@@ -531,10 +676,12 @@ from comment where comment.name_id = name.id)"
   :where_clause: " simple_name in (select simple_name from name inner_name group by  inner_name.simple_name having count(*) > 1) "
   :order: name.simple_name
   :allow_common_and_cultivar: true
+  :takes_no_arg: true,
 'duplicate-full-names:':
   :where_clause: " full_name in (select full_name from name inner_name group by  inner_name.full_name having count(*) > 1) "
   :order: name.full_name
   :allow_common_and_cultivar: true
+  :takes_no_arg: true,
 'verbatim-rank:':
   :where_clause: 'lower(verbatim_rank) like lower(?) '
   :leading_wildcard: true
@@ -616,3 +763,165 @@ from comment where comment.name_id = name.id)"
   :order: name.sort_name
 'name-path:':
   :where_clause: " lower(name_path) like ? "
+'parent-child-tree-inconsistent:':
+  :where_clause: " (name.id in (select n.id
+  from tree_vw t
+       join name n
+       on t.name_id = n.id
+       join name np
+       on n.parent_id = np.id
+       join tree_vw npt
+       on np.id = npt.name_id
+   and t.current_tree_version_id = t.tree_version_id
+   and t.accepted_tree
+   and npt.current_tree_version_id = npt.tree_version_id
+   and npt.accepted_tree
+   and t.tree_path != npt.tree_path || '/'||t.tree_element_id
+   and npt.name_path != regexp_replace(t.name_path,'/[^/]*$','')  ) )
+   or (name.id in (select np.id
+  from tree_vw t
+       join name n
+       on t.name_id = n.id
+       join name np
+       on n.parent_id = np.id
+       join tree_vw npt
+       on np.id = npt.name_id
+   and t.current_tree_version_id = t.tree_version_id
+   and t.accepted_tree
+   and npt.current_tree_version_id = npt.tree_version_id
+   and npt.accepted_tree
+   and t.tree_path != npt.tree_path || '/'||t.tree_element_id
+   and npt.name_path != regexp_replace(t.name_path,'/[^/]*$','')  ) ) "
+'first-parent-descendants-of-id:':
+  :where_clause: " id in 
+(WITH RECURSIVE subordinates AS (
+	SELECT
+		id
+	FROM
+		name
+	WHERE
+		id = ?
+	UNION
+		SELECT
+			e.id
+		FROM
+			name e
+		INNER JOIN subordinates s ON s.id = e.parent_id
+) SELECT
+	*
+FROM
+	subordinates)"
+'bad-name-path:':
+  :where_clause: "id in
+  (select name.id
+  from name
+  join name parent
+    on name.parent_id = parent.id
+ where name.name_path != parent.name_path || '/' || name.name_element
+ order by name.id)"
+'possibly-malformed:':
+  :where_clause: " name.id in (
+    select child.id
+      from name child
+           join name parent
+             on child.parent_id = parent.id
+     where parent.name_rank_id = (
+        select id
+          from name_rank r
+         where r.name = 'Genus'
+          )
+   and child.simple_name not like parent.simple_name || '%')"
+'parent-different-to-family:':
+  :where_clause: 'name.id in (select id from name where parent_id != family_id)'
+'isonym-has-early-secondary:':
+  :takes_no_arg: true,
+  :where_clause: "name.id in (
+select instance.name_id
+  from instance
+  join instance_type itype
+    on instance.instance_type_id = itype.id
+  join reference r
+    on instance.reference_id = r.id
+ where instance.cites_id is null
+   and itype.name = 'secondary reference'
+   and r.iso_publication_date = (
+    select min(iso_publication_date)
+      from reference ir
+           join instance ii
+        on ir.id = ii.reference_id
+     where ii.name_id = instance.name_id
+       and ii.cites_id is null
+  )
+   and instance.name_id in (
+    select n.id
+      from name n
+      join name_status ns
+        on n.name_status_id = ns.id
+ where ns.name            = 'isonym'
+       ))"
+'first-instance-is-syn:':
+  :takes_no_arg: true,
+  :where_clause: " id in 
+(select n.id
+from name n
+join instance i
+     on n.id = i.name_id
+join instance_type t
+     on i.instance_type_id = t.id 
+join reference r
+     on i.reference_id = r.id
+where t.relationship
+  and iso_publication_date <
+  (select min(iso_publication_date)
+     from instance i2
+     join instance_type t2
+          on i2.instance_type_id = t2.id
+     join reference r2
+          on i2.reference_id = r2.id
+    where i2.name_id = n.id
+      and t2.primary_instance
+  ) )"
+'is-a-duplicate-and-master:':
+  :takes_no_arg: true,
+  :allow_common_and_cultivar: true
+  :where_clause: " id in (select id
+                            from name name_dupe_master 
+                           where id in (select duplicate_of_id 
+                                          from name name_dupes
+                                         where duplicate_of_id is not null)
+                           and duplicate_of_id is not null)"
+'is-a-duplicate-and-master:':
+  :takes_no_arg: true,
+  :allow_common_and_cultivar: true
+  :where_clause: " id in (select id
+                            from name name_dupe_master 
+                           where id in (select duplicate_of_id 
+                                          from name name_dupes
+                                         where duplicate_of_id is not null)
+                           and duplicate_of_id is not null)"
+'novel-names-for-ref:':
+  :where_clause: " id in 
+(select n.id
+FROM instance 
+INNER JOIN name n
+  ON n.id = instance.name_id 
+  INNER JOIN instance_type 
+  ON instance_type.id = instance.instance_type_id 
+ WHERE instance.reference_id = ? 
+   AND instance_type.primary_instance = TRUE 
+  )"
+'tag:':
+  :leading_wildcard: true
+  :trailing_wildcard: true
+  :where_clause: " exists (select null
+    from name_tag_name ntn
+    join name_tag nt on nt.id = ntn.tag_id
+   where ntn.name_id = name.id
+     and lower(nt.name) like lower(?)) "
+  :not_exists_clause: " not exists (select null
+    from name_tag_name ntn
+   where ntn.name_id = name.id) "
+'has-tags:':
+  :where_clause: " exists (select null from name_tag_name ntn where ntn.name_id = name.id)"
+'has-no-tags:':
+  :where_clause: " not exists (select null from name_tag_name ntn where ntn.name_id = name.id)"

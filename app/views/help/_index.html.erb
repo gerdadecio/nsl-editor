@@ -1,0 +1,46 @@
+
+<% content_for :search_result_summary do %>
+   <%= render partial: 'search/header' %>
+<% end %>
+
+
+<div id="search-results" class="col-xs-12 col-sm-8 col-md-9 col-lg-9 nothing-selected stylish-scrollbar">
+  <div id="search-results-inner" class="no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 search-results-inner">
+    <table  id="search-results-table" class="table table-condensed search-results" data-summary="Results of the latest search.">
+      <% unless @search.parsed_request.count %>
+        <% increment_tab_index(1000) %>
+        <%= render partial: 'search/standard/results' unless @search.executed_query.blank? || @search.executed_query.results.blank? %>
+      <% end %>
+      <tr><td class="width-100-percent">
+          <%= markdown_to_html("
+  
+
+#### The NSL Editor
+
+The **NSL Editor** is a web application that allows you to search and edit nomenclatural information.
+
+The nomenclatural information is organised within:
+
+- names
+- references
+- authors, and
+- instances
+
+**Instances** connect **names** to **references** and can be understood as **usages** of names in published works.
+
+
+                   ") %>
+        <%= image_tag 'synonymy-model-lego-style.svg' %>
+
+        <%= markdown_to_html("
+Names have an **author** or **authors**, as do references.
+        ") %>
+
+
+      </td>
+      </tr>
+    </table>
+  <br> <br> <br> <br> <br> <br> <br>
+  </div>
+</div>
+

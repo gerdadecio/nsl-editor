@@ -1,0 +1,25 @@
+debug('show_valrep');
+
+$('ul.tree-report-tabs li').removeClass('active');
+$('ul.tree-report-tabs li#valrep-tab').addClass('active');
+
+$('#treeDiff').addClass('fade');
+$('#treeDiff').hide();
+$('.tree-container').hide();
+$('.tree-container').addClass('fade');
+
+$('#treeValidateSyn').addClass('hidden');
+$('#treeValidateSyn').addClass('fade');
+$('#treeValidateSyn').hide();
+
+$('#validation-content').removeClass('fade');
+$('#validation-content').show();
+
+$('#treeValidation').removeClass('fade');
+$('#treeValidation').show();
+$('#treeValidation').removeClass('hidden');
+
+$('#validation-content').removeClass('hidden');
+$('#validation-content').removeClass('fade');
+$('#validation-content').show();
+

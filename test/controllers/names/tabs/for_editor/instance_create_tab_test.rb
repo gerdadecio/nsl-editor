@@ -28,10 +28,10 @@ class InstanceCreateTabTest < ActionController::TestCase
   test "instance create for name" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @name.id, tab: "tab_instances" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @name.id, tab: "tab_instances" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     assert_template "names/tabs/_tab"
     assert_template "names/tabs/_tab_instances"

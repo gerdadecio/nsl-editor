@@ -27,9 +27,9 @@ class NamesNewRowScientHybridFormUnk2ParSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    xhr(:get, :new_row,
-        { type: "hybrid-formula-unknown-2nd-parent" },
-        {},
+    get(:new_row,
+        params: { type: "hybrid-formula-unknown-2nd-parent" },
+        session: {},
         xhr: true)
     assert_response :success,
                     "Cannot start new row for a scientific hybrid formula
@@ -37,7 +37,7 @@ class NamesNewRowScientHybridFormUnk2ParSimpleTest < ActionController::TestCase
     assert_match(/search-results-table/,
                  response.body.to_s,
                  "Missing expected element 1")
-    assert_match(/names.new.category=hybrid.formula.unknown.2nd.parent/,
+    assert_match(/New Hybrid Formula Unknown 2nd Parent Name/,
                  response.body.to_s,
                  "Missing expected element 2")
   end

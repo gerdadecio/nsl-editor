@@ -5,3 +5,4 @@
 <%= ERB.new(File.read("#{ENV['HOME']}/.nsl/editor-database.yml")).result %>
 <% end %>
 
+

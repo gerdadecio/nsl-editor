@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -18,65 +17,92 @@
 #   limitations under the License.
 
 #  A tree version
-class TreeVersion < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: tree_version
+#
+#  id                  :bigint           not null, primary key
+#  created_by          :string(255)      not null
+#  draft_name          :text             not null
+#  lock_version        :bigint           default(0), not null
+#  log_entry           :text
+#  published           :boolean          default(FALSE), not null
+#  published_at        :timestamptz
+#  published_by        :string(100)
+#  created_at          :timestamptz      not null
+#  previous_version_id :bigint
+#  tree_id             :bigint           not null
+#
+# Foreign Keys
+#
+#  fk_4q3huja5dv8t9xyvt5rg83a35  (tree_id => tree.id)
+#  fk_tiniptsqbb5fgygt1idm1isfy  (previous_version_id => tree_version.id)
+#
+class TreeVersion < ApplicationRecord
   self.table_name = "tree_version"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  belongs_to :tree, class_name: Tree
+  belongs_to :tree, class_name: "Tree"
 
   has_many :tree_version_elements,
            foreign_key: "tree_version_id",
-           class_name: TreeVersionElement
+           class_name: "TreeVersionElement"
+
+  has_many :user_product_role_vs,
+           through: :tree
+
+
+  before_save :stop_if_read_only
 
   # Returns a TreeVersionElement for this TreeVersion which contains the name
   def name_in_version(name)
     tree_version_elements.joins(:tree_element)
-        .where(tree_element: {name: name}).first
+                         .where(tree_element: { name: name }).first
   end
 
   # Returns a TreeVersionElement for this TreeVersion which contains the name
   def instance_in_version(instance)
     tree_version_elements.joins(:tree_element)
-        .where(tree_element: {instance: instance}).first
+                         .where(tree_element: { instance: instance }).first
   end
 
   def query_name_in_version(term)
     tree_version_elements
-        .joins(:tree_element)
-        .where(["lower(tree_element.simple_name) like lower(?)", term])
-        .order(:name_path)
-        .limit(50)
+      .joins(:tree_element)
+      .where(["lower(tree_element.simple_name) like lower(?)", term])
+      .order(:name_path)
+      .limit(50)
   end
 
   def query_name_in_version_at_rank(term, rank_name)
     tree_version_elements
-        .joins(:tree_element)
-        .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank = ?", term, rank_name])
-        .limit(15)
+      .joins(:tree_element)
+      .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank = ?", term, rank_name])
+      .limit(15)
   end
 
   def query_name_version_ranks(term, rank_names)
     tree_version_elements
-        .joins(:tree_element)
-        .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank in (?)", term, rank_names])
-        .order(:name_path)
-        .limit(15)
+      .joins(:tree_element)
+      .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank in (?)", term, rank_names])
+      .order(:name_path)
+      .limit(15)
   end
 
   def last_update
-    self.tree_version_elements.order(updated_at: :desc).first
-  end
-
-  def user_can_edit?(user)
-    user && user.groups.include?(tree.group_name)
+    tree_version_elements.order(updated_at: :desc).first
   end
 
   def comment_key
+    return nil if tree.config.blank?
+
     tree.config["comment_key"]
   end
 
   def distribution_key
+    return nil if tree.config.blank?
+
     tree.config["distribution_key"]
   end
 
@@ -84,8 +110,14 @@ class TreeVersion < ActiveRecord::Base
     tree.host_name
   end
 
-  def draft_instance_default?
-    self != tree.default_draft_version
+  def default_tree_version?
+    self == tree.default_draft_version
   end
 
+  def stop_if_read_only
+    if tree.read_only?
+      errors.add(:base, ' parent tree is read only')
+      throw :abort
+    end
+  end
 end

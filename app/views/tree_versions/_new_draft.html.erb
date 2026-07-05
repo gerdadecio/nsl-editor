@@ -1,0 +1,52 @@
+<div id="new-draft-tree-version-panel" class="focus-details unsaved-record">
+  <div id="new-draft-tree-form-container" class="new-record-form-container">
+    <% if current_context_id && Rails.configuration.try(:multi_product_tabs_enabled) %>
+      <%
+        available_trees = Tree.accessible_by(current_ability, :create_draft)
+          .joins(:products).where(products: { context_id: current_context_id })
+      %>
+    <% else %>
+      <%
+        available_trees = Tree.accessible_by(current_ability, :create_draft)
+      %>
+    <% end %>
+
+    <h4>Create New Draft Version of the <%= @tree.name %> Tree</h4>
+    <div>
+      <form action="<%= tree_versions_create_draft_path %>" data-remote="true" method="post">
+        <div class="form-group">
+          <input id="tree_id" name="tree_id" type="hidden" title="tree_id" value="<%= @tree.id %>"/>
+
+          <label>Name this draft<span class="red">*</span>
+            <input class="form-control" id="draft_name" name="draft_name" type="text" required
+                   placeholder="e.g. November 2022" title="Enter a name for this draft, e.g. minor edits"/>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="draft_log">Description / work log</label><span class="red">*</span>
+          <textarea class="form-control"
+                    title="Description of work to carry out" required
+                    id="draft_log" name="draft_log" rows="10"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-inline">Default draft
+            <input class="form-control" id="default_draft" name="default_draft" type="checkbox"
+                   title="check to make the default draft"/>
+          </label>
+        </div>
+
+        <div>&nbsp;
+          <button id="tree-form-cancel" type="button" class="btn btn-default left"
+                  onclick="$('#new-draft-tree-version-panel').hide()">Cancel</button>
+          <button id="create-draft-submit" type="submit" class="btn btn-primary right">Save</button>
+        </div>
+      </form>
+    <br/>
+    <div id="create-draft-message-container" class="message-container"></div>
+    <div id="create-draft-error-message-container" class="message-container error"></div>
+    </div>
+  </div>
+   <div id="common-error-message-container" class="error-container"></div>
+</div>

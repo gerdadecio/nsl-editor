@@ -1,0 +1,7 @@
+
+<% unless search_result.higher_rank_comment.blank? %>
+  <span class="review loader-name remark-to-reviewers">
+    <%= search_result.higher_rank_comment.html_safe %>
+  </span>
+<% end %>
+

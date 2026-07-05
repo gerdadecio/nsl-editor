@@ -1,0 +1,41 @@
+# Use the official Ruby image as a base image
+FROM ruby:3.4.8-bookworm
+
+RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
+  build-essential \
+  less \
+  ed
+
+RUN apt-get update && apt-get install -y wget gnupg2 lsb-release \
+  && echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
+  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+  && apt-get update \
+  && apt-get install -y postgresql-client-15 \
+  && apt-get install -y vim \
+  && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the Gemfile and Gemfile.lock
+COPY ./Gemfile ./Gemfile.lock ./
+
+RUN ruby --version
+RUN gem --version
+
+# Install gems
+RUN bundle install
+
+# Copy the rest of the application code
+COPY . ./
+
+RUN chmod 600 .pgpass
+
+# Precompile assets (optional, if you have assets to precompile)
+# RUN bundle exec rake assets:precompile
+
+# Expose port 3000 to the outside world
+EXPOSE 3000 3001
+
+# Start the Rails server
+#CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"]

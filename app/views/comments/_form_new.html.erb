@@ -63,4 +63,10 @@
   <%= divider %>
 <% end %>
 
-
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      focusOnField('comment_text');
+    })
+  </script>
+<% end %>

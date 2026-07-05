@@ -1,0 +1,154 @@
+---
+- :date: 11-Dec-2018
+  :jira_id: '3132'
+  :description: |-
+    Hide common names in tree outptu reports. Add extra levels for Dawr tree.
+- :date: 26-Nov-2018
+  :jira_id: '3122'
+  :description: |-
+    ICZN systems can now be configured to use name.published_year.
+- :date: 23-Nov-2018
+  :release: true
+- :date: 21-Nov-2018
+  :jira_id: '3116'
+  :description: |-
+    Restore the ability of names above family to omit a parent.  - :date: 21-Nov-2018
+  :jira_id: '3099'
+  :description: |-
+    Configure the use of name authors and changed combination to allow for ICZN.
+- :date: 14-Nov-2018
+  :jira_id: '3065'
+  :description: |-
+    Use name_category.takes_rank if it is available.
+- :date: 14-Nov-2018
+  :jira_id: '3065'
+  :description: |-
+    Set name type to phrase name in edit tab when converting scientific name to phrase name
+- :date: 07-Nov-2018
+  :jira_id: '3065'
+  :description: |-
+    Technical change to incorporate improved name category data.
+- :date: 22-Oct-2018
+  :jira_id: '3072'
+  :description: |-
+    Name delete changed to also work in Chrome browser.
+- :date: 18-Oct-2018
+  :release: true
+- :date: 17-Oct-2018
+  :jira_id: '3034'
+  :description: |-
+    Spell "adnote" correctly as "adnot" in syn-with-adnot search. 
+- :date: 17-Oct-2018
+  :jira_id: '3059'
+  :description: |-
+    Added name query has-multiple-primary-instances.
+- :date: 15-Oct-2018
+  :jira_id: '2947'
+  :description: |-
+    Pressing Enter in the Copy Name tab triggers the confirmation dialog.
+- :date: 12-Oct-2018
+  :jira_id: '3034'
+  :description: |-
+    New instance queries for synonyms with note or adnote: syn-with-note:, syn-with-adnote:
+- :date: 12-Oct-2018
+  :release: true
+- :date: 8-Oct-2018
+  :jira_id: '3030'
+  :description: |-
+    Fix typos in reference help.
+- :date: 4-Oct-2018
+  :jira_id: '3033'
+  :description: |-
+    Add instance search "non-tree-drafts:".
+- :date: 28-Sep-2018
+  :release: true
+- :date: 24-Sep-2018
+  :jira_id: '1221'
+  :description: |-
+    Add a name search assertion "has-no-primary-instance:".
+- :date: 21-Sep-2018
+  :release: true
+- :date: 19-Sep-2018
+  :jira_id: '2990'
+  :description: |-
+    Change the instance details tab by adding a link to show the current name in
+    new search.
+- :date: 7-Sep-2018
+  :release: true
+- :date: 22-Aug-2018
+  :jira_id: '2955'
+  :description: |-
+    Change the name details tab by adding a link to show the current name in
+    new search.
+- :date: 20-Aug-2018
+  :jira_id: ''
+  :description: |-
+    Remove menu options that were 'Editor' toggle switches for new search.
+- :date: 16-Aug-2018
+  :jira_id: '2928'
+  :description: |-
+    The Name &gt; Copy tab has a link that appears after a copy is completed.
+    That link was broken and it is now fixed.
+- :date: 16-Aug-2018
+  :release: true
+- :date: 6-Aug-2018
+  :jira_id: '2757'
+  :description: |-
+    Changed the name of the new scientific name family and above. Changed the order of parent and Family and automatically set family from the parent.
+- :date: 3-Aug-2018
+  :jira_id: '2875'
+  :description: |-
+    Added "tree-dist-matches:" and "tree-comment-matches:" search option to instance search and changed "apc-dist-match" to "apc-dist-note-match" and added "apc-comment-note=match"
+- :date: 4-Jul-2018
+  :jira_id: '2883'
+  :description: |-
+    Fix error when creating hybrid names.
+- :date: 4-Jul-2018
+  :jira_id: '2857'
+  :description: |-
+    Warn when editing or deleting the synonymy of an accepted instance.
+- :date: 2-Jul-2018
+  :jira_id: '2773'
+  :description: |-
+    Add confirm remove and warning of sub taxa removal when removing a taxon from the draft tree.
+- :date: 22-Jun-2018
+  :jira_id: '2842'
+  :description: |-
+    Add a check if a name needs a Family. Alter the name edit form to leave out Family if not required.
+- :date: 22-Jun-2018
+  :jira_id: '2831'
+  :description: |-
+    Allow editing of existing APC comment and distribution notes. Note that notes that are on a tree should be removed from instance notes.
+- :date: 13-Jun-2018
+  :jira_id: '2438'
+  :description: |-
+    New tree structure and editing.
+- :date: 13-Jun-2018
+  :release: true
+- :date: 29-Mar-2018
+  :jira_id: 
+  :description: |-
+    Add link to new search and add menu options to turn Editor links on and off in new search.
+- :date: 23-Feb-2018
+  :jira_id: '2638'
+  :description: |-
+    Move feedback link back to main page; move feedback JavaScript to the configuration file.
+- :date: 09-Feb-2018
+  :jira_id: '2638'
+  :description: |-
+    Add feedback on/off configuration switch.
+- :date: 02-Feb-2018
+  :jira_id: ''
+  :description: |-
+    Remove hard-coded references to 'NSL' etc with pull-request from Arnab for DAWR.
+- :date: 09-Feb-2018
+  :jira_id: '2638'
+  :description: |-
+    Add feedback on/off configuration switch.
+- :date: 02-Feb-2018
+  :release: true
+- :date: 25-Jan-2018
+  :jira_id: '2499'
+  :description: |-
+    Correct the ordering of instances by page.
+

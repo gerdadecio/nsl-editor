@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# require 'test_helper'
+require "test_helper"
 
 # Instance Notes controller tests.
 class InstanceNotesControllerTest < ActionController::TestCase
@@ -52,25 +52,27 @@ class InstanceNotesControllerTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     assert_difference("InstanceNote.count") do
       post(:create,
-           { instance_note:
-             { "instance_id" => instances(:triodia_in_brassard),
-               "instance_note_key_id" => instance_note_keys(:neotype),
-               "value" => "this is a note" } },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
+           params: { instance_note:
+                     { "instance_id" => instances(:triodia_in_brassard),
+                       "instance_note_key_id" => instance_note_keys(:neotype),
+                       "value" => "this is a note" } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     end
   end
 
   test "should show instance_note" do
     @request.headers["Accept"] = "application/javascript"
-    get :show, id: @instance_note
+    get :show,
+        params: { id: @instance_note }
     assert_response :success
   end
 
   test "should get edit" do
     @request.headers["Accept"] = "application/javascript"
-    get :edit, id: @instance_note
+    get :edit,
+        params: { id: @instance_note }
     assert_response :success
   end
 

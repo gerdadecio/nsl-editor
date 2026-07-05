@@ -17,13 +17,27 @@
 #   limitations under the License.
 #
 class ServicesController < ApplicationController
-  skip_before_filter :authenticate
-
-  def index
-    render layout: "services.html.erb"
-  end
+  skip_before_action :authenticate
 
   def ping
-    render json: "Editor here.".to_json, status: :ok
+    render plain: "✓", status: :ok, layout: false
+  end
+
+  def version
+    render plain: "#{Rails.configuration.try('version')}",
+           status: :ok,
+           layout: false
+  end
+
+  def build
+    render partial: "build",
+           format: :text,
+           status: :ok,
+           layout: false
+  end
+
+  def clear_connections
+    ActiveRecord::Base.clear_active_connections!
+    render plain: "Cleared.", status: :ok, layout: false
   end
 end

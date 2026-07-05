@@ -1,0 +1,59 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "1dcdd0e7c0413ea7f796db38000b45d190fef9e58fee3e30e45fdf42a92112c2",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/instances/show.html.erb",
+      "line": 17,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(partial => \"instances/tabs/#{tab_for_instance_type(tab_or_default_tab, params[\"row-type\"])}\", {})",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "InstancesController",
+          "method": "show",
+          "line": 44,
+          "file": "app/controllers/instances_controller.rb",
+          "rendered": {
+            "name": "instances/show",
+            "file": "app/views/instances/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "instances/show"
+      },
+      "user_input": "params[\"row-type\"]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 122,
+      "fingerprint": "21ab0fe00fdd5899ffc405cff75aadb91b805ee996a614f7e27b08a287e9062d",
+      "check_name": "EOLRails",
+      "message": "Support for Rails 7.1.5.1 ends on 2025-10-01",
+      "file": "Gemfile.lock",
+      "line": 279,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        1104
+      ],
+      "note": ""
+    }
+  ],
+  "updated": "2025-08-04 17:14:31 +1000",
+  "brakeman_version": "6.2.2"
+}

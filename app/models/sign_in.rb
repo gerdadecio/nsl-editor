@@ -26,11 +26,23 @@ class SignIn < ActiveType::Object
   validate :validate_credentials
 
   def groups
-    build_ldap.users_groups
+    @ldap.users_groups
   end
 
   def user_full_name
-    build_ldap.user_full_name
+    @ldap.user_full_name
+  end
+
+  def user_cn
+    @ldap.user_cn
+  end
+
+  def generic_active_directory_user
+    @ldap.generic_active_directory_user
+  end
+
+  def make_invalid
+    errors.add(:credentials, "not authorised.")
   end
 
   private
@@ -43,6 +55,6 @@ class SignIn < ActiveType::Object
     credentials = {}
     credentials[:username] = username
     credentials[:password] = password
-    Ldap.new(credentials)
+    @ldap = Ldap.new(credentials)
   end
 end

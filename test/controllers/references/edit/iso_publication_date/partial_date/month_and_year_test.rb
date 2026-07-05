@@ -55,27 +55,27 @@ class ReferencesesUpdateIsoPartialMonthAndYearTest < ActionController::TestCase
     stub_request(:get, %r{http://#{host}/#{path}/\d+/api/citation-strings})
       .with(
         headers: { "Accept" => "text/json",
-                   "Accept-Encoding" => encoding,
-                   "User-Agent" => "Ruby" }
+                   "Accept-Encoding" => encoding }
       )
       .to_return(status: 200, body: body, headers: {})
   end
 
   test "update reference iso partial month and year test" do
     @request.headers["Accept"] = "application/javascript"
-      patch(:update,
-           { id: references(:simple).id,
-             reference: { "ref_type_id" => ref_types(:book),
-                          "title" => "Some book",
-                          "author_id" => authors(:dash),
-                          "author_typeahead" => "-",
-                          "published" => true,
-                          "ref_author_role_id" => ref_author_roles(:author),
-                          "month" => "4",
-                          "year" => '2018' } },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
+    patch(:update,
+          params: { id: references(:simple).id,
+                    reference: { "ref_type_id" => ref_types(:book),
+                                 "title" => "Some book",
+                                 "author_id" => authors(:dash),
+                                 "author_typeahead" => "-",
+                                 "published" => true,
+                                 "parent_typeahead" => @parent_typeahead,
+                                 "ref_author_role_id" => ref_author_roles(:author),
+                                 "month" => "4",
+                                 "year" => "2018" } },
+          session: { username: "fred",
+                     user_full_name: "Fred Jones",
+                     groups: ["edit"] })
     assert_response :success
   end
 end

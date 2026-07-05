@@ -17,12 +17,11 @@
 #   limitations under the License.
 #
 class InstanceNotesController < ApplicationController
-  before_action :set_instance_note, only: [:show, :edit, :update, :destroy]
+  before_action :set_instance_note, only: %i[show edit update destroy]
 
   # GET /instance_notes/1
   # GET /instance_notes/1.json
-  def show
-  end
+  def show; end
 
   # GET /instance_notes/new
   def new
@@ -31,7 +30,7 @@ class InstanceNotesController < ApplicationController
 
   # GET /instance_notes/1/edit
   def edit
-    render "edit.js"
+    render "edit"
   end
 
   # POST /instance_notes
@@ -44,9 +43,9 @@ class InstanceNotesController < ApplicationController
     else
       raise("Not saved")
     end
-  rescue => e
+  rescue StandardError => e
     @message = e.to_s
-    render "create_failed.js", status: :unprocessable_entity
+    render "create_failed", status: :unprocessable_content
   end
 
   # PATCH/PUT /instance_notes/1
@@ -64,7 +63,7 @@ class InstanceNotesController < ApplicationController
       render :destroy
     else
       @message = "Could not delete that record."
-      render "update_failed.js", status: :unprocessable_entity
+      render "update_failed", status: :unprocessable_content
     end
   end
 
@@ -98,8 +97,8 @@ class InstanceNotesController < ApplicationController
     else
       raise("Not updated")
     end
-  rescue => e
+  rescue StandardError => e
     @message = e.to_s
-    render "update_failed.js", status: :unprocessable_entity
+    render :update_failed, status: :unprocessable_content
   end
 end

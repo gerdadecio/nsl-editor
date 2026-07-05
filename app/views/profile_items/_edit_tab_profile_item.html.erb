@@ -1,0 +1,35 @@
+<div id="edit-tab-profile-item" style="padding: 10px;margin: 5px 0 30px 0px;background-color: white;border: 1px solid #afafaf;">
+  <% product_item_config = profile_item&.product_item_config %>
+  <% instance = profile_item&.instance %>
+  <% if profile_item.fact? %>
+    <% profile_text = profile_item.profile_text || Profile::ProfileText.new %>
+    <%= render(
+      partial: "profile_items/fact_profile_item",
+      locals: {
+        profile_text: profile_text,
+        product_item_config: product_item_config,
+        profile_item: profile_item,
+        instance: instance
+      })
+    %>
+
+  <% else %>
+    <div id="linked-profile-item-container">
+      <%= render partial: "profile_items/linked_profile_item",
+        locals: {
+          profile_item: profile_item,
+          product_item_config: product_item_config,
+          instance: instance
+        } %>
+    </div>
+  <% end %>
+
+  <div id="profile_item_actions_<%= product_item_config.id %>">
+    <%= divider %>
+    <% if profile_item.allow_delete? %>
+      <%= render partial: "profile_items/delete_widgets", locals: {profile_item: profile_item, non_turbo: true} %>
+    <% else %>
+      <%= render partial: 'profile_items/no_delete_reasons', locals: {profile_item: profile_item} %>
+    <% end %>
+  </div>
+</div>

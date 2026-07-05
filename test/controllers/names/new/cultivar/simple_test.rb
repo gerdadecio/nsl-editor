@@ -27,11 +27,11 @@ class NamesNewCultivarNameSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    xhr(:get, :new,
-        { category: "cultivar",
-          random_id: "123445",
-          tabIndex: "107" },
-        {},
+    get(:new,
+        params: { category: "cultivar",
+                  random_id: "123445",
+                  tabIndex: "107" },
+        session: {},
         xhr: true)
     assert_response :success, "Cannot start new for a cultivar name"
     assert_select("h4", /New Cultivar Name/)

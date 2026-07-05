@@ -1,0 +1,564 @@
+- :date: 24-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Family loader name records can be selected; added <code>family:</code> and <code>family-id:</code> queries, results ordered by sequence.
+- :date: 23-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: keyboard navigation works for loader name records in review mode - key up and down; had to change how to hide the details tab - an 'X' to click.
+- :date: 22-Dec-2021
+  :release: true
+- :date: 22-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: in review mode hide the batch-review tab and the details link to batch reviews - neither are needed or appropriate in review-mode
+- :date: 21-Dec-2021
+  :jira_id: '4092'
+  :description: |-
+    More consistent hiding/showing of the Common/Cultivars switch, also more consistent color styling of the top-LHS brand box e.g. when showing help pages or history pages.
+- :date: 21-Dec-2021
+  :jira_id: '4080'
+  :description: |-
+    Faster version of the earliest-instance-not-primary Names report (which is timing out) - called earliest-instance-not-primary-faster.
+- :date: 21-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: reviewers are now not offered the menu option to switch out of review mode.
+- :date: 20-Dec-2021
+  :jira_id: '4097'
+  :description: |-
+    Rails software upgrade for security - requires general workflow testing.
+- :date: 20-Dec-2021
+  :jira_id: '4092'
+  :description: |-
+    Show the Common/Cultivars checkbox only when relevant
+- :date: 17-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: upgraded major review searches to return full-context of name and synonyms
+- :date: 17-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: make name reviewer the default role when adding a reviewer to a period
+- :date: 17-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: loader name search results now show all synonyms for the last name in the results (applies only to searches that return full-context)
+- :date: 17-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: users who switch to review mode now see the same list of search targets as users who are always in review mode.
+- :date: 16-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Move the Review Mode switch from the Draft Taxonomy menu to the User menu, and remove the Review Menu (not used)
+- :date: 16-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Hide review-mode switch unless app is configured batch-loader aware
+- :date: 16-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Adjust query example for remark search 
+- :date: 15-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Eradicate 'taxonomy-comment' from visible text; reviewer not offered 'compiler-comment'.
+- :date: 15-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Loader Name show record in context link.
+- :date: 15-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: first set of changes arising from yesterday's review
+- :date: 14-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: allow for a configured tag to customize the page title
+- :date: 13-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: name status now appears directly after the full name in review mode
+- :date: 08-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: comments easier to pick out and read in the tab; technical work on view-mode.
+- :date: 08-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: comment counts and remarks on main entries; users can edit/delete their own comments; compilers can comment; new queries; adjustments
+- :date: 03-Dec-2021
+  :jira_id: '4091'
+  :description: |-
+    Restore common-and-cultivar toggle (Moved to production same day, then back-fitted here.)
+- :date: 01-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: tabs now showing/hiding for all loader name records, including taxonomy-comments and distribution
+- :date: 29-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: review mode styling of loader names to allow easy scanning without drilling into details; view mode switchable for compilers
+- :date: 26-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Further refinement of the view for taxonomy reviewers.
+- :date: 24-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Work-in-progress on new view for taxonomy reviewers.
+- :date: 23-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Minor fixes and improvements.
+- :date: 23-Nov-2021
+  :jira_id: ''
+  :description: |-
+    General software update
+- :date: 23-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Next phase of work since last week's walk-through, including adding and removing batch reviewers, and much more.
+- :date: 16-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: Add several orchid loader features for loader names; add search infrastructure for users, organisations, and batch reviewers.
+- :date: 15-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: Users, organisations, review periods, reviewers. A reviewer can comment on a loader name.
+- :date: 08-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: Batch Reviewer now has basic query, list, display.
+- :date: 07-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: more components and links for the loader batch system, including orgs and batch review roles; some search refactoring.
+- :date: 06-Nov-2021
+  :release: true
+- :date: 05-Nov-2021
+  :jira_id: '4062'
+  :description: |-
+    Rails 6.1 upgrade fix: should be able to update instance notes again now
+- :date: 04-Nov-2021
+  :release: true
+- :date: 02-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: components and link for batch_review and batch_review_period.
+- :date: 02-Nov-2021
+  :jira_id: '4059'
+  :description: |-
+    Show 'updated' message after Name edit is saved. Make the same fix for some delete and update errors for comments and instances.
+- :date: 02-Nov-2021
+  :jira_id: '4058'
+  :description: |-
+    Add a global debug function to allow things like the Synonymy Report to run.
+- :date: 01-Nov-2021
+  :jira_id: '4057'
+  :description: |-
+    Orchids: Log draft instance create action even if no instance created.
+- :date: 01-Nov-2021
+  :jira_id: '4058'
+  :description: |-
+    Upgrade JavaScript libraries to fix webpacker and JQuery problems.
+- :date: 27-Oct-2021
+  :jira_id: '4044'
+  :description: |-
+    Tweak startup script to exclude passwords from the output list of variables.
+- :date: 27-Oct-2021
+  :jira_id: '4044'
+  :description: |-
+    Fix timestamps in test.
+- :date: 26-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Add database connection info to admin -> config page; remove separate page showing database connection info.
+- :date: 26-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Add clear-connections service.
+- :date: 25-Oct-2021
+  :jira_id: '4028'
+  :description: |-
+    Add basic infrastructure for batch loader.
+- :date: 25-Oct-2021
+  :jira_id: '4041'
+  :description: |-
+    Fix name report for <code>top-of-tree</code> - look for depth 1 rather than depth null
+- :date: 25-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Fix typo "excludeded" in orchids stats.
+- :date: 22-Oct-2021
+  :jira_id: '4033'
+  :description: |-
+    Fix Orchid loader query error complaining about non-attribute arguments.
+- :date: 21-Oct-2021
+  :jira_id: '4027'
+  :description: |-
+    Remove code for taxonomic (tree version) review from Editor
+- :date: 20-Oct-2021
+  :jira_id: '4014'
+  :description: |-
+    Fix failing tests and change error processing to avoid deprecation warnings following the Rails upgrade.
+- :date: 15-Oct-2021
+  :jira_id: '4014'
+  :description: |-
+    Upgrade to rails 6.1.4 - please run through common workflow tests.
+- :date: 14-Oct-2021
+  :release: true
+- :date: 14-Oct-2021
+  :jira_id: '3999'
+  :description: |-
+    Amend instructions for selecting draft taxonomy on Tree Tab - in line with minor tweaks from NSL-4012.
+- :date: 13-Oct-2021
+  :jira_id: '4012'
+  :description: |-
+    Minor tweaks to the layout for consistency - mainly to the Draft Taxonomy menu and to the associated tab for Reports on the draft taxonomy.
+- :date: 11-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Software upgrades for security.
+- :date: 11-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Add Name search directives <code>accepted-name-without-distribution</code> and <code>accepted-name-with-dist-but-no-bubbles</code> while working on distribution.
+- :date: 08-Oct-2021
+  :jira_id: '4006'
+  :description: |-
+    For instance search directives <code>tree-dist-matches</code> and <code>tree-comment-matches</code>: search only the current active tree, do not replace '*' with '%', add documentation and examples 
+- :date: 01-Oct-2021
+  :jira_id: '3364'
+  :description: |-
+    Add processing to avoid stale object errors when creating names and references (which can happen because they require a 2-step dance with services during creation).
+- :date: 28-Sep-2021
+  :jira_id: ''
+  :description: |-
+    Upgrade to Rails 6.0.4.1, yarn upgrade.
+- :date: 27-Sep-2021
+  :jira_id: ''
+  :description: |-
+    Replace the tree icon with the sitemap icon to indicate a hierarchy, rename tree menu to indicate it is for draft taxonomy.
+- :date: 27-Sep-2021
+  :jira_id: ''
+  :description: |-
+    Restore trash icons that were not appearing - they are now "open" icons, not filled in
+- :date: 15-Sep-2021
+  :release: true
+- :date: 15-Sep-2021
+  :jira_id: '3983'
+  :description: |-
+    Added author search for missed-diacritics, and displayed name and abbrev without diacritics on author details tab, with red highlight when diacritics present.
+- :date: 31-Aug-2021
+  :jira_id: '3980'
+  :description: |-
+    Adjust author search result record so author name and abbrev are the same font-size and line up horizontally. First change in cloud env.
+- :date: 05-Aug-2021
+  :release: true
+- :date: 02-Aug-2021
+  :jira_id: ''
+  :description: |-
+    Security upgrades
+- :date: 02-Aug-2021
+  :jira_id: '3613'
+  :description: |-
+    Fix reference duplicate-of typeahead - it works again on successive records without the user manually refreshing the tab
+- :date: 22-Jul-2021
+  :release: true
+- :date: 19-Jul-2021
+  :jira_id: ''
+  :description: |-
+    Security: upgrade rails and some other libraries
+- :date: 12-Jul-2021
+  :jira_id: '3909'
+  :description: |-
+    Orchids: mark records as 'excluded' where appropriate in logs
+- :date: 02-Jul-2021
+  :jira_id: '3909'
+  :description: |-
+    Orchids:  also process excluded names from the console (early version)
+- :date: 25-Jun-2021
+  :release: true
+- :date: 23-Jun-2021
+  :jira_id: '3938'
+  :description: |-
+    Orchids:  new search directive has-preferred-name-without-instance
+- :date: 16-Jun-2021
+  :jira_id: ''
+  :description: |-
+    Security: yarn upgrade
+- :date: 23-Jun-2021
+  :release: true
+- :date: 16-Jun-2021
+  :jira_id: ''
+  :description: |-
+    Orchids: standardize on spelling of 'preflight'
+- :date: 16-Jun-2021
+  :jira_id: ''
+  :description: |-
+    Software upgrade for security
+- :date: 16-Jun-2021
+  :jira_id: '3929'
+  :description: |-
+    Orchids: include an error count in the create-instances summary log entry
+- :date: 10-Jun-2021
+  :jira_id: '3929'
+  :description: |-
+    Orchids: capture and log errors that occur when creating instances for matched orchids
+- :date: 09-Jun-2021
+  :jira_id: '3930'
+  :description: |-
+    Orchids: query for misapplications with a preferred match but no relationship instance identified or created (no cross-reference)
+- :date: 03-Jun-2021
+  :jira_id: ''
+  :description: |-
+    Reverse Firefox cookie security change
+- :date: 26-May-2021
+  :jira_id: '3909'
+  :description: |-
+    Orchids: you can now create instances for excluded orchids (if flag is set); 'excluded' now displayed as (true) record type when appropriate
+- :date: 26-May-2021
+  :jira_id: ''
+  :description: |-
+    Rails: various upgrades to underlying software for security
+- :date: 13-May-2021
+  :release: true
+- :date: 11-May-2021
+  :jira_id: ''
+  :description: |-
+    Rails: upgrade to version 6.0.3.7; upgrade various JS libraries due to security alerts
+- :date: 06-May-2021
+  :jira_id: '3908'
+  :description: |-
+    Orchids: allow orchids to be flagged as manually drafted, and exclude such orchids from batch drafting
+- :date: 06-May-2021
+  :release: true
+- :date: 05-May-2021
+  :jira_id: '3906'
+  :description: |-
+    Orchids: batch tree placement - halting for failed genus placement now looks to a matching name's rank if nsl_rank and rank are both empty
+- :date: 30-Apr-2021
+  :jira_id: '3612'
+  :description: |-
+    Taxonomy review: work-in-progress
+- :date: 29-Apr-2021
+  :jira_id: '3895'
+  :description: |-
+    Name search: improve search for hybrid formulae
+- :date: 27-Apr-2021
+  :jira_id: '3893'
+  :description: |-
+    Reference and Instance search on page or pages: add help for Reference search on page; page and pages now work for both search targets.
+- :date: 15-Apr-2021
+  :release: true
+- :date: 14-Apr-2021
+  :jira_id: '3877'
+  :description: |-
+    Orchids: the Add to Tree process for an orchid checks the No Further Processing flag before any other record-level checks
+- :date: 14-Apr-2021
+  :jira_id: '3875'
+  :description: |-
+    Orchids: restrict search directive in-current-taxonomy: to accepted orchids; add not-in-current-taxonomy directive with help and example
+- :date: 14-Apr-2021
+  :release: true
+- :date: 08-Apr-2021
+  :jira_id: '3867'
+  :description: |-
+    Restore handling of old parameter convention still used in services.
+- :date: 06-Apr-2021
+  :jira_id: '3867'
+  :description: |-
+    Name details Delete tab links for "child" or "children" work again, and the "instance(s)" links still work, but should also be tested
+- :date: 06-Apr-2021
+  :release: true
+- :date: 31-Mar-2021
+  :jira_id: ''
+  :description: |-
+    Software updates
+- :date: 30-Mar-2021
+  :jira_id: '3325'
+  :description: |-
+    Expired sessions: alert the user if they request a JavaScript action after their session expires
+- :date: 30-Mar-2021
+  :jira_id: '3815'
+  :description: |-
+    Orchids: make the Process tab buttons for batch processing work again (they don't participate in the lock)
+- :date: 29-Mar-2021
+  :jira_id: '3815'
+  :description: |-
+    Orchids: add unlock button
+- :date: 26-Mar-2021
+  :jira_id: '3856'
+  :description: |-
+    Working with the Mapper: when the Editor gets a 401 from the Mapper it re-authenticates and keeps working.
+- :date: 25-Mar-2021
+  :release: true
+- :date: 24-Mar-2021
+  :jira_id: '3761'
+  :description: |-
+    Instance Notes: when editing a note, a blank note type isn't offered
+- :date: 24-Mar-2021
+  :jira_id: '3815'
+  :description: |-
+    Orchids: clean up screen text for the lock
+- :date: 23-Mar-2021
+  :jira_id: '3815'
+  :description: |-
+    Orchids: add a lock to prevent one batch job starting while another is running
+- :date: 23-Mar-2021
+  :jira_id: '3851'
+  :description: |-
+    Orchids: button to enable/disable "Add to draft tree" button on orchid panel
+- :date: 23-Mar-2021
+  :release: true
+- :date: 18-Mar-2021
+  :jira_id: '3843'
+  :description: |-
+    Orchids: remove locking code mistakenly added with this jira's changes.
+- :date: 18-Mar-2021
+  :release: true
+- :date: 17-Mar-2021
+  :jira_id: '3839'
+  :description: |-
+    Orchids: show the synonym type for non-misapplied synonyms as soon as a preferred match is made
+- :date: 17-Mar-2021
+  :jira_id: '3843'
+  :description: |-
+    Orchids: create "orchids-matcher" group and use it to authorise orchids work
+- :date: 17-Mar-2021
+  :jira_id: '3819'
+  :description: |-
+    Orchids: add "found” and “created” entries for misapplied records in the “With match and instances breakdown” section of stats
+- :date: 16-Mar-2021
+  :jira_id: '3839'
+  :description: |-
+    Orchids: for matched names, show the synonym type on the Details tab
+- :date: 16-Mar-2021
+  :jira_id: '3743'
+  :description: |-
+    Orchids: halt batch job adding records to draft taxonomy if a genus fails
+- :date: 15-Mar-2021
+  :jira_id: '3743'
+  :description: |-
+    Orchids: Order records in the batch jobs by sequence, not id
+- :date: 15-Mar-2021
+  :jira_id: '3837'
+  :description: |-
+    Orchids: Log end of job after bulk addition of draft orchid instances to tree
+- :date: 12-Mar-2021
+  :jira_id: ''
+  :description: |-
+    Software upgrades to JRuby and Rails - please sample test some workflows.
+- :date: 12-Mar-2021
+  :jira_id: '3838'
+  :description: |-
+    Orchids: remove misleading designation of raw synonym types as '(unknown)'; add syn-type: search directive (more to do for this jira)
+- :date: 11-Mar-2021
+  :jira_id: '3651'
+  :description: |-
+    Orchids: add in-current-taxonomy: directive
+- :date: 04-Mar-2021
+  :jira_id: '3823'
+  :description: |-
+    Orchids: fix the query directive non-misapp-taxon-sharing-name-id-not-pp
+- :date: 04-Mar-2021
+  :jira_id: '3817'
+  :description: |-
+    Orchids: create draft instance no longer logs zero counts - if the job doesn't create a record then it says nothing in the log
+- :date: 02-Mar-2021
+  :jira_id: '3817'
+  :description: |-
+    Orchids: breakdown stats of instances created/found; log end of create instances task; add orchid id and more to logs; fix the logic for creating/finding cross-ref instances.
+- :date: 01-Mar-2021
+  :jira_id: '3817'
+  :description: |-
+    Orchids: check for standalone instance now insists on it being standalone
+- :date: 01-Mar-2021
+  :jira_id: '3815'
+  :description: |-
+    Orchids: remove the undefined method error mentioned in the first comment
+- :date: 22-Feb-2021
+  :jira_id: '3789'
+  :description: |-
+    Orchids: bug fix to ensure the create-instance process detects an existing instance for the 2018 CHAH reference
+- :date: 19-Feb-2021
+  :jira_id: '3794'
+  :description: |-
+    Orchids: new query non-misapp-taxon-sharing-name-id-not-pp.
+- :date: 18-Feb-2021
+  :jira_id: '3764'
+  :description: |-
+    Orchids: batch processing refinements - improved unmatched status counts and some extra logging of errors mainly
+- :date: 17-Feb-2021
+  :jira_id: '3764'
+  :description: |-
+    Orchids: orchid processing log help and examples now appear correctly on page load 
+- :date: 17-Feb-2021
+  :jira_id: '3764'
+  :description: |-
+    Orchids: batch job now logs successful finish
+- :date: 16-Feb-2021
+  :jira_id: '3764'
+  :description: |-
+    Orchids: change uniqueness validation from name_id plus orchid_id to name_id plus instance_id for preferred matches
+- :date: 01-Feb-2021
+  :release: true
+- :date: 29-Jan-2021
+  :jira_id: '3784'
+  :description: |-
+    Instance edit bug fix: calling orchids-aware should not break the instance edit tab now
+- :date: 22-Jan-2021
+  :jira_id: '3632'
+  :description: |-
+    Name report: earliest-instance-not-primary-year-strict 
+- :date: 21-Jan-2021
+  :release: true
+- :date: 20-Jan-2021
+  :jira_id: '3762'
+  :description: |-
+    Taxonomy: provide a brief explanatory paragraph on the tab with the profile data
+- :date: 18-Jan-2021
+  :jira_id: '3586'
+  :description: |-
+    Namepaths: a new report "bad-namepath" which retrieves names with incorrectly formed name paths; listed on the Reports tab
+- :date: 14-Jan-2021
+  :jira_id: '3649'
+  :description: |-
+    Orchids: prevent Instance delete failing silently when the Instance is linked to an Orchid (APNI-only).
+- :date: 14-Jan-2021
+  :release: true
+- :date: 13-Jan-2021
+  :jira_id: '3764'
+  :description: |-
+    Orchids: Improve orchid-name match uniqueness violation error message, again.
+- :date: 13-Jan-2021
+  :jira_id: '2404'
+  :description: |-
+    New instance query directives: verbatim-name-matches-full-name-ignoring-orth-var, name-status, and name-status-not
+- :date: 13-Jan-2021
+  :jira_id: '3764'
+  :description: |-
+    Orchids: Improve orchid-name match uniqueness violation error message
+- :date: 12-Jan-2021
+  :jira_id: '3730'
+  :description: |-
+    Fix the distribution field to be fixed full width; not grow as typed into it
+- :date: 12-Jan-2021
+  :jira_id: '3769'
+  :description: |-
+    New instance query directive: verbatim-name-matches-full-name-ignoring-hybrid-x; field help text tidied up as requested
+- :date: 06-Jan-2021
+  :jira_id: '3763'
+  :description: |-
+    Orchids: add help and examples for is-not-misapplied; also add query directive non-misapp-taxon-sharing-name-id that thoroughly excludes misapps from the shared-name check
+- :date: 06-Jan-2021
+  :jira_id: '3763'
+  :description: |-
+    Orchids: add query directive is-not-misapplied for use in combination with directives like taxon-sharing-name-id 
+- :date: 05-Jan-2021
+  :jira_id: '3762'
+  :description: |-
+    Taxonomy: allow authorised users to view structured profile data (e.g. distribution) in the editor

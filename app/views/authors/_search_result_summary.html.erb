@@ -1,9 +1,0 @@
-<% unless params[:query].blank? %>
-  <%= %Q(#{pluralize(@search_results.count, "author") } \
-          #{" (limited) " if @limited} \
-          for #{link_to("#{params[:query]}",authors_search_path(query: params[:query]),
-            tabindex: 35,
-            class: 'rerun-query-link',
-            data: {no_turbolink: true},
-            title: 'Rerun this query.')}).html_safe if @search_results %><%= "(Ignored criteria: #{@rejected_pairings.join(',')})" if !@rejected_pairings.blank? %>
-<% end %>

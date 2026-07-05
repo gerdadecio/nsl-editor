@@ -28,10 +28,10 @@ class ReferenceEditorShowNewInstanceTabTest < ActionController::TestCase
   test "should show editor reference new instance tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @reference.id, tab: "tab_new_instance" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @reference.id, tab: "tab_new_instance" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_select "li.active a#reference-new-instance-tab",
                   /New instance/,
                   "Should show 'New instance' tab."

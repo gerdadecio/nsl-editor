@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class SessionsController < ApplicationController
-  skip_before_filter :authenticate
+  skip_before_action :authenticate
 
   def new
     build_sign_in
@@ -29,16 +29,19 @@ class SessionsController < ApplicationController
     render "new"
   end
 
+  # Known problem: if login is rejected due to no login authority
+  # entering a legit username/password into the re-rendered sign in form
+  # fails the first time.  
   def create
     build_sign_in
-    if @sign_in.save
+    if @sign_in.save && authorised_to_login?
       set_up_session
       deep_link || (redirect_to :root)
     else
-      render "new"
+      render "new", status: :unprocessable_content
     end
-  rescue => e
-    logger.error("Exception signing in: #{e}")
+  rescue StandardError => e
+    logger.error("Exception signing in: #{e.to_s.gsub(/password:[^,]*/, 'password: [filtered]')}")
     redirect_to :retry_start_sign_in
   end
 
@@ -55,17 +58,23 @@ class SessionsController < ApplicationController
   private
 
   def build_sign_in
+    # Do we need to reset the session? For security?
+    # deep_link = session[:url_after_sign_in]
+    # reset_session
+    # session[:url_after_sign_in] = deep_link
     @sign_in = SignIn.new(sign_in_params)
     @no_searchbar = true
     @no_search_result_details = true
     @no_advanced_search = true
-    @no_navigation = true
+    @no_menus = true
   end
 
   def set_up_session
-    session[:username] = sign_in_params[:username]
+    session[:username] = sign_in_params[:username].downcase
     session[:groups] = @sign_in.groups
     session[:user_full_name] = @sign_in.user_full_name
+    session[:user_cn] = @sign_in.user_cn
+    session[:generic_active_directory_user] = @sign_in.generic_active_directory_user
     session[:include_common_and_cultivar] = false
     session[:workspace] = {}
   end
@@ -83,5 +92,15 @@ class SessionsController < ApplicationController
   def sign_in_params
     sign_in_params = params[:sign_in]
     sign_in_params&.permit(:username, :password)
+  end
+  
+  def authorised_to_login?
+    if @sign_in.groups.include?('login')
+      true
+    else
+      @sign_in.make_invalid # simulate failed credentials
+      reset_session
+      false
+    end
   end
 end

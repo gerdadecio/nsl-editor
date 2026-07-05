@@ -41,10 +41,10 @@ class ReferencesControllerTest < ActionController::TestCase
   test "should show reference" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @reference, tab: "tab_show_1" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:edit])
+        params: { id: @reference, tab: "tab_show_1" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [:edit] })
     assert_response :success
   end
 end

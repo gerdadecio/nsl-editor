@@ -24,21 +24,22 @@ class ReferencesesUpdateInvalidMonthTooHighTest < ActionController::TestCase
 
   test "update reference invalid month too high" do
     @request.headers["Accept"] = "application/javascript"
-      patch(:update,
-           { id: references(:simple).id,
-             reference: { "ref_type_id" => ref_types(:book),
-                          "title" => "Some book",
-                          "author_id" => authors(:dash),
-                          "author_typeahead" => "-",
-                          "published" => true,
-                          "ref_author_role_id" => ref_author_roles(:author),
-                          "year" => "1999",
-                          "month" => "13",
-                          "day" => "4" } },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
-    assert_response :unprocessable_entity
+    patch(:update,
+          params: { id: references(:simple).id,
+                    reference: { "ref_type_id" => ref_types(:book),
+                                 "title" => "Some book",
+                                 "author_id" => authors(:dash),
+                                 "author_typeahead" => "-",
+                                 "published" => true,
+                                 "parent_typeahead" => @parent_typeahead,
+                                 "ref_author_role_id" => ref_author_roles(:author),
+                                 "year" => "1999",
+                                 "month" => "13",
+                                 "day" => "4" } },
+          session: { username: "fred",
+                     user_full_name: "Fred Jones",
+                     groups: ["edit"] })
+    assert_response :unprocessable_content
     assert_match(/Month 13 is above the range 1-12/,
                  response.body.to_s,
                  "Missing or incorrect error message")

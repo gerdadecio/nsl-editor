@@ -38,33 +38,28 @@ class GenusNameUpdateWithNoNameChangeTest < ActionController::TestCase
     "name-strings"
   end
 
-  def user_agent
-    "Ruby"
-  end
-
   def stub_it
     stub_request(:get, %r{#{a}.nsl/services.rest.name.apni.[0-9]*.api.#{b}})
       .with(headers: { "Accept" => "text/json", "Accept-Encoding" => /.*/,
-                       "User-Agent" => user_agent })
-      .to_return(status: 200, body: %({ "class": "silly name class",
-      "_links": { "permalink": [ ] }, "name_element":
-      "redundant name element for id 91755", "action": "unnecessary action",
-      "result": { "fullMarkedUpName": "full marked up name for id 91755",
-        "simpleMarkedUpName": "simple marked up name for id 91755",
-        "fullName": "full name for id 91755",
-        "simpleName": "simple name for id 91755" } }).to_json, headers: {})
+                       "User-Agent" => /rest-client.*ruby.*/ })
+      .to_return(status: 200,
+                 body: {result: {simpleName:"Acacia",
+                                 fullName:"Acacia"}}.to_json,
+                 headers: {})
   end
+
 
   test "genus name update with no name change" do
     post(:update,
-         { name: { "name_element" => "Acacia", "verbatim_name" => "fred" },
-           id: @genus.id },
-         username: "fred",
-         user_full_name: "Fred Jones",
-         groups: ["edit"])
+         params: { name: { "name_element" => "Acacia", "verbatim_rank" => "sp" },
+                   id: @genus.id },
+         session: { username: "fred",
+                    user_full_name: "Fred Jones",
+                    groups: ["edit"] })
     assert_response :success
     sleep(2) # to allow for the asynch job
     species_afterwards = Name.find(@species.id)
+    genus_after = Name.find(@genus.id)
     assert @species.full_name == species_afterwards.full_name,
            "Genus name not changed so species's name should not change"
     subspecies_afterwards = Name.find(@subspecies.id)
@@ -72,4 +67,3 @@ class GenusNameUpdateWithNoNameChangeTest < ActionController::TestCase
            "Genus name has not changed so subspecies's name. should not change"
   end
 end
-

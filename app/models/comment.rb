@@ -16,15 +16,44 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Comment < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: comment
+#
+#  id           :bigint           not null, primary key
+#  created_by   :string(50)       not null
+#  lock_version :bigint           default(0), not null
+#  text         :text             not null
+#  updated_by   :string(50)       not null
+#  created_at   :timestamptz      not null
+#  updated_at   :timestamptz      not null
+#  author_id    :bigint
+#  instance_id  :bigint
+#  name_id      :bigint
+#  reference_id :bigint
+#
+# Indexes
+#
+#  comment_author_index     (author_id)
+#  comment_instance_index   (instance_id)
+#  comment_name_index       (name_id)
+#  comment_reference_index  (reference_id)
+#
+# Foreign Keys
+#
+#  fk_3tfkdcmf6rg6hcyiu8t05er7x  (reference_id => reference.id)
+#  fk_6oqj6vquqc33cyawn853hfu5g  (instance_id => instance.id)
+#  fk_9aq5p2jgf17y6b38x5ayd90oc  (author_id => author.id)
+#  fk_h9t5eaaqhnqwrc92rhryyvdcf  (name_id => name.id)
+#
+class Comment < ApplicationRecord
   self.table_name = "comment"
   self.primary_key = "id"
   self.sequence_name = "hibernate_sequence"
-  strip_attributes
-  belongs_to :author
-  belongs_to :instance
-  belongs_to :name
-  belongs_to :reference
+  belongs_to :author, optional: true
+  belongs_to :instance, optional: true
+  belongs_to :name, optional: true
+  belongs_to :reference, optional: true
   validate :validate_only_one_parent
   validates :text, presence: true
 
@@ -35,12 +64,12 @@ class Comment < ActiveRecord::Base
 
   def update_attributes_with_username!(attributes, username)
     self.updated_by = username
-    update_attributes!(attributes)
+    update!(attributes)
   end
 
   def update_attributes_with_username(attributes, username)
     update_attributes_with_username!(attributes, username)
-  rescue
+  rescue StandardError
     false
   end
 
@@ -52,9 +81,9 @@ class Comment < ActiveRecord::Base
     parents += 1 if name_id.present?
     parents += 1 if reference_id.present?
     if parents.zero?
-      errors[:base] << "do not know which record this comment is for."
+      errors.add(:base, "do not know which record this comment is for.")
     elsif parents > 1
-      errors[:base] << "cannot be attached to more than one record."
+      errors.add(:base, "cannot be attached to more than one record.")
     end
   end
 end

@@ -30,10 +30,10 @@ class ReferenceDestroyForbiddenForReaderTest < ActionController::TestCase
     assert_no_difference("Reference.count",
                          "No references should be harmed in this test") do
       post(:destroy,
-           { id: @reference.id },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: [])
+           params: { id: @reference.id },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: [] })
     end
     assert_response :forbidden, "Reader should not be able to destroy reference"
   end

@@ -17,8 +17,6 @@
 #   limitations under the License.
 #
 require "test_helper"
-require "models/instance/as_typeahead/for_synonymy/rank_restrictions/\
-infraspecies/infraspecies_helper"
 
 # Single instance typeahead search.
 class TypeaheadForSynonymySubformaTest < ActiveSupport::TestCase
@@ -35,4 +33,36 @@ class TypeaheadForSynonymySubformaTest < ActiveSupport::TestCase
     check_infraspecific_exclusions
     check_infraspecific_inclusions
   end
+
+  def check_infraspecific_exclusions
+    %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Familia
+       Subfamilia Tribus Subtribus Genus Subgenus Sectio Subsectio Series
+       Subseries Superspecies Subforma].each do |rank_string|
+      assert @rank_names.none? { |e| e.match(/\A#{rank_string}\z/) },
+             "Expect no #{Regexp.escape(rank_string)} to be suggested"
+    end
+  end
+
+  def check_infraspecific_inclusions
+    check_species
+    check_the_rest
 end
+
+  def check_species
+    assert @rank_names.select { |e| e == "Species" }.size >= 5,
+           "Expect correct number of species to be suggested"
+  end
+
+  def check_the_rest
+    %w[Subspecies Varietas Subvarietas [n/a] [unknown] [unranked]
+     [infraspecies] Forma Nothovarietas nothomorph. morphological\ var.]
+      .each do |rank_string|
+      matches = @rank_names.select do |e|
+        e.match(/\A#{Regexp.escape(rank_string)}\z/)
+      end
+      assert matches.size >= 1,
+             "Expect at least one #{rank_string} to be suggested"
+    end
+  end
+end
+

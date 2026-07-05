@@ -16,7 +16,38 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class NameRank < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: name_rank
+#
+#  id                :bigint           not null, primary key
+#  abbrev            :string(20)       not null
+#  deprecated        :boolean          default(FALSE), not null
+#  description_html  :text
+#  display_name      :text             not null
+#  has_parent        :boolean          default(FALSE), not null
+#  italicize         :boolean          default(FALSE), not null
+#  lock_version      :bigint           default(0), not null
+#  major             :boolean          default(FALSE), not null
+#  name              :string(50)       not null
+#  sort_order        :integer          default(0), not null
+#  use_verbatim_rank :boolean          default(FALSE), not null
+#  visible_in_name   :boolean          default(TRUE), not null
+#  name_group_id     :bigint           not null
+#  parent_rank_id    :bigint
+#  rdf_id            :string(50)
+#
+# Indexes
+#
+#  name_rank_rdfid  (rdf_id)
+#  nr_unique_name   (name_group_id,name) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_p3lpayfbl9s3hshhoycfj82b9  (name_group_id => name_group.id)
+#  fk_r67um91pujyfrx7h1cifs3cmb  (parent_rank_id => name_rank.id)
+#
+class NameRank < ApplicationRecord
   self.table_name = "name_rank"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -55,7 +86,7 @@ class NameRank < ActiveRecord::Base
   INFRAGENUS = "[infragenus]"
   INFRASPECIES = "[infraspecies]"
 
-  scope :not_deprecated, -> {where(deprecated: false)}
+  scope :not_deprecated, -> { where(deprecated: false) }
 
   scope :infraspecific,
         (lambda do
@@ -119,58 +150,58 @@ class NameRank < ActiveRecord::Base
 
   def self.options
     where("deprecated is false")
-        .order(:sort_order)
-        .collect {|rank| [rank.display_name, rank.id]}
+      .order(:sort_order)
+      .collect { |rank| [rank.display_name, rank.id] }
   end
 
   def self.query_form_options
     where("deprecated is false")
-        .order(:sort_order)
-        .collect {|n| [n.name, "rank: #{n.name.downcase}"]}
+      .order(:sort_order)
+      .collect { |n| [n.name, "rank: #{n.name.downcase}"] }
   end
 
   def self.query_form_ranked_below_options
     where("deprecated is false")
-        .order(:sort_order)
-        .collect {|n| [n.name, "below-rank: #{n.name.downcase}"]}
+      .order(:sort_order)
+      .collect { |n| [n.name, "below-rank: #{n.name.downcase}"] }
   end
 
   def self.xquery_form_ranked_above_options
     where("deprecated is false")
-        .order(:sort_order)
-        .collect {|n| [n.name, "above-rank: #{n.name.downcase}"]}
+      .order(:sort_order)
+      .collect { |n| [n.name, "above-rank: #{n.name.downcase}"] }
   end
 
   def self.cultivar_hybrid_options
     where("deprecated is false")
-        .where("(name not like '%[%' or name = '[unranked]') ")
-        .where(" sort_order >= (select sort_order from name_rank where lower(name)
+      .where("(name not like '%[%' or name = '[unranked]') ")
+      .where(" sort_order >= (select sort_order from name_rank where lower(name)
     = 'species')")
-        .order(:sort_order)
-        .collect {|rank| [rank.display_name, rank.id]}
+      .order(:sort_order)
+      .collect { |rank| [rank.display_name, rank.id] }
   end
 
   def self.cultivar_options
     where("deprecated is false")
-        .where("name not like '%[%' or name = '[unranked]' ")
-        .where(" sort_order >= (select sort_order from name_rank where lower(name)
+      .where("name not like '%[%' or name = '[unranked]' ")
+      .where(" sort_order >= (select sort_order from name_rank where lower(name)
     = 'species')")
-        .order(:sort_order)
-        .collect {|rank| [rank.display_name, rank.id]}
+      .order(:sort_order)
+      .collect { |rank| [rank.display_name, rank.id] }
   end
 
   def self.below_family_options
     where("deprecated is false")
-        .where(" sort_order > (select sort_order from name_rank where lower(name) = 'familia')")
-        .order(:sort_order)
-        .collect {|rank| [rank.display_name, rank.id]}
+      .where(" sort_order > (select sort_order from name_rank where lower(name) = 'familia')")
+      .order(:sort_order)
+      .collect { |rank| [rank.display_name, rank.id] }
   end
 
   def self.above_family_options
     where("deprecated is false")
-        .where(" sort_order <= (select sort_order from name_rank where lower(name) = 'familia')")
-        .order(:sort_order)
-        .collect {|rank| [rank.display_name, rank.id]}
+      .where(" sort_order <= (select sort_order from name_rank where lower(name) = 'familia')")
+      .order(:sort_order)
+      .collect { |rank| [rank.display_name, rank.id] }
   end
 
   def self.id_is_unranked?(id)
@@ -260,17 +291,23 @@ class NameRank < ActiveRecord::Base
     end
   end
 
-  # Note: greater than means below!
+  # NOTE: greater than means below!
   def below_species?
     sort_order > NameRank.species.sort_order
   end
 
-  # Note: greater than means below!
+  # NOTE: greater than means below!
   def below_genus?
     sort_order > NameRank.genus.sort_order
   end
 
-  # Note: greater than means below!
+  # NOTE: greater than means below!
+  def at_or_below_genus?
+    sort_order >= NameRank.genus.sort_order
+  end
+
+
+  # NOTE: greater than means below!
   def below_family?
     sort_order > NameRank.family.sort_order
   end
@@ -281,37 +318,6 @@ class NameRank < ActiveRecord::Base
 
   def self.family
     find_by(name: FAMILY)
-  end
-
-  def self.xprint_parent_divisions
-    NameRank.all.each do |name_rank|
-      if name_rank.below_species?
-        puts "#{name_rank.name} is below species"
-      else
-        puts name_rank.name
-      end
-    end
-    ""
-  end
-
-  def self.xprint_parents
-    NameRank.all.each do |name_rank|
-      printf("%20s:  %s\n", name_rank.name, name_rank.parent.try("name"))
-    end
-    ""
-  end
-
-  def self.xprint_takes_parent
-    NameRank.all.each do |name_rank|
-      printf("%20s:  %s\n",
-             name_rank.name,
-             name_rank.parent.takes_parent? ? "takes parent" : "no parent")
-    end
-    ""
-  end
-
-  def takes_parent?
-    unranked? || parent.real_parent?
   end
 
   def real_parent?
@@ -328,6 +334,21 @@ class NameRank < ActiveRecord::Base
 
   def top_rank?
     sort_order == NameRank.minimum(:sort_order)
+  end
+
+  def not_bracketed?
+    !(name.match(/\[/))
+  end
+
+  def can_impact_child_name_construction?
+    at_or_below_genus? && not_bracketed?
+  end
+
+  # Autonym only exist at the following ranks:
+  #  subdivisions of a genus (i.e. below genus but above species)
+  #  infraspecies (i.e. below species)
+  def compatible_with_autonym?
+    sort_order > NameRank.genus.sort_order && !species? 
   end
 end
 

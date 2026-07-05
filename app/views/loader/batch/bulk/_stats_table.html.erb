@@ -1,0 +1,28 @@
+
+
+<table class="batch-stats status table-striped" border="1px solid black">
+<% a_hash.each do | key, value | %> 
+  <tr>
+    <% if key =~ /\Astatus\z/ %>
+      <td colspan="2">
+        <%= value %>
+      </td>
+    <% elsif key =~ /\Astring\z/ || key =~ /\Acategory\z/ || key =~ /\Areported\z/ %>
+       <td>
+        <%= key.to_s.gsub(/_/,' ').capitalize %>
+       </td>
+      <td class="width-23em min-width-23em">
+        <%= value %>
+      </td>
+    <% else %>
+       <td>
+        <%= key.to_s.gsub(/_/,' ').capitalize %>
+       </td>
+      <td class="numeric width-4em min-width-4em">
+        <%= value if value.to_i > 0 %>
+      </td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+<br>

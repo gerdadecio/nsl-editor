@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -25,11 +24,11 @@ class NamesDeletesController < ApplicationController
     raise "Not confirmed" unless @names_delete.save! # i.e. confirmed
 
     delete_via_service(names_delete_params)
-    render partial: "ok.js"
+    render partial: "ok"
   rescue StandardError => e
     logger.error("Exception deleting name: #{e}")
     assemble_error_message(e)
-    render partial: "error.js"
+    render partial: "error"
   end
 
   private
@@ -60,7 +59,7 @@ class NamesDeletesController < ApplicationController
     @name_delete = NameDelete.new
     @no_searchbar = true
     @no_search_result_details = true
-    @no_navigation = true
+    @no_menus = true
   end
 
   def names_delete_params

@@ -17,7 +17,19 @@
 #   limitations under the License.
 
 #  Distribution Region
-class DistRegion < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: dist_region
+#
+#  id               :bigint           not null, primary key
+#  def_link         :string(255)
+#  deprecated       :boolean          default(FALSE), not null
+#  description_html :text
+#  lock_version     :bigint           default(0), not null
+#  name             :string(255)      not null
+#  sort_order       :integer          default(0), not null
+#
+class DistRegion < ApplicationRecord
   self.table_name = "dist_region"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -27,13 +39,18 @@ class DistRegion < ActiveRecord::Base
 
   def self.sorted
     DistRegion.all
-        .sort {|a, b| a.sort_order <=> b.sort_order}
+              .sort { |a, b| a.sort_order <=> b.sort_order }
   end
 
   def self.region_names
     DistRegion.all
-        .sort {|a, b| a.sort_order <=> b.sort_order}
-        .collect {|dr| dr.name}
+              .sort { |a, b| a.sort_order <=> b.sort_order }
+              .collect { |dr| dr.name }
   end
 
+  def self.as_hash
+    dr_hash = {}
+    DistRegion.all.each { |dr| dr_hash[dr.name] = dr.sort_order }
+    dr_hash
+  end
 end

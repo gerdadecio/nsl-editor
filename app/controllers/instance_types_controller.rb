@@ -18,7 +18,7 @@
 #
 class InstanceTypesController < ApplicationController
   include ActionView::Helpers::TextHelper
-  before_filter :hide_details, :empty_search
+  before_action :hide_details, :empty_search
 
   # GET /instance_types
   def index

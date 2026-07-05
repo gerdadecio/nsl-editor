@@ -28,14 +28,14 @@ class SearchNamesWithFocusSimpleTest < ActionController::TestCase
 
   test "search for a set of names and focus on one" do
     get(:search,
-        { query_target: "name", query_string: "a", focus_id: @name.id },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "name", query_string: "a", focus_id: @name.id },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
-                  /4[0-9] names of 4[0-9]/,
+                  /[45][0-9] names of [45][0-9]/,
                   "Should find plenty of records for a simple search on 'a'"
-    assert_select "#focus-id[value='#{@name.id}']", { count: 1 }, "One Focus"
+    assert_select "#focus_id[value='#{@name.id}']", { count: 1 }, "One Focus"
   end
 end

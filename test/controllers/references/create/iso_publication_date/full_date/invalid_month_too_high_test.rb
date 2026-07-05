@@ -30,18 +30,19 @@ class ReferencesesCreateFullDateInvMonthTooHighTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Reference.count") do
       post(:create,
-           { reference: { "ref_type_id" => ref_types(:book),
-                          "title" => "Some book",
-                          "author_id" => authors(:dash),
-                          "author_typeahead" => "-",
-                          "published" => true,
-                          "ref_author_role_id" => ref_author_roles(:author),
-                          "day" => "30",
-                          "month" => @month,
-                          "year" => "1988" } },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
+           params: { reference: { "ref_type_id" => ref_types(:book),
+                                  "title" => "Some book",
+                                  "author_id" => authors(:dash),
+                                  "author_typeahead" => "-",
+                                  "published" => true,
+                                  "parent_typeahead" => @parent_typeahead,
+                                  "ref_author_role_id" => ref_author_roles(:author),
+                                  "day" => "30",
+                                  "month" => @month,
+                                  "year" => "1988" } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
       assert_match(/Error: Month #{@month} is above the range 1-12/,
                    response.body.to_s,
                    "Missing or incorrect error message")

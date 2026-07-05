@@ -26,10 +26,10 @@ class InstancesCreateByReaderTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Instance.count") do
       post(:create,
-           { instance: {} },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: [])
+           params: { instance: {} },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: [] })
     end
     assert_response :forbidden
   end

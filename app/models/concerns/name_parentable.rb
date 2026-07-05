@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
-
 # Name scopes
 module NameParentable
   extend ActiveSupport::Concern
   included do
-    belongs_to :parent, class_name: "Name", foreign_key: "parent_id"
+    belongs_to :parent, class_name: "Name", foreign_key: "parent_id", optional: true
     has_many :children,
              class_name: "Name",
              foreign_key: "parent_id",
              dependent: :restrict_with_exception
-    belongs_to :second_parent,
-               class_name: "Name", foreign_key: "second_parent_id"
+    belongs_to :second_parent, optional: true,
+                               class_name: "Name", foreign_key: "second_parent_id"
     has_many :second_children,
              class_name: "Name",
              foreign_key: "second_parent_id",

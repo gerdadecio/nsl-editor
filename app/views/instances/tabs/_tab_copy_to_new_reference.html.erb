@@ -19,7 +19,9 @@ The copied instance will remain attached to:
 
 <% @instance.instance_type_id = InstanceType.secondary_reference.id %>
 <%= form_for(@instance,  
-             url: { action: "copy_standalone" }, 
+             url: { action: "copy_standalone",
+             format: 'js'}, 
+             id: "copy-instance-for-name-form",
              remote: true, 
              method: :post) do |f| %>
 
@@ -93,7 +95,7 @@ The copied instance will remain attached to:
 <div class="width-100-percent"> 
 
   <%= link_to("Copy",
-             '#',
+             "javascript:void(0);",
              id: "copy-instance-link",
              class: "btn btn-warning pull-right",
              title: "Copy the instance - you will be asked to confirm.",
@@ -101,22 +103,6 @@ The copied instance will remain attached to:
              data: {show_this_id: "confirm-or-cancel-copy-instance-link-container",
                     must_have_value: "instance_reference_id"})
   %>
-	<script>
-		$('#copy-instance-link').click(function() {
-			$('#pre-submit-error-message').addClass('hidden');
-			var $myForm = $('form.edit_instance')[0];
-			if ($myForm.checkValidity()) {
-		    $('#confirm-or-cancel-copy-instance-link-container').removeClass('hidden');
-			  $(this).addClass('disabled');
-			} else {
-				$('#pre-submit-error-message').removeClass('hidden');
-				setTimeout(function() {
-					$('#pre-submit-error-message').addClass('hidden');
-				}, 2500 );
-				$('#create-copy-of-instance').click();
-			}
-		});
-	</script>
   <div id="pre-submit-error-message" class="error-message red hidden">Please fill out all the fields</div>
   <div id="confirm-or-cancel-copy-instance-link-container"
        class="confirm-or-cancel-container pull-right hidden">
@@ -166,4 +152,12 @@ The copied instance will remain attached to:
             class: "btn btn-default hidden refresh-page-link",
             title: "Refresh page")
 %>
+
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      focusOnField('instance-reference-typeahead');
+    })
+  </script>
+<% end %>
 

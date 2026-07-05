@@ -1,223 +1,248 @@
+# == Schema Information
+#
+# Table name: name_status
+#
+#  id               :bigint           not null, primary key
+#  deprecated       :boolean          default(FALSE), not null
+#  description_html :text
+#  display          :boolean          default(TRUE), not null
+#  lock_version     :bigint           default(0), not null
+#  name             :string(50)
+#  nom_illeg        :boolean          default(FALSE), not null
+#  nom_inval        :boolean          default(FALSE), not null
+#  name_group_id    :bigint           not null
+#  name_status_id   :bigint
+#  rdf_id           :string(50)
+#
+# Indexes
+#
+#  name_status_rdfid  (rdf_id)
+#  ns_unique_name     (name_group_id,name) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_g4o6xditli5a0xrm6eqc6h9gw  (name_status_id => name_status.id)
+#  fk_swotu3c2gy1hp8f6ekvuo7s26  (name_group_id => name_group.id)
+#
 default:
   name: "[default]"
-  name_group_id: NameGroup.na    
+  name_group: na
   nom_illeg: false
   nom_inval: false
 
 unknown:
   name: "[unknown]"
-  name_group_id: NameGroup.na    
+  name_group: na
   nom_illeg: false
   nom_inval: false
 
 na:
   name: "[n/a]"
-  name_group_id: NameGroup.na    
+  name_group: na
   nom_illeg: false
   nom_inval: false
 
 legitimate:
   name: "legitimate"
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 manuscript:
   name: "manuscript"
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_inval:
   name: "nom. inval."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_inval_nom_nud:
   name: "nom. inval., nom. nud."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_inval_nom_subnud:
   name: "nom. inval., nom. subnud."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_inval_pro_syn:
   name: "nom. inval., pro syn."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_inval_nom_ambig:
   name: "nom. inval., nom. ambig."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_inval_nom_confus:
   name: "nom. inval., nom. confus."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_inval_nom_prov:
   name: "nom. inval., nom. prov."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_inval_nom_alt:
   name: "nom. inval., nom. alt."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_inval_nom_dub:
   name: "nom. inval., nom. dub."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
   deprecated: true
 
 nom_inval_opera_utique_oppressa:
-  name: "nom. inval., opera utique oppressa
-  "
-  name_group_id: NameGroup.botanical
+  name: "nom. inval., opera utique oppressa"
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_inval_tautonym:
   name: "nom. inval., tautonym"
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: true
 
 nom_illeg:
   name: "nom. illeg."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: true
   nom_inval: false
 
 nom_illeg_nom_superfl:
   name: "nom. illeg., nom. superfl."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: true
   nom_inval: false
 
 nom_illeg_nom_rej:
   name: "nom. illeg., nom. rej."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: true
   nom_inval: false
 
 isonym:
   name: "isonym"
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_superfl:
   name: "nom. superfl."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_rej:
   name: "nom. rej."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_alt:
   name: "nom. alt."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_alt_nom_illeg:
   name: "nom. alt., nom. illeg"
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_cult:
   name: "nom. cult."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_cons:
   name: "nom. cons."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_cons_nom_alt:
   name: "nom. cons., nom. alt."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_cult_nom_alt:
   name: "nom. cult., nom. alt."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_et_typ_cons:
   name: "nom. et typ. cons."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_cons_orth_cons:
   name: "nom. cons., orth. cons."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_et_orth_cons:
   name: "nom. et orth. cons."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nomina_utique_rejicienda:
   name: "nomina utique rejicienda"
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 typ_cons:
   name: "typ. cons."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 orth_var:
   name: "orth. var."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 orth_cons:
   name: "orth. cons."
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 deleted:
   name: "[deleted]"
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false
 
 nom_inval_opera_utique_oppressa:
   name: "nom. inval., opera utique oppressa"
-  name_group_id: NameGroup.botanical
+  name_group: botanical
   nom_illeg: false
   nom_inval: false

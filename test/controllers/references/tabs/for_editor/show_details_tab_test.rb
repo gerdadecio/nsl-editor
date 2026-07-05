@@ -28,10 +28,10 @@ class ReferenceShowEditorDetailsTabTest < ActionController::TestCase
   test "should show editor reference details tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @reference.id, tab: "tab_show_1" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @reference.id, tab: "tab_show_1" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
   end
 end

@@ -25,11 +25,11 @@ class SearchRefsOnCitationSimpleTest < ActionController::TestCase
   test "search on reference citation" do
     ref = references(:bucket_reference_for_default_instances)
     get(:search,
-        { query_target: "reference",
-          query_string: "citation: #{ref.citation}" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "reference",
+                  query_string: "citation: #{ref.citation}" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /1 record\b/,

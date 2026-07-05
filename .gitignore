@@ -6,38 +6,51 @@
 
 # Ignore bundler config.
 /.bundle
-
-# Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-journal
+# Ignore history files.
+.history/
 
 # Ignore all logfiles and tempfiles.
-/log
-/log/*.log
-/tmp
-*.log
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
 
-# Ignore vim swaps
-*.sw?
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
 
+/public/assets
+.byebug_history
 
-public/assets/**
-doc/app/**
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Added
+*.war
+.yarn
+.yarnrc
 .DS_Store
-
-#IntelliJ Idea files
-/*.iml
-/.idea
-# Ignore application configuration
-/config/application.yml
-
-# Ignore tags file
-
 tags
+coverage
+hs_err*.log
+# .vscode
+.pgpass
+.nsl
 
-.ruby-version
+# Ignore env configs
+.env*
 
-sandi_meter/assets
+# Ignore vpn configs
+*.ovpn
+/vpn
 
-bin/jruby-9.1.12.0
-bin/jruby-dist-9.1.12.0-bin.zip
+# Ignore key files for decrypting credentials and more.
+/config/*.key
+

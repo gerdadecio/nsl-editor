@@ -17,23 +17,54 @@
 #   limitations under the License.
 
 # Rails class for the Name Category table.
-class NameCategory < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: name_category
+#
+#  id                            :bigint           not null, primary key
+#  description_html              :text
+#  lock_version                  :bigint           default(0), not null
+#  max_parents_allowed           :integer          default(0), not null
+#  min_parents_required          :integer          default(0), not null
+#  name                          :string(50)       not null
+#  parent_1_help_text            :text
+#  parent_2_help_text            :text
+#  requires_family               :boolean          default(FALSE), not null
+#  requires_higher_ranked_parent :boolean          default(FALSE), not null
+#  requires_name_element         :boolean          default(FALSE), not null
+#  sort_order                    :integer          default(0), not null
+#  takes_author_only             :boolean          default(FALSE), not null
+#  takes_authors                 :boolean          default(FALSE), not null
+#  takes_cultivar_scoped_parent  :boolean          default(FALSE), not null
+#  takes_hybrid_scoped_parent    :boolean          default(FALSE), not null
+#  takes_name_element            :boolean          default(FALSE), not null
+#  takes_rank                    :boolean          default(FALSE), not null
+#  takes_verbatim_rank           :boolean          default(FALSE), not null
+#  rdf_id                        :string(50)
+#
+# Indexes
+#
+#  name_category_rdfid           (rdf_id)
+#  uk_rxqxoenedjdjyd4x7c98s59io  (name) UNIQUE
+#
+class NameCategory < ApplicationRecord
   self.table_name = "name_category"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-  SCIENTIFIC_CATEGORY = 'scientific'
-  SCIENTIFIC_HYBRID_FORMULA_CATEGORY = 'scientific hybrid formula'
+  SCIENTIFIC_CATEGORY = "scientific"
+  SCIENTIFIC_HYBRID_FORMULA_CATEGORY = "scientific hybrid formula"
   SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY =
-    'scientific hybrid formula unknown 2nd parent'
-  PHRASE_NAME = 'phrase name'
-  CULTIVAR_CATEGORY = 'cultivar'
-  CULTIVAR_HYBRID_CATEGORY = 'cultivar hybrid'
-  OTHER_CATEGORY = 'other'
-
+    "scientific hybrid formula unknown 2nd parent"
+  PHRASE_NAME = "phrase name"
+  NAMED_HYBRID = "named hybrid"
+  CULTIVAR_CATEGORY = "cultivar"
+  CULTIVAR_HYBRID_CATEGORY = "cultivar hybrid"
+  NAMED_HYBRID_CATEGORY = "named hybrid"
+  OTHER_CATEGORY = "other"
 
   has_many :name_types
   def self.phrase_name
-    self.where("name = 'phrase name'").first
+    where("name = 'phrase name'").first
   end
 
   def needs_top_buttons?
@@ -64,6 +95,10 @@ class NameCategory < ActiveRecord::Base
     name == PHRASE_NAME
   end
 
+  def named_hybrid?
+    name == NAMED_HYBRID
+  end
+
   def other?
     name == OTHER_CATEGORY
   end
@@ -75,9 +110,9 @@ class NameCategory < ActiveRecord::Base
 
   def takes_rank?
     takes_rank
-  rescue => e
+  rescue StandardError => e
     # transitional code
-    Rails.logger.error('Falling back to static takes_rank criteria because name_category.takes_rank was not found')
+    Rails.logger.error("Falling back to static takes_rank criteria because name_category.takes_rank was not found")
     scientific? ||
       scientific_hybrid_formula? ||
       cultivar? ||

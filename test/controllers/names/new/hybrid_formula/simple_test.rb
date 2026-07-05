@@ -27,10 +27,10 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    xhr(:get, :new,
-        { category: "hybrid formula",
-          random_id: "123445",
-          tabIndex: "107" },
+    get(:new,
+        params: { category: "hybrid formula",
+                  random_id: "123445",
+                  tabIndex: "107" },
         xhr: true)
     assert_response :success,
                     "Cannot get form for a new hybrid formula name"

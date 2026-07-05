@@ -1,93 +1,120 @@
-# frozen_string_literal: true
-
 source "https://rubygems.org"
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem "rails", "4.2.11.1"
+ruby "3.4.8"
 
-platform :jruby do
-  gem "activerecord-jdbcpostgresql-adapter", "1.3.24", :platform => :jruby
-  # warbler for rake tasks to generate a WAR file and use jruby 9.1.5.0
-  gem "jruby-jars", "9.1.5.0"
-  gem "warbler"
-  gem 'json', '~> 1.8', '>= 1.8.6'
-  gem "therubyrhino"
-end
+gem 'rails', '~> 8.1.0'
 
-platform :ruby do
-  gem 'pg', '~> 0.21'
-end
+# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
+gem "sprockets-rails"
 
-gem "sass-rails", "~> 4.0.3"
-gem "autoprefixer-rails", '8.6.5'
-gem "bootstrap-sass"
-# gem "uglifier", ">= 1.3.0"
-gem "coffee-rails", "~> 4.0.0"
-gem "jquery-rails"
-gem "jquery-ui-rails"
-gem "turbolinks"
-gem "jbuilder", "~> 2.0"
-# bundle exec rake doc:rails generates the API under doc/api.
-gem "sdoc", "~> 0.4.0", group: :doc
+# Use postgresql as the database for Active Record
+gem "pg", "~> 1.1"
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+# Use Puma as the app server [https://github.com/puma/puma]
+gem "puma", ">= 6.3.1"
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+gem "importmap-rails"
 
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+gem "turbo-rails"
+
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "stimulus-rails"
+
+# Build JSON APIs with ease. [https://github.com/rails/jbuilder]
+gem "jbuilder", "~> 2.7"
+
+# Use Redis adapter to run Action Cable in production
+# gem 'redis', '~> 4.0'
+
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# gem "bcrypt", "~> 3.1.7"
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[windows]
+
+# Reduces boot times through caching; required in config/boot.rb
+gem "bootsnap", require: false
+
+# Use Sass to process CSS
+# gem "sassc-rails"
+
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+# gem "image_processing", "~> 1.2"
+
+gem "listen", "~> 3.0"
 group :development do
-  gem "puma"
-  gem "better_errors", "~>1.0"
-  gem "spring"
-  gem "binding_of_caller", platforms: [:mri_19, :mri_20, :mri_21, :rbx]
-  gem "quiet_assets"
-  gem "rails_layout"
-end
-
-group :development, :test do
-  gem "pry-rails"
-  gem "pry-rescue"
-  gem "webmock"
-  # gem "schema_plus"
+  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem "annotaterb"
+  gem "awesome_print"
+  gem "brakeman", require: false
+  gem "bundler-audit", require: false
+  gem "web-console", ">= 3.3.0"
 end
 
 group :test do
-    gem "minitest"
-    gem "minitest-rails"
-    gem "minitest-reporters"
-    gem "launchy"
-    gem "mocha", "~> 1.1.0"
+  # gem 'capybara', '>= 2.15'
+  # gem "selenium-webdriver"
+  # Easy installation and use of web drivers to run system tests with browsers
+  gem "launchy"
+  gem "minitest"
+  gem "minitest-rails", "~> 8.1.0"
+  gem "minitest-reporters"
+  # NoMethodError: assert_template has been extracted to a gem. To continue using it, add:
+  gem "minitest-stub_any_instance"
+  gem "rails-controller-testing"
 end
 
-gem "kramdown"
-gem "seed_dump"
+group :development, :test do
+  gem "byebug"
+  gem "capybara"
+  gem "pry-rails"
+  # gem "pry-rescue" # breaks test env. on Mac M1
+  gem "webmock"
+  # gem "schema_plus"
 
-# gem 'activejob', '~> 0'
-gem "delayed_job_active_record"
+  gem "bullet"
+  gem "database_cleaner-active_record"
+  gem "factory_bot_rails"
+  gem "rspec-rails"
+  gem "shoulda-matchers"
 
-gem "figaro"
-gem "rest-client"
+  gem "rubocop", "~> 1.74", require: false
+  gem "rubocop-performance", require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-shopify", require: false
+end
 
-gem "active_type"
-gem "net-ldap", "~> 0.16.0"
-
-gem "strip_attributes"
-gem "exception_notification"
-
-gem "composite_primary_keys"
-gem "cancancan", "~> 1.10"
-
-gem "sucker_punch", "~> 1.0"
-gem "activejob_backport"
-gem "underscore-rails"
-
+# Added
+gem "active_type", ">= 2.7.0"
+gem "cancancan"
+gem "net-ldap"
 gem "pg_search"
-gem "acts_as_tree"
+gem "strip_attributes"
+gem "sucker_punch"
 
-# Removed because it seems to stop icons Angular part of the app.
-# Restored because getting rid of Angular.
-gem "font-awesome-rails"
-gem "comma", "~> 4.1" # csv dsl
-gem "awesome_print"
+gem "kramdown", ">= 2.3.0"
+gem "nokogiri", ">= 1.18.9"
+gem "rack", ">= 3.2.2"
+gem "rest-client"
+gem "simple_calendar"
+gem "websocket-extensions", ">= 0.1.5"
 
-gem "rubyzip", ">= 1.3.0"
+gem "addressable", ">= 2.8.0"
+
+gem "simplecov", require: false, group: :test
+
+gem "standard", group: %i[development test]
+gem "standardrb", group: %i[development test]
+
+gem "csv"
+gem "font-awesome-sass", "~> 6.4"
+gem "indefinite_article"
+gem "rails-ujs"
+gem "unf_ext"
+
+gem "logger" # previously logger was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 3.5.0.
+gem "next_rails"
+gem "ostruct" # previously ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 3.5.0.

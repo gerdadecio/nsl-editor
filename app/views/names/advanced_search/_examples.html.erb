@@ -16,7 +16,7 @@
       {search_target: 'Names', search_string: "*cacia", explanation: %Q(Find names containing "cacia". A trailing wildcard is added automatically. #{excc})},
       {search_target: 'Names', search_string: "acacia type:common,cultivar", explanation: %Q(Find just common or cultivar names exactly matching "acacia". #{incc})},
       {search_target: 'Names', search_string: "acacia rank: genus", explanation: %Q(List any name starting with "acacia" that is a genus. #{excc})},
-      {search_target: 'Names', search_string: "acacia rank: genus is-not-a-duplicate:", explanation: %Q(List any name starting with "acacia" that is a genus and is not a duplicate. #{excc})}
+      {search_target: 'Names', search_string: "acacia rank: genus is-not-a-duplicate:", explanation: %Q(List any name starting with "acacia" that is a genus and is not a duplicate. #{excc})},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
@@ -27,6 +27,21 @@
   <% end %>
 </table>
 
+
+<h5 class="">More complex name searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Names', search_string: "p above-rank: familia show-instances: limit:10", explanation: %Q(Find the first 10 names above rank familia, with a name that starts with "p", and show their instances. #{excc})},
+      {search_target: 'Names', search_string: "name: b above-rank: genus below-rank: ordo limit:20", explanation: %Q(Find the first 20 names above rank genus, below rank ordo, with a name that starts with "b". #{excc})},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td><%= val[:explanation].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
 
 <h5 class="">Simple Name and Name Element searches</h5>
 <table class="example-searches table table-striped">
@@ -51,6 +66,34 @@
   <% end %>
 </table>
 
+<h5 class="">Family searches</h5>
+<table class="example-searches table table-striped">
+  <% [{search_target: 'Names',
+       search_string: "no-family-id:",
+       explanation: %Q(Names with not directly connected to a family.)},
+      {search_target: 'Names',
+       search_string: "no-family-id: name-rank: species",
+       explanation: %Q(Species names with not directly connected to a family. Note the rank names can vary across databases)},
+      {search_target: 'Names',
+       search_string: "no-family-id: name-rank: familia",
+       explanation: %Q(Family names with not directly connected to a family. Note the rank names can vary across databases)},
+      {search_target: 'Names',
+       search_string: "parent-different-to-family: rank: genus",
+       explanation: %Q(Genera whose parent is different to their family - could be valid, but not always)},
+     ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string],
+                  search_path(query_string: val[:search_string],
+                  query_target: val[:search_target]),
+                  class:'blue',
+                  title: "Run the described search.")
+      %>
+    </td>
+    <td><%= val[:explanation].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
 
 <h5 class="">Assertion queries</h5>
 <table class="example-searches table table-striped">
@@ -78,6 +121,7 @@
 
 <br>
 <h5 class="inline-block">Count names</h5><span> - turn a list into a count</span>
+<p>Note: you can also use a <code>count:</code> directive.
 <table class="example-searches table table-striped">
   <% [{search_target: 'Names', search_string: "count acacia",explanation: %Q(Count names starting with "acacia". #{excc})},
       {search_target: 'Names', search_string: "count rank: genus is-not-a-duplicate:", explanation: %Q(Count non-duplicate genera. #{excc})},
@@ -134,7 +178,7 @@
   <% end %>
 </table>
 
-<h5 class="">Accepted Tree searches</h5>
+<h5 class="">Accepted Taxonomy searches</h5>
 <table class="example-searches table table-striped">
   <% [{search_target: 'Names',
        search_string: "angophora in-accepted-tree:",
@@ -150,7 +194,33 @@
        explanation: %Q(Names matching "angophora cordata%" excluded from the accepted tree.)},
       {search_target: 'Names',
        search_string: "angophora cordata excluded-from-accepted-tree: show-instances:",
-       explanation: %Q(Names matching "angophora cordata%" excluded from the accepted tree with instances.)},
+       explanation: %Q(Names matching "angophora cordata%" excluded from the accepted taxonomy with instances.)},
+     ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string],
+                  search_path(query_string: val[:search_string],
+                  query_target: val[:search_target]),
+                  class:'blue',
+                  title: "Run the described search.")
+      %>
+    </td>
+    <td><%= val[:explanation].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">Accepted Taxonomy Distribution searches</h5>
+<table class="example-searches table table-striped">
+  <% [{search_target: 'Names',
+       search_string: "accepted-name-without-distribution:",
+       explanation: %Q(Accepted names in the accepted taxonomy with no distribution strings to display.)},
+      {search_target: 'Names',
+       search_string: "accepted-name-with-dist-but-no-bubbles:",
+       explanation: %Q(Accepted names in the accepted taxonomy with a distribution string but no bubbles.)},
+      {search_target: 'Names',
+       search_string: "id: 88745, 91755, 99999 accepted-name-with-dist-but-no-bubbles:",
+       explanation: %Q(Accepted names in the accepted taxonomy with a distribution string but no bubbles, that also have one of the listed IDs. Show instances on results to drill in.)},
      ].each do |val| %>
   <tr>
     <td class="width-30-percent">

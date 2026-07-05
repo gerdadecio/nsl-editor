@@ -28,10 +28,10 @@ class NameEditorShowAllTabsTest < ActionController::TestCase
   test "should show all tabs if editor requests details tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @name.id, tab: "tab_edit" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @name.id, tab: "tab_edit" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     assert_select "a#name-details-tab", true, "Should show 'Detail' tab."
     assert_select "a#name-edit-tab", true, "Should show 'Edit' tab."

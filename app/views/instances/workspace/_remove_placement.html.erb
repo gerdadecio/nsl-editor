@@ -1,4 +1,4 @@
-<% if @working_draft.user_can_edit?(@current_user) %>
+<% if can? :remove_name_placement, @working_draft %>
   <% if @tree_version_element.present? %>
 
     <div>
@@ -31,7 +31,7 @@
                   tabindex="<%= increment_tab_index %>"
                   title="Really remove this name from the tree."
                   onclick="$('#confirm_remove_placement_btn').find('i.fa').addClass('fa-spin');"
-          >Confirm Remove <i class="fa fa-trash"></i></button>
+          >Confirm Remove <i class="fa fa-trash-o"></i></button>
 
           <button type="button"
                   id="cancel_remove_placement_btn"

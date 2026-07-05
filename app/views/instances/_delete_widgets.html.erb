@@ -6,7 +6,6 @@
                          tabindex: increment_tab_index,
                          data: {show_this_id: "confirm-or-cancel-link-container"})
 -%>
-<% if @instance.allow_delete? %>
 
   <% if @instance.this_is_cited_by&.accepted_concept? %>
     <div class="text-warning">Note: if you delete this instance you are changing the synonymy of an accepted
@@ -14,9 +13,20 @@
     </div>
   <% end %>
 
+  <% if @instance.profile_items.present? %>
+    <div class="text-warning">Note: Deleting this instance will also delete the following profile items:
+      <ul>
+        <% @instance.profile_items.each do |profile_item| %>
+          <li><%= profile_item.product_item_config.display_html %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <% confirm_delete_link = link_to("Confirm delete",
                                    instance_path(@instance.id),
-                                   class: "btn btn-danger",
+                                   id: "confirm-delete-link",
+                                   class: "btn btn-danger confirm-delete-btn",
                                    tabindex: increment_tab_index,
                                    title: "Confirm the delete.",
                                    remote: true,
@@ -40,44 +50,6 @@
   -%>
   <div class="actions"> <%= delete_link.html_safe %> </div>
   <div class="width-100-percent"> <%= confirm_or_cancel_element.html_safe %> </div>
-<% else %>
-  You cannot delete this instance.
-  <br>
-  <% if @instance.in_apc? %>
-    Instance is in APC.
-    <br>
-  <% end %>
-  <% if @instance.instance_notes.size > 0 %>
-    <span title="See the Notes tab."><%= "Instance notes: #{@instance.instance_notes.size} (see the 'Notes' tab)" %></span>
-    <br>
-  <% end %>
-  <% if @instance.reverse_of_this_cites.size > 0 %>
-    <%= link_to("Instance is cited: #{@instance.reverse_of_this_cites.size} &nbsp; #{gray_search_icon}".html_safe,
-                search_path(query_string: @instance.id.to_s,
-                            query_target: 'instance is cited'),
-                title: "Query the instances") %>
-    <br>
-  <% end %>
-  <% if @instance.reverse_of_this_is_cited_by.size > 0 %>
-    <%= link_to("Instance cited by #{citation_summary(@instance)} &nbsp; #{gray_search_icon}".html_safe,
-                search_path(query_string: @instance.id.to_s, query_target: 'instance is cited by'),
-                title: "Query the instances this is cited by.") %>
-    <br>
-  <% end %>
-  <% if @instance.comments.size > 0 %>
-    <span title="See the Adnot tab."><%= "Instance Adnot: #{@instance.comments.size} (see the 'Adnot' tab)" %></span>
-    <br>
-  <% end %>
-  <% unless @instance.children.empty? %>
-    Instance <%= @instance.id %> has children: <%= @instance.children.collect {|i| i.id}.join(',') %>
-    <br>
-    <%= link_to("See instance and children".html_safe,
-                search_path(query_string: "id: #{@instance.id},#{@instance.children.collect {|i| i.id}.join(',')}", query_target: 'instances'),
-                title: "Query the instances.") %>
-    <br> 
-  <% end %>
-  <br>
-<% end %>
-<br>
 
-<div class="error-message-container"></div>
+<div id="instance-delete-info-message-container" class="message-container"></div>
+<div id="instance-delete-error-message-container" class="error-container message-container"></div>

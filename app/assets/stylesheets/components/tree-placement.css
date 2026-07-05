@@ -1,0 +1,49 @@
+
+table#search-results-table tr td a .workspace-container {
+  color: #a13911;
+  padding: 0.2em;
+  text-decoration: none;
+}
+
+table#search-results-table tr td a .taxo-icon-container {
+  color: red;
+  padding: 0.2em;
+  text-decoration: none;
+  padding: 0.2em 0.6em 0.2em 0.6em;
+}
+
+table#search-results-table tr.showing-details a .workspace-container,
+table#search-results-table tr.showing-details a i.workspace-container {
+  color: orange;
+  padding: 0.2em 0.6em 0.2em 0.6em;
+  text-decoration: none;
+}
+
+table#search-results-table tr.showing-details a span.workspace-container {
+  background-position-y: 20%;
+}
+
+.focus-details span.workspace-container {
+  color: orange;
+  padding: 0.3em 0.6em 0.3em 0.6em;
+  font-size: 14px;
+}
+
+
+table#search-results-table tr.showing-details a .taxo-icon-container,
+table#search-results-table tr.showing-details a i.taxo-icon-container {
+  color: red;
+  padding: 0.2em 0.6em 0.2em 0.6em;
+  text-decoration: none;
+}
+
+table#search-results-table tr.showing-details a span.taxo-icon-container {
+  background-position-y: 20%;
+}
+
+div.focus-details span.taxo-icon-container,
+.focus-details span.taxo-icon-container {
+  color: red;
+  padding: 0.2em 0.6em 0.2em 0.6em;
+}
+

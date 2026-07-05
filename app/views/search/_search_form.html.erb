@@ -1,116 +1,17 @@
 
-
 <%= form_tag(search_path, method: :get, id: "search-form", class: 'form-inline')  do -%>
 
 <div class="row">
-  <div class="col-xs-11 col-sm-12 col-md-10 col-lg-9">
-    <div class="input-group width-80-percent">
-      <div id="search-target-btn" class="input-group-btn">
-        <button id="search-target-button" 
-                type="button" 
-                class="btn btn-default dropdown-toggle" 
-                tabindex="7"
-                title="Target of the search"
-                data-toggle="dropdown" 
-                aria-haspopup="true" 
-                aria-expanded="false">
-          <span id="search-target-button-text">
+  <div class="col-xs-11 col-sm-12 col-md-11 col-lg-11">
 
-            <%= @search.parsed_request.target_button_text || 'no target button text' %>
+    <div id="search-field-and-buttons-container" class="flex-container input-group">
 
-          </span>
-          &nbsp;
-        <span class="caret"></span></button>
+      <%= render partial: 'search/search_target' %>
 
-        <ul id="search-target-list" class="dropdown-menu">
-          <li><a id="search-target-item-names" 
-                 href="#" 
-                 title="Set the search to target names" 
-                 data-help="name-search-help" 
-                 data-examples="name-search-examples"
-                 data-advanced="name-search-advanced" 
-              >Names</a></li>
-          <li><a id="search-target-item-name-with-instances" 
-                 href="#" 
-                 title="Set the search to target names and also retrieve instances" 
-                 data-help="name-plus-instances-search-help" 
-                 data-examples="name-plus-instances-search-examples"
-                 data-advanced="name-plus-instances-search-advanced" 
-              >Names plus instances</a>
-          </li>
-          <% if Rails.configuration.try(:look_for_orchids_table) %>
-            <li><a id="search-target-item-orchid-names" 
-                   href="#" 
-                   title="Set the search to target orchid names" 
-                   data-help="orchids-search-help" 
-                   data-examples="orchids-search-examples"
-                   data-advanced="orchids-search-advanced" 
-                >Orchids</a>
-            </li>
-          <% end %>
-
-          <li role="separator" class="divider"></li>
-
-          <li><a id="search-target-item-authors" 
-                     href="#" 
-                 title="Set the search to target authors" 
-                     data-help="author-search-help" 
-                     data-examples="author-search-examples" 
-                     data-advanced="author-search-advanced" 
-                  >Authors</a></li>
-          <li role="separator" class="divider"></li>
-
-          <li><a id="search-target-item-references" 
-                 href="#" 
-                 title="Set the search to target references" 
-                 data-help="reference-search-help"
-                 data-examples="reference-search-examples"
-                 data-advanced="reference-search-advanced"
-                 >References</a></li>
-
-          <li><a id="search-target-item-reference-accepted-names" 
-                 href="#" 
-                 title="Set the search to target references with novelties." 
-                 data-help="references-accepted-names-search-help"
-                 data-examples="references-accepted-names-search-examples"
-                 data-advanced="references-with-novelties-search-advanced"
-              >References with novelties</a></li>
-          <li><a id="search-target-item-instances-for-reference" 
-                 href="#" 
-                 title="Set the search to target references and return full synonymy" 
-                 data-help="references-names-full-synonymy-search-help"
-                 data-examples="references-names-full-synonymy-search-examples"
-                 data-advanced="references-names-full-synonymy-search-advanced"
-              >References, names, full synonymy</a></li>
-          <li><a id="search-target-item-reference-shared-names" 
-                 href="#" 
-                 title="Query the instances for 2 references - show only the instances for shared names." 
-                 data-help="references-shared-names-search-help"
-                 data-examples="references-shared-names-search-examples"
-                 data-advanced="references-shared-names-search-advanced"
-              >References shared names</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a id="search-target-item-instances" 
-                     href="#" 
-                 title="Set the search to target instances" 
-                     data-help="instance-search-help"
-                     data-examples="instance-search-examples"
-                     data-advanced="instance-search-advanced"
-                  >Instances</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a id="search-target-audit" 
-                     href="#" 
-                 title="Set the search to target review" 
-                     data-help="review-search-help"
-                     data-examples="review-search-examples"
-                     data-advanced="review-search-advanced"
-                  >Review</a></li> 
-        </ul>
-      </div><!-- /btn-group -->
-      <input id="query-string-field" 
-             name="query_string" 
-             type="search" 
-             class="form-control"
+      <input id="query-string-field"
+             name="query_string"
+             type="search"
+             class="xform-control"
              aria-label="search field"
              tabindex = "8"
              placeholder = "Search terms"
@@ -119,14 +20,14 @@
              value = "<%= @search.parsed_request.query_string if @search.present? %>"
              required
              >
+
+      <input id="query-submit" name="query_submit" value="Search <%= Rails.configuration.database_configuration[Rails.env]['database'].upcase %>"
+             type="submit" class="btn search-btn" tabindex="9" title="Run the query">
     </div><!-- /input-group -->
-    <input id="query-submit" name="query_submit" value="Search" type="submit" class="btn search-btn" tabindex="9" title="Run the query">
-    <input id="focus-id" name="focus-id" value="<%= @focus_id %>" type="hidden" class="" title="focus id">
   </div><!-- /.col-lg-9 -->
 </div><!-- /row -->
 
   <input id="query-target" name="query_target" value="<%= @search.parsed_request.target_button_text %>" type="hidden" >
+  <input id="focus_id" name="focus_id" type="hidden" value="<%= @focus_id %>" class="pull-right" title="focus id">
 
 <% end %>
-
-

@@ -1,0 +1,47 @@
+<li class="dropdown">
+  <a href="#"
+     id="batch-dropdown-menu-link" 
+     class="dropdown-toggle"
+     tabindex="5"
+     title="Batch loader menu"
+     <%= bs_toggle(:dropdown) %>><%= default_batch||'Batch' %><span class="caret"></span></a>
+  <ul id="batch-dropdown-menu" class="dropdown-menu width-15em" role="menu"> 
+      <% Loader::Batch.all.order(:name).each do |batch| %>
+        <li role="presentation">
+          <% if batch.name == default_batch %>
+            <% check = editor_icon('check') %>
+            <%= link_to("#{batch.name}&nbsp;#{check}".html_safe,
+                clear_default_batch_path('from-menu'),
+                {class: 'blue',
+                 title: "Clear the default batch",
+                 method: :post,
+                 remote: true}) %>
+          <% else %>
+            <%= link_to("#{batch.name}".html_safe,
+                make_default_batch_path(batch.id, 'from-menu'),
+                {class: 'blue',
+                 title: "Make #{batch.name} the default batch",
+                 method: :post,
+                 remote: true}) %>
+          <% end %>
+        </li>
+      <% end %>
+      <li role="presentation" class="divider"></li>
+      <li>
+        <%= link_to("Batches",
+                          search_path(
+                            query_string: "*",
+                            query_target: 'loader batches'),
+                 title:"Query the batches",class:'blue') %>
+      </li>
+      <li>
+        <%= link_to("Batch Stacks",
+                          search_path(
+                            query_string: "*",
+                            query_target: 'batch stacks'),
+                 title:"Query the batch stack",class:'blue') %>
+      </li>
+  </ul>
+</li>
+
+

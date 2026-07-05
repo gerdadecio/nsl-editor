@@ -16,7 +16,22 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class RefAuthorRole < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: ref_author_role
+#
+#  id               :bigint           not null, primary key
+#  description_html :text
+#  lock_version     :bigint           default(0), not null
+#  name             :string(255)      not null
+#  rdf_id           :string(50)
+#
+# Indexes
+#
+#  ref_author_role_rdfid         (rdf_id)
+#  uk_l95kedbafybjpp3h53x8o9fke  (name) UNIQUE
+#
+class RefAuthorRole < ApplicationRecord
   self.table_name = "ref_author_role"
   self.primary_key = "id"
   has_many :references
@@ -30,7 +45,8 @@ class RefAuthorRole < ActiveRecord::Base
   end
 
   def self.author
-    where(name: "Author").push(order("name").limit(1).first).first
+    # where(name: "Author").push(order("name").limit(1).first).first
+    where(name: "Author").first
   end
 
   def self.unknown
@@ -42,6 +58,6 @@ class RefAuthorRole < ActiveRecord::Base
   end
 
   def self.query_form_options
-    all.sort_by(&:name).collect { |n| [n.name, n.name.downcase, class: ""] }
+    all.sort_by(&:name).collect { |n| [n.name, n.name.downcase, { class: "" }] }
   end
 end

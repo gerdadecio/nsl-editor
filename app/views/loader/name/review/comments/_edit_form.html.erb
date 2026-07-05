@@ -1,0 +1,35 @@
+
+<br>
+<div class="inline-edit-form-container">
+  <%= form_with model: name_review_comment,
+                url: 'name_review_comments',
+                data: { turbo: false },
+                local: false,
+                method: :patch do |form| %>
+
+      <%= form.hidden_field :id %>
+      <%= form.hidden_field :batch_reviewer_id %>
+      <%= form.hidden_field :loader_name_id %>
+      <%= form.hidden_field :batch_review_period_id %>
+
+      <% if defined?(offer_context) && offer_context && @review_comment.loader_name.contexts.size > 1 %>
+        Context<span class='red'>*</span>:<br>
+        <%= form.select :context, options_for_select(@review_comment.loader_name.contexts, @review_comment.context), {}, {title: 'context'} %>
+        <br>
+      <% else %>
+        <%= form.hidden_field :context %>
+      <% end %>
+
+      Comment*: <%= form.text_area :comment, class: 'form-control give-me-focus', title: "Enter comment", required: true, size: "60x10", tabindex: increment_tab_index %>
+      <br>
+      <%= form.submit id: "save-new-batch-review-comment-btn", class: 'btn btn-primary', title: "Save comment", tabindex: increment_tab_index %>
+      
+      <%= link_to 'Cancel', cancel_edit_name_review_comment_path(@review_comment.id), remote: true, class: 'btn btn-primary', title: 'Cancel the edit - remove the editing fields.' %>
+        <span id="comment-<%= @review_comment.id %>-delete-widgets-container"> 
+
+          <%= render partial: "loader/names/review/tabs/common/delete_dialog_button",
+          locals: {comment: @review_comment} %>
+
+        </span>
+  <% end %>
+</div>

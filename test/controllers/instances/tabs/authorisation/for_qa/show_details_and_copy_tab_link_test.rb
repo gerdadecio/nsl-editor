@@ -28,20 +28,36 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
 
   test "should show detail and copy tab links if qa user gets details tab" do
     get(:show,
-        { id: @instance.id,
-          tab: "tab_show_1",
-          "row-type" => "instance_as_part_of_concept_record" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["QA"])
+        params: { id: @instance.id,
+                  tab: "tab_show_1",
+                  "row-type" => "instance_as_part_of_concept_record" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["QA"] })
     assert_response :success
     asserts
+  end
+
+  test "should show instance details tab even if profile item tables don't exist" do
+    Rails.configuration.profile_v2_aware = false
+    Instance.stub_any_instance(:profile_items, -> { raise PG::UndefinedTable, "relation \"profile_item\" does not exist" }) do
+      @request.headers["Accept"] = "application/javascript"
+      get(:show,
+        params: { id: @instance.id,
+                  tab: "tab_show_1",
+                  "row-type" => "instance_as_part_of_concept_record" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["QA"] })
+      assert_response :success
+    end
   end
 
   def asserts
     asserts1
     asserts2
     asserts3
+    asserts4
   end
 
   def asserts1
@@ -75,5 +91,11 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
     assert_select "a#instance-copy-to-new-reference-tab",
                   false,
                   "Should not show 'Copy' tab link."
+  end
+
+  def asserts4
+    assert_select "a#instance-profile-v2-tab",
+                  false
+                  "Should not show 'FOA Profile' tab link"
   end
 end

@@ -5,24 +5,28 @@
             class: 'name') %>
 <%= " [#{@instance.name.try('name_status').try('name_without_brackets')}]" if @instance.try('name').try('name_status').try('legitimate?') %>
 
+<% if @instance.draft? && can?(:change_name, @instance) && local_assigns.fetch(:with_name_change, nil) == true %>
+  <%= link_to "#",
+              onclick: "$('#change-name-form-container').toggle(); $('#change-name-chevron').toggleClass('fa-chevron-down fa-chevron-up'); return false;",
+              title: "Show or hide the change name form",
+              class: "small" do %>
+    change name <%= editor_icon("chevron-down", "", id: "change-name-chevron", style: "font-size: inherit") %>
+  <% end %>
+  <div id="change-name-form-container" style="display: none">
+    <%= render 'form_change_name' %>
+  </div>
+<% end %>
+
 <% if @instance.name.accepted_concept? || @instance.name.excluded_concept? %>
-    <%= render(partial: 'instances/apc/widgets', locals: {instance: @instance}) %>
+    <%= render(partial: 'instances/taxo/details/widgets', locals: {instance: @instance}) %>
 <% end %>
 &nbsp;
-<%= link_to("#{ShardConfig.name_space}&nbsp;#{icon('external-link-square')}".html_safe,
-            "#{Rails.configuration.nsl_links}apni-format/display/#{@instance.name_id}",
+<%= link_to("#{sanitize(ShardConfig.name_space)}&nbsp;#{external_link_square_icon}".html_safe,
+            "#{Rails.configuration.try('nsl_links')}apni-format/display/#{@instance.name_id}",
             title: "#{ShardConfig.name_space} search. Opens in another named tab or window.",
             class: 'rebeccapurple',
             target: "_editor_to_apni",
             tabindex: increment_tab_index) %>
-<% if Rails.configuration.try(:show_new_search_link) %>
-  <%= link_to("New #{ShardConfig.name_space} #{icon('external-link-square')}".html_safe,
-              "#{Rails.configuration.try('search_address')}/name/#{@instance.name_id}?search_form=names#name-#{@instance.name_id}",
-              title: "New #{ShardConfig.name_space} search. Opens in another tab or window.",
-              class: "rebeccapurple",
-              target: "_editor_to_apni",
-              tabindex: increment_tab_index) if @instance.name.instances.size > 0 %>
-<% end %>
 <br>
 appears in
 <br>
@@ -39,7 +43,7 @@ as <%= @instance.instance_type.name_with_indefinite_article.sub(/ /, '<br>').htm
 <%= "<br>on page #{@instance.page}".html_safe if @instance.page.present? %>
 <%= "<br>with verbatim name #{@instance.verbatim_name_string}".html_safe if @instance.verbatim_name_string.present? %>
 <br>
-<%= link_to("and BHL entry #{icon('external-link')}".html_safe,
+<%= link_to("and BHL entry #{editor_icon('external-link')}".html_safe,
             @instance.bhl_url,
             title: "Follow this link to the BHL entry.") if @instance.bhl_url.present? %>
 

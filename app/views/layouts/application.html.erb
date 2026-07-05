@@ -1,36 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title> <%= page_title %> </title>
+    <title> <%= page_title || 'Editor' %> </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= javascript_importmap_tags %>
 
     <script>
-      window.relative_url_root = "<%= Rails.application.config.relative_url_root %>";
-      window.NG_TEMPLATE_URL="<%= @ng_template_path %>";
-      taxoTree = "<%= ShardConfig.classification_tree_key %>";
+      window.relative_url_root = "<%= Rails.application.config.action_controller.relative_url_root %>";
+      window.enablePromptUnsavedChanges = <%= Rails.configuration.try('unsaved_form_prompt_enabled') || false %>;
+      window.enableSiteWidePromptUnsavedChanges = <%= Rails.configuration.try('site_wide_form_prompt_enabled') || false %>;
+      window.useLatestBootstrap = <%= bootstrap5? %>;
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.js"
+            integrity="sha512-bvV1V1YSjP1fbfKJjTlNmdnUO2XpsLYUdKwmz5UXBi5U+x40rx9JpA0ooQUMZfpz1MaaBC0ydNLoC6r0sitPUQ=="
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/bf212265e9.js" crossorigin="anonymous"  data-mutate-approach="sync"></script>
+
     <% if Rails.env == "development" || params[:debug] == 'true' %>
       <script> debugSwitch = true; </script>
     <% else %>
       <script> debugSwitch = false; </script>
     <% end %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => false %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
-    <%= csrf_meta_tags %>
-    <%= favicon_link_tag 'favicon.png?v=1', :rel => 'shortcut icon' %>
+    <% if ['development','test','production','staging'].include?(Rails.configuration.try('environment'))  %>
+      <%= favicon_link_tag "favicon-#{Rails.configuration.try('environment')}.png?v=1", :rel => 'shortcut icon' %>
+    <% else %>
+      <%= favicon_link_tag 'favicon-fallback.png?v=1', :rel => 'shortcut icon' %>
+    <% end %>
+
+    <% if bootstrap5? %>
+      <%= stylesheet_link_tag "bootstrap.min", media: "all" %>
+      <%= stylesheet_link_tag "bootstrap5-compat", media: "all" %>
+    <% else %>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <% end %>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+
     <!--    Select2 widget TODO download if it works out -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script> -->
 
-    <% if development? %>
+    <% if Rails.env == "development" %>
 <style>
-a:not([title]),
+a:not([title]):not(.remark-to-reviewers),
 select:not([title]),
 textarea:not([title]),
 input:not([title]) {
@@ -58,38 +77,45 @@ input[type="checkbox"]:not([title]) {
         data-active-name-tab="tab_details"
         data-active-author-tab="tab_show_1"
         data-active-instance-tab="tab_show_1"
-        data-active-orchid-tab="tab_show_1">
+        data-active-loader-batch-tab="tab_details"
+        data-active-loader-name-tab="tab_details"
+        data-active-batch-review-tab="tab_details"
+        data-active-review-period-tab="tab_details"
+        data-active-batch-reviewer-tab="tab_details"
+        >
 
     <div id="screen-too-small-msg">Sorry.... your window is too small to show the editor.  It needs to be wider.</div>
-    <%= render partial: 'search/big_navbar' %>
+    <% if @view_mode == ViewMode::REVIEW then %>
+      <%= render partial: 'search/review/top_navbar' %>
+    <% else %>
+      <%= render partial: 'search/top_navbar' %>
+    <% end %>
 
     <div id="main-content" class="container-fluid">
 
-      <% if @no_search_result_details %>
-        <div id="search-result-details" class="hidden <%= 'orchids' if params[:query_target].try('downcase') == 'orchids' %>"> </div>
-      <% else %>
-        <div id="search-result-details" class="<%= 'orchids' if params[:query_target] == 'Orchids' %>"> </div>
-      <% end %>
-
+    <% wide_details =  '' %>
+    <% wide_details = 'wide-details' if params[:query_target]&.downcase == 'loader names' && @view_mode == ViewMode::STANDARD %>
+    <div id="search-result-details" class="hidden <%= wide_details %>"> </div>
 
       <div class="row">
-        <div id="search-result-container" 
+        <div id="search-result-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 sidebar" >
           <%= yield %>
         </div>
         <div id="help-search-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
-            <%= render partial: 'search/help_search_inner' %>
+            <%= render partial: 'search/tab_inners/help_target_divs' %>
         </div>
         <div id="example-search-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
-            <%= render partial: 'search/example_search_inner' %>
+            <%= render partial: 'search/tab_inners/example_target_divs' %>
         </div>
         <div id="search-reports-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
         </div>
         <div id="tree-reports-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
+          <div id="tree-reports-error-message-container" class="error-container"></div>
         </div>
         <div id="stats-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
@@ -97,14 +123,26 @@ input[type="checkbox"]:not([title]) {
         <div id="batch-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
         </div>
+        <div id="batch-loader-panel-container"
+             class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
+        </div>
+        <div id="help-info-panel-container"
+             class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
+        </div>
+        <div id="admin-info-panel-container"
+             class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
+        </div>
       </div>
     </div>
+
 
     <div id="footer" class="footer">
       <div class="container-fluid">
         <%= render partial: 'layouts/footer' %>
       </div>
     </div>
+
+    <%= render partial: "layouts/unsaved_changes_modal" %>
  </body>
 </html>
- 
+

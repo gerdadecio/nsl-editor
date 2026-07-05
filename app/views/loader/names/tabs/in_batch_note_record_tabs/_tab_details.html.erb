@@ -1,0 +1,36 @@
+<ul class="nav nav-tabs">
+  <%= @loader_name.record_type.gsub(/-/,' ').titlecase %>
+  <% if @loader_name.in_batch_compiler_note? %>
+    &mdash; will not appear in search results for reviewers
+  <% end %>
+</ul>
+
+<%#= render partial: 'detail_line', locals: {info: @loader_name.notes, label: 'Notes'} %>
+<% unless @loader_name.notes.blank? %>
+  <%= render partial: 'detail_line',
+    locals: {info: "",
+             label: 'notes'} %>
+  <div class="width-100-percent">
+  <%= sanitize(@loader_name.notes) %>
+  </div>
+<% end %>
+
+<%= divider %>
+<p>Family or Family and Name, if given, will help generate a sort key that positions the note in the batch</p>
+<%= render partial: 'detail_line', locals: {info: @loader_name.sort_key, label: 'value for sorting'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.family, label: 'family'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.simple_name, label: 'simple name'} %>
+<%= divider %>
+<h5>Metadata</h5>
+<%= render partial: 'detail_line', locals: {info: @loader_name.id, label: 'ID'} %>
+<%= render partial: 'detail_line',
+      locals: {label: 'batch',
+               info: link_to(@loader_name.batch.name,
+                        search_path(
+                          query_target: 'loader batch',
+                          query_string: "id: #{@loader_name.batch.id}"),
+               title:"Query the loader batch",class:'blue')} %>
+
+<%= created_by_whom_and_when(@loader_name).html_safe %>
+<br>
+<%= updated_by_whom_and_when(@loader_name).html_safe %>

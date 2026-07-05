@@ -1,0 +1,672 @@
+/* ==========================================================================
+   Bootstrap 3 -> 5 compatibility shim.
+
+   Loaded ONLY when Rails.configuration.use_latest_bootstrap_version is true
+   (see app/views/layouts/application.html.erb). Bridges the shallow set of
+   Bootstrap 3 classes this app still uses onto Bootstrap 5.3.x so the existing
+   views render correctly without a full markup rewrite.
+
+   Load order in <head>: bootstrap.min.css -> THIS FILE -> application.css.
+   The app's own heavy navbar/dropdown styling lives in application.css and
+   loads in both flag states, so this shim only supplies the structural pieces
+   Bootstrap 5 removed or renamed.
+
+   When the BS3 fallback is eventually retired, fold any still-needed rules into
+   the main stylesheets and delete this file.
+   ========================================================================== */
+
+/* --- Typography: preserve the app's compact 14px density (BS3 default) -------
+   BS5 defaults to 16px/1.5 which would reflow every tuned form. */
+body {
+  font-size: 14px;
+}
+
+/* Headings: BS5's reboot zeroes heading top margins (margin-top:0); BS3 gave
+   h1–h3 a 20px top margin and h4–h6 a 10px top margin. The app was built around
+   that spacing, so without it headings sit flush against whatever precedes them
+   — e.g. the detail panel's first heading touching the panel's top edge.
+   Restore the BS3 margins. */
+h1, h2, h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+h4, h5, h6 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  font-size: 12px;
+}
+
+/* --- Links: BS3's reboot set anchors to `text-decoration: none` and only
+   underlined them on hover/focus. BS5's reboot underlines EVERY <a> by default.
+   BS3 also used link color #337ab7, darkening to #23527c on hover/focus; BS5
+   changed both the palette and dropped the hover color shift. Restore both. */
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #23527c;
+  text-decoration: underline;
+}
+.btn,
+.btn:hover,
+.btn:focus,
+.btn:active {
+  text-decoration: none;
+}
+
+/* --- .hidden : CRITICAL. BS3 shipped this; BS5 removed it. The layout and
+   tabs.js use .hidden to show/hide the main-body containers and tab panels.
+   Without this, every hidden container renders at once. ----------------------- */
+.hidden {
+  display: none !important;
+}
+
+/* --- Grid: BS5 dropped the xs tier (xs == the default, no-prefix tier).
+   The app uses col-xs-* (mostly col-xs-12). Re-create the widths.
+
+   CRITICAL: scope these to the smallest tier ONLY (below the BS5 `sm` 576px
+   breakpoint). BS3's col-xs-* was the BASE tier, declared BEFORE col-sm/md/lg,
+   so the larger tiers overrode it on wider screens. This shim loads AFTER
+   bootstrap.min.css, so an unscoped `.col-xs-12 { ... }` has equal specificity
+   to (and wins over) Bootstrap's `.col-md-9`/`.col-lg-9` — forcing every
+   col-xs-12 element to 100% width and clobbering its col-md/lg width. (That is
+   what made #search-results render full-width and run under the detail panel.)
+   Every col-xs-* in the app's views carries a col-sm/md/lg companion, so below
+   576px these govern and at ≥576px the companions correctly take over. --------- */
+@media (max-width: 575.98px) {
+  .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6,
+  .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+    position: relative;
+    width: 100%;
+    padding-right: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+    padding-left: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+  }
+  .col-xs-1  { flex: 0 0 8.333333%;  max-width: 8.333333%;  }
+  .col-xs-2  { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-xs-3  { flex: 0 0 25%;        max-width: 25%;        }
+  .col-xs-4  { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-xs-5  { flex: 0 0 41.666667%; max-width: 41.666667%; }
+  .col-xs-6  { flex: 0 0 50%;        max-width: 50%;        }
+  .col-xs-7  { flex: 0 0 58.333333%; max-width: 58.333333%; }
+  .col-xs-8  { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-xs-9  { flex: 0 0 75%;        max-width: 75%;        }
+  .col-xs-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+  .col-xs-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+  .col-xs-12 { flex: 0 0 100%;       max-width: 100%;       }
+}
+
+/* --- Forms: .form-group was removed in BS5 (it only added a bottom margin). -- */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Sizing lock so the app's existing `.form-control { height: 26px }` override
+   (in components/new-for-rails-6.css) doesn't clip text under BS5's larger
+   default padding/line-height. Keeps typeahead + select2 inputs aligned. */
+input.form-control,
+select.form-control {
+  padding: 3px 8px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* --- Buttons: .btn-default was removed in BS5. Re-create the BS3 light look. - */
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-default.active {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+/* CRITICAL: contextual button colours when the variant class is used WITHOUT
+   the base `.btn` class. Many of the app's `f.submit` buttons emit just
+   `class: 'btn-primary'` (no `btn`) — e.g. the "Create Instance" button. In BS3
+   each `.btn-*` rule set `color`/`background`/`border` directly, so the variant
+   alone painted itself (white text on a coloured fill). BS5 moved those onto the
+   base `.btn` via CSS custom properties: `.btn-primary` now only sets
+   `--bs-btn-color:#fff` etc., and the actual `color: var(--bs-btn-color)` lives
+   on `.btn`. With no `.btn` on the element the variables are never consumed, so
+   the text falls back to the default dark colour while the fill (overridden to
+   #606060 in new-for-rails-6.css for primary) still paints — giving a grey
+   button with dark text. Re-declare the colours directly so the variant works
+   standalone, exactly as BS3 did and as `.btn-default` above already does.
+   new-for-rails-6.css loads AFTER this shim, so its #606060 primary fill still
+   wins; only the white text is restored here. */
+.btn-primary {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  /* Remap BS5's blue --bs-btn-* palette to the app's greys. BS5 paints the
+     hover/focus-visible/active states from these custom properties (e.g.
+     :focus-visible uses --bs-btn-hover-bg, :active uses --bs-btn-active-bg),
+     so without this the Sign in button — and any primary <button>/<a> — flashes
+     Bootstrap blue (#0b5ed7 / #0a58ca) on focus, press and keyboard activation.
+     Setting the variables fixes every state path at once instead of chasing each
+     pseudo-class. The grey ring colour also neutralises any focus box-shadow that
+     out-specifies the suppressor below. */
+  --bs-btn-bg: #606060;
+  --bs-btn-border-color: #606060;
+  --bs-btn-hover-bg: #474747;
+  --bs-btn-hover-border-color: #474747;
+  --bs-btn-active-bg: #474747;
+  --bs-btn-active-border-color: #474747;
+  --bs-btn-focus-shadow-rgb: 96, 96, 96;
+  /* The disabled state has its own variables: Rails' `data-disable-with` adds
+     `disabled` to the submit button while the form is in flight, and BS5 paints
+     `.btn:disabled` from these — blue (#0d6efd) by default — so a submitting
+     Sign in button flashed blue. Keep it the app's solid grey (the global
+     --bs-btn-disabled-opacity:1 below keeps it opaque rather than washed-out). */
+  --bs-btn-disabled-bg: #606060;
+  --bs-btn-disabled-border-color: #606060;
+}
+.btn-success {
+  color: #fff;
+  background-color: #198754;
+  border-color: #198754;
+}
+.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+.btn-warning {
+  color: #fff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #f0ad4e;
+  --bs-btn-border-color: #eea236;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #ec971f;
+  --bs-btn-hover-border-color: #d58512;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #ec971f;
+  --bs-btn-active-border-color: #d58512;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #f0ad4e;
+  --bs-btn-disabled-border-color: #eea236;
+}
+
+/* --- Button focus ring: BS5 replaced BS3's `outline` focus indicator with a
+   .25rem `box-shadow` ring (applied on :focus-visible). The app flattens button
+   focus via `input.btn:focus / a.btn:focus { outline: none }` (controls.css) —
+   but `outline:none` does NOT remove a box-shadow, so under BS5 the ring leaks
+   through (e.g. when keyboard-focusing a button) where BS3 showed none. Suppress
+   the box-shadow so buttons keep the app's flat BS3 look.
+
+   The active+keyboard-focus combo needs extra weight: BS5 re-applies the ring
+   via `:not(.btn-check) + .btn:active:focus-visible` (specificity 0,4,0), which
+   out-specifies a plain `.btn:active:focus` (0,3,0) — so pressing the Sign in
+   button with the keyboard flashed the blue ring back. The `:focus-visible`
+   variants below match that weight and, loading after bootstrap.min.css, win. */
+.btn:focus,
+.btn:focus-visible,
+.btn:active:focus,
+.btn:active:focus-visible,
+.btn.active:focus,
+.btn.active:focus-visible,
+.btn:first-child:active:focus-visible,
+:not(.btn-check) + .btn:active:focus-visible {
+  box-shadow: none;
+}
+
+/* Extend the app's grey primary-active fill (new-for-rails-6.css only covers
+   `input.btn.btn-primary:active`) to non-input primary buttons. Otherwise a
+   primary <button>/<a> on :active shows BS5's computed blue --bs-btn-active-bg
+   instead of the app's #474747. */
+.btn-primary:active,
+.btn-primary.active {
+  background: #474747;
+  border-color: #474747;
+}
+
+/* --- Disabled buttons: BS5 dims `.btn:disabled` with
+   `opacity: var(--bs-btn-disabled-opacity)` (.65). Over the app's coloured
+   chrome (e.g. the purple search navbar) that 65% opacity lets the background
+   bleed through, so a disabled button reads as washed-out / transparent rather
+   than a solid greyed-out control — BS3 kept the fill opaque. Restore opacity
+   to 1 so disabled buttons stay solid. The app's own deliberate dimming
+   (`a.btn-danger[disabled] { opacity: .55 }` in new-for-rails-6.css) uses a
+   more specific attribute selector and loads later, so it still wins where
+   intended. */
+.btn {
+  --bs-btn-disabled-opacity: 1;
+}
+
+/* The search submit (.btn.search-btn) has its own lightgrey fill; when disabled
+   give it a muted, still-opaque grey so it reads as disabled without going
+   see-through. */
+.search-btn:disabled,
+.search-btn.disabled {
+  background: #d6d6d6;
+  color: #888;
+}
+
+/* --- Float helpers: BS5 renamed pull-left/right to float-start/end. --------- */
+.pull-left  { float: left  !important; }
+.pull-right { float: right !important; }
+
+/* --- Misc removed helpers --------------------------------------------------- */
+.center-block { display: block; margin-right: auto; margin-left: auto; }
+.text-muted   { color: #6c757d !important; }
+
+/* --- .sr-only : renamed to .visually-hidden in BS5. ------------------------- */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* --- Dropdown caret : BS3 used an explicit <span class="caret">; BS5 renders
+   the caret as ::after on .dropdown-toggle. Reproduce the span triangle and
+   suppress BS5's auto-caret so we don't get two. --------------------------- */
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-top: 4px solid \9;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+.dropdown-toggle::after {
+  display: none;
+}
+
+/* --- Dropdown menu items: BS5 only styles .dropdown-item; the app emits
+   ul.dropdown-menu > li > a. Style that BS3 structure. (The app's own
+   dropdown CSS in application.css layers on top of this.) ------------------- */
+.dropdown-menu > li > a {
+  display: block;
+  width: 100%;
+  padding: 4px 16px;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  text-decoration: none;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #1e2125;
+  background-color: #e9ecef;
+}
+/* BS3 .divider inside a dropdown -> BS5 .dropdown-divider */
+.dropdown-menu .divider {
+  height: 0;
+  margin: 8px 0;
+  overflow: hidden;
+  border-top: 4px solid #d4d4d4;
+}
+
+/* --- Input group: CRITICAL. The app's two search bars (search/_search_form +
+   search/review/_search_form — the ONLY `.input-group` users in the app) put a
+   `.input-group-btn` "Names" dropdown, the `#query-string-field` input, and the
+   `#query-submit` button in a row. BS5 rebuilt `.input-group` as a flex row that
+   (a) only *sizes* children carrying `.form-control` — and this app's field is
+   deliberately `xform-control`, so it's skipped — and (b) joins items with
+   `margin-left:-1px` plus a `z-index:2` on `.btn`, which tucked the buttons over
+   the field's corners. Result: overlapping, misaligned items.
+
+   A BS3-style `display:table` model fixes the overlap but `display:table-cell`
+   is honoured inconsistently on replaced FORM controls — WebKit/Blink stretch
+   the text <input> to the row height (tall white box) while treating the
+   <input type=submit> differently, so they end up different heights. So drive it
+   with flex instead, which aligns inputs and buttons uniformly:
+     - align-items:center      -> reliable vertical centring across element types
+     - the field flex-grows    -> fills the row like BS3's field did
+     - buttons hug their width  -> no growth/shrink
+     - zero the negative-margin joins -> nothing overlaps
+   Scoped to `.input-group` is safe: the only instances are these two search
+   bars. -------------------------------------------------------------------- */
+.input-group {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+}
+/* Kill BS5's -1px border-collapse join, plus the BS3 nudge margins new-for-
+   rails-6 put on the field/submit (-4px left on the submit, 3px top on the
+   field, 3px bottom on the submit). The left margins caused overlap; the
+   vertical ones would push items off-centre now that align-items:center applies.
+   The submit/field need ID specificity to beat `input#query-...` rules. */
+.input-group > * {
+  margin-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+#query-submit {
+  margin: 0;
+}
+.input-group > .input-group-btn {
+  position: relative;   /* anchors the absolutely-positioned dropdown menu */
+  flex: 0 0 auto;
+}
+.input-group > #query-string-field {
+  flex: 1 0 auto;
+  min-width: 16em;
+  margin-top: 0;        /* beats input#query-string-field{margin-top:3px} */
+  margin-bottom: 0;
+}
+.input-group > .btn {
+  flex: 0 0 auto;
+}
+
+/* --- Navbar: BS5 rewrote the navbar. The app's detailed navbar styling lives
+   in application.css; here we only restore structural BS3 pieces BS5 dropped
+   or changed so that layout/colours/positioning hold up. ------------------- */
+
+/* CRITICAL: BS5 makes .navbar AND .navbar > .container-fluid flex rows. The
+   app's #top-navbar wraps a .container-fluid containing several stacked .row
+   blocks (menu row, searchbar row, summary row); BS5's flex collapses them
+   into one squished horizontal row. BS3's .navbar was block-level, so restore
+   that for the app's BS3-era stacked navbar layout. */
+.navbar {
+  display: block;
+  padding: 0;
+}
+.navbar > .container,
+.navbar > .container-fluid {
+  display: block;
+}
+
+/* CRITICAL: the menu markup is `<div class="collapse navbar-collapse">` with no
+   .navbar-expand-* class, so BS5's `.collapse:not(.show){display:none}` would
+   hide the whole menu. BS3 force-showed .navbar-collapse on desktop via a media
+   query; replicate that. (This is a desktop-only app — it shows a "window too
+   small" message on narrow viewports — so always-expanded matches behaviour.) */
+.navbar-collapse {
+  display: block !important;
+}
+
+/* CRITICAL: BS3 laid the navbar out with floats on desktop (≥768px) so the
+   brand and the menu sit on ONE line; the toggle button was hidden. BS5 drives
+   the navbar with flex, dropped those floats, and shows .navbar-toggler by
+   default. The result is the brand dropping onto its own line with a stray
+   hamburger above it. This is a desktop-only app (it shows a "window too small"
+   message on narrow viewports), so apply BS3's ≥768px float model
+   unconditionally rather than behind a media query. */
+.navbar-header {
+  float: left;
+}
+.navbar-brand {
+  float: left;
+}
+/* Hide the collapse toggle outright — the navbar never collapses here. */
+.navbar-toggle,
+.navbar-toggler {
+  display: none;
+}
+
+/* CRITICAL: BS5 defaults `.navbar-nav .dropdown-menu` to position:static and
+   only restores position:absolute under a `.navbar-expand-*` class — which this
+   app's navbar does not use. A static dropdown sits in normal flow, ignores
+   z-index, and so renders BEHIND the searchbar row stacked below it. Restore
+   absolute positioning exactly as `.navbar-expand` would, so the menu floats
+   over the content below. */
+.navbar-nav .dropdown-menu {
+  position: absolute;
+  /* Force an opaque background so the purple navbar behind it doesn't bleed
+     through an open (active) dropdown. */
+  background-color: #fff;
+  opacity: 1;
+}
+
+/* NOTE on navbar vs the floating #search-result-details panel: both sit at
+   z-index:80 (old-application.css / layout-using-dashboard.css) and the panel
+   comes later in the DOM, so the panel paints OVER the navbar. This is what we
+   want: the fixed right panel overflows its #main-content div upward over the
+   navbar bar and must stay on top so its top edge isn't clipped. We deliberately
+   do NOT lift #top-navbar above the panel.
+
+   KNOWN TRADE-OFF: an open navbar dropdown is confined to the navbar's z-80
+   fixed stacking context, so where a (wide) dropdown reaches into the panel's
+   area it is painted under the panel. There is no CSS-only way to have the panel
+   above the navbar bar AND the dropdown above the panel, because the dropdown is
+   a descendant of the fixed navbar; the only real fix is rendering dropdowns to
+   <body> (Popper container). Accepted as-is. menu_ops.js no longer hides the
+   panel when a menu opens. */
+
+.navbar-inverse {
+  background-color: #222;
+  border-color: #080808;
+}
+.navbar-inverse .navbar-nav > li > a,
+.navbar-inverse .navbar-brand,
+.navbar-inverse .dropdown-toggle {
+  color: #9d9d9d;
+}
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus,
+.navbar-inverse .navbar-brand:hover {
+  color: #fff;
+}
+.navbar-fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+}
+/* BS5 .navbar-nav is a vertical flex column by default; the app's menu is
+   horizontal. Keep the flex row for the items, but float the whole nav left so
+   it sits beside the floated .navbar-header (BS3 desktop model) instead of
+   dropping below it. */
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  float: left;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+.navbar-nav > li {
+  list-style: none;
+}
+/* Legacy navbar toggle button + its icon bars (BS3 markup kept via helper for
+   the BS3 path; under BS5 the helper emits .navbar-toggler, but the icon-bar
+   spans remain in the markup). */
+
+ul.navbar-nav li a.dropdown-toggle {
+  display: block;
+}
+
+#top-navbar ul.navbar-nav li a.dropdown-toggle.show,
+#top-navbar ul.navbar-nav li a.dropdown-toggle[aria-expanded="true"],
+#top-navbar ul.navbar-nav li a.dropdown-toggle:hover,
+#top-navbar ul.navbar-nav li a.dropdown-toggle:focus {
+  background: white;
+  color: black;
+  text-decoration: none;
+}
+
+.navbar-toggle {
+  position: relative;
+  float: right;
+  padding: 9px 10px;
+  margin-top: 8px;
+  margin-right: 15px;
+  margin-bottom: 8px;
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.navbar-toggle .icon-bar,
+.navbar-toggler .icon-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 4px 0;
+  background-color: #888;
+  border-radius: 1px;
+}
+
+/* --- Tabs: tabs.js keeps .active on the <li> (BS3 style); BS5 expects it on
+   the .nav-link anchor. Style the BS3 structure. --------------------------- */
+.nav-tabs > li {
+  margin-bottom: -1px;
+}
+.nav-tabs > li > a {
+  display: block;
+  padding: 12px 16px;
+  color: #606060;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+  /* Restore BS3's base `.nav > li > a:hover/:focus { background-color:#eee }`.
+     BS5 dropped it (it styles .nav-link, not .nav>li>a, and applies no hover
+     fill), so without this an inactive tab loses its grey hover. The active tab
+     stays white via `.nav-tabs > li.active > a:hover` below (higher specificity,
+     loads after). */
+  background-color: #eee;
+  border-color: #e9ecef #e9ecef #dee2e6;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: #495057;
+  cursor: default;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+
+/* Table styles */
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+table[border] {
+  border-collapse: collapse;
+}
+table[border] th,
+table[border] td {
+  border: 1px solid #999;
+}
+
+/* Search form */
+input#query-submit {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-bottom: 3px;
+  height: 25px;
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  margin-top: 3px;
+  padding-top: 0;
+}
+
+tbody > tr.results-row-filler  > td{
+  border-bottom: none;
+}
+
+#search-field-and-buttons-container input#query-submit {
+  margin-left: 0;
+}
+#search-field-and-buttons-container input#query-string-field {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#query-string-field:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+div#search-field-and-buttons-container div#search-target-btn.input-group-btn {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+div#search-field-and-buttons-container #search-target-button {
+  display: inline-flex;
+  align-items: center;
+  height: 25px;
+  padding: 0 6px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+div#search-field-and-buttons-container #search-target-button-text {
+  white-space: nowrap;
+}
+
+/* Search result tabs */
+#top-navbar ul#search-results-tabset {
+  top: 108px;
+}
+
+#top-navbar ul#search-results-tabset li a {
+  margin-right: 2px;
+}
+
+#search-target-button-text {
+  color: #333;
+}
+
+/*Batch stack search results */
+tr.search-result.batch-stack td {
+  border-bottom: none;
+}
+
+/* dl-horizontal (e.g. instance Notes, cites/cited id, Local trees):
+   old-application.css frames the .dl-horizontal container with BOTH a border-top
+   and a border-bottom, AND gives every dd a border-bottom. Those container
+   borders stack against neighbouring 1px lines into double lines:
+     - bottom border vs. the last (or empty) dd's border, and
+     - top border vs. a preceding <hr class="divider"> section separator.
+   Drop both container borders and let the per-row dd border-bottoms be the only
+   lines; the <hr> dividers already separate sections. dl.dl-horizontal outranks
+   old-application.css's .dl-horizontal, which loads after this shim. */
+dl.dl-horizontal {
+  border-top: none;
+  border-bottom: none;
+}
+
+/* An empty trailing value (e.g. a blank "cited by id") still renders <dd></dd>,
+   which keeps a 1px border-bottom and 0.7em padding. That short empty row's
+   border bunches against the previous row's border into a double line. Collapse
+   empty dds so they contribute neither a line nor height. */
+.dl-horizontal dd:empty {
+  border-bottom: none;
+  padding-top: 0;
+}

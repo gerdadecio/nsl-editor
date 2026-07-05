@@ -28,10 +28,12 @@ class AuthorEditMESpacesNameUpdateWithTest < ActionController::TestCase
     new_name = "as  asd    x"
     new_abbrev = "as   sd  x"
     patch(:update,
-          { id: author.id,
-            author: { "name" => new_name,
-                      "abbrev" => new_abbrev } },
-          username: "fred", user_full_name: "Fred Jones", groups: ["edit"])
+          params: { id: author.id,
+                    author: { "name" => new_name,
+                              "abbrev" => new_abbrev } },
+          session: { username: "fred",
+                     user_full_name: "Fred Jones",
+                     groups: ["edit"] })
     assert_not_nil assigns(:author), "Should assign author"
     updated_author = Author.find(author.id)
     assert_equal new_name.gsub(/ +/, " "),

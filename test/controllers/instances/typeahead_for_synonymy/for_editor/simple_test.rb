@@ -25,10 +25,10 @@ class InstancesTypeaheadForSynonymyForEditorTest < ActionController::TestCase
   test "editor should be able to typehead for synonymy instance" do
     @request.headers["Accept"] = "application/javascript"
     get(:typeahead_for_synonymy,
-        { term: "abc", name_id: names(:a_species).id },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { term: "abc", name_id: names(:a_species).id },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
   end
 end

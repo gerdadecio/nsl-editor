@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -32,14 +31,14 @@ class CanUpdateStandaloneToDuplicateWithOverride < ActionController::TestCase
 
   test "editor can add override to update standalone instance to a duplicate" do
     put(:update,
-        { id: @instance.id,
-          instance: { "reference_id" => @target.reference_id,
-                      "instance_type_id" => @target.instance_type_id,
-                      "page" => @target.page,
-                      "duplicate_instance_override" => "1" } },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @instance.id,
+                  instance: { "reference_id" => @target.reference_id,
+                              "instance_type_id" => @target.instance_type_id,
+                              "page" => @target.page,
+                              "duplicate_instance_override" => "1" } },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     check_assertions
   end
 

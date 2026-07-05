@@ -29,11 +29,11 @@ class NameCreateScientificHybridFormulaTest < ActiveSupport::TestCase
     name_type = name_types(:hybrid_formula_parents_known)
     name_rank = name_ranks(:species)
     name_status = name_statuses(:na)
-    @name_params = {"name_type_id" => name_type.id.to_s,
-                    "name_rank_id" => name_rank.id.to_s,
-                    "name_status_id" => name_status.id.to_s,
-                    "name_element" => 'blah',
-                    "verbatim_rank" => ''}
+    @name_params = { "name_type_id" => name_type.id.to_s,
+                     "name_rank_id" => name_rank.id.to_s,
+                     "name_status_id" => name_status.id.to_s,
+                     "name_element" => "blah",
+                     "verbatim_rank" => "" }
     @parent = names(:a_species)
     @second_parent = names(:another_species)
   end
@@ -43,11 +43,11 @@ class NameCreateScientificHybridFormulaTest < ActiveSupport::TestCase
   end
 
   def setup2
-    stub_request(:get, %r{#{address}[0-9]{8,}/api/name-strings})
+    stub_request(:get, %r{#{address}[0-9]{1,}/api/name-strings})
       .with(headers: { "Accept" => "text/json",
                        "Accept-Encoding" =>
                        "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-                       "User-Agent" => "Ruby" })
+                       "User-Agent" => /rest-client.*ruby.*/ })
       .to_return(status: 200, body: body, headers: {})
   end
 

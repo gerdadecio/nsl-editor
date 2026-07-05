@@ -26,11 +26,11 @@ class SearchRefsDQRefSharedNamesListNonExistantTest < ActionController::TestCase
     ref_1 = -1
     ref_2 = -2
     get(:search,
-        { query_target: "references shared names",
-          query_string: "#{ref_1},#{ref_2}" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "references shared names",
+                  query_string: "#{ref_1},#{ref_2}" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /No Reference ID: *#{ref_1}/,

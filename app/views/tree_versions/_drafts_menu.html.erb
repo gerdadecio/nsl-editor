@@ -1,0 +1,39 @@
+<% if Rails.configuration.try(:multi_product_tabs_enabled) %>
+  <% if current_context_id %>
+    <% draft_trees = Tree.menu_drafts.where(id: Product.with_context_and_tree(current_context_id).select(:tree_id)) %>
+  <% else %>
+    <% draft_trees = Tree.menu_drafts.where(accepted_tree: true) %>
+  <% end %>
+<% else %>
+  <% draft_trees = Tree.menu_drafts %>
+<% end %>
+
+<% draft_trees.each do |menu_item| %>
+
+  <% tree = Tree.find(menu_item[:id]) %>
+  <% if can? :toggle_draft, tree %>
+    <%
+      check_is_hidden =
+          if session["draft"].present? &&
+              menu_item.draft_id == session["draft"]["id"]
+            ""
+          else
+            "hidden"
+          end
+    %>
+
+    <li role="presentation">
+      <% if menu_item.draft_id %>
+        <%= link_to("#{menu_item.name} #{menu_item.draft_name} #{'(Default Draft)' if menu_item.default_draft}
+                      #{editor_icon('check', '',{class: check_is_hidden})}".html_safe,
+                      toggle_current_workspace_path(id: menu_item.draft_id),
+                      { remote: true,
+                        method: "post",
+                        title: menu_item.log_entry || menu_item.draft_name }) %>
+      <% else %>
+          <%= "#{menu_item.name} (No draft)".html_safe %>
+      <% end %>
+    </li>
+
+  <% end %>
+<% end %>

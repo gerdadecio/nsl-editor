@@ -16,7 +16,41 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class InstanceType < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: instance_type
+#
+#  id                 :bigint           not null, primary key
+#  alignment          :boolean          default(FALSE), not null
+#  bidirectional      :boolean          default(FALSE), not null
+#  citing             :boolean          default(FALSE), not null
+#  deprecated         :boolean          default(FALSE), not null
+#  description_html   :text
+#  doubtful           :boolean          default(FALSE), not null
+#  has_label          :string(255)      default("not set"), not null
+#  lock_version       :bigint           default(0), not null
+#  misapplied         :boolean          default(FALSE), not null
+#  name               :string(255)      not null
+#  nomenclatural      :boolean          default(FALSE), not null
+#  of_label           :string(255)      default("not set"), not null
+#  primary_instance   :boolean          default(FALSE), not null
+#  pro_parte          :boolean          default(FALSE), not null
+#  protologue         :boolean          default(FALSE), not null
+#  relationship       :boolean          default(FALSE), not null
+#  secondary_instance :boolean          default(FALSE), not null
+#  sort_order         :integer          default(0), not null
+#  standalone         :boolean          default(FALSE), not null
+#  synonym            :boolean          default(FALSE), not null
+#  taxonomic          :boolean          default(FALSE), not null
+#  unsourced          :boolean          default(FALSE), not null
+#  rdf_id             :string(50)
+#
+# Indexes
+#
+#  instance_type_rdfid           (rdf_id)
+#  uk_j5337m9qdlirvd49v4h11t1lk  (name) UNIQUE
+#
+class InstanceType < ApplicationRecord
   self.table_name = "instance_type"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -38,6 +72,10 @@ class InstanceType < ActiveRecord::Base
     unsourced
   end
 
+  def secondary_instance?
+    secondary_instance
+  end
+
   def self.info_or_help_links
     head = %(<li><a tabindex="-1" href="#" class="append-to-query-field" )
     tail = %(</a></li>)
@@ -55,7 +93,7 @@ class InstanceType < ActiveRecord::Base
 
   # For new records: just the standard set.
   def self.synonym_options
-    where("citing").where.not("deprecated")
+    where("relationship").where.not("deprecated")
                    .where.not("unsourced")
                    .sort_by(&:name)
                    .collect { |i| [i.name, i.id] }
@@ -63,9 +101,10 @@ class InstanceType < ActiveRecord::Base
 
   # For new records: just the standard set.
   def self.unpublished_citation_options
-    where("unsourced").where.not("deprecated")
-                      .sort_by(&:name)
-                      .collect { |i| [i.name, i.id] }
+    where("relationship").where("unsourced")
+      .where.not("deprecated")
+      .sort_by(&:name)
+      .collect { |i| [i.name, i.id] }
   end
 
   # For existing records.
@@ -83,6 +122,8 @@ class InstanceType < ActiveRecord::Base
 
   def name_with_indefinite_article
     case name
+    when /^[aeiou]/
+      "an #{name}"
     when "[unknown]", "autonym", "[n/a]", "excluded name",
          "invalid publication", "isonym", "orth. var"
       "an #{name}"
@@ -103,11 +144,10 @@ class InstanceType < ActiveRecord::Base
 
   def self.query_form_options
     all.sort_by(&:name)
-       .collect { |n| [n.name, n.name.downcase, class: ""] }
+       .collect { |n| [n.name, n.name.downcase, { class: "" }] }
   end
 
   def self.secondary_reference
     InstanceType.find_by(name: "secondary reference")
   end
-
 end

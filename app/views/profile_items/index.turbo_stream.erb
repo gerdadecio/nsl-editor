@@ -1,0 +1,23 @@
+<% all_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@current_user, @instance).run_query %>
+<%= turbo_stream.replace "product-item-config-dropdown-container" do %>
+  <%= render partial: "profile_items/product_item_config_dropdown", locals: {
+      product_configs_and_profile_items: all_items,
+      selected_product_item_config_id: params[:product_item_config_id] || @profile_item&.product_item_config_id,
+      instance: @instance
+    }
+  %>
+<% end %>
+
+<%= turbo_stream.replace "product-config-and-profile-items-container" do %>
+  <div id="product-config-and-profile-items-container">
+    <% @product_configs_and_profile_items.each do |config_items| %>
+      <%= render partial: "profile_items/product_item_config_container", locals: { config_items: config_items, instance: @instance } %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @profile_item %>
+  <%= turbo_stream.replace "edit-tab-profile-item" do %>
+    <%= render partial: "profile_items/edit_tab_profile_item", locals: { profile_item: @profile_item, instance: @instance } %>
+  <% end %>
+<% end %>

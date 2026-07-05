@@ -1,0 +1,6 @@
+<% unless period.review.reviewer?(@current_user.username) %>
+  You are not registered as a reviewer for this review.
+<% else %>
+  <%= render partial: 'loader/names/review/tabs/main/details/periods/reviewers/comment',
+             locals: {period: period} %>
+<% end %>

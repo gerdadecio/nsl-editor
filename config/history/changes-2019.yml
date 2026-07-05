@@ -1,0 +1,256 @@
+---
+- :date: 23-Dec-2019
+  :jira_id: '3480'
+  :description: |-
+    Orchids: fixed the name status example queries so they now use the just-added name-status-exact: query directive.
+- :date: 20-Dec-2019
+  :jira_id: '3469'
+  :description: |-
+    Added ref type example queries for references with no iso publication date and references with neither iso nor textual publication dates.
+- :date: 20-Dec-2019
+  :jira_id: '3479'
+  :description: |-
+    Orchids: added an extra 'Save' button at the bottom of the raw edit form.
+- :date: 20-Dec-2019
+  :jira_id: '3480'
+  :description: |-
+    Orchids: added a list of name status values with query links to the Stats tab, then moved the Stats tab info to the bottom of the Query Examples tab and removed the Stats tab.
+- :date: 19-Dec-2019
+  :jira_id: '3394'
+  :description: |-
+    Name duplicate rewiring at record-level and in bulk, requiring a new Name De-duplicate tab and a page-level Batch tab.
+- :date: 11-Dec-2019
+  :release: true
+- :date: 09-Dec-2019
+  :jira_id: '3473'
+  :description: |-
+    Orchids: don't offer matches with names marked as duplicates or without instances.
+- :date: 09-Dec-2019
+  :jira_id: '3472'
+  :description: |-
+    Orchids: sort the dropdown list of name status values for raw orchid records.
+- :date: 03-Dec-2019
+  :jira_id: '3407'
+  :description: |-
+    Orchids: fix the stats page queries where doubtful is involved; also added the not-rank:, no-rank:, nsl-rank:, not-nsl-rank:, and no-nsl-rank: queries; more stats queries.
+- :date: 03-Dec-2019
+  :jira_id: '3407'
+  :description: |-
+    Orchids: switched the doubtful field to a non-nullable boolean, added an accompanying search directive "exc:", altered the default query "taxon-with-syn:" to exclude excluded-accepted records, and adjusted all other doubtful-related queries. Note also some new aliases for common search directives, like "acc:" for "taxon-with-syn:", listed in the query help.
+- :date: 03-Dec-2019
+  :jira_id: '3460'
+  :description: |-
+    Orchids: added a checkbox for 'doubtful' on the 'accepted' taxon edit form.
+- :date: 02-Dec-2019
+  :jira_id: '3460'
+  :description: |-
+    Orchids: improved create and edit forms and validations for raw data, including synonyms; also allow NSL set of "synonym types" in raw orchid record.
+- :date: 29-Nov-2019
+  :jira_id: '3422'
+  :description: |-
+    Orchids refinements including moving Stats tab alongside the Reports tab, and interative improvements to batch processing and its tab.
+- :date: 27-Nov-2019
+  :jira_id: '3422'
+  :description: |-
+    Orchids refinements including new searches and batch processing, and the first appearance of the Stats and Batch tabs (with fixes).
+- :date: 26-Nov-2019
+  :jira_id: '3458'
+  :description: |-
+    Stop Orchids notes search returning false positives by correctly converting empty strings to nulls before saving.
+- :date: 25-Nov-2019
+  :release: true
+- :date: 21-Nov-2019
+  :jira_id: '3456'
+  :description: |-
+    Fix Orchids details tab which was failing when trying to sort instances for which it couldn't find an iso publication date.
+- :date: 21-Nov-2019
+  :jira_id: '3456'
+  :description: |-
+    Fix Orchids details tab which was failing when trying to sort instances for which it couldn't find an iso publication date.
+- :date: 21-Nov-2019
+  :release: true
+- :date: 21-Nov-2019
+  :jira_id: '3422'
+  :description: |-
+    Further refinements to the interface, more batch processing code for adding instances, and other processing improvements.
+- :date: 21-Nov-2019
+  :jira_id: '3450'
+  :description: |-
+    Add notes field to orchid loader with an accompanying search directive.
+- :date: 21-Nov-2019
+  :release: true
+- :date: 20-Nov-2019
+  :jira_id: '3449'
+  :description: |-
+    Phrase Names: change form heading from 'New Phrase Name Name' to 'New Phrase Name'; only show parent 1 help text brackets if there is parent 1 help text to display inside the brackets.
+- :date: 14-Nov-2019
+  :release: true
+- :date: 13-Nov-2019
+  :jira_id: '3422'
+  :description: |-
+    Orchids: We can now create preferred matches with a (programmer) script; there's an adjusted notification color scheme, notifications for orth.vars and isonyms, and accompanying queries with examples.
+- :date: 11-Nov-2019
+  :jira_id: '3432'
+  :description: |-
+    Delete instance button is now aware of instance children.
+- :date: 11-Nov-2019
+  :release: true
+- :date: 11-Nov-2019
+  :jira_id: '3429'
+  :description: |-
+    Orchids with wider implications: Remove old, unused feature that ignored search targets like "reference", "orchid" in the search field.
+- :date: 11-Nov-2019
+  :jira_id: '3431'
+  :description: |-
+    Orchids: Order all search directive results by seq.
+- :date: 11-Nov-2019
+  :jira_id: '3430'
+  :description: |-
+    Orchids: "No primary instance" flag should now be present even if the taxon has smart quotes because the alternative matching name is now also included in the search.
+- :date: 07-Nov-2019
+  :jira_id: '3422'
+  :description: |-
+    Orchids: add checkbox to exclude a record from being bulk processed, with an accompanying query directive and display notifications.
+- :date: 07-Nov-2019
+  :release: true
+- :date: 07-Nov-2019
+  :jira_id: '3428'
+  :description: |-
+    Orchids bug fix: synonym type now works properly on the Edit tab.
+- :date: 06-Nov-2019
+  :release: true
+- :date: 06-Nov-2019
+  :jira_id: '3424'
+  :description: |-
+    More Orchids tweaks: distinguish misapps and hybrids in result lists; widen the details area for smaller screen resolutions.
+- :date: 05-Nov-2019
+  :jira_id: '3424'
+  :description: |-
+    Tweak the Orchids interface based on feedback, including bolding accepted names and clarifying the way misapplieds are listed and any multiple preferred matches are counted, also moved save buttons up.
+- :date: 04-Nov-2019
+  :release: true
+- :date: 01-Nov-2019
+  :jira_id: '3418'
+  :description: |-
+    Add 'Created' message for create Orchid raw synonym.
+- :date: 31-Oct-2019
+  :jira_id: '3418'
+  :description: |-
+    Fix display bug noticed on Wednesday, show record type beside 'Already the preferred match for...' (including for misapplieds); now also allowing Create Synonym for an accepted taxon.
+- :date: 30-Oct-2019
+  :jira_id: '3418'
+  :description: |-
+    More hybrid-related queries, with examples.  Other minor fixes.
+- :date: 30-Oct-2019
+  :jira_id: '3417'
+  :description: |-
+    Orchid loading: you can now delete raw records, provided they have no synonyms or preferred matches; also you can now clear out preferred matches for a raw record.
+- :date: 29-Oct-2019
+  :jira_id: '3418'
+  :description: |-
+    Orchid loading: now showing all raw fields; added hybrid-related queries; added alt_taxon_for_matching which you can enter and query and which is used for matching.
+- :date: 23-Oct-2019
+  :jira_id: '3397'
+  :description: |-
+    Orchid loading: now has an edit tab for orchids allowing fine tuning of instance type.  Also honouring the partly (p.p.) field when assigning instance type.
+- :date: 23-Oct-2019
+  :jira_id: '3397'
+  :description: |-
+    Orchid loading: now adding instances and instance type for every preferred name link.
+- :date: 21-Oct-2019
+  :jira_id: '3397'
+  :description: |-
+    Orchid data loading now allows multiple preferred name/instances for misapplieds - other related changes.
+- :date: 18-Oct-2019
+  :jira_id: '3397'
+  :description: |-
+    Orchid data loading features for vascular shard - switchable via configuration, so should not impact other shards.
+- :date: 31-Jul-2019
+  :release: true
+- :date: 31-Jul-2019
+  :jira_id: '3339'
+  :description: |-
+    Widen Reference edit year field.
+- :date: 31-Jul-2019
+  :release: true
+- :date: 18-Jul-2019
+  :jira_id: '3311'
+  :description: |-
+    Add data entry for reference day, month and year of publication which are stored in iso_publication_date.
+    Year field is deprecated.
+- :date: 04-Jul-2019
+  :release: true
+- :date: 03-Jul-2019
+  :jira_id: '3318'
+  :description: |-
+    Remove incorrect tree ticks/crosses in cross-references on the details tab.
+- :date: 13-Jun-2019
+  :release: true
+- :date: 12-Jun-2019
+  :jira_id: '3281'
+  :description: |-
+    Allow override for creating or updating duplicate standalone or additional primary instances.
+- :date: 03-Jun-2019
+  :jira_id: '3303'
+  :description: |-
+    Added report excluded-name-with-distribution: to list excluded names with a distribution.
+- :date: 03-Jun-2019
+  :jira_id: '1951'
+  :description: |-
+    Removed the "accepted-name-synony-of-accepted-name" report as it used the old tree and didn't work. Functionality
+    replaced by tree validation report.
+- :date: 30-May-2019
+  :jira_id: '1622'
+  :description: |-
+    New distribution editing for the tree.
+- :date: 09-May-2019
+  :release: true
+- :date: 06-May-2019
+  :jira_id: '3161'
+  :description: |-
+    Show the excluded name icon for excluded names on the instance details tab
+    wherever we show the accepted name icon for accepted names.
+- :date: 03-May-2019
+  :jira_id: '3189'
+  :description: |-
+    Added two name search directives: accepted-in-accepted-tree and excluded-in-accepted-tree.
+- :date: 02-May-2019
+  :release: true
+- :date: 26-Apr-2019
+  :jira_id: '2343'
+  :description: |-
+    Prevent addition of notes and adnots in most synonymy instances.
+- :date: 18-Apr-2019
+  :release: true
+- :date: 05-Apr-2019
+  :jira_id: '3182'
+  :description: |-
+    Fixed the copy name feature.
+- :date: 05-Apr-2019
+  :release: true
+- :date: 02-Apr-2019
+  :jira_id: '614'
+  :description: |-
+    Add ability to change password.
+- :date: 27-Mar-2019
+  :jira_id: '3235'
+  :description: |-
+    Remove special formatting for old versions of firefox.
+- :date: 07-Mar-2019
+  :release: true
+- :date: 06-Mar-2019
+  :jira_id: '3173'
+  :description: |-
+    Change placement of edition on reference details tab.
+- :date: 26-Feb-2019
+  :jira_id: '2426'
+  :description: |-
+    Search for text in a particular type of instance note.
+- :date: 22-Feb-2019
+  :release: true
+- :date: 20-Feb-2019
+  :jira_id: '3217'
+  :description: |-
+    Extract and display the error message from the name delete service when it fails.
+- :date: 04-Feb-2019
+  :release: true

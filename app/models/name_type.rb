@@ -16,7 +16,38 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class NameType < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: name_type
+#
+#  id               :bigint           not null, primary key
+#  autonym          :boolean          default(FALSE), not null
+#  connector        :string(1)
+#  cultivar         :boolean          default(FALSE), not null
+#  deprecated       :boolean          default(FALSE), not null
+#  description_html :text
+#  formula          :boolean          default(FALSE), not null
+#  hybrid           :boolean          default(FALSE), not null
+#  lock_version     :bigint           default(0), not null
+#  name             :string(255)      not null
+#  scientific       :boolean          default(FALSE), not null
+#  sort_order       :integer          default(0), not null
+#  vernacular       :boolean          default(FALSE), not null
+#  name_category_id :bigint           not null
+#  name_group_id    :bigint           not null
+#  rdf_id           :string(50)
+#
+# Indexes
+#
+#  name_type_rdfid  (rdf_id)
+#  nt_unique_name   (name_group_id,name) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_10d0jlulq2woht49j5ccpeehu  (name_category_id => name_category.id)
+#  fk_5r3o78sgdbxsf525hmm3t44gv  (name_group_id => name_group.id)
+#
+class NameType < ApplicationRecord
   self.table_name = "name_type"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -50,61 +81,37 @@ class NameType < ActiveRecord::Base
 
   def self.query_form_options
     not_deprecated.sort_by(&:name)
-                  .collect { |n| [n.capitalised_name, n.name.to_s, class: ""] }
+                  .collect { |n| [n.capitalised_name, n.name.to_s, { class: "" }] }
                   .unshift(["Include common, cultivars", "type:*"])
                   .unshift(["Exclude common, cultivars", ""])
   end
 
   def self.options
     all.sort_by(&:name)
-       .collect { |n| [n.capitalised_name, n.id, class: ""] }
+       .collect { |n| [n.capitalised_name, n.id, { class: "" }] }
   end
 
   def self.option_ids_for_category(name_category)
     NameType.options_for_category(name_category).collect(&:second)
   end
 
-  def self.xoptions_for_category(for_category)
-    case for_category
-    when Name.name_category.scientific?
-      scientific_1_parent_options
-    when Name.name_category.scientific_hybrid_formula?
-      scientific_2_parent_options
-    when Name.name_category.scientific_hybrid_formula_unknown_2nd_parent?
-      scientific_hybrid_formula_unknown_2nd_parent_options
-    when Name.name_category.cultivar_hybrid?
-      cultivar_hybrid_options
-    when Name.name_category.cultivar?
-      cultivar_options
-    when Name.name_category.phrase_name?
-      phrase_options
-    when Name.name_category.other?
-      other_options
-    when "all"
-      options
-    else
-      []
-    end
-  end
-
   def self.options_for_category(for_category)
-    case 
-    when for_category.scientific?
+    if for_category.scientific?
       scientific_1_parent_options
-    when for_category.scientific_hybrid_formula?
+    elsif for_category.scientific_hybrid_formula?
       scientific_2_parent_options
-    when for_category.scientific_hybrid_formula_unknown_2nd_parent?
+    elsif for_category.scientific_hybrid_formula_unknown_2nd_parent?
       scientific_hybrid_formula_unknown_2nd_parent_options
-    when for_category.cultivar_hybrid?
+    elsif for_category.cultivar_hybrid?
       cultivar_hybrid_options
-    when for_category.cultivar?
+    elsif for_category.cultivar?
       cultivar_options
-    when for_category.phrase_name?
+    elsif for_category.phrase_name?
       phrase_options
-    when for_category.other?
+    elsif for_category.named_hybrid?
+      named_hybrid_options
+    elsif for_category.other?
       other_options
-    # when "all"
-    #   options
     else
       []
     end
@@ -112,7 +119,7 @@ class NameType < ActiveRecord::Base
 
   def self.scientific_1_parent_options
     where(scientific: true)
-      .where(" (not hybrid or name in ('named hybrid','named hybrid autonym'))")
+      .where(" (not hybrid or name in ('named hybrid autonym'))")
       .where(" name != 'phrase name' ")
       .sort_by(&:name).collect { |n| [n.name, n.id] }
   end
@@ -143,7 +150,7 @@ class NameType < ActiveRecord::Base
       .where(" name not in ('cultivar hybrid formula', 'graft/chimera')")
       .sort_by(&:name)
       .collect do |n|
-      [n.name, n.id, class: "cultivar_hybrid"]
+      [n.name, n.id, { class: "cultivar_hybrid" }]
     end
   end
 
@@ -155,16 +162,28 @@ class NameType < ActiveRecord::Base
       .where(" name not in ('cultivar hybrid formula', 'graft/chimera')")
       .sort_by(&:name)
       .collect do |n|
-      [n.name, n.id, class: "cultivar"]
+      [n.name, n.id, { class: "cultivar" }]
     end
+  end
+
+  def self.named_hybrid_options
+    where(scientific: true)
+      .where(" name = 'named hybrid'")
+      .sort_by(&:name).collect { |n| [n.name, n.id] }
   end
 
   def self.other_options
     where(scientific: false).where(cultivar: false)
                             .sort_by(&:name)
                             .collect do |n|
-      [n.name, n.id, class: "other"]
+      [n.name, n.id, { class: "other" }]
     end
+  end
+
+  def self.common_only_options
+    where("lower(name) = ?", "common")
+      .sort_by(&:name)
+      .map { |n| [n.name, n.id, { class: "other" }] }
   end
 
   def hybrid?
@@ -183,35 +202,7 @@ class NameType < ActiveRecord::Base
     name == "phrase name"
   end
 
-  def xcategory
-    case name
-    when "[default]"                         then "other"
-    when "[unknown]"                         then "other"
-    when "[n/a]"                             then "other"
-    when "scientific"                        then "scientific_1_parent"
-    when "phrase name"                       then "scientific_1_parent"
-    when "sanctioned"                        then "scientific_1_parent"
-    when "hybrid"                            then "scientific_2_parents"
-    when "hybrid formula parents known"      then "scientific_2_parents"
-    when "hybrid formula unknown 2nd parent" then "scientific_1_parent"
-    when "named hybrid"                      then "scientific_1_parent"
-    when "named hybrid autonym"              then "scientific_1_parent"
-    when "hybrid autonym"                    then "scientific_2_parents"
-    when "intergrade"                        then "scientific_2_parents"
-    when "autonym"                           then "scientific_1_parent"
-    when "cultivar"                          then "cultivar"
-    when "cultivar hybrid"                   then "cultivar"
-    when "cultivar hybrid formula"           then "scientific_2_parents"
-    when "acra"                              then "cultivar"
-    when "acra hybrid"                       then "cultivar"
-    when "pbr"                               then "cultivar"
-    when "pbr hybrid"                        then "cultivar"
-    when "trade"                             then "cultivar"
-    when "trade hybrid"                      then "cultivar"
-    when "graft/chimera"                     then "scientific_2_parents"
-    when "informal"                          then "other"
-    when "common"                            then "other"
-    else "other"
-    end
+  def autonym?
+    name == "autonym"
   end
 end

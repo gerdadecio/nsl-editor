@@ -16,7 +16,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class DbVersion < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: db_version
+#
+#  id      :bigint           not null, primary key
+#  version :integer          not null
+#
+class DbVersion < ApplicationRecord
   # Really "Schema Version"
 
   self.table_name = "db_version"
@@ -24,7 +31,7 @@ class DbVersion < ActiveRecord::Base
 
   def self.current
     DbVersion.first[:version]
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Problem detecting current schema version.")
     Rails.logger.error("Exception: #{e}")
     "[Problem finding version: #{e}]"

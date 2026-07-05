@@ -1,0 +1,327 @@
+- :date: 24-Dec-2020
+  :release: true
+- :date: 23-Dec-2020
+  :jira_id: '3646'
+  :description: |-
+    Instance Note Types: handle deprecated types more gracefully when records still exist
+- :date: 21-Dec-2020
+  :jira_id: '3750'
+  :description: |-
+    Orchids: log problems creating a name match and give more informative results of it as a batch job
+- :date: 10-Dec-2020
+  :jira_id: '3744'
+  :description: |-
+    Non-QA users now no longer see the (top-level) <q>De-duplicate</q> tab
+- :date: 10-Dec-2020
+  :release: true
+- :date: 07-Dec-2020
+  :jira_id: ''
+  :description: |-
+    Remove the note on the login page about the app being developed (i.e. tested) on Firefox.
+- :date: 04-Dec-2020
+  :release: true
+- :date: 01-Dec-2020
+  :jira_id: '3720'
+  :description: |-
+    Provide alternative links to the three tree reports on the main tree tab as work-arounds for when the intermittent encoding error occurs.
+- :date: 26-Nov-2020
+  :jira_id: '3731'
+  :description: |-
+    Changed 'excluded-in-accepted-tree:' to 'excluded-from-accepted-tree:' in the Name query help; also removed some unnecessary colons from Reference query help
+- :date: 26-Nov-2020
+  :release: true
+- :date: 22-Nov-2020
+  :jira_id: '3724'
+  :description: |-
+    Moved Name details entry for verbatim rank onto its own line
+- :date: 22-Nov-2020
+  :jira_id: '3612'
+  :description: |-
+    Early version of taxonomy review feature for reviewer to add comments - APNI-only for now, and only in test
+- :date: 19-Nov-2020
+  :jira_id: '3716'
+  :description: |-
+    Improved the Reference Query Help explanation of the default search, the text search, and the citation tokenised search.
+- :date: 19-Nov-2020
+  :jira_id: '3720'
+  :description: |-
+    Removed the gsub statements for the html returned from tree reports because they're associated with encoding errors and sporadic report no-shows.
+- :date: 17-Nov-2020
+  :jira_id: '3588'
+  :description: |-
+    Fixed the Javascript error preventing the page to reload after publishing the draft tree
+- :date: 13-Nov-2020
+  :release: true
+- :date: 12-Nov-2020
+  :jira_id: '2274'
+  :description: |-
+    Added Query Help and Query Examples for name search directives "above-rank" and "below-rank".  Also changed tab heading for query examples from "Queries" to "Query Examples" for clarity. Adjusted help text.
+- :date: 10-Nov-2020
+  :jira_id: '2275'
+  :description: |-
+    Changed the Query Help for Name status by removing "Any status" from the drop-down list-of-values; also minor boilerplate comment changes.
+- :date: 23-Oct-2020
+  :release: true
+- :date: 21-Oct-2020
+  :jira_id: '3689'
+  :description: |-
+    Refreshing the constructed names of descendent names via the Name -> More -> Refresh tab now works again; also added name descendants-of-id query
+- :date: 23-Sep-2020
+  :jira_id: '3612'
+  :description: |-
+    Taxonomy Review: more work including the Taxonomy tab for taxonomy builders, a workflow for creating reviews and review periods
+- :date: 23-Sep-2020
+  :release: true
+- :date: 17-Sep-2020
+  :jira_id: '3660'
+  :description: |-
+    Orchids fixes after review: bulk matches are not made for misapplied records; log text "for orchids" corrected; query example text corrected
+- :date: 16-Sep-2020
+  :jira_id: '3660'
+  :description: |-
+    Orchids fixes after review: dummy taxonomy count removed, link to orchid search added, accepted records with match count corrected
+- :date: 14-Sep-2020
+  :jira_id: '3660'
+  :description: |-
+    Orchids: improved process reporting on the orchids tab and better error messages in the logs.
+- :date: 10-Sep-2020
+  :release: true
+- :date: 08-Sep-2020
+  :jira_id: '3663'
+  :description: |-
+    Parent name typeahead on the Tree tab works again.
+- :date: 08-Sep-2020
+  :jira_id: '3660'
+  :description: |-
+    Orchids: first cut of the orchid processing log table, with queries.
+- :date: 08-Sep-2020
+  :jira_id: '3662'
+  :description: |-
+    Allow search result instance records to be seen in full.
+- :date: 07-Sep-2020
+  :jira_id: '3660'
+  :description: |-
+    Orchids: the Orchids tab is now available and is the focus for bulk processing work.
+- :date: 07-Sep-2020
+  :jira_id: '3650'
+  :description: |-
+    Orchids: the prevent-further-bulk-processing flag now prevents bulk processing for name matching, creating instances, and putting on a draft tree.
+- :date: 04-Sep-2020
+  :release: true
+- :date: 31-Aug-2020
+  :jira_id: '3656'
+  :description: |-
+    Orchid batch processing now attributes all operations to the authenticated user.
+- :date: 31-Aug-2020
+  :jira_id: '3653'
+  :description: |-
+    Move batch success/error messages closer to the relevant button
+- :date: 31-Aug-2020
+  :jira_id: '3652'
+  :description: |-
+    Change wording on batch tab for draft instances
+- :date: 25-Aug-2020
+  :jira_id: '3612'
+  :description: |-
+    Early version of taxonomy review periods, with simple calendar
+- :date: 19-Aug-2020
+  :jira_id: '3612'
+  :description: |-
+    More work on taxonomy reviews for tree versions, building start-a-review
+- :date: 13-Aug-2020
+  :jira_id: '3612'
+  :description: |-
+    Early work on taxonomy reviews for tree versions, building a platform for starting a review.
+- :date: 05-Aug-2020
+  :jira_id: '3612'
+  :description: |-
+    Branch 3580, including NSL-3612 taxonomic-review-mode, now merged into the mainstream of changes. Features invisible unless switched on.
+- :date: 05-Aug-2020
+  :jira_id: '3580'
+  :description: |-
+    Branch 3580, including all taxonomic-review features now merged into the mainstream of changes. Features invisible unless switched on.
+- :date: 29-Jul-2020
+  :release: true
+- :date: 28-Jul-2020
+  :jira_id: '2532'
+  :description: |-
+    Add a new name query parent-child-tree-inconsistent: which is documented on the Reports tab.
+- :date: 28-Jul-2020
+  :jira_id: '3378'
+  :description: |-
+    Add two Name entries on the Reports tab for names with missing simple name and missing full name
+- :date: 27-Jul-2020
+  :jira_id: '3547'
+  :description: |-
+    Orchids: name-match-no-primary: directive no longer returns taxa which have an allocated match
+- :date: 27-Jul-2020
+  :jira_id: '3621'
+  :description: |-
+    Orchids: add distribution to the Raw Edit fields, also improve tabbing from field to field.
+- :date: 21-Jul-2020
+  :jira_id: '3610'
+  :description: |-
+    Fix delete distribution.
+- :date: 21-Jul-2020
+  :jira_id: '3534'
+  :description: |-
+    Orchid taxon searches also silently match on leading 'x ' or leading '('.  Adjusted help text.
+- :date: 21-Jul-2020
+  :jira_id: '3592'
+  :description: |-
+    Reduce the over-scroll amount in the main results area to avoid a wall of white. Fine-tune it down further.  Also add trailing white space to various help pages.
+- :date: 20-Jul-2020
+  :jira_id: '3594'
+  :description: |-
+    When you copy a name via the Name>Copy tab, its name_path is adjusted to match the new name
+- :date: 20-Jul-2020
+  :jira_id: '3611'
+  :description: |-
+    Successfully refreshing a name on the Name>More>Refresh tab results in a message 'Name refreshed' instead of no message
+- :date: 08-Jul-2020
+  :jira_id: '3592'
+  :description: |-
+    Allow the bottom record to scroll up fully into view.
+- :date: 08-Jul-2020
+  :jira_id: '3580'
+  :description: |-
+    Layout tweaks and stop the auto focus on removed tree elements. Wednesday 10:45pm.  <b>Branch 3580 only. Not in production yet.</b>
+- :date: 08-Jul-2020
+  :jira_id: '3580'
+  :description: |-
+    Plenty of adjustments and fixes, hopefully linking to the correct diffs and showing removals as removals and not as additions. Tuesday 2:30pm  <b>Branch 3580 only. Not in production yet.</b>
+- :date: 07-Jul-2020
+  :jira_id: '3580'
+  :description: |-
+    Using new tree diff query; not trying to get the diff from services for removed or added tree elements; diff is now on details tab.  <b>Branch 3580 only. Not in production yet.</b>
+- :date: 06-Jul-2020
+  :jira_id: '3580'
+  :description: |-
+    Added basic (mock) commenting to review tab.  <b>Branch 3580 only. Not in production yet.</b>
+    Partial work on APC review prototype, as at Sunday, 5 July, 9:35pm  <b>Branch 3580 only. Not in production yet.</b>
+- :date: 06-Jul-2020
+  :release: true
+- :date: 05-Jul-2020
+  :jira_id: '3583'
+  :description: |-
+    Two for the price of one: the Tree > Replace Instance form is now stable.
+- :date: 28-Jun-2020
+  :jira_id: '3583'
+  :description: |-
+    Tree-related spinners now switch off as expected. (Note: Rails 6 version is now live.)
+- :date: 26-Jun-2020
+  :release: true
+- :date: 23-Jun-2020
+  :jira_id: '3581'
+  :description: |-
+    Fixed arrowing up-and-down bug in R6
+- :date: 17-Jun-2020
+  :jira_id: '3576'
+  :description: |-
+    Cultivar names can now have cultivar parents.
+- :date: 16-Jun-2020
+  :jira_id: '3575'
+  :description: |-
+    Copy the work log entry from the previously-published tree to the new auto generated draft tree.
+- :date: 16-Jun-2020
+  :jira_id: '3574'
+  :description: |-
+    Allow new auto generated draft tree to be named at the point of publication.
+- :date: 03-Jun-2020
+  :jira_id: '3546'
+  :description: |-
+    Fix weird hover-blackening of link backgrounds.
+- :date: 26-May-2020
+  :jira_id: '3551'
+  :description: |-
+    Behind the scenes, update the name element for a hybrid formula when either parent is changed. This is so the name path will also be updated correctly behind the scenes; to make this more visible, you can now see name path, name element, sort name in the details.  The refresh tab now lets you refresh name path - likely to be rarely used, but handy if you ever need it.
+- :date: 18-May-2020
+  :jira_id: '3546'
+  :description: |-
+    Run-report links now appear as buttons
+- :date: 12-May-2020
+  :jira_id: '3546'
+  :description: |-
+    Relative, humanized dates are now working on the tree reports. e.g. "2 days ago"
+- :date: 12-May-2020
+  :jira_id: '3546'
+  :description: |-
+    Reworked the Tree tab (the one on the main screen) for Rails 6.
+- :date: 01-May-2020
+  :jira_id: '3546'
+  :description: |-
+    Fixed line-spacing of typeaheads in new records. e.g. New -> Name, parent typeahead; blue buttons now grey; convert common to scientific works
+- :date: 01-May-2020
+  :jira_id: '3542'
+  :description: |-
+    Changed update name_path to do a bulk update of name paths to update all child names. (Improved version.)
+- :date: 23-Apr-2020
+  :jira_id: '3546'
+  :description: |-
+    Rails 6 upgrade: cursor lands on first edit field in tabs; deep links work (really?)
+- :date: 23-Apr-2020
+  :jira_id: '3546'
+  :description: |-
+    Rails 6 upgrade: old editor logins now won't be shared; name delete now available; purple placeholder text; tighten up vertical space on forms
+- :date: 21-Apr-2020
+  :jira_id: '3539'
+  :description: |-
+    Rails 6 upgrade: more fixes including setting AEST timezone.
+- :date: 16-Apr-2020
+  :jira_id: '3539'
+  :description: |-
+    Rails 6 upgrade: recent - sign-in, sign-out reviewed - noticed I'm getting credentials saved by firefox, which is hard to prevent
+- :date: 09-Apr-2020
+  :jira_id: '3539'
+  :description: |-
+    Rails 6 upgrade: recent - fixed menu layout; reinstated history of changes; count names works
+- :date: 13-Mar-2020
+  :jira_id: '3481'
+  :description: |-
+    Orchids: prevent a match being saved for an orchid that is a synonym-without-a-synonym-type, and make it clear that is a problem the user can fix
+- :date: 13-Mar-2020
+  :jira_id: '3530'
+  :description: |-
+    Orchids: consider a broader set of name matches, particularly on the Details tab, by no longer excluding names that are duplicates or have no instances.
+- :date: 13-Mar-2020
+  :jira_id: '3536'
+  :description: |-
+    Upgrade Rails to 4.2.11.1 for security
+- :date: 12-Mar-2020
+  :release: true
+- :date: 11-Mar-2020
+  :jira_id: 
+  :description: |-
+    Orchids: added search on the comment field, with help and examples - no jira.
+- :date: 11-Mar-2020
+  :jira_id: '3529'
+  :description: |-
+    Orchids: when editing raw synonym data, the synonym type field options include heterotypic and homotypic, so you can see the raw value, but these options are disabled so you cannot choose them.
+- :date: 25-Feb-2020
+  :jira_id: '3461'
+  :description: |-
+    Orchids: the Batch tab now lets you add orchids to the current draft tree.  This is an early version of the feature, released for review and improvement. The feature is switched off by default.
+- :date: 28-Feb-2020
+  :release: true
+- :date: 25-Feb-2020
+  :jira_id: '3525'
+  :description: |-
+    Orchids: synonym type is now required and you cannot add or save a synonym without a synonym type; also the drop-down list of synonym type options has no blank entry now.
+- :date: 25-Feb-2020
+  :jira_id: '3524'
+  :description: |-
+    Orchids: add query to find raw data synonyms missing a synonym type - 'is-syn-but-no-syn-type:' 
+- :date: 03-Feb-2020
+  :release: true
+- :date: 28-Jan-2020
+  :jira_id: '3503'
+  :description: |-
+    Clicking the Name details More tab now displays the second line of tabs but also with the Comment tab active.  This was normal behaviour before NSL-3394 and is now restored.
+- :date: 23-Jan-2020
+  :release: true
+- :date: 17-Jan-2020
+  :jira_id: '3495'
+  :description: |-
+    Two new instance query directives: note-has-carriage-return and note-updated-by, with query help and examples; also showing meta data for instance notes.
+- :date: 16-Jan-2020
+  :release: true

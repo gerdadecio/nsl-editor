@@ -1,0 +1,10 @@
+debug('run diff');
+$('#diff-content').html('<%= escape_javascript(@result.html_safe) %>');
+$('#diff-content').removeClass('hidden');
+$('#diff-content').removeClass('fade');
+$('#diff-content').show();
+
+$('#link-to-run-diff').html('Re-run the Changes Report');
+$('#link-to-run-diff').show();
+$('#diff-is-running-indicator').html("Ran at <%= Time.now.strftime('%H:%M:%S') %>");
+

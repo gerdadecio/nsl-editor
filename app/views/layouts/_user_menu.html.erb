@@ -1,44 +1,120 @@
-<% if @current_user.present? %>                  
+<% if @current_user.present? %>
 
 <li class="dropdown">
-  <a href="#" 
-     id="user-dropdown-menu-link" 
-     tabindex="4" 
-     class="dropdown-toggle <%= 'active' if params[:controller].match(/session/) %>" 
+  <a href="#"
+     id="user-dropdown-menu-link"
+     tabindex="4"
+     class="dropdown-toggle <%= 'active' if params[:controller].match(/session/) %>"
      title="Select this to see your account options."
-     data-toggle="dropdown">
-    <%= icon('user') %>&nbsp;<%= @current_user.full_name %> <span class="caret"></span></a>
+     <%= bs_toggle(:dropdown) %>>
+    <%= editor_icon('user') %>&nbsp;<%= @current_user.full_name %> <span class="caret"></span>
+  </a>
   <ul id="user-dropdown-menu" class="dropdown-menu" role="menu">
-    <% if @current_user.groups.size > 0 %>
+    <% if @current_user.groups.present? && @current_user.groups.size > 0 %>
       <li class="dropdown-submenu">
-        <a tabindex="-1" 
+        <a tabindex="-1"
            href="#"
-           title="Your security groups">
-          <%= pluralize(@current_user.groups.size,'Group') %></a>
-          <ul class="dropdown-menu">
+           title="Your security groups and roles">
+          <%= "#{pluralize(@current_user.groups.size,'Security group')}"%>
+          <%= "& #{pluralize(@current_registered_user.product_roles.size, 'Role')}" if @current_registered_user.product_roles.present? %>
+        </a>
+        <ul class="dropdown-menu">
           <% @current_user.groups.each do |group| %>
-            <% case group 
-               when 'edit'  then icon_name = 'edit' 
-               when 'admin' then icon_name = 'sliders' 
-               else icon_name = 'circle-o' 
-               end 
+            <% case group
+               when 'edit'  then icon_name = 'edit'
+               when 'admin' then icon_name = 'sliders'
+               when 'login' then icon_name = 'fingerprint'
+               else icon_name = 'user-lock'
+               end
              %>
              <li role="presentation">
                <a title="A security group you belong to">
-                 <%= "#{icon(icon_name)} #{group == group.upcase ? group : group.capitalize}".html_safe %>
+                 <%= "#{editor_icon(icon_name)} #{group == group.upcase ? group : group.capitalize}".html_safe %>
                </a>
              </li>
           <% end %>
-          </ul>
+          <% if @current_registered_user.present? %>
+            <% sorted_product_roles(@current_registered_user).each_with_index do |product_role, index| %>
+              <% if index == 0 %>
+                <li role="presentation" class="divider"></li>
+              <% end %>
+              <li role="presentation">
+                <a title="A product role you have">
+                  <%= "#{editor_icon('user-group')} #{product_role.product.name} #{product_role.role.name}:".html_safe %>
+                  <span class="role-description"><%= product_role.role&.description %></span>
+                </a>
+            <% end %>
+          <% end %>
+        </ul>
       </li>
     <% end %>
 
-    <li role="presentation" class="divider"></li>
-    <li class="" role="presentation">
-      <%= link_to "#{icon('key')} Change password".html_safe, edit_password_path, method: :get, title: 'Select this to change your password'%>
+    <% if @current_registered_user&.batch_reviewers&.any? %>
+      <li class="dropdown-submenu">
+        <a tabindex="-1"
+           href="#"
+           title="Batch reviews you are assigned to">
+          <%= pluralize(@current_registered_user.batch_reviewers.size, 'Batch Review') %>
+        </a>
+        <ul class="dropdown-menu">
+          <% @current_registered_user.batch_reviewers.includes(:batch_review_role, :org, :batch_review).each do |batch_reviewer| %>
+            <li role="presentation">
+              <a title="<%= batch_reviewer.batch_review&.name %>">
+                <%= editor_icon('clipboard-list') %>
+                <strong><%= batch_reviewer.role&.name&.titleize %></strong>
+                <% if batch_reviewer.org.present? %>
+                  <span class="text-muted">(<%= batch_reviewer.org.abbrev.presence || batch_reviewer.org.name %>)</span>
+                <% end %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+
+<li role="presentation" class="divider"></li>
+
+<% if Rails.configuration.try(:batch_loader_aware) %>
+  <% if can? 'loader/batch/review/mode', 'switch_on' %>
+    <li>
+      <% if @view_mode == ViewMode::STANDARD %>
+        <%= link_to "<i class=''></i> Switch to Review Mode".html_safe,
+                    switch_on_review_mode_path,
+                    title: 'See things as a reviewer would',
+                    remote: true,
+                    method: :post,
+                    tabindex: '-1' %>
+         <li role="presentation" class="divider"></li>
+       <% end %>
+    <% end %>
+
+  <% if can? 'loader/batch/review/mode', 'switch_off' %>
+      <% unless @view_mode == ViewMode::STANDARD %>
+         <% if @current_user.edit? || Rails.configuration.try(:multi_product_tabs_enabled) %>
+         <%= link_to "<i class=''></i> Switch out of Review Mode".html_safe,
+                     switch_off_review_mode_path,
+                     title: 'Stop seeing things as a reviewer would',
+                     remote: true,
+                     method: :post,
+                     tabindex: '-1' %>
+         <li role="presentation" class="divider"></li>
+         <% end %>
+      <% end %>
+     </li>
+  <% end %>
+<% end %>
+
+<% if session[:generic_active_directory_user] %>
+    <li class="" role="presentation", title="Generic users cannot change their passwords here.">
+      <span class="strike-through">Change Password </span>
     </li>
+<% else %>
     <li class="" role="presentation">
-      <%= link_to "#{icon('sign-out')} Sign out".html_safe, sign_out_path, method: :get, title: 'Select this to sign out from the NSL Editor'%>
+      <%= link_to "#{editor_icon('key')} Change password".html_safe, edit_password_path, method: :get, title: 'Select this to change your password'%>
+    </li>
+<% end %>
+    <li class="" role="presentation">
+      <%= link_to "#{editor_icon('sign-out')} Sign out".html_safe, sign_out_path, method: :get, title: 'Select this to sign out from the NSL Editor'%>
     </li>
   </ul>
 </li>

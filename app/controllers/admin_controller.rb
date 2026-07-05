@@ -18,13 +18,9 @@
 #
 # Administrator Actions
 class AdminController < ApplicationController
-  before_filter :hide_details, :empty_search
+  before_action :hide_details, :empty_search
 
-  def index
-  end
-
-  def db_connections
-  end
+  def index; end
 
   def throw
     raise "Exception!!!"

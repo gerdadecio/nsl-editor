@@ -28,8 +28,8 @@ class AuthorUnauthenticatedShowNoTabLinkTest < ActionController::TestCase
   test "should show no tab links if unauthenticated requests details tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @author.id, tab: "tab_edit" },
-        {})
+        params: { id: @author.id, tab: "tab_edit" },
+        session: {})
     # assert_response :redirect, 'Should be redirected.'
     assert_select "a#author-show-tab", false, "Should not show 'Detail' tab."
     assert_select "a#author-edit-tab", false, "Should not show 'Edit' tab."

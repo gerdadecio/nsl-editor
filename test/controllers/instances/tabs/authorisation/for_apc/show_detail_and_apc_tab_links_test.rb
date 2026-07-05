@@ -24,16 +24,18 @@ class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
   setup do
     @instance = instances(:britten_created_angophora_costata)
     @request.headers["Accept"] = "application/javascript"
+    @working_draft = TreeVersion.first
   end
 
   test "should show detail and APC tab links if editor requests details tab" do
     get(:show,
-        { id: @instance.id,
-          tab: "tab_show_1",
-          "row-type" => "instance_as_part_of_concept_record" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["treebuilder"])
+        params: { id: @instance.id,
+                  tab: "tab_show_1",
+                  "row-type" => "instance_as_part_of_concept_record" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   draft: @working_draft,
+                   groups: ["treebuilder"] })
     asserts
   end
 
@@ -41,6 +43,7 @@ class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
     asserts1
     asserts2
     asserts3
+    asserts4
   end
 
   def asserts1
@@ -75,5 +78,11 @@ class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
     assert_select "a#instance-copy-to-new-reference-tab",
                   false,
                   "Should not show 'Copy' tab link."
+  end
+
+  def asserts4
+    assert_select "a#instance-profile-v2-tab",
+                  false
+                  "Should not show 'FOA Profile' tab link"
   end
 end

@@ -17,9 +17,12 @@
 #   limitations under the License.
 #
 #   A list of names.
+#   Is called from the Reference >  New Instance tab to identify a Name record 
+#   for the Instance.
 class Name::AsTypeahead::OnFullName
   attr_reader :suggestions,
               :params
+
   SEARCH_LIMIT = 50
 
   def initialize(params)
@@ -37,10 +40,9 @@ class Name::AsTypeahead::OnFullName
 
   def query
     Name.not_a_duplicate
-        .where(["lower(full_name) like lower(?)", prepared_search_term])
+        .where("lower(full_name) like lower(?)", prepared_search_term)
         .includes(:name_status)
         .joins(:name_rank)
-        .where("exists (select null from instance where instance.name_id = name.id)")
         .order("name_rank.sort_order, lower(full_name)")
         .limit(SEARCH_LIMIT)
         .collect do |n|

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Name scopes
 module NameScopable
   extend ActiveSupport::Concern
@@ -10,6 +9,11 @@ module NameScopable
              where([" name_type_id in (select id from
                     name_type where not (cultivar or
                     lower(name_type.name) = 'common'))"])
+           end)
+    scope :not_common,
+          (lambda do
+             where([" name_type_id in (select id from
+                    name_type where lower(name_type.name) != 'common')"])
            end)
     scope :not_a_duplicate, -> { where(duplicate_of_id: nil) }
     scope :full_name_like,
@@ -38,11 +42,22 @@ module NameScopable
     scope :select_fields_for_typeahead,
           (lambda do
              select(" name.id, name.full_name, name_rank.name name_rank_name,
-                    name_status.name name_status_name")
+                    name_status.name name_status_name,
+                    case name_status.name
+                      when 'legitimate' then null
+                      when '[n/a]' then null
+                      else name_status.name
+                    end name_status_name,
+                    case name_status.name
+                      when 'legitimate' then null
+                      when '[n/a]' then null
+                      else ' | '
+                    end pipe_for_name_status")
            end)
+          
     # sorry this repeated code forced on me by needing to set the name of name.full_name
     scope :order_by_rank_and_full_name_for_parent_typeahead,
-          -> {order("name_rank.sort_order, lower(name.full_name)")}
+          -> { order("name_rank.sort_order, lower(name.full_name)") }
     # sorry this repeated code forced on me by needing to set the name of name.full_name
     scope :lower_full_name_like_for_parent_typeahead,
           (lambda do |string|
@@ -51,12 +66,23 @@ module NameScopable
           end)
     scope :select_fields_for_parent_typeahead,
           (lambda do
-            select(" name.id, name.full_name, name.family_id,
+             select(" name.id, name.full_name, name.family_id,
                     families_name.full_name family_full_name,
                     name_rank.name name_rank_name,
-                    name_status.name name_status_name, count(instance.id)
-                    instance_count")
+                    name_status.name name_status_name,
+                    count(instance.id) instance_count,
+                    case name_status.name 
+                      when 'legitimate' then null
+                      when '[n/a]' then null
+                      else name_status.name
+                    end name_status_name,
+                    case name_status.name
+                      when 'legitimate' then null
+                      when '[n/a]' then null
+                      else ' | '
+                    end pipe_for_name_status")
            end)
+
     scope :select_fields_for_family_typeahead,
           (lambda do
             select(" name.id, name.full_name,

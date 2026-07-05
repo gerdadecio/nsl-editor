@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -32,14 +31,14 @@ class CanUpdateStandaloneToExtraPrimaryWithOverride < ActionController::TestCase
 
   test "editor can update standalone instance to extra primary with override" do
     put(:update,
-        { id: @instance.id,
-          instance: { "reference_id" => @target.reference_id,
-                      "instance_type_id" => instance_types(:comb_nov),
-                      "page" => @target.page,
-                      "multiple_primary_override" => "1" } },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @instance.id,
+                  instance: { "reference_id" => @target.reference_id,
+                              "instance_type_id" => instance_types(:comb_nov),
+                              "page" => @target.page,
+                              "multiple_primary_override" => "1" } },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert Instance.find(@instance.id).name_id == @target.name_id
     check_assertions
   end
@@ -49,7 +48,7 @@ class CanUpdateStandaloneToExtraPrimaryWithOverride < ActionController::TestCase
     es = "Saving this instance would result in multiple primary instances"
     es += " for the same name."
     assert_no_match(/#{es}/,
-                 response.body,
-                 "Expected error message did not appear")
+                    response.body,
+                    "Expected error message did not appear")
   end
 end

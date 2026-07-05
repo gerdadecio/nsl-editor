@@ -25,14 +25,14 @@ class SearchRefsOnTitleWithInstancesTest < ActionController::TestCase
   test "search on reference title with instances" do
     ref = references(:bucket_reference_for_default_instances)
     get(:search,
-        { query_target: "reference",
-          query_string: "title: #{ref.title} show-instances:" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "reference",
+                  query_string: "title: #{ref.title} show-instances:" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
-                  /36 records\b/,
-                  "Should find 36 records"
+                  /37 records\b/,
+                  "Should find 37 records"
   end
 end

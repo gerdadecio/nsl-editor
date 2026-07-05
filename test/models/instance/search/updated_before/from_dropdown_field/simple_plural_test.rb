@@ -27,9 +27,8 @@ class InstSrchUpdatedBeforeDropdownSimplePluralTest < ActiveSupport::TestCase
     # no translation yet
     # search = Search::Base.new({query_string:"more-than-2 instances-only",
     #                            query_string:'review'})
-    # assert_equal search.results.class,
-    #              Instance::ActiveRecord_Relation,
-    #              "Results should be an Array"
+    # assert search.executed_query.results.is_a?(ActiveRecord::Relation),
+    #   "Results should be an ActiveRecord::Relation."
     # assert search.results.size > 0, "At least 1 record expected."
     # assert_match /Search for instances updated more than 2 days ago./,
     #              search.info.join

@@ -1,0 +1,746 @@
+- :date: 02-July-2026
+  :jira_id: '5846'
+  :description: |-
+    Tree Version Draft Creation: Add a json_error method to handle a broader set of error cases
+- :date: 02-July-2026
+  :jira_id: '5846'
+  :description: |-
+    Tree Version Draft Creation: Fix error handling code so error messages show clearly to users
+- :date: 01-July-2026
+  :jira_id: '5402'
+  :description: |-
+    Instance Search: Add <code>is-standalone:</code> and <code>is-not-standalone:</code> directives
+- :date: 30-June-2026
+  :jira_id: '4984'
+  :description: |-
+    Names plus instances search: Retain the correct query target when reporting an error
+- :date: 30-June-2026
+  :jira_id: '5818'
+  :description: |-
+    Name Editing: improve notification when a name author has no abbreviation 
+- :date: 30-June-2026
+  :jira_id: '4573'
+  :description: |-
+    Add tag:, has-tags:, and has-no-tags: directives to the Name search
+- :date: 30-June-2026
+  :jira_id: '4137'
+  :description: |-
+    Reference Novel Names: Add Name search <code>novel-names-for-ref:</code> linked from Reference -> Details tab
+- :date: 29-June-2026
+  :jira_id: '5844'
+  :description: |-
+    Loader: Fix code that fails when a loader name misapplied record has no misapplied-type value
+- :date: 26-June-2026
+  :jira_id: '4521'
+  :description: |-
+    Instance Tree Tab for new and replaced placement: fix behaviour of the Clear distribution button
+- :date: 26-June-2026
+  :jira_id: '4361'
+  :description: |-
+    Instance Details tab for taxonomic instances: display "taxon link" only after tree version publication
+- :date: 26-June-2026
+  :jira_id: '242'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the refresh button not redirecting properly after creating a versioned update of a profile item
+- :date: 26-June-2026
+  :jira_id: '5802'
+  :description: |-
+    Search: Fix the "list" link that appears in the summary of a count query
+- :date: 26-June-2026
+  :jira_id: '4318'
+  :description: |-
+    Instance search: allow <code>bhl:</code> directive to be used with other Instance directives
+- :date: 26-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Remove extra border in the search results table for bs5
+- :date: 26-June-2026
+  :jira_id: '3931'
+  :description: |-
+    Reference search from Details tab: link to new search for list of novelties sorted by page
+- :date: 26-June-2026
+  :jira_id: '5837'
+  :description: |-
+    Display the api_name and api_at info in the audit details for profile item details tab
+- :date: 25-June-2026
+  :jira_id: '3918'
+  :description: |-
+    Reference Delete: Do not offer delete button if comments are attached
+- :date: 25-June-2026
+  :jira_id: '5837'
+  :description: |-
+    Display the api_name and api_at info in the audit details for instance, name, and author details tab
+- :date: 24-June-2026
+  :jira_id: '3703'
+  :description: |-
+    Search on Name Status: Allow semi-colons to be used to list name status values in a search
+- :date: 23-June-2026
+  :jira_id: '5400'
+  :description: |-
+    Reference DOI: Add uniqueness validation to avoid database error appearing
+- :date: 23-June-2026
+  :jira_id: '4054'
+  :description: |-
+    New Name Search:  <code>genus-accepted-in-accepted-tree-no-children:</code>
+- :date: 23-June-2026
+  :jira_id: '3504'
+  :description: |-
+    Search Help: Clean up and add to Search and Query Help text, including on the <code>limit:</code> and <code>offset:</code> directives
+- :date: 22-June-2026
+  :jira_id: '5776'
+  :description: |-
+    CSS for the dl elements for bs5
+- :date: 22-June-2026
+  :jira_id: '5776'
+  :description: |-
+    CSS for the dropdown divider and link colors for bs5
+- :date: 19-June-2026
+  :jira_id: '5776'
+  :description: |-
+    More css fixes in top meanu and search form for bs5
+- :date: 19-June-2026
+  :jira_id: '5372'
+  :description: |-
+    Author: Make name field mandatory in Editor
+- :date: 17-June-2026
+  :jira_id: '3871'
+  :description: |-
+    Tree Draft Version: Indicate when a draft is the default draft
+- :date: 17-June-2026
+  :jira_id: '3748'
+  :description: |-
+    Name name_path: Stop adding leading slash to common name and other name_paths
+- :date: 17-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Fixup the dropdown select styling for bs5
+- :date: 16-June-2026
+  :jira_id: '3228'
+  :description: |-
+    Name Delete: Allow larger text field and longer text contents in Extra Information
+- :date: 16-June-2026
+  :jira_id: '3215'
+  :description: |-
+    Synonymy: Do not offer a Name as a synonym of itself
+- :date: 15-June-2026
+  :jira_id: '3156'
+  :description: |-
+    Instances Tree tab: change checkbox label from "Allow higher ranks" to "Show higher ranks"
+- :date: 15-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Fixup the table border in bs5 in the help page
+- :date: 12-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Fixup the dropdown item covering the search field issue in the search form in bs5
+- :date: 12-June-2026
+  :jira_id: '3117'
+  :description: |-
+    Name validation: Don't allow save of autonym type name with an ineligible rank
+- :date: 12-June-2026
+  :jira_id: '5776'
+  :description: |-
+    CSS fixes for the signin and search forms buttons for bs5
+- :date: 12-June-2026
+  :jira_id: '3085'
+  :description: |-
+    Instance search: Fix offset: directive
+- :date: 11-June-2026
+  :jira_id: '5776'
+  :description: |-
+    CSS fixes for the headers and buttons for bs5
+- :date: 11-June-2026
+  :jira_id: '2423'
+  :description: |-
+    Synonym display details: add a comma before any status tag or page number
+- :date: 11-June-2026
+  :jira_id: '2434'
+  :description: |-
+    New Instance form from Reference: swap fields instance-type and page for consistent ordering
+- :date: 11-June-2026
+  :jira_id: '2423'
+  :description: |-
+    Synonym display details: adjust LHS display for synonyms with trailing nomenclatural status tags
+- :date: 10-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Fixup the issue where the bootstrap upgrade was causing some styling issues in the html menu and layout
+- :date: 05-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Wire up the bootstrap helpers in the html menu and layout
+- :date: 04-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Initial setup prep setup for bootstrap upgrade - add helper and config flag to toggle between versions
+- :date: 22-June-2026
+  :release: true
+- :date: 04-June-2026
+  :jira_id: '240'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the profile tab not showing up when instance has no profile items but is part of a concept with profile items
+- :date: 03-June-2026
+  :jira_id:
+  :description: |-
+    Regression tests: Added some Claude suggested - no user testing required.
+- :date: 02-June-2026
+  :jira_id: '5811'
+  :description: |-
+    Add an option to create a synonym for draft instance name change
+- :date: 28-May-2026
+  :jira_id: '218'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the ui for of the versioned update success message
+- :date: 27-May-2026
+  :jira_id: '217'
+  :jira_project: FLOR
+  :description: |-
+    Improve the print preview of profile items by adding draft/current labels and removing ended items
+- :date: 27-May-2026
+  :jira_id: '216'
+  :jira_project: FLOR
+  :description: |-
+    Restrict product admins from updating user details
+- :date: 27-May-2026
+  :jira_id: '5635'
+  :description: |-
+    Batch Loader: Allow manual addition of unsourced misapplications to an accepted or excluded name directly in a batch
+- :date: 26-May-2026
+  :jira_id: '215'
+  :jira_project: FLOR
+  :description: |-
+    Fixup draft-profile-editor permissions to only allow managing profile items that are related to the product
+- :date: 25-May-2026
+  :jira_id: '220'
+  :jira_project: FLOR
+  :description: |-
+    Add a delete button for profile item reference annotations
+- :date: 25-May-2026
+  :jira_id: '5813'
+  :description: |-
+    User search: Automatically add a trailing wildcard to the user-name search
+- :date: 22-May-2026
+  :jira_id: '220'
+  :jira_project: FLOR
+  :description: |-
+    Add a delete button for profile item annotations
+- :date: 22-May-2026
+  :jira_id: '221'
+  :jira_project: FLOR
+  :description: |-
+    Restrict "More" and sub tabs to users with name edit permissions
+- :date: 21-May-2026
+  :jira_id: '2958'
+  :description: |-
+    Name Edit: Minor extra change to make the information text red
+- :date: 21-May-2026
+  :jira_id: '1319'
+  :description: |-
+    Names and Instances: Minor additional change to NOT offer the copy form when a Name has no standalone instances
+- :date: 20-May-2026
+  :jira_id: '1319'
+  :description: |-
+    Names and Instances: Minor additional change to properly clear the Confirm dialog after successful copy
+- :date: 20-May-2026
+  :jira_id: ''
+  :description: |-
+    Fixup the typo in the changelog for jira 5896 -> 5796
+- :date: 20-May-2026
+  :jira_id: '222'
+  :jira_project: FLOR
+  :description: |-
+    Add loading state and disable the button on confirm delete widgets
+- :date: 19-May-2026
+  :jira_id: '1319'
+  :description: |-
+    Names and Instances: Allow copy of Instances from one Name to another Name
+- :date: 19-May-2026
+  :jira_id: '237'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the remove from tree button that seem to hang forever
+- :date: 18-May-2026
+  :jira_id: '223'
+  :jira_project: FLOR
+  :description: |-
+    Fix the issue where pasting a long string in the profile item textarea was not showing all the content until the user saves the profile item
+- :date: 18-May-2026
+  :jira_id: '226'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the display of the Tree tab for user with/without tree permission
+- :date: 05-May-2026
+  :jira_id: '5796'
+  :description: |-
+    UI integration for the change name workflow for draft instances
+- :date: 04-May-2026
+  :jira_id: '5796'
+  :description: |-
+    Change name controller and js template changes to support the change name workflow for draft instances
+- :date: 04-May-2026
+  :jira_id: '5796'
+  :description: |-
+    Ability and service object changes to support the change name workflow for draft instances
+- :date: 01-May-2026
+  :jira_id: ''
+  :description: |-
+    Chore: Add vim to the editor development Dockerfile for easier debugging and testing in the container
+- :date: 29-Apr-2026
+  :jira_id: '5800'
+  :description: |-
+    Fix and rework the display of Jira ticket statuses in release notes - they will also display quicker
+- :date: 28-Apr-2026
+  :jira_id: '206'
+  :jira_project: FLOR
+  :description: |-
+    Display the common name form and edit common name tab for users with the common-name product role
+- :date: 28-Apr-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot updates erb from 6.0.2 to 6.0.4
+- :date: 24-Apr-2026
+  :jira_id: '206'
+  :jira_project: FLOR
+  :description: |-
+    Add a common-name product role and give it permissions to create new common names
+- :date: 20-Apr-2026
+  :jira_id: '205'
+  :jira_project: FLOR
+  :description: |-
+    Apply adnot permissions for draft-profile-editor and profile-editor users
+- :date: 17-Apr-2026
+  :jira_id: '2958'
+  :description: |-
+    Name Edit: Let the user know when a name change will impact children
+- :date: 07-May-2026
+  :release: true
+- :date: 16-Apr-2026
+  :jira_id: '2144'
+  :description: |-
+    Search: Allow for count as a directive i.e. <code>count:</code>
+- :date: 15-Apr-2026
+  :jira_id: '2144'
+  :description: |-
+    Search: Offer a link to an increased limit when there are more records to list
+- :date: 14-Apr-2026
+  :jira_id: '5786'
+  :description: |-
+    Duplicate badge css style for duplicate name in the search results
+- :date: 14-Apr-2026
+  :jira_id: '5788'
+  :description: |-
+    Duplicate badge css style for duplicate author name in the search results
+- :date: 14-Apr-2026
+  :jira_id: '200'
+  :jira_project: FLOR
+  :description: |-
+    Fixup incorrect end_date handling for related profile items in service object during publish.
+- :date: 13-Apr-2026
+  :jira_id: '204'
+  :jira_project: FLOR
+  :description: |-
+    Hotfix: Fixup the undefined manages_profile for nil error in name instance search results when context is nil - promoted to production as hotfix
+- :date: 10-Apr-2026
+  :jira_id: '200'
+  :jira_project: FLOR
+  :description: |-
+    Fix the profile_item not being set in the publish profile item controller by prepending the set_profile_item callback
+- :date: 10-Apr-2026
+  :jira_id: '201'
+  :jira_project: FLOR
+  :description: |-
+    Draft badge in profile items
+- :date: 10-Apr-2026
+  :jira_id: '742'
+  :description: |-
+    Code removal: Small code removal related to name rank and name parents - code was not called, so expect no user impact
+- :date: 10-Apr-2026
+  :jira_id: '200'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the issue whenn publish PI is incorrectly setting the end_date of related profile items
+- :date: 09-Apr-2026
+  :jira_id: '200'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the issue where the created version copy is incorrectly setting the end_date of related profile items
+- :date: 09-Apr-2026
+  :jira_id: '5790'
+  :description: |-
+    Batch Loader: Add "trade name" to the synonym type dropdown
+- :date: 08-Apr-2026
+  :jira_id: '196'
+  :jira_project: FLOR
+  :description: |-
+    Include the draft working tree in the instance results
+- :date: 08-Apr-2026
+  :jira_id: '3257'
+  :description: |-
+    Tweak the message on the Instances tab for common and vernacular Names
+- :date: 08-Apr-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot bump rack-session 2.1.1 to 2.1.2
+- :date: 08-Apr-2026
+  :jira_id: '184'
+  :jira_project: FLOR
+  :description: |-
+    Change the "Ended" pill with "replaced" badge for profile items in search results
+- :date: 08-Apr-2026
+  :jira_id: '5622'
+  :description: |-
+    Allow reviewers to see details of matched name in loader batches
+- :date: 07-Apr-2026
+  :jira_id: '180'
+  :jira_project: FLOR
+  :description: |-
+    Display profile item audit info for fact and linked profile items
+- :date: 07-Apr-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot bump rack 3.2.5 to 3.2.6
+- :date: 02-Apr-2026
+  :jira_id: '196'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the create version copy stale form issue where the form was not being replaced with the success message
+- :date: 02-Apr-2026
+  :jira_id: '5782'
+  :description: |-
+    History of Changes page: Needs to handle malformed Jira-IDs without crashing
+- :date: 31-Mar-2026
+  :jira_id: '5707'
+  :description: |-
+    Rails 8.1 upgrade along with associated gems
+- :date: 30-Mar-2026
+  :jira_id: '5766'
+  :description: |-
+    Batch Review: Prevent review comments when two or more overlapping review periods apply
+- :date: 30-Mar-2026
+  :jira_id: '196'
+  :jira_project: FLOR
+  :description: |-
+    Extend the display of the taxon concept 'in classification' to instance results
+- :date: 26-Mar-2026
+  :jira_id: '5773'
+  :description: |-
+    Give a clearer, simpler error message when Loader gets confused about instance type
+- :date: 26-Mar-2026
+  :jira_id: '194'
+  :jira_project: FLOR
+  :description: |-
+    Exclude ended profile items in query
+- :date: 26-Mar-2026
+  :jira_id: '195'
+  :jira_project: FLOR
+  :description: |-
+    Fixup current profile item not being copied when copying an instance with profile items
+- :date: 25-Mar-2026
+  :jira_id: '184'
+  :jira_project: FLOR
+  :description: |-
+    Display ended date label of profile item in the details tab of the instance view
+- :date: 25-Mar-2026
+  :jira_id: '192'
+  :jira_project: FLOR
+  :description: |-
+    When a profile item is to be copied, only copy current items
+- :date: 25-Mar-2026
+  :jira_id: '5761'
+  :description: |-
+    Batch Loader: Allow for cases where a loader_name record has no family string yet in the Loader2 tab
+- :date: 24-Mar-2026
+  :jira_id: '5438'
+  :description: |-
+    Display the batch reviewer list and organisation in the menu if available for the user
+- :date: 24-Mar-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot updates Activesupport from 8.0.4 to 8.0.4.1, Actionview from 8.0.4 to 8.0.4.1, and Activestorage from 8.0.4 to 8.0.4.1
+- :date: 24-Mar-2026
+  :jira_id: '173'
+  :jira_project: FLOR
+  :description: |-
+    Display the profile item annotation in print view
+- :date: 24-Mar-2026
+  :jira_id: '180'
+  :jira_project: FLOR
+  :description: |-
+    Audit display for profile item details tab
+- :date: 20-Mar-2026
+  :jira_id: '5761'
+  :description: |-
+    Batch Loader: Allow for cases where a loader_name record has no family string yet
+- :date: 13-Apr-2026
+  :release: true
+- :date: 13-Apr-2026
+  :jira_id: '204'
+  :jira_project: FLOR
+  :description: |-
+    Hotfix: Fixup the undefined manages_profile for nil error in name instance search results when context is nil
+- :date: 9-Apr-2026
+  :release: true
+- :date: 19-Mar-2026
+  :jira_id: '5740'
+  :description: |-
+    Sort the user product roles in the roles tab of the user
+- :date: 19-Mar-2026
+  :jira_id: '184'
+  :jira_project: FLOR
+  :description: |-
+    Display the "Ended" pill for profile items that have an end date in the search results and profile item details
+- :date: 17-Mar-2026
+  :jira_id: '106'
+  :jira_project: FLOR
+  :description: |-
+    Modify the product.has_the_same_reference? method to also check for instance's parent reference
+- :date: 16-Mar-2026
+  :jira_id: '160'
+  :jira_project: FLOR
+  :description: |-
+    Refactor the "Edit Profile" tab access for users with tree-builder role
+- :date: 12-Mar-2026
+  :jira_id: '2796'
+  :description: |-
+    Activity queries: tweak message to 'takes no argument'
+- :date: 12-Mar-2026
+  :jira_id: '3357'
+  :description: |-
+    Author duplicate: change label from 'master' to 'duplicate of', tweak tooltip
+- :date: 11-Mar-2026
+  :jira_id: '3257'
+  :description: |-
+    Names: do not offer to create Instances for vernacular names
+- :date: 11-Mar-2026
+  :jira_id: '3924'
+  :description: |-
+    Improve handling of <code>iso_publication_date</code> when being set null during update
+- :date: 11-Mar-2026
+  :jira_id: '5729'
+  :description: |-
+    Sort order for draft and non-draft instances in name search results
+- :date: 06-Mar-2026
+  :jira_id: ''
+  :description: |-
+    Update the readme with docker-apps instructions and add the network to the docker-compose.dev.yml
+- :date: 06-Mar-2026
+  :jira_id: '5740'
+  :description: |-
+    Add role description to the user menu for product roles
+- :date: 06-Mar-2026
+  :jira_id: '2466'
+  :description: |-
+    Names: create facility to add named hybrids and optionally include two parents
+- :date: 05-Mar-2026
+  :jira_id: '5719'
+  :description: |-
+    Don't restrict product tree reviewer role to only be able to review if they have other roles
+- :date: 03-Mar-2026
+  :jira_id: '5726'
+  :description: |-
+    Admin product role: ability permissions to manage user roles for the product-admin role
+- :date: 02-Mar-2026
+  :jira_id: '2973'
+  :description: |-
+    Reference pages field: hide page data only if the whole field consists of 'null - null'
+- :date: 26-Feb-2026
+  :jira_id: '5728'
+  :description: |-
+    Task: Refactor factories for rspec tests
+- :date: 26-Feb-2026
+  :jira_id: '4335'
+  :description: |-
+    Reference Input: add format helper text to DOI field
+- :date: 26-Feb-2026
+  :jira_id: '3357'
+  :description: |-
+    Author duplicate display: Tweak the label and tool tip for Author duplicate/master display on Details tab
+- :date: 26-Feb-2026
+  :jira_id: '1832'
+  :description: |-
+    Author data entry: prevent entry of duplicate author name field
+- :date: 26-Feb-2026
+  :jira_id: '5726'
+  :description: |-
+    Additional changes for product-admin role to manage user roles mainly for the permissions
+- :date: 25-Feb-2026
+  :jira_id: '2796'
+  :description: |-
+    Activity queries: Stop with error message if activity search directives have the wrong number of arguments
+- :date: 25-Feb-2026
+  :jira_id: '5726'
+  :description: |-
+    Add support for product-admin role to manage user roles
+- :date: 24-Feb-2026
+  :jira_id: '2526'
+  :description: |-
+    Reference input: add context specific help for new journal without author
+- :date: 24-Feb-2026
+  :jira_id: '1771'
+  :description: |-
+    Instance query: add directive <code>nov-lacks-replaced-syn:</code>
+- :date: 24-Feb-2026
+  :jira_id: '1729'
+  :description: |-
+    Instance query: change <code>species-or-below-syn-with-genus-or-above:</code> to exclude infragenus and unranked cases
+- :date: 23-Feb-2026
+  :jira_id: '1668'
+  :description: |-
+    Reference query: add directive <code>unknown-in-journal</code>
+- :date: 20-Feb-2026
+  :jira_id: '5719'
+  :description: |-
+    Enable use of product tree reviewer role
+- :date: 20-Mar-2026
+  :release: true
+- :date: 20-Feb-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot updates Nokogiri from 1.18.9 to 1.19.1
+- :date: 19-Feb-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot updatesRack from 3.2.3 to 3.2.5
+- :date: 17-Feb-2026
+  :jira_id: '5715'
+  :description: |-
+    Rails 8.0.4 upgrade
+- :date: 13-Feb-2026
+  :jira_id: '143'
+  :jira_project: FLOR
+  :description: |-
+    Only show the accepted trees in the menu for users without roles
+- :date: 12-Feb-2026
+  :jira_id: '5711'
+  :description: |-
+    Update Gemfile lock for Ruby 3.4.8 upgrade
+- :date: 11-Feb-2026
+  :jira_id: '5711'
+  :description: |-
+    Ruby 3.4.8 upgrade
+- :date: 10-Feb-2026
+  :jira_id: '179'
+  :jira_project: FLOR
+  :description: |-
+    Enable reference update for foa when a reference is not used by any related table
+- :date: 06-Feb-2026
+  :jira_id: ''
+  :description: |-
+    Address n+1 query issue in the user.is? by memoizing the role_names for the user
+- :date: 04-Feb-2026
+  :jira_id: '5696'
+  :description: |-
+    Move draft instances to the bottom of the search results
+- :date: 03-Mar-2026
+  :release: true
+- :date: 04-Feb-2026
+  :jira_id: '5710'
+  :description: |-
+    Name De-duplication: Add text on tab explaining that nested duplicates are not handled there - instead of failing silently
+- :date: 03-Feb-2026
+  :jira_id: '5511'
+  :description: |-
+    Query duplicates for a record: add search directive <code>master-id:</code> to Author and documented it for Author, Name, and Reference
+- :date: 03-Feb-2026
+  :jira_id: '5709'
+  :description: |-
+    Duplicate query: add search directive <code>is-a-duplicate-and-master:</code> to Author, Name, and Reference
+- :date: 03-Feb-2026
+  :jira_id: '178'
+  :jira_project: FLOR
+  :description: |-
+    Don't show the Profile tab for instance that are part of a concept within a name
+- :date: 29-Jan-2026
+  :jira_id: '161'
+  :jira_project: FLOR
+  :description: |-
+    Fix for issue where classification tree icons were incorrectly showing in instance search results and tab details
+- :date: 27-Jan-2026
+  :jira_id: '174'
+  :jira_project: FLOR
+  :description: |-
+    Bypass the print dialog when clicking the print icon link in the Profile section header in the Instance view tab
+- :date: 23-Jan-2026
+  :jira_id: '143'
+  :jira_project: FLOR
+  :description: |-
+    Only show the "Create draft taxonomy" menu item for users with roles or for accepted trees
+- :date: 22-Jan-2026
+  :jira_id: '174'
+  :jira_project: FLOR
+  :description: |-
+    Add a print icon link to the Profile section header in the Instance view tab
+- :date: 21-Jan-2026
+  :jira_id: '177'
+  :jira_project: FLOR
+  :description: |-
+    Additional fix for the issue where Tree tab wasn't properly working for users with treebuild simple AD group
+- :date: 20-Jan-2026
+  :jira_id: '177'
+  :jira_project: FLOR
+  :description: |-
+    Fixup issue where Tree tab was not showing for users with treebuild simple AD group
+- :date: 19-Jan-2026
+  :jira_id: '173'
+  :jira_project: FLOR
+  :description: |-
+    Some css stying updates for the print view of profile items
+- :date: 19-Jan-2026
+  :jira_id: '5673'
+  :description: |-
+    Batch Loader: create instance for misapplication - first check is now whether the parent is using an existing instance
+- :date: 15-Jan-2026
+  :jira_id: '5621'
+  :description: |-
+    Reference Search: make the <code>citation:</code> search directive the default again
+- :date: 14-Jan-2026
+  :jira_id: '173'
+  :jira_project: FLOR
+  :description: |-
+    Add support for print directive in instance searches
+- :date: 14-Jan-2026
+  :jira_id: '173'
+  :jira_project: FLOR
+  :description: |-
+    Add support for print directive in instance searches
+- :date: 14-Jan-2026
+  :jira_id: '177'
+  :jira_project: FLOR
+  :description: |-
+    Hide Tree tab when the current product reference does not match the instance reference
+- :date: 13-Jan-2026
+  :jira_id: '5634'
+  :description: |-
+    Loader Name Search: add a note in the search result summary to say "any-batch" has been applied when it has been
+- :date: 09-Jan-2026
+  :jira_id: '172'
+  :jira_project: FLOR
+  :description: |-
+    Update the query help and examples to include "draft:", "not-draft:" and "show-profiles:"
+- :date: 09-Jan-2026
+  :jira_id: '5634'
+  :description: |-
+    Loader Name Search: make "any-batch:" the default if no batch is set as a default or specified in the search
+- :date: 03-Feb-2026
+  :release: true
+- :date: 06-Jan-2026
+  :jira_id: '5667'
+  :description: |-
+    Reorder delete widget rendering logic for improved clarity in resource deletion flow
+- :date: 05-Jan-2026
+  :jira_id: '5667'
+  :description: |-
+    Name Resource: Show name resources when deleting a name
+- :date: 05-Jan-2026
+  :jira_id: '5626'
+  :description: |-
+    Reference edit: Hide some fields when the type is "Part"
+- :date: 05-Jan-2026
+  :jira_id: '5659'
+  :description: |-
+    History: Set up Changes 2026 page &#127881;
+

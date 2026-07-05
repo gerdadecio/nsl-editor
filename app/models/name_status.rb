@@ -16,13 +16,40 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class NameStatus < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: name_status
+#
+#  id               :bigint           not null, primary key
+#  deprecated       :boolean          default(FALSE), not null
+#  description_html :text
+#  display          :boolean          default(TRUE), not null
+#  lock_version     :bigint           default(0), not null
+#  name             :string(50)
+#  nom_illeg        :boolean          default(FALSE), not null
+#  nom_inval        :boolean          default(FALSE), not null
+#  name_group_id    :bigint           not null
+#  name_status_id   :bigint
+#  rdf_id           :string(50)
+#
+# Indexes
+#
+#  name_status_rdfid  (rdf_id)
+#  ns_unique_name     (name_group_id,name) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_g4o6xditli5a0xrm6eqc6h9gw  (name_status_id => name_status.id)
+#  fk_swotu3c2gy1hp8f6ekvuo7s26  (name_group_id => name_group.id)
+#
+class NameStatus < ApplicationRecord
   self.table_name = "name_status"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-
-  scope :ordered_by_name, -> {order(%(replace(name, '[', 'z') collate "C"))}
+  belongs_to :name_group
+  scope :ordered_by_name, -> { order(Arel.sql(%(replace(name, '[', 'z') collate "C"))) }
   scope :not_deprecated, -> { where("not deprecated") }
+  scope :not_cultivar, -> { where(" name not in ('nom. cult.', 'nom. cult., nom. alt.') ") }
 
   NA = "[n/a]"
 
@@ -33,11 +60,11 @@ class NameStatus < ActiveRecord::Base
   end
 
   def legitimate?
-    name =~ /\Alegitimate\z/
+    name == "legitimate"
   end
 
   def manuscript?
-    name =~ /\Amanuscript\z/
+    name == "manuscript"
   end
 
   def na?
@@ -60,6 +87,10 @@ class NameStatus < ActiveRecord::Base
     legitimate? || na? ? "" : name
   end
 
+  def for_inline_display
+    legitimate? || na? ? "" : ", #{name}"
+  end
+
   def name_for_instance_display_within_reference
     legitimate? || na? || unknown? ? "" : name
   end
@@ -77,13 +108,14 @@ class NameStatus < ActiveRecord::Base
   end
 
   def self.options_for_category(name_category)
-    case 
-    when name_category.scientific?
+    if name_category.scientific?
       scientific_options
-    when name_category.cultivar_hybrid?
+    elsif name_category.cultivar_hybrid?
       na_default_and_deleted_options
-    when name_category.cultivar?
+    elsif name_category.cultivar?
       na_default_and_deleted_options
+    elsif name_category.named_hybrid?
+      scientific_options
     else
       na_option
     end
@@ -92,15 +124,15 @@ class NameStatus < ActiveRecord::Base
   def self.query_form_options
     all.ordered_by_name.collect do |n|
       [n.name, "status: #{n.name.downcase}"]
-    end.unshift(["any status", ""])
+    end
   end
 
   def self.scientific_options
-    where(" name not in ('nom. cult.', 'nom. cult., nom. alt.') ")
-      .not_deprecated
-      .ordered_by_name.collect do |n|
-        [n.name, n.id]
-      end
+    self.not_cultivar
+        .not_deprecated
+        .ordered_by_name.collect do |n|
+          [n.name, n.id]
+        end
   end
 
   def self.na_option
@@ -114,5 +146,13 @@ class NameStatus < ActiveRecord::Base
       .order("name").collect do |n|
         [n.name, n.id]
       end
+  end
+
+  def self.loader_options
+    self.not_cultivar
+        .not_deprecated
+        .ordered_by_name.collect do |n|
+          [n.name]
+    end
   end
 end

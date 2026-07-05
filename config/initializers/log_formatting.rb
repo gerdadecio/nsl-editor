@@ -26,17 +26,17 @@ class ActiveSupport::Logger::SimpleFormatter
   USE_HUMOROUS_SEVERITIES = true
 
   def call(severity, time, _progname, msg)
-    if USE_HUMOROUS_SEVERITIES
-      formatted_severity = format("%-3s", SEVERITY_TO_TAG_MAP[severity])
-    else
-      formatted_severity = format("%-5s", severity)
-    end
+    formatted_severity = if USE_HUMOROUS_SEVERITIES
+                           format("%-3s", SEVERITY_TO_TAG_MAP[severity])
+                         else
+                           format("%-5s", severity)
+                         end
 
     formatted_time =
       time.strftime("%Y-%m-%d %H:%M:%S.") << time.usec.to_s[0..2].rjust(3)
     color = SEVERITY_TO_COLOR_MAP[severity]
 
     "\033[0;37m#{formatted_time}\033[0m [\033[#{color}m#{formatted_severity}\
-\033[0m] editor #{msg.strip} (pid:#{$PROCESS_ID})\n"
+\033[0m] r6editor #{msg.strip} (pid:#{$PROCESS_ID})\n"
   end
 end

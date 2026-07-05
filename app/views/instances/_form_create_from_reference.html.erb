@@ -26,9 +26,6 @@
     <script> setUpInstanceName(); </script>
     appears in
     <%= show_field_as_linked_lookup('',@reference,'citation', search_path(query_string: %Q(id:#{@reference.id}),query_target: 'reference'),'reference') %>
-    on page
-    <%= f.text_field :page, title: "Enter the page details for the name usage", tabindex: increment_tab_index %>
-    <br>
     as an instance type*
     <%= render partial: 'detail_line', locals: {
             info: f.select(:instance_type_id, InstanceType.standalone_options,{include_blank: true},
@@ -37,6 +34,9 @@
             label:''
     }
     %>
+    on page
+    <%= f.text_field :page, class: 'form-control width-50-percent', title: "Enter the page details for the name usage", tabindex: increment_tab_index %>
+    <br>
     with verbatim name
     <br>
     <%= f.text_field :verbatim_name_string, class: "form-control", title: "The verbatim or literal name as it occurs, if non-standard.", tabindex: increment_tab_index %>
@@ -76,5 +76,11 @@
    <%= refresh_page_link %>
 <% end %>
 
-
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      focusOnField('instance-name-typeahead');
+    })
+  </script>
+<% end %>
 

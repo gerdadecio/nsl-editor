@@ -23,6 +23,7 @@ class SearchParsedRequestCountAngophoraCostataTest < ActiveSupport::TestCase
   test "search parse query count angophora costata" do
     query_string = "count angophora costata"
     params = ActiveSupport::HashWithIndifferentAccess.new(query_target: "name",
+                                                          canonical_query_target: "name",
                                                           query_string:
                                                           query_string)
     parsed_request = Search::ParsedRequest.new(params)

@@ -1,5 +1,6 @@
 $('.message-container').html('');
-$('#search-result-details-error-message-container').html("Error: <%= @error %> ");
+$('#search-result-details-error-message-container').html("<%= escape_javascript(@error) %>");
+$('#search-result-details-error-message-container2').html("<%= escape_javascript(@error) %>");
 
 
 

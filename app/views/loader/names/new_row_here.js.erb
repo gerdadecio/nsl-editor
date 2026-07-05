@@ -1,0 +1,28 @@
+
+// insert a row on LHS
+addNewRow($('#search-result-<%= params[:id] %>').closest('TR').index(),
+  <%= params[:id] %>,
+  <%= @random_id.to_s %>,
+  "<%= loader_name_new_with_random_id_and_start_id_path(@random_id,loader_name_id: 7007007007007007) %>"
+);
+
+// set up events on the new row
+$(document).on("keydown", "#new-loader-name-<%= @random_id %>", function(event){
+  return searchResultKeyNavigation(event, $(this));
+});
+
+
+$('body').on('focus', 'tr.search-result td.takes-focus', function(event) {
+  return searchResultFocus(event, $(this).parent('tr'));
+});
+$('body').on('click', 'tr.search-result td.takes-focus', function(event) {
+  return searchResultFocus(event, $(this).parent('tr'));
+});
+$('tr.search-result td.takes-focus').focus(function(event) {
+  return searchResultFocus(event, $(this).parent('tr'));
+});
+
+$('tr.search-result td.takes-focus').click(function(event) {
+  return searchResultFocus(event, $(this).parent('tr'));
+});
+

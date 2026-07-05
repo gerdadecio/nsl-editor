@@ -33,9 +33,12 @@ class GenusNameChangeAffectsSpAndSubspeciesTest < ActionController::TestCase
     species = names(:a_species)
     subspecies = names(:a_subspecies)
     @request.headers["Accept"] = "application/javascript"
-    post(:update, { name: { "name_element" => "newname" },
-                    id: genus.id },
-         username: "fred", user_full_name: "Fred Jones", groups: ["edit"])
+    post(:update,
+         params: { name: { "name_element" => "newname" },
+                   id: genus.id },
+         session: { username: "fred",
+                    user_full_name: "Fred Jones",
+                    groups: ["edit"] })
     assert_response :success
     # puts genus.id
     # genus.children.each {|c| puts c.id}

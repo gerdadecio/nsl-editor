@@ -1,0 +1,102 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line', 
+           locals: {info: link_to("#{@loader_name.family}",
+         search_path(query_target: "loader names",
+                     query_string: "family: #{@loader_name.family} batch-id: #{@loader_name.loader_batch_id}",
+                     focus_id: "loader-name-#{@loader_name.family}"),
+                     title: 'Query family members',
+                     class: 'blue underline'), 
+                     label: "query family members"} %>
+
+<% if @loader_name.rank&.downcase == 'family' %>
+  <% members = Loader::Name.where(family: @loader_name.simple_name).where(loader_batch_id: @loader_name.loader_batch_id).count - 1 %>
+  <%= render partial: 'detail_line', 
+             locals: {info: link_to("Members of #{@loader_name.family}",
+         search_path(query_target: "loader names",
+                     query_string: "family-id: #{@loader_name.id} batch-id: #{@loader_name.batch.id}",
+                     focus_id: "loader-name-#{@loader_name.id}"),
+                     title: 'Query family members',
+                     class: 'blue underline'), 
+                     label: "query family #{members} members"} %>
+<% end %>
+
+<% if @loader_name.accepted? || @loader_name.excluded? %>
+   
+  <% if can? 'loader/names', 'update' %>
+
+    <% if @loader_name.no_family_heading_or_record? %>
+      <%= render partial: 'loader/names/tabs/forms/form_for_auto_create_heading',
+                 locals: {params: params} %>
+    <% end %>
+
+  <% end %>
+
+<% end %>
+
+
+<%= render partial: 'detail_line', locals: {info: @loader_name.subfamily, label: 'subfamily'} unless @loader_name.subfamily.blank?  %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.full_name, label: 'full name aka taxon full'} unless @loader_name.full_name.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.simple_name, label: 'simple name aka taxon'} unless @loader_name.simple_name.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.simple_name_as_loaded, label: 'simple name as loaded'} unless @loader_name.simple_name_as_loaded.blank? || @loader_name.simple_name == @loader_name.simple_name_as_loaded %>
+
+<%= render partial: 'detail_line', locals: {info: @loader_name.name_status, label: 'name_status'} unless @loader_name.name_status.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.name_comment, label: 'name_comment'} unless @loader_name.name_comment.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.partly, label: 'partly'} unless @loader_name.partly.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.auct_non, label: 'auct_non'} unless @loader_name.auct_non.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.doubtful, label: 'doubtful'} unless @loader_name.doubtful.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.hybrid_flag, label: 'hybrid_flag'} unless @loader_name.hybrid_flag.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.unplaced, label: 'unplaced'} unless @loader_name.unplaced.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.unplaced_flag, label: 'unplaced_flag'} if defined? @loader_name.unplaced_flag %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.synonym_type, label: 'synonym_type'} unless @loader_name.synonym_type.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.isonym, label: 'isonym'} unless @loader_name.isonym.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.publ_count, label: 'publ_count'} unless @loader_name.publ_count.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.volume, label: 'volume'} unless @loader_name.volume.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.page, label: 'page'} unless @loader_name.page.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.year, label: 'year'} unless @loader_name.year.blank? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.date_, label: 'date_'} unless @loader_name.date_.blank? %>
+<% if @loader_name.misapp? && @loader_name.original_text.present? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.original_text.gsub(/&amp;/,'zzzzzzz').gsub(/;/,';<br>').gsub(/zzzzzzz/,'&amp;').html_safe, label: 'Misapp HTML'} %>
+  <%  (1..@loader_name.original_text.length.div(110)).each do |i|  %>
+    <br>
+  <% end %>
+<% end %>
+<%= render partial: 'detail_line',
+  locals: {info: "<span class='bgyellow remark loader-name remark-to-reviewers'>#{@loader_name.remark_to_reviewers}</span>".html_safe,
+           label: 'remark to reviewers'} unless @loader_name.remark_to_reviewers.blank? || @loader_name.misapp? %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.higher_rank_comment, label: 'higher rank comment'} unless @loader_name.higher_rank_comment.blank? %>
+<%= "<br><br>#{ divider }<br><br><br><br>".html_safe unless @loader_name.higher_rank_comment.blank? %>
+
+<% unless @loader_name.formatted_text_above.blank? %>
+  <%= render partial: 'detail_line',
+    locals: {info: "",
+             label: 'formatted text above'} %>
+  <div class="bgyellow black width-100-percent">
+  <%= sanitize(@loader_name.formatted_text_above) %>
+  </div>
+<% end %>
+
+<% unless @loader_name.formatted_text_below.blank? %>
+  <%= render partial: 'detail_line',
+    locals: {info: "",
+             label: 'formatted text below'} %>
+  <div class="bgyellow black width-100-percent">
+  <%= sanitize(@loader_name.formatted_text_below) %>
+  </div>
+<% end %>
+
+<%= render partial: 'detail_line', locals: {info: @loader_name.no_further_processing, label: 'no_further_processing'} unless @loader_name.no_further_processing.blank? %>
+ <% if @loader_name.synonym_without_synonym_type? %>
+      <span class="red">
+      This loader-name is a synonym without a synonym type.  You can fix that on the Edit tab.
+      </span>
+    <% end %>
+<%= render partial: 'loader/names/tabs/details/link_to_context_view' %>
+
+<% if @loader_name.batch.use_sort_key_for_ordering %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.sort_key, label: 'value for sorting'} %>
+<% else %>
+  This batch uses seq field for sorting. Alt value for sorting should be empty<br>
+<%= render partial: 'detail_line', locals: {info: @loader_name.sort_key, label: 'alt value for sorting'} %>
+<% end %>
+
+

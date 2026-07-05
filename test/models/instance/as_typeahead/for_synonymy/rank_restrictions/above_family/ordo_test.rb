@@ -23,8 +23,7 @@ above_family/above_family_helper"
 # Single instance typeahead search.
 class TypeaheadForSynonymyOrdoTest < ActiveSupport::TestCase
   def setup
-    @ta = Instance::AsTypeahead::ForSynonymy.new("a*",
-                                                 names(:an_ordo).id)
+    @ta = Instance::AsTypeahead::ForSynonymy.new("a*", names(:an_ordo).id)
     @tb = Instance::AsTypeahead::ForSynonymy.new("plantae",
                                                  names(:an_ordo).id)
     @tc = Instance::AsTypeahead::ForSynonymy.new("magnolio",
@@ -40,6 +39,7 @@ class TypeaheadForSynonymyOrdoTest < ActiveSupport::TestCase
     inclusions.delete("Regnum")
     inclusions.delete("Division")
     inclusions.delete("Classis")
+    inclusions.delete("Ordo")
     check_rank_names_inclusions(inclusions)
   end
 
@@ -56,6 +56,6 @@ class TypeaheadForSynonymyOrdoTest < ActiveSupport::TestCase
     @rank_names = @tc.results.collect do |result|
       Instance.find(result[:id]).name.name_rank.name
     end
-    check_rank_names_inclusions(%w(Division Classis))
+    check_rank_names_inclusions(%w[Division Classis])
   end
 end

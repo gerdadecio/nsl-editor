@@ -18,8 +18,8 @@
       <td class="align-top width-25-percent">
       <%= lov_select_field("instance_note", 
                        "instance_note_key_id",  
-                       options, 
-                       {include_blank: true },
+                       edit_options, 
+                       {include_blank: false },
                        {data: {update_url: instance_note_path,
                                            instance_note_id: @instance_note.id}, 
                         id: "instance-note-key-id-select-#{@instance_note.id}",
@@ -106,6 +106,11 @@
     <tr>
       <td colspan="2">
         <div id="message-for-instance-note-<%= @instance_note.id %>" class="message-container"></div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <div id="error-for-instance-note-<%= @instance_note.id %>" class="error-container message-container"></div>
       </td>
     </tr>
   </table>

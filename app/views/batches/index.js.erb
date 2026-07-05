@@ -1,7 +1,0 @@
-$('#batch-container').removeClass('hidden');
-$('ul#results-tabset li').removeClass('active');
-if (!$('#batch-container').hasClass('has-data')){
-  $('#batch-container').html("<%= j render(:partial => 'index') %>")
-  //$('#batch-container').addClass('has-data');
-}
-

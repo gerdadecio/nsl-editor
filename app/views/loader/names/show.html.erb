@@ -1,0 +1,34 @@
+<div class="focus-details"> 
+  <% if notice %>
+    <p id="notice"><%= notice %></p>
+  <% end %>
+  <div class="inner">
+    <h3>
+      <%= link_to('<i class="fa fa-link"></i>'.html_safe,
+                  search_path(query_target: 'loader_name', 
+                              query_string: "id:#{@loader_name.id}"),
+                  id: 'tab-heading',
+                  title: "Simple Name") %>
+    <%= @loader_name.seq %>
+    <%#= "#{@loader_name.seq}." unless @loader_name.batch.use_sort_key_for_ordering %>
+    <%= "#{@loader_name.simple_name} <span class='gray'>&nbsp;&mdash; Batch #{@loader_name.batch.name}</span>".html_safe %>
+      <%= 'Handmade' if @loader_name.created_manually? %>
+    </h3>
+    <% if @loader_name.record_type == 'heading' %>
+      <%= render partial: 'loader/names/tabs/heading_record_tabs/all_tab_headings' %>
+      <%= render partial: "loader/names/tabs/heading_record_tabs/#{@tab}" %>
+    <% elsif ['in-batch-note','in-batch-compiler-note'].include?(@loader_name.record_type) %>
+      <%= render partial: 'loader/names/tabs/in_batch_note_record_tabs/all_tab_headings' %>
+      <%= render partial: "loader/names/tabs/in_batch_note_record_tabs/#{@tab}" %>
+    <% else %>
+      <%= render partial: 'loader/names/tabs/all_tab_headings' %>
+      <%= render partial: "loader/names/tabs/#{@tab}" %>
+    <% end %>
+    <br>
+    <span class='server-response-time'><%= "(#{(Time.now - @start_time).round(2)}s)" if @start_time %></span>
+
+  </div><!-- /end .inner -->
+</div><!-- /end .focus-details -->
+
+<br>
+

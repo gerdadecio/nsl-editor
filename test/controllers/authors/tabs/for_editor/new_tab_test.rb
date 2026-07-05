@@ -35,10 +35,10 @@ class AuthorEditorNewTest < ActionController::TestCase
     #      JavaScript embedding. (pid:78529)
     @request.headers["Accept"] = "application/javascript"
     get(:new,
-        { random_id: "12345" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { random_id: "12345" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     # puts response.body
     # assert_select "li.active a#author-edit-tab",
     #               "Edit",

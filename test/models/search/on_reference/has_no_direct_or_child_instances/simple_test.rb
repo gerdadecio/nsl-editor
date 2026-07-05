@@ -27,9 +27,8 @@ class SearchOnReferenceHasNoDirOrChInstancesSimpleTest < ActiveSupport::TestCase
                    query_string: "has-no-direct-or-child-instances:",
                    current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert_equal search.executed_query.results.class,
-                 Reference::ActiveRecord_Relation,
-                 "Results should be a Reference::ActiveRecord_Relation."
+    assert search.executed_query.results.is_a?(ActiveRecord::Relation),
+           "Results should be an ActiveRecord::Relation."
     assert !search.executed_query.results.empty?, "Results expected."
   end
 end

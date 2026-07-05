@@ -26,9 +26,11 @@ class AuthorCreateSimpleTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Author.count") do
       post(:create,
-           { author: { "name" => "newauthor",
-                       "abbrev" => "na" } },
-           username: "fred", user_full_name: "Fred Jones", groups: ["edit"])
+           params: { author: { "name" => "newauthor",
+                               "abbrev" => "na" } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     end
   end
 end

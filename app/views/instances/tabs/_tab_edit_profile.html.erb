@@ -1,0 +1,47 @@
+<h5>
+  Edit Profile for <%= @instance.name.full_name %>
+</h5>
+  <p>All operations on this tab change the published tree directly.
+  <br>Use the Tree tab to make changes to the draft tree.</p>
+<dl class="dl-horizontal">
+<br>
+
+<% current_te = @instance.accepted_tree_version_element.tree_element %>
+
+<%= form_with model: current_te, data: { turbo: false }, local: false do |form| %>
+
+  <% if current_te.excluded? %>
+    Distribution: <%= form.text_field :distribution_value, title: 'Distribution', class: 'form-control', disabled: true, placeholder: "Excluded taxa do not have distributions" %>
+  <% else %>
+    Distribution: <%= form.text_field :distribution_value, title: 'Distribution', class: 'form-control' %>
+  <% end %>
+  <% unless current_te.profile.blank? %>
+    <% unless current_te.distribution_value.blank? && current_te.tede_entries_arr.blank? %>
+      <%= render partial: 'detail_line', locals: {info: "&nbsp;#{current_te.tede_entries_arr.join(', ')}", label: 'Matching TEDE (bubbles)'} %>
+    <% end %>
+    <br>
+  <% end %>
+  Comment: <%= form.text_area :comment_value, title: 'Comment', class: 'form-control' %>
+  Note: new lines will be replaced with spaces when saved; leading and trailing spaces will be removed.
+  <br>
+  <br>
+  <%= form.submit :Save, title: 'Save changes', class: 'btn btn-primary width-3em' %>
+  <br>
+  <br>
+  Tree Element:<br>
+  <%= meaningful_update_when_no_created_at(current_te).html_safe %>
+<% end %>
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+  <br>
+<%= divider %>
+<% unless current_te.profile.blank? %>
+  <h5>Technical Profile data</h5>
+  <br>
+  <h6>Profile stored as JSONB in the Tree Element record</h6>
+  <%= render partial: 'detail_line', locals: {info: current_te.id, label: 'Tree Element ID'} %>
+  <pre>
+  <%= JSON.pretty_generate(current_te.profile) %>
+  </pre>
+<% end %>
+

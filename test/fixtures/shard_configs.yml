@@ -6,12 +6,22 @@
 #
 # Note: quotes around value of 'on' are essential to get literal value of 'on' 
 # loaded into the column rather than t.
-name-parent-rank-restriction: 
+# == Schema Information
+#
+# Table name: shard_config
+#
+#  id         :bigint           not null, primary key
+#  deprecated :boolean          default(FALSE), not null
+#  name       :string(255)      not null
+#  use_notes  :string(255)
+#  value      :string(5000)     not null
+#
+name_parent_rank_restriction: 
   name: name parent rank restriction 
   value: "on"
-classification-tree-key:
+classification_tree_key:
   name: classification tree key
   value: APC
-name-space:
+name_space:
   name: name space
   value: anamespace

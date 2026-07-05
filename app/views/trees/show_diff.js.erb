@@ -1,0 +1,24 @@
+debug('show_diff');
+
+$('ul.tree-report-tabs li').removeClass('active');
+$('ul.tree-report-tabs li#changes-tab').addClass('active');
+
+$('.tree-container').hide();
+$('.tree-container').addClass('fade');
+$('#treeValidateSyn').addClass('hidden');
+
+$('#validation-content').addClass('hidden');
+$('#validation-content').addClass('fade');
+$('#validation-content').hide();
+
+$('#treeValidation').addClass('hidden');
+$('#treeValidation').addClass('fade');
+$('#treeValidation').hide();
+
+$('#treeDiff').removeClass('hidden');
+$('#treeDiff').show();
+$('#diff-content').removeClass('hidden');
+$('#diff-content').removeClass('fade');
+$('#diff-content').show();
+debug('diff should show');
+

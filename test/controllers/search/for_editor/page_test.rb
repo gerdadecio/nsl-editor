@@ -24,10 +24,10 @@ class SearchControllerForEditorPageTest < ActionController::TestCase
 
   test "editor should get search with correct elements" do
     get(:search,
-        {},
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: {},
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     assert_select "a#new-dropdown-menu-link.dropdown-toggle",
                   /New/,
@@ -39,7 +39,7 @@ class SearchControllerForEditorPageTest < ActionController::TestCase
                   true,
                   "Should show User menu link."
     assert_select "a#admin-dropdown-menu-link.dropdown-toggle",
-                  false,
-                  "Should not show Admin menu link."
+                  true,
+                  "Should show Admin menu link."
   end
 end

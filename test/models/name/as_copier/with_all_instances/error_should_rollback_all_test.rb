@@ -25,7 +25,7 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
   end
 
   def stub_it
-    stub_request(:get, %r{#{path}/[0-9]{8,}/api/name-strings})
+    stub_request(:get, %r{#{path}/[0-9]{1,}/api/name-strings})
       .with(headers: headers)
       .to_return(status: 200,
                  body: returned_body.to_json, headers: {})
@@ -33,20 +33,20 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
 
   def returned_body
     {
-      "class": "silly name class",
-      "_links": { "permalink": [] },
-      "name_element": "redundant name element for id 960477440",
-      "action": "unnecessary action",
-      "result": returned_body_result
+      class: "silly name class",
+      _links: { permalink: [] },
+      name_element: "redundant name element for id 960477440",
+      action: "unnecessary action",
+      result: returned_body_result
     }
   end
 
   def returned_body_result
     {
-      "fullMarkedUpName": "full marked up name for id 960477440",
-      "simpleMarkedUpName": "simple marked up name for id 960477440",
-      "fullName": "full name for id 960477440",
-      "simpleName": "simple name for id 960477440"
+      fullMarkedUpName: "full marked up name for id 960477440",
+      simpleMarkedUpName: "simple marked up name for id 960477440",
+      fullName: "full name for id 960477440",
+      simpleName: "simple name for id 960477440"
     }
   end
 
@@ -57,7 +57,7 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
   def headers
     { "Accept" => "text/json",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-      "User-Agent" => "Ruby" }
+      "User-Agent" => /rest-client.*ruby.*/ }
   end
 
   test "copy name with all instances for 2 identical instances should fail" do

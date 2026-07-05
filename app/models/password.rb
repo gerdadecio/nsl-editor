@@ -24,46 +24,56 @@ class Password < ActiveType::Object
   attribute :new_password_confirmation, :string
   validates :new_password_confirmation, presence: true
   attribute :username, :string
+  attribute :user_cn, :string
 
   def save!
     validate_arguments
-    Rails.logger.debug('save!')
-    Rails.logger.debug("username: #{username}")
-    Rails.logger.debug("new_password: #{new_password}")
     change_password
     true
-  rescue => e
-    Rails.logger.error("Error changing password: #{e.to_s}")
-    @error = e.to_s
+  rescue StandardError => e
+    # Hide the params because they contain password
+    Rails.logger.error("Error changing password: #{e.to_s.sub(/ for .*/, '...')}")
+    @error = e.to_s.sub(/ for .*/, "...")
     false
   end
 
   def error
-    @error ||= ''
+    @error ||= ""
   end
 
   private
 
   def validate_arguments
-    raise "no current password entered" if current_password.blank? 
-    raise "no new password entered" if new_password.blank? 
-    raise "new password was not confirmed" if new_password_confirmation.blank? 
-    unless new_password == new_password_confirmation
-      raise "new password was not confirmed correctly"
+    raise "No current password entered" if current_password.blank?
+    raise "No new password entered" if new_password.blank?
+    raise "Please also re-type the new password." if new_password_confirmation.blank?
+    raise "The new password doesn't match the re-typed new password." unless new_password == new_password_confirmation
+    raise "The new password is the same as the current password you entered." unless new_password != current_password
+    raise "The new password is not long enough." if new_password.size < 8
+    raise "The new password is too long." if new_password.size > 50
+
+    return unless Rails.configuration.try("ldap_via_active_directory")
+    unless new_password.match(/[[:upper:]]/)
+      raise "The new password must contain at least one upper-case character A-Z."
     end
-    raise "new password not long enough" if new_password.size < 8
-    raise "new password too long" if new_password.size > 25
+    unless new_password.match(/[[:lower:]]/)
+      raise "The new password must contain at least one lower-case character a-z."
+    end
+    # a digit or non-word char
+    raise "The new password must contain at least one symbol or digit." unless new_password.match(/[\d\W]/)
   end
 
   def change_password
     ldap = Ldap.new
     ldap.username = username
     ldap.password = current_password
-    raise 'current password is wrong' unless ldap.verify_current_password
-    ldap.change_password(username, new_password,random_seed)
+    ldap.user_cn = user_cn
+    raise "current password is wrong" unless ldap.verify_current_password
+
+    ldap.change_password(username, new_password, random_seed)
   end
 
   def random_seed
-    (0...8).map { (97 + rand(26)).chr }.join
+    (0...8).map { rand(97..122).chr }.join
   end
 end

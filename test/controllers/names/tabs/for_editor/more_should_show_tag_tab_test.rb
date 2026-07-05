@@ -28,10 +28,10 @@ class NameMoreShouldShowTagTabForEditorTest < ActionController::TestCase
   test "should show tag tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @name.id, tab: "tab_more" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @name.id, tab: "tab_more" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     assert_select "li a#name-tags-tab",
                   "Tag",

@@ -1,80 +1,34 @@
-<h4>Reference search</h4>
+<h3>Reference search</h3>
 <p/>References include books, papers, journals etc.
+<p/>You are seeing this Reference help because the search target field (the top-left dropdown) is set to Reference.
+<p/>Note: some of the help text here depends on APNI data examples - we apologise for that, but, for the present, we think it's better to have some examples rather than none.
 <br>
 <br>
 <%= render partial: 'references/advanced_search/quick_start_help' %>
 <br>
 <br>
-<h5>Default Reference search</h5>
-<p/>The default search occurs when you do <strong>not</strong> enter a field name into the search.
-<p/>This is an example of a default Reference search:
-<p/> <%= image_tag('reference-default-search-example.png') %> 
-<p/>This is an example of a non-default Reference search:
-<p/> <%= image_tag('reference-non-default-search-example.png') %> 
-<p/>The difference is the <strong>field name</strong> <q>citation:</q>, which tells the Editor which field you want searched.
-<br>
-<br>
-<h5>Field names</h5>
-<p/>Field names always end in a colon (<q>:</q>).  
-<p/>Enter them in the search field ahead of the search terms they apply to.
-<p/>Some search terms also determine a search method.
-<p/>A full list of Reference search terms is below.
-<br>
-<br>
-<h5>Default Reference searching is a text search</h5>
-<p/>The default Reference search is a <q>text search</q> on citation that <q>understands</q> the English language and, in particular, words and word prefixes.
-<p/>The result is the same as if you had entered the field name <q>citation:</q> in front of the search terms. 
-<p/>It is also the same as if you had entered the field abbreviation <q>c:</q> in front of the search terms.
-<br>
-<br>
-<h5>Text search on Reference citations</h5>
-<p/>Each reference has a citation - a text string that identifies it.  
-<p/>Each reference citation is constructed in a standard way based on the type of reference.  
-<p/>For example, a citation for a <%= link_to('paper',search_path(query_string: 'id: 44128', query_target: 'reference'),title:"Query the paper by its ID",class:'blue') %>: 
-<pre>
-Short, P.S. (1986), Notes on Trachymene humilis (J.D.Hook.) Benth. (Umbelliferae). Muelleria 6(3)
-</pre>
-<p/>Searches that would retrieve this paper include:
-<ul>
-  <li><%= link_to('short trach',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>: 
-  <li><%= link_to('trach short',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>: 
-  <li><%= link_to('short 1986',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>: 
-  <li><%= link_to('trach 1986',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>: 
-  <li><%= link_to('muell 1986 humil',search_path(query_string: 'muell 1986 humil', query_target: 'reference'),title:"Sample query",class:'blue') %>: 
-</ul>
+<%= render partial: 'references/advanced_search/directives_intro' %>
+<%#= render partial: 'references/advanced_search/text_search_help' %>
 
+<h4>Show instances</h4>
+<p/>You may often want to see the instances for a reference as well and here is how you can do that.
+<p/>Add <code>show-instances:</code> or <code>show-instances-by-page:</code> to also retrieve instances.
+<p>
+<p>
+The <code>show-instances:</code> directive also has abbreviations: <code>s-i:</code>, <code>si:</code>, and <code>i:</code> that all do the same thing.
+<p>
+Add <code>instance-offset: 999</code> to offset the instances for each reference retrieved.
 <br>
-<p/>Another example is this search for <%= link_to('"hookers icon pl"',search_path(query_string: 'hookers icon pl', query_target: 'reference'),title:"Run the query.",class:'blue') %> which works because the search engine understands that "hookers" should match "Hooker's" and so will match citations such as:
-<pre>
- Bentham, G. (1876), Plagiocarpus axillaris Benth. Hooker's Icones Plantarum 12 
-</pre>
 <br>
 
+<h4>Show novelties</h4>
+<p/>You can show novelties for a reference, much the same as the way to show instances.
+<p/>Add <code>show-novelties:</code> or <code>show-novelties-by-page:</code> to retrieve novelties.
+<p>
+<p>
+The <code>show-novelties:</code> directive also has abbreviations: <code>s-nov:</code>, <code>snov:</code>,  and <code>nov:</code> that all do the same thing.
+<p>
+The <code>show-novelties-by-page:</code> directive has an abbreviation: <code>novbp:</code>.
 <br>
-<p/>A search for <%= link_to('"münchh"',search_path(query_string: 'münchh', query_target: 'reference'),title:"Run the query.",class:'blue') %> retrieves the same records as a search 
-for <%= link_to('"munchh"',search_path(query_string: 'munchh', query_target: 'reference'),title:"Run the query.",class:'blue') %> showing that the default reference search ignores accents.
-Here is the citation of one of the records retrieved:
-<pre>
-Münchhausen, Otto, Freiherr von (1765-1773), Der Hausvater 
-</pre>
-<br>
-<h5>Alternatives to text search</h5>
-<p/>The text search engine is very powerful, but it has some limitations.  
-<p/>For example, it is word-oriented and prefix-oriented, so a search for <%= link_to('"hookers icon ant"',search_path(query_string: 'hookers icon ant', query_target: 'reference'),title:"Run the query.",class:'blue') %> returns no records because "ant", although part of the word "Plantarum", is not a prefix.  That is, it is not preceded by a space nor is it at the start of the citation.
-
-<p/>For pure wildcarded fragments use the "citation:" field name, or "c:" for short.  
-<p/>For example, a search for <%= link_to('"citation:hook icon ant"',search_path(query_string: 'citation:hook icon ant', query_target: 'reference'),title:"Run the query.",class:'blue') %> does return records.  But note "hook" instead of "hookers" in the search.
-<br>
-<br>
-<h5>Other Reference searches</h5>
-<p/>While most searches will be default searches, you can specify other fields for the search.  These are listed below.
-<br>
-<br>
-<h5>Show instances</h5>
-Add <em>"show-instances:"</em> or <em>"show-instances-by-page:"</em> to also retrieve instances.
-<br>
-Add <em>"instance-offset: 999"</em> to offset the instances for each reference retrieved.
-<br>
-<br>
-<%= render partial: 'references/advanced_search/field_help' %>
+<%= render partial: 'references/advanced_search/directives_list' %>
 

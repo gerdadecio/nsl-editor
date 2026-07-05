@@ -28,10 +28,10 @@ class AuthorEditorDoNotOfferDelButtonIfNoDeleteTest < ActionController::TestCase
     assert_not author.can_be_deleted?,
                "Must not be able to delete this author for the test to be valid"
     get(:show,
-        { id: author.id, tab: "tab_edit" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: author.id, tab: "tab_edit" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_select "li.active a#author-edit-tab",
                   "Edit",
                   "Should show 'Edit' tab."

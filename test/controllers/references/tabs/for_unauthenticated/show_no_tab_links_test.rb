@@ -27,7 +27,9 @@ class ReferenceUnauthenticatedShowNoTabLinkTest < ActionController::TestCase
 
   test "should show no tab links if unauthenticated requests details tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show, { id: @reference.id, tab: "tab_edit" }, {})
+    get(:show,
+        params: { id: @reference.id, tab: "tab_edit" },
+        session: {})
     # assert_response :redirect, 'Should be redirected.'
     assert_select "a#reference-show-tab", false, "Should not show 'Detail' tab."
     assert_select "a#reference-edit-tab", false, "Should not show 'Edit' tab."

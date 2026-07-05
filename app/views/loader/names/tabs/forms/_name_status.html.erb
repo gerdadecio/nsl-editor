@@ -1,0 +1,9 @@
+
+  <div class="form-group">
+    <label for="name_status">Status</label>
+    <%= f.select :name_status,
+      NameStatus.loader_options,
+    {include_blank: true}, class: 'form-control',
+      title: "Enter name status", tabindex: increment_tab_index %>
+  </div>
+

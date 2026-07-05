@@ -19,7 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class ReferencesCreateValidFullMonthTest < ActionController::TestCase
+class ReferencesesCreateValidFullMonthTest < ActionController::TestCase
   tests ReferencesController
 
   setup do
@@ -56,28 +56,28 @@ class ReferencesCreateValidFullMonthTest < ActionController::TestCase
       .with(
         headers: { "Accept" => "text/json",
                    "Accept-Encoding" => encoding,
-                   "User-Agent" => "Ruby" }
+                   "User-Agent" => /rest-client.*ruby.*/ }
       )
       .to_return(status: 200, body: body, headers: {})
   end
 
   test "create reference valid full date" do
-    skip # associated with intermittent test failure
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Reference.count") do
       post(:create,
-           { reference: { "ref_type_id" => ref_types(:book),
-                          "title" => "Some book",
-                          "author_id" => authors(:dash),
-                          "author_typeahead" => "-",
-                          "published" => true,
-                          "ref_author_role_id" => ref_author_roles(:author),
-                          "day" => "1",
-                          "month" => "12",
-                          "year" => "1988" } },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
+           params: { reference: { "ref_type_id" => ref_types(:book),
+                                  "title" => "Some book",
+                                  "author_id" => authors(:dash),
+                                  "author_typeahead" => "-",
+                                  "published" => true,
+                                  "parent_typeahead" => @parent_typeahead,
+                                  "ref_author_role_id" => ref_author_roles(:author),
+                                  "day" => "1",
+                                  "month" => "12",
+                                  "year" => "1988" } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     end
   end
 end

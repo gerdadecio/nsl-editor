@@ -26,15 +26,15 @@ class NamesCreateWithInvalidAuthorTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Name.count") do
       post(:create,
-           { name: { "name_status_id" => name_statuses(:legitimate),
-                     "name_rank_id" => name_ranks(:species),
-                     "name_type_id" => name_types(:scientific),
-                     "author_id" => nil,
-                     "author_typeahead" => "aabasdb",
-                     "name_element" => "fred" } },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
+           params: { name: { "name_status_id" => name_statuses(:legitimate),
+                             "name_rank_id" => name_ranks(:species),
+                             "name_type_id" => name_types(:scientific),
+                             "author_id" => nil,
+                             "author_typeahead" => "aabasdb",
+                             "name_element" => "fred" } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     end
     # can we check for error message?
   end

@@ -27,7 +27,9 @@ class ReferenceUnauthDoNotShowNewInstanceTabTest < ActionController::TestCase
 
   test "should not show unauthenticated user reference new instance tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show, { id: @reference.id, tab: "tab_new_instance" }, {})
-    assert response.body.match(/window.location.assign.".sign_in"./)
+    get(:show,
+        params: { id: @reference.id, tab: "tab_new_instance" },
+        session: {})
+    assert response.body.match(/Your session may have expired.  Please reload the whole page before continuing/)
   end
 end

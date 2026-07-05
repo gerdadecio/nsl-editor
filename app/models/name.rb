@@ -1,25 +1,95 @@
-# frozen_string_literal: true
-
-
-#   Copyright 2015 Australian National Botanic Gardens
-#
-#   This file is part of the NSL Editor.
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
-#
-
 # Name model
-class Name < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: name
+#
+#  id                    :bigint           not null, primary key
+#  apni_json             :jsonb
+#  changed_combination   :boolean          default(FALSE), not null
+#  created_by            :string(50)       not null
+#  full_name             :string(512)
+#  full_name_html        :string(2048)
+#  lock_version          :bigint           default(0), not null
+#  name_element          :string(255)
+#  name_path             :text             default(""), not null
+#  orth_var              :boolean          default(FALSE), not null
+#  published_year        :integer
+#  simple_name           :string(250)
+#  simple_name_html      :string(2048)
+#  sort_name             :string(250)
+#  source_id_string      :string(100)
+#  source_system         :string(50)
+#  status_summary        :string(50)
+#  updated_by            :string(50)       not null
+#  uri                   :text
+#  valid_record          :boolean          default(FALSE), not null
+#  verbatim_rank         :string(50)
+#  created_at            :timestamptz      not null
+#  updated_at            :timestamptz      not null
+#  author_id             :bigint
+#  base_author_id        :bigint
+#  basionym_id           :bigint
+#  duplicate_of_id       :bigint
+#  ex_author_id          :bigint
+#  ex_base_author_id     :bigint
+#  family_id             :bigint
+#  name_rank_id          :bigint           not null
+#  name_status_id        :bigint           not null
+#  name_type_id          :bigint           not null
+#  namespace_id          :bigint           not null
+#  parent_id             :bigint
+#  primary_instance_id   :bigint
+#  sanctioning_author_id :bigint
+#  second_parent_id      :bigint
+#  source_dup_of_id      :bigint
+#  source_id             :bigint
+#
+# Indexes
+#
+#  lower_full_name               (lower((full_name)::text))
+#  name_author_index             (author_id)
+#  name_baseauthor_index         (base_author_id)
+#  name_duplicate_of_id_index    (duplicate_of_id)
+#  name_exauthor_index           (ex_author_id)
+#  name_exbaseauthor_index       (ex_base_author_id)
+#  name_full_name_index          (full_name)
+#  name_name_element_index       (name_element)
+#  name_parent_id_ndx            (parent_id)
+#  name_rank_index               (name_rank_id)
+#  name_sanctioningauthor_index  (sanctioning_author_id)
+#  name_second_parent_id_ndx     (second_parent_id)
+#  name_simple_name_index        (simple_name)
+#  name_sort_name_idx            (sort_name)
+#  name_source_index             (namespace_id,source_id,source_system)
+#  name_source_string_index      (source_id_string)
+#  name_status_index             (name_status_id)
+#  name_system_index             (source_system)
+#  name_type_index               (name_type_id)
+#  uk_66rbixlxv32riosi9ob62m8h5  (uri) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_156ncmx4599jcsmhh5k267cjv   (namespace_id => namespace.id)
+#  fk_3pqdqa03w5c6h4yyrrvfuagos   (duplicate_of_id => name.id)
+#  fk_5fpm5u0ukiml9nvmq14bd7u51   (name_status_id => name_status.id)
+#  fk_5gp2lfblqq94c4ud3340iml0l   (second_parent_id => name.id)
+#  fk_ai81l07vh2yhmthr3582igo47   (sanctioning_author_id => author.id)
+#  fk_airfjupm6ohehj1lj82yqkwdx   (author_id => author.id)
+#  fk_bcef76k0ijrcquyoc0yxehxfp   (name_type_id => name_type.id)
+#  fk_coqxx3ewgiecsh3t78yc70b35   (base_author_id => author.id)
+#  fk_dd33etb69v5w5iah1eeisy7yt   (parent_id => name.id)
+#  fk_rp659tjcxokf26j8551k6an2y   (ex_base_author_id => author.id)
+#  fk_sgvxmyj7r9g4wy9c4hd1yn4nu   (ex_author_id => author.id)
+#  fk_sk2iikq8wla58jeypkw6h74hc   (name_rank_id => name_rank.id)
+#  fk_whce6pgnqjtxgt67xy2lfo34    (family_id => name.id)
+#  name_basionym_id_fkey          (basionym_id => name.id)
+#  name_primary_instance_id_fkey  (primary_instance_id => instance.id)
+#
+class Name < ApplicationRecord
+  self.table_name = "name"
+  self.primary_key = "id"
+  self.sequence_name = "nsl_global_seq"
+
   include NameScopable
   include AuditScopable
   include NameValidatable
@@ -31,27 +101,22 @@ class Name < ActiveRecord::Base
   include NameAuthorable
   include NameRankable
   include NameEnterable
-
-  strip_attributes
-  # acts_as_tree
-
-  self.table_name = "name"
-  self.primary_key = "id"
-  self.sequence_name = "nsl_global_seq"
+  include Name::Loadable
+  include Name::InstancesCopyable
 
   attr_accessor :display_as,
                 :give_me_focus,
-                :apc_instance_is_an_excluded_name,
-                :apc_declared_bt,
-                :change_category_name_to
+                :change_category_name_to,
+                :target_name_id,
+                :instance_ids_to_copy
 
-  belongs_to :name_type
+  belongs_to :name_type, optional: false
   has_one :name_category, through: :name_type
-  belongs_to :name_status
+  belongs_to :name_status, optional: false
   belongs_to :namespace, class_name: "Namespace", foreign_key: "namespace_id"
 
-  belongs_to :duplicate_of, class_name: "Name", foreign_key: "duplicate_of_id"
-  belongs_to :family, class_name: "Name"
+  belongs_to :duplicate_of, class_name: "Name", foreign_key: "duplicate_of_id", optional: true
+  belongs_to :family, class_name: "Name", optional: true
   has_many   :members, class_name: "Name", foreign_key: "family_id"
 
   has_many :duplicates,
@@ -67,13 +132,18 @@ class Name < ActiveRecord::Base
   has_many :comments
   has_many :name_tag_names
   has_many :name_tags, through: :name_tag_names
-  has_many :tree_nodes  # not sure what this is, looks like a thought bubble
+  has_many :tree_nodes # not sure what this is, looks like a thought bubble
   has_many :tree_elements
+  has_many :intended_tree_children,
+           class_name: "Loader::Name::Match",
+           foreign_key: "intended_tree_parent_name_id"
+  has_many :name_resources, dependent: :destroy
 
   SEARCH_LIMIT = 50
   DECLARED_BT = "DeclaredBt"
 
   before_create :set_defaults
+  before_update :set_name_element_if_blank
   before_save :validate
 
   def primary_instances
@@ -85,13 +155,9 @@ class Name < ActiveRecord::Base
   end
 
   def save_with_username(username)
+    set_defaults # under rails 6 the before_create was not getting called (in time)
     self.created_by = self.updated_by = username
     save
-  end
-
-  def update_attributes_with_username(attributes, username)
-    self.updated_by = username
-    update_attributes(attributes)
   end
 
   def validate
@@ -120,7 +186,32 @@ class Name < ActiveRecord::Base
   end
 
   def allow_delete?
-    instances.blank? && children.blank? && comments.blank? && duplicates.blank?
+    instances.blank? &&
+      children.blank? &&
+      comments.blank? &&
+      duplicates.blank? &&
+      !family_dependents?
+  end
+
+  def no_name_resource_dependents?
+    return true unless Rails.configuration.try(:resource_tab_enabled)
+
+    name_resources.blank?
+  end
+
+  def family_dependents?
+    return false unless name_rank.family?
+
+    # From here on, must be a family
+    return false if family_members.empty? # 0 members
+    return true if family_members.length > 1 # 2 or more members
+
+    # From here on, only 1 family member
+    return true if family_id.blank? # 1 but null so not itself
+    return false if family_id = id # 1 but is itself
+    return true if family_id != id # 1 but it is not itself
+
+    true # fail safe - shouldn't get here
   end
 
   def migrated_from_apni?
@@ -157,15 +248,6 @@ class Name < ActiveRecord::Base
     parents
   end
 
-  def orchids
-    if Rails.configuration.try(:look_for_orchids_table)
-     #Orchid.where(name_id: id)
-      OrchidsName.where(name_id: id).collect {|orcn| orcn.orchid}
-    else
-      []
-    end
-  end
-
   def de_dupe
     dd = Name::DeDuper.new(self)
     dd.de_dupe
@@ -189,27 +271,27 @@ class Name < ActiveRecord::Base
     dd.transfer_dependents(dependent_type)
   end
 
-  def self.children_of_duplicates_count 
+  def self.children_of_duplicates_count
     sql = "select count(*) total from name n join name parent on n.parent_id = parent.id where parent.duplicate_of_id is not null"
     records_array = ActiveRecord::Base.connection.execute(sql)
-    records_array.first['total'] 
+    records_array.first["total"]
   end
 
-  def self.instances_of_duplicates_count 
+  def self.instances_of_duplicates_count
     sql = "select count(*) total from name join instance on name.id = instance.name_id where name.duplicate_of_id is not null"
     records_array = ActiveRecord::Base.connection.execute(sql)
-    records_array.first['total'] 
+    records_array.first["total"]
   end
 
-  def self.family_members_of_duplicates_count 
+  def self.family_members_of_duplicates_count
     sql = "select count(*) total from name join name family on name.family_id = family.id where family.duplicate_of_id is not null"
     records_array = ActiveRecord::Base.connection.execute(sql)
-    records_array.first['total'] 
+    records_array.first["total"]
   end
 
   def self.transfer_all_dependents(dependent_type)
     total = 0
-    Name.where('duplicate_of_id is not null').each do |duplicate|
+    Name.where("duplicate_of_id is not null").each do |duplicate|
       dd = Name::DeDuper.new(duplicate)
       total += dd.transfer_dependents(dependent_type)
     end
@@ -220,5 +302,10 @@ class Name < ActiveRecord::Base
 
   def set_defaults
     self.namespace_id = Namespace.default.id if namespace_id.blank?
+    self.name_element = '[unknown]' if name_element.blank?
+  end
+
+  def set_name_element_if_blank
+    self.name_element = '[unknown]' if name_element.blank?
   end
 end

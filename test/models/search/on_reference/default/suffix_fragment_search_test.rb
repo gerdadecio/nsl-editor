@@ -24,16 +24,13 @@ class SearchOnReferenceDefaultSuffixFragmentSearchTest < ActiveSupport::TestCase
   test "search on reference default for suffix fragment" do
     params = ActiveSupport::HashWithIndifferentAccess
              .new(query_target: "reference",
-                  query_string: "uplicate",
-                  include_common_and_cultivar_session: true,
+                  query_string: "duplicate already unknown",
                   current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert_equal search.executed_query.results.class,
-                 Reference::ActiveRecord_Relation,
-                 "Results should be a Reference::ActiveRecord_Relation."
-    assert_equal 0,
+    assert search.executed_query.results.is_a?(ActiveRecord::Relation),
+           "Results should be an ActiveRecord::Relation."
+    assert_equal 1,
                  search.executed_query.results.size,
-                 "No results are expected.  Citation text search does not
-                 support suffix text fragments."
+                 "One record is expected.  Default search is token based"
   end
 end

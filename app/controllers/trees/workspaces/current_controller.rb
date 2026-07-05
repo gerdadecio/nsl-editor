@@ -19,13 +19,13 @@
 #   User can choose a workspace.
 class Trees::Workspaces::CurrentController < ApplicationController
   def toggle
+    @tree_version = TreeVersion.find(params[:id])
     if session[:draft] &&
        session[:draft]["id"] == params[:id].to_i
       unset_workspace
     else
       set_workspace
     end
-    render js: "window.location.reload(true)"
   end
 
   private
@@ -35,11 +35,12 @@ class Trees::Workspaces::CurrentController < ApplicationController
   # Need both because session variable loses ActiveRecord features
   # but activerecord variable dies after the request.
   def set_workspace
-    @working_draft = TreeVersion.find(params[:id])
-    session[:draft] = @working_draft
+    authorize! :set_workspace, @tree_version
+    session[:draft] = @working_draft = @tree_version
   end
 
   def unset_workspace
+    authorize! :set_workspace, @tree_version
     remove_instance_variable(:@working_draft)
     session[:draft] = nil
   end

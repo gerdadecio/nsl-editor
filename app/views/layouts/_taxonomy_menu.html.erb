@@ -1,0 +1,81 @@
+<% if @current_user.present? %>
+
+  <% if @working_draft %>
+    <% selected_draft_title = "#{@working_draft&.tree&.name} #{@working_draft&.draft_name}" %>
+  <% end %>
+
+    <a href="#"
+       id="draft-taxo-dropdown-menu-link"
+       tabindex="4"
+       class="dropdown-toggle <%= 'active' if params[:controller].match(/session/) %>"
+       title='<%= @working_draft ? selected_draft_title + " is the selected draft" : "Draft taxonomy menu. Choose a draft taxonomy to work on here." %>'
+       <%= bs_toggle(:dropdown) %>>
+      <i class="fa fa-sitemap"></i>
+      <% if @working_draft %>
+        <%= "#{selected_draft_title[0,14]}#{ '...' if selected_draft_title.length > 15 } #{editor_icon 'check'}".html_safe %>
+      <% else %>
+        Draft Taxonomies
+      <% end %>
+      <span class="caret"></span>
+    </a>
+    <ul id="tree-dropdown-menu" class="dropdown-menu" role="menu">
+      <%= render partial: "tree_versions/drafts_menu" %>
+      <% if @working_draft && can?(:edit, TreeVersion) %>
+        <li role="presentation" class="divider"></li>
+        <li>
+          <%= link_to %Q(<i class='fa fa-edit'></i> Edit #{selected_draft_title}).html_safe,
+                      tree_versions_edit_draft_path,
+                      id: "edit-draft-taxonomy-menu-link-#{selected_draft_title.gsub(/ /,'-')}",
+                      title: 'Edit draft taxonomy',
+                      remote: true,
+                      tabindex: '-1' %>
+        </li>
+        <li>
+          <%= link_to "<i class='fa fa-file-text green'></i> Publish #{selected_draft_title}".html_safe,
+                      tree_versions_form_to_publish_path,
+                      id: "publish-draft-taxonomy-menu-link-#{selected_draft_title.gsub(/ /,'-')}",
+                      title: 'Publish draft taxonomy',
+                      remote: true,
+                      tabindex: '-1' %>
+        </li>
+      <% end %>
+
+
+      <% if Rails.configuration.try(:multi_product_tabs_enabled) %>
+        <% if current_context_id %>
+          <%
+            all_trees = current_registered_user.roles.blank? ? Tree.where(accepted_tree: true) :
+              Tree.where(id: Product.with_context_and_tree(current_context_id).select(:tree_id))
+          %>
+        <% else %>
+          <% all_trees = current_registered_user.roles.blank? ? Tree.where(accepted_tree: true) : Tree.all%>
+        <% end %>
+      <% else %>
+        <% all_trees = Tree.all %>
+      <% end %>
+
+      <% all_trees.includes([:user_product_role_vs]).order('name').each do |tree| %>
+        <% if can?(:create_draft, tree) %>
+          <% if tree.read_only? %>
+            <li>[<%= tree.name %> tree is read-only] </li>
+          <% elsif tree.has_no_drafts? %>
+            <% if current_registered_user.roles.present? || (current_registered_user.roles.blank? && tree.accepted_tree) %>
+              <li role="presentation" class="divider"></li>
+              <li>
+                <%= link_to "<i class='fa fa-plus'></i> Create draft taxonomy for #{tree.name}".html_safe,
+                            tree_versions_new_draft_path(tree.id),
+                            id: 'create-draft-taxonomy-menu-link',
+                            title: 'Add a new draft taxonomy',
+                            remote: true,
+                            tabindex: '-1' %>
+              </li>
+            <% end %>
+          <% else %>
+            <li>[<%= tree.name %> tree already has a draft version] </li>
+          <% end %>
+        <% end %>
+      <% end %>
+
+    </ul>
+
+<% end %>

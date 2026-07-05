@@ -30,26 +30,25 @@ class Tree::Workspace::Placement < ActiveType::Object
   validates :version_id, presence: true
 
   def place
-
     url = build_url
-    payload = {instanceUri: instance_url,
-               parentElementUri: parent_element_link,
-               excluded: excluded,
-               profile: profile,
-               versionId: version_id
-    }
-    logger.info "Calling #{url} with #{payload}"
+    payload = { instanceUri: instance_url,
+                parentElementUri: parent_element_link,
+                excluded: excluded,
+                profile: profile,
+                versionId: version_id }
     raise errors.full_messages.first unless valid?
+
+    logger.info "PLACEMENT calling #{url} WITH PAYLOAD: #{payload}"
+
     RestClient.put(url, payload.to_json,
-                   {content_type: :json, accept: :json})
+                   { content_type: :json, accept: :json })
   rescue RestClient::ExceptionWithResponse => e
-    Rails.logger.error("Tree::Workspace::Placement error: #{e}")
+    Rails.logger.error("Tree::Workspace::Placement RestClient::ExceptionWithResponse error: #{e.message}")
     raise
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Tree::Workspace::Placement other error: #{e}")
     raise
   end
-
 
   def build_url
     Tree::AsServices.placement_url(username, parent_element_link.blank?)
@@ -58,5 +57,4 @@ class Tree::Workspace::Placement < ActiveType::Object
   def instance_url
     Tree::AsServices.instance_url(instance_id)
   end
-
 end

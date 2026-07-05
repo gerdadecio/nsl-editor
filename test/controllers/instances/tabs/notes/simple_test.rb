@@ -28,11 +28,11 @@ class InstanceTabsNotesTest < ActionController::TestCase
   test "notes tab simple" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @triodia_in_brassard.id,
-          tab: "tab_edit_notes" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @triodia_in_brassard.id,
+                  tab: "tab_edit_notes" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     asserts
   end
@@ -44,7 +44,8 @@ class InstanceTabsNotesTest < ActionController::TestCase
   end
 
   def asserts1
-    assert_select "h5", "Add Note", "Needs correct heading."
+    assert_select "h5", "Add Note for #{@triodia_in_brassard.name.simple_name}", 
+      "Needs correct heading."
     assert_select "form#new_instance_note", true, "Needs insert form."
     assert_select "form#new_instance_note" do
       assert_select "select.instance-note-key-id-select", true, "Needs select."

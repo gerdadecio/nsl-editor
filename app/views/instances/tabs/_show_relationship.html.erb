@@ -4,27 +4,17 @@
             title: 'Search for the name with its instances',
             class: 'name') %>
 <% if @instance.name.accepted_concept? || @instance.name.excluded_concept? %>
-    <%= render(partial: 'instances/apc/widgets', locals: { instance: @instance }) %>
+    <%= render(partial: 'instances/taxo/details/widgets', locals: { instance: @instance }) %>
 <% end %>
 &nbsp;
 <span class="apni-format-link-on-details">
-  <%= link_to("APNI #{icon('external-link-square')}".html_safe,
-              "#{Rails.configuration.nsl_links}apni-format/display/#{@instance.name_id}",
+  <%= link_to("APNI #{external_link_square_icon}".html_safe,
+              "#{Rails.configuration.try('nsl_links')}apni-format/display/#{@instance.name_id}",
               title: "APNI search. Opens in another named tab or window.",
               class: 'rebeccapurple',
               target: "_editor_to_apni",
               tabindex: increment_tab_index) %>
   </span>
-<% if Rails.configuration.try(:show_new_search_link) %>
-  <span class="apni-format-link-on-details">
-  <%= link_to("New #{ShardConfig.name_space} #{icon('external-link-square')}".html_safe,
-              "#{Rails.configuration.try('search_address')}/name/#{@instance.name_id}?search_form=names#name-#{@instance.name_id}",
-              title: "New #{ShardConfig.name_space} search. Opens in another tab or window.",
-              class: "rebeccapurple",
-              target: "_editor_to_apni",
-              tabindex: increment_tab_index) if @instance.name.instances.size > 0 %>
-  </span>
-<% end %>
 <br>
 <% if @instance.cites_id %>
     in
@@ -43,7 +33,7 @@ is cited under
             search_path(query_string: "id: #{@instance.this_is_cited_by.name_id} show-instances:", query_target: 'name'),
             title: 'Search for the instance this is cited under.') %>
 <% if @instance.this_is_cited_by.name.accepted_concept? || @instance.this_is_cited_by.name.excluded_concept? %>
-    <%= render(partial: 'instances/apc/widgets', locals: { instance: @instance.this_is_cited_by }) %>
+    <%= render(partial: 'instances/taxo/details/widgets', locals: { instance: @instance.this_is_cited_by }) %>
 <% end %>
 <br>
 by
@@ -58,7 +48,7 @@ as
 <%= "<br>on page #{@instance.page}".html_safe if @instance.page.present? %>
 <%= "<br>with verbatim name<br> #{@instance.verbatim_name_string}".html_safe if @instance.verbatim_name_string.present? %>
 <br>
-<%= link_to("and BHL entry #{icon('external-link')}".html_safe,
+<%= link_to("and BHL entry #{editor_icon('external-link')}".html_safe,
             @instance.bhl_url, title: "Follow this link to the BHL entry.") if @instance.bhl_url.present? %>
 
 <%= "<div class=\"draft\">[DRAFT]</div>".html_safe if @instance.draft? %>

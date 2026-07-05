@@ -1,14 +1,16 @@
-<h4>Fields for review searches</h4>
+<h4>Fields for activity searches</h4>
 <br>
 <h5>Restrict time period</h5>
 <table class="table table-striped">
   <tr><th>Field</th><th>Description</th></tr>
   <% [
-      {field_name: '5', description: "default review searches are on records created or updated in the last N days, e.g. '1' means show records 1 or less days old"},
+      {field_name: '5', description: "default activity searches are on records created or updated in the last N days, e.g. '1' means show records 1 or less days old"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span>
       </a>
     </td>
@@ -31,7 +33,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span>
       </a>
     </td>
@@ -55,7 +59,9 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span>
       </a>
     </td>

@@ -28,12 +28,15 @@ class InstancesCreateCitesAndCitedByByEditorTest < ActionController::TestCase
     instance_type = instance_types(:nomenclatural_synonym)
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Instance.count") do
-      post(:create, { instance: { "cites_id" => instance_1.id,
-                                  "cited_by_id" => instance_2.id,
-                                  "name_id" => instance_1.name.id,
-                                  "reference_id" => instance_2.reference.id,
-                                  "instance_type_id" => instance_type.id } },
-           username: "fred", user_full_name: "Fred Jones", groups: ["edit"])
+      post(:create,
+           params: { instance: { "cites_id" => instance_1.id,
+                                 "cited_by_id" => instance_2.id,
+                                 "name_id" => instance_1.name.id,
+                                 "reference_id" => instance_2.reference.id,
+                                 "instance_type_id" => instance_type.id } },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     end
     assert_response :success
   end

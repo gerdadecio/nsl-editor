@@ -28,10 +28,10 @@ class ReferenceEditorShowCommentsTabTest < ActionController::TestCase
   test "should show editor reference comments tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @reference.id, tab: "tab_comments" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @reference.id, tab: "tab_comments" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     assert_select "li.active a#reference-comments-tab",
                   "Comments",

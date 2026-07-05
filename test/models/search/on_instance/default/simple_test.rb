@@ -30,9 +30,8 @@ class SearchOnInstanceDefaultSimpleTest < ActiveSupport::TestCase
                                                           current_user:
                                                           build_edit_user)
     search = Search::Base.new(params)
-    assert_equal search.executed_query.results.class,
-                 Instance::ActiveRecord_Relation,
-                 "Results should be an Instance::ActiveRecord_Relation."
+    assert search.executed_query.results.is_a?(ActiveRecord::Relation),
+           "Results should be an ActiveRecord::Relation."
     assert !search.executed_query.results.empty?,
            "Expecting at least 1 record."
   end

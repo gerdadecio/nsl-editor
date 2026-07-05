@@ -33,12 +33,13 @@
 #
 class Instance::AsArray::ForName < Array
   attr_reader :results
-  NO_YEAR = ''
+
+  NO_YEAR = ""
 
   def initialize(name)
     @results = []
     @already_shown = []
-    sorted_instances(name.instances.includes([{reference: :author}, :instance_type])).each do |instance|
+    sorted_instances(name.instances.includes([{ reference: :author }, :instance_type])).each do |instance|
       if instance.standalone?
         show_standalone_instance(instance)
       else
@@ -52,23 +53,61 @@ class Instance::AsArray::ForName < Array
   end
 
   def sorted_instances(instances)
-    instances.sort do |i1, i2|
-      sort_fields(i1) <=> sort_fields(i2)
-    end
+    instances.to_a.sort { |i1, i2| sort_fields(i1) <=> sort_fields(i2) }
   end
 
+  # Sort order:
+  # 1. Draft status (non-drafts before drafts)
+  # 2. Whether instance has a year (dated before undated within same draft group)
+  # 3. Year (chronologically, earliest first)
+  # 4. Primary instance type first
+  # 5. ISO publication date
+  # 6. Author name (alphabetically)
+  #
+  # This ensures undated instances stay within their draft/non-draft group:
+  # - Undated non-draft instances sort immediately after dated non-drafts
+  # - Undated draft instances sort immediately after dated drafts
+  # - draft instances are instance.draft? or profile_item.draft?
   def sort_fields(instance)
-    [instance.reference.year || instance.reference.try('parent').try('year') || NO_YEAR,
-     instance.instance_type.primaries_first,
-     instance.reference.iso_publication_date || instance.reference.try('parent').try('iso_publication_date') || NO_YEAR,
-     instance.reference.author.try("name") || "x"]
+    ref = instance.reference
+    year = ref.year || parent_attr(ref, :year)
+    iso_date = ref.iso_publication_date || parent_attr(ref, :iso_publication_date)
+
+    [
+      draft_sort_order(instance),             # "A" (non-draft) or "B" (draft)
+      dated_first(year),                      # 0 (has year) or 1 (no year)
+      year || NO_YEAR,                        # 2026 or ""
+      instance.instance_type.primaries_first, # "A" (primary instance) or "B" (non-primary)
+      iso_date || NO_YEAR,                    # "2026-01-01" or ""
+      author_name(instance).downcase          # "authorname, g." or "x" (if nil)
+    ]
+  end
+
+  # NOTES: Handle references that inherit publication metadata from a parent reference in the hierarchy.
+  def parent_attr(reference, attribute)
+    reference.try(:parent).try(attribute)
+  end
+
+  def dated_first(year)
+    year.present? ? 0 : 1
+  end
+
+  # NOTES: Non-drafts sort before drafts (A < B)
+  # Replaced the instance.draft? with instance.draft_for_sorting?
+  # (so we don't change the existing instance.draft? logic, which maybe used elsewhere in the codebase)
+  def draft_sort_order(instance)
+    instance.draft_for_sorting? ? "B" : "A"
+  end
+
+  def author_name(instance)
+    instance.reference.author.try("name") || "x"
   end
 
   def show_standalone_instance(instance)
     debug("show_standalone_instance #{instance.id}")
     standalone_instance_records(instance).each do |one_instance|
       one_instance.show_primary_instance_type = true
-      one_instance.consider_apc = true
+      one_instance.consider_taxo = true
       @results.push(one_instance)
     end
   end
@@ -94,17 +133,21 @@ class Instance::AsArray::ForName < Array
   def records_cited_by_standalone(instance)
     debug("records_cited_by_standalone for instance #{instance.id}")
     Instance.joins(:instance_type, :name, :reference)
+            .joins("left outer join instance cites on instance.cites_id = cites.id")
+            .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
+            .joins("inner join name_status ns on name.name_status_id = ns.id")
             .includes(:instance_type)
             .where(cited_by_id: instance.id)
-            .in_nested_instance_type_order
+            .in_synonymy_order
             .order("reference.iso_publication_date,lower(name.full_name)")
   end
 
   def show_relationship_instance(name, instance)
     citing_instance = instance.this_is_cited_by
     return if @already_shown.include?(citing_instance.id)
+
     relationship_instance_records(name, citing_instance).each do |element|
-      element.consider_apc = false
+      element.consider_taxo = false
       @results.push(element)
     end
     @already_shown.push(citing_instance.id)
@@ -117,6 +160,7 @@ class Instance::AsArray::ForName < Array
     records_cited_by_relationship(instance)
       .each do |cited_by_original_instance|
       next unless cited_by_original_instance.name.id == name.id
+
       cited_by_original_instance.expanded_instance_type =
         cited_by_original_instance.instance_type.name
       results.push(with_display_as(cited_by_original_instance))
@@ -126,18 +170,21 @@ class Instance::AsArray::ForName < Array
 
   def with_display_as(instance)
     debug("with_display_as for instance #{instance.id}")
-    if instance.misapplied?
-      instance.display_as = "cited-by-relationship-instance"
-    else
-      instance.display_as = "cited-by-relationship-instance-name-only"
-    end
+    instance.display_as = if instance.misapplied?
+                            "cited-by-relationship-instance"
+                          else
+                            "cited-by-relationship-instance-name-only"
+                          end
     instance
   end
 
   def records_cited_by_relationship(instance)
     debug("records_cited_by_relationship for instance #{instance.id}")
-    Instance.joins(:instance_type)
+    Instance.joins(:instance_type, :name, :reference)
+            .joins("left outer join instance cites on instance.cites_id = cites.id")
+            .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
+            .joins("inner join name_status ns on name.name_status_id = ns.id")
             .where(cited_by_id: instance.id)
-            .in_nested_instance_type_order
+            .in_synonymy_order
   end
 end

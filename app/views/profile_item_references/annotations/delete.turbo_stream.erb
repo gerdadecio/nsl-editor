@@ -1,0 +1,8 @@
+<%= turbo_stream.replace "edit_reference_#{@profile_item_reference.profile_item_id_reference_id}" do %>
+  <%= render partial: "profile_item_references/annotation_form",
+      locals: {
+        profile_item_reference: @profile_item_reference,
+        profile_item: @profile_item,
+        message: @message
+      } %>
+<% end %>

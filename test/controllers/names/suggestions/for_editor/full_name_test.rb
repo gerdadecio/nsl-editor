@@ -28,10 +28,10 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
   test "name full name suggestions for editor" do
     @request.headers["Accept"] = "application/javascript"
     get(:typeahead_on_full_name,
-        { rank_id: name_ranks(:unranked).id, term: "search for this" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { rank_id: name_ranks(:unranked).id, term: "search for this" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
   end
 end

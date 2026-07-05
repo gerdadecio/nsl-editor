@@ -1,0 +1,41 @@
+<% path = 'application/search_results/link_texts/loader/name' %>
+
+<%= render partial: "#{path}/decorate/remarks_and_comments",
+  locals: {search_result: search_result}
+%>
+
+|
+
+<span title="Potential Matches Count"><%= search_result.matches.size %>m</span>
+
+<% if search_result.created_manually? %>
+   <% unless search_result.loader_batch.use_sort_key_for_ordering %>
+     <span class='flag bgdarkslateblue white'
+           title='Loader name record was manually created'>Handmade</span>
+   <% end %>
+<% end %>
+
+<% if search_result.loader_name_matches.blank? %>
+  <%= render partial: "#{path}/decorate/no_preferred_match",
+    locals: {search_result: search_result}
+  %>
+<% else %>
+  <%= render partial: "#{path}/decorate/preferred_match",
+    locals: {search_result: search_result}
+  %>
+<% end %>
+
+<%= render partial: "#{path}/decorate/record_type",
+  locals: {search_result: search_result}
+%>
+
+<%= render partial: "#{path}/decorate/no_further_processing",
+  locals: {search_result: search_result}
+%>
+
+<% if search_result.narrow_direct_reviewer_comments? %>
+  <span class="reviewer-comment-tag"><%= pluralize(search_result.narrow_direct_reviewer_comments.size, 'reviewer comment') %></span>
+<% end %>
+<% if search_result.narrow_direct_compiler_comments? %>
+  <span class="compiler-comment-tag"><%= pluralize(search_result.narrow_direct_compiler_comments.size, 'compiler comment') %></span>
+<% end %>

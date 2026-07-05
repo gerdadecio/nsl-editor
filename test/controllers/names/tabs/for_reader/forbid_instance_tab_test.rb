@@ -28,10 +28,10 @@ class NameForbidInstanceTabForReaderTest < ActionController::TestCase
   test "reader requests forbidden instances tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @name.id, tab: "tab_instances" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { id: @name.id, tab: "tab_instances" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :forbidden
   end
 end

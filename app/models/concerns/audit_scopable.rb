@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Name scopes
 module AuditScopable
   extend ActiveSupport::Concern
@@ -27,9 +26,5 @@ module AuditScopable
 
   def fresh?
     created_at > 1.hour.ago
-  end
-
-  def self.created_in_the_last(amount = 1, time_unit = "hour")
-    where("created_at > now() - interval '#{amount}  #{time_unit}'")
   end
 end

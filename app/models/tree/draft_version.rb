@@ -17,35 +17,56 @@
 #   limitations under the License.
 
 #  A workspace or DraftVersion is an unpublished copy of a tree that can be edited.
-class Tree::DraftVersion < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: tree_version
+#
+#  id                  :bigint           not null, primary key
+#  created_by          :string(255)      not null
+#  draft_name          :text             not null
+#  lock_version        :bigint           default(0), not null
+#  log_entry           :text
+#  published           :boolean          default(FALSE), not null
+#  published_at        :timestamptz
+#  published_by        :string(100)
+#  created_at          :timestamptz      not null
+#  previous_version_id :bigint
+#  tree_id             :bigint           not null
+#
+# Foreign Keys
+#
+#  fk_4q3huja5dv8t9xyvt5rg83a35  (tree_id => tree.id)
+#  fk_tiniptsqbb5fgygt1idm1isfy  (previous_version_id => tree_version.id)
+#
+#
+#
+#
+#  This model object is not used in a Rails way
+class Tree::DraftVersion < ApplicationRecord
   self.table_name = "tree_version"
   self.primary_key = "id"
   default_scope { where(published: false) }
 
-  belongs_to :tree,
-             class_name: Tree
+  belongs_to :tree, class_name: "Tree"
 
-  has_many :tree_version_elements,
-           foreign_key: "tree_version_id",
-           class_name: TreeVersionElement
+  has_many :tree_version_elements, foreign_key: "tree_version_id"
 
-  def name
-    name
-  end
+  before_save :stop_if_read_only
 
   def name_in_version(name)
     tree_version_elements.joins(:tree_element)
-        .where(tree_element: { name: name }).first
+                         .where(tree_element: { name: name }).first
   end
 
-  def self.create(tree_id, from_version_id, draft_name, draft_log, default_draft, username)
+  def self.create_via_service(tree_id, from_version_id, draft_name, draft_log, default_draft, username)
+    for_tree = Tree.find(tree_id)
+    raise "#{for_tree.name} Tree is read only - cannot create a draft" if for_tree.read_only?
     url = Tree::AsServices.create_version_url(username)
     payload = { treeId: tree_id,
                 fromVersionId: from_version_id,
                 draftName: draft_name,
                 log: draft_log,
-                defaultDraft: default_draft
-    }
+                defaultDraft: default_draft }
     logger.info "Calling #{url} with #{payload}"
     RestClient::Request.execute(method: :put,
                                 url: url,
@@ -53,29 +74,42 @@ class Tree::DraftVersion < ActiveRecord::Base
                                 headers: { content_type: :json, accept: :json },
                                 timeout: 360)
   rescue RestClient::ExceptionWithResponse => e
-    Rails.logger.error("Tree::Workspace::Placement error: #{e}")
+    Rails.logger.error("Tree::DraftVersion RestClient::ExceptionWithResponse error: #{e}")
     raise
-  rescue => e
-    Rails.logger.error("Tree::Workspace::Placement other error: #{e}")
+  rescue StandardError => e
+    Rails.logger.error("Tree::DraftVersion other error: #{e}")
     raise
   end
 
-  def publish(username)
+  def publish(username, next_draft_name)
+    raise "Publishing is not allowed - parent tree is read only" if tree.read_only?
     url = Tree::AsServices.publish_version_url(username)
     payload = { versionId: id,
-                logEntry: log_entry }
+                logEntry: log_entry,
+                nextDraftName: next_draft_name }
     logger.info "Calling #{url} with #{payload}"
     RestClient.put(url, payload.to_json,
                    { content_type: :json, accept: :json })
   rescue RestClient::ExceptionWithResponse => e
-    Rails.logger.error("Tree::Workspace::Placement error: #{e}")
+    Rails.logger.error("Tree::DraftVerson RestClient::ExceptionWithResponse error: #{e}")
     raise
-  rescue => e
-    Rails.logger.error("Tree::Workspace::Placement other error: #{e}")
+  rescue StandardError => e
+    Rails.logger.error("Tree::DraftVerson other error: #{e}")
     raise
   end
 
   def last_update
-    self.tree_version_elements.order(updated_at: :desc).first
+    tree_version_elements.order(updated_at: :desc).first
+  end
+
+  def stop_if_read_only
+    if tree.read_only?
+      errors.add(:base, ' parent tree is read only')
+      throw :abort
+    end
+  end
+
+  def default_tree_version?
+    self == tree.default_draft_version
   end
 end

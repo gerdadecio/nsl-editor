@@ -1,0 +1,23 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line',
+           locals: {info: @user.userid, label: 'Userid'} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @user.given_name, label: 'Given Name'} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @user.family_name, label: 'Family Name'} %>
+
+<% if Rails.configuration.try(:batch_loader_aware) %>
+  <%= render partial: 'detail_line',
+             locals: {info: @user.batch_reviewers.size, label: 'Batch Reviews Count'} %>
+<% end %>
+
+
+<%= divider %>
+User #<%= @user.id %>
+<h5>Metadata</h5>
+<%= created_by_whom_and_when(@user).html_safe %> <br>
+<%= updated_by_whom_and_when(@user).html_safe %>
+
+

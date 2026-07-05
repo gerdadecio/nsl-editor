@@ -21,8 +21,8 @@ require "test_helper"
 # Single instance model test.
 class InstanceDeleteServiceNotPermitted403Test < ActiveSupport::TestCase
   setup do
-    raw = { "action": "delete", "instance": {}, "ok": false,
-            "errors": ["Not permitted."] }
+    raw = { action: "delete", instance: {}, ok: false,
+            errors: ["Not permitted."] }
     stub_request(:delete,
                  "#{action}?apiKey=test-api-key&reason=Edit")
       .with(headers: headers)
@@ -35,7 +35,7 @@ class InstanceDeleteServiceNotPermitted403Test < ActiveSupport::TestCase
 
   def headers
     { "Accept" => "application/json",
-      "Accept-Encoding" => "gzip, deflate",
+      "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
       "Host" => "localhost:9090",
       "User-Agent" => /ruby/ }
   end
@@ -48,6 +48,6 @@ class InstanceDeleteServiceNotPermitted403Test < ActiveSupport::TestCase
       # The test mock service determines response based on the id
       Instance::AsServices.delete(403)
     end
-    assert_match "Not permitted.", exception.message, "Wrong message"
+    assert_match "from Services: 403 Forbidden", exception.message, "Wrong message"
   end
 end

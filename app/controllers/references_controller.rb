@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class ReferencesController < ApplicationController
-  before_filter :find_reference, only: [:edit, :update, :destroy, :show, :tab]
+  before_action :find_reference, only: %i[edit update destroy show tab]
 
   # GET /references/1/tab/:tab
   # Sets up RHS details panel on the search results page.
@@ -26,6 +26,7 @@ class ReferencesController < ApplicationController
     pick_a_tab
     pick_a_tab_index
     copy_reference if @tab == "tab_copy"
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 
@@ -36,16 +37,21 @@ class ReferencesController < ApplicationController
     @reference = Reference::AsNew.default
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
-    render "new.js"
+    render "new"
   end
 
   # GET /references/new_row
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    respond_to do |format|
-      format.html { redirect_to new_search_path }
-      format.js {}
-    end
+    render :new_row, 
+      locals: {partial: 'new_row', 
+                locals_for_partial:
+                  {tab_path: "#{new_reference_with_random_id_path(@random_id)}",
+                   link_id: "link-new-reference-#{@random_id}",
+                   link_title: "New reference",
+                   link_text: "New Reference"
+                  }
+              }
   end
 
   # POST /references
@@ -54,11 +60,11 @@ class ReferencesController < ApplicationController
     @reference = Reference::AsEdited.create(reference_params,
                                             typeahead_params,
                                             current_user.username)
-    render "create.js"
-  rescue => e
+    render "create"
+  rescue StandardError => e
     logger.error("Controller:reference:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error.js", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   # PUT /references/1.json
@@ -68,11 +74,11 @@ class ReferencesController < ApplicationController
     check_date_params
     @form = params[:form][:name] if params[:form]
     update_reference
-    render "update.js"
-  rescue => e
+    render "update"
+  rescue StandardError => e
     logger.error("Controller:reference:update rescuing: #{e}")
     @message = e.to_s
-    render "update_error.js", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_content
   end
 
   # DELETE /references/1
@@ -82,12 +88,6 @@ class ReferencesController < ApplicationController
     else
       render js: "alert('Could not delete that record.');"
     end
-  end
-
-  def copy
-    reference = Reference.find(params[:id])
-    @reference = Reference.new reference.attributes
-    render :copy
   end
 
   # Columns such as duplicate_of_id use a typeahead search.
@@ -145,8 +145,8 @@ class ReferencesController < ApplicationController
     redirect_to references_path
   end
 
-  # Note: the order of the :year, :month, :day params is critical to 
-  # successfully processing these fields on insert and combining them into 
+  # NOTE: the order of the :year, :month, :day params is critical to
+  # successfully processing these fields on insert and combining them into
   # the iso_publication_date field.
   def reference_params
     params.require(:reference)
@@ -179,11 +179,8 @@ class ReferencesController < ApplicationController
 
   # Do this before getting to the model - much more control.
   def check_date_params
-    if reference_params[:year].blank?
-      raise 'Month entered but no year' unless reference_params[:month].blank?
-    end
-    if reference_params[:month].blank?
-      raise 'Day entered but no month' unless reference_params[:day].blank?
-    end
+    raise "Month entered but no year" if reference_params[:year].blank? && !reference_params[:month].blank?
+    return unless reference_params[:month].blank?
+    raise "Day entered but no month" unless reference_params[:day].blank?
   end
 end

@@ -66,18 +66,18 @@ class Instance::AsArray::ForReference < Array
             .joins(:name)
             .includes(name: :name_status)
             .includes(:instance_type)
-            .includes(this_is_cited_by: [:name, :instance_type])
+            .includes(this_is_cited_by: %i[name instance_type])
     @sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
   end
 
   def find_instances_for_ref
     built_query.each do |instance|
-      if @count < @offset
-        @count += 1
-      elsif @count < @limit
-        @count += 1
-        if instance.cited_by_id.blank?
-          include_standalone_instance(instance)
+      if instance.cited_by_id.blank?
+        if @count < @offset
+          @count += 1
+        elsif @count < @limit
+          @count += 1
+          include_standalone_instance_and_synonymy(instance)
           include_synonym(instance) unless instance.cites_this.nil?
         end
       end
@@ -85,10 +85,11 @@ class Instance::AsArray::ForReference < Array
     end
   end
 
-  def include_standalone_instance(instance)
+  def include_standalone_instance_and_synonymy(instance)
     instance.display_within_reference
     @results.push(instance)
-    instance.is_cited_by.each do |cited_by|
+    instance.is_cited_by
+            .each do |cited_by|
       @count += 1
       cited_by.expanded_instance_type = cited_by.instance_type.name
       @results.push(cited_by)

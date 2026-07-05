@@ -1,0 +1,29 @@
+div#review-calendar {
+  border: 1px solid darkgray;
+  max-width: 26em;
+  padding: 1em;
+}
+
+div.review-day {
+  height: 1.25em;
+  width: 1.2em;
+  background: orange;
+}
+
+div.today {
+  height: 1.25em;
+  width: 1.2em;
+  background: blue;
+}
+
+div.past-day {
+  height: 1.25em;
+  width: 1.2em;
+  background: purple;
+}
+
+span.calendar-title {
+  display: inline-block;
+  width: 8em;
+  text-align: center;
+}

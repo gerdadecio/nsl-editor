@@ -17,42 +17,42 @@
 #   limitations under the License.
 #
 
-ENV["RAILS_ENV"] = "test"
-require File.expand_path("../../config/environment", __FILE__)
+ENV["RAILS_ENV"] ||= "test"
+require_relative "../config/environment"
 require "rails/test_help"
-# require "capybara/rails"
-require "minitest"
-require "minitest/rails"
-# require "minitest/capybara"
-# require "minitest/rails/capybara"
-require "minitest/unit"
-require "mocha"
-require "mocha/setup"
-require "mocha/mini_test"
+
 require "webmock/minitest"
+require "minitest/stub_any_instance"
 
-# To add Capybara feature tests add `gem "minitest-rails-capybara"`
-# to the test group in the Gemfile and uncomment the following:
-# require "minitest/rails/capybara"
-
-# Uncomment for awesome colorful output
-# require "minitest/pride"
-
-# require "capybara-webkit"
-## Capybara.default_driver = :webkit
-# Capybara.default_driver = :selenium
-## Capybara.default_wait_time = 5
-
-# Set up tests
 class ActiveSupport::TestCase
-  ActiveRecord::Migration.check_pending!
-
-  # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in
-  # alphabetical order.
+  # Run tests in parallel with specified workers
+  # parallelize(workers: :number_of_processors, with: :threads)
+  # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  # After commenting the above line, these disappeared:
   #
-  # Note: You'll currently still have to declare fixtures explicitly in
-  # integration tests -- they do not yet inherit this setting
+  # $ grep -i circular tests4.log | tee circ4c
+  # RuntimeError: Circular dependency detected while autoloading constant TreeVersionElement
+  # ...
+  # RuntimeError: Circular dependency detected while autoloading constant NameStatus
+  # ...
+  # RuntimeError: Circular dependency detected while autoloading constant NameTagName
+  # ...
+  # RuntimeError: Circular dependency detected while autoloading constant NameCategory
+  # ...
+  # RuntimeError: Circular dependency detected while autoloading constant DistRegion
+  # RuntimeError: Circular dependency detected while autoloading constant Reference
+  # RuntimeError: Circular dependency detected while autoloading constant Author
+  # RuntimeError: Circular dependency detected while autoloading constant NameType
+  # RuntimeError: Circular dependency detected while autoloading constant Namespace
+  # RuntimeError: Circular dependency detected while autoloading constant NameTag
+  # RuntimeError: Circular dependency detected while autoloading constant Comment
+  # RuntimeError: Circular dependency detected while autoloading constant InstanceType
+  # RuntimeError: Circular dependency detected while autoloading constant RefAuthorRole
+  # RuntimeError: Circular dependency detected while autoloading constant RefType
+
+  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
+  # fixtures %w[users groups memberships]
 
   # Add more helper methods to be used by all tests here...
 end
@@ -159,8 +159,9 @@ def make_sure_details_are_showing
 end
 
 def search_results_with_details?
-  return unless search_results?
+  return false unless search_results?
   return true if details_are_showing?
+
   show_details
   debug "sleeping...."
   sleep(0.01)
@@ -318,7 +319,7 @@ def load_new_author_form
   Timeout.timeout(Capybara.default_wait_time) do
     loop until page.evaluate_script("jQuery.active").zero?
   end
-  select_from_menu(%w(New Author))
+  select_from_menu(%w[New Author])
   search_result_must_include_link("New author")
   search_result_details_must_include_content("New Author")
 end
@@ -476,7 +477,7 @@ def try_typeahead_multi(field_id,
                         which_suggestion = "first")
   fill_in(field_id, with: input_text)
   page.execute_script %{ $('##{field_id}').trigger("focus") }
-  suggestion = find("#" + field_id).find(:xpath, ".//..")
+  suggestion = find("##{field_id}").find(:xpath, ".//..")
                                    .all("div.tt-suggestion")
                                    .send(which_suggestion)
   assert_not_nil suggestion, "Should have found a suggestion."
@@ -487,10 +488,10 @@ end
 def try_typeahead_single(field_id, input_text, expected)
   fill_in(field_id, with: input_text)
   page.execute_script %{ $('##{field_id}').trigger("focus") }
-  begin
-    suggestion = find("#" + field_id).find(:xpath, ".//..")
-                                     .find("div.tt-suggestion")
-  end
+
+  suggestion = find("##{field_id}").find(:xpath, ".//..")
+                                   .find("div.tt-suggestion")
+
   assert_not_nil suggestion, "No such suggestion: '#{expected}'"
   assert_equal expected, suggestion.text, "Expected: #{expected}."
 end

@@ -25,7 +25,8 @@ class InstanceAsServicesTrueSuccess200Test < ActiveSupport::TestCase
     stub_request(:delete,
                  "#{action}?apiKey=test-api-key&reason=Edit")
       .with(headers: { "Accept" => "application/json",
-                       "Accept-Encoding" => "gzip, deflate",
+                       "Accept-Encoding" =>
+                         "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
                        "Host" => "localhost:9090",
                        "User-Agent" => /ruby/ })
       .to_return(status: 200,
@@ -33,23 +34,23 @@ class InstanceAsServicesTrueSuccess200Test < ActiveSupport::TestCase
   end
 
   def body_hash
-    { "instance":
-      { "class":
+    { instance:
+      { class:
         "au.org.biodiversity.nsl.Instance",
-        "_links": inner_hash,
-        "instanceType": "taxonomic synonym",
-        "protologue": false,
-        "citation": citation,
-        "citationHtml": citation },
-      "action": "delete", "ok": true }
+        _links: inner_hash,
+        instanceType: "taxonomic synonym",
+        protologue: false,
+        citation: citation,
+        citationHtml: citation },
+      action: "delete", ok: true }
   end
 
   def inner_hash
     {
-      "permalink": {
-        "link": "http://localhost:8080/nsl/mapper/boa/instance/apni/819227",
-        "preferred": true,
-        "resources": 1
+      permalink: {
+        link: "http://localhost:8080/nsl/mapper/boa/instance/apni/819227",
+        preferred: true,
+        resources: 1
       }
     }
   end

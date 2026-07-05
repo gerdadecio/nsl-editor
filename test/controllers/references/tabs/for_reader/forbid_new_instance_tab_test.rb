@@ -28,10 +28,10 @@ class ReferenceEditorNotShowNewInstanceTabTest < ActionController::TestCase
   test "should not show reader reference new instance tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @reference.id, tab: "tab_new_instance" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { id: @reference.id, tab: "tab_new_instance" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :forbidden
   end
 end

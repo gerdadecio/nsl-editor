@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Name fields that are offered for the various types and categories of names.
 module NameEnterable
   extend ActiveSupport::Concern
@@ -33,15 +32,6 @@ module NameEnterable
 
   def requires_higher_ranked_parent?
     category_for_edit.requires_higher_ranked_parent?
-  end
-
-  def name_type_must_match_category
-    return if NameType.option_ids_for_category(category_for_edit)
-                      .include?(name_type_id)
-
-    errors.add(:name_type_id,
-               "Wrong name type for category! Category: #{category_for_edit} vs
-               name type: #{name_type.name}.")
   end
 
   def category_name_for_edit

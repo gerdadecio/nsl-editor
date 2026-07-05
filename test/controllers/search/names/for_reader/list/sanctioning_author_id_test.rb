@@ -25,11 +25,11 @@ class ReaderSearchContrNamesSanctioningAuthIdListT < ActionController::TestCase
   test "reader can search for a name by sanctioning author id" do
     author = authors(:is_a_name_authority_of_every_type)
     get(:search,
-        { query_target: "name",
-          query_string: "sanctioning-author-id: #{author.id}" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "name",
+                  query_string: "sanctioning-author-id: #{author.id}" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /\b1 name\b/,

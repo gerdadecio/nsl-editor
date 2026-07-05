@@ -26,16 +26,17 @@ class ReferenceDestroyForEditorSimpleTest < ActionController::TestCase
   end
 
   #  assert_difference('Reference.count') do
-  test "editor should destroy reference" do
+  test "editor should destroy reference not associated to a product" do
+    @reference.products.update_all(reference_id: nil)
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Reference.count",
                       -1,
                       "References should reduce by 1 when editor destroys 1") do
       post(:destroy,
-           { id: @reference.id },
-           username: "fred",
-           user_full_name: "Fred Jones",
-           groups: ["edit"])
+           params: { id: @reference.id },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     end
     assert_response :success, "Editor should be able to destroy reference"
   end

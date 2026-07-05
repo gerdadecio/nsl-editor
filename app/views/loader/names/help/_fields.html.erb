@@ -1,0 +1,503 @@
+<h4>Loader Name search help</h4>
+<table class="table table-striped">
+  <p>Note: setting a default batch will apply that batch to Loader Name searches.
+  <p>Note: when searching for loader-names you need to specify a batch via 'batch-id:', 'batch-name:', or by setting a default batch.  If you really want to search across batches use the 'any-batch:' directive.
+  <tr><th>Field</th><th>Description</th></tr>
+  <p>Note: In January 2026 we made "any-batch:" the default - so, with no batch selected as a default, your loader name queries will behave as if you had added the "any-batch:" directive
+  <% [
+    {field_name: 'batch-id:', descr: "Search within a batch using its ID."},
+    {field_name: 'batch-name:', descr: "Search within a batch using its name. Accepts wild-cards."},
+    {field_name: 'any-batch:', descr: "Search across all batches. Takes no argument."},
+    {field_name: 'id:', descr: "Search by ID or IDs (comma separated)."},
+    {field_name: 'raw-id:', descr: "Search by raw-ID or raw-IDs (comma separated). Raw ID is the ID assigned in the original data - these can be duplicated across batches."},
+    {field_name: 'has-review-comment:',
+     descr: "Search for loader names that have been commented on."},
+    {field_name: 'review-comment:',
+     descr: "Search for loader names that have a comment matching a given string."},
+    {field_name: 'has-review-comment-by:',
+     descr: "Search for loader names that have been commented on by a particular user (user-id)."},
+    {field_name: 'concept-note:',
+     descr: "Search for loader names that have a concept note matching a given string."},
+    {field_name: 'distribution:',
+     descr: "Search for loader names that have a distribution matching a given string."},
+    {field_name: 'distribution-not:',
+     descr: "Search for loader names that have a distribution without a given string."},
+    {field_name: 'no-distribution:',
+     descr: "Search for loader names that have no distribution string."},
+    {field_name: 'simple-name:',
+     descr: "Search for loader names based on simple name."},
+    {field_name: 'simple-name-as-loaded:',
+     descr: "Search for loader names based on simple name as loaded - this field holds the unchanged value of simple name as loaded.  You can edit simple name, but this field retains the original value."},
+    {field_name: 'simple-name-not-like:',
+     descr: "Search for loader names based on simple name not matching the argument. Wildcards are added automatically."},
+    {field_name: 'original-text:',
+     descr: "Search for loader names based on original text matching the argument. Trailing wildcard is added automatically. Empty argument looks for nulls."},
+    {field_name: 'remark:',
+     descr: "Search for loader names containing a remark to reviewers - wildcards are added automatically."},
+    {field_name: 'higher-rank-comment:',
+     descr: "Search for loader names containing a higher-rank-comment - wildcards are added automatically."},
+    {field_name: 'created-manually:',
+     descr: "Search for loader names that users created in the web interface - i.e. 'manually'. Abbreviations: <code>manually-created:</code>, <code>cm:</code>, <code>mc:</code>"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:descr].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Name Matching Directives</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'no-name-match:',
+     description: "no matching NSL name - checks the supplied name against name.simple_name (no authority) and name.full_name (has authority) for scientific names"},
+    {field_name: 'no-name-match-unscientific:',
+     description: "same as <code>no-name-match:</code>, but no requirement for the matching name to be <b>scientific</b> - so it allows for cultivars"},
+    {field_name: 'no-name-match-unaccent:',
+     description: "no matching NSL name - applies f_unaccent to normalise accented chars but only compares to name.simple_name (no authority)"},
+    {field_name: 'some-name-match:',
+     description: "checks supplied name against name simple_name or full_name for at least one matching NSL scientific name"},
+    {field_name: 'some-name-match-unscientific:',
+     description: "same as <code>some-name-match:</code> but matching names must be <b>unscientific</b> - this complements <code>no-name-match-unscientific</code> by showing you the matching cultivars etc"},
+    {field_name: 'many-name-match:',
+     description: "match loader names with more than 1 matching NSL name - compares on simple name and full_name of scientific names "},
+    {field_name: 'many-name-match-unaccent: Batch Name',
+     description: "match loader names with more than 1 matching NSL name - applies f_unaccent to normalise accented chars, checks name.simple_name only (for scientific names), and <b>needs the target batch name as an argument to give correct results</b>"},
+    {field_name: 'one-name-match:',
+     description: "match only on CSV data with exactly one matching NSL name"},
+    {field_name: 'name-match-eq:',
+     description: "match only on CSV data with a number of matching NSL names equal to the supplied number"},
+    {field_name: 'name-match-gt:',
+     description: "match only on CSV data with a number of matching NSL names greater than the supplied number"},
+    {field_name: 'name-match-gte:',
+     description: "match only on CSV data with a number of matching NSL names greater than or equal to the supplied number"},
+    {field_name: 'name-match-no-primary:',
+     description: "find loader names with at least one matching name but no matching name with a primary instance"},
+    {field_name: 'taxon-sharing-name-id:',
+     description: "match only on CSV data loader name that shares a preferred name ID with at least one other CSV data loader name"},
+    {field_name: 'non-misapp-taxon-sharing-name-id:',
+     description: "any non-misapplied loader name that shares a preferred name ID match with at least one other non-misapplied loader name"},
+    {field_name: 'non-misapp-taxon-sharing-name-id-not-pp:',
+     description: "any non-misapplied loader name that shares a preferred name ID match with at least one other non-misapplied loader name, but excluding cases where all the relationships are partial"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Taxonomy Instance Choice</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'use-batch-default-ref:',
+     description: "Loader name has a preferred match and that preferred match is set to use the batch default reference"},
+    {field_name: 'use-existing-instance:',
+     description: "Loader name has a preferred match and that preferred match is set to an existing instance"},
+    {field_name: 'copy-and-append:',
+     description: "Loader name has a preferred match and that preferred match is set to copy and append instances from an existing instance onto a new instance"},
+    {field_name: 'no-nomination:',
+     description: "Loader name has a preferred match and that preferred match has no decision made on how to create or obtain an instance"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Family-related Searches</h4>
+  <h5>See also: Processing and taxonomy queries</h5>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'family-list:',
+     description: "list records with rank 'family' - arguments are family name strings: zero retrieves all, one allows wildcards, but if more than one, each argument must be a complete family name"},
+    {field_name: 'family-members:',
+     description: "list records within the family - arguments are family name strings: zero retrieves all, one allows wildcards, but if more than one, each argument must be a complete family name"},
+    {field_name: 'family:',
+     description: "Alias for family-members"},
+    {field_name: 'families:',
+     description: "Alias for family-members"},
+    {field_name: 'family-id:',
+     description: "Search for loader names for a given family ID, includes the family record and its members - typically used in Editor-generated links."},
+    {field_name: 'no-family-heading:',
+     description: "retrieve accepted/excluded records that belong to a family for which there is no family heading - takes no arguments; shortcut is <code>nfh:</code>"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+
+  <h4>Other Rank Search Directives</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'rank:',
+     description: "match on the rank field - case-insensitive"},
+    {field_name: 'not-rank:',
+     description: "match on the rank field not matching the argument - case-insensitive"},
+    {field_name: 'no-rank:',
+     description: "no value in the rank field"},
+    {field_name: 'nsl-rank:',
+     description: "match on the nsl-rank field - case-insensitive"},
+    {field_name: 'not-nsl-rank:',
+     description: "match on the nsl-rank field not matching the argument - case-insensitive"},
+    {field_name: 'no-nsl-rank:',
+     description: "no value in the nsl-rank field"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Record Type Directives or Similar</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'accepted:',
+     description: "match only CSV data with record type 'accepted'"},
+    {field_name: 'excluded:',
+     description: "match only CSV data with record type 'excluded'"},
+    {field_name: 'syn:',
+     description: "match only CSV data with record type 'synonym'"},
+    {field_name: 'syn-but-no-syn-type:',
+     description: "match only CSV data with record type 'synonym' and no synonym type"},
+    {field_name: 'misapplied:',
+     description: "match only CSV data with record type 'misapplied'"},
+    {field_name: 'not-misapplied:',
+     description: "loader name data with a record type other than 'misapplied'"},
+    {field_name: 'in-batch-note:',
+     description: "match records of type 'in-batch-note'"},
+    {field_name: 'isonym:',
+     description: "match records with any value in the isonym field"},
+    {field_name: 'orth-var:',
+     description: "match records with a name status value starting with 'orth'"},
+    {field_name: 'doubtful:',
+     description: "match records with true in the doubtful column"},
+    {field_name: 'not-doubtful:',
+     description: "match records with false in the doubtful column"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+
+  <h4>Some More Interesting Directives</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'partly:',
+     description: "find records where partly = 'p.p.', publ_partly = 'p.p.' or the synonym_type (used for misapps too) includes the text 'pro parte'"},
+    {field_name: 'not-partly:',
+     description: "find records where neither partly nor publ_partly contain 'p.p.' and the synonym_type does not contain the text 'pro parte'"},
+    {field_name: 'publ-partly:',
+     description: "match only on CSV data where the publ_partly field has any data in it, which is uniformly 'p.p.' - it's essentially a flag where p.p. means true and is generally for misapplieds"},
+    {field_name: 'not-publ-partly:',
+     description: "match only on CSV data where the publ_partly field has no data"},
+    {field_name: 'name-status:',
+     description: "match fragment on the name status field (leading and trailing wildcards added automatically)"},
+    {field_name: 'name-status-exact:',
+     description: "match fragment on the name status field (no wildcards added, but you can add them)"},
+    {field_name: 'name-status-empty-string:',
+     description: "loader name with an empty string in name status (these came about during early raw editing of loader name data when empty fields were mistakenly saved as empty strings)"},
+    {field_name: 'syn-matched-to-autonym:',
+     description: "loader name synonym with a preferred match to an autonym, implicit autonym, or explicit autonym (i.e. includes any instance type matching '%autonym%')"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Helpful queries for checking processing progress</h4>
+  Use these alone for an overview, or in combination with other search directives.
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'has-preferred-name:',
+     description: "match only on CSV taxon data where the preferred name ID has been set"},
+    {field_name: 'has-no-preferred-name:',
+     description: "match only on CSV taxon data where the preferred name ID has NOT been set"},
+    {field_name: 'has-preferred-name-without-instance:',
+     description: "match only on CSV taxon data where the preferred name ID has been set but no instance has been created or found"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Hybrid-related queries</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'original-text-has-×:',
+     description: "original text includes a cross symbol"},
+    {field_name: 'original-text-has-x:',
+     description: "original text includes a cross symbol (directive has an ex character)"},
+    {field_name: 'hybrid-flag:',
+     description: "matches on the hybrid_flag (text) field, which holds values like hybrid, intergrade, MsoNormal"},
+    {field_name: 'is-hybrid:',
+     description: "matches on the hybrid_flag field, checks for value of hybrid"},
+    {field_name: 'is-intergrade:',
+     description: "matches on the hybrid_flag field, checks for value of intergrade"},
+    {field_name: 'is-mso-normal:',
+     description: "matches on the hybrid_flag field, checks for value of MsoNormal"},
+    {field_name: 'no-hybrid-flag:',
+     description: "hybrid_flag has no value"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Processing and taxonomy queries</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'bulk-ops:',
+     description: "searches on a name string exactly as bulk operations search does, wildcards are supported but not supplied (as for bulk ops)"},
+    {field_name: 'bulk-ops-family:',
+     description: "searches on a family name string exactly as bulk operations search does, wildcards are supported but not supplied (as for bulk ops)"},
+    {field_name: 'no-further-processing:',
+     description: "search for records flagged to stop further bulk processing"},
+    {field_name: 'in-accepted-taxonomy:',
+     description: "search for 'accepted' loader names matched to a name which is listed in the current accepted taxonomy"},
+    {field_name: 'not-in-accepted-taxonomy:',
+     description: "search for 'accepted' loader names matched to a name which is NOT listed in the current accepted taxonomy"},
+    {field_name: 'in-or-not-in-accepted-taxonomy:',
+     description: "search for 'accepted' loader names matched to a name - this result should equal the total for the in- and not-in- searches"},
+    {field_name: 'drafted:',
+     description: "search for loader names matched to a name and flagged as drafted"},
+    {field_name: 'manually-drafted:',
+     description: "search for loader names matched to a name and flagged as manually drafted"},
+    {field_name: 'syn-match-in-tree:',
+     description: "a clash search: find loader name synonyms matched to a name that's already in the draft accepted tree; this search requires an argument e.g. <code>syn-match-in-tree: leucopogon*</code>. It can also handle multiple, comma-separated arguments but they shouldn't have wildcards"},
+    {field_name: 'syn-match-in-tree-family:',
+     description: "same as syn-match-in-tree but it expects a family name argument e.g. <code>syn-match-in-tree-family: myrtac*</code>. It can also handle multiple, comma-separated arguments but they shouldn't have wildcards"},
+    {field_name: 'name-match-in-syn:',
+     description: "a clash search: find loader name accepted or excluded records matched to a name that's already in synonymy in the current accepted tree"},
+    {field_name: 'syn-clash-with-syn:',
+     description: "a clash search: look for synonym records matched to a name that's already in synonymy to another name in the current accepted tree"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Status page queries</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'misapp-matched-without-cross-ref:',
+     description: "misapplied loader names that have a preferred match but the preferred match has no cross-reference instance identified (NSL-3930)"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Metadata queries</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'created-by:',
+     description: "match on created by field"},
+    {field_name: 'updated-by:',
+     description: "match on updated by field"},
+    {field_name: 'not-created-by:',
+     description: "non-match on created by field"},
+    {field_name: 'not-created-by-batch:',
+     description: "records not created by batch"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+
+<h4>Vote search help</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'org-voted:',
+     descr: "Search for loader names with a vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
+    {field_name: 'org-not-voted:',
+     descr: "Search for loader names with no vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means no org."},
+    {field_name: 'org-voted-yes:',
+     descr: "Search for loader names with a 'yes' vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
+    {field_name: 'org-voted-no:',
+     descr: "Search for loader names with a 'no' vote recorded by the organisation (abbreviation) you provide - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:descr].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+<%= render partial: 'help/case_and_wildcards_search' %>

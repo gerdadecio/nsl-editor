@@ -16,33 +16,165 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+# Loader Usertable entity
+#
+# This model is for the users table created during work on the batch loader and batch review subsystem.
+# == Schema Information
+#
+# Table name: users
+#
+#  id                         :bigint           not null, primary key
+#  created_by                 :string(50)       not null
+#  family_name                :string(60)       not null
+#  given_name                 :string(60)
+#  lock_version               :bigint           default(0), not null
+#  updated_by                 :string(50)       not null
+#  user_name                  :string(30)       not null
+#  created_at                 :timestamptz      not null
+#  updated_at                 :timestamptz      not null
+#  default_product_context_id :bigint
+#
+# Indexes
+#
+#  users_name_key  (user_name) UNIQUE
+#
+class User < ApplicationRecord
+  self.primary_key = "id"
+  self.sequence_name = "nsl_global_seq"
 
-# User model.
-class User < ActiveType::Object
-  attr_accessor :username, :full_name, :groups
+  has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer", foreign_key: :user_id
+  has_many :user_product_roles, class_name: "User::ProductRole", foreign_key: :user_id
+  has_many :product_roles, through: :user_product_roles
+  has_many :products, through: :product_roles
+  has_many :roles, through: :product_roles
+  has_many :user_product_role_vs
 
-  validates :username, presence: true
-  validates :full_name, presence: true
-  validates :groups, presence: true
+  before_create :set_audit_fields, :force_lower_case_user_name
+  before_update :set_updated_by
 
-  def edit?
-    groups.include?("edit")
+  def role_names
+    @role_names ||= roles.pluck(:name)
   end
 
-  def admin?
-    groups.include?("admin")
+  def is?(requested_role_name)
+    role_names.include?(requested_role_name)
   end
 
-  # TODO: remove this - NSL-2007
-  def apc?
-    groups.include?("APC")
+  def available_product_from_roles
+    # NOTES: This field allows us to identify
+    # which specific product this user is related to.
+    # Currently, we're making an assumption that there will
+    # be just one product associated with these roles.
+    product_roles
+      .joins(:role)
+      .includes(:product)
+      .first&.product
   end
 
-  def qa?
-    groups.include?("QA")
+  def available_products_from_roles
+    # Returns all products that this user has access to through their roles
+    # This method supports multi-product scenarios by returning all available products
+    # instead of just the first one
+    product_roles
+      .joins(:role, :product)
+      .includes(:product, :user_product_roles)
+      .order(Product.arel_table[:context_sort_order].asc, Product.arel_table[:name].asc)
+      .filter_map(&:product)
+      .uniq
   end
 
-  def treebuilder?
-    groups.include?("treebuilder")
+  def set_audit_fields
+    self.created_by = self.updated_by = @current_user&.username || "self as new user"
+  end
+
+  def force_lower_case_user_name
+    self.user_name = user_name.downcase
+  end
+
+  def set_updated_by
+    self.updated_by = @current_user&.username || "unknown"
+  end
+
+  # Note, the PK for the users table is the id column.
+  # That appears as user_id as a foreign key.
+  # The user's login id is in the column called user_name - called that to avoid
+  # confusion with the FK user_id or with the PK id.
+  def userid
+    user_name
+  end
+
+  def self.create(params, username)
+    user = User.new(params)
+    raise user.errors.full_messages.first.to_s unless user.save_with_username(username)
+
+    user
+  end
+
+  def save_with_username(username)
+    self.created_by = self.updated_by = username
+    save
+  end
+
+  def fresh?
+    created_at > 1.hour.ago
+  end
+
+  def display_as
+    "User"
+  end
+
+  def allow_delete?
+    true
+  end
+
+  def update_if_changed(params, username)
+    self.user_name = params[:user_name]
+    self.given_name = params[:given_name]
+    self.family_name = params[:family_name]
+    if changed?
+      self.updated_by = username
+      save!
+      "Updated"
+    else
+      "No change"
+    end
+  end
+
+  def full_name
+    "#{given_name} #{family_name}"
+  end
+
+  def self.users_not_already_reviewers(batch_review)
+    all.order([:given_name, :family_name]) - batch_review.batch_reviewers.collect { |reviewer| reviewer.user }
+  end
+
+  def can_be_deleted?
+    batch_reviewers.empty?
+  end
+
+  def grantable_product_roles_for_select(current_user = nil)
+    available_roles = Product::Role.non_admins - product_roles
+
+    # NOTES: If current_user is a product admin, restrict to only products they have admin access to
+    if current_user&.with_role?('admin') && Rails.configuration.try(:multi_product_tabs_enabled)
+      admin_product_ids = current_user
+        .user
+        .product_roles
+        .joins(:role)
+        .where(roles: { name: 'admin' })
+        .pluck(:product_id)
+      available_roles = available_roles.select { |pr| admin_product_ids.include?(pr.product_id) }
+    end
+
+    available_roles.sort_by(&:name).map { |pr| [pr.name, pr.id] }
+  end
+
+  def inspect
+    {id: id,
+     user_name: user_name,
+     given_name: given_name,
+     family_name: family_name,
+     default_product_context_id: default_product_context_id
+    }
   end
 end

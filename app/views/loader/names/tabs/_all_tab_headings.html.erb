@@ -1,0 +1,98 @@
+<ul class="nav nav-tabs">
+  <%= render partial: 'loader/names/tabs/tab',
+             locals: {first: true,
+                      last: false,
+                      this_tab: 'tab_details', 
+                      link_text: 'Details'.html_safe, 
+                      link_id: 'loader-name-details-tab', 
+                      link_title: 'View a summary',
+                      tab_index: @tab_index,
+                      prev_tab: 'loader-names-details-tab', 
+                      next_tab: 'loader-names-details-tab' } %> 
+
+  <% if can? 'loader/names', 'update' %>
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: false,
+                                      this_tab: 'tab_edit', 
+                                      link_text: 'Edit'.html_safe, 
+                                      link_id: 'loader-name-edit-tab', 
+                                      link_title: 'Edit Loader Name.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-details-tab', 
+                                      next_tab: 'loader-name-matched-name-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_matched_name', 
+                                      link_text: 'Match'.html_safe, 
+                                      link_id: 'loader-name-matched-name-tab', 
+                                      link_title: 'Edit Loader Name Match.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-edit-tab', 
+                                      next_tab: 'loader-name-delete-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_delete', 
+                                      link_text: 'Delete'.html_safe, 
+                                      link_id: 'loader-name-delete-tab', 
+                                      link_title: 'Delete loader name record.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-matched-name-tab', 
+                                      next_tab: 'loader-name-create-syn-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_create_syn', 
+                                      link_text: 'Syn+'.html_safe, 
+                                      link_id: 'loader-name-create-syn-tab', 
+                                      link_title: 'Create loader name synonym record.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-delete-tab', 
+                                      next_tab: 'loader-name-create-misapp-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: false,
+                                      this_tab: 'tab_create_misapp', 
+                                      link_text: 'Mis+'.html_safe, 
+                                      link_id: 'loader-name-create-misapp-tab', 
+                                      link_title: 'Create loader name misapplication record.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-create-syn-tab', 
+                                      next_tab: 'loader-name-ref-instance-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: false,
+                                      this_tab: 'tab_switch_batch', 
+                                      link_text: 'Batch'.html_safe, 
+                                      link_id: 'loader-name-switch-batch-tab', 
+                                      link_title: 'Switch to another batch.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-create-misapp-tab', 
+                                      next_tab: 'loader-name-ref-instance-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: false,
+                                      this_tab: 'tab_ref_instance', 
+                                      link_text: 'Ref'.html_safe, 
+                                      link_id: 'loader-name-ref-instance-tab', 
+                                      link_title: 'Choose the reference instance for the taxonomy record.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-create-misapp-tab', 
+                                      next_tab: 'loader-name-rev-comments-tab'} %>  
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_rev_comments', 
+                                      link_text: 'Rev'.html_safe, 
+                                      link_id: 'loader-name-rev-comments-tab', 
+                                      link_title: 'See any review comments for this loader name record',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-ref-instance-tab', 
+                                      next_tab: 'loader-name-details-tab'} %> 
+
+  <% end %>
+
+</ul>
+

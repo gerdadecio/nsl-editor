@@ -24,11 +24,11 @@ class NamesSearchAutonymWrongRank < ActionController::TestCase
 
   test "search for autonyms that do not exist" do
     get(:search,
-        { query_target: "Names",
-          query_string: "autonym-has-invalid-rank:" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "Names",
+                  query_string: "autonym-has-invalid-rank:" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary", true, "Should run"
   end

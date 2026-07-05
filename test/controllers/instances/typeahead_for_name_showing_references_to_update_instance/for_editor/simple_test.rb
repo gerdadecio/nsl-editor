@@ -32,11 +32,11 @@ class InstTAhead4NameShowRefToUpdSynonymy4EditTest < ActionController::TestCase
     instance = instances(:xyz_costata_is_synonym_of_angophora_costata)
     @request.headers["Accept"] = "application/javascript"
     get(:typeahead_for_name_showing_references_to_update_instance,
-        { term: "an",
-          instance_id: instance.id },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { term: "an",
+                  instance_id: instance.id },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert response.body.length > 2, "Search should have results."
     assert_match FIN, response.body, "Missing: #{FIN}"
     assert_match FCOMB, response.body, "Missing: #{FCOMB}"

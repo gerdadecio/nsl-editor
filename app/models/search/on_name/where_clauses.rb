@@ -18,6 +18,7 @@
 #
 class Search::OnName::WhereClauses
   attr_reader :sql
+
   DEFAULT_FIELD = "name:"
 
   def initialize(parsed_request, incoming_sql)
@@ -81,9 +82,18 @@ class Search::OnName::WhereClauses
     when 1 then @sql = @sql.where(rule.predicate, rule.processed_value)
     when 2 then supply_value_twice(rule)
     when 3 then supply_value_thrice(rule)
+    when 4 then supply_value_four_times(rule)
     else
-      raise "Where clause value frequency (#{rule.value_frequency}), too high."
+      raise "Token frequency (#{rule.value_frequency}) in name qry, too high."
     end
+  end
+
+  def supply_value_four_times(rule)
+    @sql = @sql.where(rule.predicate,
+                      rule.processed_value,
+                      rule.processed_value,
+                      rule.processed_value,
+                      rule.processed_value)
   end
 
   def supply_value_thrice(rule)
@@ -111,6 +121,7 @@ class Search::OnName::WhereClauses
   def apply_common_and_cultivar(rule)
     debug("apply_common_and_cultivar: #{rule.try('where_clause')}")
     return if @common_and_cultivar_included
+
     if rule.allow_common_and_cultivar
       @common_and_cultivar_included = true
       debug("now including common and cultivar!!!!!!")
@@ -121,7 +132,7 @@ class Search::OnName::WhereClauses
 
   def apply_order(rule)
     @sql = if rule.order
-             @sql.order(rule.order)
+             @sql.order(Arel.sql(rule.order))
            else
              @sql.order("full_name")
            end

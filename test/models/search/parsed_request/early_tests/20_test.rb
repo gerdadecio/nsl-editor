@@ -24,6 +24,7 @@ class SearchParsedRequest20Test < ActiveSupport::TestCase
     query_string = "limit:20"
     params = ActiveSupport::HashWithIndifferentAccess.new
     params[:query_target] = "name"
+    params[:canonical_query_target] = "names"
     params[:query_string] = query_string
     params[:include_common_and_cultivar_session] = true
     parsed_request = Search::ParsedRequest.new(params)

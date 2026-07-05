@@ -24,11 +24,11 @@ class NamesSearchDefinedListEarliestInstNotPrimary < ActionController::TestCase
 
   test "search for earliest instance not primary" do
     get(:search,
-        { query_target: "Names",
-          query_string: "earliest-instance-not-primary:" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "Names",
+                  query_string: "earliest-instance-not-primary:" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9][0-9]* names of/,

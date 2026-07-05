@@ -1,6 +1,5 @@
 <% increment_tab_index(0) %>
 
-<%= divider %>
 <% delete_link = link_to("Delete...",
                          '#',
                          id: "author-delete-link",
@@ -11,7 +10,7 @@
 %>
 <% confirm_delete_link = link_to("Confirm delete",
                                  author_path(@author.id),
-                                 class: "btn btn-danger",
+                                 class: "btn btn-danger confirm-delete-btn",
                                  tabindex: increment_tab_index,
                                  title: "Confirm you want to delete the author.",
                                  remote: true,
@@ -33,10 +32,13 @@
                                   #{confirm_delete_link}
 #{cancel_delete_link}</div>)
 %>
-<div class="width-100-percent hack-to-force-line-separation-for-long-instance-notes">xxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
 
 <div class="actions"> <%= delete_link.html_safe %> </div>
 <div class="width-100-percent"> <%= confirm_or_cancel_element.html_safe %> </div>
 <div id="delete-info-message-container" class="message-container"></div>
 <div id="delete-error-message-container" class="message-container"></div>
+<br>
+<br>
+<br>
+<br>
 

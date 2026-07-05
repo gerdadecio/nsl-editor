@@ -21,13 +21,11 @@ require "test_helper"
 # Single instance note model test.
 class InstanceNoteCanUpdateApcDistNoteTest < ActiveSupport::TestCase
   test "can update instance apc dist note" do
-    assert_nothing_raised("Should not raise exception if everything is ok") do
-      apc_dist_note_key = InstanceNoteKey.find_by_name("APC Dist.")
-      note = InstanceNote.where(instance_note_key_id: apc_dist_note_key.id)
-                         .first
-      note.value = note.value + "x"
-      assert note.valid?, "Updated APC Dist. instance note shd still be valid"
-      note.save!
-    end
+    apc_dist_note_key = InstanceNoteKey.find_by_name("APC Dist.")
+    note = InstanceNote.where(instance_note_key_id: apc_dist_note_key.id)
+                       .first
+    note.value = "#{note.value}x"
+    assert note.valid?, "Updated APC Dist. instance note shd still be valid"
+    note.save!
   end
 end

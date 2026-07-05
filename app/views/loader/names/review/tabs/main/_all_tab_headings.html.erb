@@ -1,0 +1,46 @@
+<ul class="nav nav-tabs">
+  <%= render partial: 'loader/names/review/tabs/main/tab',
+    locals: {link_text: 'Details',
+             first: true,
+             last: false,
+             this_tab: 'tab_details', 
+             link_id: 'loader-name-details-tab', 
+             link_title: 'View a summary, including any comments',
+             display_component: display_component || 'none',
+             tab_index: @tab_index,
+             prev_tab: '.search-result.loader-name-review-vote-tab', 
+             next_tab: '.search-result.loader-name-review-comments-tab' } %> 
+
+  <% unless @loader_name.batch.reviews.empty? %>
+  <%# ToDo: Check permission to comment on this batch %> 
+
+  <%= render partial: 'loader/names/review/tabs/main/tab',
+    locals: {link_text: 'Comment', 
+             this_tab: 'tab_comment', 
+             link_id: 'loader-name-review-comments-tab', 
+             link_title: 'Add a comment',
+             display_component: display_component || 'none',
+             tab_index: @tab_index,
+             first: false,
+             last: false, 
+             prev_tab: '.search-result.loader-name-details-tab', 
+             next_tab: '.search-result.loader-name-review-vote-tab' } %> 
+  <% end %>
+
+  <% unless @loader_name.batch.reviews.empty? %>
+  <%# ToDo: Check permission to vote on this batch %> 
+
+  <%= render partial: 'loader/names/review/tabs/main/tab',
+    locals: {link_text: 'Vote', 
+             this_tab: 'tab_vote', 
+             link_id: 'loader-name-review-vote-tab', 
+             link_title: 'Vote on this loader name',
+             display_component: display_component || 'none',
+             tab_index: @tab_index,
+             first: false,
+             last: true, 
+             prev_tab: '.search-result.loader-name-review-comments-tab', 
+             next_tab: '.search-result.loader-name-details-tab' } %> 
+  <% end %>
+</ul>
+

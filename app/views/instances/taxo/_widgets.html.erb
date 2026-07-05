@@ -1,0 +1,15 @@
+<span class="taxo-icon-container no-decoration">
+  <% instance.in_published_trees.each do |pt| %>
+    <% if pt.excluded %>
+      <%= editor_icon('ban','',class: '') %>
+      <span class='small strong' title="Excluded from the accepted taxonomy">
+        <%= pt.tree_name %>
+      </span>
+    <% else %>
+      <%= editor_icon('check','',class: '') %>
+      <span class='small strong' title="In taxonomy">
+        <%= pt.tree_name %>
+      </span>
+    <% end %>
+  <% end %>
+</span>

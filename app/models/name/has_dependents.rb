@@ -19,7 +19,7 @@
 
 # I can Deduplicate a name
 # I have a name I can deduplicate
-# 
+#
 class Name::HasDependents
   def initialize(name)
     @name = name
@@ -27,7 +27,7 @@ class Name::HasDependents
   end
 
   def overview
-    result = Hash.new
+    result = {}
     # family members
     result[:children] = @children.size
     result[:second_children] = @second_children.size
@@ -53,7 +53,7 @@ class Name::HasDependents
   end
 
   def tree_versions
-    @name.tree_elements.collect do | te |
+    @name.tree_elements.collect do |te|
       te.tree_version_elements.collect do |tve|
         tve.tree_version
       end
@@ -61,7 +61,7 @@ class Name::HasDependents
   end
 
   def trees
-    @name.tree_elements.collect do | te |
+    @name.tree_elements.collect do |te|
       te.tree_version_elements.collect do |tve|
         tve.tree_version.tree
       end
@@ -69,14 +69,15 @@ class Name::HasDependents
   end
 
   def trees_2
-    t = @name.tree_elements.collect do |te|
-          te.tree_version_elements.collect {|tve| tve.tree_version.tree.name + '::' +
-                                                  tve.tree_version.draft_name + '::' +
-                                                  tve.tree_version.published.to_s}
-        end
-    t
+    @name.tree_elements.collect do |te|
+      te.tree_version_elements.collect do |tve|
+        tve.tree_version.tree.name + "::" +
+          tve.tree_version.draft_name + "::" +
+          tve.tree_version.published.to_s
+      end
+    end
   end
- 
+
   private
 
   def identify_dependencies
@@ -88,7 +89,7 @@ class Name::HasDependents
     debug("instances: #{@instances.size}")
     @duplicates_of = Name.where(duplicate_of_id: @name.id)
     debug("duplicates of: #{@duplicates_of.size}")
-    @tree_elements = TreeElement.where(name_id: @name.id)
+    @tree_elements = Tree::Element.where(name_id: @name.id)
     debug("tree elements: #{@tree_elements.size}")
     @comments = @name.comments
     debug("comments: #{@comments.size}")
@@ -99,7 +100,7 @@ class Name::HasDependents
   end
 
   def debug(msg)
-    #Rails.logger.debug('With dependents....')
+    # Rails.logger.debug('With dependents....')
     puts(msg)
   end
 end

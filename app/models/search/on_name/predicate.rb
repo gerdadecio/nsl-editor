@@ -22,6 +22,7 @@ class Search::OnName::Predicate
               :trailing_wildcard,
               :leading_wildcard,
               :multiple_values,
+              :allow_split_on_semicolon,
               :predicate,
               :value_frequency,
               :processed_value,
@@ -58,12 +59,10 @@ class Search::OnName::Predicate
     @scope_ = rule[:scope_] || ""
     @trailing_wildcard = rule[:trailing_wildcard] || false
     @leading_wildcard = rule[:leading_wildcard] || false
-    apply_rule_overflow(rule)
-  end
-
-  def apply_rule_overflow(rule)
     @wildcard_embedded_spaces = rule[:wildcard_embedded_spaces] || false
     @multiple_values = rule[:multiple_values] || false
+    @allow_split_on_semicolon = rule[:allow_split_on_semicolon] || false
+    @split_char = work_out_split_char
     @predicate = build_predicate(rule)
     @allow_common_and_cultivar = rule[:allow_common_and_cultivar] || false
     @tokenize = rule[:tokenize] || false
@@ -79,17 +78,25 @@ class Search::OnName::Predicate
                        end
   end
 
+  def work_out_split_char
+    return ',' unless @multiple_values
+    return ',' unless @allow_split_on_semicolon
+
+    @value.match(/;/) ? ';' : ','
+  end
+
   def process_value
     @processed_value = @canon_value
     @processed_value = "%#{@processed_value}" if @leading_wildcard
     @processed_value = "#{@processed_value}%" if @trailing_wildcard
     @processed_value = @processed_value.tr("\u00D7", "x") if @convert_symbol_to_x
     return unless @wildcard_embedded_spaces
+
     @processed_value = @processed_value.gsub(/  */, "%").to_s
   end
 
   def build_predicate(rule)
-    if @multiple_values && @value.split(/,/).size > 1
+    if @multiple_values && @value.split(@split_char).size > 1
       rule[:multiple_values_where_clause]
     else
       build_scalar_predicate(rule)
@@ -108,15 +115,15 @@ class Search::OnName::Predicate
     if rule[:not_exists_clause].present?
       rule[:not_exists_clause]
     else
-      rule[:where_clause].gsub(/= \?/, "is null")
-                         .gsub(/like lower\(\?\)/, "is null")
-                         .gsub(/like lower\(f_unaccent\(\?\)\)/, "is null")
+      rule[:where_clause].gsub("= ?", "is null")
+                         .gsub("like lower(?)", "is null")
+                         .gsub("like lower(f_unaccent(?))", "is null")
     end
   end
 
   def build_canon_value(val)
-    if @multiple_values && @value.split(/,/).size > 1
-      val.split(",").collect(&:strip)
+    if @multiple_values && @value.split(@split_char).size > 1
+      val.split(@split_char).collect(&:strip)
     else
       val.tr("*", "%")
     end

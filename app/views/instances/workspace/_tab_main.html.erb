@@ -1,3 +1,6 @@
+<div id="common-error-message-container" class="error-container"></div>
+<% if can? :place_name, @working_draft %>
+
 <% if @tree_version_element.present? %>
   <% if @tree_version_element&.tree_element&.instance == @instance %>
     <%= render partial: "instances/workspace/draft_placement" %>
@@ -8,4 +11,16 @@
   <% end %>
 <% else %>
   <%= render partial: "instances/workspace/new_placement" %>
+<% end %>
+
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      focusOnField('place_name_comment');
+    })
+  </script>
+<% end %>
+
+<% else %>
+  You are not authorised to work on the current draft.
 <% end %>

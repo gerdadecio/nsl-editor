@@ -17,17 +17,16 @@
 #   limitations under the License.
 #
 class HelpController < ApplicationController
-  before_filter :hide_details, :empty_search
+  before_action :hide_details, :empty_search
 
-  def index
-  end
+  def index; end
+  def how_to_search; end
+  def instance_models; end
+  def ref_type_rules; end
+  def typeaheads; end
+  def name_rules; end
 
-  def instance_models
-  end
-
-  def ref_type_rules
-  end
-
-  def typeaheads
+  def instance_types
+    @instance_types = InstanceType.all.order("sort_order,name")
   end
 end

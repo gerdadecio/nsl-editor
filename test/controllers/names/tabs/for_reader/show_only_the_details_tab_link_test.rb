@@ -28,10 +28,10 @@ class NameReaderOnlyDetailsTab < ActionController::TestCase
   test "should not show reader the edit tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @name.id, tab: "tab_edit" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { id: @name.id, tab: "tab_edit" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :forbidden
   end
 
@@ -42,10 +42,10 @@ class NameReaderOnlyDetailsTab < ActionController::TestCase
   test "reader should see only details tab link" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @name.id, tab: "tab_details" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { id: @name.id, tab: "tab_details" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "a#name-details-tab", true, "Should show 'Detail' tab."
     assert_select "a#name-edit-tab", false, "Should not show 'Edit' tab."

@@ -27,11 +27,13 @@ class AuthorEditMarkAsDuplicateOfSimpleTest < ActionController::TestCase
     author = authors(:clarke_1)
     intended_dupe = authors(:clarke_2)
     patch(:update,
-          { id: intended_dupe.id,
-            author: { "name" => "Clarke",
-                      "duplicate_of_typeahead" => "Clarke",
-                      "duplicate_of_id" => author }, },
-          username: "fred", user_full_name: "Fred Jones", groups: ["edit"])
+          params: { id: intended_dupe.id,
+                    author: { "name" => "Clarke",
+                              "duplicate_of_typeahead" => "Clarke",
+                              "duplicate_of_id" => author }, },
+          session: { username: "fred",
+                     user_full_name: "Fred Jones",
+                     groups: ["edit"] })
     assert_response :success
     expected_dupe = Author.find(intended_dupe.id)
     assert_equal author.id, expected_dupe.duplicate_of_id, "Should be equal."

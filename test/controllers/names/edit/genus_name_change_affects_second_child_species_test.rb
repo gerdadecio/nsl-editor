@@ -31,9 +31,12 @@ class GenusNameChangeAffects2ndChildSpAndSubspTest < ActionController::TestCase
     subspecies = names(:hybrid_formula)
     @request.headers["Accept"] = "application/javascript"
     # post(:update, { name: { 'name_element' => genus.name_element+'XYZ'},
-    post(:update, { name: { "name_element" => "XYZ" },
-                    id: genus.id },
-         username: "fred", user_full_name: "Fred Jones", groups: ["edit"])
+    post(:update,
+         params: { name: { "name_element" => "XYZ" },
+                   id: genus.id },
+         session: { username: "fred",
+                    user_full_name: "Fred Jones",
+                    groups: ["edit"] })
     assert_response :success
     sleep(2) # to allow for the asynch job
     species_afterwards = Name.find(species.id)

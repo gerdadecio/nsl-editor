@@ -1,0 +1,105 @@
+<h4>Loader Name search help</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'has-review-comment:',
+     descr: "Search for loader names that have been commented on. Takes no argument. Records returned in context of synonymy.  "},
+    {field_name: 'review-comment:',
+     descr: "Search for loader names that have a comment matching a given string. (Full context returned.)"},
+    {field_name: 'has-review-comment-by:',
+     descr: "Search for loader names that have been commented on by a particular user (user-id). (Full context returned.)"},
+    {field_name: 'concept-note:',
+     descr: "Search for loader names that have a concept note matching a given string. (Full context returned.)"},
+    {field_name: 'distribution:',
+     descr: "Search for loader names that have a distribution matching a given string. (Full context returned.)"},
+    {field_name: 'distribution-not:',
+     descr: "Search for loader names that have a distribution without a given string. (Full context returned.)"},
+    {field_name: 'no-distribution:',
+     descr: "Search for loader names that have no distribution string. Takes no argument. (Full context returned.)"},
+    {field_name: 'family:',
+     descr: "Return all the names in matching families. You can give one argument with or without wildcards, or several comma-separated arguments that do not have wildcards. e.g. <code>family: myrtaceae</code>, or <code>family: b*</code>, or <code>family: myrtaceae, acacia</code>"},
+    {field_name: 'family-list:',
+     descr: "Return a list of matching families. Arguments same as for <code>family:</code>"},
+    {field_name: 'remark:',
+     descr: "Search for loader names containing a remark to reviewers - wildcards are added automatically, so no argument becomes a wildcard and retrieves all remarks."},
+    {field_name: 'higher-rank-comment:',
+     descr: "Search for loader names containing a higher-rank-comment - wildcards are added automatically."},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:descr].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+<h4>Vote search</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'org-voted:',
+     descr: "Search for loader names with a vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
+    {field_name: 'org-not-voted:',
+     descr: "Search for loader names with no vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument not fully supported - aim for an org abbreviation that matches just one organisation."},
+    {field_name: 'org-voted-yes:',
+     descr: "Search for loader names with a 'yes' vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
+    {field_name: 'org-voted-no:',
+     descr: "Search for loader names with a 'no' vote recorded by the organisation (abbreviation) you provide - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:descr].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+<h4>Print-ready output</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'print:',
+     descr: "Prepare the output for printing"},
+    {field_name: 'print-with-comments:',
+     descr: "Prepare the output for printing, also showing review comments"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:descr].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+
+<%= render partial: 'help/case_and_wildcards_search' %>

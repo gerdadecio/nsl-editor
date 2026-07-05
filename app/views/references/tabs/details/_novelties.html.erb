@@ -1,0 +1,36 @@
+
+
+<% novelties = @reference.novelties %>
+<% if novelties.size > 0 %>
+  <br>
+  <% if novelties.size == 1 %>
+    <%= link_to("1 Novelty #{search_icon_on_tab}".html_safe,
+                          search_path(query_target: "references", query_string: "id: #{@reference.id} show-novelties:"),
+                          tabindex: increment_tab_index,
+                          title: 'Search for the instance with novelty.') %>
+  <% else %>
+    <%= "#{novelties.size} Novelties" %>
+    <br>
+    <%= link_to("&mdash; sorted by name #{search_icon_on_tab}".html_safe,
+                search_path(query_string:
+                            "id: #{@reference.id} show-novelties:",
+                            query_target: 'references'),
+                tabindex: increment_tab_index,
+                title: 'Search for the novelties, sorted by name.',
+                class: 'instance')
+    %>
+    <br>
+    <%= link_to("&mdash; sorted by page #{search_icon_on_tab}".html_safe,
+                search_path(query_string: "id:#{@reference.id.to_s} show-novelties-by-page:",
+                            query_target: "references"),
+                tabindex: increment_tab_index,
+                title: 'Search for the novelties, sorted by page.',
+                class: 'instance')
+    %>
+   <% end %>
+   <br>
+   <%= link_to("Novel Names #{search_icon_on_tab}".html_safe,
+                         search_path(query_target: "names", query_string: "novel-names-for-ref: #{@reference.id} s-i:"),
+                         tabindex: increment_tab_index,
+                         title: 'Search for novel names linked to this reference.') %>
+<% end %>

@@ -13,14 +13,13 @@
     <% end %>
     <div id="search-result-details-info-message-container" class="message-container"></div>
     <div id="search-result-details-error-message-container" class="message-container"></div>
+    <br>
     <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
 
     <div class="form-group">
-      <label for="name">Name</label>
-      <%= f.text_field :name, class: 'form-control give-me-focus', title: "Enter author name", tabindex: increment_tab_index, autofocus: true %>
-      <% if @author.new_record? %>
-        <p class="help-block">e.g. Fischer, F.E.L. von, Meyer, C.A.A. von &amp; Ave-Lallelant, J.L.E.</p>
-      <% end %>
+      <label for="name">Name<span class="red">*</span></label>
+      <%= f.text_field :name, class: 'form-control give-me-focus', required: true,  title: "Enter author name", tabindex: increment_tab_index, autofocus: true %>
+      <p class="help-block">e.g. Fischer, F.E.L. von, Meyer, C.A.A. von &amp; Ave-Lallelant, J.L.E.</p>
     </div>
 
     <div class="form-group">
@@ -29,9 +28,9 @@
     </div>
 
     <div class="form-group">
-      <label for="full_name">Extra information to distinguish name</label>
-      <%= f.text_field :full_name, class: 'form-control', title: "Enter any optional information to distinguish this author from others with similar names.", tabindex: increment_tab_index %>
-      <p class="help-block">Will display in brackets beside the author's name.</p>
+      <label for="extra_information">Extra information to distinguish name</label>
+      <%= f.text_field :extra_information, class: 'form-control', title: "Enter any optional information to distinguish this author from others with similar names.", tabindex: increment_tab_index %>
+      <p class="help-block">Will display beside the author's name and in authority typeaheads.</p>
     </div>
 
     <div class="form-group">
@@ -59,7 +58,7 @@
     <hr>
 
     <div class="form-group align-right">
-      <% if @author.id.blank? %>
+      <% if @tab.blank? %>
           <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new author", tabindex: increment_tab_index, data: {element_id: "new-author-#{params[:random_id]}"} %>
       <% end %>
       <%= f.submit "Save", id: 'author-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
@@ -67,3 +66,10 @@
 
 <% end %>
 
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      focusOnField('author_name');
+    })
+  </script>
+<% end %>

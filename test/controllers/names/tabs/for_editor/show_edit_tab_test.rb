@@ -28,10 +28,10 @@ class ShowEditTest < ActionController::TestCase
   test "should show name edit tab" do
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        { id: @name.id, tab: "tab_edit" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"])
+        params: { id: @name.id, tab: "tab_edit" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
     assert_response :success
     assert_select "li.active a#name-edit-tab", "Edit", "Should show 'Edit' tab."
     assert_select "form", true

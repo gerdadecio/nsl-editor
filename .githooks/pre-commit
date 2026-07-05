@@ -1,0 +1,138 @@
+#!/bin/bash
+#
+# pre-commit: block commits that introduce Bootstrap 3/4 classes that were
+# removed or renamed in Bootstrap 5.
+#
+# Why: this app is mid-migration to Bootstrap 5 (see vendor/assets/stylesheets/
+# bootstrap5-compat.css, which shims the legacy classes the existing views still
+# use). The shim keeps old markup rendering, but we don't want NEW code to keep
+# introducing BS3 classes — that just grows the pile we eventually have to undo.
+#
+# What it does: scans only the ADDED lines in the staged diff (not whole files),
+# so editing a legacy file doesn't nag you about classes that were already there
+# — it only flags BS3 classes you're introducing in this commit.
+#
+# It is a GATE: if any introduced line uses a flagged BS3/4 class, the commit is
+# blocked (exit non-zero). Fix the classes to proceed.
+#
+# Bypass entirely with the standard:  git commit --no-verify
+#
+# Installed via core.hooksPath=.githooks (see bin/setup).
+# Implemented in Perl for portability (macOS ships BSD awk, which mishandles
+# multi-line program data; Perl is reliably present and already used by the
+# repo's other hooks).
+
+# Only scan front-end-ish files. Keeps the scan fast and avoids matching the
+# class tokens inside unrelated Ruby/SQL/etc.
+globs=('*.erb' '*.html' '*.html.erb' '*.haml' '*.js' '*.jsx' '*.css' '*.scss' '*.rb')
+
+# Nothing staged in those file types -> nothing to do.
+if ! git diff --cached --name-only --diff-filter=ACM -- "${globs[@]}" | grep -q .; then
+  exit 0
+fi
+
+# The Perl scanner reads `git diff --cached -U0`, which emits per changed file:
+# a `+++ b/<path>` header, `@@ ... +start,count @@` hunk headers, and `+`/`-`
+# lines (no context lines at -U0). It tracks the current file and new-file line
+# number so it can report file:line for each offending added line.
+#
+# Rules live in the @rules table below as [regex, suggestion]. Each regex is
+# matched with class-boundary lookarounds so e.g. `pull-right` won't fire inside
+# `xpull-right`. We deliberately skip ultra-generic words (hidden, caret,
+# divider, media, label, well, panel) that collide with plain English/HTML.
+output=$(git diff --cached -U0 --diff-filter=ACM -- "${globs[@]}" | perl -e '
+# Each rule is [display-name, match-regex, suggestion]. Keeping the human label
+# separate from the regex means findings read "pull-right" rather than the raw
+# compiled pattern.
+my @rules = (
+  [ "pull-left",        qr/pull-left/,        "float-start" ],
+  [ "pull-right",       qr/pull-right/,       "float-end" ],
+  [ "img-responsive",   qr/img-responsive/,   "img-fluid" ],
+  [ "img-circle",       qr/img-circle/,       "rounded-circle" ],
+  [ "img-rounded",      qr/img-rounded/,      "rounded" ],
+  [ "center-block",     qr/center-block/,     "mx-auto (with d-block)" ],
+  [ "btn-default",      qr/btn-default/,      "btn-secondary / btn-light" ],
+  [ "btn-xs",           qr/btn-xs/,           "btn-sm" ],
+  [ "col-xs-*",         qr/col-xs-[0-9]+/,    "col-[n] (the default, no-prefix tier)" ],
+  [ "col-*-offset-*",   qr/col-(?:sm|md|lg|xl)-offset-[0-9]+/, "offset-(sm|md|lg|xl)-[n]" ],
+  [ "form-group",       qr/form-group/,       "removed — use spacing utilities (e.g. mb-3)" ],
+  [ "navbar-inverse",   qr/navbar-inverse/,   "navbar-dark" ],
+  [ "navbar-fixed-top", qr/navbar-fixed-top/, "fixed-top" ],
+  [ "navbar-fixed-bottom", qr/navbar-fixed-bottom/, "fixed-bottom" ],
+  [ "navbar-static-top",   qr/navbar-static-top/,   "sticky-top" ],
+  [ "navbar-toggle",    qr/navbar-toggle/,    "navbar-toggler" ],
+  [ "navbar-right",     qr/navbar-right/,     "ms-auto" ],
+  [ "navbar-left",      qr/navbar-left/,      "me-auto" ],
+  [ "has-error",        qr/has-error/,        "is-invalid" ],
+  [ "has-success",      qr/has-success/,      "is-valid" ],
+  [ "has-warning",      qr/has-warning/,      "removed — use is-invalid / is-valid" ],
+  [ "help-block",       qr/help-block/,       "form-text" ],
+  [ "control-label",    qr/control-label/,    "col-form-label" ],
+  [ "input-group-btn",  qr/input-group-btn/,  "removed — put the .btn directly in .input-group" ],
+  [ "input-group-addon",qr/input-group-addon/,"input-group-text" ],
+  [ "glyphicon",        qr/glyphicon/,        "removed — use bootstrap-icons or an <svg>/font-awesome icon" ],
+  [ "hidden-{xs,sm,md,lg}",  qr/hidden-(?:xs|sm|md|lg)/,  "d-none / d-(sm|md|lg)-none responsive display utilities" ],
+  [ "visible-{xs,sm,md,lg}", qr/visible-(?:xs|sm|md|lg)/, "d-* responsive display utilities" ],
+  [ "dl-horizontal",    qr/dl-horizontal/,    "removed — use .row on the <dl> with grid columns" ],
+  [ "page-header",      qr/page-header/,      "removed — use a heading with border-bottom + pb-2" ],
+  [ "sr-only",          qr/sr-only/,          "visually-hidden" ],
+  [ "panel-default",    qr/panel-default/,    "card" ],
+  [ "panel-heading",    qr/panel-heading/,    "card-header" ],
+  [ "panel-body",       qr/panel-body/,       "card-body" ],
+  [ "panel-title",      qr/panel-title/,      "card-title" ],
+  [ "panel-footer",     qr/panel-footer/,     "card-footer" ],
+  [ "well-{lg,sm}",     qr/well-(?:lg|sm)/,   "removed — use .card or .border with padding" ],
+  [ "thumbnail",        qr/thumbnail/,        "removed — use .img-thumbnail (image) or .card (block)" ],
+  [ "label-{default,primary,...}", qr/label-(?:default|primary|success|info|warning|danger)/, "badge text-bg-*" ],
+);
+
+my ($file, $newline, $hits) = ("", 0, 0);
+while (my $line = <STDIN>) {
+  if ($line =~ m{^\+\+\+ b/(.*)}) { $file = $1; next; }
+  if ($line =~ m{^\@\@ .*\+(\d+)})  { $newline = $1; next; }   # new-file start line
+  if ($line =~ m{^\+}) {                                        # an added line
+    my $text = substr($line, 1);
+    for my $r (@rules) {
+      my ($name, $pat, $sug) = @$r;
+      # class-boundary: token not flanked by [A-Za-z0-9_-]
+      if ($text =~ /(?<![A-Za-z0-9_-])$pat(?![A-Za-z0-9_-])/) {
+        printf "  %s:%d\n      .%s  ->  %s\n", $file, $newline, $name, $sug;
+        $hits++;
+      }
+    }
+    $newline++;
+    next;
+  }
+  # `-` (removed) lines do not advance the new-file counter; no context at -U0.
+}
+exit($hits > 0 ? 2 : 0);
+')
+status=$?
+
+if [ "$status" -eq 2 ]; then
+  # Colours (fall back to plain if not a tty / no tput).
+  if [ -t 2 ] && command -v tput >/dev/null 2>&1 && [ "$(tput colors 2>/dev/null || echo 0)" -ge 8 ]; then
+    Y=$(tput setaf 3); R=$(tput setaf 1); B=$(tput bold); N=$(tput sgr0)
+  else
+    Y=""; R=""; B=""; N=""
+  fi
+
+  {
+    echo ""
+    echo "${R}${B}✖  Bootstrap 5 compatibility check failed${N}"
+    echo "${Y}   The lines you're adding use Bootstrap 3/4 classes that BS5 removed or renamed:${N}"
+    echo ""
+    echo "$output"
+    echo ""
+    echo "   These currently only work because of the BS3 shim"
+    echo "   (vendor/assets/stylesheets/bootstrap5-compat.css). Prefer the BS5 class so we"
+    echo "   don't grow the migration backlog."
+    echo ""
+    echo "${R}${B}   Blocking this commit.${N} Fix the classes above to proceed, or bypass with:"
+    echo "   ${B}git commit --no-verify${N}"
+    echo "$N"
+  } >&2
+  exit 1
+fi
+
+exit 0

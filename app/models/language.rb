@@ -16,7 +16,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Language < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: language
+#
+#  id           :bigint           not null, primary key
+#  iso6391code  :string(2)
+#  iso6393code  :string(3)        not null
+#  lock_version :bigint           default(0), not null
+#  name         :string(50)       not null
+#
+# Indexes
+#
+#  uk_g8hr207ijpxlwu10pewyo65gv  (name) UNIQUE
+#  uk_hghw87nl0ho38f166atlpw2hy  (iso6391code) UNIQUE
+#  uk_rpsahneqboogcki6p1bpygsua  (iso6393code) UNIQUE
+#
+class Language < ApplicationRecord
   self.table_name = "language"
   self.primary_key = "id"
   has_many :references
@@ -34,7 +50,7 @@ class Language < ActiveRecord::Base
 
   # For any language select list.
   def self.options
-    all.order(ORDER_BY).collect do |lang|
+    all.order(Arel.sql(ORDER_BY)).collect do |lang|
       [lang.name, lang.id]
     end.insert(5, ["──────────", "disabled"])
   end

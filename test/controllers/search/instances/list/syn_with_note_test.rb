@@ -24,11 +24,11 @@ class SearchInstListSynWithNoteTest < ActionController::TestCase
 
   test "search for instances that are synonyms with a note" do
     get(:search,
-        { query_target: "instance",
-          query_string: "syn-with-note:" },
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [])
+        params: { query_target: "instance",
+                  query_string: "syn-with-note:" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9] record\b/,

@@ -1,0 +1,629 @@
+---
+- :date: 18-Nov-2016
+  :release: true
+- :date: 11-Nov-2016
+  :jira_id: '2048'
+  :description: |-
+    Add a case-sensitive regex match search on APC Dist. notes.
+- :date: 11-Nov-2016
+  :jira_id: '2041'
+  :description: |-
+    Fix CSV link for instance queries.
+- :date: 08-Nov-2016
+  :jira_id: '2007'
+  :description: |-
+    Preliminary changes associated with workspace tree editing.
+- :date: 02-Nov-2016
+  :release: true
+- :date: 02-Nov-2016
+  :jira_id: ''
+  :description: |-
+    Fix icons
+- :date: 27-Oct-2016
+  :release: true
+- :date: 27-Oct-2016
+  :jira_id: '2004'
+  :description: |-
+    Default new phrase name status to 'n/a'.
+- :date: 26-Oct-2016
+  :jira_id: '2011'
+  :description: |-
+    The name typeahead for creating an unpublished citation now expects
+    text-only (no ID) results to match exactly.
+- :date: 25-Oct-2016
+  :jira_id: '2004'
+  :description: |-
+    New entry form for phrase names.
+- :date: 24-Oct-2016
+  :jira_id: '2024'
+  :description: |-
+    Removed the Search dropdown options "Instance for Ref ID" and "Instances
+    sorted by page for Ref Id". <br/><br/>Get the same result by applying
+    "show-instances:" or "show-instances-by_page:" to Reference searches.
+- :date: 24-Oct-2016
+  :jira_id: '2011'
+  :description: |-
+    The name typeahead for creating an unpublished citation now starts
+    validating text strings case-sensitively.  <br/><br/>For example,
+    "Blue Gum" and "Blue gum" are distinct.  If it finds no matches that way
+    it resumes checking case-INsensitively - so if you entered the right name
+    in the wrong case, it will still find the name.
+- :date: 23-Oct-2016
+  :jira_id: '1740'
+  :description: |-
+    Added reference search for "pub-date-matches:".  <br/><br/>It takes simple
+    regular expressions and finds matching publication dates. Examples on the
+    Reports tab.  [Partial solution to JIRA.]
+- :date: 23-Oct-2016
+  :jira_id: '1740'
+  :description: |-
+    Added reference search for "pub-date-is-year:", which returns references 
+    with a 4-digit publication date, with or without surrounding parentheses. 
+    <br/><br/>Examples on Reports tab.  [Partial solution to JIRA.]
+- :date: 23-Oct-2016
+  :jira_id: '1740'
+  :description: |-
+    Added search for references with no value in the year. ie. "no-year:".
+    Examples on Reports tab.  [Partial solution to JIRA.]
+- :date: 23-Oct-2016
+  :jira_id: '2018'
+  :description: |-
+    Added reference parent help text (under field) for reference type of
+    "Paper".
+- :date: 22-Oct-2016
+  :jira_id: '1739'
+  :description: |-
+    Sort name instances to the top if the reference has no year.
+- :date: 21-Oct-2016
+  :jira_id: '2012'
+  :description: |-
+    Add "show-instances-by-page:" for reference searches.
+- :date: 19-Oct-2016
+  :jira_id: '2013'
+  :description: |-
+    Show 'test' in the page title for the test environment.
+- :date: 13-Oct-2016
+  :release: true
+- :date: 11-Oct-2016
+  :jira_id: '1735'
+  :description: |-
+    Unpublished citation name typeahead now works with common names that match
+    scientific names when wildcarded.  <br/><br/>It works like name authors:
+    if you enter text that matches exactly one name, then that name will be
+    used.  E.g.  "acacia"
+- :date: 11-Oct-2016
+  :jira_id: '2001'
+  :description: |-
+    Add show-instances: option for reference searches.
+- :date: 10-Oct-2016
+  :jira_id: '2008'
+  :description: |-
+    Instances for reference sorted by page fixed.
+- :date: 10-Oct-2016
+  :jira_id: '2009'
+  :description: |-
+    Remove the feedback link from the universal page footer and add a feedback
+    link to the Help menu.
+- :date: 07-Oct-2016
+  :jira_id: '2006'
+  :description: |-
+    Fix add unpublished citation.
+- :date: 06-Oct-2016
+  :release: true
+- :date: 05-Oct-2016
+  :jira_id: '1998'
+  :description: |-
+    Report for Names "at-top-of-accepted-tree:".  The names at the top of the
+    accepted tree include Plantae and "unplaced" names.
+- :date: 04-Oct-2016
+  :jira_id: '2000'
+  :description: |-
+    Display page or page range for References in query results listing.
+- :date: 04-Oct-2016
+  :jira_id: '1701'
+  :description: |-
+    Name edit error messages are now cleared before a new
+          message is presented.
+- :date: 30-Sep-2016
+  :jira_id: ''
+  :description: Refactoring code - no visible changes.
+- :date: 29-Sep-2016
+  :jira_id: '1999'
+  :description: |-
+    Search successfully for uppper-case diacritics. e.g.
+          you can now set author Ollegaard as duplicate of author Øllegaard.
+- :date: 21-Sep-2016
+  :release: true
+- :date: 21-Sep-2016
+  :jira_id: '1984'
+  :description: |-
+    Cultivar tags working again, now with a work-around in
+          the program that is invisible to users.
+- :date: 19-Sep-2016
+  :jira_id: '1989'
+  :description: |-
+    Reference duplicate-of typeahead now works again
+          consistently.
+- :date: 19-Sep-2016
+  :jira_id: '1950'
+  :description: |-
+    Warn if an accepted name is being added as a
+          synonym of another accepted name.
+- :date: 16-Sep-2016
+  :jira_id: '1987'
+  :description: Sort names using the sort_name key.
+- :date: 16-Sep-2016
+  :release: true
+- :date: 12-Sep-2016
+  :jira_id: ''
+  :description: Now running on CSIRO infrastructure.
+- :date: 12-Sep-2016
+  :jira_id: '1954'
+  :description: Prevent double synonyms being created.
+- :date: 09-Sep-2016
+  :jira_id: '1954'
+  :description: |-
+    Two reports on double synonyms - "has" double synonyms and
+          "is" a double synonym.
+- :date: 09-Sep-2016
+  :release: true
+- :date: 08-Sep-2016
+  :jira_id: '1974'
+  :description: Report of any name listed as synonym of itself.
+- :date: 08-Sep-2016
+  :jira_id: '1952'
+  :description: Prevent any name being a synonym of itself.
+- :date: 07-Sep-2016
+  :jira_id: '1951'
+  :description: Report of accepted names as synonyms of accepted names.
+- :date: 01-Sep-2016
+  :release: true
+- :date: 29-Aug-2016
+  :jira_id: '1956'
+  :description: |-
+    Fix reference parent typeahead problem and improve error
+          messages.
+- :date: 25-Aug-2016
+  :release: true
+- :date: 24-Aug-2016
+  :jira_id: '1943'
+  :description: |-
+    Fix color that is incorrect for some names on some
+          instances.
+- :date: 23-Aug-2016
+  :jira_id: '1939'
+  :description: |-
+    Show error message for attempt to create a duplicate
+          synonym.
+- :date: 23-Aug-2016
+  :jira_id: '1937'
+  :description: |-
+    When an author is deleted the confirmation message
+          should once again show on the tab.
+- :date: 22-Aug-2016
+  :jira_id: '1936'
+  :description: |-
+    Reference typeaheads now handle diacritics, e.g. "é"
+          This includes typeaheads for changing the reference for instances,
+          reference parent, and reference duplicate-of.
+- :date: 19-Aug-2016
+  :release: true
+- :date: 18-Aug-2016
+  :jira_id: '1935'
+  :description: |-
+    Delete reference confirm dialog should now reliably
+          show the success message if the reference is deleted.
+- :date: 18-Aug-2016
+  :release: true
+- :date: 16-Aug-2016
+  :jira_id: '1931'
+  :description: |-
+    Show exception messages for instance create problems e.g.
+          if synonym create double-enter bypasses application-level validation.
+- :date: 15-Aug-2016
+  :jira_id: '1928'
+  :description: Technical upgrade to code.
+- :date: 12-Aug-2016
+  :jira_id: '1929'
+  :description: Name > More > Refresh > Refresh Descendant names... works again.
+- :date: 12-Aug-2016
+  :jira_id: '1926'
+  :description: |-
+    Fix error that prevents details tab displaying for references which
+          are published but have no parent, no year and no publication date
+- :date: 12-Aug-2016
+  :jira_id: '1925'
+  :description: |-
+    When creating a new reference you can once again add a parent from the
+          typeahead. [Tests added too.]
+- :date: 11-Aug-2016
+  :jira_id: '1924'
+  :description: |-
+    Enter key no longer bypasses confirmation dialog when changing the
+          reference for an instance with synonyms. Also, escape key cancels
+          the dialog.
+- :date: 11-Aug-2016
+  :release: true
+- :date: 09-Aug-2016
+  :jira_id: '1918'
+  :description: Restore timezone setting lost on Rails upgrade.
+- :date: 08-Aug-2016
+  :jira_id: '478'
+  :description: |-
+    Show a scrollbar for large search results in old versions of
+          Firefox.
+- :date: 08-Aug-2016
+  :jira_id: '478'
+  :description: |-
+    Work-around formatting problem for search field in old Firefox
+          versions
+- :date: 04-Aug-2016
+  :release: true
+- :date: 03-Aug-2016
+  :jira_id: '775'
+  :description: Upgrade to Rails 4.2, requiring JRuby 9.1.2.0
+- :date: 28-Jul-2016
+  :jira_id: '1900'
+  :description: |-
+    You can now use letters with and without diacritics in author
+          typeaheads and they will match authors with and without diacritics.
+          E.g. "Doll" finds "Doll" and "Döll", "Döll" finds "Doll" and "Döll".
+- :date: 28-Jul-2016
+  :jira_id: '974'
+  :description: |-
+    Report of synonymy instances and the instances that cite them matching
+          the requirements in jira 974. Also a report that retrieves the names
+          for those instances.
+- :date: 28-Jul-2016
+  :release: true
+- :date: 27-Jul-2016
+  :jira_id: '1860'
+  :description: |-
+    Force choice of instance type when copying standalone instance.
+          With refinements
+- :date: 26-Jul-2016
+  :jira_id: '1872'
+  :description: Add new assertion searches for whether an author has authored names.
+- :date: 26-Jul-2016
+  :jira_id: '1872'
+  :description: Stop removal of abbreviation from authors who have authored a name.
+- :date: 25-Jul-2016
+  :jira_id: '1872'
+  :description: |-
+    Allow authors marked as duplicates to have no name and/or
+          abbreviation.
+- :date: 22-Jul-2016
+  :jira_id: '1828'
+  :description: |-
+    Display reference parts correctly. Prevent entry of edition, volume,
+          publication date and year for reference parts.
+- :date: 22-Jul-2016
+  :release: true
+- :date: 20-Jul-2016
+  :jira_id: '1892'
+  :description: Add search on reference notes.  Includes field help and an example.
+- :date: 18-Jul-2016
+  :jira_id: '1889'
+  :description: |-
+    Define new name query arguments "in-accepted-tree:" and
+          "not-in-accepted-tree:". Added field help, name search example, and
+          report example combining with "with-exactly-one_instance:" and
+          "ref-title:".
+- :date: 18-Jul-2016
+  :jira_id: '1889'
+  :description: |-
+    Define a new name query argument "ref-title:" that can be used to find
+        names associated with a matching reference title.
+- :date: 12-Jul-2016
+  :release: true
+- :date: 11-Jul-2016
+  :jira_id: '1882'
+  :description: "Accept author names with accented characters in reference typeahead.\n
+    \     (Remove f_unaccent call in sql that checks authors.) "
+- :date: 28-Jun-2016
+  :jira_id: ''
+  :description: Move the record-level drag-icons onto the details tabs.
+- :date: 24-Jun-2016
+  :jira_id: ''
+  :description: You can drag search result records into the tree editor.
+- :date: 09-Jun-2016
+  :release: true
+- :date: 08-Jun-2016
+  :jira_id: '1840'
+  :description: |-
+    Duplicate of authors now include those with diacritics.
+          e.g. "Thumen" also retrieves "Thümen".
+- :date: 07-Jun-2016
+  :jira_id: '1834'
+  :description: |-
+    Add <q>offset:</q> as a search token for name searches so that work
+          using the is-orth-var-with-no-orth-var-instances report can continue.
+- :date: 02-Jun-2016
+  :release: true
+- :date: 23-May-2016
+  :jira_id: '1810'
+  :description: |-
+    Stop special characters (e.g. &amp;, &#39;) appearing
+          with raw encoding (e.g. &amp;amp;, &amp;#39; ) in some typeahead fields
+          immediately after update. Fixed for Author.duplicate-of field and
+          Reference.parent field.
+- :date: 20-May-2016
+  :jira_id: '1807'
+  :description: |-
+    Add an example of a correctly formatted name under the new Author
+          name field.
+- :date: 19-May-2016
+  :release: true
+- :date: 18-May-2016
+  :jira_id: '1803'
+  :description: Set Name.sort_name on save using service data.
+- :date: 13-May-2016
+  :jira_id: '1778'
+  :description: |-
+    Assume first namespace record is the default namespace for the
+          database.
+- :date: 14-Apr-2016
+  :release: true
+- :date: 13-Apr-2016
+  :jira_id: '1756'
+  :description: Remove stray text on synonym instance details tab.
+- :date: 12-Apr-2016
+  :release: true
+- :date: 04-Apr-2016
+  :jira_id: '1745'
+  :description: |-
+    Include names without instances in the Name typeahead for unpublished
+          citation - problem arose after NSL-945.
+- :date: 31-Mar-2016
+  :release: true
+- :date: 30-Mar-2016
+  :jira_id: '1157'
+  :description: Report for names with earliest instance not primary.
+- :date: 30-Mar-2016
+  :jira_id: '1737'
+  :description: Adjust layout for laptop screen - to show bottom of pages.
+- :date: 30-Mar-2016
+  :jira_id: '945'
+  :description: |-
+    Typeahead on full name (e.g. for adding instance to reference) now
+          excludes names without instances.
+- :date: 30-Mar-2016
+  :jira_id: '1730'
+  :description: Fix validation error when editing APC distribution Instance Note.
+- :date: 24-Mar-2016
+  :release: true
+- :date: 17-Mar-2016
+  :jira_id: '1712'
+  :description: Improve error message for duplicate Author abbreviations.
+- :date: 10-Mar-2016
+  :release: true
+- :date: 03-Mar-2016
+  :jira_id: '1698'
+  :description: |-
+    Author duplicate typeahead now excludes duplicates - all duplicate-of
+          typeaheads now exclude duplicates.
+- :date: 03-Mar-2016
+  :jira_id: '1697'
+  :description: Prevent duplicate Author abbreviations.
+- :date: 03-Mar-2016
+  :release: true
+- :date: 02-Mar-2016
+  :jira_id: '1687'
+  :description: Long Author names are now allowed.
+- :date: 01-Mar-2016
+  :jira_id: '1693'
+  :description: Add "rank:" as a query field for Instances.  See help and examples.
+- :date: 01-Mar-2016
+  :jira_id: '1691'
+  :description: |-
+    Fix Instance Synonymy tab link which appears after a new synonym is
+          created. Once again correctly queries all instances for the Name.
+- :date: 01-Mar-2016
+  :jira_id: '1690'
+  :description: |-
+    Add exact search examples for Author showing how to find embedded
+          substrings with spaces e.g. ' in ' etc.
+- :date: 25-Feb-2016
+  :release: true
+- :date: 24-Feb-2016
+  :jira_id: '1672'
+  :description: Offer typehead name parents in descending taxonomic rank
+- :date: 22-Feb-2016
+  :jira_id: '1673'
+  :description: |-
+    Add search for name with-exactly-one-instance. Examples on Reports
+          tab
+- :date: 22-Feb-2016
+  :jira_id: '1674'
+  :description: Add return before Reference notes on Details tab.
+- :date: 22-Feb-2016
+  :jira_id: '1680'
+  :description: 'New Reference searches for not-type: and parent-type:.'
+- :date: 22-Feb-2016
+  :jira_id: '1676'
+  :description: Name duplicate typeahead does not offer current name.
+- :date: 22-Feb-2016
+  :jira_id: '1679'
+  :description: Fix summary of totals for Name search.
+- :date: 22-Feb-2016
+  :release: true
+- :date: 22-Feb-2016
+  :jira_id: '1675'
+  :description: |-
+    Convert Names plus instances search to Names search with
+          show-instances: directive.
+- :date: 18-Feb-2016
+  :jira_id: '1652'
+  :description: |-
+    Modify is-orth-var-and-non-primary-ref-first: report query to
+          include standalone instances only.
+- :date: 18-Feb-2016
+  :jira_id: '1666'
+  :description: |-
+    Modify Help and Examples for Audit/Review to clarify created-at:,
+          updated-at:, and by: queries.
+- :date: 18-Feb-2016
+  :jira_id: '1666'
+  :description: |-
+    Modify Report page description for
+          is-orth-var-and-non-primary-sec-ref-first:.
+- :date: 18-Feb-2016
+  :release: true
+- :date: 17-Feb-2016
+  :jira_id: '1666'
+  :description: Fix Review list search and make Review count searches work.
+- :date: 16-Feb-2016
+  :jira_id: '1655'
+  :description: |-
+    Added queries <strong>is-orth-var-and-non-primary-ref-first:</strong>
+          and <strong>is-orth-var-and-non-primary-sec-ref-first:</strong>. Links
+          on Reports tab.
+- :date: 16-Feb-2016
+  :jira_id: '1651'
+  :description: |-
+    Also added query report for
+          <strong>parent-ref-wrong-child-type:</strong>. Links on Reports tab.
+- :date: 16-Feb-2016
+  :jira_id: '1651'
+  :description: |-
+    Warn of conflicts when changing type of parent reference -
+          dropdown now shows unacceptable options in red with a comment.
+- :date: 15-Feb-2016
+  :jira_id: '1661'
+  :description: Fix "cited" and "cited by" links on the Instance edit tab.
+- :date: 12-Feb-2016
+  :jira_id: '1662'
+  :description: 'Order instance-type: search results by name.'
+- :date: 12-Feb-2016
+  :jira_id: '1657'
+  :description: |-
+    Adjust query for parent suggestions for unranked
+          names. Should be faster.
+- :date: 11-Feb-2016
+  :release: true
+- :date: 10-Feb-2016
+  :jira_id: '1650'
+  :description: Correctly show reference edit error.
+- :date: 10-Feb-2016
+  :jira_id: '1420'
+  :description: Report to find autonyms whose parent's epithet       is not at the
+    end of the autonym's name.
+- :date: 10-Feb-2016
+  :jira_id: '1636'
+  :description: 'Add name-element-exact: and simple-name-exact:       searches.'
+- :date: 09-Feb-2016
+  :jira_id: '1620'
+  :description: 'Reports tab for easier access to queries like       <q>is-orth-var-and-sec-ref-first:
+    show-instances:       limit: 10</q>'
+- :date: 08-Feb-2016
+  :jira_id: '1620'
+  :description: Option to <q>show-instances:</q> with the original       search for
+    NSL-1620
+- :date: 08-Feb-2016
+  :jira_id: '1620'
+  :description: Add <q>show-instances:</q> directive for Name       searches.
+- :date: 08-Feb-2016
+  :release: true
+- :date: 08-Feb-2016
+  :jira_id: '1647'
+  :description: Fix link to APC tree search on Name details tab.
+- :date: 05-Feb-2016
+  :release: true
+- :date: 02-Feb-2016
+  :jira_id: '1637'
+  :description: |-
+    Reinstate the Name search feature that replaced embedded
+          spaces with wildcards.  Also reinstate no leading wildcard.
+- :date: 02-Feb-2016
+  :jira_id: '1644'
+  :description: |-
+    Restore tokenized search function to Author
+          name-or-abbrev and default searches.  Tokenized means "in any order".
+- :date: 02-Feb-2016
+  :jira_id: '1641'
+  :description: |-
+    Clicking Help/Examples/Advanced after an Instance search
+          now correctly shows Instance info.
+          "Trees" search is now "Tree", avoiding an error.
+- :date: 29-Jan-2016
+  :jira_id: '474'
+  :description: |-
+    Add Instance search for species or below synonymised to a
+          genus or above.  With help and examples.
+- :date: 28-Jan-2016
+  :jira_id: '1636'
+  :description: |-
+    Add name searches for name-element and simple-name.  With
+          help and examples.
+- :date: 27-Jan-2016
+  :jira_id: '1620'
+  :description: |-
+    Add Name search for orth. vars whose first instance is a
+          secondary reference. With help and examples
+- :date: 22-Jan-2016
+  :jira_id: '1618'
+  :description: Add headings to Instance CSV output.
+- :date: 22-Jan-2016
+  :jira_id: '1624'
+  :description: |-
+    Allow searches for instances with specified text in 'type'
+          notes
+- :date: 22-Jan-2016
+  :release: true
+- :date: 21-Jan-2016
+  :jira_id: '1608'
+  :description: |-
+    Allow one and only one <q>APC Dist.</q> field for each APC
+          instance. If one already exists, only offer <q>APC comment</q> option.
+- :date: 20-Jan-2016
+  :jira_id: '1618'
+  :description: CSV output for instance queries.
+- :date: 14-Jan-2016
+  :jira_id: '1608'
+  :description: |-
+    APC Comment and Dist. Instance Notes are now created and
+          edited on the APC tab.
+- :date: 14-Jan-2016
+  :release: true
+- :date: 13-Jan-2016
+  :jira_id: '1612'
+  :description: |-
+    Help, examples now showing on initial query for instance
+          sorted by page for ref id.
+- :date: 12-Jan-2016
+  :jira_id: '1606'
+  :description: |-
+    For Reference > (new) Instance, the name typeahead is now
+          ordered by rank.
+- :date: 11-Jan-2016
+  :jira_id: '1602'
+  :description: Query for tax. nov. instances with an orth. var. name.
+- :date: 08-Jan-2016
+  :release: true
+- :date: 07-Jan-2016
+  :jira_id: '447'
+  :description: |-
+    Instances for a reference query in page
+          order refinement - put hyphenated ranges last . <br>
+          e.g. '58-59' after '58'.
+- :date: 06-Jan-2016
+  :jira_id: '1603'
+  :description: |-
+    Double-clicking text fields no
+          longer selects the whole field. Default behaviour applies:
+          triple click selects whole field.
+- :date: 05-Jan-2016
+  :jira_id: '1601'
+  :description: |-
+    Split single history page into two yearly pages.
+          Make minor layout and substantial coding changes.
+- :date: 04-Jan-2016
+  :jira_id: '1004'
+  :description: |-
+    Add HTML titles to form fields on the Reference Page,
+          New Instance tab.
+- :date: 04-Jan-2016
+  :jira_id: '1505'
+  :description: |-
+    Duplicate Names are excluded from suggestions on the
+          Reference page, New Instance tab, Name field.

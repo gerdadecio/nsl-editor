@@ -1,0 +1,52 @@
+_fixture:
+  model_class: Product::Role
+
+DEFAULTS: &DEFAULTS
+  created_by: tester
+  updated_by: tester
+
+foa_draft_editor:
+  <<: *DEFAULTS
+  product: foa
+  role: draft_editor
+
+foa_draft_profile_editor:
+  <<: *DEFAULTS
+  product: foa
+  role: draft_profile_editor
+
+foa_profile_editor:
+  <<: *DEFAULTS
+  product: foa
+  role: profile_editor
+
+foa_tree_publisher:
+  <<: *DEFAULTS
+  product: foa
+  role: tree_publisher
+
+apc_tree_publisher:
+  <<: *DEFAULTS
+  product: apc
+  role: tree_publisher
+
+foa_tree_builder:
+  <<: *DEFAULTS
+  product: foa
+  role: tree_builder
+
+apc_tree_builder:
+  <<: *DEFAULTS
+  product: apc
+  role: tree_builder
+
+ron_tree_publisher:
+  <<: *DEFAULTS
+  product: ron
+  role: tree_publisher
+
+ron_tree_builder:
+  <<: *DEFAULTS
+  product: ron
+  role: tree_builder
+

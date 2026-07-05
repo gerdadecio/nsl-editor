@@ -1,0 +1,16 @@
+<tr id="search-result-<%= search_result[:id] %>" 
+    class="search-result <%= search_result[:record_type] %> <%= 'fresh' if search_result.try('fresh?') %>"  
+    >
+    <td class="text name main-content width-100-percent" colspan="4" >
+
+
+<% path = 'application/search_results/link_texts/loader/name' %>
+<%#= render partial: "#{path}/indent", locals: {search_result: search_result} %>
+
+unexpected record type -> <%= "#{search_result[:record_type]}" %>
+
+
+  </td>
+</tr>
+
+

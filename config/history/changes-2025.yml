@@ -1,0 +1,1186 @@
+- :date: 24-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Update form labels for host and url
+- :date: 24-Dec-2025
+  :jira_id: '2986'
+  :description: |-
+    Instance display: Show Taxonomy status on LHS for Instances displayed within a Reference query
+- :date: 23-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: JS cleanup and set the host field to read-only when editing name resources
+- :date: 23-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Fix bug preventing resource tab from displaying for some users
+- :date: 22-Dec-2025
+  :jira_id: '5172'
+  :description: |-
+    Reference Edit: Remove bug preventing sequential edits
+- :date: 22-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Add and update functionality for the resource tab in Name records
+- :date: 19-Dec-2025
+  :jira_id: '3265'
+  :description: |-
+    Name Query: New search directive <code>first-instance-is-syn:</code>
+- :date: 18-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Delete functionality for the resource tab in Name records
+- :date: 18-Dec-2025
+  :jira_id: '5383'
+  :description: |-
+    Loader: Set name-status options to match scientific name options
+- :date: 17-Dec-2025
+  :jira_id: '5638'
+  :description: |-
+    Loader: Improvements to Family entries
+- :date: 17-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Controller and routes for the resource tab in Name records
+- :date: 19-Dec-2025
+  :release: true
+- :date: 16-Dec-2025
+  :jira_id: '5587'
+  :description: |-
+    Taxonomy: Do not offer Create Draft for read-only Trees
+- :date: 16-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Initial backend models for the resource tab in Name records
+- :date: 15-Dec-2025
+  :jira_id: '2753'
+  :description: |-
+    General: Prevent tags in search terms infecting the results page
+- :date: 15-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Initial UI for the resource tab in Name records
+- :date: 12-Dec-2025
+  :jira_id: '5641'
+  :description: |-
+    Search Form: Add database name to the Search button
+- :date: 11-Dec-2025
+  :jira_id: '1723'
+  :description: |-
+    Reference Search: Add example searches for citations in which the string "wheeler" occurs twice
+- :date: 11-Dec-2025
+  :jira_id: '3451'
+  :description: |-
+    Author: Add success message for Author copy and also remove Save button on success
+- :date: 10-Dec-2025
+  :jira_id: '3047'
+  :description: |-
+    Reference: Add boilerplate advice about not entering pub date when type is 'Part'
+- :date: 09-Dec-2025
+  :jira_id: '3451'
+  :description: |-
+    Author: Add ability to copy an Author
+- :date: 08-Dec-2025
+  :jira_id: '5609'
+  :description: |-
+    Taxonomy: Limit each Taxonomy Tree to at most one draft Tree Version per database
+- :date: 04-Dec-2025
+  :jira_id: '5633'
+  :description: |-
+    Loader: Don't offer to create family headers for names in synonymy
+- :date: 04-Dec-2025
+  :jira_id: '5632'
+  :description: |-
+    Loader: Fix <code>no-family-heading:</code> query
+- :date: 01-Dec-2025
+  :jira_id: '5628'
+  :description: |-
+    Update tab classification rendering and update permissions message
+- :date: 03-Dec-2025
+  :release: true
+- :date: 01-Dec-2025
+  :jira_id: '5631'
+  :description: |-
+    Loader Name: Fix bug in NSL-5623 - edit tab now works again and offers a list of families
+- :date: 28-Nov-2025
+  :jira_id: '161'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Display the feature flag config in the admin configuration page
+- :date: 26-Nov-2025
+  :jira_id: '5627'
+  :description: |-
+    Author typeaheads in Name records: Fix bug from NSL-967 so now you can select author abbreviations that are shown with extra information
+- :date: 26-Nov-2025
+  :jira_id: '160'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Update the ability permission for tree_builder_auth
+- :date: 24-Nov-2025
+  :jira_id: '161'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Show name of tree in taxon concept
+- :date: 21-Nov-2025
+  :jira_id: '5623'
+  :description: |-
+    Loader Name: Add drop-down selection that also allows typing new values for family field of new accepted/excluded names
+- :date: 20-Nov-2025
+  :jira_id: '5625'
+  :description: |-
+    Loader Distribution error message: Re-worded to make clearer
+- :date: 19-Nov-2025
+  :release: true
+- :date: 14-Nov-2025
+  :jira_id: '3377'
+  :description: |-
+    Author delete: Delete button not offered if any comments; list dependents when they prevent delete
+- :date: 14-Nov-2025
+  :jira_id: '969'
+  :description: |-
+    Reference details: Remove trial clipboard copy feature from title and/or parent title.
+- :date: 13-Nov-2025
+  :jira_id: '1619'
+  :description: |-
+    Instance display: Avoid displaying "legitimate" name status for misapplied cross-references
+- :date: 13-Nov-2025
+  :jira_id: '535'
+  :description: |-
+    Source search: Fix typos, make query help consistent for Name and Reference, add <code>source-id-string</code> directive for Names
+- :date: 12-Nov-2025
+  :jira_id: '157'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup retrieval of product with selected context in name tab
+- :date: 12-Nov-2025
+  :jira_id: '1724'
+  :description: |-
+    Name search: Add directive <code>isonym-has-early-secondary</code>
+- :date: 12-Nov-2025
+  :jira_id: '475'
+  :description: |-
+    Synonymy: Names typeahead now sorts first by rank
+- :date: 11-Nov-2025
+  :jira_id: '1841'
+  :description: |-
+    Author edit: Add formatting example under the name field
+- :date: 11-Nov-2025
+  :jira_id: '969'
+  :description: |-
+    Reference details: Add clipboard copy for title and/or parent title.
+- :date: 11-Nov-2025
+  :jira_id: '5620'
+  :description: |-
+    Instance search: Add directives <code>ref-id</code> and <code>parent-ref-id</code>
+- :date: 11-Nov-2025
+  :jira_id: '1315'
+  :description: |-
+    Name search: Add directive <code>has-basionym-but-no-base-author</code>
+- :date: 10-Nov-2025
+  :jira_id: '535'
+  :description: |-
+    Reference search: Add directives for <code>source-system</code>, <code>source-id</code>, and <code>source-id-string</code>
+- :date: 10-Nov-2025
+  :jira_id: '144'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Set default product context if missing upon login
+- :date: 10-Nov-2025
+  :jira_id: '144'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Integrate default context service objects into product role controller actions
+- :date: 07-Nov-2025
+  :jira_id: '1084'
+  :description: |-
+    Author extra information: Switch from <code>full_name</code> to new <code>extra_information</code> field - updated query help too
+- :date: 07-Nov-2025
+  :jira_id: '144'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Service object to handle setting default product context for user when user product role is removed
+- :date: 07-Nov-2025
+  :jira_id: '967'
+  :description: |-
+    Author typeaheads: Add extra information to Name Author typeahead entries
+- :date: 06-Nov-2025
+  :jira_id: '5618'
+  :description: |-
+    Technical: Upgrade Bootstrap dropdown.js to latest patch (it makes our dropdown menus work)
+- :date: 06-Nov-2025
+  :jira_id: '144'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Service object to handle setting default product context for user when user product role is added
+- :date: 06-Nov-2025
+  :jira_id: '1206'
+  :description: |-
+    Instances search result records: added colon between citation and page
+- :date: 04-Nov-2025
+  :jira_id: '1574'
+  :description: |-
+    Technical: Remove user_queries code and help_topics code - not used, no impact on users
+- :date: 04-Nov-2025
+  :jira_id: '5615'
+  :description: |-
+    Technical: Remove the <code>exception_notifier</code> gem - no impact on users
+- :date: 03-Nov-2025
+  :jira_id: '1033'
+  :description: |-
+    Instance update: if you update an instance and try to remove the reference you now get an error message
+- :date: 03-Nov-2025
+  :jira_id: '826'
+  :description: |-
+    Technical: Models that inherited from <code>ActiveRecord::Base</code> now inherit from <code>ApplicationRecord</code>, and it calls <code>strip_attributes</code>
+- :date: 30-Oct-2025
+  :jira_id: '146'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Ability Permissions for profile-reference role
+- :date: 27-Oct-2025
+  :jira_id: '149'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup the edit tab not showing for relationship instance when foa context is selected
+- :date: 27-Oct-2025
+  :jira_id: '148'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Enable tree workflow for trees with no tree.config value - second set of changes
+- :date: 27-Oct-2025
+  :release: true
+- :date: 24-Oct-2025
+  :jira_id: '5365'
+  :description: |-
+    Loader Name Search: Allow <code>family-members:</code>, <code>family:</code>, and <code>families:</code> to have zero arguments too
+- :date: 24-Oct-2025
+  :jira_id: '5605'
+  :description: |-
+    Loader Name Search: Make the <code>batch-id:</code>, <code>batch-name:</code> and <code>any-batch:</code> directives case-insensitive
+- :date: 23-Oct-2025
+  :jira_id: '5365'
+  :description: |-
+    Loader Name Search: Improve action of and help for family queries - allow <code>family-list:</code> to have zero arguments too
+- :date: 22-Oct-2025
+  :jira_id: '148'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Enable tree workflow for trees with no tree.config value - first set of changes
+- :date: 21-Oct-2025
+  :jira_id: '5200'
+  :description: |-
+    Batch Loader: Add Force Delete button as an easier way to delete loader name records with dependents
+- :date: 21-Oct-2025
+  :jira_id: '5199'
+  :description: |-
+    Loader Tab 2: Allow processing even if no default batch has been set
+- :date: 20-Oct-2025
+  :jira_id: '5199'
+  :description: |-
+    Loader Tab 2: Add explanatory wording under the <code>Remark to reviewer</code> field
+- :date: 20-Oct-2025
+  :jira_id: '5375'
+  :description: |-
+    Batch Review: Tweak the wording of boilerplate saying Reviewers with comments cannot be removed from Review
+- :date: 17-Oct-2025
+  :jira_id: '5590'
+  :description: |-
+    Batch Loader: Change boilerplate from "Convert to misapp" to "Convert to synonym" on the appropriate form
+- :date: 17-Oct-2025
+  :jira_id: '5581'
+  :description: |-
+    Batch Loader: Loader 2 tab - do not initialize the batch drop down with the current active batch - causes odd problems
+- :date: 15-Oct-2025
+  :jira_id: '5581'
+  :description: |-
+    Batch Loader: Loader 2 tab - initialize the batch drop down with the current active batch
+- :date: 15-Oct-2025
+  :jira_id: '5604'
+  :description: |-
+    Batch Loader: Use pro parte status for misapplication display details from the match record not from the loader name record
+- :date: 14-Oct-2025
+  :jira_id: '5199'
+  :description: |-
+    Batch Loader: Allow addition of a remark when adding names from Loader 2 tab
+- :date: 14-Oct-2025
+  :jira_id: '5365'
+  :description: |-
+    Loader Name Search: Improve action of and help for family queries
+- :date: 13-Oct-2025
+  :jira_id: '5375'
+  :description: |-
+    Batch Review: Make the target of the Reviewer Delete button clearer
+- :date: 13-Oct-2025
+  :jira_id: '5429'
+  :description: |-
+    Tree Profile Edit: Add ability for treebuilder to edit existing profile
+- :date: 10-Oct-2025
+  :jira_id: '5586'
+  :description: |-
+    Batch Review: Fix edit form so it picks up the current comment context value
+- :date: 10-Oct-2025
+  :jira_id: '5586'
+  :description: |-
+    Batch Review: Allow batch loaders to see reviewer comments and add their own comments - supplementary changes
+- :date: 08-Oct-2025
+  :jira_id: '5595'
+  :description: |-
+    Security: Update rack gem to latest then replace deprecated <code>:unprocessable_entity</code> with <code>:unprocessable_content</code>
+- :date: 03-Oct-2025
+  :jira_id: '128'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: fixup the profile tabs not showing when user has selected the foa context in test
+- :date: 03-Oct-2025
+  :jira_id: '5593'
+  :description: |-
+    Rails Upgrade: Upgrade to Rails 8.0.0 and update related dependencies
+- :date: 02-Oct-2025
+  :jira_id: '5198'
+  :description: |-
+    Batch Loading: Set and use synonym type on Instance Loader 2 tab
+- :date: 02-Oct-2025
+  :jira_id: '126'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Add current_product_from_context method to User model and use it in views and controllers
+- :date: 01-Oct-2025
+  :jira_id: '5581'
+  :description: |-
+    Batch Loading: Allow user to choose batch on Instance Loader 2 tab
+- :date: 01-Oct-2025
+  :jira_id: '5591'
+  :description: |-
+    Batch Review: Show NFP status of loader name records to batch reviewers
+- :date: 30-Sep-2025
+  :jira_id: '5588'
+  :description: |-
+    Batch Load and Review: Fix doco for partly: and not-partly: searches, handle null values correctly in the queries
+- :date: 30-Sep-2025
+  :jira_id: '5590'
+  :description: |-
+    Batch Loader: Allow conversion from synonym to misapplication and vice versa
+- :date: 30-Sep-2025
+  :jira_id: '5588'
+  :description: |-
+    Batch Load and Review: Show misapp and pro parte data on web and print outputs consistently
+- :date: 29-Sep-2025
+  :jira_id: '5586'
+  :description: |-
+    Batch Loader: Allow batch loaders to see reviewer comments and add their own comments
+- :date: 29-Sep-2025
+  :jira_id: '127'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Refactor ability logic for name index editor and update reference tabs permissions
+- :date: 25-Sep-2025
+  :jira_id: '115'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Add a guard using the multi_product_tabs_enabled flag to the product context service
+- :date: 24-Sep-2025
+  :jira_id: '115'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Use product context when creating a draft taxonomy
+- :date: 24-Sep-2025
+  :jira_id: '5429'
+  :description: |-
+    Tree permissions: Refer to the user_product_role_v instead of separate tables in the ability.rb file to avoid N+1 queries
+- :date: 23-Sep-2025
+  :jira_id: '115'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Use product context to offer draft taxonomies in the menu
+- :date: 22-Sep-2025
+  :jira_id: '5550'
+  :description: |-
+    Add edit permission for name-index-editor role
+- :date: 22-Sep-2025
+  :jira_id: '116'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup foa copy tab with product context logic
+- :date: 19-Sep-2025
+  :jira_id: '117'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup missing edit tab for profile item when foa context is selected
+- :date: 18-Sep-2025
+  :jira_id: '119'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Sort the product context in the menu using the product's context_sort_order field
+- :date: 18-Sep-2025
+  :release: true
+- :date: 18-Sep-2025
+  :jira_id: '5571'
+  :description: |-
+    Batch Review:  Also show total comment count for family header records
+- :date: 17-Sep-2025
+  :jira_id: '5575'
+  :description: |-
+    Batch Review:  Adding reviewers - sort offered list of reviewers by first name, family name not username
+- :date: 17-Sep-2025
+  :jira_id: '5429'
+  :description: |-
+    Tree permission changes: Order "Create draft taxonomy" options by tree name
+- :date: 17-Sep-2025
+  :jira_id: '5571'
+  :description: |-
+    Batch Review: Show comments on family header on screen and in print view
+- :date: 16-Sep-2025
+  :jira_id: '119'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Remove the use of product_context table and use product's product_context column instead
+- :date: 15-Sep-2025
+  :jira_id: '5429'
+  :description: |-
+    Tree: Order trees in select for the Create Draft Tree form
+- :date: 15-Sep-2025
+  :jira_id: '112'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Refresh tab access for users with product roles
+- :date: 15-Sep-2025
+  :jira_id: '5449'
+  :description: |-
+     Batch Loader: Return Loader Name records in context for <code>id:</code> and <code>ids:</code> query directives
+- :date: 15-Sep-2025
+  :jira_id: '112'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Don't render the new name option to foa users
+- :date: 12-Sep-2025
+  :jira_id: '5429'
+  :description: |-
+    Tree permissions: Add permissions for treebuilder user to open parent typeahead - as before, for backwards compatibility during transition
+- :date: 12-Sep-2025
+  :jira_id: '5429'
+  :description: |-
+    Tree permissions: Add permissions for treebuilder user on Instance Tree tab actions so they work in the transition to product role permissions
+- :date: 11-Sep-2025
+  :jira_id: '112'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Sort the product context in the menu by context id
+- :date: 11-Sep-2025
+  :jira_id: '5564'
+  :description: |-
+    Batch Loader: Copying concept into batch from Loader 1 tab should now use primary instances for synonym matches
+- :date: 10-Sep-2025
+  :jira_id: '5429'
+  :description: |-
+    Tree permissions: Add permissions for treebuilder user on Taxonomy tab reports so they work in the transition period
+- :date: 09-Sep-2025
+  :jira_id: '112'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Handle PG permission errors when querying product contexts
+- :date: 03-Sep-2025
+  :jira_id: '112'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Use product context to determine the tabs to display in the editor
+- :date: 27-Aug-2025
+  :jira_id:  '5405'
+  :description: |-
+    Batch Loader: Allow user to add synonymy to excluded name
+- :date: 26-Aug-2025
+  :jira_id:  '5393'
+  :description: |-
+    Batch Review Print: Show votes on print output
+- :date: 25-Aug-2025
+  :jira_id: '82'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup the product names in the tabs and refactor the view templates
+- :date: 25-Aug-2025
+  :jira_id:  '5364'
+  :description: |-
+    Batch Review Voting: Allow voting during active review periods - following the same rules as for comments
+- :date: 21-Aug-2025
+  :jira_id:  '5163'
+  :description: |-
+    CSV Output: link to CSV export of instance query results works again without breaking the print: directive
+- :date: 21-Aug-2025
+  :jira_id:  '5451'
+  :description: |-
+    Loader Batch: Genus name now consistently sorting before first child species in batch
+- :date: 21-Aug-2025
+  :jira_id:  '5549'
+  :description: |-
+    Software Upgrade: Update many outdated gems/libraries
+- :date: 21-Aug-2025
+  :jira_id:  '5554'
+  :description: |-
+    Loader Batch Review: Remove stray char from Review Details tab Comment display
+- :date: 20-Aug-2025
+  :jira_id: '82'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Implement initial (Author, Reference, Name) tabs logic for multi-product roles
+- :date: 20-Aug-2025
+  :jira_id:  '5362'
+  :description: |-
+    Loader Batch Query: Add query <code>syn-matched-to-autonym:</code> for preferred matches that are autonyms
+- :date: 18-Aug-2025
+  :jira_id:  '5196'
+  :description: |-
+    Batch Review Example Queries: Set the query links up with search targets in the expected case (not all down-cased)
+- :date: 15-Aug-2025
+  :jira_id:  '5192'
+  :description: |-
+    Batch Review: Handle "uncaught throw" error for unassigned reviewers hitting the Search button
+- :date: 15-Aug-2025
+  :jira_id:  ''
+  :description: |-
+    Remove unnecessary libraries in Dockerfile.dev
+- :date: 14-Aug-2025
+  :jira_id:  '5538'
+  :description: |-
+    Security Patch: Upgrade Rails to 7.2.2.2
+- :date: 14-Aug-2025
+  :jira_id:  ''
+  :description: |-
+    Add a workflow_dispatch trigger to Github workflow
+- :date: 14-Aug-2025
+  :jira_id: '111'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Sort the user product roles in the user menu by product and role name
+- :date: 14-Aug-2025
+  :jira_id:  '5527'
+  :description: |-
+    Batch: Loader Name queries <code>in-accepted-taxonomy</code> (renamed), <code>not-in-accepted-taxonomy</code> (added), <code>in-or-not-in-accepted-taxonomy</code> (added)
+- :date: 12-Aug-2025
+  :jira_id:  '5534'
+  :description: |-
+    Ruby: Upgrade docker image to ruby:3.4.5-bullseye
+- :date: 07-Aug-2025
+  :jira_id:  '5529'
+  :description: |-
+    Rails: Upgrade to Rails 7.2.2.1
+- :date: 06-Aug-2025
+  :jira_id:  '5530'
+  :description: |-
+    Loader logs: Allow search directive <code>latest:</code> to be submitted without an argument
+- :date: 04-Aug-2025
+  :jira_id: '82'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Use specific js selector for multi-product tabs js driven click
+- :date: 04-Aug-2025
+  :jira_id:  '5163'
+  :description: |-
+    CSV Output: link to CSV export of instance query results works again
+- :date: 31-July-2025
+  :jira_id: '82'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Add a fallbback for users with no product roles to show default tabs
+- :date: 30-July-2025
+  :jira_id:  '5429'
+  :description: |-
+    Set up permissions for tree ops by users with tree-builder and tree-publisher roles on specific trees
+- :date: 29-July-2025
+  :jira_id:
+  :description: |-
+    Check the batch_loader_aware flag on the Users detail tab before querying batch info
+- :date: 28-July-2025
+  :jira_id: '82'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Multi-tab support for instances and profile item selection.
+- :date: 22-July-2025
+  :jira_id: ''
+  :description: |-
+    Chore: Rubocop rules Update and added gems related to Rubocop
+- :date: 22-July-2025
+  :jira_id: '82'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Display the flag in admin configuration page for multi-product tabs
+- :date: 22-July-2025
+  :jira_id:
+  :description: |-
+    Security Patch: Nokogiri
+- :date: 21-July-2025
+  :jira_id: '82'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Implement multi-product tabs
+- :date: 15-Jul-2025
+  :jira_id: '5505'
+  :description: |-
+    Unpublished citation: remove duplicate, un-used typeahead controller
+- :date: 08-Jul-2025
+  :jira_id: '5502'
+  :description: |-
+    JavaScript: Remove rogue script tag showing up as a console error
+- :date: 07-July-2025
+  :jira_id: '76'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Additional Fixes for the prompt for unsaved changes in the profile item editor
+- :date: 04-July-2025
+  :jira_id: '76'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup prompt for menu and search form submit when there are unsaved changes.
+- :date: 30-June-2025
+  :jira_id: ''
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup copy tab not working for a profile editor which is caused by Profile::Product call.
+- :date: 30-June-2025
+  :jira_id: '77'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Address testing feedback - create version button should be available for link items as well
+- :date: 01-Aug-2025
+  :release: true
+- :date: 25-June-2025
+  :jira_id: '5472'
+  :jira_project: NSL
+  :description: |-
+    Don't allow a user to delete a reference that is used in a product
+- :date: 23-June-2025
+  :jira_id: '77'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Chore - Address bullet gem's N+1 queries
+- :date: 23-June-2025
+  :jira_id: '77'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Implement new versioned copy of profile item
+- :date: 20-Jun-2025
+  :jira_id: '5468'
+  :description: |-
+    Batch Review: Keep commenting available until the end of the review period's closing day
+- :date: 20-Jun-2025
+  :jira_id: '5462'
+  :description: |-
+    Batch Review: Remove ability for user to edit or delete their comments after review ends
+- :date: 18-June-2025
+  :jira_id: '73'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Unify the Product and Profile::Product models as a Product model
+- :date: 18-June-2025
+  :jira_id: '77'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Backend service for creating new versioned profile items
+- :date: 12-June-2025
+  :jira_id: '76'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Add a feature flag for site-wide unsaved form changes prompt
+- :date: 12-Jun-2025
+  :jira_id: '5457'
+  :description: |-
+    Batch Loader: remove boiler plate text "need a way to see the comments"
+- :date: 12-Jun-2025
+  :jira_id: '5435'
+  :description: |-
+    Loader Review: allow comments on in-batch-note records - fix problem found testing re-factored display algorithm
+- :date: 11-June-2025
+  :jira_id: '76'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Prompt message for there are unsaved changes in the profile item editor
+- :date: 11-Jun-2025
+  :jira_id: '5450'
+  :description: |-
+    Loader Review: Do not display heading record full names e.g. for Family heading records
+- :date: 11-Jun-2025
+  :jira_id: '5453'
+  :description: |-
+    Created By and Updated By: Editor now does not downcase usernames when displaying them in metadata
+- :date: 06-Jun-2025
+  :jira_id: '4889'
+  :description: |-
+    Reference New Instance: include names without an instance in the names typeahead (revert NSL-945)
+- :date: 04-Jun-2025
+  :jira_id: '5448'
+  :description: |-
+    Loader Review: Fix first accepted name not being displayed in Test
+- :date: 30-May-2025
+  :jira_id: '75'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Identify profile item product by tree and fixup UI for editing linked profile item
+- :date: 29-May-2025
+  :jira_id: '5439'
+  :description: |-
+    Loader Review: Make in-batch compiler notes invisible to reviewers
+- :date: 28-May-2025
+  :jira_id: '75'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Profile editor permissions and view template code cleanups
+- :date: 28-May-2025
+  :jira_id: '5442'
+  :description: |-
+    Loader Review Period: Really fix data comparisons in cloud deployments (use Time.zone.today instead of Date.today)
+- :date: 27-May-2025
+  :jira_id: '5446'
+  :description: |-
+    Search directives: Report error to user when search directives requiring an argument are submitted without one
+- :date: 23-May-2025
+  :jira_id: '5442'
+  :description: |-
+    Loader Review Period: Fix date comparisons for start and end of review periods (make timezone neutral)
+- :date: 23-May-2025
+  :jira_id: '5435'
+  :description: |-
+    Loader Review: Allow reviewer comments on in-batch-notes
+- :date: 10-Jun-2025
+  :release: true
+- :date: 22-May-2025
+  :jira_id: '5445'
+  :description: |-
+    Users: save and query user logins in lower case regardless of how users enter them for login
+- :date: 21-May-2025
+  :jira_id: '5441'
+  :description: |-
+    Loader Review: Revise <code>org-not-voted:</code> search directive SQL
+- :date: 21-May-2025
+  :jira_id: '74'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup few issues in the profile item UI (ie edit, delete from search results)
+- :date: 21-May-2025
+  :jira_id: '53'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Set copied profile item's published_date to nil, and set the created_by and updated_by field appropriately
+- :date: 21-May-2025
+  :jira_id: ''
+  :description: |-
+    Loader Review: Fix problem in has-review-comment-by: search directive
+- :date: 20-May-2025
+  :jira_id: '5440'
+  :description: |-
+    Loader Review: Fix comment/distribution wrongly appearing under an excluded name
+- :date: 16-May-2025
+  :jira_id: '74'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Copy the profile item references of sourced profile item when converting a link item to fact
+- :date: 16-May-2025
+  :jira_id: '5431'
+  :description: |-
+    Loader: Users no longer enter a comment type to make a review comment
+- :date: 16-May-2025
+  :jira_id: '5433'
+  :description: |-
+    Loader: Make in-batch note appear below distribution entry of previous accepted record
+- :date: 16-May-2025
+  :jira_id: '5432'
+  :description: |-
+    Loader: Remove stray "&gt;" in review output for some note and text fields
+- :date: 15-May-2025
+  :jira_id: '5432'
+  :description: |-
+    Loader: Remove some metadata boilerplate from comment tab; when user first logs in, give their users record better audit details.
+- :date: 14-May-2025
+  :jira_id: '74'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Allow draft-profile-editor to edit a linked profile item
+- :date: 12-May-2025
+  :jira_id: '5398'
+  :description: |-
+    Reference Search: Switch dictionary from 'english' to 'simple' and silently remove wildcards from user-supplied search terms
+- :date: 13-May-2025
+  :release: true
+- :date: 09-May-2025
+  :jira_id: '5395'
+  :description: |-
+    Loader Review: Revise and improve SQL for <code>org-not-voted:</code> directive
+- :date: 08-May-2025
+  :jira_id: '53'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Avoid profile_instance_constraint when copying profile item by setting the tree_element_id to nil
+- :date: 08-May-2025
+  :jira_id: '5428'
+  :description: |-
+    Loader Name: Tweak the suppression of family headings to make sure real headings are shown
+- :date: 07-May-2025
+  :jira_id: '5394'
+  :description: |-
+    Loader Name: Show full context in vote query results
+- :date: 07-May-2025
+  :jira_id: '5428'
+  :description: |-
+    Loader Name: Suppress family headings in output when a synonym/misapp belongs to a different family
+- :date: 07-May-2025
+  :jira_id: '5406'
+  :description: |-
+    Loader Name: Switch order of full and simple names on loader name details tab for heading records too
+- :date: 07-May-2025
+  :jira_id: '53'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup issue not able to profile items of an instance
+- :date: 07-May-2025
+  :jira_id: '5395'
+  :description: |-
+    Loader Name: Show real family headers in vote query results
+- :date: 07-May-2025
+  :jira_id: '5406'
+  :description: |-
+    Loader Name: Switch order of full and simple names on loader name details tab
+- :date: 06-May-2025
+  :jira_id: ''
+  :description: |-
+    Bullet gem - added a bullet gem for development to identify N+1 queries.
+- :date: 06-May-2025
+  :jira_id: '5193'
+  :description: |-
+    Loader Name: Adjust print-ready output for reviewers to show formatted notes and text; introduce print-with-comments directive
+- :date: 05-May-2025
+  :jira_id: '49'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Don't allow draft profile editor to edit an author with authored names
+- :date: 05-May-2025
+  :jira_id: '55'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Support for link profile item's typeahead to search for name's full name and UI fix for draft item.
+- :date: 02-May-2025
+  :jira_id: '5193'
+  :description: |-
+    Loader Name: Adjust <code>in-batch-note.notes</code> review display to suit reference lists
+- :date: 02-May-2025
+  :jira_id: '55'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Add a way to link a published profile item
+- :date: 01-May-2025
+  :jira_id: '5193'
+  :description: |-
+    Loader Name: Add <code>formatted_text_above</code> and <code>formatted_text_below</code> fields and allow editing and display
+- :date: 29-Apr-2025
+  :jira_id: '5193'
+  :description: |-
+    Loader Name: Allow header records to have a <code>remark_to_reviewer</code> value and display it
+- :date: 17-Apr-2025
+  :jira_id: '5376'
+  :description: |-
+    Show unaffiliated users in batch stack listing
+- :date: 17-Apr-2025
+  :jira_id: '53'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Offer to copy profile items of a standalone isntance
+- :date: 17-Apr-2025
+  :jira_id: '5397'
+  :description: |-
+    Admin configuration page: display schema search path
+- :date: 15-Apr-2025
+  :jira_id: '5386'
+  :description: |-
+    Author abbreviation: Allow for up to 150 characters
+- :date: 15-Apr-2025
+  :jira_id: '54'
+  :jira_project: FLOR
+  :description: |-
+    New Roles Mechanism: Fix search on Users role, products, product-roles
+- :date: 15-Apr-2025
+  :jira_id: '70'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Allow editing of a relationship instance
+- :date: 14-Apr-2025
+  :jira_id: '54'
+  :jira_project: FLOR
+  :description: |-
+    New Roles Mechanism: Admin editing interface for giving users roles
+- :date: 14-Apr-2025
+  :jira_id: '68'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project profile context v2 service: Code Cleanup - Remove unused codes
+- :date: 10-Apr-2025
+  :jira_id: '69'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Don't offer the delete button when the instance has profile items
+- :date: 14-Apr-2025
+  :release: true
+- :date: 09-Apr-2025
+  :jira_id: '72'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project permissions: add a <code>Product_Role</code> table and re-arrange the associations between <code>Users</code>, <code>Roles</code>, and <code>User_Product_Role</code>
+- :date: 09-Apr-2025
+  :jira_id: '69'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Permissions for draft-editor to delete a draft instance via edit tab
+- :date: 03-Apr-2025
+  :jira_id: '48'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Permissions for draft-editor to edit a draft instance
+- :date: 01-Apr-2025
+  :jira_id: '41'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Show new instance tab from name for draft-editor users
+- :date: 31-Mar-2025
+  :jira_id: '56'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Rename table <code>product_role_type</code> to <code>roles</code>
+- :date: 28-Mar-2025
+  :jira_id: '34'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Show unpub tab for draft and secondary reference instance
+- :date: 28-Mar-2025
+  :jira_id: '5368'
+  :description: |-
+    Author: Check field lengths before saving to database
+- :date: 27-Mar-2025
+  :jira_id: '33'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Show syn tab for draft and secondary reference instance
+- :date: 27-Mar-2025
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Only offer copy tab when row-type params is instance_as_part_of_concept_record
+- :date: 26-Mar-2025
+  :jira_id: '5088'
+  :description: |-
+    Loader Search Targets: change order of target options to relect use
+- :date: 25-Mar-2025
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Only display instance copy tab for standalone and non-draft instances and display error message.
+- :date: 25-Mar-2025
+  :jira_id:
+  :description: |-
+    Build: Remove scripted changing of active_record timezome from :localhost to :utc - just leave production AR TZ as :utc
+- :date: 24-Mar-2025
+  :jira_id: '5146'
+  :description: |-
+    Taxonomy: Honour <code>tree.is_read_only</code> by preventing tree operations when boolean is set true
+- :date: 24-Mar-2025
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: draft-editor permissions for copying an instance as draft secondary ref instance for a product (FOA)
+- :date: 21-Mar-2025
+  :jira_id: '52'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Allow user to remove a profile item annotation
+- :date: 18-Mar-2025
+  :jira_id: '51'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Don't offer the delete button when the profile item is not deletable
+- :date: 17-Mar-2025
+  :jira_id: '47'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: draft-profile-editor permissions for updating authors and references
+- :date: 14-Mar-2025
+  :jira_id: '5340'
+  :description: |-
+    Loader Name: Fix loss of <code>limit:</code> directive when placed after default batch name
+- :date: 12-Mar-2025
+  :jira_id: '47'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Permissions for draft profile editor
+- :date: 07-Mar-2025
+  :jira_id:
+  :description: |-
+    CI: Trigger github workflow tests for .erb file changes
+- :date: 07-Mar-2025
+  :jira_id: '5330'
+  :description: |-
+    Loader Batch Review Voting: Tidy up the Reviewers Vote tab
+- :date: 07-Mar-2025
+  :jira_id: '5329'
+  :description: |-
+    Loader: Batch Review search results now include the Batch name; revert recent nokogiri patch upgrade
+- :date: 06-Mar-2025
+  :jira_id:
+  :description: |-
+    Security: Upgrade rack
+- :date: 05-Mar-2025
+  :jira_id: '42'
+  :jira_project: FLOR
+  :description: |-
+    Refactored the registered user method and added a way to identify a user role
+- :date: 04-Mar-2025
+  :jira_id: '42'
+  :jira_project: FLOR
+  :description: |-
+    Product Role and icons in the navbar menu
+- :date: 21-Feb-2025
+  :jira_id: '5331'
+  :description: |-
+    Loader: Recent column change in Users table from name to user_name caused problems in voting tab - fixed.
+- :date: 21-Feb-2025
+  :jira_id: '42'
+  :jira_project: FLOR
+  :description: |-
+    Permissions: List down the roles that a user has in the menu.
+- :date: 20-Feb-2025
+  :jira_id: '5341'
+  :description: |-
+    Loader: Trap and decline processing when synonym has no parent record
+- :date: 20-Feb-2025
+  :jira_id: '43'
+  :jira_project: FLOR
+  :description: |-
+    FOA Project: Make the Users table search target available outside the batch aware context to users authorised to see user data
+- :date: 20-Feb-2025
+  :jira_id: '40'
+  :jira_project: FLOR
+  :description: |-
+    FOA Project: Adding back the user's product roles in the menu
+- :date: 19-Feb-2025
+  :jira_id: '40'
+  :jira_project: FLOR
+  :description: |-
+    FOA Project: Early work on setting up users and their roles
+- :date: 19-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Ruby gem patch: Revert the nokogiri upgrade because it fails to build on Jenkins
+- :date: 19-Feb-2025
+  :jira_id: '5341'
+  :description: |-
+    Loader: Fix typo from yesterday
+- :date: 19-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Ruby gem patch: Dependabot upgrade Nokogiri
+- :date: 19-Feb-2025
+  :jira_id: ''
+  :description: |-
+    CI/CD: Updated the github workflow to make sure it runs the tests on every PR
+- :date: 18-Feb-2025
+  :jira_id: '5339'
+  :description: |-
+    Loader: Remove stray characters in view output
+- :date: 18-Feb-2025
+  :jira_id: '5341'
+  :description: |-
+    Loader: Fix error handler to avoid <code>uninitialized constant</code> message for parenting error
+- :date: 18-Feb-2025
+  :jira_id: '5331'
+  :description: |-
+    Rename User name to user_name and same on screen label
+- :date: 17-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Code cleanup: adding annotations to the models, factories, and fixtures
+- :date: 14-Feb-2025
+  :jira_id: '41'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Add a New Instance tab in the Name panel for Foa context users
+- :date: 13-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Patch update for the rack gem to 3.1.10
+- :date: 12-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Security upgrade for the net-imap gem to 0.5.6 to address CVE-2022-22963
+- :date: 10-Feb-2025
+  :jira_id: '5323'
+  :jira_project: NSL
+  :description: |-
+    Update the instance_type query for the Synonymy and Unpub to use relationship=true
+- :date: 05-Feb-2025
+  :jira_id: '39'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Fix some UI spacing issues in the foa editor
+- :date: 03-Feb-2025
+  :jira_id: '23'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Display the reference using the reference.citation_html in the foa editor
+- :date: 24-Jan-2025
+  :jira_id: '5310'
+  :description: |-
+    Improve the screen explanation when you cannot delete an instance due to tree entanglement
+- :date: 24-Jan-2025
+  :jira_id: '23'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Fixup the 500 error issue for when the app has no access to the database when adding a profile item reference.
+- :date: 20-Jan-2025
+  :jira_id: '5304'
+  :description: |-
+    Users for Batch Review: Allow users to be added, edited, and deleted.
+- :date: 17-Jan-2025
+  :jira_id: '5305'
+  :description: |-
+    Code infrastructure: Rename the User model to SessionUser - technical change that should have no affect on functions
+- :date: 17-Jan-2025
+  :jira_id: '34'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Allow profile v2 context user to create an unpublish instance of a draft AND secondary reference instance (standalone)
+- :date: 15-Jan-2025
+  :jira_id: '33'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Allow profile v2 context user to create a synonymy of a draft AND secondary reference instance (standalone)
+- :date: 15-Jan-2025
+  :jira_id: '5298'
+  :description: |-
+    Batch Review: The Batch Reviewer create form should offer only users not already added as Reviewers
+- :date: 15-Jan-2025
+  :jira_id: '5291'
+  :description: |-
+    Batch Review: Further corrections and improvements to start_date/end_date entry for batch review periods
+- :date: 13-Jan-2025
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Allow profile v2 context user to copy an instance
+- :date: 13-Jan-2025
+  :jira_id: '5292'
+  :description: |-
+    Batch Reviewers: Make it optional for a batch reviewer to belong to a registered organisation
+- :date: 10-Jan-2025
+  :jira_id: '5291'
+  :description: |-
+    Batch Review: Review and improve the start_date/end_date entry interface for batch review periods
+- :date: 09-Jan-2025
+  :jira_id: '5290'
+  :description: |-
+    Batch Review Voting: Remove square box beside Loader Name records with no vote recorded - it is not a checkbox
+- :date: 09-Jan-2025
+  :jira_id: '5289'
+  :description: |-
+    Batch Review: Remove Batch Review Voting Orgs tab
+- :date: 09-Jan-2025
+  :jira_id: '5281'
+  :description: |-
+    Rename "batches" feature to "de-duplicate" to avoid confusion with loader batches
+- :date: 06-Jan-2025
+  :jira_id: '5275'
+  :description: |-
+    History: Set up Changes 2025 page &#127881;
+
