@@ -449,7 +449,7 @@ class Search::ParsedRequest
     elsif ADDITIONAL_NON_PREPROCESSED_TARGETS.include?(@query_target)
     elsif loader_batch_preprocessing?
     else
-      throw "Unknown query target: #{@query_target}"
+      raise "Unknown query target, please choose one from the list."
     end
     tokens
   end
