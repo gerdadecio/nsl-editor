@@ -1,4 +1,8 @@
 - :date: 06-July-2026
+  :jira_id: '4519'
+  :description: |-
+    Search Target: Do not output invalid search targets on screen
+- :date: 06-July-2026
   :jira_id: ''
   :description: |-
     Technical: Merged the current Editor git repo into the original Editor git repo to make a new repo with full history
