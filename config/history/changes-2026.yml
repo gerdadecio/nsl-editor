@@ -1,4 +1,8 @@
 - :date: 07-July-2026
+  :jira_id: '3658'
+  :description: |-
+    Show a parent and second parent dropdowns when copying a hybrid name and set the name status to n/a in the copier
+- :date: 07-July-2026
   :jira_id: '5603'
   :description: |-
     Loader: List misapplications in chronological order
@@ -29,7 +33,7 @@
 - :date: 30-June-2026
   :jira_id: '5818'
   :description: |-
-    Name Editing: improve notification when a name author has no abbreviation 
+    Name Editing: improve notification when a name author has no abbreviation
 - :date: 30-June-2026
   :jira_id: '4573'
   :description: |-
