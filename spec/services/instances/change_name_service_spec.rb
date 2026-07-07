@@ -90,7 +90,8 @@ describe Instances::ChangeNameService do
       let(:synonym_instance_type) do
         create(:instance_type,
           relationship: true, primary_instance: false,
-          deprecated: false, unsourced: false, misapplied: false)
+          deprecated: false, unsourced: false, misapplied: false,
+          standalone: false)
       end
       let(:cites_instance) do
         create(:instance, name: synonym_name, reference: draft_instance.reference)

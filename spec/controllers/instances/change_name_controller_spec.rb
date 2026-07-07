@@ -58,7 +58,8 @@ RSpec.describe Instances::ChangeNameController, type: :controller do
       let(:synonym_instance_type) do
         FactoryBot.create(:instance_type,
           relationship: true, primary_instance: false,
-          deprecated: false, unsourced: false, misapplied: false)
+          deprecated: false, unsourced: false, misapplied: false,
+          standalone: false)
       end
       let(:cites_instance) do
         FactoryBot.create(:instance, name: synonym_name, reference: instance.reference)

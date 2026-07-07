@@ -78,7 +78,7 @@ FactoryBot.define do
       uncited { false }
       valid_record { false }
       after(:create) do |instance|
-        instance_type = create(:instance_type, primary_instance: false)
+        instance_type = create(:instance_type, primary_instance: false, standalone: false)
         instance.instance_type_id = instance_type.id
       end
     end
