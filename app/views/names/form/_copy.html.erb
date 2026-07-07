@@ -1,9 +1,20 @@
+<% copy_form_data = {} %>
+<% if @name.hybrid? %>
+  <% copy_form_data = {
+       controller: "copy-name-form",
+       copy_name_form_original_parent_id_value: @name.parent_id,
+       copy_name_form_original_second_parent_id_value: @name.second_parent_id,
+       copy_name_form_cultivar_hybrid_value: @name.cultivar_hybrid?,
+       action: "submit->copy-name-form#validate"
+     } %>
+<% end %>
 <%= form_for(@name,
              url: name_copy_path(id: @name.id),
              html: {id: "copy-name-form",
                     role: 'form',
                     remote: true,
-                    method: :post}) do |f| %>
+                    method: :post,
+                    data: copy_form_data}) do |f| %>
  <% if @name.errors.any? %>
     <div id="error_explanation">
       <h6><%= pluralize(@name.errors.count, "error") %> prohibited this name from being saved:</h6>
@@ -23,59 +34,10 @@
   </div>
 
 <div class="width-100-percent">
-  hybrid: <%= @name.hybrid? %><br/>
-  parent_id: <%= @name.parent_id %><br/>
-  name_second_parent_id: <%= @name.second_parent_id %><br/><br/>
-
   <% if @name.hybrid? %>
     <%= hidden_field(:name, :name_rank_id, value: @name.name_rank_id) %>
     <%= render partial: 'names/form/parent_1' %>
     <%= render partial: 'names/form/parent_2' %>
-
-    <script>
-      $(function () {
-        var originalParentId = '<%= @name.parent_id %>';
-        var originalSecondParentId = '<%= @name.second_parent_id %>';
-        var cultivarHybrid = <%= @name.cultivar_hybrid? %>;
-
-        // Start empty so the copy cannot silently inherit the original's parents.
-        function clearParent(typeaheadId, hiddenId) {
-          var $typeahead = $('#' + typeaheadId);
-          if ($typeahead.hasClass('tt-input')) {
-            $typeahead.typeahead('val', '');
-          }
-          $typeahead.val('');
-          $('#' + hiddenId).val('');
-        }
-        clearParent('name-parent-typeahead', 'name_parent_id');
-        clearParent('name-second-parent-typeahead', 'name_second_parent_id');
-
-        $('#copy-name-form').on('submit', function (e) {
-          var firstParent = $('#name_parent_id').val();
-          var secondParent = $('#name_second_parent_id').val();
-          var message = null;
-
-          if (!firstParent) {
-            message = 'Please choose a first parent for the copy.';
-          } else if (firstParent === originalParentId) {
-            message = "The first parent must differ from the original name's first parent.";
-          } else if (!secondParent) {
-            message = 'Please choose a second parent for the copy.';
-          } else if (secondParent === originalSecondParentId) {
-            message = "The second parent must differ from the original name's second parent.";
-          } else if (!cultivarHybrid && firstParent === secondParent) {
-            message = 'The second parent cannot be the same as the first parent.';
-          }
-
-          if (message) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            $('#copy-name-info-message-container').html('').addClass('hidden');
-            $('#copy-name-error-message-container').html(message).removeClass('hidden');
-          }
-        });
-      });
-    </script>
   <% end %>
 
   <%= link_to("Copy...",

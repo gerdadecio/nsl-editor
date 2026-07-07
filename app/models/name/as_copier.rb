@@ -129,6 +129,7 @@ class Name::AsCopier < Name
     new.uri = new.source_system = new.source_id_string = nil
     new.source_id = nil
     new.lock_version = 0
+    new.name_status = NameStatus.not_applicable if hybrid?
     new.save!
     new.set_names!
     new.refresh_name_paths

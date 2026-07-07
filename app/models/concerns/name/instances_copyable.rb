@@ -9,7 +9,7 @@ module Name::InstancesCopyable
   end
 
   def standalone_instances_sorted
-    standalone_instances.sort {|x,y| x.reference.iso_publication_date <=> y.reference.iso_publication_date}
+    standalone_instances.sort_by {|si| si.reference&.iso_publication_date.to_s}
   end
 
   def standalone_instance_ids
