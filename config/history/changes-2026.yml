@@ -1,3 +1,7 @@
+- :date: 07-July-2026
+  :jira_id: '5603'
+  :description: |-
+    Loader: List misapplications in chronological order
 - :date: 06-July-2026
   :jira_id: '4519'
   :description: |-
