@@ -1,4 +1,8 @@
 - :date: 07-July-2026
+  :jira_id: '5829'
+  :description: |-
+    Instance validation: validate relationship instances to prevent them having a standalone type (e.g. via loader)
+- :date: 07-July-2026
   :jira_id: '3658'
   :description: |-
     Show a parent and second parent dropdowns when copying a hybrid name and set the name status to n/a in the copier

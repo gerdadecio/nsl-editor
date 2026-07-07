@@ -374,6 +374,7 @@ class Instance < ApplicationRecord
   validate :name_cannot_be_double_synonym
   validate :restrict_change_to_accepted_concept_synonymy
   validate :only_one_primary_instance_per_name
+  validate :relationship_cannot_be_standalone_type
 
   before_validation :set_defaults
   before_create :set_defaults
@@ -508,6 +509,13 @@ class Instance < ApplicationRecord
     return unless this_is_cited_by.name_id == this_cites.name_id
 
     errors.add(:base, "A name cannot be a synonym of itself")
+  end
+
+  def relationship_cannot_be_standalone_type
+    return if cited_by_id.blank?
+    return unless instance_type.standalone?
+
+    errors.add(:base, "A relationship instance cannot be a standalone type")
   end
 
   def apc_instance_notes
