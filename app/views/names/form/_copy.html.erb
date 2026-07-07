@@ -1,9 +1,20 @@
+<% copy_form_data = {} %>
+<% if @name.hybrid? %>
+  <% copy_form_data = {
+       controller: "copy-name-form",
+       copy_name_form_original_parent_id_value: @name.parent_id,
+       copy_name_form_original_second_parent_id_value: @name.second_parent_id,
+       copy_name_form_cultivar_hybrid_value: @name.cultivar_hybrid?,
+       action: "submit->copy-name-form#validate"
+     } %>
+<% end %>
 <%= form_for(@name,
              url: name_copy_path(id: @name.id),
              html: {id: "copy-name-form",
                     role: 'form',
                     remote: true,
-                    method: :post}) do |f| %>
+                    method: :post,
+                    data: copy_form_data}) do |f| %>
  <% if @name.errors.any? %>
     <div id="error_explanation">
       <h6><%= pluralize(@name.errors.count, "error") %> prohibited this name from being saved:</h6>
@@ -22,18 +33,23 @@
    <%= f.text_field :name_element, class: 'form-control give-me-focus', required: @name.requires_name_element?, tabindex: increment_tab_index, title: "Change this value to the new name for the copy.", autofocus: true %>
   </div>
 
-<div class="width-100-percent"> 
+<div class="width-100-percent">
+  <% if @name.hybrid? %>
+    <%= hidden_field(:name, :name_rank_id, value: @name.name_rank_id) %>
+    <%= render partial: 'names/form/parent_1' %>
+    <%= render partial: 'names/form/parent_2' %>
+  <% end %>
 
   <%= link_to("Copy...",
-             '#',
-             id: "copy-name-link",
-             class: "btn btn-warning unconfirmed-action-link pull-right",
-             title: "Copy the name - you will be asked to confirm.",
-             tabindex: increment_tab_index,
-             data: {show_this_id: "confirm-or-cancel-copy-name-link-container"})
+            '#',
+            id: "copy-name-link",
+            class: "btn btn-warning unconfirmed-action-link pull-right",
+            title: "Copy the name - you will be asked to confirm.",
+            tabindex: increment_tab_index,
+            data: {show_this_id: "confirm-or-cancel-copy-name-link-container"})
   %>
   <div id="confirm-or-cancel-copy-name-link-container"
-       class="confirm-or-cancel-container pull-right hidden">
+      class="confirm-or-cancel-container pull-right hidden">
 
     <%= f.submit "Confirm", id: 'create-copy-of-name', class: 'btn btn-primary width-7em', title: 'Really copy the name', disabled: false, tabindex: increment_tab_index %>
     <%= link_to("Cancel",
@@ -45,6 +61,7 @@
                 data: {enable_this_id: 'copy-name-link',
                 hide_this_id: "confirm-or-cancel-copy-name-link-container"})
     %>
+
   </div>
   <div id="copy-name-info-message-container" class="message-container hidden"></div>
   <div id="copy-name-error-message-container" class="error-container hidden"></div>

@@ -124,7 +124,9 @@ class NamesController < ApplicationController
     logger.debug("copy")
     current_name = Name::AsCopier.find(params[:id])
     @name = current_name.copy_with_username(name_params[:name_element],
-                                            current_user.username)
+                                            current_user.username,
+                                            parent_id: name_params[:parent_id],
+                                            second_parent_id: name_params[:second_parent_id])
     render "names/copy/success"
   rescue StandardError => e
     @message = e.to_s
@@ -268,6 +270,8 @@ class NamesController < ApplicationController
                                  :published_year,
                                  :changed_combination,
                                  :target_name_id,
+                                 :parent_id,
+                                 :second_parent_id,
                                  instance_ids_to_copy: [])
   end
 

@@ -112,17 +112,24 @@
 #
 class Name::AsCopier < Name
   NAC = "Name::AsCopier"
-  def copy_with_username(new_name_element, as_username)
+  def copy_with_username(new_name_element, as_username, parent_id: nil, second_parent_id: nil)
     Rails.logger.debug("#{NAC}#copy with username
                        new_name_element: #{new_name_element}")
     raise "Copied record would have the same name." if new_name_element.eql?(name_element)
 
+    validate_new_hybrid_parents!(parent_id, second_parent_id) if hybrid?
+
     new = dup
     new.name_element = new_name_element
+
+    new.parent_id = parent_id if parent_id.present?
+    new.second_parent_id = second_parent_id if second_parent_id.present?
+
     new.created_by = new.updated_by = as_username
     new.uri = new.source_system = new.source_id_string = nil
     new.source_id = nil
     new.lock_version = 0
+    new.name_status = NameStatus.not_applicable if hybrid?
     new.save!
     new.set_names!
     new.refresh_name_paths
@@ -171,5 +178,23 @@ class Name::AsCopier < Name
       raise("Name not copied")
     end
     copied_name
+  end
+
+  private
+
+  def validate_new_hybrid_parents!(parent_id, second_parent_id)
+    if parent_id.blank? || parent_id.to_i == self.parent_id
+      raise "Please choose a first parent that is different from " \
+            "the original name's first parent."
+    end
+
+    if second_parent_id.blank? || second_parent_id.to_i == self.second_parent_id
+      raise "Please choose a second parent that is different from " \
+            "the original name's second parent."
+    end
+
+    if !cultivar_hybrid? && parent_id.to_i == second_parent_id.to_i
+      raise "The second parent cannot be the same as the first parent."
+    end
   end
 end
