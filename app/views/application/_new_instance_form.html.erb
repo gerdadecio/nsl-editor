@@ -1,0 +1,8 @@
+<%= form_tag(instances_path, method: "post",id: 'new-instance-form') do %>
+  <%= hidden_field_tag(:name_id, '',id: 'instance-name-id',name: 'instance[name_id]') %>
+  <%= hidden_field_tag(:reference_id, '', id: 'instance-reference-id', name: 'instance[reference_id]') %>
+  <%= hidden_field_tag(:cited_by_id, '', id: 'instance-cited-by', name: 'instance[cited_by_id]') %>
+  <%= hidden_field_tag(:cites_id, '', id: 'instance-cites-id', name: 'instance[cites_id]') %>
+  <%= submit_tag('Save', class: 'hidden') %>
+<% end %>
+
