@@ -41,7 +41,7 @@ RSpec.describe Instance::AsCopier, type: :model do
       end
 
       context "for valid parameters" do
-        let(:instance_type) { FactoryBot.create(:instance_type, name: "another name")}
+        let(:instance_type) { FactoryBot.create(:instance_type, name: "another name", standalone: false)}
         let(:params) do
           {
             reference_id: reference.id,
