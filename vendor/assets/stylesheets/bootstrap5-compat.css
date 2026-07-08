@@ -145,6 +145,27 @@ select.form-control {
   background-color: #e6e6e6;
   border-color: #adadad;
 }
+#query-submit {
+  color: #333;
+  background-color: lightgrey;
+  border-color: lightgrey;
+}
+#query-submit:hover,
+#query-submit:focus,
+#query-submit:active {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  --bs-btn-color: #333;
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #ccc;
+  --bs-btn-hover-color: #333;
+  --bs-btn-hover-bg: #e6e6e6;
+  --bs-btn-hover-border-color: #adadad;
+  --bs-btn-active-color: #333;
+  --bs-btn-active-bg: #e6e6e6;
+  --bs-btn-active-border-color: #adadad;
+}
 
 /* CRITICAL: contextual button colours when the variant class is used WITHOUT
    the base `.btn` class. Many of the app's `f.submit` buttons emit just
