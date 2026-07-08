@@ -563,6 +563,10 @@ ul.navbar-nav li a.dropdown-toggle {
   border-color: #dee2e6 #dee2e6 #fff;
 }
 
+.fade.in {
+  opacity: 1;
+}
+
 /* Table styles */
 .table > thead > tr > th,
 .table > tbody > tr > th,
