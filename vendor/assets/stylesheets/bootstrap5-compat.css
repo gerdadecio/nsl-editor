@@ -124,6 +124,15 @@ select.form-control {
   color: #333;
   background-color: #fff;
   border-color: #ccc;
+  --bs-btn-color: #333;
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #ccc;
+  --bs-btn-hover-color: #333;
+  --bs-btn-hover-bg: #e6e6e6;
+  --bs-btn-hover-border-color: #adadad;
+  --bs-btn-active-color: #333;
+  --bs-btn-active-bg: #e6e6e6;
+  --bs-btn-active-border-color: #adadad;
 }
 .btn-default:hover,
 .btn-default:focus,
