@@ -11,11 +11,11 @@
 
       <% display_as = record.class.name == 'Hash' ? record[:display_as] || record.class.to_s  : record.try('display_as') || record.class.to_s %>
       <%# TODO: standardize on strings or symbols, at least for the instance record variants. %>
-      <% case display_as %>
+      <% case display_as&.to_s %>
       <% when 'Reference' %>
         <%= render partial: "#{partials}/reference_record",
           locals: {reference: record, give_me_focus: give_me_focus} %>
-      <% when :reference_as_part_of_concept %>
+      <% when 'reference_as_part_of_concept' %>
         <%= render partial: "#{partials}/reference_as_part_of_concept_record",
           locals: {reference: record, give_me_focus: give_me_focus} %>
       <% when 'Author' %>
@@ -23,16 +23,16 @@
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Name' %>
         <%= render partial: "#{partials}/name_record", locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when :name_as_part_of_concept %>
+      <% when 'name_as_part_of_concept' %>
         <%= render partial: "#{partials}/name_as_part_of_instance_record",
           locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when :instance_as_part_of_concept %>
+      <% when 'instance_as_part_of_concept' %>
         <%= render partial: "#{partials}/instance/instance_as_part_of_concept_record",
           locals: {search_result: record, give_me_focus: give_me_focus}%>
-      <% when :citing_instance_within_name_search %>
+      <% when 'citing_instance_within_name_search' %>
         <%= render partial: "#{partials}/instance/citing_instance_within_name_search_record",
           locals: {search_result: record, give_me_focus: give_me_focus}%>
-      <% when :instance_within_reference %>
+      <% when 'instance_within_reference' %>
         <%= render partial: "#{partials}/instance/instance_within_reference_record",
           locals: {search_result: record, give_me_focus: give_me_focus}%>
       <% when 'Instance' %>
@@ -107,17 +107,17 @@
       <% else %>
         <tr>
           <td class="width-1-percent"></td>
-          <td class="min-with-40-percent width-50-percent max-width-60-percent">
-            <%= display_as %> is an unknown type of standard search result
+          <td class="min-width-40-percent width-50-percent max-width-60-percent">
+            <%= display_as&.to_s %> is an unknown type of standard search result
           </td>
-          <td class="width-5-perent filler"></td>
+          <td class="width-5-percent filler"></td>
         </tr>
       <% end %>
     <% end %>
 
     <tr class="results-row-filler">
       <td class="width-1-percent"></td>
-      <td class="min-with-40-percent width-50-percent max-width-60-percent">
+      <td class="min-width-40-percent width-50-percent max-width-60-percent">
         <br> <br> <br> <br> <br>
       </td>
       <td class="width-5-percent filler"></td>
