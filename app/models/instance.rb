@@ -79,6 +79,7 @@ class Instance < ApplicationRecord
   include InstanceInTaxonomy
   include Instance::ForCopyToLoaderName
   include Instance::CopyableToNewName
+  include Instance::Displayable
 
   self.table_name = "instance"
   self.primary_key = "id"
