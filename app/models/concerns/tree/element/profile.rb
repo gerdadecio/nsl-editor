@@ -79,7 +79,8 @@ module Tree::Element::Profile
     message = ""
     refresh = false
     if excluded?
-      message = "We don't allow changes to distribution for excluded taxa"
+      message = "Error: We don't allow changes to distribution for excluded taxa"
+      raise message
     else
       message, refresh =
         transaction_for_update_accepted_distribution(dist_param, username)
@@ -95,9 +96,7 @@ module Tree::Element::Profile
     rescue StandardError => e
       Rails.logger.error("Rolling back transaction in update_distribution")
       Rails.logger.error(e.to_s)
-      message = "Error: #{e}"
-      refresh = false
-      raise ActiveRecord::Rollback
+      raise
     end
     [message, refresh]
   end
