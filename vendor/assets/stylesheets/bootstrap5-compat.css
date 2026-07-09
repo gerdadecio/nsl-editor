@@ -623,6 +623,15 @@ ul.navbar-nav li a.dropdown-toggle {
   padding: 5px;
 }
 
+tr.search-result td.main-content {
+  padding: 5px !important;
+}
+
+/* For the green icon alignment with text */
+tr.search-result td.nsl-tiny-icon-container {
+  padding-top: 6px !important;
+}
+
 table[border] {
   border-collapse: collapse;
 }
