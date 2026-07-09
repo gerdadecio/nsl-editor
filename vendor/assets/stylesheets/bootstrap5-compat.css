@@ -16,9 +16,12 @@
    ========================================================================== */
 
 /* --- Typography: preserve the app's compact 14px density (BS3 default) -------
-   BS5 defaults to 16px/1.5 which would reflow every tuned form. */
+   BS5 defaults to 16px/1.5 which would reflow every tuned form.
+   Put back the BS3 font stack (Helvetica Neue, Helvetica, Arial, sans-serif) so the
+*/
 body {
   font-size: 14px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 /* Headings: BS5's reboot zeroes heading top margins (margin-top:0); BS3 gave
@@ -124,6 +127,15 @@ select.form-control {
   color: #333;
   background-color: #fff;
   border-color: #ccc;
+  --bs-btn-color: #333;
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #ccc;
+  --bs-btn-hover-color: #333;
+  --bs-btn-hover-bg: #e6e6e6;
+  --bs-btn-hover-border-color: #adadad;
+  --bs-btn-active-color: #333;
+  --bs-btn-active-bg: #e6e6e6;
+  --bs-btn-active-border-color: #adadad;
 }
 .btn-default:hover,
 .btn-default:focus,
@@ -132,6 +144,27 @@ select.form-control {
   color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
+}
+#query-submit {
+  color: #333;
+  background-color: lightgrey;
+  border-color: lightgrey;
+}
+#query-submit:hover,
+#query-submit:focus,
+#query-submit:active {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  --bs-btn-color: #333;
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #ccc;
+  --bs-btn-hover-color: #333;
+  --bs-btn-hover-bg: #e6e6e6;
+  --bs-btn-hover-border-color: #adadad;
+  --bs-btn-active-color: #333;
+  --bs-btn-active-bg: #e6e6e6;
+  --bs-btn-active-border-color: #adadad;
 }
 
 /* CRITICAL: contextual button colours when the variant class is used WITHOUT
@@ -563,6 +596,10 @@ ul.navbar-nav li a.dropdown-toggle {
   border-color: #dee2e6 #dee2e6 #fff;
 }
 
+.fade.in {
+  opacity: 1;
+}
+
 /* Table styles */
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -572,6 +609,18 @@ ul.navbar-nav li a.dropdown-toggle {
 .table > tfoot > tr > td {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
+}
+
+/* --- .table-condensed was renamed to .table-sm in BS4/5, so the app's markup
+   (which still uses .table-condensed) matches nothing under BS5 and its compact
+   tables lost the BS3 5px cell padding. So we re-create the BS3 rule here. --------------- */
+.table-condensed > thead > tr > th,
+.table-condensed > tbody > tr > th,
+.table-condensed > tfoot > tr > th,
+.table-condensed > thead > tr > td,
+.table-condensed > tbody > tr > td,
+.table-condensed > tfoot > tr > td {
+  padding: 5px;
 }
 
 table[border] {

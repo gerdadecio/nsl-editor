@@ -1,3 +1,7 @@
+- :date: 09-July-2026
+  :jira_id: '5845'
+  :description: |-
+    Additional css fixes for bs5 addressing feedback from testing
 - :date: 08-July-2026
   :jira_id: '2423'
   :description: |-
