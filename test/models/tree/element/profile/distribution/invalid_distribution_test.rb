@@ -13,23 +13,24 @@ class InvalidDistributionTest < ActiveSupport::TestCase
     trel = update_profile_to_invalid_dist(
       trel,
       "Vic,, NSW",
-      /Error: empty distribution value, likely due to an unnecessary comma/i
+      /empty distribution value, likely due to an unnecessary comma/i
     )
     update_profile_to_invalid_dist(
       trel,
       ",Vic",
-      /Error: empty distribution value, likely due to an unnecessary comma/i
+      /empty distribution value, likely due to an unnecessary comma/i
     )
   end
 
-  def update_profile_to_invalid_dist(trel, new_dist, expected_message_re = /Error: Invalid distribution value: /i)
+  def update_profile_to_invalid_dist(trel, new_dist, expected_message_re = /Invalid distribution value: /i)
     tag = "update_profile_to_invalid_dist"
-    message, refresh = trel.update_distribution(new_dist, "dist user")
-    te_changed = Tree::Element.find(trel.id)
+    error = assert_raises(RuntimeError) do
+      trel.update_distribution(new_dist, "dist user")
+    end
     assert_match(expected_message_re,
-                 message,
+                 error.message,
                  "Unexpected message for #{tag} with dist: #{new_dist}")
-    assert_not(refresh, "Expected no refresh for #{tag}")
+    te_changed = Tree::Element.find(trel.id)
     assert_nil(te_changed.distribution_value,
                "Expected distribution to be unchanged for #{tag}")
     te_changed
