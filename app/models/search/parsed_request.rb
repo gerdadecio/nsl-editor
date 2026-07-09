@@ -471,8 +471,7 @@ class Search::ParsedRequest
            @params["query_string"].match(/[^-]id:/i) ||
            @params["query_string"].match(/\Aid:/i) ||
            @params["query_string"].match(/\bid-with-syn:/i) 
-      @params["query_string"] = @params["query_string"].dup << ' any-batch:'
-      @note_to_user = 'any-batch applied'
+      raise "Please set a default batch, or specify a 'batch-id:', a 'batch-name:' or 'any-batch:'"
     end
   end
 
