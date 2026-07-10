@@ -1,3 +1,11 @@
+- :date: 10-July-2026
+  :jira_id: '5806'
+  :description: |-
+    Loader Name Search: add new "any-batch" target and remove the default to "any-batch"
+- :date: 09-July-2026
+  :jira_id: '5708'
+  :description: |-
+    Fixup typos in the search results as suggested by claude
 - :date: 09-July-2026
   :jira_id: '5708'
   :description: |-

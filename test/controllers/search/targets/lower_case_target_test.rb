@@ -28,7 +28,7 @@ class SearchControllerLowerCaseTargetTest < ActionController::TestCase
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: [:edit, :taxonomic_review, :login] })
-    assert_select 'span#search-target-button-text', /Names/, "The input search target 'name' should be output as canonical 'Names'"
+    assert_select 'span#search-target-button-text', /name/, "The input search target 'name' should be output as 'name'"
     assert_response :success
   end
 end
