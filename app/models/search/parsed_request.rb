@@ -81,6 +81,7 @@ class Search::ParsedRequest
     "batch_stacks" => "batch stack",
     "loader_name" => "loader name",
     "loader_names" => "loader name",
+    "loader_names_any_batch" => "loader name",
     "batch_review" => "batch review",
     "batch_reviews" => "batch review",
     "batch_review_period" => "batch review period",
@@ -182,6 +183,7 @@ class Search::ParsedRequest
 
   PREPROCESSING_TARGETS = {
     "loader_names" => "preprocess_loader_names",
+    "loader_names_any_batch" => "preprocess_loader_names_any_batch",
   }
 
   SHOW_INSTANCES = "show-instances:"
@@ -192,11 +194,11 @@ class Search::ParsedRequest
   def initialize(params)
     @params = params
     @note_to_user = ''
+    @original_query_target_for_display = params[:query_target]
     @query_string = canonical_query_string
     @query_string = @query_string.gsub(/  */, " ") unless @query_string.blank?
-    @query_target = (@params["canonical_query_target"] || "").strip.downcase
+    @query_target = (@params["canonical_query_target"] || "").gsub(')','').gsub('(','').strip.downcase
     @user = @params[:current_user]
-    @original_query_target = @query_target
     @default_query_scope = ""
     @apply_default_query_scope = false
     @original_query_target = @query_target
@@ -449,7 +451,7 @@ class Search::ParsedRequest
     elsif ADDITIONAL_NON_PREPROCESSED_TARGETS.include?(@query_target)
     elsif loader_batch_preprocessing?
     else
-      raise "Unknown query target, please choose one from the list."
+      raise "Unknown query target '#{@query_target}', please choose one from the list."
     end
     tokens
   end
@@ -471,9 +473,13 @@ class Search::ParsedRequest
            @params["query_string"].match(/[^-]id:/i) ||
            @params["query_string"].match(/\Aid:/i) ||
            @params["query_string"].match(/\bid-with-syn:/i) 
-      @params["query_string"] = @params["query_string"].dup << ' any-batch:'
-      @note_to_user = 'any-batch applied'
+      raise "Please set a default batch, or specify a 'batch-id:', a 'batch-name:' or 'any-batch:'"
     end
+  end
+
+  def preprocess_loader_names_any_batch
+    @target_button_text = @original_query_target
+    @query_string += ' any-batch: ' unless @query_string.match(/any-batch:/)
   end
 
   # TODO: convert this procedural code that refers to specific models to model
@@ -489,8 +495,8 @@ class Search::ParsedRequest
        end.include?(@query_target.downcase.gsub("_", " ").rstrip)
       @default_query_scope = "batch-id: #{::Loader::Batch.id_of(@query_target.gsub('_', ' '))}"
       debug("here is @default_query_scope: #{@default_query_scope}")
-      @target_button_text = @query_target
       @original_query_target = @query_target
+      @target_button_text = @query_target
       @query_target = "loader_names"
       @apply_default_query_scope = true
       true
@@ -504,8 +510,6 @@ class Search::ParsedRequest
       raise "Cannot parse target: #{@query_target}." unless SIMPLE_QUERY_TARGETS.key?(@query_target)
 
       @target_table = SIMPLE_QUERY_TARGETS[@query_target]
-      @target_button_text = @target_table.capitalize.pluralize
-      @original_query_target_for_display = @original_query_target.gsub("_", " ").capitalize
       @target_model = TARGET_MODELS[@target_table]
       @default_order_column = DEFAULT_ORDER_COLUMNS[@target_table]
       @default_query_directive = DEFAULT_QUERY_DIRECTIVES[@target_table]

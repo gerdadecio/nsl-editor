@@ -36,6 +36,7 @@ class SearchLoaderNameWithXBatchIdTest < ActiveSupport::TestCase
     error = assert_raises(RuntimeError) do
       Search::Base.new(params)
     end
-    assert_match(/Cannot search this target for: xbatch-id:/i, error.message)
+    assert_match(/Please set a default batch, or specify a/i, error.message)
+    assert_match(/'batch-id:', a 'batch-name:' or 'any-batch:'/i, error.message)
   end
 end
