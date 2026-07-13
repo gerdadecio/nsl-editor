@@ -1,4 +1,8 @@
 - :date: 13-July-2026
+  :jira_id: '3228'
+  :description: |-
+    Name Delete: Reduce length of extra reason field to 200 char
+- :date: 13-July-2026
   :jira_id: '5845'
   :description: |-
     Remove the extra space between the dropdown and search field in the search form for bs5
