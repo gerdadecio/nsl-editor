@@ -1,6 +1,10 @@
 - :date: 13-July-2026
   :jira_id: '5845'
   :description: |-
+    Remove the extra space between the dropdown and search field in the search form for bs5
+- :date: 13-July-2026
+  :jira_id: '5845'
+  :description: |-
     Fixup tabs position for bs5
 - :date: 13-July-2026
   :jira_id: '5845'
