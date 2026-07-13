@@ -77,7 +77,7 @@ module NameValidatable
     return unless name_type.autonym?
     return if name_rank.compatible_with_autonym?
 
-    errors.add(:name_type_id, "autonym cannot be this rank")
+    errors.add(:name_type_id, "autonym must either be infrageneric or infraspecific rank")
   end
 
   def genus_parent_must_match_family_if_both_ranked_family

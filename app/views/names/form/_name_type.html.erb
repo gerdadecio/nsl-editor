@@ -3,6 +3,8 @@
     <%
       name_type_options = if can?(:create_common_name, Name) && !can?(:manage, Name) && @name.category_for_edit.other?
                             NameType.common_only_options
+                          elsif @category =~ /scientific.family.or.above/i
+                            NameType.scientific_family_or_above
                           else
                             NameType.options_for_category(@name.category_for_edit)
                           end
