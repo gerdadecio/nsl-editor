@@ -1,4 +1,8 @@
 - :date: 13-July-2026
+  :jira_id: '5845'
+  :description: |-
+    Css fixes for bs5 addressing ui issues in the tree tab and search results
+- :date: 13-July-2026
   :jira_id: '3117'
   :description: |-
     Name: stop users creating autonym names of ineligible ranks
