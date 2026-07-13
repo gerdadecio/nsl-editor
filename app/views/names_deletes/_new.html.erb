@@ -24,9 +24,6 @@
       class: 'btn btn-danger width-8em', 
       disabled: false %>
     <%= cancel_delete_link %>
-    <br>
-    <br>
-    <br>
     <div class="form-group">
       <label for="names_delete_reason">Reason*</label>
     <br>
@@ -42,13 +39,11 @@
     <div class="form-group">
       <label for="names_delete_extra_info">Extra information</label>
       <%= f.text_area :extra_info,
-        title: "Enter any extra information about the reason for delete. Up to 500 characters long. Field is required if you choose reason of 'Other'.", 
-        style: 'width: 100%; height: 8lh;',
-        maxlength: 500, tabindex: increment_tab_index, class: 'form-control pull-left' %>
+        title: "Enter any extra information about the reason for delete. Up to 200 characters long. Field is required if you choose reason of 'Other'.", 
+        style: 'width: 100%; height: 6lh;',
+        maxlength: 200, tabindex: increment_tab_index, class: 'form-control pull-left' %>
     </div>
-    <br>
-    <br>
-    <br>
+    <p>Up to 200 characters allowed</p>
     <p id="name-delete-spinner" class="hidden">
     Deleting...    <i class="fa fa-spinner fa-spin"></i>
     </p>
