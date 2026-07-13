@@ -117,6 +117,14 @@ class NameType < ApplicationRecord
     end
   end
 
+  def self.scientific_family_or_above
+    where(scientific: true)
+      .where(" (not hybrid or name in ('named hybrid autonym'))")
+      .where(" name != 'phrase name' ")
+      .where("name != 'autonym'")
+      .sort_by(&:name).collect { |n| [n.name, n.id] }
+  end
+
   def self.scientific_1_parent_options
     where(scientific: true)
       .where(" (not hybrid or name in ('named hybrid autonym'))")

@@ -27,7 +27,7 @@ require "test_helper"
 #
 # Non-autonym name types are unaffected by this validation.
 class NameTypeAutonymForRestrictedRanksOnlyTest < ActiveSupport::TestCase
-  ERROR = "Name type autonym cannot be this rank"
+  ERROR = "Name type autonym must either be infrageneric or infraspecific rank"
 
   def autonym
     names(:autonym_for_rank_validation)
