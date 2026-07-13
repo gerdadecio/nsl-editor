@@ -149,6 +149,19 @@ select.form-control {
   line-height: 1.4;
 }
 
+.btn:not([class*="btn-"]) {
+  --bs-btn-color: #333;
+  --bs-btn-bg: rgb(239, 239, 239);
+  --bs-btn-border-color: rgb(239, 239, 239);
+  --bs-btn-hover-color: #333;
+  --bs-btn-hover-bg: rgb(223, 223, 223);
+  --bs-btn-hover-border-color: rgb(223, 223, 223);
+  --bs-btn-active-color: #333;
+  --bs-btn-active-bg: rgb(211, 211, 211);
+  --bs-btn-active-border-color: rgb(211, 211, 211);
+  --bs-btn-focus-shadow-rgb: 173, 173, 173;
+}
+
 /* --- Buttons: .btn-default was removed in BS5. Re-create the BS3 light look. - */
 .btn-default {
   color: #333;
@@ -307,6 +320,12 @@ select.form-control {
    intended. */
 .btn {
   --bs-btn-disabled-opacity: 1;
+}
+
+#remove_name_placement:disabled,
+#delete_distribution_btn:disabled,
+#delete_comment_btn:disabled {
+  opacity: 0.65;
 }
 
 /* The search submit (.btn.search-btn) has its own lightgrey fill; when disabled
@@ -681,6 +700,10 @@ table[border] td {
 
 dd {
   margin-bottom: 0;
+}
+
+.text-right {
+  text-align: right;
 }
 
 /* Search form */
