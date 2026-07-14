@@ -14,6 +14,8 @@ module NameEnterable
     return name_status_id unless category_for_edit.phrase_name?
 
     options = status_options
+
+    # options is an array of arrays, each inner array is [name, id]
     options.first.last if options.one?
   end
 
