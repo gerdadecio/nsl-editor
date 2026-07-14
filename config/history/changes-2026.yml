@@ -1,3 +1,7 @@
+- :date: 14-July-2026
+  :jira_id: '5197'
+  :description: |-
+    Set the status field to n/a when converting a scientific name to phrase name
 - :date: 13-July-2026
   :jira_id: '3228'
   :description: |-
