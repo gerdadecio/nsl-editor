@@ -10,6 +10,13 @@ module NameEnterable
     NameStatus.options_for_category(category_for_edit)
   end
 
+  def selected_status_id
+    return name_status_id unless category_for_edit.phrase_name?
+
+    options = status_options
+    options.first.last if options.one?
+  end
+
   def takes_name_element?
     category_for_edit.takes_name_element?
   end

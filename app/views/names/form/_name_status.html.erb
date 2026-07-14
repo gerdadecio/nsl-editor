@@ -9,11 +9,12 @@
                'name_status_id',
                @name.status_options,
                {include_blank: true,
-                prompt: ''},
+                prompt: '',
+                selected: @name.selected_status_id},
                title: 'Select status',
                tabindex: increment_tab_index,
                autocomplete: "off",
-               class:"form-control",
+               class: "form-control",
                disabled: false,
                required: true) %>
   </div>
