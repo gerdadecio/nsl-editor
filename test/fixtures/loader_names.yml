@@ -56,3 +56,188 @@ accepted_three:
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
 
+# --- Fixtures for Loader::Name::MakeOneInstance guard-ordering tests ---
+# (test/models/loader/name/make_one_instance/)
+#
+# create_misapp and MakeOneSynonymyInstance#create must check, in this
+# order, before ever dereferencing further: does the loader_name have a
+# parent? does that parent have a preferred match? only then is it safe
+# to check whether that match uses an existing instance.
+#
+# These use dedicated parent fixtures with deliberately nonsense names
+# (NOT accepted_one/two/three). Search::Loader::Name::FieldRule's
+# "simple-name:" rule matches a record if ITS OWN name matches, OR its
+# PARENT's name matches, OR one of its CHILDREN's/SIBLINGS' names match -
+# so a child of accepted_one ("Hardenbergia violacea") would itself start
+# matching "Hardenbergia violacea" searches. Giving parents unique,
+# unsearched-for names avoids that collision entirely.
+#
+# New rows here also show up in *unscoped* count assertions elsewhere
+# (tests searching "* any-batch:" / "* batch-name: *" /
+# "no-hybrid-flag: any-batch:" across every loader name in every batch).
+# See the count updates in:
+#   test/models/search/loader/name/simple_with_any_batch_test.rb
+#   test/models/search/loader/name/print/simple_with_any_batch_test.rb
+#   test/models/search/loader/name/simple_with_batch_name_asterisk_test.rb
+#   test/models/search/loader/name/hybrid/no_hybrid_flag_test.rb
+
+zzz_test_parent_no_match:
+  seq: 0
+  record_type: accepted
+  loader_batch: batch_one
+  simple_name: Zzz test parent no match
+  simple_name_as_loaded: Zzz test parent no match
+  full_name: Zzz test parent no match
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+zzz_test_parent_with_match:
+  seq: 0
+  record_type: accepted
+  loader_batch: batch_one
+  simple_name: Zzz test parent with match
+  simple_name_as_loaded: Zzz test parent with match
+  full_name: Zzz test parent with match
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+zzz_test_parent_using_existing:
+  seq: 0
+  record_type: accepted
+  loader_batch: batch_one
+  simple_name: Zzz test parent using existing
+  simple_name_as_loaded: Zzz test parent using existing
+  full_name: Zzz test parent using existing
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+misapp_no_parent:
+  seq: 0
+  record_type: misapplied
+  loader_batch: batch_one
+  simple_name: Misapp with no parent
+  simple_name_as_loaded: Misapp with no parent
+  full_name: Misapp with no parent
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+misapp_parent_no_pref_match:
+  seq: 0
+  record_type: misapplied
+  loader_batch: batch_one
+  parent: zzz_test_parent_no_match
+  simple_name: Misapp whose parent has no preferred match
+  simple_name_as_loaded: Misapp whose parent has no preferred match
+  full_name: Misapp whose parent has no preferred match
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+misapp_parent_using_existing:
+  seq: 0
+  record_type: misapplied
+  loader_batch: batch_one
+  parent: zzz_test_parent_using_existing
+  simple_name: Misapp whose parent uses an existing instance
+  simple_name_as_loaded: Misapp whose parent uses an existing instance
+  full_name: Misapp whose parent uses an existing instance
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+misapp_guards_pass:
+  seq: 0
+  record_type: misapplied
+  loader_batch: batch_one
+  parent: zzz_test_parent_with_match
+  simple_name: Misapp that passes all parent guards
+  simple_name_as_loaded: Misapp that passes all parent guards
+  full_name: Misapp that passes all parent guards
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+synonym_no_parent:
+  seq: 0
+  record_type: synonym
+  loader_batch: batch_one
+  simple_name: Synonym with no parent
+  simple_name_as_loaded: Synonym with no parent
+  full_name: Synonym with no parent
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+synonym_parent_no_pref_match:
+  seq: 0
+  record_type: synonym
+  loader_batch: batch_one
+  parent: zzz_test_parent_no_match
+  simple_name: Synonym whose parent has no preferred match
+  simple_name_as_loaded: Synonym whose parent has no preferred match
+  full_name: Synonym whose parent has no preferred match
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+synonym_parent_using_existing:
+  seq: 0
+  record_type: synonym
+  loader_batch: batch_one
+  parent: zzz_test_parent_using_existing
+  simple_name: Synonym whose parent uses an existing instance
+  simple_name_as_loaded: Synonym whose parent uses an existing instance
+  full_name: Synonym whose parent uses an existing instance
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+synonym_guards_pass:
+  seq: 0
+  record_type: synonym
+  loader_batch: batch_one
+  parent: zzz_test_parent_with_match
+  simple_name: Synonym that passes all parent guards
+  simple_name_as_loaded: Synonym that passes all parent guards
+  full_name: Synonym that passes all parent guards
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+

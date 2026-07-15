@@ -1,0 +1,65 @@
+_fixture:
+  model_class: Loader::Name::Match
+
+# Supports test/models/loader/name/make_one_instance/create_misapp_test.rb
+# and test/models/loader/name/make_one_instance/make_one_synonymy_instance_test.rb
+#
+# name/instance associations are arbitrary and reused across rows below -
+# only the loader_name association and the use_existing_instance /
+# standalone_instance_* / relationship_instance_id flags matter for those
+# tests.
+
+# zzz_test_parent_using_existing's preferred match: uses an existing
+# instance, so nothing further should be created off it.
+match_zzz_test_parent_using_existing:
+  loader_name: zzz_test_parent_using_existing
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  use_existing_instance: true
+  instance_choice_confirmed: true
+  standalone_instance_found: true
+  standalone_instance: gaertner_created_metrosideros_costata
+  created_by: tester
+  updated_by: tester
+
+# zzz_test_parent_with_match's preferred match: an ordinary match, not
+# using an existing instance, so processing should be able to proceed
+# past the parent guards.
+match_zzz_test_parent_with_match:
+  loader_name: zzz_test_parent_with_match
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  created_by: tester
+  updated_by: tester
+
+# Each synonym test loader_name needs its own preferred match, because
+# MakeOneSynonymyInstance#create dereferences @match (loader_name's own
+# preferred_match) as its very first check, before any of the parent
+# guards under test here.
+match_synonym_no_parent:
+  loader_name: synonym_no_parent
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  created_by: tester
+  updated_by: tester
+
+match_synonym_parent_no_pref_match:
+  loader_name: synonym_parent_no_pref_match
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  created_by: tester
+  updated_by: tester
+
+match_synonym_parent_using_existing:
+  loader_name: synonym_parent_using_existing
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  created_by: tester
+  updated_by: tester
+
+match_synonym_guards_pass:
+  loader_name: synonym_guards_pass
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  created_by: tester
+  updated_by: tester

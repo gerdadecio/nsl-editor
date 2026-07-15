@@ -32,8 +32,9 @@ class SearchLoaderNameSimpleWithAnyBatchTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
            "Results should be an ActiveRecord::Relation."
-    assert_equal 3,
+    assert_equal 14,
                  search.executed_query.results.size,
-                 "Exactly 3 results expected."
+                 "Exactly 14 results expected (3 original fixtures + 11 " \
+                 "from Loader::Name::MakeOneInstance guard-ordering tests)."
   end
 end

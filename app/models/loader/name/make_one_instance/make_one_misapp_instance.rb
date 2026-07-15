@@ -11,13 +11,8 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
   end
 
   def create
-    return parent_using_existing if @loader_name.parent
-                                                .preferred_match
-                                                .use_existing_instance == true
     return already_noted if @match.relationship_instance_id.present?
     return misapp_already_attached if misapp_already_attached?
-    return parent_no_preferred_match if @loader_name.parent
-                     .preferred_match.blank?
     return parent_no_standalone if @loader_name.parent.preferred_match.try("standalone_instance_id").blank?
     return no_misapplied_type if @loader_name.synonym_type.blank?
     return no_relationship_instance_type if @match
@@ -67,16 +62,6 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     record_misapp_already_there
     log_to_table(declined_entry("misapplied instance already there"))
     {declines: 1, declines_reasons: {misapplied_instance_already_there: 1}}
-  end
-
-  def parent_using_existing
-    log_to_table(declined_entry("parent is using existing instance"))
-    {declines: 1, declines_reasons: {parent_is_using_existing_instance: 1}}
-  end
-
-  def parent_no_preferred_match
-    log_to_table(declined_entry("parent has no preferred match"))
-    {declines: 1, declines_reasons: {parent_has_no_preferred_match: 1}}
   end
 
   def declined_entry(message)

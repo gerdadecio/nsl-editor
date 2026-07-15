@@ -24,10 +24,10 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
       return {declines: 1, declines_reasons: {synonym_has_no_parent: 1}}
     end
     if @loader_name.parent.preferred_match.blank?
-      entry = "#{Constants::DECLINED_INSTANCE} -: parent has no preferred match"
+      entry = "#{Constants::DECLINED_INSTANCE} -: parent no preferred match"
       entry += " #{@loader_name.simple_name} ##{@loader_name.id}"
       log_to_table(entry)
-      return {declines: 1, declines_reasons: {parent_has_no_preferred_match: 1}}
+      return {declines: 1, declines_reasons: {parent_no_preferred_match: 1}}
     end
     if @loader_name.parent.preferred_match.use_existing_instance == true
       entry = "#{Constants::DECLINED_INSTANCE} -: parent is using existing instance for "
