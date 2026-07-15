@@ -83,6 +83,25 @@ class Loader::Name::MakeOneInstance
     {declines: 1, declines_reasons: {no_preferred_match: 1}}
   end
 
+  def parent_using_existing
+    log_to_table(declined_entry("parent is using existing instance"))
+    {declines: 1, declines_reasons: {parent_is_using_existing_instance: 1}}
+  end
+
+  def no_parent
+    log_to_table(declined_entry("no parent"))
+    {declines: 1, declines_reasons: {no_parent: 1}}
+  end
+
+  def parent_no_preferred_match
+    log_to_table(declined_entry("parent no preferred match"))
+    {declines: 1, declines_reasons: {parent_no_preferred_match: 1}}
+  end
+
+  def declined_entry(message)
+    "#{Constants::DECLINED_INSTANCE}: #{message} for #{@loader_name.simple_name} ##{@loader_name.id}"
+  end
+
   def heading
     log_to_table("#{Constants::DECLINED_INSTANCE} - heading entries not processed ##{@loader_name.id} #{@loader_name.simple_name}")
     {declines: 1, declines_reasons: {heading_so_not_processed: 1}}
@@ -105,6 +124,11 @@ class Loader::Name::MakeOneInstance
   end
 
   def create_misapp
+    return no_parent if @loader_name.parent.blank?
+    return parent_no_preferred_match if @loader_name.parent.preferred_match.blank?
+    return parent_using_existing if @loader_name.parent
+                                                .preferred_match
+                                                .use_existing_instance == true
     return no_preferred_match unless @loader_name.preferred_matches.size > 0
 
     result_h = {creates: 0, declines: 0, errors: 0}

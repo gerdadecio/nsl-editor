@@ -1,3 +1,11 @@
+- :date: 15-July-2026
+  :jira_id: '5692'
+  :description: |-
+    Loader: misapplications without preferred matches now respect their parent's "use existing instance" choice 
+- :date: 14-July-2026
+  :jira_id: '5197'
+  :description: |-
+    Set the status field to n/a when converting a scientific name to phrase name
 - :date: 14-July-2026
   :jira_id: '5197'
   :description: |-
