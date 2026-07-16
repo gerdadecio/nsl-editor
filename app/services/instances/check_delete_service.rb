@@ -5,11 +5,14 @@ module Instances
   # rules live in one place - the database.
   class CheckDeleteService < BaseService
     Result = Struct.new(:action_code, :delete_action, :explanation) do
-      def block? = delete_action == "BLOCK"
+      # deletion is blocked
+      def delete_blocked? = delete_action == "BLOCK"
 
-      def soft_delete? = delete_action == "SOFT_DELETE"
+      # deletion is allowed, but the instance should be soft-deleted
+      def soft_delete_allowed? = delete_action == "SOFT_DELETE"
 
-      def delete? = delete_action == "DELETE"
+      # deletion is allowed, and the instance can be hard-deleted
+      def hard_delete_allowed? = delete_action == "DELETE"
     end
 
     attr_reader :result

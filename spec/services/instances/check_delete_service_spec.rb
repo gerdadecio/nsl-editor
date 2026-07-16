@@ -43,7 +43,7 @@ describe Instances::CheckDeleteService do
       end
 
       it "blocks the delete" do
-        expect(result).to have_attributes(
+        expect(result).to be_delete_blocked.and have_attributes(
           action_code: 0,
           delete_action: "BLOCK",
           explanation: "Instance has notes"
@@ -56,7 +56,7 @@ describe Instances::CheckDeleteService do
         before { create_referencing_instance(foreign_key => instance.id) }
 
         it "blocks the delete" do
-          expect(result).to have_attributes(
+          expect(result).to be_delete_blocked.and have_attributes(
             action_code: 0,
             delete_action: "BLOCK",
             explanation: "Instance is referenced by a live instance"
@@ -71,7 +71,7 @@ describe Instances::CheckDeleteService do
       end
 
       it "ignores the reference and allows a hard delete" do
-        expect(result).to have_attributes(
+        expect(result).to be_hard_delete_allowed.and have_attributes(
           action_code: 2,
           delete_action: "DELETE",
           explanation: "Instance has no instance or tree dependents"
@@ -81,7 +81,7 @@ describe Instances::CheckDeleteService do
 
     context "when the instance has no notes, references or tree usage" do
       it "allows a hard delete" do
-        expect(result).to have_attributes(
+        expect(result).to be_hard_delete_allowed.and have_attributes(
           action_code: 2,
           delete_action: "DELETE",
           explanation: "Instance has no instance or tree dependents"
@@ -103,7 +103,7 @@ describe Instances::CheckDeleteService do
       end
 
       it "allows a soft delete" do
-        expect(result).to have_attributes(
+        expect(result).to be_soft_delete_allowed.and have_attributes(
           action_code: 1,
           delete_action: "SOFT_DELETE",
           explanation: "Instance is used only in past tree versions"
@@ -115,7 +115,7 @@ describe Instances::CheckDeleteService do
       before { tree_with_element_in(:current_tree_version_id) }
 
       it "blocks the delete" do
-        expect(result).to have_attributes(
+        expect(result).to be_delete_blocked.and have_attributes(
           action_code: 0,
           delete_action: "BLOCK",
           explanation: "Instance is used in a current or draft tree version"
@@ -127,7 +127,7 @@ describe Instances::CheckDeleteService do
       before { tree_with_element_in(:default_draft_tree_version_id) }
 
       it "blocks the delete" do
-        expect(result).to have_attributes(
+        expect(result).to be_delete_blocked.and have_attributes(
           action_code: 0,
           delete_action: "BLOCK",
           explanation: "Instance is used in a current or draft tree version"
