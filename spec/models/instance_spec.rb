@@ -246,6 +246,40 @@ RSpec.describe Instance, type: :model do
     end
   end
 
+  describe "#allow_soft_delete?" do
+    let(:check_delete_service) { double("CheckDeleteService", soft_delete_allowed?: true) }
+
+    before do
+      allow(CheckDeleteService).to receive(:new).with(instance).and_return(check_delete_service)
+    end
+
+    it "returns the result of the check delete service" do
+      expect(instance.allow_soft_delete?).to eq(check_delete_service.soft_delete_allowed?)
+    end
+
+    context "when the check delete service raises an exception" do
+      before do
+        allow(check_delete_service).to receive(:soft_delete_allowed?).and_raise(StandardError, "Service error")
+        allow(Rails.logger).to receive(:error)
+      end
+
+      it "logs the exception and returns false" do
+        expect(Rails.logger).to receive(:error).with(/allow_soft_delete\? exception: Service error/)
+        expect(instance.allow_soft_delete?).to be false
+      end
+    end
+
+    context "when the check delete service returns false" do
+      before do
+        allow(check_delete_service).to receive(:soft_delete_allowed?).and_return(false)
+      end
+
+      it "returns false" do
+        expect(instance.allow_soft_delete?).to be false
+      end
+    end
+  end
+
   describe "#draft_for_sorting?" do
     context "when instance is draft and has no profile items" do
       before do

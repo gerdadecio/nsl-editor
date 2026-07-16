@@ -77,6 +77,7 @@ class Instance < ApplicationRecord
   include ActionView::Helpers::TextHelper
   include InstanceTreeable
   include InstanceInTaxonomy
+  include UserTrackable
   include Instance::ForCopyToLoaderName
   include Instance::CopyableToNewName
   include Instance::Displayable
@@ -700,6 +701,10 @@ class Instance < ApplicationRecord
       children.empty? &&
       not_linked_to_loader_name_matches? &&
       profile_items.blank?
+  end
+
+  def allow_soft_delete?
+    ::Instances::CheckDeleteService.new(instance: self).execute.soft_delete_allowed?
   end
 
   # This is not handled via an instance association because the loader is only
