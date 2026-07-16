@@ -485,6 +485,68 @@ $$;
 
 
 --
+-- Name: check_delete_instance(bigint); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.check_delete_instance(p_inst_id bigint) RETURNS TABLE(action_code integer, delete_action text, explanation text)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Block if notes exist
+    IF EXISTS (SELECT 1
+               FROM public.instance_note n
+               WHERE n.instance_id = p_inst_id) THEN
+        RETURN QUERY
+            SELECT 0, 'BLOCK', 'Instance has notes';
+        RETURN;
+    END IF;
+
+    -- Block if referenced by another live instance
+    IF EXISTS (SELECT 1
+               FROM public.instance i
+               WHERE (
+                   i.cites_id = p_inst_id
+                       OR i.cited_by_id = p_inst_id
+                       OR i.parent_id = p_inst_id
+                   )
+                 AND i.deleted_at IS NULL) THEN
+        RETURN QUERY
+            SELECT 0, 'BLOCK', 'Instance is referenced by a live instance';
+        RETURN;
+    END IF;
+
+    -- Delete if this instance is not used in any tree
+    IF NOT EXISTS (SELECT 1
+                   FROM public.tree_element te
+                   WHERE te.instance_id = p_inst_id) THEN
+        RETURN QUERY
+            SELECT 2, 'DELETE', 'Instance has no instance or tree dependents';
+        RETURN;
+    END IF;
+
+    -- Soft delete if this instance is used only in past trees
+    IF NOT EXISTS (SELECT 1
+                   FROM public.tree_element te
+                            JOIN public.tree_version_element tve
+                                 ON tve.tree_element_id = te.id
+                            JOIN public.tree t
+                                 ON tve.tree_version_id IN (
+                                                            t.current_tree_version_id,
+                                                            t.default_draft_tree_version_id
+                                     )
+                   WHERE te.instance_id = p_inst_id) THEN
+        RETURN QUERY
+            SELECT 1, 'SOFT_DELETE', 'Instance is used only in past tree versions';
+        RETURN;
+    END IF;
+
+    RETURN QUERY
+        SELECT 0, 'BLOCK', 'Instance is used in a current or draft tree version';
+END;
+$$;
+
+
+--
 -- Name: daily_top_nodes(text, timestamp without time zone); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1258,6 +1320,7 @@ CREATE TABLE public.instance (
     delete_at timestamp with time zone,
     api_name text,
     api_at timestamp with time zone,
+    deleted_at timestamp with time zone,
     CONSTRAINT citescheck CHECK (((cites_id IS NULL) OR (cited_by_id IS NOT NULL)))
 );
 
