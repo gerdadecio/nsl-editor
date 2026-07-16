@@ -119,7 +119,7 @@ class Name::AsEdited < Name::AsTypeahead
     name = Name::AsEdited.new(params)
     name.resolve_typeahead_params(typeahead_params)
     create_hybrid_name_element(name)
-    create_name_path(name)
+    name.build_name_path
     raise name.errors.full_messages.first.to_s unless name.save_with_username(username)
 
     name.set_names!
@@ -138,14 +138,6 @@ class Name::AsEdited < Name::AsTypeahead
     return unless name_category.scientific_hybrid_formula?
 
     self.name_element = "#{parent.name_element} #{name_type.connector} #{second_parent.name_element}"
-  end
-
-  def self.create_name_path(name)
-    path = ""
-    path = name.parent.name_path if name.parent
-    path += "/" unless path.blank?
-    path += name.name_element.strip if name.name_element
-    name.name_path = path
   end
 
   def update_if_changed(params, typeahead_params, username)

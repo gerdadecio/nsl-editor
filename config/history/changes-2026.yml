@@ -1,3 +1,7 @@
+- :date: 16-July-2026
+  :jira_id: '3748'
+  :description: |-
+    Name name_path: Stop adding leading slash to common name and other name_paths on Copy and Refresh name path
 - :date: 15-July-2026
   :jira_id: '5692'
   :description: |-
