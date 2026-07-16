@@ -7,7 +7,9 @@ module NameNamePathable
   def make_name_path
     path = ""
     path = parent.name_path if parent
-    path += "/#{name_element&.strip}"
+    path += "/" unless path.blank?
+    path += name_element.strip unless name_element.blank?
+    path
   end
 
   def build_name_path
