@@ -62,6 +62,18 @@
   text-align: right;
 }
 
+.soft-delete-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+.soft-delete-actions #confirm-or-cancel-link-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 /* Add Resource Section */
 .add-resource-section {
   margin-top: 20px;

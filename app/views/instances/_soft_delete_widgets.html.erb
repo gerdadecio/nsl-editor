@@ -19,7 +19,7 @@
 <% confirm_delete_link = link_to("Confirm soft delete",
                                   instance_soft_deletes_path(@instance.id),
                                   id: "confirm-soft-delete-link",
-                                  class: "btn btn-danger confirm-soft-delete-btn me-2",
+                                  class: "btn btn-danger confirm-soft-delete-btn",
                                   tabindex: increment_tab_index,
                                   title: "Confirm the soft delete.",
                                   remote: true,
@@ -39,7 +39,7 @@
 <% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-container"
                                 class="instance-note hidden">#{confirm_delete_link}#{cancel_delete_link}</div>)
 -%>
-<div class="actions d-flex justify-content-end align-items-center gap-2">
+<div class="actions soft-delete-actions">
   <%= confirm_or_cancel_element.html_safe %>
   <%= delete_link.html_safe %>
 </div>
