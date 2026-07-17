@@ -24,6 +24,7 @@ class NamesDeletesController < ApplicationController
     raise "Not confirmed" unless @names_delete.save! # i.e. confirmed
 
     delete_via_service(names_delete_params)
+    raise "Name not deleted" unless name_is_gone?
     render partial: "ok"
   rescue StandardError => e
     logger.error("Exception deleting name: #{e}")
@@ -39,6 +40,12 @@ class NamesDeletesController < ApplicationController
     raise "Not saved" unless @name.delete_with_reason(
       @names_delete.assembled_reason
     )
+  end
+
+  # Services response on failure may not reliably give a clue that the delete
+  # failed, so we have to check.
+  def name_is_gone?
+    !Name.exists?(names_delete_params[:name_id])
   end
 
   def assemble_error_message(err)

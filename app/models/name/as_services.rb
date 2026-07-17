@@ -144,6 +144,10 @@ class Name::AsServices < Name
   # "There are 1 that cite this.", raw database messages like multi-level
   # foreign key technical errors, but we get them often enough that we
   # need to pass them through to the application GUI.
+  #
+  # In 2026 I'm finding that Editor is thinking Name is deleted when an error
+  # has occurred in Services - the return code is still 200 from Services and 
+  # the json says "ok"
   def delete_with_reason(reason)
     url = Name::AsServices.delete_url(id, reason)
     s_response = RestClient.delete(url, accept: :json)
