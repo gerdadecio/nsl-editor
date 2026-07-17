@@ -1,6 +1,10 @@
 - :date: 17-July-2026
   :jira_id: '3228'
   :description: |-
+    Name Delete: Check after Services call that Name really has been deleted
+- :date: 17-July-2026
+  :jira_id: '3228'
+  :description: |-
     Name Delete: Cap extra information input at 199 characters so it should never be rejected
 - :date: 17-July-2026
   :jira_id: '5861'
