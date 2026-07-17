@@ -1,4 +1,8 @@
 - :date: 17-July-2026
+  :jira_id: '3228'
+  :description: |-
+    Name Delete: Cap extra information input at 199 characters so it should never be rejected
+- :date: 17-July-2026
   :jira_id: '5861'
   :description: |-
     Instance Delete: Record any Tree Element record preventing Instance Delete - even if unexpectedly detached from any Tree Version
