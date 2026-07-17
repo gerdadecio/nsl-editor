@@ -17,6 +17,30 @@ red_gum_in_taxonomy:
   synonyms_html: <synonyms><nom><scientific><name data-id='110181'><scientific><name data-id='109596'><element>Metrosideros</element></name></scientific> <element>costata</element> <authors><author data-id='7066' title='Gaertner, J.'>Gaertn.</author></authors></name></scientific><name-status class="legitimate">, legitimate</name-status> <year>(1788)</year> <type>nomenclatural synonym</type></nom></synonyms>
   updated_at: 2020-02-18 19:19:44.173+11
   updated_by: amonro
+# Deliberately has no corresponding tree_version_elements row, i.e. it is
+# not attached to any tree_version. This mirrors a real (rare) data state
+# where a tree_element exists but nothing in tree_version_element points to
+# it, so it is invisible to tree_join_v-based checks even though the
+# instance -> tree_element foreign key still exists and blocks deletion.
+# See Instance#allow_delete? / #in_any_tree? and
+# app/views/instances/widgets/_no_delete_reasons.html.erb.
+tree_element_not_attached_to_a_tree_version:
+  display_html: <data><scientific><element>Angophora costata</element></scientific></data>
+  excluded: f
+  name_element: costata
+  name: angophora_costata
+  instance: no_source_system
+  instance_link: ilink3
+  name_link: nlink3
+  previous_element_id:
+  rank: Species
+  simple_name: Angophora costata not attached to a tree version
+  source_element_link:
+  source_shard: APNI
+  synonyms_html: <synonyms></synonyms>
+  updated_at: 2020-02-18 19:19:44.173+11
+  updated_by: amonro
+
 angophora_in_taxonomy:
   display_html: <data><scientific><name data-id='91755'><scientific><name data-id='91714'><element>Angophora</element></name></scientific><authors>(<base data-id='7066' title='Gaertner, J.'>Gaertn.</base>) <author data-id='7087' title='Britten, J.'>Britten</author></authors></name></scientific><name-status class="legitimate">, legitimate</name-status> <citation><ref data-id='47743'><ref-section><author>CHAH</author> <year>(2009)</year>, <par-title><i>Australian Plant Census</i></par-title></ref-section></ref></citation></data>
   excluded: f
