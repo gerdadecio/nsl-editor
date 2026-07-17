@@ -13,6 +13,7 @@ Rails.configuration.unsaved_form_prompt_enabled = true
 Rails.configuration.site_wide_form_prompt_enabled = true
 Rails.configuration.multi_product_tabs_enabled = false
 Rails.configuration.resource_tab_enabled = true
+Rails.configuration.soft_delete_enabled = false
 Rails.configuration.nsl_linker = "http://localhost:9090/"
 # Services
 Rails.configuration.services_clientside_root_url = "#{external_services_host}/"

@@ -77,7 +77,6 @@ class Instance < ApplicationRecord
   include ActionView::Helpers::TextHelper
   include InstanceTreeable
   include InstanceInTaxonomy
-  include UserTrackable
   include Instance::ForCopyToLoaderName
   include Instance::CopyableToNewName
   include Instance::Displayable
@@ -704,6 +703,8 @@ class Instance < ApplicationRecord
   end
 
   def allow_soft_delete?
+    return false unless Rails.configuration.try(:soft_delete_enabled)
+
     ::Instances::CheckDeleteService.new(instance: self).execute.soft_delete_allowed?
   end
 

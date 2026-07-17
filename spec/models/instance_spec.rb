@@ -247,31 +247,40 @@ RSpec.describe Instance, type: :model do
   end
 
   describe "#allow_soft_delete?" do
-    let(:check_delete_service) { double("CheckDeleteService", soft_delete_allowed?: true) }
+    let(:result) do
+      instance_double(Instances::CheckDeleteService::Result, soft_delete_allowed?: true)
+    end
+    let(:check_delete_service) do
+      instance_double(Instances::CheckDeleteService, execute: result)
+    end
 
     before do
-      allow(CheckDeleteService).to receive(:new).with(instance).and_return(check_delete_service)
+      allow(Rails.configuration).to receive(:try).and_call_original
+      allow(Rails.configuration).to receive(:try).with(:soft_delete_enabled).and_return(true)
+      allow(Instances::CheckDeleteService)
+        .to receive(:new).with(instance: instance).and_return(check_delete_service)
     end
 
-    it "returns the result of the check delete service" do
-      expect(instance.allow_soft_delete?).to eq(check_delete_service.soft_delete_allowed?)
-    end
-
-    context "when the check delete service raises an exception" do
+    context "when soft delete is not enabled in configuration" do
       before do
-        allow(check_delete_service).to receive(:soft_delete_allowed?).and_raise(StandardError, "Service error")
-        allow(Rails.logger).to receive(:error)
+        allow(Rails.configuration).to receive(:try).with(:soft_delete_enabled).and_return(false)
       end
 
-      it "logs the exception and returns false" do
-        expect(Rails.logger).to receive(:error).with(/allow_soft_delete\? exception: Service error/)
+      it "returns false without calling the check delete service" do
         expect(instance.allow_soft_delete?).to be false
+        expect(Instances::CheckDeleteService).not_to have_received(:new)
       end
     end
 
-    context "when the check delete service returns false" do
-      before do
-        allow(check_delete_service).to receive(:soft_delete_allowed?).and_return(false)
+    context "when the check delete service allows soft delete" do
+      it "returns true" do
+        expect(instance.allow_soft_delete?).to be true
+      end
+    end
+
+    context "when the check delete service does not allow soft delete" do
+      let(:result) do
+        instance_double(Instances::CheckDeleteService::Result, soft_delete_allowed?: false)
       end
 
       it "returns false" do
