@@ -702,6 +702,12 @@ class Instance < ApplicationRecord
       profile_items.blank?
   end
 
+  def allow_soft_delete?
+    return false unless Rails.configuration.try(:soft_delete_enabled)
+
+    ::Instances::CheckDeleteService.new(instance: self).execute.soft_delete_allowed?
+  end
+
   # This is not handled via an instance association because the loader is only
   # in the apni database for now.
   def linked_to_loader_name_matches?
