@@ -77,6 +77,7 @@ class Instance < ApplicationRecord
   include ActionView::Helpers::TextHelper
   include InstanceTreeable
   include InstanceInTaxonomy
+  include UserTrackable
   include Instance::ForCopyToLoaderName
   include Instance::CopyableToNewName
   include Instance::Displayable
