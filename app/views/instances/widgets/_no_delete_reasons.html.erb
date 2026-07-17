@@ -8,6 +8,10 @@
     Instance is in at least one old classification for: <%= @instance.tree_join_v.collect {|tjv| tjv.tree_name}.flatten.uniq.join(', ') %>.
     <br>
   <% end %>
+  <% if @instance.tree_elements.count > 0 %> <%# Allow for tree_element records not connected to any tree_version %>
+    Instance is in at least one tree element record: <%= @instance.tree_elements.collect {|te| te.simple_name}.flatten.uniq.join(', ') %>.
+    <br>
+  <% end %>
   <% if @instance.instance_notes.size > 0 %>
     <span title="See the Notes tab."><%= "Instance notes: #{@instance.instance_notes.size} (see the 'Notes' tab)" %></span>
     <br>
