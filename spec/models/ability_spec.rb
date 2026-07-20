@@ -1168,6 +1168,10 @@ RSpec.describe Ability, type: :model do
         expect(subject.can?("names_deletes", :all)).to eq true
       end
 
+      it "allows all actions on instance soft deletes" do
+        expect(subject.can?("instances/soft_deletes", :all)).to eq true
+      end
+
       it "allows all actions on references" do
         expect(subject.can?("references", :all)).to eq true
       end
@@ -1280,6 +1284,10 @@ RSpec.describe Ability, type: :model do
 
       it "allows all actions on name deletions" do
         expect(subject.can?("names_deletes", :all)).to eq true
+      end
+
+      it "allows all actions on instance soft deletes" do
+        expect(subject.can?("instances/soft_deletes", :all)).to eq true
       end
 
       it "allows all actions on references" do

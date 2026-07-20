@@ -1,0 +1,48 @@
+<div id="soft-delete-info-message-container">
+  You soft delete this instance.<br/>
+
+  <% if @instance.tree_join_v.old.count > 0 %>
+    Instance is in at least one old classification for: <%= @instance.tree_join_v.collect {|tjv| tjv.tree_name}.flatten.uniq.join(', ') %>
+    <br><br>
+  <% end %>
+</div>
+
+<% delete_link = link_to("Soft Delete Instance",
+                         '#',
+                         id: "instance-soft-delete-link",
+                         class: "btn btn-warning unconfirmed-delete-link",
+                         title: "Soft delete the instance.",
+                         tabindex: increment_tab_index,
+                         data: {show_this_id: "confirm-or-cancel-link-container"})
+-%>
+
+<% confirm_delete_link = link_to("Confirm soft delete",
+                                  instance_soft_deletes_path(@instance.id),
+                                  id: "confirm-soft-delete-link",
+                                  class: "btn btn-danger confirm-soft-delete-btn",
+                                  tabindex: increment_tab_index,
+                                  title: "Confirm the soft delete.",
+                                  remote: true,
+                                  method: :post)
+-%>
+
+<% cancel_delete_link = link_to("Cancel soft delete",
+                                '#',
+                                id: "cancel-soft-delete-link",
+                                class: "btn btn-default cancel-link",
+                                title: "Cancel the soft delete.",
+                                tabindex: increment_tab_index,
+                                data: {enable_this_id: 'instance-soft-delete-link',
+                                        hide_this_id: 'confirm-or-cancel-link-container'})
+-%>
+
+<% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-container"
+                                class="instance-note hidden">#{confirm_delete_link}#{cancel_delete_link}</div>)
+-%>
+<div class="actions soft-delete-actions">
+  <%= confirm_or_cancel_element.html_safe %>
+  <%= delete_link.html_safe %>
+</div>
+
+<div id="instance-soft-delete-info-message-container" class="message-container"></div>
+<div id="instance-soft-delete-error-message-container" class="error-container message-container"></div>

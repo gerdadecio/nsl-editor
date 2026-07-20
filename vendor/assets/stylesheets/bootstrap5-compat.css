@@ -290,6 +290,10 @@ select.form-control {
   --bs-btn-disabled-border-color: #eea236;
 }
 
+.btn-danger:hover,
+.btn-danger:focus {
+  color: #fff;
+}
 /* --- Button focus ring: BS5 replaced BS3's `outline` focus indicator with a
    .25rem `box-shadow` ring (applied on :focus-visible). The app flattens button
    focus via `input.btn:focus / a.btn:focus { outline: none }` (controls.css) —

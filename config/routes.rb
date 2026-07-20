@@ -125,6 +125,7 @@ Rails.application.routes.draw do
   match "instances/:id/standalone/copy_for_profile_v2",
         as: "copy_for_profile_v2", to: "instances#copy_for_profile_v2", via: :post
   resources :instances, only: %i[new create update destroy] do
+    resources :soft_deletes, only: [:create], controller: "instances/soft_deletes"
     resource :name, only: [:update], controller: "instances/change_name" do
       get :typeahead
     end

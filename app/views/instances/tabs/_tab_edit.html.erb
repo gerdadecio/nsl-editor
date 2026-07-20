@@ -30,6 +30,12 @@
 
   <% if @instance.allow_delete? %>
     <%= render 'delete_widgets' %>
+  <% elsif @instance.allow_soft_delete? %>
+    <% if @instance.deleted_at %>
+      Instance has been soft-deleted at <%= formatted_timestamp(@instance.deleted_at) %>.
+    <% else %>
+      <%= render 'soft_delete_widgets' %>
+    <% end %>
   <% else %>
     <%= render 'instances/widgets/no_delete_reasons' %>
   <% end %>
