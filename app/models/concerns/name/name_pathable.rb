@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Names can be in a classification tree
-module NameNamePathable
+module Name::NamePathable
   extend ActiveSupport::Concern
 
   def make_name_path

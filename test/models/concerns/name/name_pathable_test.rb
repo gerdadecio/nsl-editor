@@ -18,10 +18,10 @@
 #
 require "test_helper"
 
-# NameNamePathable#make_name_path / #build_name_path build a name's
+# Name::NamePathable#make_name_path / #build_name_path build a name's
 # slash-separated ancestry path from its parent's name_path plus its own
 # name_element, with no leading slash when there is no parent.
-class NameNamePathableTest < ActiveSupport::TestCase
+class Name::NamePathableTest < ActiveSupport::TestCase
   test "a root name (no parent) has a path with no leading slash" do
     name = names(:the_regnum)
     assert_nil name.parent, "fixture should have no parent"

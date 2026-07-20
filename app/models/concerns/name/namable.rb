@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Name scopes
-module NameNamable
+module Name::Namable
   extend ActiveSupport::Concern
   def apni_json
     logger.info("apni_json; service call unless cached...")

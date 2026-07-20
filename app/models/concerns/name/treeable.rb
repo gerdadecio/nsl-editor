@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Names can be in a classification tree
-module NameTreeable
+module Name::Treeable
   extend ActiveSupport::Concern
 
   def accepted_tree_version_element

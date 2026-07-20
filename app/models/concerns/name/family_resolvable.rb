@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Name Family resolvable typeahead parameters
-module NameFamilyResolvable
+module Name::FamilyResolvable
   extend ActiveSupport::Concern
 
   def resolve_family(params, field_name_stub)

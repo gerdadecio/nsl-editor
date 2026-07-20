@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Name Duplicate Of resolvable typeahead parameters
-module NameDuplicateOfResolvable
+module Name::DuplicateOfResolvable
   extend ActiveSupport::Concern
 
   def resolve_duplicate_of(params)

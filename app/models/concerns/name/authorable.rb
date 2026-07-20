@@ -2,7 +2,7 @@
 
 # Name author associations and methods
 # covering the various types of authors a name may have
-module NameAuthorable
+module Name::Authorable
   extend ActiveSupport::Concern
   included do
     BASE = "base"

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Name scopes
-module NameParentable
+module Name::Parentable
   extend ActiveSupport::Concern
   included do
     belongs_to :parent, class_name: "Name", foreign_key: "parent_id", optional: true

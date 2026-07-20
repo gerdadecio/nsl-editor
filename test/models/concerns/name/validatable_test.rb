@@ -18,11 +18,11 @@
 #
 require "test_helper"
 
-# NameValidatable#name_path_no_slash_unless_parent rejects a leading slash
+# Name::Validatable#name_path_no_slash_unless_parent rejects a leading slash
 # on name_path when the name has no parent (a root name's path should just
 # be its own name_element), but allows a leading slash when there is a
 # parent.
-class NameValidatableTest < ActiveSupport::TestCase
+class Name::ValidatableTest < ActiveSupport::TestCase
   test "a root name's name_path may not have a leading slash" do
     name = names(:the_regnum)
     assert_nil name.parent, "fixture should have no parent"

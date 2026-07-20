@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Name scopes
-module NameScopable
+module Name::Scopable
   extend ActiveSupport::Concern
   included do
     scope :not_common_or_cultivar,

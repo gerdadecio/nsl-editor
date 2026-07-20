@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Names can be in a classification tree
-module NameFamilyable
+module Name::Familyable
   extend ActiveSupport::Concern
 
   def requires_family?

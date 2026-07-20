@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Name validations
-module NameValidatable
+module Name::Validatable
   extend ActiveSupport::Concern
   included do
     validates :second_parent_id, presence: true, if: :requires_parent_2?

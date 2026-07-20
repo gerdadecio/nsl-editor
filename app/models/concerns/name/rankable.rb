@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Name rank rules
-module NameRankable
+module Name::Rankable
   extend ActiveSupport::Concern
   included do
     belongs_to :name_rank
