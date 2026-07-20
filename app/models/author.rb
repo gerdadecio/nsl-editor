@@ -60,8 +60,8 @@
 #
 class Author < ApplicationRecord
   include AuditScopable
-  include AuthorValidations
-  include AuthorScopes
+  include Author::Validations
+  include Author::Scopes
   self.table_name = "author"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

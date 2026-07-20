@@ -90,17 +90,17 @@ class Name < ApplicationRecord
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  include NameScopable
+  include Name::Scopable
   include AuditScopable
-  include NameValidatable
-  include NameParentable
-  include NameFamilyable
-  include NameNamePathable
-  include NameTreeable
-  include NameNamable
-  include NameAuthorable
-  include NameRankable
-  include NameEnterable
+  include Name::Validatable
+  include Name::Parentable
+  include Name::Familyable
+  include Name::NamePathable
+  include Name::Treeable
+  include Name::Namable
+  include Name::Authorable
+  include Name::Rankable
+  include Name::Enterable
   include Name::Loadable
   include Name::InstancesCopyable
 

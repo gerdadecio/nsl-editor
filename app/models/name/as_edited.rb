@@ -110,10 +110,10 @@
 #  name_primary_instance_id_fkey  (primary_instance_id => instance.id)
 #
 class Name::AsEdited < Name::AsTypeahead
-  include NameAuthorResolvable
-  include NameParentResolvable
-  include NameFamilyResolvable
-  include NameDuplicateOfResolvable
+  include Name::AuthorResolvable
+  include Name::ParentResolvable
+  include Name::FamilyResolvable
+  include Name::DuplicateOfResolvable
 
   def self.create(params, typeahead_params, username)
     name = Name::AsEdited.new(params)
