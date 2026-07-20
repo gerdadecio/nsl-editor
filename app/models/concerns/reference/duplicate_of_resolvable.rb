@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Reference Duplicate Of typeahead params are resolvable.
-module ReferenceDuplicateOfResolvable
+module Reference::DuplicateOfResolvable
   extend ActiveSupport::Concern
 
   def resolve_duplicate_of(params)

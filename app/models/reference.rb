@@ -90,13 +90,13 @@
 class Reference < ApplicationRecord
   include PgSearch::Model
   include AuditScopable
-  include ReferenceAssociations
-  include ReferenceScopes
-  include ReferenceValidations
-  include ReferenceIsoDateValidations
-  include ReferenceIsoDateParts
-  include ReferenceRefTypeValidations
-  include ReferenceCitations
+  include Reference::Associations
+  include Reference::Scopes
+  include Reference::Validations
+  include Reference::IsoDateValidations
+  include Reference::IsoDateParts
+  include Reference::RefTypeValidations
+  include Reference::Citations
   require "open-uri"
   self.table_name = "reference"
   self.primary_key = "id"

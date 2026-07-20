@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Reference Iso Publication Date Components
-module ReferenceIsoDateParts
+module Reference::IsoDateParts
   extend ActiveSupport::Concern
   included do
   end

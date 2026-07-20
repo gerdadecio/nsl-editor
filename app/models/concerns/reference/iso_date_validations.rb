@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Reference validations
-module ReferenceIsoDateValidations
+module Reference::IsoDateValidations
   extend ActiveSupport::Concern
 
   def iso_publication_date_required?

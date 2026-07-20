@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Reference Associations
-module ReferenceAssociations
+module Reference::Associations
   extend ActiveSupport::Concern
   included do
     belongs_to :ref_type, foreign_key: "ref_type_id", optional: false

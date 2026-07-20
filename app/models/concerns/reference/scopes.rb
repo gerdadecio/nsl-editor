@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Reference scopes
-module ReferenceScopes
+module Reference::Scopes
   extend ActiveSupport::Concern
   included do
     # https://github.com/Casecommons/pg_search

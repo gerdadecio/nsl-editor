@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Reference Duplicate Of typeahead params are resolvable.
-module ReferenceParentResolvable
+module Reference::ParentResolvable
   extend ActiveSupport::Concern
 
   def resolve_parent(params)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Reference validations
-module ReferenceValidations
+module Reference::Validations
   extend ActiveSupport::Concern
   included do
     validates :published, inclusion: { in: [true, false] }

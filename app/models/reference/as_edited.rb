@@ -89,9 +89,9 @@
 #  fk_p8lhsoo01164dsvvwxob0w3sp  (author_id => author.id)
 #
 class Reference::AsEdited < Reference
-  include ReferenceAuthorResolvable
-  include ReferenceParentResolvable
-  include ReferenceDuplicateOfResolvable
+  include Reference::AuthorResolvable
+  include Reference::ParentResolvable
+  include Reference::DuplicateOfResolvable
 
   def self.create(params, typeahead_params, username)
     reference = Reference::AsEdited.new(params)

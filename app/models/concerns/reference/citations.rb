@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Reference Citations
-module ReferenceCitations
+module Reference::Citations
   extend ActiveSupport::Concern
   included do
   end
