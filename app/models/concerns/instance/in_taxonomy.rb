@@ -2,7 +2,7 @@
 
 # Name author associations and methods
 # covering the various types of authors a name may have
-module InstanceInTaxonomy
+module Instance::InTaxonomy
   extend ActiveSupport::Concern
 
   def profile?

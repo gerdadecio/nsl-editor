@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe InstanceTreeable do
+RSpec.describe Instance::Treeable do
   describe '#in_published_trees' do
     context 'when instance is in a single published tree' do
       let(:instance) { create(:instance) }
