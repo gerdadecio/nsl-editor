@@ -45,6 +45,30 @@ tve_for_red_gum:
   updated_at: 2018-05-10 14:00:00.000000
   updated_by: import
 
+tve_for_non_accepted_tree:
+  element_link: "/tree/foa/9000001"
+  depth: 1
+  name_path: "Plantae/Metrosideros costata"
+  taxon_id: 9000001
+  taxon_link: "/node/apni/9000001"
+  tree_element: tree_element_attached_to_current_version_of_a_non_accepted_tree
+  tree_path: "/9000001"
+  tree_version: foa_current_version
+  updated_at: 2018-05-10 14:00:00.000000
+  updated_by: import
+
+tve_for_combined_reasons_test:
+  element_link: "/tree/apc/9000002"
+  depth: 1
+  name_path: "Plantae/Casuarina inophloia"
+  taxon_id: 9000002
+  taxon_link: "/node/apni/9000002"
+  tree_element: tree_element_attached_for_combined_reasons_test
+  tree_path: "/9000002"
+  tree_version: apc_current_version
+  updated_at: 2018-05-10 14:00:00.000000
+  updated_by: import
+
 tve_for_angophora:
   element_link: "/tree/52410590/51363635"
   depth: 8

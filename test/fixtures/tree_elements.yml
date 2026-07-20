@@ -41,6 +41,73 @@ tree_element_not_attached_to_a_tree_version:
   updated_at: 2020-02-18 19:19:44.173+11
   updated_by: amonro
 
+# Attached to the *current* version of a non-accepted tree (FOA has
+# accepted_tree: false). Regression guard for
+# app/views/instances/widgets/_no_delete_reasons.html.erb: this tree_element
+# IS properly attached (it has a tree_version_element), but it is invisible
+# to both tree_join_v.current_accepted (fails the accepted_tree check) and
+# tree_join_v.old (its tree_version_id *is* the tree's current one). It must
+# never be reported as "DETACHED" - detached-ness has to be decided per
+# tree_element (tree_version_elements.empty?), not inferred from those two
+# scopes.
+tree_element_attached_to_current_version_of_a_non_accepted_tree:
+  display_html: <data><scientific><element>Metrosideros costata</element></scientific></data>
+  excluded: f
+  name_element: costata
+  name: angophora_costata
+  instance: invalid_publication_standalone_instance
+  instance_link: ilink4
+  name_link: nlink4
+  previous_element_id:
+  rank: Species
+  simple_name: Metrosideros costata in a non-accepted tree
+  source_element_link:
+  source_shard: APNI
+  synonyms_html: <synonyms></synonyms>
+  updated_at: 2020-02-18 19:19:44.173+11
+  updated_by: amonro
+
+# A pair used together: one tree_element properly attached to the current
+# version of an *accepted* tree (so tree_join_v.current_accepted reports a
+# normal reason), and a second, separate tree_element for the same instance
+# that is genuinely detached (no tree_version_element at all). Regression
+# guard: the detached one must still be reported even though the instance
+# already has another, normal reason - it must not be suppressed just
+# because *a* reason was already found.
+tree_element_attached_for_combined_reasons_test:
+  display_html: <data><scientific><element>Casuarina inophloia</element></scientific></data>
+  excluded: f
+  name_element: inophloia
+  name: casuarina_inophloia
+  instance: casuarina_inophloia_by_mueller_and_bailey
+  instance_link: ilink5
+  name_link: nlink5
+  previous_element_id:
+  rank: Species
+  simple_name: Casuarina inophloia (attached)
+  source_element_link:
+  source_shard: APNI
+  synonyms_html: <synonyms></synonyms>
+  updated_at: 2020-02-18 19:19:44.173+11
+  updated_by: amonro
+
+tree_element_detached_for_combined_reasons_test:
+  display_html: <data><scientific><element>Casuarina inophloia</element></scientific></data>
+  excluded: f
+  name_element: inophloia
+  name: casuarina_inophloia
+  instance: casuarina_inophloia_by_mueller_and_bailey
+  instance_link: ilink6
+  name_link: nlink6
+  previous_element_id:
+  rank: Species
+  simple_name: Casuarina inophloia (detached)
+  source_element_link:
+  source_shard: APNI
+  synonyms_html: <synonyms></synonyms>
+  updated_at: 2020-02-18 19:19:44.173+11
+  updated_by: amonro
+
 angophora_in_taxonomy:
   display_html: <data><scientific><name data-id='91755'><scientific><name data-id='91714'><element>Angophora</element></name></scientific><authors>(<base data-id='7066' title='Gaertner, J.'>Gaertn.</base>) <author data-id='7087' title='Britten, J.'>Britten</author></authors></name></scientific><name-status class="legitimate">, legitimate</name-status> <citation><ref data-id='47743'><ref-section><author>CHAH</author> <year>(2009)</year>, <par-title><i>Australian Plant Census</i></par-title></ref-section></ref></citation></data>
   excluded: f
