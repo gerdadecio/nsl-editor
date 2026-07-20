@@ -58,7 +58,7 @@
 #  fk_p0ysrub11cm08xnhrbrfrvudh  (namespace_id => namespace.id)
 #
 class Author::AsEdited < Author::AsTypeahead
-  include AuthorAuthorResolvable
+  include Author::AuthorResolvable
   AED = "Author::AsEdited:"
   def self.create(params, typeahead_params, username)
     author = Author::AsEdited.new(params)

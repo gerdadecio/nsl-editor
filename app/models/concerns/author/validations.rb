@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Author validations
-module AuthorValidations
+module Author::Validations
   extend ActiveSupport::Concern
   included do
     validates :name, length: { maximum: 1000,

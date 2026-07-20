@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Author scopes
-module AuthorScopes
+module Author::Scopes
   extend ActiveSupport::Concern
   included do
     # Only used for typeahead confirmation, so DO NOT use f_unaccent.

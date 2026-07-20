@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Author Author resolvable typeahead parameters
-module AuthorAuthorResolvable
+module Author::AuthorResolvable
   extend ActiveSupport::Concern
 
   def resolve_author(params, param_stub, author)
