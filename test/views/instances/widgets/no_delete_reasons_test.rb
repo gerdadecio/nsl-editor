@@ -25,7 +25,7 @@ require "test_helper"
 # any tree_element at all (attached or not) blocks deletion.
 class NoDeleteReasonsPartialTest < ActionView::TestCase
   def render_reasons_for(instance)
-    assign(:instance, instance)
+    @instance = instance
     render partial: "instances/widgets/no_delete_reasons"
     rendered
   end
