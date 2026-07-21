@@ -17,7 +17,7 @@ class SearchController < ApplicationController
     params[:error_message] = "That query did not work. Please check the \
     search directives and arguments."
     logger.error("Search error: #{e}")
-    @search = Search::Error.new(params) unless @search.present?
+    run_empty_search_to_show_error(params)
   rescue StandardError => e
     params[:error_message] = e.to_s
     run_empty_search_to_show_error(params)
