@@ -1,3 +1,7 @@
+- :date: 21-July-2026
+  :jira_id: '5855'
+  :description: |-
+    Service object for soft delete of names
 - :date: 20-July-2026
   :jira_id: '5863'
   :description: |-

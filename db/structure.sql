@@ -547,6 +547,68 @@ $$;
 
 
 --
+-- Name: check_delete_name(bigint); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.check_delete_name(p_name_id bigint) RETURNS TABLE(action_code integer, delete_action text, explanation text)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+	-- Block if resources exist
+	IF EXISTS (SELECT 1
+	           FROM public.name_resources r
+	           WHERE r.name_id = p_name_id) THEN
+		RETURN QUERY
+			SELECT 0, 'BLOCK', 'Name has resources';
+		RETURN;
+	END IF;
+
+	-- Block if referenced by a live name
+	IF EXISTS (SELECT 1
+	           FROM public.name n
+	           WHERE (
+		           n.parent_id = p_name_id
+			           OR n.duplicate_of_id = p_name_id
+			           OR n.family_id = p_name_id
+			           OR n.basionym_id = p_name_id
+			           OR n.second_parent_id = p_name_id
+		           )
+		         AND n.deleted_at IS NULL) THEN
+		RETURN QUERY
+			SELECT 0, 'BLOCK', 'Name is referenced by a live name';
+		RETURN;
+	END IF;
+
+	-- Soft delete if referenced only by soft-deleted instances
+	IF EXISTS (SELECT 1
+	           FROM public.instance i
+	           WHERE i.name_id = p_name_id
+		         AND i.deleted_at IS NOT NULL)
+		AND NOT EXISTS (SELECT 1
+		                FROM public.instance i
+		                WHERE i.name_id = p_name_id
+			              AND i.deleted_at IS NULL) THEN
+		RETURN QUERY
+			SELECT 1, 'SOFT_DELETE', 'Name is referenced only by soft-deleted instances';
+		RETURN;
+	END IF;
+
+	-- Delete if not referenced by any instance
+	IF NOT EXISTS (SELECT 1
+	               FROM public.instance i
+	               WHERE i.name_id = p_name_id) THEN
+		RETURN QUERY
+			SELECT 2, 'DELETE', 'Name is not referenced by any instance';
+		RETURN;
+	END IF;
+
+	RETURN QUERY
+		SELECT 0, 'BLOCK', 'Name is referenced by a live instance';
+END;
+$$;
+
+
+--
 -- Name: daily_top_nodes(text, timestamp without time zone); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1443,6 +1505,7 @@ CREATE TABLE public.name (
     delete_at timestamp with time zone,
     api_name text,
     api_at timestamp with time zone,
+    deleted_at timestamp with time zone,
     CONSTRAINT published_year_limits CHECK (((published_year > 0) AND (published_year < 2500)))
 );
 
