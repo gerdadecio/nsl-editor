@@ -1,4 +1,8 @@
 - :date: 21-July-2026
+  :jira_id: '5864'
+  :description: |-
+    Search: Fix unhandled errors that crash Search page
+- :date: 21-July-2026
   :jira_id: '5855'
   :description: |-
     Service object for soft delete of names
