@@ -114,6 +114,8 @@ class Instance < ApplicationRecord
       .distinct
   }
 
+  scope :soft_deleted, -> { where.not(deleted_at: nil) }
+
   attr_accessor :copy_profile_items
 
   def self.to_csv
