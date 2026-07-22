@@ -88,7 +88,7 @@ class SearchController < ApplicationController
 
   def run_empty_search_to_show_error(params)
     @empty_search = true
-    params[:query_target] = params[:original_query_target]
+    params[:query_target] = params[:original_query_target] || params[:query_target]
     @search = Search::Empty.new(params)
   end
 
