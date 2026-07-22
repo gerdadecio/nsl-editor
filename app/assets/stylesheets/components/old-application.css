@@ -295,13 +295,13 @@ tr.search-result.fresh td.main-content {
 
 .message-container,
 .message-container a,
-.batch-message-container {
+.all-dep-message-container {
   margin-top: 1em;
   font-size: 13px;
   color: green;
 }
 
-.batch-error-container,
+.all-dep-error-container,
 .error-container,
 .error {
   color: red;
@@ -316,14 +316,6 @@ tr.search-result.fresh td.main-content {
 }
 
 #search-result-details-error-message-container {
-  color: red;
-}
-
-#batch-info-message-container {
-  color: green;
-}
-
-#batch-error-message-container {
   color: red;
 }
 

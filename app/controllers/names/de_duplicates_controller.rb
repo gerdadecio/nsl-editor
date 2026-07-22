@@ -17,8 +17,26 @@
 #   limitations under the License.
 #
 #
-# Bulk de-duplication
-class DeDuplicatesController < ApplicationController
+# Bulk de-duplication of Names.
+class Names::DeDuplicatesController < ApplicationController
+  before_action :javascript_only, only: %i[transfer_all_dependents]
+
   def index
+  end
+
+  def transfer_all_dependents
+    @dependent_type = dependent_params[:dependent_type]
+    count = Name.transfer_all_dependents(@dependent_type)
+    @message = "#{count} transferred"
+    render "names/de_duplicates/transfer_all_dependents/success"
+  rescue StandardError => e
+    @message = e.to_s.sub("uncaught throw", "").sub(/\A *"/, "").sub(/" *\z/, "")
+    render "names/de_duplicates/transfer_all_dependents/error"
+  end
+
+  private
+
+  def dependent_params
+    params.permit(:id, :dependent_type)
   end
 end
