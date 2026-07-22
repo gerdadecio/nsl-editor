@@ -77,7 +77,7 @@
                       title: "Draft taxonomy reports" %>
       </li>
 
-      <% if can?("de_duplicates", :index) %>
+      <% if can?("names/de_duplicates", :index) %>
         <% if @current_user.qa? || @current_user.product_from_context&.is_name_index? %>
           <li role="presentation" class="">
             <%= link_to "De-duplicate",

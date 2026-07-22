@@ -1,0 +1,6 @@
+$('#all-dep-container').removeClass('hidden');
+$('ul#results-tabset li').removeClass('active');
+if (!$('#all-dep-container').hasClass('has-data')){
+  $('#all-dep-container').html("<%= j render(:partial => 'index') %>")
+}
+

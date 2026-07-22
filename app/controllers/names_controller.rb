@@ -179,16 +179,6 @@ class NamesController < ApplicationController
     render "names/de_duplication/transfer_dependents/error"
   end
 
-  def transfer_all_dependents
-    @dependent_type = dependent_params[:dependent_type]
-    count = Name.transfer_all_dependents(@dependent_type)
-    @message = "#{count} transferred"
-    render "names/de_duplication/transfer_all_dependents/success"
-  rescue StandardError => e
-    @message = e.to_s.sub("uncaught throw", "").sub(/\A *"/, "").sub(/" *\z/, "")
-    render "names/de_duplication/transfer_all_dependents/error"
-  end
-
   private
 
   def find_name

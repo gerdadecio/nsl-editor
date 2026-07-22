@@ -1,5 +1,5 @@
-<div id="batch-reports-inner" class="reports-inner">
-<h3> Batch </h3>
+<div id="all-dep-reports-inner" class="reports-inner">
+<h3> De-duplicate </h3>
 <h4> Rewiring duplicate names</h4>
 <% duplicate_count = Name.where('duplicate_of_id is not null').count %></p>
 <% if duplicate_count == 0 %>
@@ -8,7 +8,7 @@
 
 <% else %>
 
-  <p>Once a name has been marked as a duplicate of another name, you can de-duplicate it via a batch job on the Services admin page.</>
+  <p>Once a name has been marked as a duplicate of another name, you can de-duplicate it via a bulk job on the Services admin page.</p>
 
   <p>Part of the de-duplication process is to move all the information attached to the duplicate over to the "master" record.  We call that part of the process "rewiring".</p>
 
@@ -16,11 +16,11 @@
 
   <p>The Editor also offers you a way to automatically rewire a duplicate name - there are buttons for rewiring name duplicates on the details tabs.</p>
 
-  <p>The batch operations offered here do something similar, but in bulk.</p>
-  
+  <p>The operations offered here do something similar, but in bulk.</p>
+
   <p>If you have a lot of duplicates these operations may take a long time.  Reload this tab if you clicked a button and it is taking a long time to respond.</p>
 
-  <p>Clicking on the "Batch" tab label reloads it.</>
+  <p>Clicking on the "De-duplicate" tab label reloads it.</p>
 
   <p><%= pluralize(duplicate_count,'name') %> are marked as duplicates</p>
   <p>All up, those names have</p>
@@ -30,7 +30,7 @@
                 name_transfer_all_dependents_path('children'),
                 method: :post, remote: true, class: "button",
                 title: "Transfer dependents to the master record",
-                onclick: "$('#batch-de-duplicate-info-message-container').html('Working'); return true;"
+                onclick: "$('#all-dep-info-message-container').html('Working'); return true;"
           %>
         <br>
         <br>
@@ -40,24 +40,24 @@
                 name_transfer_all_dependents_path('instances'),
                 method: :post, remote: true, class: "button",
                 title: "Transfer dependents to the master record",
-                onclick: "$('#batch-de-duplicate-info-message-container').html('Working'); return true;"
+                onclick: "$('#all-dep-info-message-container').html('Working'); return true;"
           %>
         <br>
         <br>
-      
+
     <li><%= pluralize(Name.family_members_of_duplicates_count,'family member') %>
     <%= link_to 'Transfer all family members from duplicate to master',
                 name_transfer_all_dependents_path('in_family'),
                 method: :post, remote: true, class: "button",
                 title: "Transfer dependents to the master record",
-                onclick: "$('#batch-de-duplicate-info-message-container').html('Working'); return true;"
+                onclick: "$('#all-dep-info-message-container').html('Working'); return true;"
           %>
         <br>
         <br>
   </ul>
 <% end %>
 <p></p>
-<span id="batch-de-duplicate-info-message-container" class="batch-message-container"></span>
-<span id="batch-de-duplicate-error-message-container" class="batch-error-container"></span>
+<span id="all-dep-info-message-container" class="all-dep-message-container"></span>
+<span id="all-dep-error-message-container" class="all-dep-error-container"></span>
 
 </div>

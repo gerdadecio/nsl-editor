@@ -386,7 +386,7 @@ class Ability
   end
 
   def qa_auth
-    can "de_duplicates",              :all
+    can "names/de_duplicates",        :all
     can "tree_versions",             :all
     can "tree_version_elements",     :all
     can "tree_elements",             :all
@@ -587,7 +587,7 @@ class Ability
       cannot "user/product_roles", :all
       cannot [:create, :destroy], User::ProductRole
 
-      can("de_duplicates", :all) if session_user.product_from_context&.is_name_index? && admin_product_ids.include?(session_user.product_from_context&.id)
+      can("names/de_duplicates", :all) if session_user.product_from_context&.is_name_index? && admin_product_ids.include?(session_user.product_from_context&.id)
       can "user/product_roles", "index"
       can "user/product_roles", "show"
       can "user/product_roles", "create"
