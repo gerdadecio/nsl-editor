@@ -110,4 +110,39 @@ RSpec.describe Name, type: :model do
       end
     end
   end
+
+  describe "#allow_soft_delete?" do
+    let(:name) { create(:name) }
+
+    context "when soft_delete_enabled is false" do
+      before do
+        allow(Rails.configuration).to receive(:try).with(:soft_delete_enabled).and_return(false)
+      end
+
+      it "returns false without calling the check delete service" do
+        expect(::Names::CheckDeleteService).not_to receive(:new)
+        expect(name.allow_soft_delete?).to be false
+      end
+    end
+
+    context "when soft_delete_enabled is true" do
+      let(:result) { instance_double(::Names::CheckDeleteService::Result) }
+      let(:service) { instance_double(::Names::CheckDeleteService, execute: result) }
+
+      before do
+        allow(Rails.configuration).to receive(:try).with(:soft_delete_enabled).and_return(true)
+        allow(::Names::CheckDeleteService).to receive(:new).with(name: name).and_return(service)
+      end
+
+      it "returns true when the service allows a soft delete" do
+        allow(result).to receive(:soft_delete_allowed?).and_return(true)
+        expect(name.allow_soft_delete?).to be true
+      end
+
+      it "returns false when the service does not allow a soft delete" do
+        allow(result).to receive(:soft_delete_allowed?).and_return(false)
+        expect(name.allow_soft_delete?).to be false
+      end
+    end
+  end
 end

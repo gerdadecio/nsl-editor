@@ -4,6 +4,20 @@ RSpec.describe Instance, type: :model do
   let!(:name) { create(:name) }
   let!(:instance) { create(:instance, name:) }
 
+  describe ".soft_deleted" do
+    let!(:soft_deleted_instance) { create(:instance, name: create(:name), deleted_at: Time.current) }
+
+    subject { described_class.soft_deleted }
+
+    it "returns instances with a deleted_at timestamp" do
+      expect(subject).to include(soft_deleted_instance)
+    end
+
+    it "does not return instances without a deleted_at timestamp" do
+      expect(subject).not_to include(instance)
+    end
+  end
+
   describe ".product_item_config_id" do
     let(:name_type) { create(:name_type) }
     let(:name2) do

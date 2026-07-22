@@ -37,6 +37,6 @@ class Names::SoftDeletesController < ApplicationController
   private
 
   def find_name
-    @name = Name.find(params[:id])
+    @name = Name.find(params[:name_id])
   end
 end
