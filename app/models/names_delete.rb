@@ -40,7 +40,7 @@ class NamesDelete < ActiveType::Object
     if extra_info.blank?
       reason
     else
-      "#{reason}; #{extra_info}".truncate(254)
+      "#{reason}; #{extra_info}".truncate(247)
     end
   end
 
