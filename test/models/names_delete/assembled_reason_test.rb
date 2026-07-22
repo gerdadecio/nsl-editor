@@ -20,9 +20,10 @@ require "test_helper"
 
 # NamesDelete#assembled_reason joins reason and extra_info together and is
 # what actually gets sent (URL-encoded) to the external delete service via
-# Name::AsServices#delete_with_reason. It must never exceed 254 characters,
+# Name::AsServices#delete_with_reason. It must never exceed 247 characters,
 # regardless of how the two pieces combine - the UI's own maxlength on
-# extra_info (199) is only a soft guard, this is the hard one.
+# extra_info (190) keeps user text from ever actually being truncated; this
+# truncate(247) is only a failsafe.
 class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
   LONGEST_PRESET_REASON = "Name is an autonym that has not yet been established"
 
@@ -45,41 +46,41 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
                  names_delete.assembled_reason
   end
 
-  test "assembled reason is untouched at exactly 254 characters" do
+  test "assembled reason is untouched at exactly 247 characters" do
     reason = "Other"
-    extra_info = "X" * (254 - "#{reason}; ".length)
+    extra_info = "X" * (247 - "#{reason}; ".length)
     names_delete = NamesDelete.new(name_id: name_id,
                                     reason: reason,
                                     extra_info: extra_info)
     result = names_delete.assembled_reason
-    assert_equal 254, result.length
+    assert_equal 247, result.length
     assert_not result.end_with?("..."),
-               "Should not be truncated at exactly 254 characters"
+               "Should not be truncated at exactly 247 characters"
     assert_equal "#{reason}; #{extra_info}", result
   end
 
-  test "assembled reason is truncated to 254 characters when over the limit" do
+  test "assembled reason is truncated to 247 characters when over the limit" do
     reason = "Other"
     extra_info = "X" * 300
     names_delete = NamesDelete.new(name_id: name_id,
                                     reason: reason,
                                     extra_info: extra_info)
     result = names_delete.assembled_reason
-    assert_equal 254, result.length
+    assert_equal 247, result.length
     assert result.end_with?("..."), "Should be truncated with an ellipsis"
     assert result.start_with?("#{reason}; "),
            "Truncation should preserve the reason at the start"
   end
 
-  test "assembled reason stays within 254 chars even with the longest " \
+  test "assembled reason stays within 247 chars even with the longest " \
        "preset reason and a full-length extra_info" do
-    extra_info = "X" * 200
+    extra_info = "X" * 190
     names_delete = NamesDelete.new(name_id: name_id,
                                     reason: LONGEST_PRESET_REASON,
                                     extra_info: extra_info)
     result = names_delete.assembled_reason
-    assert result.length <= 254,
-           "Combined reason + extra_info must never exceed 254 characters, " \
+    assert result.length <= 247,
+           "Combined reason + extra_info must never exceed 247 characters, " \
            "was #{result.length}"
   end
 end
