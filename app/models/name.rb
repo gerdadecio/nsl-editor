@@ -92,6 +92,7 @@ class Name < ApplicationRecord
 
   include Name::Scopable
   include AuditScopable
+  include UserTrackable
   include Name::Validatable
   include Name::Parentable
   include Name::Familyable
@@ -191,6 +192,12 @@ class Name < ApplicationRecord
       comments.blank? &&
       duplicates.blank? &&
       !family_dependents?
+  end
+
+  def allow_soft_delete?
+    return false unless Rails.configuration.try(:soft_delete_enabled)
+
+    ::Names::CheckDeleteService.new(name: self).execute.soft_delete_allowed?
   end
 
   def no_name_resource_dependents?

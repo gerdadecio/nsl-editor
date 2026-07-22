@@ -206,6 +206,7 @@ Rails.application.routes.draw do
 
   resources :names, only: %i[create update destroy] do
       resources :name_resources, only: [:create, :update, :destroy], controller: 'names/name_resources'
+      resources :soft_deletes, only: [:create], controller: "names/soft_deletes"
   end
 
   match "names/:id",

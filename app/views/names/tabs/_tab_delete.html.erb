@@ -23,6 +23,12 @@
 
 <% if @name.allow_delete? %>
   <%= render 'names/widgets/delete_widgets' %>
+<% elsif @name.allow_soft_delete? %>
+  <% if @name.deleted_at %>
+    Name has been soft-deleted at <%= formatted_timestamp(@name.deleted_at) %>.
+  <% else %>
+    <%= render 'names/widgets/soft_delete_widgets' %>
+  <% end %>
 <% else %>
   <%= render 'names/widgets/cannot_delete_info' %>
 <% end %>
