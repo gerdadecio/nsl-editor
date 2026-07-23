@@ -7,6 +7,6 @@
     class="badge badge-duplicate"
   >duplicate</span>
 <% end %>
-<% if search_result[:deleted_at] %>
+<% if Rails.configuration.try(:soft_delete_enabled) && search_result[:deleted_at] %>
   <span class="badge badge-muted-orange">soft deleted</span>
 <% end %>

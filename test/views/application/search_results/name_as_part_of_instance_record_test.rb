@@ -19,13 +19,22 @@
 require "test_helper"
 
 class NameAsPartOfInstanceRecordPartialTest < ActionView::TestCase
+  setup do
+    @original_soft_delete_enabled = Rails.configuration.try(:soft_delete_enabled)
+  end
+
+  teardown do
+    Rails.configuration.soft_delete_enabled = @original_soft_delete_enabled
+  end
+
   def render_record_for(name)
     render partial: "application/search_results/name_as_part_of_instance_record",
            locals: { search_result: name, give_me_focus: false }
     rendered
   end
 
-  test "shows the soft deleted badge when the name has a deleted_at" do
+  test "shows the soft deleted badge when soft delete is enabled and the name has a deleted_at" do
+    Rails.configuration.soft_delete_enabled = true
     name = names(:another_species)
     name.update_column(:deleted_at, Time.current)
 
@@ -35,7 +44,19 @@ class NameAsPartOfInstanceRecordPartialTest < ActionView::TestCase
     assert_includes output, name.full_name
   end
 
+  test "does not show the soft deleted badge when soft delete is disabled even if the name has a deleted_at" do
+    Rails.configuration.soft_delete_enabled = false
+    name = names(:another_species)
+    name.update_column(:deleted_at, Time.current)
+
+    output = render_record_for(name)
+
+    assert_not_includes output, "soft deleted"
+    assert_select_in output, "span.badge.badge-muted-orange", false
+  end
+
   test "does not show the soft deleted badge when deleted_at is nil" do
+    Rails.configuration.soft_delete_enabled = true
     name = names(:another_species)
     assert_nil name.deleted_at
 
