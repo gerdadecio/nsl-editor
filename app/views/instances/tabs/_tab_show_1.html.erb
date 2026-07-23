@@ -99,3 +99,6 @@
 <% if @instance.api_name && @instance.api_at %>
   <br>Record changed by: <%= "#{@instance.api_name} #{formatted_timestamp(@instance.api_at)}"%>
 <% end %>
+<% if Rails.configuration.try(:soft_delete_enabled) && @instance.deleted_at %>
+  <br>Record soft deleted on: <%= formatted_timestamp(@instance.deleted_at) %>
+<% end %>

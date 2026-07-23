@@ -26,6 +26,7 @@
 
       <%= render(partial: 'record_debug', locals: { search_result: search_result }) if @debug %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
+      <%= render(partial: 'soft_delete', locals: { search_result: search_result }) %>
 
       <% if @working_draft.present? && search_result.in_workspace?(@working_draft) %>
         &nbsp;

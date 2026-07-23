@@ -24,6 +24,7 @@
       </span>
       <%= render(partial: 'record_debug', locals: {search_result: search_result}) if @debug %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
+      <%= render(partial: 'soft_delete', locals: { search_result: search_result }) %>
 
     </a></td>
   <td class="takes-focus width-10-percent filler">&nbsp;</td>

@@ -25,6 +25,7 @@
       <%= "[#{search_result.name.name_status.name}]" unless search_result.name.name_status.blank? %>
       <%= "#{search_result.page}" %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
+      <%= render(partial: 'soft_delete', locals: { search_result: search_result }) %>
 
     </a>
     <%= "</td><td>[#{search_result.type}]::#{ search_result.try('display_as') || search_result.class.to_s};#{search_result.id }cites---- #{Pathname.new(__FILE__).basename}".html_safe if @debug %>
