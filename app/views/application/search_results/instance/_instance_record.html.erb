@@ -16,6 +16,7 @@
       <%= "#{search_result.name.try('full_name')}" %>
       <%= "[#{search_result.name.try('name_status').try('name')}]" %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
+      <%= render(partial: 'soft_delete', locals: { search_result: search_result }) %>
     </a>
   </td>
   <td class="text takes-focus name main-content min-width-40-percent max-width-70-percent width-60-percent <%= 'give-me-focus' if give_me_focus %>">

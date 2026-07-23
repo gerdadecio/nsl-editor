@@ -29,9 +29,10 @@
       <%= "#{search_result.page}" %>
       <%= "[#{search_result.instance_type.name}]" if search_result.instance_type %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
+      <%= render(partial: 'soft_delete', locals: { search_result: search_result }) %>
     </a>
     <%= "</td><td>[#{search_result.type}]::#{ search_result.try('display_as') || search_result.class.to_s};#{search_result.id }cites---- #{Pathname.new(__FILE__).basename}".html_safe if @debug %>
   </td>
   <td class="width-10-percent takes-focus filler">&nbsp;</td>
 </tr>
- 
+

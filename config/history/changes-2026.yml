@@ -1,6 +1,10 @@
 - :date: 23-July-2026
   :jira_id: '5856'
   :description: |-
+    Soft delete badge in name search results and soft delete datetime in instance details tab
+- :date: 23-July-2026
+  :jira_id: '5856'
+  :description: |-
     Soft delete badge in name search results and soft delete datetime in name details tab
 - :date: 23-July-2026
   :jira_id: '5603'

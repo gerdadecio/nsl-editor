@@ -22,6 +22,7 @@
       <%= " #{search_result.name.name_status.name_for_instance_display}" %>
       <%= "#{search_result.page}" %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
+      <%= render(partial: 'soft_delete', locals: { search_result: search_result }) %>
 
       <%= render(partial: 'record_debug', locals: {search_result: search_result, file_name: Pathname.new(__FILE__).basename}) if @debug %>
     </a></td>

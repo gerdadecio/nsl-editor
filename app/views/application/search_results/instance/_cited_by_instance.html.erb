@@ -18,6 +18,7 @@
       <%= "#{search_result.expanded_instance_type || search_result.instance_type.name}: #{search_result.name.full_name}" %>
       <%= "#{search_result.page}" %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
+      <%= render(partial: 'soft_delete', locals: { search_result: search_result }) %>
     </a>
      <%= render(partial: 'record_debug', locals: { search_result: search_result }) if @debug %>
 
