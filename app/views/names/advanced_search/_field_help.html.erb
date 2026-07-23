@@ -46,7 +46,7 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="searchable-field width-100-percent" 
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
          data-search-directive="<%= val[:field_name] %>"
          title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span>
@@ -82,7 +82,7 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="searchable-field width-100-percent" 
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
          data-search-directive="<%= val[:field_name] %>"
          title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span>
@@ -111,7 +111,7 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="searchable-field width-100-percent" 
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
          data-search-directive="<%= val[:field_name] %>"
          title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
@@ -138,7 +138,7 @@
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="searchable-field width-100-percent" 
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
          data-search-directive="<%= val[:field_name] %>"
          title='Add "<%= val[:field_name] %>" field to search.'>
           <span class="blue"><%= val[:field_name] %></span>
@@ -174,6 +174,25 @@
   <% end %>
 </table>
 <br>
+
+<h6>Soft delete assertions</h6>
+<table class="table table-striped">
+  <% [
+      {field_name: 'is-soft-deleted:', description: "record is soft deleted"},
+      {field_name: 'is-not-soft-deleted:', description: "record is not soft deleted"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
 
 
 <h6>Parent-Child Queries</h6>
@@ -423,8 +442,8 @@
       {field_name: 'source-id-string:', description: "numeric ID as a string - so it takes wildcards and has a wildcard added to the tail, needs an argument"},
       ].each do |val| %>
   <tr>
-    <td class="width-20-percent"><a href="javascript:void(0)" 
-                                    data-search-directive="<%= val[:field_name] %>" 
+    <td class="width-20-percent"><a href="javascript:void(0)"
+                                    data-search-directive="<%= val[:field_name] %>"
                                     class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span></a>
     </td>
@@ -437,5 +456,5 @@
 <%= render partial: 'help/case_and_wildcards_search' %>
 
 
-Note: When searches return Name records with their instances and synonymy, the <code>limit:</code> and <code>offset:</code> directives apply only to the 
+Note: When searches return Name records with their instances and synonymy, the <code>limit:</code> and <code>offset:</code> directives apply only to the
 Name records.

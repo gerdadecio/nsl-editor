@@ -11,7 +11,7 @@
       {search_target: 'Names', search_string: "acacia",explanation: %Q(List names starting with "acacia".  Bare search is on names. 100 records is the default.)},
       {search_target: 'Names', search_string: "acacia limit: 1 offset: 99",explanation: %Q(List the 100th name starting with "acacia".)},
       {search_target: 'Names', search_string: "acacia limit: 100 offset: 200",explanation: %Q(List the 201st - 300th names starting with "acacia".)},
-      {search_target: 'Names', search_string: "acacia type:*", 
+      {search_target: 'Names', search_string: "acacia type:*",
        explanation: %Q(Also include common and cultivar names which are normally excluded (i.e. #{excc.sub(/\./,'')}).)},
       {search_target: 'Names', search_string: "*cacia", explanation: %Q(Find names containing "cacia". A trailing wildcard is added automatically. #{excc})},
       {search_target: 'Names', search_string: "acacia type:common,cultivar", explanation: %Q(Find just common or cultivar names exactly matching "acacia". #{incc})},
@@ -100,6 +100,8 @@
   <% [
       {search_target: 'Names', search_string: "is-a-parent: has-no-instances:",explanation: %Q(List names that have children but no instances.)},
       {search_target: 'Names', search_string: "has-a-second-parent:",explanation: %Q(List names that have a second parent.)},
+      {search_target: 'Names', search_string: "is-soft-deleted:",explanation: %Q(List names that are soft deleted.)},
+      {search_target: 'Names', search_string: "is-not-soft-deleted:",explanation: %Q(List names that are not soft deleted.)},
       {search_target: 'Names', search_string: "Grevillea has-a-second-parent:",explanation: %Q(List Grevilleas that have a second parent.)},
       {search_target: 'Names', search_string: "acacia is-orth-var-with-no-orth-var-instances:",explanation: %Q(List orth. var. acacias with no orth. var. instance.)},
       {search_target: 'Names', search_string: "*acacia is-orth-var-with-no-orth-var-instances:",explanation: %Q(List orth. var. names containing "acacia" with no orth. var. instance.)},
