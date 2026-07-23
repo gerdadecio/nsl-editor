@@ -23,7 +23,8 @@
     <% size = search_result.preferred_matches.length %>
     <span class="misapplied-by-whom-where">
       <% search_result.preferred_matches.collect
-        .sort {|x,y| x.instance.reference.iso_publication_date <=> y.instance.reference.iso_publication_date}
+        .sort {|x,y| (x&.instance&.reference&.iso_publication_date || '0000-00-00') <=>
+               (y&.instance&.reference&.iso_publication_date || '0000-00-00') }
         .each_with_index do | match, ndx | %>
       <% string = "#{match.instance.reference.citation}: #{match.instance.page}" %>
       <% pp = match.relationship_instance_type.pro_parte? ? ', <i>p.p.</i>' : '' %>
