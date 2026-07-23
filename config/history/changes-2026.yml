@@ -1,3 +1,7 @@
+- :date: 23-July-2026
+  :jira_id: '5806'
+  :description: |-
+    Search: Fix search-target-reverts-to-Names-on-error bug introduced on 10 July
 - :date: 22-July-2026
   :jira_id: '5855'
   :description: |-
