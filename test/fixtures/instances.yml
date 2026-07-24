@@ -80,7 +80,7 @@ triodia_in_brassard:
   updated_at: <%= Time.now + (24*60*60) %>
   page: "xx 200,300"
   page_qualifier: qualified
- 
+
 # Standalone instance
 britten_created_angophora_costata:
   <<: *DEFAULTS
@@ -128,9 +128,9 @@ xyz_costata_is_synonym_of_angophora_costata:
   this_is_cited_by: britten_created_angophora_costata
   this_cites: gaertner_created_metrosideros_costata
   instance_type: nomenclatural_synonym
-  verbatim_name_string: 
+  verbatim_name_string:
   page: xx,20,1000
- 
+
 # Relationship instance - unpublished citation
 rusty_gum_is_a_common_name_of_angophora_costata:
   <<: *DEFAULTS
@@ -140,7 +140,7 @@ rusty_gum_is_a_common_name_of_angophora_costata:
   instance_type: vernacular_name
   verbatim_name_string: rusty gum
   page: "41"
- 
+
 # Relationship instance - invalid unpublished citation with unmatched reference
 invalid_unpublished_citation_with_unmatched_reference:
   <<: *DEFAULTS
@@ -166,7 +166,7 @@ invalid_publication_standalone_instance:
 no_source_system:
   <<: *DEFAULTS
   reference: de_fructibus_et_seminibus_plantarum
-  name: angophora_costata 
+  name: angophora_costata
   instance_type: invalid_publication
   verbatim_name_string: verbatim
   page: "3"
@@ -694,7 +694,7 @@ pro_parte_nomenclatural_synonym_instance:
   verbatim_name_string: verbatim20
   created_at: <%= Time.now + (24*60*60) %>
   updated_at: <%= Time.now + (24*60*60) %>
- 
+
 # Standalone instance
 has_no_page_bhl_url_verbatim_name_string:
   <<: *DEFAULTS
@@ -725,7 +725,7 @@ tax_nov_for_an_orth_var:
   instance_type: tax_nov
   page: 9999999999
   verbatim_name_string: verbatim23
- 
+
 # Standalone instance
 has_apc_dist_note:
   <<: *DEFAULTS
@@ -797,7 +797,7 @@ inst_genus_or_above_to_be_synomised:
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim8
 
-# standalone for name earliest_instance_not_primary: 
+# standalone for name earliest_instance_not_primary:
 inst_for_name_earliest_instance_not_primary:
   <<: *DEFAULTS
   reference: ref_4_genus_or_above_to_be_synonym
@@ -817,7 +817,7 @@ name_in_secondary_ref_marked_as_basionym_synonym:
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim11
 
-# standalone 
+# standalone
 secondary_ref_citation:
   <<: *DEFAULTS
   reference: dummy_reference_for_eflora_service
@@ -925,7 +925,7 @@ instance_for_name_in_taxonomy:
 instance_for_name_in_taxonomy:
   <<: *DEFAULTS
   reference: syntrinema_genus_novum
-  name: ptychocaryum_ghaeri 
+  name: ptychocaryum_ghaeri
   instance_type: comb_nov
   source_id_string: gcmd
   page: exclude-from-ordering-test
@@ -938,11 +938,10 @@ darwinia_sp_7_in_briggs_and_leigh_1996:
   page: exclude-from-ordering-test
   verbatim_name_string: l
 
-# Soft deleted standalone instance - used by the is-soft-deleted: search tests
 a_soft_deleted_instance:
   <<: *DEFAULTS
   reference: de_fructibus_et_seminibus_plantarum
-  name: angophora_costata
+  name: metrosideros_costata_gaertn
   instance_type: comb_nov
   verbatim_name_string: verbatim
   page: "soft-deleted 1"
