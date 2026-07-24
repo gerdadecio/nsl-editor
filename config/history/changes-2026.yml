@@ -1,4 +1,8 @@
 - :date: 24-July-2026
+  :jira_id: '5557'
+  :description: |-
+    Reference search: Add two display-title directives
+- :date: 24-July-2026
   :jira_id: '5602'
   :description: |-
     Loader: Improve Loader Name search directive <code>name-match-no-primary:</code> 

@@ -29,6 +29,10 @@
               title: "Search for the #{label_string}",
               tabindex: increment_tab_index) %>
 <% end %>
+<% unless @reference.title == @reference.display_title %>
+<br>
+<%= render partial: 'detail_line', locals: {info: @reference.display_title, label: 'Display Title'} %>
+<% end %>
 
 <% if @reference.duplicate_of.present? %>
   <br>

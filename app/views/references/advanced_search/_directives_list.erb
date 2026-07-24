@@ -14,6 +14,7 @@
       {field_name: 'citation-exact:', description: "search citation with no tokenization, and no wildcards unless you supply them"},
       {field_name: 'title:', description: "title, with trailing wildcard added automatically"},
       {field_name: 'title-exact:', description: "title"},
+      {field_name: 'display-title:', description: "display title, with leading and trailing wildcards added automatically"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -236,6 +237,7 @@ in the following formats:</p>
        description: "Publication date is 4 digits alone or 4 digits within
        parentheses."},
        {field_name: 'has-no-direct-or-child-instances:', description: "References that have no instance and no children with instances. Does <b>not</b> check beyond first generation of children."},
+       {field_name: 'title-does-not-match-display-title:', description: "References in which the title and display title are not the same. Takes no arguments"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
