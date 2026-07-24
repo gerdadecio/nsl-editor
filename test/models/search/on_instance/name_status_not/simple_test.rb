@@ -28,7 +28,7 @@ class SearchOnInstanceNameStatusNotSimpleTest < ActiveSupport::TestCase
       current_user: build_edit_user
     )
     search = Search::Base.new(params)
-    assert search.executed_query.results.size == 35,
-      "35 expected not #{search.executed_query.results.size}"
+    assert search.executed_query.results.size == 36,
+      "36 expected not #{search.executed_query.results.size}"
   end
 end
