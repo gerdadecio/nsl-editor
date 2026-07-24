@@ -53,9 +53,6 @@ of
 <br>
 <%= @instance.reference.citation %>
 <br>
-with BHL URL
-<%= f.text_field :bhl_url, class: "form-control", title: 'Enter BHL URL', tabindex: increment_tab_index %>
-<br>
 <%= f.hidden_field :reference_id, value: @instance.reference_id %>
 <%= f.hidden_field :name_id, id: "instance-name-id", value: @instance.name_id %>
 <%= f.hidden_field :cited_by_id, value: @instance.id %>
