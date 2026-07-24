@@ -223,5 +223,12 @@ inner join ref_type xcrt on xrt.id = xcrt.parent_id))",
     on parent.ref_type_id = prt.id
  where rt.name  = 'Unknown'
    and prt.name = 'Journal')"},
+    "display-title:" => { trailing_wildcard: true,
+                          leading_wildcard: true,
+                          where_clause:
+                                 " lower(display_title) like lower(?)" },
+    "title-does-not-match-display-title:" => { 
+                          takes_no_arg: true,
+                          where_clause: " display_title != title " },
   }.freeze
 end
