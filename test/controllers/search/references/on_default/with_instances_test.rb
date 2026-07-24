@@ -31,7 +31,7 @@ class SearchRefsOnDefaultWithInstancesTest < ActionController::TestCase
                    groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
-                  /6 records\b/,
-                  "Should find 6 records"
+                  /7 records\b/,
+                  "Should find 7 records"
   end
 end

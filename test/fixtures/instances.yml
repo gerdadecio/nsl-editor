@@ -944,6 +944,6 @@ a_soft_deleted_instance:
   name: metrosideros_costata_gaertn
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  page: "soft-deleted 1"
+  page: exclude-from-ordering-test
   deleted_at: <%= Time.now %>
 
