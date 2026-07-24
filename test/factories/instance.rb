@@ -56,7 +56,6 @@
 FactoryBot.define do
   factory :instance do
     lock_version { 1 }
-    bhl_url { "Sample Bhl url" }
     created_by { "Sample Created by" }
     draft { true }
     nomenclatural_status { "Sample Nomenclatural status" }

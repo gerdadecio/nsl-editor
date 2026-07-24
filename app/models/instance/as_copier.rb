@@ -113,7 +113,6 @@ class Instance::AsCopier < Instance
         new_citer.cites_id = citer.cites_id
         new_citer.instance_type_id = citer.instance_type_id
         new_citer.verbatim_name_string = citer.verbatim_name_string
-        new_citer.bhl_url = citer.bhl_url
         new_citer.created_by = new_citer.updated_by = as_username
         new_citer.save!
       end
@@ -170,7 +169,6 @@ class Instance::AsCopier < Instance
         new_citer.cites_id = citer.cites_id
         new_citer.instance_type_id = citer.instance_type_id
         new_citer.verbatim_name_string = citer.verbatim_name_string
-        new_citer.bhl_url = citer.bhl_url
         new_citer.page = new_page
         new_citer.created_by = new_citer.updated_by = as_username
         new_citer.save!

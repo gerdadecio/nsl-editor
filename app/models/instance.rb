@@ -379,6 +379,7 @@ class Instance < ApplicationRecord
   validate :restrict_change_to_accepted_concept_synonymy
   validate :only_one_primary_instance_per_name
   validate :relationship_cannot_be_standalone_type
+  validate :relationship_cannot_have_bhl_url
 
   before_validation :set_defaults
   before_create :set_defaults
@@ -520,6 +521,13 @@ class Instance < ApplicationRecord
     return unless instance_type.standalone?
 
     errors.add(:base, "A relationship instance cannot be a standalone type")
+  end
+
+  def relationship_cannot_have_bhl_url
+    return if bhl_url.blank?
+    return unless instance_type&.relationship?
+
+    errors.add(:base, "A relationship instance cannot have a bhl url value")
   end
 
   def apc_instance_notes

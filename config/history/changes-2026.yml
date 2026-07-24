@@ -1,4 +1,8 @@
 - :date: 24-July-2026
+  :jira_id: '5464'
+  :description: |-
+    Instance <code>bhl_url</code>: Prevent addition of BHL links to relationship instances (synonymy)
+- :date: 24-July-2026
   :jira_id: '5857'
   :description: |-
     Query directives <code>is-soft-deleted:</code> and <code>is-not-soft-deleted:</code> to filter instances on their `deleted_at` column

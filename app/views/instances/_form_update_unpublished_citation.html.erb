@@ -38,10 +38,6 @@
     <br>
     <%= f.text_field :page, title: 'Enter page details', tabindex: increment_tab_index %>
     <br>
-    with BHL URL
-    <br>
-    <%= f.text_field :bhl_url, class: "form-control", title: 'Enter BHL URL', tabindex: increment_tab_index %>
-    <br>
     <%= hidden_field :instance, :id, value: @instance.id, name: 'for-bloodhound-js-use-only' %>
     <%= f.hidden_field :name_id, value: @instance.name_id %>
     <%= f.hidden_field :cites_id, value: @instance.cites_id %>

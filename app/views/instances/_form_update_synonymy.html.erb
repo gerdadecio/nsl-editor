@@ -54,9 +54,6 @@
   %>
   with verbatim name
   <%= f.text_field :verbatim_name_string, class: "form-control", title: 'Enter verbatim name', tabindex: increment_tab_index %>
-  with BHL URL
-  <%= f.text_field :bhl_url, class: "form-control", title: 'Enter BHL URL', tabindex: increment_tab_index %>
-  <br>
   <br>
   <%= hidden_field :instance, :id, value: @instance.id, name: 'for-bloodhound-js-use-only' %>
   <%= f.hidden_field :name_id, value: @instance.name_id %>

@@ -69,6 +69,9 @@ RSpec.describe Instance::AsCopier, type: :model do
         end
 
         it "creates a copy of the instance's citations" do
+          # bhl_url is deliberately NOT copied onto new relationship (citer)
+          # instances - Instance#relationship_cannot_have_bhl_url forbids a
+          # relationship-type instance from having a bhl_url at all.
           instance.update(cited_by_id: instance_citation.id)
           instance.reload
           instance_citation.multiple_primary_override = true
@@ -85,7 +88,7 @@ RSpec.describe Instance::AsCopier, type: :model do
           expect(copied_citation.cites_id).to eq instance_citation.cites_id
           expect(copied_citation.instance_type_id).to eq instance_citation.instance_type_id
           expect(copied_citation.verbatim_name_string).to eq instance_citation.verbatim_name_string
-          expect(copied_citation.bhl_url).to eq instance_citation.bhl_url
+          expect(copied_citation.bhl_url).to be_blank
           expect(copied_citation.created_by).to eq "username"
         end
 
