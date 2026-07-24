@@ -241,3 +241,81 @@ synonym_guards_pass:
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
 
+# --- Fixtures for the "name-match-no-primary:" search directive ---
+# (test/models/search/loader/name/directives/name_match_no_primary_test.rb)
+#
+# Each simple_name below is chosen to hit exactly one of the directive's
+# conditions, using existing `name` fixtures that are otherwise unrelated
+# to loader names:
+#   - has_no_instances / no_instances: unique simple_name, zero instances,
+#     so "no primary instance" is trivially true.
+#   - metrosideros_costata: has a comb_nov (primary_instance) instance.
+#   - name_matches_another_1/_2: two different `name` rows share this
+#     exact simple_name, so it fails the directive's "exactly one
+#     matching name" requirement.
+#
+# Like the guard-ordering fixtures above, none of these set
+# comment/distribution/remark_to_reviewers, so they add exactly 1 (not
+# expanded) entry each to the *any-batch*/print-any-batch/batch-name-*
+# unscoped count assertions - see the count updates in:
+#   test/models/search/loader/name/simple_with_any_batch_test.rb
+#   test/models/search/loader/name/print/simple_with_any_batch_test.rb
+#   test/models/search/loader/name/simple_with_batch_name_asterisk_test.rb
+#   test/models/search/loader/name/hybrid/no_hybrid_flag_test.rb
+
+no_primary_no_match_candidate:
+  seq: 0
+  record_type: accepted
+  loader_batch: batch_one
+  simple_name: has no instances
+  simple_name_as_loaded: has no instances
+  full_name: has no instances
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+has_primary_instance_candidate:
+  seq: 0
+  record_type: accepted
+  loader_batch: batch_one
+  simple_name: Metrosideros costata Gaertn.
+  simple_name_as_loaded: Metrosideros costata Gaertn.
+  full_name: Metrosideros costata Gaertn.
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+already_matched_candidate:
+  seq: 0
+  record_type: accepted
+  loader_batch: batch_one
+  simple_name: no instances
+  simple_name_as_loaded: no instances
+  full_name: no instances
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+multiple_name_matches_candidate:
+  seq: 0
+  record_type: accepted
+  loader_batch: batch_one
+  simple_name: name matches another
+  simple_name_as_loaded: name matches another
+  full_name: name matches another
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+

@@ -63,3 +63,16 @@ match_synonym_guards_pass:
   instance: gaertner_created_metrosideros_costata
   created_by: tester
   updated_by: tester
+
+# Supports test/models/search/loader/name/directives/name_match_no_primary_test.rb
+#
+# already_matched_candidate would otherwise qualify for "name-match-no-primary:"
+# (exactly one matching name, no primary instance), except it already has a
+# recorded match, which the directive's "not exists (loader_name_match)"
+# clause excludes.
+match_already_matched_candidate:
+  loader_name: already_matched_candidate
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  created_by: tester
+  updated_by: tester

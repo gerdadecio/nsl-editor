@@ -33,13 +33,15 @@ class SearchLoaderNameAndPrintSimpleWithAnyBatchTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(Array),
       "Results should be an Array."
-    assert_equal 20,
+    assert_equal 24,
                  search.executed_query.results.size,
-                 "Exactly 20 results expected (9 original + 11 from " \
+                 "Exactly 24 results expected (9 original + 11 from " \
                  "Loader::Name::MakeOneInstance guard-ordering tests - " \
                  "none of the 11 set comment/distribution, so " \
                  "RewriteResultsShowingExtras adds exactly 1 entry per " \
                  "record with no expansion, even for the 3 that are " \
-                 "record_type accepted)."
+                 "record_type accepted - + 4 from the " \
+                 "name-match-no-primary: directive tests, which also " \
+                 "don't set comment/distribution)."
   end
 end
