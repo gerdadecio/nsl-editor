@@ -1,4 +1,8 @@
 - :date: 24-July-2026
+  :jira_id: '5602'
+  :description: |-
+    Loader: Improve Loader Name search directive <code>name-match-no-primary:</code> 
+- :date: 24-July-2026
   :jira_id: '5857'
   :description: |-
     Query directives <code>is-soft-deleted:</code> and <code>is-not-soft-deleted:</code> to filter names on their `deleted_at` column

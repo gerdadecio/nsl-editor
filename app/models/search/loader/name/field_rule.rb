@@ -465,30 +465,35 @@ having count(*) > 2
             from name_Type nt
           where name.name_type_id       = nt.id
      and nt.scientific))"},
-    "name-match-no-primary:" => { where_clause: " record_type != 'heading'
-   and exists ( select null
-             from name
-                  join name_type nty
-                  on name.name_type_id = nty.id
-      where duplicate_of_id is null
-      and (loader_name.simple_name = name.simple_name
-             or
-             loader_name.simple_name = name.full_name)
-                  and nty.name = 'scientific'
-                )
-   and not exists (
-                   select null
-                     from name
-                          join instance
-                          on name.id = instance.name_id
-                          join instance_type ity
-                          on instance.instance_type_id = ity.id
-                          join name_type nty
-                          on name.name_type_id = nty.id
-                    where loader_name.simple_name = name.simple_name
-                      and ity.primary_instance = true
-                      and nty.name = 'scientific'
-          )"},
+  "name-match-no-primary:" => { 
+    where_clause: 
+    "id in (
+select ln.id
+  from loader_name ln 
+ where record_type != 'heading'
+   and 1 =
+  (select count(*)
+     from name 
+    where ln.simple_name = name.simple_name)
+   and 1 = 
+  (select count(*) 
+     from name 
+    where ln.simple_name = name.simple_name
+      and not exists
+      (select null
+     from instance i
+          join
+          instance_type t
+          on i.instance_type_id = t.id
+    where i.name_id = name.id
+      and t.primary_instance)
+  )
+  and not exists
+  (select null
+     from loader_name_match lnm
+    where ln.id = lnm.loader_name_id)
+    )",
+      takes_no_arg: true, },
     "name-match-eq:" => { where_clause: "record_type not in ('heading')
  and ? = (
       select count(*)
