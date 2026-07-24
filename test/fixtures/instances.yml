@@ -938,3 +938,13 @@ darwinia_sp_7_in_briggs_and_leigh_1996:
   page: exclude-from-ordering-test
   verbatim_name_string: l
 
+# Soft deleted standalone instance - used by the is-soft-deleted: search tests
+a_soft_deleted_instance:
+  <<: *DEFAULTS
+  reference: de_fructibus_et_seminibus_plantarum
+  name: angophora_costata
+  instance_type: comb_nov
+  verbatim_name_string: verbatim
+  page: "soft-deleted 1"
+  deleted_at: <%= Time.now %>
+
