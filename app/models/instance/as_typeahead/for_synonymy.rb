@@ -43,6 +43,14 @@ class Instance::AsTypeahead::ForSynonymy
             "instance_type.name as instance_type_name"
   SEARCH_LIMIT = 50
 
+  # ref_parent_date(ref_id) is an existing db function (see db/structure.sql)
+  # that returns the reference's own iso_publication_date, unless its ref_type
+  # has use_parent_details set, in which case it falls back to the parent
+  # reference's iso_publication_date. Re-using it here keeps this ordering
+  # consistent with how the rest of the app treats parent/child reference
+  # dates, rather than reimplementing the same rule.
+  ISO_PUBLICATION_DATE_ORDER = "coalesce(ref_parent_date(reference.id), '0000-00-00')"
+
   def initialize(terms, name_id)
     @results = []
     @name_binds = []
@@ -68,7 +76,8 @@ class Instance::AsTypeahead::ForSynonymy
                     .joins(:instance_type)
                     .where("cited_by_id is null")
                     .where("name_id != ?", name_id.to_i)
-                    .order(Arel.sql("name_rank.sort_order,lower(f_unaccent(full_name)), iso_publication_date"))
+                    .order(Arel.sql("name_rank.sort_order,lower(f_unaccent(full_name)), " \
+                                    "#{ISO_PUBLICATION_DATE_ORDER}"))
                     .limit(SEARCH_LIMIT)
     restrict_ranks(query, name_id)
   end
@@ -114,7 +123,7 @@ class Instance::AsTypeahead::ForSynonymy
     reference_year = match.to_s 
     if reference_year.present? &&
        reference_year.to_i > 1000 && reference_year.to_i < 3000
-      reference_binds.push(" iso_publication_date like ? ||'%' ")
+      reference_binds.push(" reference.iso_publication_date like ? ||'%' ")
       reference_binds.push(reference_year)
     end
     reference_binds

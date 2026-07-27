@@ -2718,4 +2718,29 @@ a_soft_deleted_name:
   uri: soft_deleted_name_1
   deleted_at: 2020-01-01 00:00:00
 
+# Name shared by four standalone instances used to test that
+# Instance::AsTypeahead::ForSynonymy orders a reference with no
+# iso_publication_date of its own using its parent reference's date.
+#
+# Deliberately ranked "classis" (like the a_classis fixture) with no
+# parent/family, rather than "species": a species-ranked name matching a
+# broad wildcard search (e.g. "*") gets pulled into the infraspecific-band
+# rank-restriction tests elsewhere and can push their expected rare-rank
+# results past the typeahead's 50-result limit. Ranks above family aren't
+# covered by any of those broad wildcard searches. Also has no `parent`,
+# so it doesn't perturb tests that count a_genus's children.
+fallback_reference_date_name:
+  <<: *DEFAULTS
+  name_element: fallbackia
+  simple_name: 'Fallbackia parentdatensis'
+  full_name: 'Fallbackia parentdatensis'
+  name_rank: classis
+  name_status: legitimate
+  name_type: scientific
+  namespace: apni
+  parent_id: nil
+  family_id: nil
+  name_path: 'Plantae/Fallbackia parentdatensis'
+  uri: fallback_reference_date_name
+
 

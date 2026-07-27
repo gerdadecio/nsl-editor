@@ -1942,3 +1942,61 @@ chah_2025:
   author: chah
   ref_author_role: author
   ref_type: section
+
+# Fixtures for Instance::AsTypeahead::ForSynonymy sort-order fallback:
+# a reference with no iso_publication_date of its own should sort as if
+# it had its parent reference's iso_publication_date.
+fallback_parent_reference:
+  <<: *DEFAULTS
+  title: "Fallback Parent Reference"
+  citation: "Fallback Parent Reference"
+  citation_html: "Fallback Parent Reference"
+  display_title: "Fallback Parent Reference"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book
+  iso_publication_date: 1850
+
+fallback_child_reference_no_own_date:
+  <<: *DEFAULTS
+  title: "Fallback Child Reference With No Own Date"
+  citation: "Fallback Child Reference With No Own Date"
+  citation_html: "Fallback Child Reference With No Own Date"
+  display_title: "Fallback Child Reference With No Own Date"
+  author: unknown
+  ref_author_role: dash
+  ref_type: chapter_using_parent_details
+  parent: fallback_parent_reference
+
+fallback_ungated_child_reference_no_own_date:
+  <<: *DEFAULTS
+  title: "Fallback Ungated Child Reference With No Own Date"
+  citation: "Fallback Ungated Child Reference With No Own Date"
+  citation_html: "Fallback Ungated Child Reference With No Own Date"
+  display_title: "Fallback Ungated Child Reference With No Own Date"
+  author: unknown
+  ref_author_role: dash
+  ref_type: chapter
+  parent: fallback_parent_reference
+
+fallback_earlier_reference:
+  <<: *DEFAULTS
+  title: "Fallback Earlier Reference"
+  citation: "Fallback Earlier Reference"
+  citation_html: "Fallback Earlier Reference"
+  display_title: "Fallback Earlier Reference"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book
+  iso_publication_date: 1700
+
+fallback_later_reference:
+  <<: *DEFAULTS
+  title: "Fallback Later Reference"
+  citation: "Fallback Later Reference"
+  citation_html: "Fallback Later Reference"
+  display_title: "Fallback Later Reference"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book
+  iso_publication_date: 1980

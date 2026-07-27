@@ -947,3 +947,51 @@ a_soft_deleted_instance:
   page: exclude-from-ordering-test
   deleted_at: <%= Time.now %>
 
+# Standalone instances of the same name, used to test that
+# Instance::AsTypeahead::ForSynonymy orders a reference with no
+# iso_publication_date of its own by its parent reference's date -
+# but only when the reference's ref_type has use_parent_details set
+# (see db function ref_parent_date() and ref_types.yml
+# chapter_using_parent_details).
+#
+# page is "exclude-from-ordering-test" on all four (the established
+# convention in this file) so they're excluded from
+# OrderByPage#test_approximates_numeric_sorting, which otherwise scans
+# every instance's page value. The test instead tells these four apart
+# by each reference's distinct citation text.
+fallback_earlier_instance:
+  <<: *DEFAULTS
+  reference: fallback_earlier_reference
+  name: fallback_reference_date_name
+  instance_type: comb_nov
+  verbatim_name_string: fallback-earlier
+  page: exclude-from-ordering-test
+
+fallback_child_instance_using_parent_date:
+  <<: *DEFAULTS
+  reference: fallback_child_reference_no_own_date
+  name: fallback_reference_date_name
+  instance_type: comb_nov
+  verbatim_name_string: fallback-child-no-own-date
+  page: exclude-from-ordering-test
+
+fallback_later_instance:
+  <<: *DEFAULTS
+  reference: fallback_later_reference
+  name: fallback_reference_date_name
+  instance_type: comb_nov
+  verbatim_name_string: fallback-later
+  page: exclude-from-ordering-test
+
+# Control: same "no own date" situation as the fixture above, but its
+# ref_type (plain `chapter`) does NOT have use_parent_details set, so it
+# should NOT inherit the parent's 1850 date - it should sort as if it had
+# no date at all (i.e. before fallback_earlier_instance's 1700).
+fallback_ungated_child_instance:
+  <<: *DEFAULTS
+  reference: fallback_ungated_child_reference_no_own_date
+  name: fallback_reference_date_name
+  instance_type: comb_nov
+  verbatim_name_string: fallback-ungated-child-no-own-date
+  page: exclude-from-ordering-test
+
