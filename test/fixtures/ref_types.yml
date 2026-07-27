@@ -75,9 +75,19 @@ unknown:
   parent_optional: true
   parent: unknown
 
-part: 
-  name: Part 
+part:
+  name: Part
   parent_optional: false
   parent: paper
+
+# Used to test ref_parent_date()/Instance::AsTypeahead::ForSynonymy's
+# fallback to a parent reference's iso_publication_date. Deliberately
+# separate from `chapter` above (which has use_parent_details: false)
+# so that fixture isn't changed for other tests relying on it.
+chapter_using_parent_details:
+  name: Chapter (uses parent details)
+  parent: book
+  parent_optional: false
+  use_parent_details: true
 
 

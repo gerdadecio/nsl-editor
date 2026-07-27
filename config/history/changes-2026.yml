@@ -1,4 +1,8 @@
 - :date: 27-July-2026
+  :jira_id: '5461'
+  :description: |-
+    Synonym typeahead sorting: when a Reference has no <code>iso_publication_date</code>, use its parent's <code>iso_publication_date</code> if appropriate
+- :date: 27-July-2026
   :jira_id: '5860'
   :description: |-
     Query directives for api_name and api_at in name search
