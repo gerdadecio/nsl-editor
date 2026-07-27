@@ -3,6 +3,36 @@
 require "rails_helper"
 
 RSpec.describe Name, type: :model do
+  describe ".soft_deleted" do
+    let!(:name) { create(:name) }
+    let!(:soft_deleted_name) { create(:name, deleted_at: Time.current) }
+
+    subject { described_class.soft_deleted }
+
+    it "returns names with a deleted_at timestamp" do
+      expect(subject).to include(soft_deleted_name)
+    end
+
+    it "does not return names without a deleted_at timestamp" do
+      expect(subject).not_to include(name)
+    end
+
+    context "when chained off the children association" do
+      let!(:soft_deleted_child) { create(:name, parent: name, deleted_at: Time.current) }
+      let!(:live_child) { create(:name, parent: name) }
+
+      subject { name.children.soft_deleted }
+
+      it "returns only the soft deleted children" do
+        expect(subject).to contain_exactly(soft_deleted_child)
+      end
+
+      it "does not return soft deleted names belonging to another parent" do
+        expect(subject).not_to include(soft_deleted_name)
+      end
+    end
+  end
+
   describe "associations" do
     describe "name_resources dependent destroy" do
       context "when name has associated name_resources" do
