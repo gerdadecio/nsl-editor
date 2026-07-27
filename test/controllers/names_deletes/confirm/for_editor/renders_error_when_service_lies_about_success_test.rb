@@ -63,7 +63,7 @@ class NamesDeleteConfirmForEditorRendersErrorWhenServiceLiesAboutSuccessTest < A
                       user_full_name: "Fred Jones",
                       groups: ["edit"] })
     assert_response :success
-    assert_includes @response.body, "Name not deleted"
+    assert_includes @response.body, "Name delete was requested but not confirmed"
     assert_not_includes @response.body, "Record deleted"
     assert Name.exists?(@name.id), "Name should still exist - the service did not really delete it"
   end
