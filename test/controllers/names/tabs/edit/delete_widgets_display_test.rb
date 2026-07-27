@@ -85,7 +85,7 @@ class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
       end
     end
     assert_response :success
-    assert_match(/Cannot delete:/, response.body)
+    assert_match(/Blocked: cannot delete/, response.body)
     assert_select "a#name-delete-link", false,
                   "Should not show the hard delete link."
     assert_select "a#name-soft-delete-link", false,
