@@ -1,7 +1,20 @@
 <% increment_tab_index %>
+<% if @name.allow_delete? %>
+  <%= render 'names/widgets/delete_widgets' %>
+<% elsif @name.allow_soft_delete? %>
+  <% if @name.deleted_at %>
+    Name has been soft-deleted at <%= formatted_timestamp(@name.deleted_at) %>.
+  <% else %>
+    <%= render 'names/widgets/soft_delete_widgets' %>
+  <% end %>
+<% else %>
+  <%= render 'names/widgets/cannot_delete_info' %>
+<% end %>
+<br>
+
 
 <% if @name.name_resources.present? %>
-  <br>Will delete the following resources:
+  <br>Warning: will also delete the following automatically
   <ul>
     <% @name.name_resources.each do |nr| %>
       <li>
@@ -20,19 +33,6 @@
   </ul>
 
 <% end %>
-
-<% if @name.allow_delete? %>
-  <%= render 'names/widgets/delete_widgets' %>
-<% elsif @name.allow_soft_delete? %>
-  <% if @name.deleted_at %>
-    Name has been soft-deleted at <%= formatted_timestamp(@name.deleted_at) %>.
-  <% else %>
-    <%= render 'names/widgets/soft_delete_widgets' %>
-  <% end %>
-<% else %>
-  <%= render 'names/widgets/cannot_delete_info' %>
-<% end %>
-<br>
 
 <div class="error-message-container"></div>
 <div id="search-result-details-info-message-container" class="message-container"></div>

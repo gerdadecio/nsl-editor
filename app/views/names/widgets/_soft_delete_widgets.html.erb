@@ -1,9 +1,14 @@
 <div id="name-soft-delete-info-message-container">
-  You soft delete this name.<br/>
+  Can soft delete<br/>
+
+  <% if @name.children.soft_deleted.count > 0 %>
+    <%= "#{pluralize(@name.children.soft_deleted.size,'soft-deleted child name')}" %>
+    <br>
+  <% end %>
 
   <% if @name.instances.soft_deleted.count > 0 %>
-    <%= "#{@name.instances.soft_deleted.count} of #{@name.instances.count}" %> instances are marked as soft delete.
-    <br><br>
+    <%= pluralize(@name.instances.soft_deleted.size,'soft-deleted instance') %>
+    <br>
   <% end %>
 </div>
 
