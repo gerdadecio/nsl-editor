@@ -1,4 +1,8 @@
 - :date: 27-July-2026
+  :jira_id: '5860'
+  :description: |-
+    Query directives for api_name and api_at in name search
+- :date: 27-July-2026
   :jira_id: '3228'
   :description: |-
     Name Delete: Add a 2 second delay before checking Name is deleted, also make the error message more neutral
