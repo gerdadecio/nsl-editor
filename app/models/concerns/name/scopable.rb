@@ -54,7 +54,7 @@ module Name::Scopable
                       else ' | '
                     end pipe_for_name_status")
            end)
-          
+
     # sorry this repeated code forced on me by needing to set the name of name.full_name
     scope :order_by_rank_and_full_name_for_parent_typeahead,
           -> { order("name_rank.sort_order, lower(name.full_name)") }
@@ -71,7 +71,7 @@ module Name::Scopable
                     name_rank.name name_rank_name,
                     name_status.name name_status_name,
                     count(instance.id) instance_count,
-                    case name_status.name 
+                    case name_status.name
                       when 'legitimate' then null
                       when '[n/a]' then null
                       else name_status.name
@@ -197,5 +197,6 @@ module Name::Scopable
             joins(:name_rank)
                 .where("name_rank.name = 'Familia'")
           end)
+    scope :soft_deleted, -> { where.not(deleted_at: nil) }
   end
 end
