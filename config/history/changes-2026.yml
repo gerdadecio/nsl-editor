@@ -1,7 +1,7 @@
 - :date: 28-July-2026
   :jira_id: '5855'
   :description: |-
-    Modify the delete workflow for name
+    Modify the delete workflow for name as part of the soft-delete work
 - :date: 27-July-2026
   :jira_id: '5461'
   :description: |-
