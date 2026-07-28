@@ -1,0 +1,11 @@
+<% summary = Names::DeleteDependentsSummaryService.call(name: name) %>
+<% if summary.any? %>
+  <br>Warning: will also delete the following automatically
+  <ul class="delete-dependents-summary">
+    <% summary.groups.each do |group| %>
+      <% group.entries.each do |entry_label, count| %>
+        <li><%= "#{count} #{entry_label}" %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
