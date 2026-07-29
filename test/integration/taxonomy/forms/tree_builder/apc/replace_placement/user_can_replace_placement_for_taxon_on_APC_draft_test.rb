@@ -31,6 +31,8 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
   tests TreesController
 
   def setup
+    # First call: look up the instance's preferred link, needed to build the
+    # second call's payload.
     stub_request(:get, %r{http:..localhost:90...*broker.preferredLink.idNumber=12345.nameSpace=anamespace.objectType=instance}).
     with(
       headers: {
@@ -40,7 +42,19 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
        'Host'=>/localhost/,
        'User-Agent'=>/ruby/
        }).
-       to_return(status: 200, body: "{replace: 'result...'}".to_json, headers: {})
+       to_return(status: 200, body: { link: "http://localhost:9091/nsl/instance/apni/12345" }.to_json, headers: {})
+
+    # Second call: the actual replaceElement request, using the link from the first call.
+    stub_request(:put, %r{http:..localhost:909..nsl.services.api.treeElement.replaceElement.apiKey=.*.as=apc-tax-builder}).
+    with(
+      headers: {
+       'Accept'=>/json/,
+       'Accept-Encoding'=>/.*/,
+       'Content-Type'=>/json/,
+       'Host'=>/localhost/,
+       'User-Agent'=>/ruby/
+       }).
+       to_return(status: 200, body: { ok: true, payload: {} }.to_json, headers: {})
   end
 
 # r6editor Started PATCH "/nsl/editor/trees/612279/replace_placement" for ::1 at 2025-07-17 15:34:26 +1000 (pid:642)
@@ -57,9 +71,8 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    # The replace_placement is complex with one API call providing params for a second API call.
-    # Raising a NoMethodError comes after the first API call - so shows the authorization was in place.
-    assert_raises(NoMethodError) {
+    # The replace_placement is complex with one API call (preferredLink) providing
+    # params for a second API call (replaceElement) - both are stubbed in setup.
     patch(:replace_placement,
          params: {"move_placement"=>{"element_link"=>tve.element_link,
                                      "instance_id"=>"12345",
@@ -74,7 +87,8 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
                     user_full_name: user.full_name,
                     draft: apc_draft,
                     groups: ["login"]})
-    }
+    assert_response :success, 'APC tree builder should be able to replace_placement on APC draft entry'
+    assert_template "moved_placement"
   end
 end
 

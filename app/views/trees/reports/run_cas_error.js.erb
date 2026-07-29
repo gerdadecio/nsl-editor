@@ -1,4 +1,4 @@
 $('#link-to-run-cas').show();
-$('#cas-report-is-running-indicator').html('<%= escape_javascript("Error running cas: #{@message}") %>');
+$('#cas-report-is-running-indicator').html('<%= escape_javascript("Error running cas: #{sanitize(@message)}") %>');
 
 

@@ -1,2 +1,2 @@
 $('#link-to-run-valrep').show();
-$('#val-report-is-running-indicator').html('<%= escape_javascript("Error running Validation: #{@message}") %>');
+$('#val-report-is-running-indicator').html('<%= escape_javascript("Error running Validation: #{sanitize(@message)}") %>');
