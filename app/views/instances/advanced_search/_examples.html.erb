@@ -254,6 +254,54 @@
 </table>
 <br>
 
+<h5 class="">API change searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Instances',
+       search_string: "has-api-name:",
+       explanation: %Q(Instances that have been changed by an API.)},
+      {search_target: 'Instances',
+       search_string: "has-no-api-name:",
+       explanation: %Q(Instances that have never been changed by an API.)},
+      {search_target: 'Instances',
+       search_string: "api-name: jira-sync",
+       explanation: %Q(Instances last changed by an API whose name contains "jira-sync".  Case-insensitive, with wildcards added at both ends.)},
+      {search_target: 'Instances',
+       search_string: "api-at: 27-07-2026",
+       explanation: %Q(Instances changed by an API on 27 July 2026.)},
+      {search_target: 'Instances',
+       search_string: "api-at: 07-2026",
+       explanation: %Q(Instances changed by an API in July 2026 - the date is matched with wildcards at both ends.)},
+      {search_target: 'Instances',
+       search_string: "api-at: 2026",
+       explanation: %Q(Instances changed by an API in 2026.)},
+      {search_target: 'Instances',
+       search_string: "api-at-after: 26-07-2026",
+       explanation: %Q(Instances changed by an API after 26 July 2026, excluding the 26th itself.)},
+      {search_target: 'Instances',
+       search_string: "api-at-before: 28-07-2026",
+       explanation: %Q(Instances changed by an API before 28 July 2026, excluding the 28th itself.)},
+      {search_target: 'Instances',
+       search_string: "api-at-after: 26-07-2026 api-at-before: 28-07-2026",
+       explanation: %Q(Instances changed by an API within a date range - here, 27 July 2026 only.)},
+      {search_target: 'Instances',
+       search_string: "api-name: jira-sync api-at-after: 30-06-2026",
+       explanation: %Q(Instances changed by the "jira-sync" API after 30 June 2026.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
+         title="Link to search">
+         <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
+      </a>
+    </td>
+    <td><%= val[:explanation].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
+
 <h5 class="">Count instances</h5>
 <table class="example-searches table table-striped">
   <% [{search_target: 'Instances', search_string: "count",explanation: %Q(Start with "count instance" to count instances.)},
@@ -269,6 +317,12 @@
       {search_target: 'Instances',
        search_string: "count is-tax-nov-for-orth-var-name:",
        explanation: %Q(Count tax. nov. instances with an orth-var name.)},
+      {search_target: 'Instances',
+       search_string: "count has-api-name:",
+       explanation: %Q(Count instances that have been changed by an API.)},
+      {search_target: 'Instances',
+       search_string: "count api-at: 2026",
+       explanation: %Q(Count instances changed by an API in 2026.)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">

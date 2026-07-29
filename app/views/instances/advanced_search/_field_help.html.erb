@@ -288,6 +288,40 @@ word "darwin" followed by a space, one or more other characters followed by "bar
   <% end %>
 </table>
 
+<h4>API changes</h4>
+<p>Instances changed via the API record the name of the API that changed them and when it happened.</p>
+<p>Dates are entered as <code>dd-mm-yyyy</code> in Australia/Melbourne time.</p>
+<table class="table table-striped">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+  </tr>
+  <% [
+         {field_name: 'api-name:', description: "Name of the API that last changed the instance.  Case-insensitive, with wildcards added at both ends."},
+         {field_name: 'has-api-name:', description: "Instance has been changed by an API.  Takes no argument."},
+         {field_name: 'has-no-api-name:', description: "Instance has never been changed by an API.  Takes no argument."},
+         {field_name: 'api-at:', description: %Q(Date the API last changed the instance, as <code>dd-mm-yyyy</code>.  Wildcards are added at both ends, so <code>07-2026</code> matches a month and <code>2026</code> matches a year.)},
+         {field_name: 'api-at-after:', description: "Changed by an API after the given date, excluding the date itself."},
+         {field_name: 'api-at-before:', description: "Changed by an API before the given date, excluding the date itself -- tip: combine with api-at-after: for a date range."},
+     ].each do |val| %>
+    <tr>
+      <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+      </td>
+      <td><%= val[:description].html_safe %></td>
+      <% if val[:partial].present? %>
+        <td><%= render partial: val[:partial] %></td>
+      <% else %>
+        <td></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
 <h4>Reference fields</h4>
 <table class="table table-striped">
   <tr>
