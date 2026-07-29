@@ -1,6 +1,6 @@
 $('#placement-error-message-container').addClass('hidden').html("");
 $('#placement-message-container')
     .removeClass('hidden')
-    .html(markdown("<%= escape_javascript(@message.html_safe) %>"))
+    .html(markdown("<%= escape_javascript(sanitize(@message)) %>"))
     .append('<button onclick="refreshTreeTab(event);">refresh</button>');
 $('#new_name_placement_btn').find('i.fa').removeClass('fa-spin');

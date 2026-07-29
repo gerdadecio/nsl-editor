@@ -14,5 +14,7 @@ $('#movement-message-container')
     .append(markdown("<%= escape_javascript(sanitize(@html_out)) %>"))
     .append('<button onclick="refreshTreeTab(event);">refresh</button>');
 <% else %>
-$('#instance-classification-tab').click();
+  $('#instance-classification-tab').click();
 <% end %>
+
+
