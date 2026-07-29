@@ -215,8 +215,8 @@ from comment where comment.instance_id = instance.id)",
                             takes_no_arg: true},
     "is-not-soft-deleted:" => { where_clause: " deleted_at is null",
                                 takes_no_arg: true},
-    "has-api-name:" => { where_clause: " api_name is not null" },
-    "has-no-api-name:" => { where_clause: " api_name is null" },
+    "has-api-name:" => { where_clause: " api_name is not null", takes_no_arg: true },
+    "has-no-api-name:" => { where_clause: " api_name is null", takes_no_arg: true },
     "verbatim-name-exact:" => { where_clause:
                                  "lower(verbatim_name_string) like lower(?) " },
     "verbatim-name:" => { where_clause:
