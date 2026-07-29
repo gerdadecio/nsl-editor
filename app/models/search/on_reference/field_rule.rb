@@ -19,12 +19,23 @@
 # Field rules available for building predicates.
 class Search::OnReference::FieldRule
   RULES = {
+    "api-name:" => { where_clause: " lower(api_name) like ? ",
+                     trailing_wildcard: true,
+                     leading_wildcard: true },
+    "api-at:" => { where_clause: " to_char(api_at at time zone 'Australia/Melbourne', 'dd-mm-yyyy') like ? ",
+                   trailing_wildcard: true,
+                   leading_wildcard: true },
+    "api-at-after:"         => { where_clause: " (api_at at time zone 'Australia/Melbourne') >= to_date(?, 'dd-mm-yyyy')
+                                  + interval '1 day' " },
+    "api-at-before:"        => { where_clause: " (api_at at time zone 'Australia/Melbourne') < to_date(?, 'dd-mm-yyyy') " },
     "is-a-duplicate:"       => { where_clause: " duplicate_of_id is not null" },
     "is-not-a-duplicate:"   => { where_clause: " duplicate_of_id is null" },
     "is-a-parent:"          => { where_clause: " exists (select null from
 reference child where child.parent_id = reference.id) " },
     "is-not-a-parent:"      => { where_clause: " not exists (select null from
 reference child where child.parent_id = reference.id) " },
+    "has-api-name:"         => { where_clause: " api_name is not null", takes_no_arg: true },
+    "has-no-api-name:"      => { where_clause: " api_name is null", takes_no_arg: true},
     "has-no-children:"      => { where_clause: " not exists (select null from
 reference child where child.parent_id = reference.id) " },
     "has-no-parent:"        => { where_clause: " parent_id is null" },
