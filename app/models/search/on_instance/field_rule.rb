@@ -102,6 +102,15 @@ from comment where comment.instance_id = instance.id)",
                                  and lower(instance_note_key.name) = 'type')) ",
                                leading_wildcard: true,
                                trailing_wildcard: true },
+    "api-name:" => { where_clause: " lower(api_name) like ? ",
+                     trailing_wildcard: true,
+                     leading_wildcard: true },
+    "api-at:" => { where_clause: " to_char(api_at at time zone 'Australia/Melbourne', 'dd-mm-yyyy') like ? ",
+                   trailing_wildcard: true,
+                   leading_wildcard: true },
+    "api-at-after:" => { where_clause: " (api_at at time zone 'Australia/Melbourne') >= to_date(?, 'dd-mm-yyyy')
+                                  + interval '1 day' " },
+    "api-at-before:" => { where_clause: " (api_at at time zone 'Australia/Melbourne') < to_date(?, 'dd-mm-yyyy') " },
     "apc-dist-note-matches:" => { where_clause: " exists (select null
                                  from instance_note
                                  where instance_id = instance.id
@@ -206,6 +215,8 @@ from comment where comment.instance_id = instance.id)",
                             takes_no_arg: true},
     "is-not-soft-deleted:" => { where_clause: " deleted_at is null",
                                 takes_no_arg: true},
+    "has-api-name:" => { where_clause: " api_name is not null" },
+    "has-no-api-name:" => { where_clause: " api_name is null" },
     "verbatim-name-exact:" => { where_clause:
                                  "lower(verbatim_name_string) like lower(?) " },
     "verbatim-name:" => { where_clause:
