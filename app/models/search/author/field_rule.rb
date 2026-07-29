@@ -18,10 +18,21 @@
 #
 class Search::Author::FieldRule
   RULES = {
+    "api-name:" => { where_clause: " lower(api_name) like ? ",
+                     trailing_wildcard: true,
+                     leading_wildcard: true },
+    "api-at:" => { where_clause: " to_char(api_at at time zone 'Australia/Melbourne', 'dd-mm-yyyy') like ? ",
+                   trailing_wildcard: true,
+                   leading_wildcard: true },
+    "api-at-after:" => { where_clause: " (api_at at time zone 'Australia/Melbourne') >= to_date(?, 'dd-mm-yyyy')
+                                  + interval '1 day' " },
+    "api-at-before:" => { where_clause: " (api_at at time zone 'Australia/Melbourne') < to_date(?, 'dd-mm-yyyy') " },
     "is-a-duplicate:" => { where_clause: " duplicate_of_id is not null",
                            takes_no_arg: true},
     "is-not-a-duplicate:" => { where_clause: " duplicate_of_id is null",
                                takes_no_arg: true},
+    "has-api-name:" => { where_clause: " api_name is not null", takes_no_arg: true },
+    "has-no-api-name:" => { where_clause: " api_name is null", takes_no_arg: true},
     "has-abbrev:" => { where_clause: " abbrev is not null" ,
                        takes_no_arg: true},
     "has-no-abbrev:" => { where_clause: " abbrev is null",
@@ -117,8 +128,8 @@ from comment where comment.author_id = author.id)" },
                            multiple_values_where_clause:
                                 " duplicate_of_id in (?)" },
     "is-a-duplicate-and-master:" => { where_clause: " id in (select id
-                                                               from author author_dupe_master 
-                                                              where id in (select duplicate_of_id 
+                                                               from author author_dupe_master
+                                                              where id in (select duplicate_of_id
                                                                              from author author_dupes
                                                                             where duplicate_of_id is not null)
                                                               and duplicate_of_id is not null)",
