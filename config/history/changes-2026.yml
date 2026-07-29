@@ -1,4 +1,8 @@
 - :date: 29-July-2026
+  :jira_id: '5860'
+  :description: |-
+    Query directives for api_name and api_at in author search
+- :date: 29-July-2026
   :jira_id: '4865'
   :description: |-
     Tree Service Errors: Treat tags in the error text as sanitized html tags
