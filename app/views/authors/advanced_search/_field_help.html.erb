@@ -82,6 +82,31 @@
   <% end %>
 </table>
 
+<h5>API changes</h5>
+<p>Authors changed via the API record the name of the API that changed them and when it happened.</p>
+<p>Dates are entered as <code>dd-mm-yyyy</code> in Australia/Melbourne time.</p>
+<table class="table table-striped">
+  <% [
+      {field_name: 'api-name:', description: "name of the API that last changed the author, case-insensitive, wildcards added at both ends"},
+      {field_name: 'has-api-name:', description: "author has been changed by an API; no arguments"},
+      {field_name: 'has-no-api-name:', description: "author has never been changed by an API; no arguments"},
+      {field_name: 'api-at:', description: %Q(date the API last changed the author, as <code>dd-mm-yyyy</code>. Wildcards are added at both ends, so <code>07-2026</code> matches a month and <code>2026</code> matches a year)},
+      {field_name: 'api-at-after:', description: "changed by an API after the given date, excluding the date itself"},
+      {field_name: 'api-at-before:', description: "changed by an API before the given date, excluding the date itself -- tip: combine with api-at-after: for a date range"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+
 <h5>Quality Checks</h5>
 <table class="table table-striped">
   <% [
