@@ -12,5 +12,5 @@ class NoCreateWhenReadOnlyTest < ActiveSupport::TestCase
                                           'draft log entry',
                                           false,
                                           'fred')}
-  end 
+  end
 end

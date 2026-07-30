@@ -28,7 +28,7 @@ class AuthorExtraInformationTooLongTest < ActiveSupport::TestCase
   test "author extra information too long test" do
     author = authors(:joe)
     assert author.valid?, "Author should be valid to start"
-    author.extra_information = "X" * @max 
+    author.extra_information = "X" * @max
     assert author.valid?, "Author should be valid with extra information #{@max} chars long"
     assert author.save!, "Author should save"
     author.extra_information = "X" * (@max + 1)

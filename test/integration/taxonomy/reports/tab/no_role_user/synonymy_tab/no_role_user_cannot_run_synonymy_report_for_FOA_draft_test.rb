@@ -21,7 +21,7 @@ require "test_helper"
 class NoRoleUserCannotRunSynonymyTabForFOADraftTest < ActionController::TestCase
   tests TreesController
 
-  # r6editor Started GET "/nsl/editor/trees/run/cas" 
+  # r6editor Started GET "/nsl/editor/trees/run/cas"
   # r6editor Processing by TreesController#run_cas as JS
   test "user with no role cannot run syn report for FOA draft" do
     user = users(:no_role)

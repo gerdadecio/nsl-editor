@@ -51,7 +51,7 @@ class Loader::Name::Review::CommentsController < ApplicationController
     @review_comment = Loader::Name::Review::Comment.find(review_comment_params[:id])
 
     unless @review_comment.batch_review_period.active? || @current_user.batch_loader?
-      raise 'Update not permitted because Review is not active' 
+      raise 'Update not permitted because Review is not active'
     end
     raise 'You cannot update a comment that is not your own' unless @current_user.username == @review_comment.reviewer.user.user_name
     @message = @review_comment.update_if_changed(review_comment_params,

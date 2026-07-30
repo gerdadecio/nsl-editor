@@ -98,7 +98,7 @@ class Loader::Name < ApplicationRecord
       child.loader_batch_id = loader_batch_id
       # Have to set sort_key here - the default callback to set it fails
       # because at that point in processing the parent's sort_key is empty
-      child.sort_key = if child.record_type == 'synonym' 
+      child.sort_key = if child.record_type == 'synonym'
                          synonym_sort_key(sort_key, child.synonym_type)
                        elsif child.record_type = 'misapplied'
                          misapp_sort_key(sort_key)
@@ -308,7 +308,7 @@ class Loader::Name < ApplicationRecord
 
     if taxonomic?
       return InstanceType.find_by_name("doubtful pro parte taxonomic synonym").id if riti_doubtful? && pp?
-      
+
       return InstanceType.find_by_name("doubtful taxonomic synonym").id if riti_doubtful?
 
       return InstanceType.find_by_name("pro parte taxonomic synonym").id if pp?
@@ -400,7 +400,7 @@ class Loader::Name < ApplicationRecord
 
     loader_name
   end
-  
+
   def save_with_username(username)
     self.created_by = self.updated_by = username
     set_defaults

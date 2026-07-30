@@ -146,7 +146,7 @@ class Name::AsServices < Name
   # need to pass them through to the application GUI.
   #
   # In 2026 I'm finding that Editor is thinking Name is deleted when an error
-  # has occurred in Services - the return code is still 200 from Services and 
+  # has occurred in Services - the return code is still 200 from Services and
   # the json says "ok"
   def delete_with_reason(reason)
     url = Name::AsServices.delete_url(id, reason)

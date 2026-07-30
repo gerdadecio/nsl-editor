@@ -18,7 +18,7 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
     allow(view).to(receive(:can?).with(:update_common_name, name).and_return(false))
     allow(view).to(receive(:can?).with(:create_common_name, Name).and_return(false))
     allow(view).to(receive(:increment_tab_index).and_return(1))
-    
+
     mock_service = product_tab_service_mock
     view.define_singleton_method(:product_tab_service) { mock_service }
     assign(:current_user, user)

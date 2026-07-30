@@ -3,7 +3,7 @@ module Loader::Name::Partials
 
   # synonym_type takes precedence
   def partial_misapplied?
-    unless synonym_type.blank? 
+    unless synonym_type.blank?
       synonym_type&.match?(/pro parte/)
     else
       publ_partly&.match(/p\.p\./)

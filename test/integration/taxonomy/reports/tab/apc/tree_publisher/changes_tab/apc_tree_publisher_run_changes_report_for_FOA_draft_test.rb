@@ -24,7 +24,7 @@ class APCTreePublisherRunChangesReportForFOADraftTest < ActionController::TestCa
   def setup
   end
 
-  # r6editor Started GET "/nsl/editor/trees/run/diff" 
+  # r6editor Started GET "/nsl/editor/trees/run/diff"
   # r6editor Processing by TreesController#run_diff as JS
   test "APC tree publisher run changes report for FOA draft" do
     user = users(:apc_tax_publisher)

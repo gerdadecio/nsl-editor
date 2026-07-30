@@ -120,7 +120,7 @@ class Instance::AsTypeahead::ForSynonymy
     match = terms.match(/[1,2][0-9]{3}/)
     return reference_binds if match.blank?
 
-    reference_year = match.to_s 
+    reference_year = match.to_s
     if reference_year.present? &&
        reference_year.to_i > 1000 && reference_year.to_i < 3000
       reference_binds.push(" reference.iso_publication_date like ? ||'%' ")

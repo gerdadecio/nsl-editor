@@ -22,7 +22,7 @@ load "test/models/search/users.rb"
 # Single Search model test for Reference target.
 #
 # In May 2025 I switched from 'english' to 'simple' dictionary and now this
-# test returns zero results - presumably because the 'simple' dictionary does 
+# test returns zero results - presumably because the 'simple' dictionary does
 # not understand apostrophes
 class SearchOnReferenceCitationHookersApostropheTest < ActiveSupport::TestCase
   test "search on reference citation text for hookers apostrophe" do

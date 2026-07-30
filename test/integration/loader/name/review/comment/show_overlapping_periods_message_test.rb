@@ -20,20 +20,20 @@ require "test_helper"
 
 # Single search controller test.
 #
-# Note: 
+# Note:
 #   xhr: true
 #
-# stopped this error in test: 
+# stopped this error in test:
 #
-# ActionController::InvalidCrossOriginRequest: Security warning: 
+# ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
 class LoaderNameReviewCommentShowTab < ActionController::TestCase
   tests Loader::NamesController
 
 
-  # Started GET 
+  # Started GET
   # "/nsl/editor/loader_names/52428461/tab/tab_comment/accepted
-  # ?format=js&tabIndex=undefined&take_focus=true" 
+  # ?format=js&tabIndex=undefined&take_focus=true"
   #
   #  def reviewer_id(username)
   #    reviewers.find_by(user_id: User.find_by_user_name(username)).id

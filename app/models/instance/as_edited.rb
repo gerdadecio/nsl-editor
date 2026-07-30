@@ -116,7 +116,7 @@ class Instance::AsEdited < Instance
     end
   end
 
-  # I tried not calling this method but found blanks entered into a text field 
+  # I tried not calling this method but found blanks entered into a text field
   # were detected as a change, so the record was updated!  Even though the blanks
   # never made it into the database, presume thanks to strip_attributes!
   def clean_all(params)

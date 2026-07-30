@@ -6,7 +6,7 @@ module Loader::Name::SiblingSynonyms
       siblings = Instance.sourced_sibling_synonyms_and_misapps(syn)
       seq_value = loader_batch.use_sort_key_for_ordering ? 0 : seq
       logger.debug("batch id: #{loader_batch_id}")
-      siblings.each do |instance| 
+      siblings.each do |instance|
         seq_value += 1 unless loader_batch.use_sort_key_for_ordering
         s = ::Loader::Name.new(loader_batch_id: loader_batch_id,
                                record_type: syn_or_misapp(instance),
@@ -26,7 +26,7 @@ module Loader::Name::SiblingSynonyms
                                seq: seq_value
                               )
         s.consider_sort_key
-        s.attribute_names.each do |a| 
+        s.attribute_names.each do |a|
           logger.debug("#{a} : #{s[a]}") unless s[a].blank?
         end
         s.save!

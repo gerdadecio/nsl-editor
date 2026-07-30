@@ -282,7 +282,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_cas_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_cas_error", status: :bad_request 
+    render "trees/reports/run_cas_error", status: :bad_request
   end
 
   def show_diff
@@ -309,7 +309,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_diff_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_diff_error", status: :bad_request 
+    render "trees/reports/run_diff_error", status: :bad_request
   end
 
   def show_valrep
@@ -332,7 +332,7 @@ class TreesController < ApplicationController
     render "trees/reports/run_valrep_error", status: :forbidden
   rescue => e
     @message = e.to_s
-    render "trees/reports/run_valrep_error", status: :bad_request 
+    render "trees/reports/run_valrep_error", status: :bad_request
   end
 
   private

@@ -21,7 +21,7 @@ require "test_helper"
 class NoRoleUserCanShowValidationTabForAPCDraftTest < ActionController::TestCase
   tests TreesController
 
-  # r6editor Started GET "/nsl/editor/trees/show/valrep" 
+  # r6editor Started GET "/nsl/editor/trees/show/valrep"
   # r6editor Processing by TreesController#show_valrep as JS
   test "user with no role cannot show validation tab for APC draft" do
     user = users(:no_role)

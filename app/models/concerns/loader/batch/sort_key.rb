@@ -21,7 +21,7 @@ update loader_name
 SQL
 
 
-  # Synonyms sort_key will be supplemented with the 
+  # Synonyms sort_key will be supplemented with the
   # taxon_name_usage_v.usage_order value
   # for better ordering
   def refresh_synonym_sort_keys

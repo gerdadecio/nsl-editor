@@ -34,7 +34,7 @@ class APCTreePublisherRunSynonymyReportForAPCDraftTest < ActionController::TestC
     to_return(status: 200, body: "", headers: {})
   end
 
-  # r6editor Started GET "/nsl/editor/trees/run/cas" 
+  # r6editor Started GET "/nsl/editor/trees/run/cas"
   # r6editor Processing by TreesController#run_cas as JS
   test "APC tree publisher can run syn report for APC draft" do
     user = users(:apc_tax_publisher)

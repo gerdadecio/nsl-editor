@@ -47,11 +47,11 @@ class JiraTicket < ActiveType::Object
   def self.keys=(array_of_keys)
     @keys = array_of_keys
   end
-  
+
   def self.keys_to_query=(list_of_keys_to_query)
     @keys_to_query = list_of_keys_to_query
   end
-  
+
   def self.jql(keys_array)
     "key in (#{keys_array.join(', ')})"
   end

@@ -38,7 +38,7 @@ class BatchReviewPeriodUpdateEndDateNotPastDateTest < ActionController::TestCase
                                                    "end_date(2i)"=>target.start_date.month.to_s,
                                                    "end_date(1i)"=>target.start_date.year.to_s,
                     },
-                   "commit"=>"Save"}, 
+                   "commit"=>"Save"},
          session: { username: "fred",
                     user_full_name: "Fred Jones",
                     groups: ["batch-loader"] })

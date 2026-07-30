@@ -40,7 +40,7 @@ class Loader::Name::DraftTaxonomyAdder::Preflights
     when @loader_name.preferred_match.blank?
       cleared = false
       preflight_error = "No preferred match"
-    when @loader_name.preferred_match.blank? || 
+    when @loader_name.preferred_match.blank? ||
          @loader_name.preferred_match.standalone_instance_id.blank?
       cleared = false
       preflight_error = "No instance identified"

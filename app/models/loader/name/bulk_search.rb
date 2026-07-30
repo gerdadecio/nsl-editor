@@ -75,7 +75,7 @@ class Loader::Name::BulkSearch
   # Family clause can be like this
   #
   #     family: one-family-name*
-  # 
+  #
   # which can have wildcard because converted to SQL like
   #
   #     family like 'one-family-name%'

@@ -21,7 +21,7 @@ require "test_helper"
 class NoRoleUserUpdateSynByInstanceForAPCDraftTest < ActionController::TestCase
   tests TreesController
 
-  # r6editor Started POST "/nsl/editor/trees/update_synonymy_by_instance" 
+  # r6editor Started POST "/nsl/editor/trees/update_synonymy_by_instance"
   # r6editor Processing by TreesController #update_synonymy_by_instance as JS
   # r6editor Parameters: {"versionId"=>"52410589", "instances"=>"612279", "update_checked_synonymy"=>""}
   test "user with no role cannot update synonymy by instance for APC draft" do

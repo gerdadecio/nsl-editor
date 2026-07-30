@@ -21,7 +21,7 @@ require "test_helper"
 class NoRoleUserCanRunChangesReportForAPCDraftTest < ActionController::TestCase
   tests TreesController
 
-  # r6editor Started GET "/nsl/editor/trees/run/diff" 
+  # r6editor Started GET "/nsl/editor/trees/run/diff"
   # r6editor Processing by TreesController#run_diff as JS
   test "user with no role cannot run changes report for APC draft" do
     user = users(:no_role)

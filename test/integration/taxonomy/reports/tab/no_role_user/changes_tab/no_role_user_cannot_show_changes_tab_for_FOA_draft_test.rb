@@ -21,7 +21,7 @@ require "test_helper"
 class NoRoleUserCannotShowChangesTabForFOADraftTest < ActionController::TestCase
   tests TreesController
 
-  # r6editor Started GET "/nsl/editor/trees/show/diff" 
+  # r6editor Started GET "/nsl/editor/trees/show/diff"
   # r6editor Processing by TreesController#show_diff as JS
   test "user with no role cannot show changes tab for FOA draft" do
     user = users(:no_role)

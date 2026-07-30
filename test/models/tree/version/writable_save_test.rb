@@ -6,8 +6,8 @@ require "test_helper"
 class WritableSaveTest < ActiveSupport::TestCase
 
   test "saves" do
-    tree_version_save 
-    tree_draft_version_save 
+    tree_version_save
+    tree_draft_version_save
   end
 
   def tree_version_save
@@ -18,5 +18,5 @@ class WritableSaveTest < ActiveSupport::TestCase
   def tree_draft_version_save
     apc_as_draft = Tree::DraftVersion.find(tree_versions(:apc_draft_version).id)
     assert(apc_as_draft.save!, 'Tree::DraftVersion should save')
-  end 
+  end
 end

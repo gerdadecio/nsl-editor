@@ -461,7 +461,7 @@ class Search::ParsedRequest
   # Note limitation of the checks: doesn't care if result of search is in only
   # one batch.
   #
-  # Note: default-batch is deliberately case-sensitive due to its more complex 
+  # Note: default-batch is deliberately case-sensitive due to its more complex
   # processing at this time.
   # Called via send
   def preprocess_loader_names
@@ -472,7 +472,7 @@ class Search::ParsedRequest
            @params["query_string"].match(/\bany-batch:/i) ||
            @params["query_string"].match(/[^-]id:/i) ||
            @params["query_string"].match(/\Aid:/i) ||
-           @params["query_string"].match(/\bid-with-syn:/i) 
+           @params["query_string"].match(/\bid-with-syn:/i)
       raise "Please set a default batch, or specify a 'batch-id:', a 'batch-name:' or 'any-batch:'"
     end
   end

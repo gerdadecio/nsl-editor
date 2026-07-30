@@ -41,7 +41,7 @@ class Loader::Batch < ApplicationRecord
 
     loader_batch
   end
-  
+
   def save_with_username(username)
     self.created_by = self.updated_by = username
     save
@@ -93,7 +93,7 @@ class Loader::Batch < ApplicationRecord
       "No change"
     end
   end
-  
+
   def first_n_seq(n = 1)
     self.loader_names.order(:seq).limit(n).pluck(:seq)
   end

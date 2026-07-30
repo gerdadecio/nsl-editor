@@ -20,12 +20,12 @@ require "test_helper"
 
 # Single search controller test.
 #
-# Note: 
+# Note:
 #   xhr: true
 #
-# stopped this error in test: 
+# stopped this error in test:
 #
-# ActionController::InvalidCrossOriginRequest: Security warning: 
+# ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
 class TaxFormsTreePubAPCNewDraftUserOferedAPCTreeOnlyTest < ActionController::TestCase
   tests TreeVersionsController

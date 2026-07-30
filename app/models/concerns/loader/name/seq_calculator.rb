@@ -63,7 +63,7 @@ module Loader::Name::SeqCalculator
         Loader::Batch.find(params["loader_batch_id"])
       elsif params["parent_id"]
         Loader::Name.find(params["parent_id"]).loader_batch
-      else 
+      else
         nil
       end
     end

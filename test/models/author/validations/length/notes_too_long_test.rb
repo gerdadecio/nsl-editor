@@ -28,7 +28,7 @@ class AuthorNotesTooLongTest < ActiveSupport::TestCase
   test "author notes too long test" do
     author = authors(:joe)
     assert author.valid?, "Author should be valid to start"
-    author.notes = "X" * @max 
+    author.notes = "X" * @max
     assert author.valid?, "Author should be valid with notes #{@max} chars long"
     assert author.save!, "Author should save"
     author.notes = "X" * (@max + 1)

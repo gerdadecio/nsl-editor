@@ -6,7 +6,7 @@ module Instance::ForCopyToLoaderName
   class_methods do
     def sourced_sibling_synonyms_and_misapps(instance)
       Instance.where(cited_by_id: instance.this_is_cited_by)
-              .where.not(id: instance.id) 
+              .where.not(id: instance.id)
               .joins(:instance_type)
               .where(instance_type: { unsourced: false })
               .where.not(instance_type: { name: 'trade name' })

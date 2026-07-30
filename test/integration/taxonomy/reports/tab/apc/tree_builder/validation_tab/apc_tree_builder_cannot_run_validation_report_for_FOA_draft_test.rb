@@ -24,7 +24,7 @@ class APCTreeBuilderCannotRunValidationReportForFOADraftTest < ActionController:
   def setup
   end
 
-  # r6editor Started GET "/nsl/editor/trees/run/valrep" 
+  # r6editor Started GET "/nsl/editor/trees/run/valrep"
   # r6editor Processing by TreesController#run_valrep as JS
   test "APC tree builder cannot run validation report for FOA draft" do
     user = users(:apc_tax_builder)

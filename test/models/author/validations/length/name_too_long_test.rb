@@ -28,7 +28,7 @@ class AuthorNameTooLongTest < ActiveSupport::TestCase
   test "author name too long test" do
     author = authors(:joe)
     assert author.valid?, "Author should be valid to start"
-    author.name = "X" * @max 
+    author.name = "X" * @max
     assert author.valid?, "Author should be valid with name #{@max} chars long"
     assert author.save!, "Author should save"
     author.name = "X" * (@max + 1)

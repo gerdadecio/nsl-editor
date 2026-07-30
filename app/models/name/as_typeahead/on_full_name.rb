@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 #   A list of names.
-#   Is called from the Reference >  New Instance tab to identify a Name record 
+#   Is called from the Reference >  New Instance tab to identify a Name record
 #   for the Instance.
 class Name::AsTypeahead::OnFullName
   attr_reader :suggestions,

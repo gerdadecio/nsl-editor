@@ -13,7 +13,7 @@ module Loader::Name::SortKey
   def should_reset_sort_key?
     return false if %w(in-batch-note in-batch-compile-note heading).include? record_type
     return true if self.changed? && !self.changes_to_save.keys.include?('sort_key')
-    false    
+    false
   end
 
   def set_sort_key
@@ -54,7 +54,7 @@ module Loader::Name::SortKey
     raise
   end
 
-  # This is for when we are combining our sort_key algorithm with a synonym sort 
+  # This is for when we are combining our sort_key algorithm with a synonym sort
   # value from taxon_mv(_new) - we want enough of a sort_key for the synonym
   # to place it under its parent, but not enough to determine its sorting
   # position within other synonyms for that parent.

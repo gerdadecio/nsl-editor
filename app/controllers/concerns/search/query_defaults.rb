@@ -57,7 +57,7 @@ module Search::QueryDefaults
     regex = /default-batch:.*(?= [A-Za-z-]*:)/
     params[:query_string].sub!(regex, '') if params[:query_string].match?(regex)
   end
-  
+
 
   def remove_old_default_at_end_of_string
     regex = /default-batch:\s[^:]{1,500}\s*$/

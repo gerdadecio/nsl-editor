@@ -50,7 +50,7 @@ module Loader::NamesHelper
   end
 
   def capture_family(search_result)
-    @previous_family = search_result.family 
+    @previous_family = search_result.family
   end
 
   def will_show_family(white_space)
