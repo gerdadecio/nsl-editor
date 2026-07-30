@@ -122,7 +122,7 @@ class Search::ParsedRequest
     "batch stack" => "name:",
     "loader name" => "simple-name:",
     "batch review" => "name:",
-    "batch reviewer" => "name:",
+    "batch reviewer" => "user-name:",
     "batch review period" => "name:",
     "users" => "user-name:",
     "org" => "name_or_abbrev:",

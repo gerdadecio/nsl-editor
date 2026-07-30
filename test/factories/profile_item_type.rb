@@ -37,7 +37,7 @@ FactoryBot.define do
     created_by { "Sample Created by" }
     updated_by { "Sample Updated by" }
     api_name { "Sample Api name" }
-    api_date { Time.current }
+    api_at { Time.current }
     sequence(:sort_order) {|n| n}
 
     association :profile_object_type

@@ -30,6 +30,6 @@ FactoryBot.define do
     updated_by { "Sample Updated by" }
     api_name { "Sample Api name" }
     value_md { "Sample Value Md"}
-    api_date { Time.current }
+    api_at { Time.current }
   end
 end

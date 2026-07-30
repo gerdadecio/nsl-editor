@@ -1,5 +1,0 @@
-=
-g/CREATE .* ON public.name_mv.*;/d
-g/CREATE TRIGGER audit.*;/d
-=
-wq

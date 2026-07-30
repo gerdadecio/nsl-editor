@@ -41,6 +41,7 @@ module ReferenceValidations
                            allow_blank: true,
                            message: "and master cannot be the same record"
     validates :language_id, presence: true
+    validates :doi, uniqueness: true, allow_nil: true
     validate :validate_parent
     validate :validate_fields_for_part
     validate :validate_uniqueness

@@ -18,30 +18,30 @@
 <% search_count = @author.master_of.try('count') || 0 %>
 <% if search_count > 0 %>
   <% @author.master_of.each do |duplicate| %>
-    <%= render partial: 'detail_line', 
+    <%= render partial: 'detail_line',
                locals: {info: link_to(duplicate.name_and_or_abbrev,
                                       search_path(query_target: "author", query_string: "id:#{duplicate.id}"),
-                                      title: 'See duplicate'), 
+                                      title: 'See duplicate'),
                         label: 'duplicate'} %>
   <% end %>
   <%= divider %>
 <% end %>
 
 <% if @author.duplicate_of_id.present? %>
-    <%= render partial: 'detail_line', 
+    <%= render partial: 'detail_line',
                locals: {info: link_to(@author.duplicate_of.name_and_or_abbrev,
                         search_path(query_target: "author", query_string: "id:#{@author.duplicate_of_id}"),
-                        title: 'See master record'), 
+                        title: 'See master record'),
                         label: 'duplicate of'} %>
     <%= divider %>
 <% end %>
 
 <% search_count = @author.references.count %>
 <% if search_count > 0 %>
-<%= render partial: 'detail_line', 
+<%= render partial: 'detail_line',
            locals: {info: link_to("#{pluralize(search_count,'authored reference')} ",
                                   search_path(query_target: "reference", query_string: "author-id:#{@author.id}"),
-                                  title: 'See references'), 
+                                  title: 'See references'),
                     label: ''} %>
 <% else %>
   No authored references.
@@ -107,4 +107,7 @@
   <br>Migrated from <%= "#{@author.source_system.downcase} ##{@author.source_id}" %>
 <% end %>
 
+<% if @author.api_name && @author.api_at %>
+  <br>Record changed by: <%= "#{@author.api_name} #{formatted_timestamp(@author.api_at)}"%>
+<% end %>
 

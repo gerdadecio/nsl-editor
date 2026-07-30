@@ -16,17 +16,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class HelpController < ApplicationController
-  before_action :hide_details, :empty_search
+require "test_helper"
 
-  def index; end
-  def how_to_search; end
-  def instance_models; end
-  def ref_type_rules; end
-  def typeaheads; end
-  def name_rules; end
+# Reference DOI uniqueness validation tests.
+class RefDoiUniquenessTest < ActiveSupport::TestCase
+  test "doi must be unique" do
+    ref_with_doi = references(:stanley_and_ross_1986_flora_of_se_qld)
+    duplicate = references(:simple)
+    duplicate.doi = ref_with_doi.doi
+    assert_not duplicate.valid?, "Should be invalid when doi duplicates another record"
+    assert duplicate.errors[:doi].any?, "Should have a doi error"
+  end
 
-  def instance_types
-    @instance_types = InstanceType.all.order("sort_order,name")
+  test "nil doi is allowed even when other records have nil doi" do
+    ref = references(:simple)
+    assert_nil ref.doi
+    assert ref.valid?, "Should be valid with nil doi"
   end
 end

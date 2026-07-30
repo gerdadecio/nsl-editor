@@ -19,7 +19,11 @@
       You cannot delete this reference because it has one or more products.
     <% end %>
 
-    <% unless @reference.children? || @reference.instances? %>
+    <% if @reference.comments.any? %>
+      You cannot delete this reference because it has one or more comments.
+    <% end %>
+
+    <% unless @reference.children? || @reference.instances? || @reference.comments? %>
 
       <% delete_link = link_to("Delete the reference...",
                               '#',

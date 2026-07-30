@@ -40,7 +40,7 @@ FactoryBot.define do
     created_by { "Sample Created by" }
     updated_by { "Sample Updated by" }
     api_name { "Sample Api name" }
-    api_date { Time.current }
+    api_at { Time.current }
     display_html { "Etymology"}
 
     association :profile_item_type

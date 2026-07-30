@@ -6,4 +6,6 @@ Name #<%= @name.id %>
 <% if @name.source_system %>
   <br>Migrated from <%= "#{@name.source_system.downcase} ##{@name.source_id}" %>
 <% end %>
-
+<% if @name.api_name && @name.api_at %>
+  <br>Record changed by: <%= "#{@name.api_name} #{formatted_timestamp(@name.api_at)}"%>
+<% end %>

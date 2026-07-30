@@ -55,7 +55,7 @@ FactoryBot.define do
     updated_by { "Sample Updated by" }
     created_by { "Sample Created by" }
     api_name { "Sample Api name" }
-    api_date { Time.current }
+    api_at { Time.current }
 
     association :instance
     association :product_item_config

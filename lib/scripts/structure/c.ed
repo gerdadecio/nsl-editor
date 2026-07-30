@@ -1,6 +1,0 @@
-H
-=
-/CREATE MATERIALIZED VIEW public.taxon_mv AS/
-.,/WITH NO DATA;/d
-=
-wq

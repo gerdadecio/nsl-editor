@@ -301,6 +301,7 @@ Rails.application.routes.draw do
   match "/admin/throw", as: "throw", to: "admin#throw", via: :get
 
   match "help/index", to: "help#index", via: :get
+  match "help/how-to-search", to: "help#how_to_search", via: :get
   match "help/instance_models",
         to: "help#instance_models", as: "instance_models", via: :get
   match "help/ref_type_rules",

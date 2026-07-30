@@ -25,7 +25,7 @@ FactoryBot.define do
     updated_by { "Sample Updated by" }
     lock_version { 1 }
     api_name { "Sample Api name" }
-    api_date { Time.current }
+    api_at { Time.current }
 
     association :profile_item
     association :reference

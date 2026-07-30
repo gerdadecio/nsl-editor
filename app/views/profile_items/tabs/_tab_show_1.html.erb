@@ -61,3 +61,6 @@
   </p>
 <% end %>
 <%= published_by_whom_and_when(@profile_item).html_safe %>
+<% if @profile_item.api_name && @profile_item.api_at %>
+  <br>Record changed by: <%= "#{@profile_item.api_name} #{formatted_timestamp(@profile_item.api_at)}"%>
+<% end %>

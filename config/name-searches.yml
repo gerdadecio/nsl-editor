@@ -196,6 +196,7 @@ from comment where comment.name_id = name.id)"
   :where_clause: name_status_id in       (select id from name_status where lower(name)
     like ?)
   :multiple_values: true
+  :allow_split_on_semicolon: true
   :multiple_values_where_clause: |-
     name_status_id in (select id from name_status where lower(name)
           in (?))
@@ -426,6 +427,25 @@ from comment where comment.name_id = name.id)"
                                 JOIN shard_config conf ON conf.name = 'classification tree key' AND t.name = conf.value
                                 JOIN tree_element te ON tve.tree_element_id = te.id
                               WHERE te.name_id = name.id)
+'genus-accepted-in-accepted-tree-no-children:':
+  :takes_no_arg: true,
+  :where_clause: |2-
+     id in ( select name.id
+                from tree_join_v tj 
+                     join name 
+                     on tj.name_id = name.id 
+                     join name_rank r 
+                     on name.name_rank_id = r.id  
+               where current_tree_version_id = tree_version_id
+                 and tj.accepted_tree 
+                 and not excluded
+                 and r.name = 'Genus'
+                 and not exists (select null
+                                   from tree_join_v tv2 
+                                  where  tv2.current_tree_version_id = tv2.tree_version_id
+                                    and tv2.accepted_tree
+                                    and tv2.parent_id = tj.element_link)
+            )
 'bad-relationships-974:':
   :where_clause: |2-
      name.id in

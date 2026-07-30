@@ -16,17 +16,17 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class HelpController < ApplicationController
-  before_action :hide_details, :empty_search
+require "test_helper"
 
-  def index; end
-  def how_to_search; end
-  def instance_models; end
-  def ref_type_rules; end
-  def typeaheads; end
-  def name_rules; end
+# Tests for Reference#comments?
+class ReferenceCommentsTest < ActiveSupport::TestCase
+  test "comments? is true when reference has a comment" do
+    assert references(:handbook_of_the_vascular_plants_of_sydney).comments?,
+           "Should be true when reference has a comment"
+  end
 
-  def instance_types
-    @instance_types = InstanceType.all.order("sort_order,name")
+  test "comments? is false when reference has no comments" do
+    assert_not references(:simple).comments?,
+               "Should be false when reference has no comments"
   end
 end

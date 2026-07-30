@@ -1,5 +1,0 @@
-=
-/CREATE VIEW public.nsl_tree_closure_cv AS/
-.,/^ *$/d
-=
-wq

@@ -93,8 +93,9 @@
 <%= created_by_whom_and_when(@instance).html_safe %>
 <br>
 <%= updated_by_whom_and_when(@instance).html_safe %>
-
-
 <% if @instance.source_system %>
   <br>Migrated from <%= "#{@instance.source_system.downcase} ##{@instance.source_id}" %>
+<% end %>
+<% if @instance.api_name && @instance.api_at %>
+  <br>Record changed by: <%= "#{@instance.api_name} #{formatted_timestamp(@instance.api_at)}"%>
 <% end %>

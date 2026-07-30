@@ -1,5 +1,0 @@
-=
-/CREATE VIEW public.taxonomic_status_v AS/
-.,/^ *$/d
-=
-wq

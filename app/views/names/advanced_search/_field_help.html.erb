@@ -73,7 +73,11 @@
       {field_name: 'rank:', description: "name rank, allows comma-separated multiple values, single values, and single values with wildcards",partial: "name_ranks/list_for_search_help"},
       {field_name: 'above-rank:', description: "search for names above a specified taxon rank (single value only)"},
       {field_name: 'below-rank:', description: "search for names below a specified taxon rank (single value only)"},
-      {field_name: 'status:', description: "name status, allows comma-separated multiple values, single values, and single values with wildcards",partial: "name_statuses/list_for_search_help"},
+      {field_name: 'status:', description: "name status, allows comma-separated (or semi-colon-separated) multiple values, single values, and single values with wildcards",partial: "name_statuses/list_for_search_help"},
+      {field_name: '', description: "Note for searching name status - some values include a comma, and these will be treated as two values",partial: "name_statuses/list_for_search_help"},
+      {field_name: '', description: "To avoid a search for one name status that includes a comma being treated as two values, replace the comma with an underscore",partial: "name_statuses/list_for_search_help"},
+      {field_name: '', description: "To search for a list of name statuses, including any with a comma, use semi-colons instead of commas to separate the values",partial: "name_statuses/list_for_search_help"},
+      {field_name: '', description: "If your list of name statuses contains any semi-colons, that will be used as the value separator",partial: "name_statuses/list_for_search_help"},
       {field_name: 'type:', description: "name type, allows comma-separated multiple values, single values, and single values with wildcards",partial: "name_types/list_for_search_help"}
       ].each do |val| %>
   <tr>
@@ -323,6 +327,7 @@
       {field_name: 'not-in-accepted-tree:', description: "restrict names to those not explicitly accepted in or excluded from the accepted tree"},
       {field_name: 'accepted-name-without-distribution:', description: "accepted names in the current accepted taxonomy with no profile distribution - mostly higher taxa"},
       {field_name: 'accepted-name-with-dist-but-no-bubbles:', description: "accepted names in the current accepted taxonomy with a profile distribution, but no 'bubbles. Show instances on results to drill in.'"},
+      {field_name: 'genus-accepted-in-accepted-tree-no-children:', description: "accepted genus names in current accepted taxonomy with no children in the tree'"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -408,3 +413,7 @@
 <br>
 
 <%= render partial: 'help/case_and_wildcards_search' %>
+
+
+Note: When searches return Name records with their instances and synonymy, the <code>limit:</code> and <code>offset:</code> directives apply only to the 
+Name records.

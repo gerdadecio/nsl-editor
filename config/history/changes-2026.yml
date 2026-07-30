@@ -1,3 +1,31 @@
+- :date: 26-June-2026
+  :jira_id: '5837'
+  :description: |-
+    Display the api_name and api_at info in the audit details for profile item details tab
+- :date: 25-June-2026
+  :jira_id: '3918'
+  :description: |-
+    Reference Delete: Do not offer delete button if comments are attached
+- :date: 25-June-2026
+  :jira_id: '5837'
+  :description: |-
+    Display the api_name and api_at info in the audit details for instance, name, and author details tab
+- :date: 24-June-2026
+  :jira_id: '3703'
+  :description: |-
+    Search on Name Status: Allow semi-colons to be used to list name status values in a search
+- :date: 23-June-2026
+  :jira_id: '5400'
+  :description: |-
+    Reference DOI: Add uniqueness validation to avoid database error appearing
+- :date: 23-June-2026
+  :jira_id: '4054'
+  :description: |-
+    New Name Search:  <code>genus-accepted-in-accepted-tree-no-children:</code>
+- :date: 23-June-2026
+  :jira_id: '3504'
+  :description: |-
+    Search Help: Clean up and add to Search and Query Help text, including on the <code>limit:</code> and <code>offset:</code> directives
 - :date: 22-June-2026
   :jira_id: '5776'
   :description: |-
@@ -86,6 +114,8 @@
   :jira_id: '5776'
   :description: |-
     Initial setup prep setup for bootstrap upgrade - add helper and config flag to toggle between versions
+- :date: 22-June-2026
+  :release: true
 - :date: 04-June-2026
   :jira_id: '240'
   :jira_project: FLOR

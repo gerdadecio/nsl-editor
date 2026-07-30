@@ -18,6 +18,7 @@ CREATE SEQUENCE loader.nsl_global_seq
     INCREMENT BY 1
     CACHE 1;
 
+
 CREATE SCHEMA audit;
 
 
@@ -792,10 +793,10 @@ WITH RECURSIVE walk (parent_id, name_element, rank, sort_order) AS (
            n.name_element,
            r.name,
            r.sort_order
-    FROM tree_version_element tve
-             JOIN tree_element te ON tve.tree_element_id = te.id
-             JOIN name n ON te.name_id = n.id
-             JOIN name_rank r ON n.name_rank_id = r.id
+    FROM public.tree_version_element tve
+             JOIN public.tree_element te ON tve.tree_element_id = te.id
+             JOIN public.name n ON te.name_id = n.id
+             JOIN public.name_rank r ON n.name_rank_id = r.id
     WHERE tve.element_link = tve_id
       AND r.sort_order >= rank_sort_order
     UNION ALL
@@ -804,10 +805,10 @@ WITH RECURSIVE walk (parent_id, name_element, rank, sort_order) AS (
            r.name,
            r.sort_order
     FROM walk w,
-         tree_version_element tve
-             JOIN tree_element te ON tve.tree_element_id = te.id
-             JOIN name n ON te.name_id = n.id
-             JOIN name_rank r ON n.name_rank_id = r.id
+         public.tree_version_element tve
+             JOIN public.tree_element te ON tve.tree_element_id = te.id
+             JOIN public.name n ON te.name_id = n.id
+             JOIN public.name_rank r ON n.name_rank_id = r.id
     WHERE tve.element_link = w.parent_id
       AND r.sort_order >= rank_sort_order
 )
@@ -1205,6 +1206,8 @@ CREATE TABLE public.author (
     valid_record boolean DEFAULT false NOT NULL,
     uri text,
     extra_information character varying(255),
+    api_name text,
+    api_at timestamp with time zone,
     CONSTRAINT abbrev_length_check CHECK ((char_length(abbrev) <= 150))
 );
 
@@ -1252,6 +1255,9 @@ CREATE TABLE public.instance (
     uri text,
     cached_synonymy_html text,
     uncited boolean DEFAULT false NOT NULL,
+    delete_at timestamp with time zone,
+    api_name text,
+    api_at timestamp with time zone,
     CONSTRAINT citescheck CHECK (((cites_id IS NULL) OR (cited_by_id IS NOT NULL)))
 );
 
@@ -1273,7 +1279,9 @@ CREATE TABLE public.instance_note (
     source_system character varying(50),
     updated_at timestamp with time zone NOT NULL,
     updated_by character varying(50) NOT NULL,
-    value character varying(4000) NOT NULL
+    value character varying(4000) NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -1369,6 +1377,9 @@ CREATE TABLE public.name (
     apni_json jsonb,
     basionym_id bigint,
     primary_instance_id bigint,
+    delete_at timestamp with time zone,
+    api_name text,
+    api_at timestamp with time zone,
     CONSTRAINT published_year_limits CHECK (((published_year > 0) AND (published_year < 2500)))
 );
 
@@ -1501,6 +1512,8 @@ CREATE TABLE public.reference (
     iso_publication_date character varying(10),
     url text,
     version_label text,
+    api_name text,
+    api_at timestamp with time zone,
     CONSTRAINT check_iso_date CHECK (public.is_iso8601(iso_publication_date)),
     CONSTRAINT parent_not_self CHECK ((parent_id <> id))
 );
@@ -2639,11 +2652,11 @@ BEGIN
 			element := 'x ' || element;
 		END IF;
 
-		IF (state ->> 'in_cultivar')::BOOLEAN  or
-		   ((state ->> 'depth')::INT > 0 and not (state ->> '{in_formula}')::boolean)
-		THEN
-			author := null;
-		ELSE
+			IF (state ->> 'in_cultivar')::BOOLEAN  or
+			   ((state ->> 'depth')::INT > 0 and not (state ->> 'in_formula')::boolean)
+			THEN
+				author := null;
+			ELSE
 			author := '<auth>'||authors||'</auth>';
 		END IF;
 
@@ -2777,7 +2790,7 @@ $$;
 --
 
 CREATE FUNCTION public.nc_table(name_id bigint) RETURNS TABLE(full_name text, title text, rdfa text, html_full text, simple_name text, html_simple text, authorship text)
-    LANGUAGE plpgsql
+    LANGUAGE plpgsql ROWS 1
     AS $$
 BEGIN
 
@@ -3342,13 +3355,13 @@ CREATE TABLE public.product (
     created_by character varying(50) NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) NOT NULL,
-    api_name character varying(50),
-    api_date timestamp with time zone,
     context_id integer DEFAULT 0 NOT NULL,
     context_sort_order integer DEFAULT 0 NOT NULL,
     manages_taxonomic_concept boolean DEFAULT false NOT NULL,
     manages_taxonomy boolean DEFAULT false NOT NULL,
-    manages_profile boolean DEFAULT false NOT NULL
+    manages_profile boolean DEFAULT false NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -3467,18 +3480,6 @@ CREATE TABLE public.product (
 
 
 --
--- Name: COLUMN product.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN product.api_date; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: product_item_config; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3499,8 +3500,8 @@ CREATE TABLE public.product_item_config (
     created_by character varying(50) NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) NOT NULL,
-    api_name character varying(50),
-    api_date timestamp with time zone
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -3601,18 +3602,6 @@ CREATE TABLE public.product_item_config (
 
 
 --
--- Name: COLUMN product_item_config.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN product_item_config.api_date; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: profile_item; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3638,8 +3627,8 @@ CREATE TABLE public.profile_item (
     updated_by text NOT NULL,
     created_at timestamp with time zone NOT NULL,
     created_by character varying(50) NOT NULL,
-    api_name character varying(50),
-    api_date timestamp with time zone,
+    api_name text,
+    api_at timestamp with time zone,
     CONSTRAINT profile_item_check CHECK (((((instance_id IS NOT NULL))::integer + ((tree_element_id IS NOT NULL))::integer) >= 1)),
     CONSTRAINT profile_item_statement_type_check CHECK ((statement_type = ANY (ARRAY['fact'::text, 'link'::text, 'assertion'::text]))),
     CONSTRAINT validate_object_type CHECK (
@@ -3779,18 +3768,6 @@ END),
 
 
 --
--- Name: COLUMN profile_item.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN profile_item.api_date; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: profile_item_annotation; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3806,8 +3783,8 @@ CREATE TABLE public.profile_item_annotation (
     created_by character varying(50) NOT NULL,
     updated_at timestamp with time zone NOT NULL,
     updated_by character varying(50) NOT NULL,
-    api_name character varying(50),
-    api_date timestamp with time zone
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -3884,18 +3861,6 @@ CREATE TABLE public.profile_item_annotation (
 
 
 --
--- Name: COLUMN profile_item_annotation.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN profile_item_annotation.api_date; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: profile_item_annotation_v; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -3930,8 +3895,8 @@ CREATE TABLE public.profile_item_type (
     created_by character varying(50) NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) NOT NULL,
-    api_name character varying(50),
-    api_date timestamp with time zone
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -4020,18 +3985,6 @@ CREATE TABLE public.profile_item_type (
 
 
 --
--- Name: COLUMN profile_item_type.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN profile_item_type.api_date; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: profile_object_type; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4046,8 +3999,8 @@ CREATE TABLE public.profile_object_type (
     created_by character varying(50) NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) NOT NULL,
-    api_name character varying(50),
-    api_date timestamp with time zone
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -4118,18 +4071,6 @@ CREATE TABLE public.profile_object_type (
 
 
 --
--- Name: COLUMN profile_object_type.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN profile_object_type.api_date; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: profile_text; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4145,8 +4086,8 @@ CREATE TABLE public.profile_text (
     created_by character varying(50) NOT NULL,
     updated_at timestamp with time zone NOT NULL,
     updated_by character varying(50) NOT NULL,
-    api_name character varying(50),
-    api_date timestamp with time zone
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -4223,18 +4164,6 @@ CREATE TABLE public.profile_text (
 
 
 --
--- Name: COLUMN profile_text.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN profile_text.api_date; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: tree_version; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4265,6 +4194,8 @@ CREATE VIEW public.profile_text_v AS
     itm.profile_object_rdf_id,
     itm.profile_text_id,
     t.id AS tree_id,
+    itm.published_date,
+    itm.end_date,
     itm.created_at,
     itm.updated_at,
     pic.display_html AS heading,
@@ -4386,30 +4317,8 @@ CREATE VIEW public.author_v AS
 
 
 --
--- Name: nsl_tree_mv; Type: VIEW; Schema: public; Owner: -
---
-
-
---
 -- Name: cited_usage_v; Type: VIEW; Schema: public; Owner: -
 --
-
-
---
--- Name: name_status_v; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.name_status_v AS
- SELECT name_status.id AS name_status_id,
-    name_status.deprecated,
-    name_status.name AS name_status_label,
-    name_status.display AS display_as,
-    name_status.name_group_id,
-    name_status.nom_illeg AS is_nom_illeg,
-    name_status.nom_inval AS is_nom_inval,
-    name_status.description_html,
-    name_status.rdf_id AS name_status_rdf_id
-   FROM public.name_status;
 
 
 --
@@ -4476,7 +4385,6 @@ CREATE VIEW public.reference_v AS
     ref_v.iso_publication_date,
     ref_v.publisher,
     ref_v.published_location,
-    ref_v.uri,
     ref_v.short_title,
     ref_v.display_title,
     ref_v.reference_notes,
@@ -4508,7 +4416,6 @@ CREATE VIEW public.reference_v AS
             r.iso_publication_date,
             r.publisher,
             r.published_location,
-            r.uri,
             r.abbrev_title AS short_title,
             r.display_title,
             r.notes AS reference_notes,
@@ -4605,7 +4512,7 @@ CREATE VIEW public.tree_v AS
 CREATE VIEW public.usage_type_v AS
  SELECT t.id AS usage_type_id,
     t.rdf_id AS usage_type_rdf_id,
-    (((mapper_host.value)::text || '/voc'::text) || (t.rdf_id)::text) AS identifier,
+    (((mapper_host.value)::text || 'voc/'::text) || (t.rdf_id)::text) AS identifier,
     t.name AS usage_type_label,
     t.description_html,
     t.rdf_id,
@@ -4964,6 +4871,12 @@ CREATE TABLE loader.name_review_vote (
 
 
 --
+-- Name: apii_image_profile; Type: FOREIGN TABLE; Schema: public; Owner: -
+--
+
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4989,7 +4902,9 @@ CREATE TABLE public.org (
     created_by character varying(50) DEFAULT USER NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) DEFAULT USER NOT NULL,
-    can_vote boolean DEFAULT false NOT NULL
+    can_vote boolean DEFAULT false NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -5009,6 +4924,8 @@ CREATE TABLE public.users (
     updated_by character varying(50) DEFAULT USER NOT NULL,
     internal_note text,
     default_product_context_id bigint,
+    api_name text,
+    api_at timestamp with time zone,
     CONSTRAINT users_user_name_lowercase_ck CHECK (((user_name)::text = lower((user_name)::text)))
 );
 
@@ -5353,7 +5270,9 @@ CREATE TABLE public.comment (
     reference_id bigint,
     text text NOT NULL,
     updated_at timestamp with time zone NOT NULL,
-    updated_by character varying(50) NOT NULL
+    updated_by character varying(50) NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -5767,7 +5686,9 @@ CREATE TABLE public.event_record (
     dealt_with boolean DEFAULT false NOT NULL,
     type text NOT NULL,
     updated_at timestamp with time zone NOT NULL,
-    updated_by character varying(50) NOT NULL
+    updated_by character varying(50) NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -5822,7 +5743,7 @@ CREATE TABLE public.instance_resource (
     created_by character varying(50) DEFAULT USER NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) DEFAULT USER NOT NULL,
-    api_name character varying(50),
+    api_name text,
     api_at timestamp with time zone,
     CONSTRAINT instance_resource_note_check CHECK ((char_length(note) <= 2400)),
     CONSTRAINT nr_length_check CHECK ((char_length(value) <= 250))
@@ -5890,18 +5811,6 @@ CREATE TABLE public.instance_resource (
 
 
 --
--- Name: COLUMN instance_resource.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN instance_resource.api_at; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: instance_resources; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5924,7 +5833,9 @@ CREATE TABLE public.resource (
     site_id bigint NOT NULL,
     updated_at timestamp with time zone NOT NULL,
     updated_by character varying(50) NOT NULL,
-    resource_type_id bigint NOT NULL
+    resource_type_id bigint NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -5941,7 +5852,9 @@ CREATE TABLE public.site (
     name character varying(100) NOT NULL,
     updated_at timestamp with time zone NOT NULL,
     updated_by character varying(50) NOT NULL,
-    url character varying(500) NOT NULL
+    url character varying(500) NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -6140,6 +6053,16 @@ CREATE VIEW public.name_group_v AS
 
 
 --
+-- Name: name_rank_valid_parent; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.name_rank_valid_parent (
+    name_rank_id bigint NOT NULL,
+    parent_name_rank_id bigint NOT NULL
+);
+
+
+--
 -- Name: name_resource; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -6154,7 +6077,7 @@ CREATE TABLE public.name_resource (
     created_by character varying(50) DEFAULT USER NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) DEFAULT USER NOT NULL,
-    api_name character varying(50),
+    api_name text,
     api_at timestamp with time zone,
     CONSTRAINT name_resource_note_check CHECK ((char_length(note) <= 2400)),
     CONSTRAINT nr_length_check CHECK ((char_length(value) <= 250))
@@ -6222,18 +6145,6 @@ CREATE TABLE public.name_resource (
 
 
 --
--- Name: COLUMN name_resource.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN name_resource.api_at; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: name_resources; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -6241,6 +6152,23 @@ CREATE TABLE public.name_resources (
     resource_id bigint NOT NULL,
     name_id bigint NOT NULL
 );
+
+
+--
+-- Name: name_status_v; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.name_status_v AS
+ SELECT name_status.id AS name_status_id,
+    name_status.deprecated,
+    name_status.name AS name_status_label,
+    name_status.display AS display_as,
+    name_status.name_group_id,
+    name_status.nom_illeg AS is_nom_illeg,
+    name_status.nom_inval AS is_nom_inval,
+    name_status.description_html,
+    name_status.rdf_id AS name_status_rdf_id
+   FROM public.name_status;
 
 
 --
@@ -6264,7 +6192,9 @@ CREATE TABLE public.name_tag_name (
     created_at timestamp with time zone NOT NULL,
     created_by character varying(255) NOT NULL,
     updated_at timestamp with time zone NOT NULL,
-    updated_by character varying(255) NOT NULL
+    updated_by character varying(255) NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -6305,34 +6235,6 @@ CREATE TABLE public.notification (
     message character varying(255) NOT NULL,
     object_id bigint
 );
-
-
---
--- Name: nsl_5579_2024_updates; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.nsl_5579_2024_updates AS
- SELECT loader_name.parent_id,
-    loader_name.id AS ln_id,
-    loader_name.simple_name,
-    loader_name.record_type,
-    SUBSTRING(nir.citation FROM 1 FOR 80) AS expected_citation,
-    nit.name AS expected_type,
-    ni.id AS expected_instance,
-    SUBSTRING(ar.citation FROM 1 FOR 80) AS actual_citation,
-    ai.id AS actual_instance
-   FROM (((((((((loader.loader_name
-     JOIN loader.loader_name_match lnm ON ((loader_name.id = lnm.loader_name_id)))
-     JOIN loader.loader_batch lb ON ((loader_name.loader_batch_id = lb.id)))
-     JOIN public.name ON ((lnm.name_id = name.id)))
-     JOIN public.instance ni ON ((name.id = ni.name_id)))
-     JOIN public.instance_type nit ON ((ni.instance_type_id = nit.id)))
-     JOIN public.reference nir ON ((ni.reference_id = nir.id)))
-     LEFT JOIN loader.loader_name parent ON ((loader_name.parent_id = parent.id)))
-     JOIN public.instance ai ON ((lnm.instance_id = ai.id)))
-     JOIN public.reference ar ON ((ai.reference_id = ar.id)))
-  WHERE (((lb.name)::text = 'APC 2024 Updates'::text) AND (loader_name.record_type <> 'misapplied'::text) AND nit.primary_instance AND (ai.id <> ni.id))
-  ORDER BY loader_name.sort_key;
 
 
 --
@@ -6410,6 +6312,11 @@ CREATE TABLE public.nsl_simple_name_export (
 
 
 --
+-- Name: nsl_tree_mv; Type: VIEW; Schema: public; Owner: -
+--
+
+
+--
 -- Name: product_role; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -6423,7 +6330,9 @@ CREATE TABLE public.product_role (
     created_by character varying(50) DEFAULT USER NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) DEFAULT USER NOT NULL,
-    description text
+    description text,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -6440,7 +6349,9 @@ CREATE TABLE public.roles (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by character varying(50) DEFAULT USER NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_by character varying(50) DEFAULT USER NOT NULL
+    updated_by character varying(50) DEFAULT USER NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -6474,8 +6385,8 @@ CREATE TABLE public.profile_item_reference (
     updated_at timestamp with time zone NOT NULL,
     updated_by character varying(50) NOT NULL,
     lock_version integer DEFAULT 0 NOT NULL,
-    api_name character varying(50),
-    api_date timestamp with time zone
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -6540,18 +6451,6 @@ CREATE TABLE public.profile_item_reference (
 
 
 --
--- Name: COLUMN profile_item_reference.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN profile_item_reference.api_date; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: reference_resource; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -6566,7 +6465,7 @@ CREATE TABLE public.reference_resource (
     created_by character varying(50) DEFAULT USER NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) DEFAULT USER NOT NULL,
-    api_name character varying(50),
+    api_name text,
     api_at timestamp with time zone,
     CONSTRAINT nr_length_check CHECK ((char_length(value) <= 250)),
     CONSTRAINT reference_resource_note_check CHECK ((char_length(note) <= 2400))
@@ -6634,18 +6533,6 @@ CREATE TABLE public.reference_resource (
 
 
 --
--- Name: COLUMN reference_resource.api_name; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
--- Name: COLUMN reference_resource.api_at; Type: COMMENT; Schema: public; Owner: -
---
-
-
-
---
 -- Name: resource_host; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -6665,6 +6552,8 @@ CREATE TABLE public.resource_host (
     created_by character varying(50) DEFAULT USER NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) DEFAULT USER NOT NULL,
+    api_name text,
+    api_at timestamp with time zone,
     CONSTRAINT lr_length_check CHECK ((char_length(resolving_url) <= 250)),
     CONSTRAINT resource_host_description_check CHECK ((char_length(description) <= 250))
 );
@@ -6809,6 +6698,44 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: taxonomic_status_mv; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.taxonomic_status_mv AS
+ SELECT t.name AS tree_name,
+    tv.id AS tree_version_id,
+    tve.taxon_id,
+    te.instance_id AS accepted_name_usage_id,
+    i.id AS name_usage_id,
+    te.name_id AS accepted_name_id,
+    n.id AS name_id,
+        CASE
+            WHEN (i.cited_by_id IS NOT NULL) THEN 'included'::text
+            WHEN te.excluded THEN 'excluded'::text
+            ELSE 'accepted'::text
+        END AS tree_status,
+        CASE
+            WHEN (i.cited_by_id IS NOT NULL) THEN it.rdf_id
+            ELSE NULL::character varying
+        END AS usage_type,
+    n.full_name,
+    n.sort_name,
+    s.nom_illeg AS is_nom_illeg,
+    s.nom_inval AS is_nom_inval,
+    te.excluded AS is_excluded
+   FROM (((public.tree_version_element tve
+     JOIN public.tree t ON (((tve.tree_version_id = t.current_tree_version_id) AND t.is_schema)))
+     JOIN public.tree_version tv ON ((tv.id = tve.tree_version_id)))
+     JOIN (public.tree_element te
+     JOIN (((public.instance i
+     JOIN public.name n ON ((i.name_id = n.id)))
+     JOIN public.name_status s ON ((n.name_status_id = s.id)))
+     JOIN public.instance_type it ON ((it.id = i.instance_type_id))) ON (((te.instance_id = i.id) OR (te.instance_id = i.cited_by_id)))) ON ((te.id = tve.tree_element_id)))
+  ORDER BY n.sort_name
+  WITH NO DATA;
+
+
+--
 -- Name: tree_element_distribution_entries; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -6910,7 +6837,9 @@ CREATE TABLE public.user_product_role (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by character varying(50) DEFAULT USER NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_by character varying(50) DEFAULT USER NOT NULL
+    updated_by character varying(50) DEFAULT USER NOT NULL,
+    api_name text,
+    api_at timestamp with time zone
 );
 
 
@@ -7316,6 +7245,14 @@ ALTER TABLE ONLY public.name
 
 ALTER TABLE ONLY public.name_rank
     ADD CONSTRAINT name_rank_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: name_rank_valid_parent name_rank_valid_parent_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.name_rank_valid_parent
+    ADD CONSTRAINT name_rank_valid_parent_pkey PRIMARY KEY (name_rank_id, parent_name_rank_id);
 
 
 --
@@ -8167,25 +8104,12 @@ CREATE INDEX name_exbaseauthor_index ON public.name USING btree (ex_base_author_
 -- Name: name_full_name_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX name_full_name_index ON public.name USING btree (full_name);
+CREATE INDEX name_full_name_index ON public.name USING btree (full_name text_pattern_ops);
 
 
 --
 -- Name: name_full_name_trgm_index; Type: INDEX; Schema: public; Owner: -
 --
-
-SET search_path TO nsl, public;
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
-CREATE EXTENSION if not exists unaccent;
-CREATE OR REPLACE FUNCTION public.f_unaccent(text)
- RETURNS text
- LANGUAGE sql
- IMMUTABLE
- SET search_path TO 'public', 'pg_temp'
-AS $function$
-SELECT unaccent('unaccent', $1)
-$function$
-;
 
 CREATE INDEX name_full_name_trgm_index ON public.name USING gin (full_name public.gin_trgm_ops);
 
@@ -8616,6 +8540,27 @@ CREATE INDEX reference_type_index ON public.reference USING btree (ref_type_id);
 
 
 --
+-- Name: taxonomic_status_fullname_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX taxonomic_status_fullname_idx ON public.taxonomic_status_mv USING gin (full_name public.gin_trgm_ops);
+
+
+--
+-- Name: taxonomic_status_mv_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX taxonomic_status_mv_idx ON public.taxonomic_status_mv USING btree (tree_name, name_usage_id);
+
+
+--
+-- Name: taxonomic_status_sortname_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX taxonomic_status_sortname_idx ON public.taxonomic_status_mv USING btree (sort_name) INCLUDE (is_nom_illeg, is_nom_inval);
+
+
+--
 -- Name: tree_element_instance_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8641,13 +8586,6 @@ CREATE INDEX tree_element_previous_index ON public.tree_element USING btree (pre
 --
 
 CREATE INDEX tree_name_path_index ON public.tree_version_element USING btree (name_path);
-
-
---
--- Name: tree_path_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX tree_path_index ON public.tree_version_element USING btree (tree_path);
 
 
 --
@@ -8703,7 +8641,14 @@ CREATE INDEX tree_version_element_taxon_link_index ON public.tree_version_elemen
 -- Name: tree_version_element_version_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX tree_version_element_version_index ON public.tree_version_element USING btree (tree_version_id);
+CREATE INDEX tree_version_element_version_index ON public.tree_version_element USING btree (tree_version_id, name_path);
+
+
+--
+-- Name: tree_version_element_version_tree_path_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX tree_version_element_version_tree_path_index ON public.tree_version_element USING btree (tree_version_id, tree_path text_pattern_ops);
 
 
 --
@@ -8770,6 +8715,13 @@ CREATE INDEX tree_version_element_version_index ON public.tree_version_element U
 -- Name: trees_taxon_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
+
+
+--
+-- Name: tve_tree_path_trgm_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX tve_tree_path_trgm_idx ON public.tree_version_element USING gin (tree_path public.gin_trgm_ops);
 
 
 --
@@ -9494,6 +9446,22 @@ ALTER TABLE ONLY public.resource
 
 ALTER TABLE ONLY public.instance
     ADD CONSTRAINT fk_lumlr5avj305pmc4hkjwaqk45 FOREIGN KEY (reference_id) REFERENCES public.reference(id);
+
+
+--
+-- Name: name_rank_valid_parent fk_name_rank_valid_parent_name_rank_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.name_rank_valid_parent
+    ADD CONSTRAINT fk_name_rank_valid_parent_name_rank_id FOREIGN KEY (name_rank_id) REFERENCES public.name_rank(id);
+
+
+--
+-- Name: name_rank_valid_parent fk_name_rank_valid_parent_parent_name_rank_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.name_rank_valid_parent
+    ADD CONSTRAINT fk_name_rank_valid_parent_parent_name_rank_id FOREIGN KEY (parent_name_rank_id) REFERENCES public.name_rank(id);
 
 
 --
