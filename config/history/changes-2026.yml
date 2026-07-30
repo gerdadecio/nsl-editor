@@ -1,4 +1,8 @@
 - :date: 30-July-2026
+  :jira_id: '5871'
+  :description: |-
+    Technical: Remove trailing whitespace from Ruby files - BAU workflow testing only
+- :date: 30-July-2026
   :jira_id: '5860'
   :description: |-
     Query directives for api_name and api_at in reference search
