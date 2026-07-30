@@ -105,6 +105,8 @@ from ref_type where lower(name) like lower(?))" },
     "bhl:" => { where_clause:
                                  " lower(bhl_url) like lower(?)" },
     "doi:" => { where_clause: " lower(doi) like lower(?)" },
+    "no-doi:" => { where_clause: " doi is null",
+                   takes_no_arg: true},
     "tl2:" => { where_clause: " lower(tl2) like lower(?)" },
 
     "id:" => { multiple_values: true,
