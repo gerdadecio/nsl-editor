@@ -23,28 +23,47 @@ load "test/models/search/users.rb"
 # (app/models/search/reference/field_rule.rb) finds references with no DOI
 # recorded. It takes no argument - there isn't one to give - so using it
 # alone, with nothing after the colon, must not raise.
+#
+# The reference search defaults to a LIMIT 100, ordered by citation
+# (Search::ParsedRequest::DEFAULT_LIST_LIMIT/DEFAULT_ORDER_COLUMNS), so a
+# bare "no-doi:" search can't reliably be checked for one specific
+# fixture's inclusion/exclusion - which fixtures make the top 100
+# alphabetically depends on how much other reference data exists, which
+# can differ between environments (this broke in CI while passing
+# locally). Combining "no-doi:" with "id:" scopes each check down to a
+# single candidate reference, so the LIMIT/order never comes into play.
 class SearchOnReferenceNoDoiSimpleTest < ActiveSupport::TestCase
-  setup do
-    params = ActiveSupport::HashWithIndifferentAccess.new(
-      query_target: "reference",
-      query_string: "no-doi:",
-      current_user: build_edit_user
-    )
-    search = Search::Base.new(params)
-    @results = search.executed_query.results
-    @ids = @results.map(&:id)
+  test "using the directive with no argument does not raise" do
+    assert_kind_of ActiveRecord::Relation, run_search("no-doi:")
   end
 
-  test "using the directive with no argument does not raise" do
-    assert_kind_of ActiveRecord::Relation, @results
+  test "every result actually has no doi recorded" do
+    results = run_search("no-doi:")
+    assert !results.empty?, "Results expected."
+    results.each do |reference|
+      assert reference.doi.blank?,
+             "#{reference.citation} should have no doi recorded"
+    end
   end
 
   test "includes a reference with no doi recorded" do
-    assert_includes @ids, references(:ref_type_is_book).id
+    reference = references(:ref_type_is_book)
+    results = run_search("id: #{reference.id} no-doi:")
+    assert_includes results.map(&:id), reference.id
   end
 
   test "excludes a reference that has a doi recorded" do
-    assert_not_includes @ids,
-                        references(:stanley_and_ross_1986_flora_of_se_qld).id
+    reference = references(:stanley_and_ross_1986_flora_of_se_qld)
+    results = run_search("id: #{reference.id} no-doi:")
+    assert_not_includes results.map(&:id), reference.id
+  end
+
+  def run_search(query_string)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target: "reference",
+      query_string: query_string,
+      current_user: build_edit_user
+    )
+    Search::Base.new(params).executed_query.results
   end
 end
