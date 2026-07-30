@@ -146,6 +146,32 @@ in the following formats:</p>
   </tr>
   <% end %>
 </table>
+<br>
+
+<h5>API change searches</h5>
+<p>References changed via the API record the name of the API that changed them and when it happened.  Dates are entered as dd-mm-yyyy in Australia/Melbourne time.</p>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'References', search_string: "has-api-name:",explanation: %Q(References that have been changed by an API.)},
+      {search_target: 'References', search_string: "has-no-api-name:",explanation: %Q(References that have never been changed by an API.)},
+      {search_target: 'References', search_string: "api-name: jira-sync",explanation: %Q(References last changed by an API whose name contains "jira-sync". Case-insensitive, with wildcards added at both ends.)},
+      {search_target: 'References', search_string: "api-at: 27-07-2026",explanation: %Q(References changed by an API on 27 July 2026.)},
+      {search_target: 'References', search_string: "api-at: 07-2026",explanation: %Q(References changed by an API in July 2026 - the date is matched with wildcards at both ends.)},
+      {search_target: 'References', search_string: "api-at: 2026",explanation: %Q(References changed by an API in 2026.)},
+      {search_target: 'References', search_string: "api-at-after: 26-07-2026",explanation: %Q(References changed by an API after 26 July 2026, excluding the 26th itself.)},
+      {search_target: 'References', search_string: "api-at-before: 28-07-2026",explanation: %Q(References changed by an API before 28 July 2026, excluding the 28th itself.)},
+      {search_target: 'References', search_string: "api-at-after: 26-07-2026 api-at-before: 28-07-2026",explanation: %Q(References changed by an API within a date range - here, 27 July 2026 only.)},
+      {search_target: 'References', search_string: "api-name: jira-sync api-at-after: 30-06-2026",explanation: %Q(References changed by the "jira-sync" API after 30 June 2026.)},
+      {search_target: 'References', search_string: "chah api-at: 2026",explanation: %Q(A leading search term like 'chah' is matched against citation, as usual.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td><%= val[:explanation].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
 
 </div>
 
