@@ -4,12 +4,11 @@
 module AuthorValidations
   extend ActiveSupport::Concern
   included do
-    validates :name,
-              presence: { if: -> { abbrev.blank? },
-                          unless: -> { duplicate_of_id.present? },
-                          message: "can't be blank if abbrev is blank." }
     validates :name, length: { maximum: 1000,
                                  too_long: "%{count} characters is the maximum allowed" }
+
+    validates :name, presence: true
+
     validates :name,
               uniqueness: { unless: -> { name.blank? },
                             case_sensitive: false,

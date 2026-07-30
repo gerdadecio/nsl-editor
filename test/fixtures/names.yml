@@ -2259,7 +2259,7 @@ autonym_with_mismatched_name:
   name_element: autonym with mismatched name
   full_name: autonym with mismatched name
   full_name_html: autonym with mismatched name
-  name_rank: species
+  name_rank: subspecies
   name_status: legitimate
   name_type: autonym
   namespace: apni
@@ -2649,5 +2649,38 @@ angophora_fred:
   author: moe
   name_path: 'Plantae/Magnoliophyta/a_family/a_genus/fred'
   uri: agi
+
+# Fixtures for the name_type_autonym_for_restricted_ranks_only validation.
+# A high-ranked parent (regnum) is used so that the parent rank is always
+# higher than the name's rank, no matter what rank we set the name to in the
+# tests. This keeps the autonym-rank validation isolated from the
+# parent-rank-high-enough validation.
+autonym_for_rank_validation:
+  <<: *DEFAULTS
+  name_element: autonymrankvalidation
+  simple_name: autonymrankvalidation
+  full_name: autonymrankvalidation
+  name_rank: subspecies
+  name_status: legitimate
+  name_type: autonym
+  namespace: apni
+  parent: parent_of_autonym_for_rank_validation
+  family: a_family
+  name_path: 'Plantae/test/autonymrankvalidation'
+  uri: autonym_rank_validation_1
+
+parent_of_autonym_for_rank_validation:
+  <<: *DEFAULTS
+  name_element: parentofautonymrankvalidation
+  simple_name: parentofautonymrankvalidation
+  full_name: parentofautonymrankvalidation
+  name_rank: tribus
+  name_status: legitimate
+  name_type: scientific
+  namespace: apni
+  parent_id: nil
+  family: a_family
+  name_path: 'Plantae/test/parentofautonymrankvalidation'
+  uri: autonym_rank_validation_2
 
 

@@ -67,6 +67,7 @@ class Instance::AsTypeahead::ForSynonymy
                     .joins(:reference).where(reference_binds(terms))
                     .joins(:instance_type)
                     .where("cited_by_id is null")
+                    .where("name_id != ?", name_id.to_i)
                     .order(Arel.sql("name_rank.sort_order,lower(f_unaccent(full_name)), iso_publication_date"))
                     .limit(SEARCH_LIMIT)
     restrict_ranks(query, name_id)

@@ -110,8 +110,8 @@ class TreeVersion < ApplicationRecord
     tree.host_name
   end
 
-  def draft_instance_default?
-    self != tree.default_draft_version
+  def default_tree_version?
+    self == tree.default_draft_version
   end
 
   def stop_if_read_only

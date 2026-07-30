@@ -36,6 +36,7 @@ class Search::OnInstance::ListQuery
                                                          prepared_query)
     prepared_query = where_clauses.sql
     prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
+    prepared_query = prepared_query.offset(@parsed_request.offset) if @parsed_request.offsetted
     include_profiles(prepared_query)
     prepared_query = if @parsed_request.order_instance_query_by_page
                        prepared_query.joins(:name).ordered_by_page_only

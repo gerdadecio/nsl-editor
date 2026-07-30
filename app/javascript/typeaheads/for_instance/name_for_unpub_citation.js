@@ -25,12 +25,19 @@ window.setUpInstanceNameForUnpubCitation = setUpInstanceNameForUnpubCitation;
 window.nameByFullNameForUnpubCit = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    remote: window.relative_url_root + '/names/typeaheads/for_unpub_cit/index?term=%QUERY',
+    remote: {url: window.relative_url_root + '/names/typeaheads/for_unpub_cit/index?term=%QUERY',
+        replace: function(url,query) {
+            return window.relative_url_root + '/names/typeaheads/for_unpub_cit/index?name_id=' +
+                $('#instance-name-id').val() +
+                '&term=' + encodeURIComponent(query) + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
+        }
+    },
     limit: 100
 });
 
 // kicks off the loading/processing of `local` and `prefetch`
 window.nameByFullNameForUnpubCit.initialize();
-
+window.nameByFullNameForUnpubCit = nameByFullNameForUnpubCit;
 
 

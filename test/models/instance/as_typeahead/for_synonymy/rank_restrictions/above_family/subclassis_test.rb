@@ -40,6 +40,7 @@ class TypeaheadForSynonymySubclassisTest < ActiveSupport::TestCase
     inclusions.delete("Regnum")
     inclusions.delete("Division")
     inclusions.delete("Classis")
+    inclusions.delete("Subclassis")
     check_rank_names_inclusions(inclusions)
   end
 

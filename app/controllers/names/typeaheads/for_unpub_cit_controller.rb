@@ -26,6 +26,6 @@ class Names::Typeaheads::ForUnpubCitController < ApplicationController
   private
 
   def typeahead_params
-    params.permit(:term)
+    params.permit(:term, :name_id)
   end
 end

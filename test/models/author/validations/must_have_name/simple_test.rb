@@ -19,11 +19,21 @@
 require "test_helper"
 
 # Single author model test.
-class AuthorMarkedAsDuplicateIsValidTest < ActiveSupport::TestCase
-  test "author marked as duplicate is valid test" do
+class AuthorMustHaveNameTest < ActiveSupport::TestCase
+  test "author must have name test" do
     author = Author.new
     assert_not author.valid?, "New author should be invalid"
-    author.duplicate_of_id = Author.first.id
-    assert author.valid?, "Author marked as duplicate should be valid"
+    assert_match(/Name can't be blank/,
+                 author.errors.full_messages.join(";"),
+                 "Error should mention blank name")
+    assert_match(/Abbrev can't be blank if name is blank/,
+                 author.errors.full_messages.join(";"),
+                 "Error should mention blank abbrev")
+    author.abbrev = "wilma"
+    assert_not author.valid?, "Author should not be valid with an abbrev if no name."
+    author.abbrev = nil
+    author.name = "some name"
+    assert author.valid?,
+           "Author should be valid with a name even if no abbrev."
   end
 end

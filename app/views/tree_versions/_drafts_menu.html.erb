@@ -24,7 +24,7 @@
 
     <li role="presentation">
       <% if menu_item.draft_id %>
-          <%= link_to("#{menu_item.name} #{menu_item.draft_name}
+        <%= link_to("#{menu_item.name} #{menu_item.draft_name} #{'(Default Draft)' if menu_item.default_draft}
                       #{editor_icon('check', '',{class: check_is_hidden})}".html_safe,
                       toggle_current_workspace_path(id: menu_item.draft_id),
                       { remote: true,

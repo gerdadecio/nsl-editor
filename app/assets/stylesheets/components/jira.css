@@ -1,3 +1,7 @@
+span.jira {
+  float: right;
+}
+
 span.jira.in-test {
   background: darkred;
 }

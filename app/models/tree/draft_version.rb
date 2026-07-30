@@ -108,4 +108,8 @@ class Tree::DraftVersion < ApplicationRecord
       throw :abort
     end
   end
+
+  def default_tree_version?
+    self == tree.default_draft_version
+  end
 end

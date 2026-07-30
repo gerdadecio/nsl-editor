@@ -201,4 +201,8 @@ class NameType < ApplicationRecord
   def phrase_name?
     name == "phrase name"
   end
+
+  def autonym?
+    name == "autonym"
+  end
 end

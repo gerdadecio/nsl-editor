@@ -7,7 +7,14 @@ import "@hotwired/turbo-rails"
 import "controllers";
 import "jQuery"; // select2 needs this case-sensitive version of jQuery - "jquery" gives error
 import "select2"; // this import first
-import "dropdown";
+// Bootstrap dropdowns/collapse: BS5 bundle (native, data-bs-* driven, toggles
+// .show) when the feature flag is on; otherwise the legacy BS3 jQuery plugin
+// (toggles .open). jQuery itself stays loaded for select2/typeahead either way.
+if (window.useLatestBootstrap) {
+  import("bootstrap");
+} else {
+  import("dropdown");
+}
 //import "fresh";
 //// start of fresh replacements
 import "debug";

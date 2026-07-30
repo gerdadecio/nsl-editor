@@ -17,14 +17,12 @@
 #   limitations under the License.
 #
 require "test_helper"
-require "models/instance/as_typeahead/for_synonymy/rank_restrictions/\
-infrafamily/infrafamily_helper"
 
 # Single instance typeahead search.
 class TypeaheadForSynonymySubtribusTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new("*",
-                                                 names(:a_family).id)
+                                                 names(:a_subtribus).id)
   end
 
   test "instance typeahead for synonymy rank restriction for a subtribus" do
@@ -32,7 +30,27 @@ class TypeaheadForSynonymySubtribusTest < ActiveSupport::TestCase
     @rank_names = @ta.results.collect do |result|
       Instance.find(result[:id]).name.name_rank.name
     end
-    check_infrafamily_exclusions
-    check_infrafamily_inclusions
+    check_exclusions
+    check_inclusions
+  end
+
+  def check_exclusions
+    %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Genus
+       Subgenus Sectio Subsectio Series Subseries Superspecies Species
+       Subspecies Nothovarietas Varietas
+       Subvarietas Forma Subforma Subtribus].each do |rank_string|
+      escape_s = Regexp.escape(rank_string)
+      assert @rank_names.none? { |e| e.match(/\A#{escape_s}\z/) },
+             "Expect no #{rank_string} to be suggested"
+    end
+  end
+  
+  def check_inclusions
+    %w(Familia Subfamilia Tribus
+       [unranked]).each do |rank_string|
+      escape_s = Regexp.escape(rank_string)
+      assert @rank_names.select { |e| e.match(/\A#{escape_s}\z/) }.size >= 1,
+             "Expect one #{rank_string} to be suggested"
+    end
   end
 end

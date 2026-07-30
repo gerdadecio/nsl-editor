@@ -72,7 +72,6 @@ class TypeaheadForSynonymyUnrankedGetMainGroupTest < ActiveSupport::TestCase
     check_unranked_inclusion("[infrafamily]")
     check_unranked_inclusion("[infragenus]")
     check_unranked_inclusion("[n/a]")
-    check_unranked_inclusion("[unranked]")
     check_unranked_inclusion("[infraspecies]")
   end
 end

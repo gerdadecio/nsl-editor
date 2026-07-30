@@ -6,7 +6,7 @@
      tabindex="4"
      class="dropdown-toggle <%= 'active' if params[:controller].match(/session/) %>"
      title="Select this to see your account options."
-     data-toggle="dropdown">
+     <%= bs_toggle(:dropdown) %>>
     <%= editor_icon('user') %>&nbsp;<%= @current_user.full_name %> <span class="caret"></span>
   </a>
   <ul id="user-dropdown-menu" class="dropdown-menu" role="menu">

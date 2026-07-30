@@ -54,6 +54,7 @@ module NameValidatable
     validates :uri, uniqueness: true, allow_blank: true
     validate :genus_parent_must_match_family_if_both_ranked_family
     validates :name_path, presence: true
+    validate :name_type_autonym_for_restricted_ranks_only
   end
 
   def name_element_is_stripped
@@ -70,6 +71,13 @@ module NameValidatable
     errors.add(:name_type_id,
                "Wrong name type for category! Category: #{category_for_edit} vs
                name type: #{name_type.name}.")
+  end
+
+  def name_type_autonym_for_restricted_ranks_only
+    return unless name_type.autonym?
+    return if name_rank.compatible_with_autonym?
+
+    errors.add(:name_type_id, "autonym cannot be this rank")
   end
 
   def genus_parent_must_match_family_if_both_ranked_family

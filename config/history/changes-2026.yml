@@ -1,3 +1,91 @@
+- :date: 22-June-2026
+  :jira_id: '5776'
+  :description: |-
+    CSS for the dl elements for bs5
+- :date: 22-June-2026
+  :jira_id: '5776'
+  :description: |-
+    CSS for the dropdown divider and link colors for bs5
+- :date: 19-June-2026
+  :jira_id: '5776'
+  :description: |-
+    More css fixes in top meanu and search form for bs5
+- :date: 19-June-2026
+  :jira_id: '5372'
+  :description: |-
+    Author: Make name field mandatory in Editor
+- :date: 17-June-2026
+  :jira_id: '3871'
+  :description: |-
+    Tree Draft Version: Indicate when a draft is the default draft
+- :date: 17-June-2026
+  :jira_id: '3748'
+  :description: |-
+    Name name_path: Stop adding leading slash to common name and other name_paths
+- :date: 17-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Fixup the dropdown select styling for bs5
+- :date: 16-June-2026
+  :jira_id: '3228'
+  :description: |-
+    Name Delete: Allow larger text field and longer text contents in Extra Information
+- :date: 16-June-2026
+  :jira_id: '3215'
+  :description: |-
+    Synonymy: Do not offer a Name as a synonym of itself
+- :date: 15-June-2026
+  :jira_id: '3156'
+  :description: |-
+    Instances Tree tab: change checkbox label from "Allow higher ranks" to "Show higher ranks"
+- :date: 15-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Fixup the table border in bs5 in the help page
+- :date: 12-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Fixup the dropdown item covering the search field issue in the search form in bs5
+- :date: 12-June-2026
+  :jira_id: '3117'
+  :description: |-
+    Name validation: Don't allow save of autonym type name with an ineligible rank
+- :date: 12-June-2026
+  :jira_id: '5776'
+  :description: |-
+    CSS fixes for the signin and search forms buttons for bs5
+- :date: 12-June-2026
+  :jira_id: '3085'
+  :description: |-
+    Instance search: Fix offset: directive
+- :date: 11-June-2026
+  :jira_id: '5776'
+  :description: |-
+    CSS fixes for the headers and buttons for bs5
+- :date: 11-June-2026
+  :jira_id: '2423'
+  :description: |-
+    Synonym display details: add a comma before any status tag or page number
+- :date: 11-June-2026
+  :jira_id: '2434'
+  :description: |-
+    New Instance form from Reference: swap fields instance-type and page for consistent ordering
+- :date: 11-June-2026
+  :jira_id: '2423'
+  :description: |-
+    Synonym display details: adjust LHS display for synonyms with trailing nomenclatural status tags
+- :date: 10-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Fixup the issue where the bootstrap upgrade was causing some styling issues in the html menu and layout
+- :date: 05-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Wire up the bootstrap helpers in the html menu and layout
+- :date: 04-June-2026
+  :jira_id: '5776'
+  :description: |-
+    Initial setup prep setup for bootstrap upgrade - add helper and config flag to toggle between versions
 - :date: 04-June-2026
   :jira_id: '240'
   :jira_project: FLOR

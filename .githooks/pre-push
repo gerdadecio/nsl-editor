@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# pre-push: confirm before pushing to the main/master branch.
+# (Ported from the previous untracked .git/hooks/pre-push so it survives the
+# switch to core.hooksPath=.githooks and is shared with the team.)
+
+# Get the remote name and URL
+remote="$1"
+url="$2"
+
+# Read push references
+while read local_ref local_sha remote_ref remote_sha; do
+    echo "Processing push to $remote_ref..."
+    # Check if pushing to the main branch on the upstream remote
+    if [ "$remote_ref" = "refs/heads/main" ] || [ "$remote_ref" = "refs/heads/master" ]; then
+        echo "You are about to push to the main branch of $remote_ref."
+
+        # Prompt for confirmation
+        # Force user input even in a non-interactive shell
+        echo -n "Are you sure? (yes/no): " > /dev/tty
+        read choice < /dev/tty
+        case "$choice" in
+            yes|YES )
+                echo "Pushing to $remote_ref..."
+                ;;
+            * )
+                echo "Push to $remote_ref aborted."
+                exit 1
+                ;;
+        esac
+    fi
+done
+
+exit 0

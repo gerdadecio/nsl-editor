@@ -143,7 +143,8 @@ class Name::AsEdited < Name::AsTypeahead
   def self.create_name_path(name)
     path = ""
     path = name.parent.name_path if name.parent
-    path += "/" + name.name_element.strip if name.name_element
+    path += "/" unless path.blank?
+    path += name.name_element.strip if name.name_element
     name.name_path = path
   end
 

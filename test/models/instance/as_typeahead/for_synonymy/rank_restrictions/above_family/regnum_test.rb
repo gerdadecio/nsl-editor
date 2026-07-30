@@ -44,11 +44,7 @@ class TypeaheadForSynonymyRegnumTest < ActiveSupport::TestCase
   end
 
   test "instance typeahead for synonymy rank restriction regnum regnum" do
-    assert @tb.results.size >= 1, "Should be at least 1 synonym"
-    @rank_names = @tb.results.collect do |result|
-      Instance.find(result[:id]).name.name_rank.name
-    end
-    check_rank_names_inclusions(["Regnum"])
+    assert @tb.results.size == 0, "Should be no synonyms"
   end
 
   test "instance typeahead for synonymy rank restriction regnum division" do

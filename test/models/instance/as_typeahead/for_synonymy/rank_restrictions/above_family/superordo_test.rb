@@ -40,6 +40,7 @@ class TypeaheadForSynonymySuperordoTest < ActiveSupport::TestCase
     inclusions.delete("Regnum")
     inclusions.delete("Division")
     inclusions.delete("Classis")
+    inclusions.delete("Superordo")
     check_rank_names_inclusions(inclusions)
   end
 

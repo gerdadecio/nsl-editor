@@ -18,6 +18,7 @@
     <div>The name <%= @instance.name.try('full_name') %> will be added as a synonym to this instance.</div>
     <select id="synonym-creation-select"
             name="instance[create_synonym]"
+            class="form-select width-30-percent"
             title="Select whether the new name will be added as a synonym"
             tabindex="<%= increment_tab_index %>">
       <option value="yes">Yes</option>
@@ -44,7 +45,7 @@
       <%= select_tag "instance[synonym_instance_type_id]",
                      options_for_select(InstanceType.synonym_options),
                      include_blank: true,
-                     class: "form-control width-50-percent",
+                     class: "form-select width-50-percent",
                      title: "Select instance type",
                      tabindex: increment_tab_index %>
     </div>

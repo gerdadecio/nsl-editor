@@ -13,7 +13,12 @@ FileUtils.chdir APP_ROOT do
   # This script is idempotent, so that you can run it at any time and get an expectable outcome.
   # Add necessary setup steps to this file.
 
-  puts "== Installing dependencies =="
+  puts "== Installing git hooks =="
+  # Point git at the tracked .githooks dir (BS5 class warning + push guard).
+  # Idempotent: re-running just re-sets the same config value.
+  system! "git config core.hooksPath .githooks"
+
+  puts "\n== Installing dependencies =="
   system("bundle check") || system!("bundle install")
 
   # puts "\n== Copying sample files =="

@@ -74,7 +74,10 @@ class Tree < ApplicationRecord
     Tree.joins("LEFT OUTER JOIN tree_version draft_version on draft_version.tree_id = tree.id")
         .where("draft_version.published = false")
         .where(is_read_only: false)
-        .select("tree.id, name, draft_version.id as draft_id, draft_version.draft_name, draft_version.log_entry, tree.accepted_tree")
+      .select("tree.id, name, draft_version.id as draft_id,
+               draft_version.draft_name, draft_version.log_entry,
+               tree.accepted_tree, tree.default_draft_tree_version_id,
+               draft_version.id = tree.default_draft_tree_version_id as default_draft")
         .order("tree.name")
   end
 

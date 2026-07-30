@@ -9,7 +9,7 @@
        tabindex="4"
        class="dropdown-toggle <%= 'active' if params[:controller].match(/session/) %>"
        title='<%= @working_draft ? selected_draft_title + " is the selected draft" : "Draft taxonomy menu. Choose a draft taxonomy to work on here." %>'
-       data-toggle="dropdown">
+       <%= bs_toggle(:dropdown) %>>
       <i class="fa fa-sitemap"></i>
       <% if @working_draft %>
         <%= "#{selected_draft_title[0,14]}#{ '...' if selected_draft_title.length > 15 } #{editor_icon 'check'}".html_safe %>

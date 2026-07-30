@@ -19,7 +19,6 @@
 require "test_helper"
 require "models/instance/as_typeahead/for_synonymy/rank_restrictions/\
 above_family/above_family_helper"
-
 # Single instance typeahead search.
 class TypeaheadForSynonymyClassisTest < ActiveSupport::TestCase
   def setup
@@ -56,6 +55,6 @@ class TypeaheadForSynonymyClassisTest < ActiveSupport::TestCase
     @rank_names = @tc.results.collect do |result|
       Instance.find(result[:id]).name.name_rank.name
     end
-    check_rank_names_inclusions(%w[Division Classis])
+    check_rank_names_inclusions(%w[Division])
   end
 end

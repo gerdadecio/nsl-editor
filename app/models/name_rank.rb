@@ -343,6 +343,13 @@ class NameRank < ApplicationRecord
   def can_impact_child_name_construction?
     at_or_below_genus? && not_bracketed?
   end
+
+  # Autonym only exist at the following ranks:
+  #  subdivisions of a genus (i.e. below genus but above species)
+  #  infraspecies (i.e. below species)
+  def compatible_with_autonym?
+    sort_order > NameRank.genus.sort_order && !species? 
+  end
 end
 
 # A stand-in class when there is no parent.
