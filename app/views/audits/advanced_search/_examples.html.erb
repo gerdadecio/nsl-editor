@@ -1,0 +1,6 @@
+<% if @current_user && @current_user.qa? %>
+  <%= render partial: 'audits/advanced_search/qa/examples' %>
+<% else %>
+  <%= render partial: 'audits/advanced_search/editor/examples' %>
+<% end %>
+
