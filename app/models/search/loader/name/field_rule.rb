@@ -103,10 +103,10 @@ class Search::Loader::Name::FieldRule
     "default-batch:" => { where_clause: "loader_batch_id = (select id from loader_batch where lower(name) = ?)  "},
     "id:" => { multiple_values: true,
                where_clause: "id = ? or parent_id = ?
-                              or id = (select parent_id from loader_name my_parent where my_parent.id = ?) 
+                              or id = (select parent_id from loader_name my_parent where my_parent.id = ?)
                               or parent_id = (select parent_id from loader_name my_sibling where my_sibling.id = ?)",
                multiple_values_where_clause: "id in (?) or parent_id in (?)
-                              or id in (select parent_id from loader_name my_parent where my_parent.id in (?)) 
+                              or id in (select parent_id from loader_name my_parent where my_parent.id in (?))
                               or parent_id in (select parent_id from loader_name my_sibling where my_sibling.id in (?))",
                },
     "raw-id:" => { multiple_values: true,
@@ -345,9 +345,9 @@ class Search::Loader::Name::FieldRule
                        takes_no_arg: true},
     "excluded:" => { where_clause: "record_type = 'excluded'",
                        takes_no_arg: true},
-    "not-excluded:" => { where_clause: " record_type != 'excluded'", 
+    "not-excluded:" => { where_clause: " record_type != 'excluded'",
                          takes_no_arg: true},
-    "syn:" => { where_clause: "record_type = 'synonym'", 
+    "syn:" => { where_clause: "record_type = 'synonym'",
                 takes_no_arg: true},
     "misapplied:" => { where_clause: "record_type = 'misapplied'",
                        takes_no_arg: true},
@@ -465,19 +465,19 @@ having count(*) > 2
             from name_Type nt
           where name.name_type_id       = nt.id
      and nt.scientific))"},
-  "name-match-no-primary:" => { 
-    where_clause: 
+  "name-match-no-primary:" => {
+    where_clause:
     "id in (
 select ln.id
-  from loader_name ln 
+  from loader_name ln
  where record_type != 'heading'
    and 1 =
   (select count(*)
-     from name 
+     from name
     where ln.simple_name = name.simple_name)
-   and 1 = 
-  (select count(*) 
-     from name 
+   and 1 =
+  (select count(*)
+     from name
     where ln.simple_name = name.simple_name
       and not exists
       (select null
@@ -678,18 +678,18 @@ select ln.id
     "drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where drafted)"},
     "created-manually:" => { where_clause: "created_manually" },
 "syn-match-in-tree-faster-join:" => { where_clause: " id in (select ln.id
-  from loader_name ln 
+  from loader_name ln
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
        join instance_type rel_type
        on lnm.relationship_instance_type_id = rel_type.id
        join instance i
-       on lnm.name_id = i.name_id 
-       join tree_join_v tjv 
-       on i.id = tjv.instance_id 
+       on lnm.name_id = i.name_id
+       join tree_join_v tjv
+       on i.id = tjv.instance_id
        join loader_batch lb
        on ln.loader_batch_id = lb.id
-       join name 
+       join name
        on tjv.name_id = name.id
  where ln.record_type = 'synonym'
    and not tjv.published
@@ -701,18 +701,18 @@ select ln.id
    not_exists_clause: " needs an argument",
    multiple_values: true,
    multiple_values_where_clause: " id in (select ln.id
-  from loader_name ln 
+  from loader_name ln
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
        join instance_type rel_type
        on lnm.relationship_instance_type_id = rel_type.id
        join instance i
-       on lnm.name_id = i.name_id 
-       join tree_join_v tjv 
-       on i.id = tjv.instance_id 
+       on lnm.name_id = i.name_id
+       join tree_join_v tjv
+       on i.id = tjv.instance_id
        join loader_batch lb
        on ln.loader_batch_id = lb.id
-       join name 
+       join name
        on tjv.name_id = name.id
  where ln.record_type = 'synonym'
    and not tjv.published
@@ -723,18 +723,18 @@ select ln.id
    and lower(ln.simple_name) in (?))",
      },
 "syn-match-in-tree-family:" => { where_clause: " id in (select ln.id
-  from loader_name ln 
+  from loader_name ln
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
        join instance_type rel_type
        on lnm.relationship_instance_type_id = rel_type.id
        join instance i
-       on lnm.name_id = i.name_id 
-       join tree_join_v tjv 
-       on i.id = tjv.instance_id 
+       on lnm.name_id = i.name_id
+       join tree_join_v tjv
+       on i.id = tjv.instance_id
        join loader_batch lb
        on ln.loader_batch_id = lb.id
-       join name 
+       join name
        on tjv.name_id = name.id
  where ln.record_type = 'synonym'
    and not tjv.published
@@ -746,18 +746,18 @@ select ln.id
    not_exists_clause: " needs an argument",
    multiple_values: true,
    multiple_values_where_clause: " id in (select ln.id
-  from loader_name ln 
+  from loader_name ln
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
        join instance_type rel_type
        on lnm.relationship_instance_type_id = rel_type.id
        join instance i
-       on lnm.name_id = i.name_id 
-       join tree_join_v tjv 
-       on i.id = tjv.instance_id 
+       on lnm.name_id = i.name_id
+       join tree_join_v tjv
+       on i.id = tjv.instance_id
        join loader_batch lb
        on ln.loader_batch_id = lb.id
-       join name 
+       join name
        on tjv.name_id = name.id
  where ln.record_type = 'synonym'
    and not tjv.published
@@ -884,8 +884,8 @@ select ln.id
                             )
                            )
                          )
-                   or 
-                   parent_id in ( select id from loader_name where 
+                   or
+                   parent_id in ( select id from loader_name where
                                    record_type in ('accepted','excluded')
                                    and (exists ( select null
                                                    from name_review_vote
@@ -894,7 +894,7 @@ select ln.id
                                                         and lower(org.abbrev) like lower(?)
                                                   where loader_name.id = name_review_vote.loader_name_id
                                                     and name_review_vote.vote = true)
-                                       ) 
+                                       )
                                 )"
        },
   "org-voted-no:" => {
@@ -927,8 +927,8 @@ select ln.id
                             )
                            )
                          )
-                   or 
-                   parent_id in ( select id from loader_name where 
+                   or
+                   parent_id in ( select id from loader_name where
                                    record_type in ('accepted','excluded')
                                    and (exists ( select null
                                                    from name_review_vote
@@ -937,7 +937,7 @@ select ln.id
                                                         and lower(org.abbrev) like lower(?)
                                                   where loader_name.id = name_review_vote.loader_name_id
                                                     and name_review_vote.vote = false)
-                                       ) 
+                                       )
                                 )"
        },
   "org-voted:" => {
@@ -968,8 +968,8 @@ select ln.id
                             )
                            )
                          )
-                   or 
-                   parent_id in ( select id from loader_name where 
+                   or
+                   parent_id in ( select id from loader_name where
                                    record_type in ('accepted','excluded')
                                    and (exists ( select null
                                                    from name_review_vote
@@ -977,7 +977,7 @@ select ln.id
                                                         on name_review_vote.org_id = org.id
                                                         and lower(org.abbrev) like lower(?)
                                                   where loader_name.id = name_review_vote.loader_name_id)
-                                       ) 
+                                       )
                                 )",
        },
   "org-not-voted:" => { where_clause: "id not in ( select id from loader_name subq_loader_name where
@@ -1007,8 +1007,8 @@ select ln.id
                             )
                            )
                          )
-                   and 
-                              ( parent_id is null or parent_id not in ( select id from loader_name parent_loader_name where 
+                   and
+                              ( parent_id is null or parent_id not in ( select id from loader_name parent_loader_name where
                                    record_type in ('accepted','excluded')
                                    and (exists ( select null
                                                    from name_review_vote
@@ -1016,12 +1016,12 @@ select ln.id
                                                         on name_review_vote.org_id = org.id
                                                         and lower(org.abbrev) like lower(?)
                                                   where parent_loader_name.id = name_review_vote.loader_name_id)
-                                       ) 
-                                ) 
+                                       )
+                                )
                               )"
        },
-  "no-family-heading:" => { 
-    where_clause: "record_type in ('accepted','excluded') 
+  "no-family-heading:" => {
+    where_clause: "record_type in ('accepted','excluded')
 and not exists
 (select null
   from loader_name family
@@ -1030,14 +1030,14 @@ and not exists
 )",
       takes_no_arg: true,
   },
-"syn-matched-to-autonym:" => { where_clause: "record_type = 'synonym' 
+"syn-matched-to-autonym:" => { where_clause: "record_type = 'synonym'
   and exists (select null
                 from loader_name_match
                      join instance on loader_name_match.instance_id = instance.id
                      join instance_type on instance.instance_type_id = instance_type.id
                where loader_name.id = loader_name_match.loader_name_id
                  and instance_type.name like '%autonym%'
-             )", 
+             )",
             takes_no_arg: true},
   }.freeze
 end

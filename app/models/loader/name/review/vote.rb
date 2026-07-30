@@ -75,7 +75,7 @@ class Loader::Name::Review::Vote < ApplicationRecord
   end
 
   # Sample params:
-  # params: "loader_name_id"=>"51739066", 
+  # params: "loader_name_id"=>"51739066",
   #         "batch_review_id"=>"51785034",
   #         "org_id"=>"51614642",
   #         "vote"=>"true"}
@@ -93,6 +93,6 @@ class Loader::Name::Review::Vote < ApplicationRecord
         created += 1
       end
     end
-    created 
+    created
   end
 end

@@ -31,9 +31,9 @@ class Loader::Name::Match < ApplicationRecord
   belongs_to :relationship_instance, class_name: "::Instance",
                 foreign_key: "relationship_instance_id", optional: true
 
-  # would like to deprecate instance_type in favour of 
+  # would like to deprecate instance_type in favour of
   # relationship_instance_type
-  belongs_to :instance_type, 
+  belongs_to :instance_type,
                 foreign_key: :relationship_instance_type_id, optional: true
   belongs_to :relationship_instance_type, class_name: "::InstanceType",
                 foreign_key: "relationship_instance_type_id", optional: true

@@ -44,7 +44,7 @@ class TypeaheadForSynonymySubfamiliaTest < ActiveSupport::TestCase
              "Expect no #{rank_string} to be suggested"
     end
   end
-  
+
   def check_inclusions
     %w(Familia Tribus Subtribus
        [unranked]).each do |rank_string|

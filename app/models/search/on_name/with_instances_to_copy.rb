@@ -19,7 +19,7 @@
 
 # Based on the core search class for Name search
 # Tweaked for copying instances to the loader
-# They don't want common name instances, vernacular name instances, or any other 
+# They don't want common name instances, vernacular name instances, or any other
 # unsourced instances or trade name instances.
 #
 class Search::OnName::WithInstancesToCopy

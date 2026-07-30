@@ -24,7 +24,7 @@ module Name::InstancesCopyable
     copy_tally = 0
     Name.transaction do
       verified_requested_instances(requested_instance_ids).each do |instance|
-        instance.copy_to_new_name(target_name.id, as_username)  
+        instance.copy_to_new_name(target_name.id, as_username)
         copy_tally += 1
       end
     end

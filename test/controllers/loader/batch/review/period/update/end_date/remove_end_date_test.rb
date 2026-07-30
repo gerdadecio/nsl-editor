@@ -38,7 +38,7 @@ class BatchReviewPeriodUpdateEndDateRemoveTest < ActionController::TestCase
                                                    "end_date(2i)"=>'',
                                                    "end_date(1i)"=>''
                     },
-                   "commit"=>"Save"}, 
+                   "commit"=>"Save"},
          session: { username: "fred",
                     user_full_name: "Fred Jones",
                     groups: ["batch-loader"] })

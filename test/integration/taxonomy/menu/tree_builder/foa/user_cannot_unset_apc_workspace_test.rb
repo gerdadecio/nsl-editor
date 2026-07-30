@@ -21,7 +21,7 @@ require "test_helper"
 # Single search controller test.
 #
 # This is arguably a less important test - that a user cannot unset a workspace tree
-# version for tree they have no access to (what harm would happen if they could UNset it is the 
+# version for tree they have no access to (what harm would happen if they could UNset it is the
 # point) - but the test is here as part of a suite of
 # tests I'm setting up for this change in permissions.
 class TreeBuilderFoaUserCannotUnsetWorkspaceTest < ActionController::TestCase

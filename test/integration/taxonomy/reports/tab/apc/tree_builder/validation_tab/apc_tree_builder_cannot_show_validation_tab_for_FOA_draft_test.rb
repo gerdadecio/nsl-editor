@@ -21,7 +21,7 @@ require "test_helper"
 class APCTreeBuilderCannotShowValidationTabForFOADraftTest < ActionController::TestCase
   tests TreesController
 
-  # r6editor Started GET "/nsl/editor/trees/show/valrep" 
+  # r6editor Started GET "/nsl/editor/trees/show/valrep"
   # r6editor Processing by TreesController#show_valrep as JS
   test "APC tree builder cannot show validation tab for FOA draft" do
     user = users(:apc_tax_builder)

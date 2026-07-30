@@ -217,8 +217,8 @@ inner join ref_type xcrt on xrt.id = xcrt.parent_id))",
                      multiple_values_where_clause: " source_id in (?)" },
     "source-id-string:" => {where_clause: "lower(source_id_string) like ?||'%'"},
     "is-a-duplicate-and-master:" => { where_clause: " id in (select id
-                                                               from reference ref_dupe_master 
-                                                              where id in (select duplicate_of_id 
+                                                               from reference ref_dupe_master
+                                                              where id in (select duplicate_of_id
                                                                              from reference ref_dupes
                                                                             where duplicate_of_id is not null)
                                                               and duplicate_of_id is not null)",
@@ -238,7 +238,7 @@ inner join ref_type xcrt on xrt.id = xcrt.parent_id))",
                           leading_wildcard: true,
                           where_clause:
                                  " lower(display_title) like lower(?)" },
-    "title-does-not-match-display-title:" => { 
+    "title-does-not-match-display-title:" => {
                           takes_no_arg: true,
                           where_clause: " display_title != title " },
   }.freeze

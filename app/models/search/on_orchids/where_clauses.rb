@@ -51,7 +51,7 @@ class Search::OnOrchids::WhereClauses
       raise "endless loop #{x}" if x > 50
     end
   end
- 
+
   def add_clause(field = 'taxon', value)
     debug("add_clause for field: #{field}; value: #{value}")
     if field.blank? && value.blank?

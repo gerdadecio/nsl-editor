@@ -44,9 +44,9 @@ class TypeaheadForSynonymyTribusTest < ActiveSupport::TestCase
              "Expect no #{rank_string} to be suggested"
     end
   end
-  
+
   def check_inclusions
-    %w(Familia Subfamilia Subtribus 
+    %w(Familia Subfamilia Subtribus
        [unranked]).each do |rank_string|
       escape_s = Regexp.escape(rank_string)
       assert @rank_names.select { |e| e.match(/\A#{escape_s}\z/) }.size >= 1,

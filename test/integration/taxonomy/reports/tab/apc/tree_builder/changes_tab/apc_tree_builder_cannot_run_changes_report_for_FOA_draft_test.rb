@@ -24,7 +24,7 @@ class APCTreeBuilderCannotRunChangesReportForFOADraftTest < ActionController::Te
   def setup
   end
 
-  # r6editor Started GET "/nsl/editor/trees/run/diff" 
+  # r6editor Started GET "/nsl/editor/trees/run/diff"
   # r6editor Processing by TreesController#run_diff as JS
   test "APC tree builder cannot run changes report for FOA draft" do
     user = users(:apc_tax_builder)

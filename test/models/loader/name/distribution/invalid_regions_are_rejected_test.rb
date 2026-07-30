@@ -12,7 +12,7 @@ class InvalidRegionsAreRejectedTest < ActiveSupport::TestCase
   end
 
   test "Invalid regions are rejected" do
-    dv = Loader::Name::DistributionValidator.new(@dist_s, @allowed_regions) 
+    dv = Loader::Name::DistributionValidator.new(@dist_s, @allowed_regions)
     assert_not(dv.validate, "Should not validate")
     assert_equal(dv.error, @expected_error, "Error should be #{@expected_error}")
   end

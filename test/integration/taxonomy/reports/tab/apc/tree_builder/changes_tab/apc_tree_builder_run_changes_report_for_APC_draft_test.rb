@@ -35,7 +35,7 @@ class APCTreeBuilderRunChangesReportForAPCDraftTest < ActionController::TestCase
       to_return(status: 200, body: "", headers: {})
   end
 
-  # r6editor Started GET "/nsl/editor/trees/run/diff" 
+  # r6editor Started GET "/nsl/editor/trees/run/diff"
   # r6editor Processing by TreesController#run_diff as JS
   test "APC tree builder can run changes report for APC draft" do
     user = users(:apc_tax_builder)

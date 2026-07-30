@@ -20,12 +20,12 @@ require "test_helper"
 
 # Single search controller test.
 #
-# Note: 
+# Note:
 #   xhr: true
 #
-# stopped this error in test: 
+# stopped this error in test:
 #
-# ActionController::InvalidCrossOriginRequest: Security warning: 
+# ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
 class TaxFormsTreePubAPCUserCanPublishAPCDraftTest < ActionController::TestCase
   tests TreeVersionsController
@@ -49,7 +49,7 @@ class TaxFormsTreePubAPCUserCanPublishAPCDraftTest < ActionController::TestCase
 
   end
 
-  # Started POST "/nsl/editor/tree_versions/publish" for 
+  # Started POST "/nsl/editor/tree_versions/publish" for
   # Processing by TreeVersionsController#publish as JS (pid:15335)
   # Parameters: {"version_id"=>"51798490",
   #              "draft_log"=>"Updates resulting from Australian Plant Census List 108, p.p. (Banksia).\n",

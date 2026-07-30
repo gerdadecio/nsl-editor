@@ -103,6 +103,6 @@ FactoryBot.define do
     association :language
     association :author
     association :namespace
-    
+
   end
 end

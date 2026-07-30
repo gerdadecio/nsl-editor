@@ -38,7 +38,7 @@ class BatchReviewPeriodUpdateEndDateNotBeforeStartDateTest < ActionController::T
                                                    "end_date(2i)"=>Date.today.month.to_s,
                                                    "end_date(1i)"=>Date.today.year.to_s
                     },
-                   "commit"=>"Save"}, 
+                   "commit"=>"Save"},
          session: { username: "fred",
                     user_full_name: "Fred Jones",
                     groups: ["batch-loader"] })

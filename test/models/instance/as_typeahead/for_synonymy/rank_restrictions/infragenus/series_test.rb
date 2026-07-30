@@ -47,7 +47,7 @@ class TypeaheadForSynonymySeriesTest < ActiveSupport::TestCase
   def check_infrageneric_inclusions
     assert @rank_names.select { |e| e == "Genus" }.size >= 4,
            "Expect correct number of genera to be suggested"
-    %w(Subgenus Sectio Subsectio 
+    %w(Subgenus Sectio Subsectio
        Subseries Superspecies [infragenus] [unranked]).each do |rank_string|
       escaped_s = Regexp.escape(rank_string)
       assert @rank_names.select { |e| e.match(/\A#{escaped_s}\z/) }.size >= 1,

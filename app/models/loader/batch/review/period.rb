@@ -50,7 +50,7 @@ class Loader::Batch::Review::Period < ApplicationRecord
 
   attr_accessor :give_me_focus, :message
 
-  scope :active, -> { 
+  scope :active, -> {
     where("start_date <= ?", Time.zone.today)
     .where("end_date IS NULL OR end_date >= ?", Time.zone.today)
   }

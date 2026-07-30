@@ -8,7 +8,7 @@ module Loader::Name::ReviewComments
   def narrow_direct_reviewer_comments
     real_record_comments(Loader::Batch::Review::Role::NAME_REVIEWER)
   end
-  
+
   def narrow_direct_reviewer_comments?
     narrow_direct_reviewer_comments.size > 0
   end
@@ -41,7 +41,7 @@ module Loader::Name::ReviewComments
   end
 
   def compiler_comments
-    [narrow_direct_compiler_comments, 
+    [narrow_direct_compiler_comments,
      concept_note_compiler_comments,
      distribution_compiler_comments,
      children_compiler_comments].flatten
@@ -68,7 +68,7 @@ module Loader::Name::ReviewComments
   # Comments on children
 
   def children_reviewer_comments
-    children.map do |child| 
+    children.map do |child|
       child.name_review_comments
       .includes(batch_reviewer: [:batch_review_role])
       .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::NAME_REVIEWER }
@@ -76,7 +76,7 @@ module Loader::Name::ReviewComments
   end
 
   def children_compiler_comments
-    children.map do |child| 
+    children.map do |child|
       child.name_review_comments
       .includes(batch_reviewer: [:batch_review_role])
       .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::COMPILER }
@@ -85,7 +85,7 @@ module Loader::Name::ReviewComments
 
 
   # Comments on pretend records
-  
+
   def concept_note_reviewer_comments
     pretend_record_comments(Loader::Batch::Review::Role::NAME_REVIEWER, 'concept-note')
   end

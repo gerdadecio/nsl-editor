@@ -21,7 +21,7 @@ class HistoryController < ApplicationController
 
   def for_year
     if Rails.configuration.try('jira_status_aware')
-      JiraTicket.keys = JiraTicket.keys_for_year(history_params[:year].to_i) 
+      JiraTicket.keys = JiraTicket.keys_for_year(history_params[:year].to_i)
       JiraTicket.query_keys
       @tickets = JiraTicket.results
     else

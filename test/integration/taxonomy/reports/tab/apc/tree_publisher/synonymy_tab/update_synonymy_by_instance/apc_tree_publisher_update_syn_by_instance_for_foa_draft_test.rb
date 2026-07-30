@@ -34,7 +34,7 @@ class APCTreePublisherUpdateSynByInstanceForFOADraftTest < ActionController::Tes
     to_return(status: 200, body: "", headers: {})
   end
 
-  # r6editor Started POST "/nsl/editor/trees/update_synonymy_by_instance" 
+  # r6editor Started POST "/nsl/editor/trees/update_synonymy_by_instance"
   # r6editor Processing by TreesController #update_synonymy_by_instance as JS
   # r6editor Parameters: {"versionId"=>"52410589", "instances"=>"612279", "update_checked_synonymy"=>""}
   test "APC tree publisher can update synonymy by instance for FOA draft" do

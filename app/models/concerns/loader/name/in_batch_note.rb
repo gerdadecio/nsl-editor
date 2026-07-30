@@ -14,7 +14,7 @@ module Loader::Name::InBatchNote
     self.simple_name = NA if simple_name.blank?
     self.full_name = simple_name
   end
-  
+
   def in_batch_note_sort_key
     if family == NA && simple_name == NA
       "aaaa-in-batch-note"

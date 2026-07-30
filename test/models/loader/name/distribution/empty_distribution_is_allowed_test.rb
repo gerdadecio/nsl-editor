@@ -11,7 +11,7 @@ class EmptyDistributionIsAllowedTest < ActiveSupport::TestCase
   end
 
   test "Empty distribution is allowed" do
-    dv = Loader::Name::DistributionValidator.new(@dist_s, @allowed_regions) 
+    dv = Loader::Name::DistributionValidator.new(@dist_s, @allowed_regions)
     assert(dv.validate, "Should validate")
     assert_nil(dv.error, "Should be no error")
   end

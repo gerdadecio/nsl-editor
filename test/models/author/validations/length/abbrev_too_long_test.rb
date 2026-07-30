@@ -28,7 +28,7 @@ class AuthorAbbrevTooLongTest < ActiveSupport::TestCase
   test "author abbrev too long test" do
     author = authors(:joe)
     assert author.valid?, "Author should be valid to start"
-    author.abbrev = "X" * @max 
+    author.abbrev = "X" * @max
     assert author.valid?, "Author should be valid with abbrev #{@max} chars long"
     assert author.save!, "Author should save"
     author.abbrev = "X" * (@max + 1)

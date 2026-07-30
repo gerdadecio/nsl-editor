@@ -20,19 +20,19 @@ require "test_helper"
 
 # Single search controller test.
 #
-# Note: 
+# Note:
 #   xhr: true
 #
-# stopped this error in test: 
+# stopped this error in test:
 #
-# ActionController::InvalidCrossOriginRequest: Security warning: 
+# ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
 class TaxFormsUserWithNoRoleCannotReplacePlacementOnFOADraftTest < ActionController::TestCase
   tests TreesController
 
 # r6editor Started PATCH "/nsl/editor/trees/612279/replace_placement" for ::1 at 2025-07-17 15:34:26 +1000 (pid:642)
 # r6editor Processing by TreesController#replace_placement as JS (pid:642)
-# Parameters: {"authenticity_token"=>"[FILTERED]", 
+# Parameters: {"authenticity_token"=>"[FILTERED]",
  #             "move_placement"=>{"element_link"=>"/tree/52410589/52410631",
  #                                "instance_id"=>"612279",
  #                                "comment"=>"Subspecies are recognised in this species in Euclid... ",

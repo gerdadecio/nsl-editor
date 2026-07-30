@@ -348,7 +348,7 @@ class NameRank < ApplicationRecord
   #  subdivisions of a genus (i.e. below genus but above species)
   #  infraspecies (i.e. below species)
   def compatible_with_autonym?
-    sort_order > NameRank.genus.sort_order && !species? 
+    sort_order > NameRank.genus.sort_order && !species?
   end
 end
 

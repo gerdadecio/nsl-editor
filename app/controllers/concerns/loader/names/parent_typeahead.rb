@@ -2,10 +2,10 @@ module Loader::Names::ParentTypeahead
   def work_out_parent_from_typeahead
     if params[:loader_name][:parent_typeahead].blank?
       params[:loader_name][:parent_id] = nil
-    else 
-      check_for_mismatched_parent_typeahead 
+    else
+      check_for_mismatched_parent_typeahead
     end
-  end  
+  end
 
   # They've selected one from typeahead
   def matched_parent_typeahead_and_id?

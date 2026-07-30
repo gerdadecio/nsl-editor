@@ -22,7 +22,7 @@ require "test_helper"
 class TreePublisherApcTaxoMenuOptions < ActionController::TestCase
   tests SearchController
 
-  # Assumes one APC draft tree_version 
+  # Assumes one APC draft tree_version
   test "APC tree publisher has taxonomy menu options" do
     user = users(:apc_tax_publisher)
     get(:search,

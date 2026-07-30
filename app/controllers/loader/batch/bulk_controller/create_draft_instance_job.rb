@@ -42,7 +42,7 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
   end
 
   private
-  
+
   def record_elapsed
     finish_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     @job_h[:time_seconds] = (finish_time - @start_time).round(1)

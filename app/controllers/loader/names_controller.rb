@@ -56,8 +56,8 @@ class Loader::NamesController < ApplicationController
 
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    render :new_row, 
-           locals: {partial: 'new_row', 
+    render :new_row,
+           locals: {partial: 'new_row',
                     locals_for_partial:
                {tab_path: "#{loader_name_new_with_random_id_path(@random_id)}",
                 link_id: "link-new-loader-name-#{@random_id}",
@@ -69,8 +69,8 @@ class Loader::NamesController < ApplicationController
 
   def new_heading_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    render :new_row, 
-           locals: {partial: 'new_row', 
+    render :new_row,
+           locals: {partial: 'new_row',
                     locals_for_partial:
                {tab_path: "#{loader_name_heading_new_with_random_id_path(@random_id)}",
                 link_id: "link-new-loader-name-#{@random_id}",
@@ -82,8 +82,8 @@ class Loader::NamesController < ApplicationController
 
   def new_in_batch_note_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    render :new_row, 
-           locals: {partial: 'new_row', 
+    render :new_row,
+           locals: {partial: 'new_row',
                     locals_for_partial:
                {tab_path: "#{loader_name_in_batch_note_new_with_random_id_path(@random_id)}",
                 link_id: "link-new-loader-name-#{@random_id}",
@@ -183,16 +183,16 @@ class Loader::NamesController < ApplicationController
   end
 
   # Note: this is (too) complicated
-  # The reason is it complicated: it is handling creates coming from 
+  # The reason is it complicated: it is handling creates coming from
   # simple actions in the loader interface, but it's also handling
   # creates from over in apni data.
   def create
     insist_on_a_batch unless params["form-task"] == "supplement-existing-concept"
     if loader_name_params["loaded_from_instance_id"].blank?
       @loader_name = Loader::Name.create(loader_name_params, current_user.username)
-    else 
+    else
       create_when_loaded_from_existing_instance
-    end 
+    end
     render "create"
   rescue StandardError => e
     logger.error("Controller:Loader::Names:create:rescuing exception #{e}")
@@ -218,7 +218,7 @@ class Loader::NamesController < ApplicationController
 
 
   def create_heading
-    Loader::Name.create_family_heading(params) 
+    Loader::Name.create_family_heading(params)
     @message = 'Created - the record will be available next time you query the family'
   rescue StandardError => e
     logger.error("Loader::NamesController#create_heading rescuing #{e}")
@@ -243,11 +243,11 @@ class Loader::NamesController < ApplicationController
   end
 
   def insist_on_a_batch
-    if session[:default_loader_batch_name].blank? && 
+    if session[:default_loader_batch_name].blank? &&
         loader_name_params[:loader_batch_id].blank?
       raise "Please set a default batch"
     end
-  end 
+  end
 
   # This is for creates started over in the Name records.
   # It has more complicated requirements than a simple create inside the loader.
@@ -336,7 +336,7 @@ class Loader::NamesController < ApplicationController
 
   def embedded_parent_typeahead_id(typeahead_value)
     raise ArgumentError, "Input too long" if typeahead_value.length > 1000
-    typeahead_value.sub(/.*\(/,'').sub(/\).*/,'') 
+    typeahead_value.sub(/.*\(/,'').sub(/\).*/,'')
   end
 
   def current_families

@@ -34,7 +34,7 @@ class APCTreeBuilderCanRunValidationReportForAPCDraftTest < ActionController::Te
     to_return(status: 200, body: "", headers: {})
   end
 
-  # r6editor Started GET "/nsl/editor/trees/run/valrep" 
+  # r6editor Started GET "/nsl/editor/trees/run/valrep"
   # r6editor Processing by TreesController#run_valrep as JS
   test "APC tree builder can run validation report for APC draft" do
     user = users(:apc_tax_builder)

@@ -42,7 +42,7 @@ module Name::Typeaheads
   end
 
   private
-  
+
   def typeahead_params
     params.require(:name).permit(:author_id,
                                  :ex_author_id,

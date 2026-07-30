@@ -21,7 +21,7 @@ require "test_helper"
 class APCTreeBuilderCannotShowSynonymyTabForFOADraftTest < ActionController::TestCase
   tests TreesController
 
-  # r6editor Started GET "/nsl/editor/trees/show/cas" 
+  # r6editor Started GET "/nsl/editor/trees/show/cas"
   # r6editor Processing by TreesController#show_cas as JS
   test "APC tree builder cannot show syn tab for FOA draft" do
     user = users(:apc_tax_builder)

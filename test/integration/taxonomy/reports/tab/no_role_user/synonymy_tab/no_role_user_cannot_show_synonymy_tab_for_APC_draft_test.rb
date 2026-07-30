@@ -21,7 +21,7 @@ require "test_helper"
 class NoRoleUserCanShowSynonymyTabForAPCDraftTest < ActionController::TestCase
   tests TreesController
 
-  # r6editor Started GET "/nsl/editor/trees/show/cas" 
+  # r6editor Started GET "/nsl/editor/trees/show/cas"
   # r6editor Processing by TreesController#show_cas as JS
   test "user with no role cannot show syn tab for APC draft" do
     user = users(:no_role)

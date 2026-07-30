@@ -36,7 +36,7 @@ class Loader::Name::MakeOneMatch
     return decline("heading") if @loader_name.heading?
     return decline("parent_using_existing") if @loader_name.parent&.preferred_match&.use_existing_instance
 
-    return decline("not_exactly_one_match")  unless exactly_one_matching_name? 
+    return decline("not_exactly_one_match")  unless exactly_one_matching_name?
     return decline("match_has_no_primary_instance") unless match_name_has_primary?
     return decline("match_has_2_or_more_primary_instances") unless match_name_just_one_primary?
 
