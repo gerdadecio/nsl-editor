@@ -1,0 +1,36 @@
+<h4>Quick start for Review search</h4>
+<p/>Enter a number (N) into the search field and press Enter or click Search. 
+    This will show you records created or updated in the last N days.
+
+<p/> E.g.  <%= link_to("5",
+                       search_path(query_string: "5",
+                                   query_target: "review"),
+                       class:"blue",
+                       title:"Run the described search.") %>
+<br>
+
+<p/>Start any search with <q>count</q> to change it from a list search to a
+count search.
+
+<p/> E.g.  <%= link_to("count 5",
+                       search_path(query_string: "count 5",
+                                   query_target: "review"),
+                       class:"blue",
+                       title:"Run the described search.") %>
+
+
+<br>
+<br>
+<h5>Updated_at/updated_by results may be confusing</h5>
+When a record is created, the updated_at and updated_by fields are set to the
+same values as created_at and created_by. 
+<p/>
+Those fields are not changed until and unless an update occurs.
+<p/>This effects search results because a record that is only created and not
+updated will still be treated as if it was:
+<ul>
+  <li>updated at the time it was created, and
+  <li>updated by the person who created it.
+</ul>
+<br>
+<br>

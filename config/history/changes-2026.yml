@@ -1,3 +1,7 @@
+- :date: 30-July-2026
+  :jira_id: '5870'
+  :description: |-
+    Name Count: Fix name count error and restore other files overlooked during the merge on 6 July
 - :date: 29-July-2026
   :jira_id: '5860'
   :description: |-

@@ -1,0 +1,16 @@
+<% if @current_user && @current_user.qa? %>
+  <h4>Review search</h4>
+  List or count records created or updated recently.
+  <br>
+  <br>
+  QA users can review all records.
+  <br>
+  <br>
+  <%= render partial: 'audits/advanced_search/editor/quick_start_help' %>
+  <%= render partial: 'audits/advanced_search/qa/field_help' %>
+<%else%>
+  Not authorized.
+<%end%>
+
+
+
