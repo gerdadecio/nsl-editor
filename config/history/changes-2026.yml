@@ -1,4 +1,8 @@
 - :date: 30-July-2026
+  :jira_id: '5867'
+  :description: |-
+    Search Directives: Add References <code>no-doi:</code> and allow Loader Names <code>no-nomination:</code> to take no argument
+- :date: 30-July-2026
   :jira_id: '5871'
   :description: |-
     Technical: Remove trailing whitespace from Ruby files - BAU workflow testing only
