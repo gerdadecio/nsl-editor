@@ -52,7 +52,7 @@
     </div>
 
     <div class="form-group">
-      <label for="notes">Notes *</label>
+      <label for="notes">Notes<span class='red'>*</span></label>
       <%= f.text_area :notes, class: 'form-control', title: "Enter notes",
         required: true, tabindex: increment_tab_index, rows: 10 %>
     </div>
@@ -61,7 +61,7 @@
 
     <div class="form-group align-right">
       <% if loader_name.new_record? %>
-        <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", data: {element_id: "new-loader-name-#{params[:random_id]}"}, 
+        <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", data: {element_id: "new-loader-name-#{params[:random_id]}"},
                        title: "Cancel new loader_name", tabindex: increment_tab_index  %>
       <% end %>
       <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
