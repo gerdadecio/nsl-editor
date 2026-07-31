@@ -52,8 +52,8 @@ describe Names::CheckDeleteService do
     context "when the name has resources" do
       before { link_resource_to(name) }
 
-      it "blocks the delete" do
-        expect(result).to be_delete_blocked
+      it "ignores the resources and allows a hard delete" do
+        expect(result).to be_hard_delete_allowed
       end
     end
 

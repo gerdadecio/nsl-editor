@@ -48,6 +48,34 @@
   <% end %>
 </table>
 
+<h5>Restrict API activity</h5>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'api-name:', description: "search for records last changed by an API with that name, case-insensitive; use * as a wildcard e.g. jira-sync*"},
+    {field_name: 'api-recorded-at: yyyy-mm-dd', description: "search for records changed by an API on a specific day e.g. 2026-06-30"},
+    {field_name: 'api-recorded-since: yyyy-mm-dd', description: "search for records changed by an API on or after a specific day e.g. 2026-06-30"},
+    {field_name: 'api-recorded-after: yyyy-mm-dd', description: "search for records changed by an API on or after a specific day e.g. 2026-06-30"},
+    {field_name: 'api-recorded-before: yyyy-mm-dd', description: "search for records changed by an API before a specific day e.g. 2026-06-30"},
+    {field_name: 'date-api-recorded: yyyy-mm-dd', description: "search for records changed by an API on a specific day e.g. 2026-06-30"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %>
+    <% if val[:partial].present? %>
+      <%= render partial: val[:partial] %>
+    <% end %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
 
 <h5>Assertions to restrict record types</h5>
 <table class="table table-striped">

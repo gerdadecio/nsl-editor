@@ -122,16 +122,22 @@ class Audit::DefinedQuery::WhereClause::Predicate
   }.freeze
 
   WHERE_VALUE_HASH = {
+    "api-name:" => "lower(api_name) like lower(?)",
     "created-by:" => "lower(created_by) like lower(?)",
     "updated-by:" => "lower(updated_by) like lower(?)",
+    "api-recorded-at:" => "api_at::date = ?",
     "created-at:" => "created_at::date = ?",
     "updated-at:" => "updated_at::date = ?",
+    "api-recorded-since:" => "api_at::date >= ?",
     "created-since:" => "created_at::date >= ?",
     "updated-since:" => "updated_at::date >= ?",
+    "api-recorded-after:" => "api_at::date >= ?",
     "created-after:" => "created_at::date >= ?",
     "updated-after:" => "updated_at::date >= ?",
+    "api-recorded-before:" => "api_at::date < ?",
     "created-before:" => "created_at::date < ?",
     "updated-before:" => "updated_at::date < ?",
+    "date-api-recorded:" => "date_trunc('day',api_at) = ?",
     "date-created:" => "date_trunc('day',created_at) = ?",
     "date-last-updated:" => "date_trunc('day',updated_at) = ?",
   }.freeze

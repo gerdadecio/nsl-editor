@@ -17,6 +17,20 @@
       {search_target: "Activity",
        search_string: "date-created-or-last-updated: 2015-09-07",
        explanation: %Q(Records created or last updated on 7 Sept 2015.)},
+      {search_target: "Activity",
+       search_string: "api-name: jira-sync",
+       explanation: %Q(Records last changed by the "jira-sync" API.
+                       Case-insensitive; use * as a wildcard.)},
+      {search_target: "Activity",
+       search_string: "api-recorded-at: 2026-06-30",
+       explanation: %Q(Records changed by an API on 30 June 2026.)},
+      {search_target: "Activity",
+       search_string: "api-name: jira-sync* api-recorded-after: 2026-06-30",
+       explanation: %Q(Records changed by an API whose name starts with
+                       "jira-sync" on or after 30 June 2026.)},
+      {search_target: "Activity",
+       search_string: "api-recorded-before: 2026-06-30 names-only:",
+       explanation: %Q(Names changed by an API before 30 June 2026.)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
@@ -49,6 +63,12 @@
       {search_target: "Activity",
        search_string: "count date-created-or-last-updated: 2015-09-07",
        explanation: %Q(Count records created or last updated on 7 Sept 2015.)},
+      {search_target: "Activity",
+       search_string: "count api-name: jira-sync",
+       explanation: %Q(Count records last changed by the "jira-sync" API.)},
+      {search_target: "Activity",
+       search_string: "count api-recorded-since: 2026-06-30",
+       explanation: %Q(Count records changed by an API on or after 30 June 2026.)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
