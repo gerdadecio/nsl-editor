@@ -266,10 +266,10 @@ class Search::ParsedRequest
       tokens = tokens.drop(1)
       listing
     elsif tokens.include?("count:")
-      tokens.delete_if { |x| x.match(/count:/) }
+      tokens.delete_if { |x| x.match(/\Acount:\z/i) }
       counting
     elsif tokens.include?("list:")
-      tokens.delete_if { |x| x.match(/list:/) }
+      tokens.delete_if { |x| x.match(/\Alist:\z/i) }
       listing
     else
       default_list_and_count
