@@ -1,4 +1,8 @@
 - :date: 31-July-2026
+  :jira_id: '5875'
+  :description: |-
+    Technical: Review and re-factor search engine code - thorough BAU workflow testing required
+- :date: 31-July-2026
   :jira_id: '5855'
   :description: |-
     Update the check_delete_name function in structure.sql following what's on test
