@@ -91,6 +91,16 @@ class SearchAuditApiNameSimpleTest < ActiveSupport::TestCase
       "Expected an author with no api_name to be excluded"
   end
 
+  test "api-name: combines with api-recorded-after:" do
+    keys = search_keys("api-name: *loader* api-recorded-after: 2026-08-01")
+    assert_includes keys,
+      "Reference##{references(:paper_by_brassard).id}",
+      "Expected the batch-loader reference api-changed in August to match"
+    refute_includes keys,
+      "Name##{names(:a_family).id}",
+      "Expected the JIRA-Sync name to be excluded by both criteria"
+  end
+
   test "api-name: without a value stops with an error" do
     error = assert_raises(RuntimeError) { search_keys("api-name:") }
     assert_match(/api-name: needs a value/, error.message)
