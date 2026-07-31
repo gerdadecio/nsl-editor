@@ -8,7 +8,7 @@
 <table class="example-searches table table-striped">
   <% [
     {search_target: 'Names plus instances', search_string: "casuarina",explanation: %Q(List names starting with "casuarina".  Bare search is on names. 100 records is the default limit.)},
-    {search_target: 'Names plus instances', search_string: "count casuarina",explanation: %Q(List names starting with "casuarina".  Bare search is on names. Counts are not limited.)},
+    {search_target: 'Names plus instances', search_string: "count: casuarina",explanation: %Q(List names starting with "casuarina".  Bare search is on names. Counts are not limited.)},
     {search_target: '', search_string: "",explanation: %Q(Note that even some counts can take a long time, depending on the number of names returned in the initial search.)},
       ].each do |val| %>
   <tr>

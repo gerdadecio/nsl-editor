@@ -72,10 +72,10 @@
       {search_target: 'Authors', search_string: "has-name:", explanation: %Q(First 100 authors with a name.)},
       {search_target: 'Authors', search_string: "has-no-abbrev:", explanation: %Q(First 100 authors with no abbreviation.)},
       {search_target: 'Authors', search_string: "has-no-name:", explanation: %Q(First 100 authors with no name.)},
-      {search_target: 'Authors', search_string: "count has-abbrev: has-no-name:", explanation: %Q(Count authors with an abbreviation but no name.)},
-      {search_target: 'Authors', search_string: "count has-name: has-no-abbrev:", explanation: %Q(Count authors with a name but no abbreviation.)},
-      {search_target: 'Authors', search_string: "count has-no-name: has-no-abbrev:", explanation: %Q(Count authors with neither name nor abbreviation. (Hopefully none.))},
-      {search_target: 'Authors', search_string: "count has-name: has-abbrev:", explanation: %Q(Count authors with name and abbreviation.)},
+      {search_target: 'Authors', search_string: "count: has-abbrev: has-no-name:", explanation: %Q(Count authors with an abbreviation but no name.)},
+      {search_target: 'Authors', search_string: "count: has-name: has-no-abbrev:", explanation: %Q(Count authors with a name but no abbreviation.)},
+      {search_target: 'Authors', search_string: "count: has-no-name: has-no-abbrev:", explanation: %Q(Count authors with neither name nor abbreviation. (Hopefully none.))},
+      {search_target: 'Authors', search_string: "count: has-name: has-abbrev:", explanation: %Q(Count authors with name and abbreviation.)},
       {search_target: 'Authors', search_string: "has-no-abbrev: has-any-authored-name:", explanation: %Q(Authors with no abbreviation that have authored a name.)},
       ].each do |val| %>
   <tr>
@@ -113,14 +113,14 @@
 
 <h5 class="">Count authors</h5>
 <table class="example-searches table table-striped">
-  <% [{search_target: 'Authors', search_string: "count",explanation: %Q(Start with "count author" to count authors.)},
-      {search_target: 'Authors', search_string: "count bentham", explanation: %Q(Counting sets.)},
-      {search_target: 'Authors', search_string: "count comments:*", explanation: %Q(Count commented authors by turning a text field into an assertion.)},
-      {search_target: 'Authors', search_string: "count comments-by:*", explanation: %Q(Count authors with a comment by someone.)},
-      {search_target: 'Authors', search_string: "count notes:*", explanation: %Q(Count authors with notes by turning a text field into an assertion.)},
-      {search_target: 'Authors', search_string: "count is-a-duplicate:", explanation: %Q(Count duplicate authors.)},
-      {search_target: 'Authors', search_string: "count has-api-name:", explanation: %Q(Count authors that have been changed by an API.)},
-      {search_target: 'Authors', search_string: "count api-at: 2026", explanation: %Q(Count authors changed by an API in 2026.)},
+  <% [{search_target: 'Authors', search_string: "count:",explanation: %Q(Add "count:" to an author search to count authors.)},
+      {search_target: 'Authors', search_string: "count: bentham", explanation: %Q(Counting sets.)},
+      {search_target: 'Authors', search_string: "count: comments:*", explanation: %Q(Count commented authors by turning a text field into an assertion.)},
+      {search_target: 'Authors', search_string: "count: comments-by:*", explanation: %Q(Count authors with a comment by someone.)},
+      {search_target: 'Authors', search_string: "count: notes:*", explanation: %Q(Count authors with notes by turning a text field into an assertion.)},
+      {search_target: 'Authors', search_string: "count: is-a-duplicate:", explanation: %Q(Count duplicate authors.)},
+      {search_target: 'Authors', search_string: "count: has-api-name:", explanation: %Q(Count authors that have been changed by an API.)},
+      {search_target: 'Authors', search_string: "count: api-at: 2026", explanation: %Q(Count authors changed by an API in 2026.)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
