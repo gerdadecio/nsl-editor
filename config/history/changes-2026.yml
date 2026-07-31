@@ -1,4 +1,8 @@
 - :date: 31-July-2026
+  :jira_id: '5860'
+  :description: |-
+    Query directives for api_name and api_at in activity search
+- :date: 31-July-2026
   :jira_id: '4883'
   :description: |-
     Orchids code: Remove some remnant Orchid loader code - BAU workflow testing only
