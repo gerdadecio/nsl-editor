@@ -554,14 +554,6 @@ CREATE FUNCTION public.check_delete_name(p_name_id bigint) RETURNS TABLE(action_
     LANGUAGE plpgsql
     AS $$
 BEGIN
-	-- Block if resources exist
-	IF EXISTS (SELECT 1
-	           FROM public.name_resources r
-	           WHERE r.name_id = p_name_id) THEN
-		RETURN QUERY
-			SELECT 0, 'BLOCK', 'Name has resources';
-		RETURN;
-	END IF;
 
 	-- Block if referenced by a live name
 	IF EXISTS (SELECT 1
