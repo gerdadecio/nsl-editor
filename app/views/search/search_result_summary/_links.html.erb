@@ -17,10 +17,23 @@
 
 <%= render partial: 'search/search_result_summary/more_results' %>
 
-<% if @search.parsed_request.count && @search.executed_query.count > 0 %> 
+<%# Strip the count:/list: directive token by exact match, never by substring -
+    an unanchored regex here would corrupt any other directive ending in the
+    same word, e.g. family-list: on a loader name search. %>
+<% query_tokens = @search.parsed_request.query_string.to_s.split(" ") %>
+
+<% if @search.parsed_request.count && @search.executed_query.count > 0 %>
    &nbsp; | &nbsp;
-   <%= link_to('List', 
-               search_path(query_string: "#{@search.parsed_request.query_string.sub(/ *count: */i,'')}",
+   <%= link_to('List',
+               search_path(query_string: "#{query_tokens.reject { |t| t =~ /\Acount:\z/i }.join(' ')}",
                query_target: "#{params[:query_target]}"),
-               title:"Re-run query as a list query" ) %>
+               title: "Re-run query as a list query" ) %>
+<% end %>
+
+<% if !@search.parsed_request.count && @search.executed_query.count > 0 %>
+   &nbsp; | &nbsp;
+   <%= link_to('Count',
+               search_path(query_string: "count: #{query_tokens.reject { |t| t =~ /\Alist:\z/i }.join(' ')}",
+               query_target: "#{params[:query_target]}"),
+               title: "Re-run the query as a count query" ) %>
 <% end %>
