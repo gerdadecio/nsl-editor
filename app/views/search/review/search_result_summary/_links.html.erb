@@ -20,7 +20,7 @@
 <% if @search.parsed_request.count && @search.executed_query.count > 0 %> 
    &nbsp; | &nbsp;
    <%= link_to('List', 
-               search_path(query_string: "#{@search.parsed_request.query_string.sub(/^ *count */i,'')}",
+               search_path(query_string: "#{@search.parsed_request.query_string.sub(/ *count: */i,'')}",
                query_target: "#{params[:query_target]}"),
                title:"Re-run query as a list query" ) %>
 <% end %>
