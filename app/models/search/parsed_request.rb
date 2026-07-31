@@ -28,7 +28,6 @@ class Search::ParsedRequest
               :canonical_query_string,
               :common_and_cultivar,
               :count,
-              :count_allowed,
               :defined_query,
               :defined_query_arg,
               :id,
@@ -203,7 +202,6 @@ class Search::ParsedRequest
     @apply_default_query_scope = false
     @original_query_target = @query_target
     parse_request
-    @count_allowed = true
   end
 
   def debug(s)
