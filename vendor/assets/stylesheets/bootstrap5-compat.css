@@ -370,6 +370,32 @@ label.custom-checkbox input[type="checkbox"] {
   margin-left: 0.25rem;
 }
 
+input[type="checkbox"].form-control,
+input[type="radio"].form-control {
+  display: inline-block;
+  width: auto;
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  -webkit-appearance: auto;
+     -moz-appearance: auto;
+          appearance: auto;
+  background-color: transparent;
+  background-image: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  vertical-align: middle;
+  margin-left: 0.25rem;
+}
+
+input[type="checkbox"].form-control:focus,
+input[type="radio"].form-control:focus {
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
 /* --- Misc removed helpers --------------------------------------------------- */
 .center-block { display: block; margin-right: auto; margin-left: auto; }
 .text-muted   { color: #6c757d !important; }
@@ -705,6 +731,17 @@ tr.search-result td.main-content {
 /* For the green icon alignment with text */
 tr.search-result td.nsl-tiny-icon-container {
   padding-top: 6px !important;
+}
+
+table.search-results > :not(caption) > * > * {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+svg.icon.name-icon {
+  width: 7px !important;
+  height: 13px !important;
+  overflow: hidden !important;
 }
 
 table[border] {
