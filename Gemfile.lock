@@ -211,8 +211,8 @@ GEM
       minitest (>= 5.0)
       ruby-progressbar
     minitest-stub_any_instance (1.0.3)
-    msgpack (1.8.0)
-    msgpack (1.8.0-java)
+    msgpack (1.8.2)
+    msgpack (1.8.2-java)
     net-imap (0.6.4.1)
       date
       net-protocol
