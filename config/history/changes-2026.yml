@@ -1,4 +1,8 @@
 - :date: 03-August-2026
+  :jira_id: '5568'
+  :description: |-
+    Intermittent 406 errors: Add code switches we expect will prevent these problems happening
+- :date: 03-August-2026
   :jira_id: '5858'
   :description: |-
     Make asterisks indicating mandatory fields consistent in the forms
