@@ -1,6 +1,6 @@
 <h5>Create a synonym</h5>
 
-<%= form_for(Instance.new, url: { action: "create_cites_and_cited_by" }, remote: true) do |f| %>
+<%= form_for(Instance.new, url: { action: "create_cites_and_cited_by" }, remote: true, data: { turbo: false }) do |f| %>
   <% if @instance.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@instance.errors.count, "error") %> prohibited this instance from being saved:</h2>

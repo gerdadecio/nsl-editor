@@ -1,5 +1,5 @@
-<%= link_to 'Overview', loader_batch_processing_overview_path, {id: 'batch-processing-overview-btn', class: 'btn btn-primary', title: 'Show a summary overview of the loading process', remote: true} %>
-<%= link_to 'Hide', loader_batch_processing_overview_hide_path, {id: 'batch-processing-overview-hide-btn', class: 'btn btn-primary hidden', title: 'Hide the summary', remote: true} %>
+<%= link_to 'Overview', loader_batch_processing_overview_path, {id: 'batch-processing-overview-btn', class: 'btn btn-primary', title: 'Show a summary overview of the loading process', remote: true, data: { turbo: false }} %>
+<%= link_to 'Hide', loader_batch_processing_overview_hide_path, {id: 'batch-processing-overview-hide-btn', class: 'btn btn-primary hidden', title: 'Hide the summary', remote: true, data: { turbo: false }} %>
 <div id="batch-processing-overview" class="hidden">
 Batch data is imported (from parsed Word documents) as <code>loader-name</code> records
 <h5>Steps</h5>

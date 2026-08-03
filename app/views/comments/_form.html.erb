@@ -1,7 +1,7 @@
 
 <% comment ||= @comment if @comment.present? %>
 
-<%= form_for(comment, remote: true, class: 'comment-edit-form') do |f| %>
+<%= form_for(comment, remote: true, data: { turbo: false }, class: 'comment-edit-form') do |f| %>
   <% if comment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>

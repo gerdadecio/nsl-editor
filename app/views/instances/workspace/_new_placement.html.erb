@@ -7,7 +7,7 @@
         </span>
       </span>
     </h1>
-    <%= form_tag({controller: 'trees', action: 'place_name'}, {method: :post, remote: true}) do %>
+    <%= form_tag({controller: 'trees', action: 'place_name'}, {method: :post, remote: true, data: { turbo: false }}) do %>
       <%= hidden_field_tag("place_name[instance_id]", @instance.id) %>
 
       <div>

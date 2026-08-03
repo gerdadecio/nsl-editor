@@ -19,7 +19,7 @@
     <div id="search-result-details-error-message-container-3" class="error-container"></div>
     <h5>Add an instance for <%= product.name %></h5>
 
-    <%= form_for(@instance, remote: true) do |f| %>
+    <%= form_for(@instance, remote: true, data: { turbo: false }) do |f| %>
       The new instance will remain attached to:<br>
 
       <h6>&mdash; <%= @instance.name.full_name %></h6>

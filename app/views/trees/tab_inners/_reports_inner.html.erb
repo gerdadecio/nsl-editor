@@ -6,7 +6,7 @@
         show_cas_path,
         id: "val-syn-tab-extra-new",
         class: 'nav-link tab',
-        remote: true,
+        remote: true, data: { turbo: false },
         method: :get,
         title: 'Check All Synonymy',
         "aria-controls": "Synonymy",
@@ -18,7 +18,7 @@
         show_diff_path,
         id: "diff-tab-new",
         class: 'nav-link tab',
-        remote: true,
+        remote: true, data: { turbo: false },
         method: :get,
         title: 'Draft Changes Report',
         "aria-controls": "Draft Changes Report",
@@ -30,7 +30,7 @@
         show_valrep_path,
         id: "valrep-tab-new",
         class: 'nav-link tab',
-        remote: true,
+        remote: true, data: { turbo: false },
         method: :get,
         title: 'Validation Report',
         "aria-controls": "Validation Report",
@@ -43,7 +43,7 @@
       <%= link_to "Run the Changes Report",
                       run_diff_path,
                       id: 'link-to-run-diff',
-                      remote: true,
+                      remote: true, data: { turbo: false },
                       class: 'btn btn-primary',
                       title: 'Run the Changes Report' %>
       <h5 id="diff-is-running-indicator" class="hidden"></h5>
@@ -76,7 +76,7 @@
       <%= link_to "Run the Validation Report",
                       run_valrep_path,
                       id: 'link-to-run-valrep',
-                      remote: true,
+                      remote: true, data: { turbo: false },
                       class: 'btn btn-primary',
                       title: 'Run the Validation Report' %>
       <h5 id="val-report-is-running-indicator" class="hidden"></h5>
@@ -95,7 +95,7 @@
       <%= link_to "Run the Synonymy Report",
                       run_cas_path,
                       id: 'link-to-run-cas',
-                      remote: true,
+                      remote: true, data: { turbo: false },
                       method: :get,
                       class: 'btn btn-primary',
                       title: 'Run or re-run the Synonymy Report.  It validates all synonyms.' %>

@@ -10,7 +10,7 @@
     <h1>Replace instance:
       <%= render partial: "instances/workspace/widgets/placement_indicator", locals: {tree_version_element: @tree_version_element} %>
     </h1>
-    <%= form_tag({controller: 'trees', action: 'replace_placement'}, {method: :patch, remote: true}) do %>
+    <%= form_tag({controller: 'trees', action: 'replace_placement'}, {method: :patch, remote: true, data: { turbo: false }}) do %>
       <%= hidden_field_tag("move_placement[element_link]", @tree_version_element.element_link) %>
       <%= hidden_field_tag("move_placement[instance_id]", @instance.id) %>
 

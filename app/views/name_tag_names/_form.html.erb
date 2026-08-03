@@ -1,6 +1,6 @@
 <% name_tag_name = name.name_tag_names.new %>
 
-<%= form_for(name_tag_name, remote: true) do |f| %>
+<%= form_for(name_tag_name, remote: true, data: { turbo: false }) do |f| %>
   <%= f.hidden_field(:name_id, value: name_tag_name.name_id) %>
   <div class="form-group">
     <label for="name_tag_name_tag_id">Tag*</label>

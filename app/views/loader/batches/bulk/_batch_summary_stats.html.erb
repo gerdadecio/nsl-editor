@@ -1,10 +1,10 @@
 <br>
 <br>
   <%= link_to 'Batch Summary Counts', loader_batch_stats_path(session[:default_loader_batch_id]),
-    {id: 'show-loader-stats-btn', class: 'btn btn-primary', title: 'Show latest counts for the current batch', remote: true} %>
-  <%= link_to 'Hide', loader_hide_batch_stats_path, {id: 'hide-loader-stats-btn', class: 'btn btn-primary hidden', title: 'Hide the counts', remote: true} %>
+    {id: 'show-loader-stats-btn', class: 'btn btn-primary', title: 'Show latest counts for the current batch', remote: true, data: { turbo: false }} %>
+  <%= link_to 'Hide', loader_hide_batch_stats_path, {id: 'hide-loader-stats-btn', class: 'btn btn-primary hidden', title: 'Hide the counts', remote: true, data: { turbo: false }} %>
   <%= link_to 'Refresh', loader_batch_stats_path(session[:default_loader_batch_id]),
-    {id: 'refresh-loader-stats-btn', class: 'btn btn-primary hidden', title: 'Show latest counts for the current batch', remote: true} %>
+    {id: 'refresh-loader-stats-btn', class: 'btn btn-primary hidden', title: 'Show latest counts for the current batch', remote: true, data: { turbo: false }} %>
   <div id="batch-stats">
   </div>
 

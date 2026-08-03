@@ -20,7 +20,7 @@
     </div>
 
     <% if profile_item.persisted? && profile_item.draft_version? %>
-      <%= form_with url: profile_items_publishes_path, method: :post, remote: true, html: { style: 'display:inline; margin-left:10px;', class: 'prompt-form-save always-prompt-before-action'  } do |f| %>
+      <%= form_with url: profile_items_publishes_path, method: :post, remote: true, data: { turbo: false }, html: { style: 'display:inline; margin-left:10px;', class: 'prompt-form-save always-prompt-before-action'  } do |f| %>
         <%= hidden_field_tag :id, profile_item.id %>
         <%= hidden_field_tag :instance_id, instance.id %>
         <%= submit_tag  'Publish', title: "Publish", class: 'btn btn-success', style: 'font-size: 12px; padding: 2px 8px;' %>

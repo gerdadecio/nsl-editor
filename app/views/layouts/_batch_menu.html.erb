@@ -15,14 +15,14 @@
                 {class: 'blue',
                  title: "Clear the default batch",
                  method: :post,
-                 remote: true}) %>
+                 remote: true, data: { turbo: false }}) %>
           <% else %>
             <%= link_to("#{batch.name}".html_safe,
                 make_default_batch_path(batch.id, 'from-menu'),
                 {class: 'blue',
                  title: "Make #{batch.name} the default batch",
                  method: :post,
-                 remote: true}) %>
+                 remote: true, data: { turbo: false }}) %>
           <% end %>
         </li>
       <% end %>

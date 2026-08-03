@@ -4,7 +4,7 @@
                 data: { turbo: false },
                 local: false)  do |form| %>
     <div> Choose an instance
-    <%= form.submit "Save", remote: true, class: 'width-5em btn btn-primary pull-right', title: 'Save your choice.' %>
+    <%= form.submit "Save", remote: true, data: { turbo: false }, class: 'width-5em btn btn-primary pull-right', title: 'Save your choice.' %>
     </div>
     <div id="search-result-details-info-message-container-top" class="message-container"></div>
     <div id="search-result-details-error-message-container-top" class="error-container"></div>
@@ -47,5 +47,5 @@
     <% end %>
     </table>
       <br>
-    <%= form.submit "Save", remote: true, class: 'width-5em btn btn-primary pull-left', title: 'Save your choice.' %>
+    <%= form.submit "Save", remote: true, data: { turbo: false }, class: 'width-5em btn btn-primary pull-left', title: 'Save your choice.' %>
 <% end %>

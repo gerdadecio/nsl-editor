@@ -8,17 +8,17 @@ Warning: this will reset the <code>sort_key</code> for all synonym records in th
 <br>
 <br>
   <%= button_to "Refresh synonym sort key values", loader_batch_prep_refresh_syn_sort_key_path, 
-    id: 'prep-refresh', remote: true, class: 'btn btn-warning width-20em pull-right',
+    id: 'prep-refresh', remote: true, data: { turbo: false }, class: 'btn btn-warning width-20em pull-right',
     title: 'Click here to refresh all synonym sort key values' %>
   <br>
   <br>
   <%= button_to "Confirm refresh synonym sort key values", loader_batch_refresh_syn_sort_key_path, 
-      id: 'confirm-refresh', remote: true, class: 'btn btn-danger width-20em hidden pull-right',
+      id: 'confirm-refresh', remote: true, data: { turbo: false }, class: 'btn btn-danger width-20em hidden pull-right',
       title: 'Click here to confirm you want to refresh all synonym sort_key values' %>
   <br>
   <br>
   <%= button_to "Cancel refresh action", loader_batch_cancel_refresh_syn_sort_key_path, 
-      id: 'cancel-refresh', remote: true, class: 'btn btn-default width-20em hidden cancel-link pull-right',
+      id: 'cancel-refresh', remote: true, data: { turbo: false }, class: 'btn btn-default width-20em hidden cancel-link pull-right',
       title: 'Click here to cancel the refresh action' %>
   <br>
 

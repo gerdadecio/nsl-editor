@@ -17,7 +17,7 @@
          <br> 
          <%= link_to "Verify drafted flag", loader_name_matches_verify_drafted_path(preferred_match),
              title: "Verify drafted flag is correct - tree work outside the loader may not be detected",
-             class: 'blue', method: :patch, remote: true %>
+             class: 'blue', method: :patch, remote: true, data: { turbo: false } %>
           <span id="verify-drafted-info-message-container" class="message-container"></span>
        <% end %>
        </br>
@@ -37,7 +37,7 @@
         <% end %>
       <% else %>
         This loader-name is not manually drafted.
-        <%= form_for(@loader_name.loader_name_matches.first, as: 'loader-name', role: 'form', remote: true) do |f| %>
+        <%= form_for(@loader_name.loader_name_matches.first, as: 'loader-name', role: 'form', remote: true, data: { turbo: false }) do |f| %>
           <%= f.hidden_field(:loader_name_match_id, value: @loader_name.loader_name_matches.first.id) %>
           <%= f.submit "Flag it as manually drafted", id: 'save-loader-name-manually-drafted', tabindex: increment_tab_index, title: 'Flag as manually drafted', class: 'btn btn-primary width-15em', disabled: false %>
         <% end %>

@@ -1,5 +1,5 @@
 
-<%= form_for(Instance.new,  url: { controller: 'instances', action: "create" }, remote: true) do |f| %>
+<%= form_for(Instance.new,  url: { controller: 'instances', action: "create" }, remote: true, data: { turbo: false }) do |f| %>
     <% if @instance && @instance.errors.any? %>
         <div id="error_explanation">
             <h2><%= pluralize(@instance.errors.count, "error") %> prohibited this instance from being saved:</h2>

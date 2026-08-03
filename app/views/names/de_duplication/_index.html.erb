@@ -20,7 +20,7 @@
           <%= link_to 'transfer',
             name_transfer_dependents_path(@name.id,key.to_s),
             method: :post,
-            remote: true,
+            remote: true, data: { turbo: false },
             class: "bgorange white btn-slim",
             title: "Transfer dependents to the master record",
             onclick: "$('#de-duplicate-info-message-container').html('Working'); return true;"

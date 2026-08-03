@@ -22,17 +22,17 @@
   <br>
   <br>
   <%= button_to "Multiply all seq by 10", loader_batch_prep_multiply_seqs_by_10_path, 
-    id: 'prep-multiply', remote: true, class: 'btn btn-warning width-15em pull-right',
+    id: 'prep-multiply', remote: true, data: { turbo: false }, class: 'btn btn-warning width-15em pull-right',
     title: 'Click here to multiply all sequence numbers by 10' %>
   <br>
   <br>
   <%= button_to "Confirm multiply all seq by 10", loader_batch_multiply_seqs_by_10_path, 
-      id: 'confirm-multiply', remote: true, class: 'btn btn-danger width-15em hidden pull-right',
+      id: 'confirm-multiply', remote: true, data: { turbo: false }, class: 'btn btn-danger width-15em hidden pull-right',
       title: 'Click here to confirm you want to multiply all sequence numbers by 10' %>
   <br>
   <br>
   <%= button_to "Cancel", loader_batch_cancel_multiply_seqs_by_10_path, 
-      id: 'cancel-multiply', remote: true, class: 'btn btn-default width-5em hidden cancel-link pull-right',
+      id: 'cancel-multiply', remote: true, data: { turbo: false }, class: 'btn btn-default width-5em hidden cancel-link pull-right',
       title: 'Click here to cancel the multiply action' %>
   <br>
 

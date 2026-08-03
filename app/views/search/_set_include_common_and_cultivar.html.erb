@@ -10,7 +10,7 @@
 
 <%= link_to "#{icon('fa-sharp fa-regular fa-lg', icon_name)} Common/Cultivars".html_safe,
   set_include_common_and_cultivar_path,
-  remote: true,
+  remote: true, data: { turbo: false },
   method: :post,
   title: "Name searches will #{include_exclude} common names and cultivars",
   class: "" %>

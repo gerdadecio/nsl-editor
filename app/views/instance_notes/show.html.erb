@@ -4,18 +4,19 @@
                        edit_instance_note_path(instance_note.id), 
                        id: "instance-note-edit-link-#{instance_note.id}", 
                        class: "btn btn-default instance-note-edit-link", 
-                       remote: true, 
-                       data: {type: 'script'}) 
+                       remote: true,
+                       data: {type: 'script', turbo: false})
 %>
  
 <% cancel_edit_link = link_to("Cancel",
                        '',
                        id: "instance-note-cancel-edit-link-#{instance_note.id}",
                        class: "btn btn-default instance-note-cancel-edit-link hidden", 
-                       remote: true, 
+                       remote: true,
                        title: 'Cancel edit',
                        data: {type: 'script',
-                              instance_note_id: instance_note.id})
+                              instance_note_id: instance_note.id,
+                              turbo: false})
 %>
 
 <%= render partial: 'detail_line', 

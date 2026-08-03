@@ -2,7 +2,7 @@
   <% if @tree_version_element.present? %>
 
     <div>
-      <%= form_tag({controller: 'trees', action: 'remove_name_placement'}, {method: :delete, remote: true}) do %>
+      <%= form_tag({controller: 'trees', action: 'remove_name_placement'}, {method: :delete, remote: true, data: { turbo: false }}) do %>
         <%= hidden_field_tag("remove_placement[taxon_uri]", @tree_version_element.element_link) %>
 
         <h3>Remove <%= @instance.name.full_name_html.html_safe %> from

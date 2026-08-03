@@ -12,7 +12,7 @@
   <div class="width-100-percent"> 
 
   <div id="confirm-or-cancel-refresh-link-container" class="confirm-or-cancel-link hidden">
-    <%= link_to "Confirm", refresh_name_path(@name.id), remote: true, class: 'btn btn-warning', title: "Confirm refresh." %>
+    <%= link_to "Confirm", refresh_name_path(@name.id), remote: true, data: { turbo: false }, class: 'btn btn-warning', title: "Confirm refresh." %>
     <%= link_to("Cancel",
                '#',
                id: "cancel-refresh-link",

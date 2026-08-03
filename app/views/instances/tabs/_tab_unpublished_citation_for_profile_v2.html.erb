@@ -1,6 +1,6 @@
 <h5>Create an unpublished citation.</h5>
 
-<%= form_for(Instance.new,  url: { action: "create_cited_by" }, remote: true) do |f| %>
+<%= form_for(Instance.new,  url: { action: "create_cited_by" }, remote: true, data: { turbo: false }) do |f| %>
     <% if @instance.errors.any? %>
         <div id="error_explanation">
             <h2><%= pluralize(@instance.errors.count, "error") %> prohibited this instance from being saved:</h2>

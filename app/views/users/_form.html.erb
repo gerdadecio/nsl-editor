@@ -1,4 +1,4 @@
-<%= form_for(@user, as: 'user', role: 'form', remote: true
+<%= form_for(@user, as: 'user', role: 'form', remote: true, data: { turbo: false }
     ) do |f| %>
     <% if @user.errors.any? %>
         <div id="error_explanation">

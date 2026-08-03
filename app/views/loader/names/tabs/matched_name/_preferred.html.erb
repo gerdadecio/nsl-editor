@@ -12,7 +12,7 @@
   <% unless @loader_name.accepted? || @loader_name.excluded? %>
     Instance type: <%= loader_name_match.instance.instance_type.name %><br>
 
-      <%= form_for(loader_name_match, as: 'loader_name_match', role: 'form', remote: true) do |f| %>
+      <%= form_for(loader_name_match, as: 'loader_name_match', role: 'form', remote: true, data: { turbo: false }) do |f| %>
         
       Relationship instance type: 
         <%= f.select(:relationship_instance_type_id,

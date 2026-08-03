@@ -14,7 +14,7 @@
                         as: 'names_delete',
                         role: 'form',
                         method: :delete,
-                        remote: true}) do |f| %>
+                        remote: true, data: { turbo: false }}) do |f| %>
     <br>
     <%= f.hidden_field :name_id %>
     <%= f.submit "Confirm delete", 

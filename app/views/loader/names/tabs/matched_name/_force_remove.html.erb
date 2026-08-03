@@ -12,17 +12,17 @@
     <br>
     Removing it will destroy the history of processing.
     <%= button_to "Remove match", loader_name_matches_prepare_force_remove_path(match.id),
-      remote: true,
+      remote: true, data: { turbo: false },
       id: "prepare_force_remove_btn_#{match.id}",
       class: 'btn btn-warning width-10em pull-right',
       title: 'Click here to remove the match' %>
     <%= button_to "Cancel Remove", loader_name_matches_cancel_force_remove_path(match.id),
-      remote: true,
+      remote: true, data: { turbo: false },
       id: "cancel_force_remove_btn_#{match.id}",
       class: 'hidden btn btn-default width-10em pull-right',
       title: 'Click here to remove the match' %>
     <%= button_to "Confirm Remove", loader_name_matches_force_remove_path(match.id),
-      remote: true,
+      remote: true, data: { turbo: false },
       id: "force_remove_btn_#{match.id}",
       method: :delete,
       class: 'hidden btn btn-danger width-12em pull-right',

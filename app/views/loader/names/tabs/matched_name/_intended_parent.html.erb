@@ -14,7 +14,7 @@
     <% else %>
         Name parent: <%= preferred_match.name.parent.full_name %>
         <br/>
-        <%= form_for(preferred_match, as: 'loader_name_match', role: 'form', remote: true) do |f| %>
+        <%= form_for(preferred_match, as: 'loader_name_match', role: 'form', remote: true, data: { turbo: false }) do |f| %>
 
           <div class="typeahead-container">
             <section class='block width-100-percent'>

@@ -3,7 +3,7 @@
              url: name_copy_instances_path(id: @name.id),
              html: {id: "copy-name-form",
                     role: 'form',
-                    remote: true,
+                    remote: true, data: { turbo: false },
                     method: :post}) do |f| %>
  <% if @name.errors.any? %>
     <div id="error_explanation">

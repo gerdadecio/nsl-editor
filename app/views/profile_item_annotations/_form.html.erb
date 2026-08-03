@@ -1,4 +1,4 @@
-<%= form_with url: url, method: method, remote: true, html: { class: "prompt-form-save", data: { type: :json, form_type: 'annotation_form' } } do |f| %>
+<%= form_with url: url, method: method, remote: true, data: { turbo: false }, html: { class: "prompt-form-save", data: { type: :json, form_type: 'annotation_form' } } do |f| %>
   <div style="margin-top: 10px; display: flex; align-items: flex-start; gap: 8px;">
     <%= hidden_field_tag "profile_item_annotation[profile_item_id]", profile_item_annotation.profile_item_id %>
     <div style="flex: 1;">

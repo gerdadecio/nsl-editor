@@ -28,7 +28,7 @@
     <li><%= pluralize(Name.children_of_duplicates_count,'child') %>
     <%= link_to 'Transfer all children from duplicate to master',
                 name_transfer_all_dependents_path('children'),
-                method: :post, remote: true, class: "button",
+                method: :post, remote: true, data: { turbo: false }, class: "button",
                 title: "Transfer dependents to the master record",
                 onclick: "$('#all-dep-info-message-container').html('Working'); return true;"
           %>
@@ -38,7 +38,7 @@
     <li><%= pluralize(Name.instances_of_duplicates_count,'instance') %>
     <%= link_to 'Transfer all instances from duplicate to master',
                 name_transfer_all_dependents_path('instances'),
-                method: :post, remote: true, class: "button",
+                method: :post, remote: true, data: { turbo: false }, class: "button",
                 title: "Transfer dependents to the master record",
                 onclick: "$('#all-dep-info-message-container').html('Working'); return true;"
           %>
@@ -48,7 +48,7 @@
     <li><%= pluralize(Name.family_members_of_duplicates_count,'family member') %>
     <%= link_to 'Transfer all family members from duplicate to master',
                 name_transfer_all_dependents_path('in_family'),
-                method: :post, remote: true, class: "button",
+                method: :post, remote: true, data: { turbo: false }, class: "button",
                 title: "Transfer dependents to the master record",
                 onclick: "$('#all-dep-info-message-container').html('Working'); return true;"
           %>
