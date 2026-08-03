@@ -42,34 +42,14 @@ class Instance::DefinedQuery::IsCitedBy
   def run_query(parsed_request)
     @show_csv = false
     @total = nil
-    if parsed_request.count
-      debug("run_query counting")
-      query = Search::OnReference::ListQuery.new(parsed_request)
-      @relation = query.sql # TODO: work out how to provide the relation and sql
-      results = relation.all
-      limited = query.limited
-
-      debug(results.size)
-      tally = results.size
-      results.each do |ref|
-        debug(ref.id)
-        tally += ref.instances.size
-      end
-      debug("tally: #{tally}")
-
-      @limited = limited
-      @common_and_cultivar_included = query.common_and_cultivar_included
-      @count = tally
-    else
-      debug("query listing")
-      instance = Instance.find_by(id: parsed_request.where_arguments)
-      @results = instance.present? ? instance.reverse_of_this_is_cited_by : []
-      @limited = false; # name_query.limited
-      @common_and_cultivar_included = true
-      @count = @results.size
-      @has_relation = false
-      @relation = nil
-    end
+    debug("query listing")
+    instance = Instance.find_by(id: parsed_request.where_arguments)
+    @results = instance.present? ? instance.reverse_of_this_is_cited_by : []
+    @limited = false
+    @common_and_cultivar_included = true
+    @count = @results.size
+    @has_relation = false
+    @relation = nil
   end
 
   def csv?

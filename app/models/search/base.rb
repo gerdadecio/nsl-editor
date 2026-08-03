@@ -71,7 +71,6 @@ class Search::Base
   end
 
   def run_plain_query
-    @count_allowed = true
     @executed_query =
       case @parsed_request.target_table
       when /any/ then raise "cannot run an 'any' search yet"
@@ -93,7 +92,6 @@ class Search::Base
   end
 
   def run_defined_query
-    @count_allowed = false
     if @parsed_request.defined_query_arg.blank? &&
        @parsed_request.where_arguments.blank?
       raise "Defined queries need an argument."

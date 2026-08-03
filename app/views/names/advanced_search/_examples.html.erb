@@ -123,14 +123,16 @@
 
 <br>
 <h5 class="inline-block">Count names</h5><span> - turn a list into a count</span>
-<p>Note: you can also use a <code>count:</code> directive.
+<p>Note: the older form, starting a search with the bare word
+<q>count</q>, still works but is deprecated - please use the
+<code>count:</code> directive instead.
 <table class="example-searches table table-striped">
-  <% [{search_target: 'Names', search_string: "count acacia",explanation: %Q(Count names starting with "acacia". #{excc})},
-      {search_target: 'Names', search_string: "count rank: genus is-not-a-duplicate:", explanation: %Q(Count non-duplicate genera. #{excc})},
-      {search_target: 'Names', search_string: "count acacia type:*", explanation: %Q(Count names starting with "acacia". #{incc})},
-      {search_target: 'Names', search_string: "count acacia type:common,cultivar", explanation: %Q(Count common or cultivar names starting with "acacia". #{incc})},
-      {search_target: 'Names', search_string: "count is-a-duplicate:", explanation: %Q(Count duplicate names. #{excc})},
-      {search_target: 'Names', search_string: "count comments:*", explanation: %Q(Count commented names turning a text field into an assertion. #{excc})}
+  <% [{search_target: 'Names', search_string: "count: acacia",explanation: %Q(Count names starting with "acacia". #{excc})},
+      {search_target: 'Names', search_string: "count: rank: genus is-not-a-duplicate:", explanation: %Q(Count non-duplicate genera. #{excc})},
+      {search_target: 'Names', search_string: "count: acacia type:*", explanation: %Q(Count names starting with "acacia". #{incc})},
+      {search_target: 'Names', search_string: "count: acacia type:common,cultivar", explanation: %Q(Count common or cultivar names starting with "acacia". #{incc})},
+      {search_target: 'Names', search_string: "count: is-a-duplicate:", explanation: %Q(Count duplicate names. #{excc})},
+      {search_target: 'Names', search_string: "count: comments:*", explanation: %Q(Count commented names turning a text field into an assertion. #{excc})}
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
@@ -148,7 +150,7 @@
       {search_target: 'Names', search_string: "acacia limit:50", explanation: %Q(List 50 names starting with "acacia". #{excc})},
       {search_target: 'Names', search_string: "acacia limit:1000", explanation: %Q(List 1000 names starting with "acacia". #{excc}.)},
       {search_target: 'Names', search_string: "acacia limit:10000", explanation: %Q(List 10000 names starting with "acacia". #{excc}. <span class="red">10000 is the current maximum.</span>)},
-      {search_target: 'Names', search_string: "count acacia limit:10 nt:*", explanation: %Q(Count over-rides limit. #{incc}.)}
+      {search_target: 'Names', search_string: "count: acacia limit:10 nt:*", explanation: %Q(Count over-rides limit. #{incc}.)}
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">

@@ -44,14 +44,16 @@ Note: some examples here depend on APNI data - we apologise for that but for the
 <br>
 
 <h5 class="">Count references</h5>
-<p>Note: you can also use a <code>count:</code> directive.</p>
+<p>Note: the older form, starting a search with the bare word
+<q>count</q>, still works but is deprecated - please use the
+<code>count:</code> directive instead.</p>
 <table class="example-searches table table-striped">
-  <% [{search_target: 'References', search_string: "count",explanation: %Q(Start with "count ref" to count references.)},
-      {search_target: 'References', search_string: "count citation: nuytsia", explanation: %Q(Counting without listing should be faster than listing for large sets.)},
-      {search_target: 'References', search_string: "count type:journal", explanation: %Q(Because it's faster, counting may suit different types of searches.)},
-      {search_target: 'References', search_string: "count type:journal is-not-a-parent:", explanation: %Q(Use an assertion.)},
-      {search_target: 'References', search_string: "count type:paper has-no-parent:", explanation: %Q(Use a different assertion)},
-      {search_target: 'References', search_string: "count type:journal is-a-parent: is-a-duplicate:", explanation: %Q(Combine assertions.)}
+  <% [{search_target: 'References', search_string: "count:",explanation: %Q(Add "count:" to a reference search to count references.)},
+      {search_target: 'References', search_string: "count: citation: nuytsia", explanation: %Q(Counting without listing should be faster than listing for large sets.)},
+      {search_target: 'References', search_string: "count: type:journal", explanation: %Q(Because it's faster, counting may suit different types of searches.)},
+      {search_target: 'References', search_string: "count: type:journal is-not-a-parent:", explanation: %Q(Use an assertion.)},
+      {search_target: 'References', search_string: "count: type:paper has-no-parent:", explanation: %Q(Use a different assertion)},
+      {search_target: 'References', search_string: "count: type:journal is-a-parent: is-a-duplicate:", explanation: %Q(Combine assertions.)}
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">

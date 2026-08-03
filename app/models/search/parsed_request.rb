@@ -28,7 +28,6 @@ class Search::ParsedRequest
               :canonical_query_string,
               :common_and_cultivar,
               :count,
-              :count_allowed,
               :defined_query,
               :defined_query_arg,
               :id,
@@ -203,7 +202,6 @@ class Search::ParsedRequest
     @apply_default_query_scope = false
     @original_query_target = @query_target
     parse_request
-    @count_allowed = true
   end
 
   def debug(s)
@@ -259,24 +257,41 @@ class Search::ParsedRequest
     end
   end
 
+  # The bare-word "count"/"list" prefixes are deprecated in favour of the
+  # count:/list: directives.  They are still honoured, but each use is logged
+  # so that real-world usage can be measured before they are removed.  Note
+  # they are only recognised as the first token, whereas the directives may
+  # appear anywhere in the query string.
   def parse_count_or_list(tokens)
     if tokens.blank? then default_list_and_count
     elsif tokens.first =~ /\Acount\z/i
+      log_deprecated_bare_word("count")
       tokens = tokens.drop(1)
       counting
     elsif tokens.first =~ /\Alist\z/i
+      log_deprecated_bare_word("list")
       tokens = tokens.drop(1)
       listing
     elsif tokens.include?("count:")
-      tokens.delete_if { |x| x.match(/count:/) }
+      tokens.delete_if { |x| x.match(/\Acount:\z/i) }
       counting
     elsif tokens.include?("list:")
-      tokens.delete_if { |x| x.match(/list:/) }
+      tokens.delete_if { |x| x.match(/\Alist:\z/i) }
       listing
     else
       default_list_and_count
     end
     tokens
+  end
+
+  # Logged at warn so it is visible without enabling debug logging in
+  # production.  Grep DEPRECATED_BARE_WORD_DIRECTIVE to measure usage.
+  def log_deprecated_bare_word(word)
+    Rails.logger.warn(
+      "DEPRECATED_BARE_WORD_DIRECTIVE: '#{word}' used as a bare-word prefix; \
+use '#{word}:' instead. query_target: '#{@query_target}', \
+query_string: '#{@query_string}'"
+    )
   end
 
   def parse_print_or_display(tokens)
