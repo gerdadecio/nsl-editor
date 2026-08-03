@@ -12,11 +12,11 @@
     <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
 
     <div class="form-group">
-      <label for="rank">Rank*</label>
+      <label for="rank">Rank<span class='red'>*</span></label>
       <%= f.text_field :rank, class: 'form-control', required: true, title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
-    <%= render partial: "loader/names/tabs/forms/misapp_synonym_type", 
+    <%= render partial: "loader/names/tabs/forms/misapp_synonym_type",
                locals: {f: f, loader_name: loader_name} %>
 
     <%= f.hidden_field :record_type, value: 'misapplied' %>
@@ -30,7 +30,7 @@
              class="typeahead form-control"
              data-loader-name-id="<%= loader_name.id %>"
              data-loader-batch-id="<%= loader_name.loader_batch_id %>"
-             type="text" 
+             type="text"
              tabindex="<%= increment_tab_index %>"
              title="Loader name parents"
              value="<%= loader_name.parent.try('simple_name') %>"/>
@@ -43,7 +43,7 @@
     <%= f.hidden_field(:loader_batch_id, {}) %>
 
     <div class="form-group">
-      <label for="family">Family*</label>
+      <label for="family">Family<span class='red'>*</span></label>
       <%= f.text_field :family, class: 'form-control', required: true, title: "Enter family name", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
@@ -59,7 +59,7 @@
 
     <div class="form-group">
       <label for="original_text">Original text</label>
-      <%= f.text_area :original_text, class: 'form-control', title: "Enter original html", tabindex: increment_tab_index %> 
+      <%= f.text_area :original_text, class: 'form-control', title: "Enter original html", tabindex: increment_tab_index %>
       <p>Normally not entered in a form, this text typically comes from parsed data.  May be needed for handmade misapplieds</p>
     </div>
 
