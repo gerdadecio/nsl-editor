@@ -14,7 +14,7 @@
                     role: 'form',
                     remote: true,
                     method: :post,
-                    data: copy_form_data}) do |f| %>
+                    data: copy_form_data.merge(turbo: false)}) do |f| %>
  <% if @name.errors.any? %>
     <div id="error_explanation">
       <h6><%= pluralize(@name.errors.count, "error") %> prohibited this name from being saved:</h6>

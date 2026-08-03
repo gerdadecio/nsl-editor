@@ -1,6 +1,10 @@
 - :date: 03-August-2026
   :jira_id: '5568'
   :description: |-
+    Intermittent 406 errors: Many more links needed the turbo-false switch to avoid potential 406 errors - BAU workflow testing only
+- :date: 03-August-2026
+  :jira_id: '5568'
+  :description: |-
     Intermittent 406 errors: Add code switches we expect will prevent these problems happening
 - :date: 03-August-2026
   :jira_id: '5858'

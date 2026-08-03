@@ -5,7 +5,7 @@ Directives available here: <code>family: [family name string]</code>,  <code>acc
 Wildcards are allowed but are <b>not</b> added automatically.<br>
 (Adding them automatically would stop you specifying non-wildcarded sets of names to process.)<br>
 The <code>family:</code> directive can take a comma-separated list of family names <em>without</em> wildcards
-<%= form_tag({controller: "loader/batch/bulk", action: "operation"}, method: "post", remote: true) do %>
+<%= form_tag({controller: "loader/batch/bulk", action: "operation"}, method: "post", remote: true, data: { turbo: false }) do %>
 
   <div class="width-64em">
     <input name="name_string"
@@ -41,13 +41,13 @@ The <code>family:</code> directive can take a comma-separated list of family nam
       <%= link_to "Enable Remove Syn Conflicts", 
         {controller: 'loader/batch/bulk', action: 'enable_delete_syn_conflict'},
         {id: 'enable-delete-syn-conflict', class: 'btn btn-primary width-16em',
-         remote: true, title: "Enable the Remove Syn Conflicts button",
+         remote: true, data: { turbo: false }, title: "Enable the Remove Syn Conflicts button",
          method: :post} %>
 
        <%= link_to "Disable Remove Syn Conflicts",
          {controller: 'loader/batch/bulk', action: 'disable_delete_syn_conflict'},
          {id: 'disable-delete-syn-conflict', class: 'btn btn-primary width-16em', style: 'display: none;',
-          remote: true, title: "Disable the Remove Syn Conficts button",
+          remote: true, data: { turbo: false }, title: "Disable the Remove Syn Conficts button",
           method: :post} %>
         <input id="delete-syn-conflicts-batch-submit"
                name="submit"
@@ -70,13 +70,13 @@ The <code>family:</code> directive can take a comma-separated list of family nam
       <%= link_to "Enable Add to draft taxonomy", 
         {controller: 'loader/batch/bulk', action: 'enable_add'},
         {id: 'enable-add', class: 'btn btn-primary width-16em',
-         remote: true, title: "Enable the Add to draft taxonomy button",
+         remote: true, data: { turbo: false }, title: "Enable the Add to draft taxonomy button",
          method: :post} %>
 
        <%= link_to "Disable Add to draft taxonomy",
          {controller: 'loader/batch/bulk', action: 'disable_add'},
          {id: 'disable-add', class: 'btn btn-primary width-16em', style: 'display: none;',
-          remote: true, title: "Disable the Add to draft taxonomy button",
+          remote: true, data: { turbo: false }, title: "Disable the Add to draft taxonomy button",
           method: :post} %>
       <input id="add-instances-to-draft-taxonomy-batch-submit"
              name="submit"
@@ -109,7 +109,7 @@ The <code>family:</code> directive can take a comma-separated list of family nam
 <div id="add-to-draft-taxonomy-info-message-container" class="message-container"></div>
 <div id="add-to-draft-taxonomy-error-message-container" class="error-container message-container"></div>
 <br>
-<%= link_to "[clear messages]", loader_batch_clear_path, class:"hidden message-clearer with-underline", remote: true, title: "Clear the messages" %> 
+<%= link_to "[clear messages]", loader_batch_clear_path, class:"hidden message-clearer with-underline", remote: true, data: { turbo: false }, title: "Clear the messages" %> 
 <br>
 <%= link_to "Recent logs", search_path(query_string: "latest:",query_target: 'bulk_processing_logs'), title: "See logs", class: "with-underline" %> 
 <br>
@@ -122,8 +122,8 @@ The <code>family:</code> directive can take a comma-separated list of family nam
 <div id="bulk-ops-stats-container" class="">
 </div>
 
-<%= link_to 'Bulk Operation Notes', loader_batch_bulk_processing_notes_path, {id: 'batch-processing-bulk-op-notes-btn', class: 'btn btn-primary', title: 'Show a summary overview of the loading process', remote: true} %>
-<%= link_to 'Hide', loader_batch_bulk_processing_notes_hide_path, {id: 'batch-processing-bulk-op-notes-hide-btn', class: 'btn btn-primary hidden', title: 'Hide the summary', remote: true} %>
+<%= link_to 'Bulk Operation Notes', loader_batch_bulk_processing_notes_path, {id: 'batch-processing-bulk-op-notes-btn', class: 'btn btn-primary', title: 'Show a summary overview of the loading process', remote: true, data: { turbo: false }} %>
+<%= link_to 'Hide', loader_batch_bulk_processing_notes_hide_path, {id: 'batch-processing-bulk-op-notes-hide-btn', class: 'btn btn-primary hidden', title: 'Hide the summary', remote: true, data: { turbo: false }} %>
 <div id="batch-processing-bulk-op-notes" class="hidden">
 <h5>Bulk Operation Notes</h5>
 

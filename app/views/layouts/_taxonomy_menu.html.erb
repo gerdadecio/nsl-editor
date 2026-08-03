@@ -27,7 +27,7 @@
                       tree_versions_edit_draft_path,
                       id: "edit-draft-taxonomy-menu-link-#{selected_draft_title.gsub(/ /,'-')}",
                       title: 'Edit draft taxonomy',
-                      remote: true,
+                      remote: true, data: { turbo: false },
                       tabindex: '-1' %>
         </li>
         <li>
@@ -35,7 +35,7 @@
                       tree_versions_form_to_publish_path,
                       id: "publish-draft-taxonomy-menu-link-#{selected_draft_title.gsub(/ /,'-')}",
                       title: 'Publish draft taxonomy',
-                      remote: true,
+                      remote: true, data: { turbo: false },
                       tabindex: '-1' %>
         </li>
       <% end %>
@@ -66,7 +66,7 @@
                             tree_versions_new_draft_path(tree.id),
                             id: 'create-draft-taxonomy-menu-link',
                             title: 'Add a new draft taxonomy',
-                            remote: true,
+                            remote: true, data: { turbo: false },
                             tabindex: '-1' %>
               </li>
             <% end %>

@@ -1,6 +1,6 @@
 <% text_area_class = Rails.configuration.try('profile_v2_dropdown_ui') ? "editor-textarea-version2" : "editor-textarea" %>
 
-<%= form_with(model: profile_text, url: url, method: method, remote: true, html: { data: {type: 'json', form_type: 'profile_text_form' }, class: 'prompt-form-save' }) do |f| %>
+<%= form_with(model: profile_text, url: url, method: method, remote: true, data: { turbo: false }, html: { data: {type: 'json', form_type: 'profile_text_form' }, class: 'prompt-form-save' }) do |f| %>
   <%= hidden_field_tag "profile_item[id]", profile_item.id %>
   <%= hidden_field_tag "profile_item[instance_id]", instance_id %>
   <%= hidden_field_tag "profile_item[product_item_config_id]", product_item_config.id %>

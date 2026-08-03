@@ -14,7 +14,7 @@
     <%= link_to "Confirm", 
       refresh_children_name_path(@name.id), 
       id: 'confirm-name-refresh-children-button', 
-      remote: true, 
+      remote: true, data: { turbo: false }, 
       method: :post,
       tabindex: increment_tab_index,
       class: 'btn btn-warning', 

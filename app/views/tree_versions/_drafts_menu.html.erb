@@ -27,7 +27,7 @@
         <%= link_to("#{menu_item.name} #{menu_item.draft_name} #{'(Default Draft)' if menu_item.default_draft}
                       #{editor_icon('check', '',{class: check_is_hidden})}".html_safe,
                       toggle_current_workspace_path(id: menu_item.draft_id),
-                      { remote: true,
+                      { remote: true, data: { turbo: false },
                         method: "post",
                         title: menu_item.log_entry || menu_item.draft_name }) %>
       <% else %>

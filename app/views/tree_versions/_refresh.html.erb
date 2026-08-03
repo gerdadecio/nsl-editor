@@ -1,7 +1,7 @@
 <button onclick="refreshPage(event);">refresh page</button>
 <%= link_to("Switch to \"#{@created_version.draft_name}\"",
             toggle_current_workspace_path(id: @created_version.id),
-            {remote: true,
+            {remote: true, data: { turbo: false },
              method: "post",
              title: "Switch to draft",
              class: "btn btn-default"})

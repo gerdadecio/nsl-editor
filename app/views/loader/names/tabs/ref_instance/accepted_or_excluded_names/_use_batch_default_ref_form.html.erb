@@ -6,7 +6,7 @@
     <%= form.hidden_field :id %>
       <br>
       Confirm your choice to <b>use the batch default reference</b> for this record:
-      <%= form.submit "Confirm", remote: true, class: 'width-5em btn btn-primary pull-right',
+      <%= form.submit "Confirm", remote: true, data: { turbo: false }, class: 'width-5em btn btn-primary pull-right',
              title: 'Confirm Use batch default referene.' %>
       <br>
       <br>

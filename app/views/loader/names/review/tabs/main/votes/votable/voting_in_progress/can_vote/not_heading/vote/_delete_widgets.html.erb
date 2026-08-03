@@ -13,7 +13,7 @@
               delete_name_review_vote_path(vote.loader_name_id, vote.batch_review_id, vote.org_id),
               class: "btn btn-danger confirm-delete-btn",
               title: "Confirm you want to delete the vote.",
-              remote: true,
+              remote: true, data: { turbo: false },
               method: :delete)
   %>
 

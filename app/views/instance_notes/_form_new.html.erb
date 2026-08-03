@@ -1,7 +1,7 @@
 <% @instance_note = instance_note %>
 
 
-<%= form_for(@instance_note, remote: true, class: 'instance-note-edit-form') do |f| %>
+<%= form_for(@instance_note, remote: true, data: { turbo: false }, class: 'instance-note-edit-form') do |f| %>
   <% if @instance_note.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@instance_note.errors.count, "error") %> prohibited this instance_note from being saved:</h2>

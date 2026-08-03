@@ -67,6 +67,7 @@
                     search_reports_path,
                     class: "main-body-tab-link",
                     remote: true,
+                    data: { turbo: false },
                     title: "List of query reports" %>
       </li>
       <li id="taxonomy-report-tab" role="presentation" class="<%= 'hidden' unless @working_draft %>">
@@ -74,6 +75,7 @@
                       trees_reports_path,
                       class: "main-body-tab-link",
                       remote: true,
+                      data: { turbo: false },
                       title: "Draft taxonomy reports" %>
       </li>
 

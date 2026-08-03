@@ -4,7 +4,7 @@
              as: 'loader_name',
              url: loader_name_matches_set_path,
              role: 'form',
-             remote: true) do |form| %>
+             remote: true, data: { turbo: false }) do |form| %>
 
   <% @loader_name.matches(type: :strict)
                  .each_with_index do |matching_name, index| %>

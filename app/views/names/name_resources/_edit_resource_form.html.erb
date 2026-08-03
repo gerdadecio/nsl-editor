@@ -1,4 +1,4 @@
-<%= form_with url: name_name_resource_path(name, name_resource), method: :put, remote: true do |f| %>
+<%= form_with url: name_name_resource_path(name, name_resource), method: :put, remote: true, data: { turbo: false } do |f| %>
   <div id="resource-edit-form-<%= name_resource.id%>" class="resource-edit-form hidden">
     <%= hidden_field_tag 'name_resource[resource_host_id]', name_resource.resource_host_id %>
     <div class="resource-form-grid">

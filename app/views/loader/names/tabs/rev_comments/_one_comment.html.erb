@@ -15,7 +15,7 @@
                       info: 
                       "#{comment.reviewer.user.full_name} (#{comment.reviewer.org.try('abbrev')} #{comment.reviewer.role.name})
                        #{link_to('(edit)', edit_name_review_comment_path(comment.id, :offer_context),
-                                           remote: true,
+                                           remote: true, data: { turbo: false },
                                            class: 'blue',
                                            title: 'Edit your comment') if @current_user.username == comment.reviewer.user.user_name} "}
                     %>

@@ -14,7 +14,7 @@
                                  class: "btn btn-danger confirm-delete-btn",
                                  tabindex: increment_tab_index,
                                  title: "Confirm you want to delete the user.",
-                                 remote: true,
+                                 remote: true, data: { turbo: false },
                                  method: :delete)
 %>
 

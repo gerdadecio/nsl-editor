@@ -8,7 +8,7 @@ Change the reference for this instance and its
 
 <br>
 <br>
-<%= form_for(@instance, url: {action: 'change_reference'}, html: {id: "change-reference-form", class: "change-reference-form", method: :patch, remote: true}) do |f| %>
+<%= form_for(@instance, url: {action: 'change_reference'}, html: {id: "change-reference-form", class: "change-reference-form", method: :patch, remote: true, data: { turbo: false }}) do |f| %>
     <% if @instance.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(@instance.errors.count, "error") %> prohibited this instance from being saved:</h2>

@@ -9,7 +9,7 @@
   <%= render partial: 'stats_table', locals: { a_hash: value } %>
   <% if key.downcase == :lock %>
     <% if Loader::Batch::Bulk::JobLock.locked? %>
-      <%= link_to "Emergency unlock batch jobs", {controller: 'job_lock', action: 'unlock'}, {id: 'emergency-unlock-link', class: 'btn btn-primary', remote: true, title: "Unlock the batch lock", method: :post} %>
+      <%= link_to "Emergency unlock batch jobs", {controller: 'job_lock', action: 'unlock'}, {id: 'emergency-unlock-link', class: 'btn btn-primary', remote: true, data: { turbo: false }, title: "Unlock the batch lock", method: :post} %>
     <% end %>
   <% end %>
 <% end %>

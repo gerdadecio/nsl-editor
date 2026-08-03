@@ -4,7 +4,7 @@
     <%= link_to "Scientific name",
                 name_new_row_path('scientific'),
                 title: 'Add a new scientific name',
-                remote: true,
+                remote: true, data: { turbo: false },
                 tabindex: '-1' %>
   </li>
 
@@ -12,7 +12,7 @@
     <%= link_to "Scientific name family or above",
                 name_new_row_path('scientific-family-or-above'),
                 title: 'Add a new scientific name family and above',
-                remote: true,
+                remote: true, data: { turbo: false },
                 tabindex: '-1' %>
   </li>
 
@@ -20,7 +20,7 @@
     <%= link_to "Phrase name",
                 name_new_row_path('phrase'),
                 title: 'Add a new phrase name',
-                remote: true,
+                remote: true, data: { turbo: false },
                 tabindex: '-1' %>
   </li>
 
@@ -29,14 +29,14 @@
     <%= link_to "Named Hybrid",
                 name_new_row_path('named-hybrid'),
                 title: 'Add a new named hybrid',
-                remote: true,
+                remote: true, data: { turbo: false },
                 tabindex: '-1' %>
   </li>
   <li role="presentation">
     <%= link_to "Hybrid formula name",
                 name_new_row_path('hybrid formula'),
                 title: 'Add a new hybrid name',
-                remote: true,
+                remote: true, data: { turbo: false },
                 tabindex: '-1' %>
   </li>
 
@@ -44,7 +44,7 @@
     <%= link_to "Hybrid formula unknown 2nd parent name",
                 name_new_row_path('hybrid-formula-unknown-2nd-parent'),
                 title: 'Add a new hybrid formula unknown 2nd parent name',
-                remote: true,
+                remote: true, data: { turbo: false },
                 tabindex: '-1' %>
   </li>
   <li role="presentation" class="divider"></li>
@@ -53,7 +53,7 @@
     <%= link_to "Cultivar hybrid name",
                 name_new_row_path('cultivar-hybrid'),
                 title: 'Add a new cultivar hybrid name',
-                remote: true,
+                remote: true, data: { turbo: false },
                 tabindex: '-1' %>
   </li>
 
@@ -61,7 +61,7 @@
     <%= link_to "Cultivar name",
                 name_new_row_path('cultivar'),
                 title: 'Add a new cultivar name',
-                remote: true,
+                remote: true, data: { turbo: false },
                 tabindex: '-1' %>
   </li>
 
@@ -71,7 +71,7 @@
     <%= link_to "Other name",
                 name_new_row_path('other'),
                 title: 'Add a new other name',
-                remote: true,
+                remote: true, data: { turbo: false },
                 tabindex: '-1' %>
   </li>
 <% elsif can?(:create_common_name, Name) %>
@@ -79,7 +79,7 @@
       <%= link_to "Other name",
                   name_new_row_path('other'),
                   title: 'Add a new other name',
-                  remote: true,
+                  remote: true, data: { turbo: false },
                   tabindex: '-1' %>
     </li>
 <% end %>

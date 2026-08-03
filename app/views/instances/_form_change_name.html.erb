@@ -2,7 +2,7 @@
 <div>Change the name for this draft instance.</div>
 <%= form_for(@instance,
              url: instance_name_path(@instance),
-             html: { id: "change-name-form", method: :patch, remote: true }) do |f| %>
+             html: { id: "change-name-form", method: :patch, remote: true, data: { turbo: false } }) do |f| %>
   <input id="instance-name-change-typeahead"
          name="instance[name_typeahead]"
          class="typeahead form-control"

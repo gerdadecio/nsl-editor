@@ -32,7 +32,7 @@
       <dt><%= @tree_version_element.comment_key %></dt>
       <dd>
         <div>
-          <%= form_tag({controller: 'trees', action: 'update_comment'}, {method: :post, remote: true}) do %>
+          <%= form_tag({controller: 'trees', action: 'update_comment'}, {method: :post, remote: true, data: { turbo: false }}) do %>
             <%= hidden_field_tag("update_comment[element_link]", @tree_version_element.element_link) %>
             <% if @tree_version_element.comment.blank? %>
               <%= render partial: "trees/add_comment", locals: {tree_version_element: @tree_version_element} %>
@@ -46,7 +46,7 @@
   
       <dt><%= @tree_version_element.distribution_key %></dt>
       <dd><%= @tree_version_element.distribution %>
-        <%= form_tag({controller: 'trees', action: 'update_distribution'}, {method: :post, remote: true}) do %>
+        <%= form_tag({controller: 'trees', action: 'update_distribution'}, {method: :post, remote: true, data: { turbo: false }}) do %>
           <%= hidden_field_tag("update_distribution[element_link]", @tree_version_element.element_link) %>
           <% if @tree_version_element.distribution.blank? %>
             <%= render partial: "trees/add_distribution", locals: {tree_version_element: @tree_version_element} %>
@@ -63,7 +63,7 @@
 
     <dt></dt>
     <dd>
-      <%= form_tag({controller: 'trees', action: 'update_tree_parent'}, {method: :post, remote: true}) do %>
+      <%= form_tag({controller: 'trees', action: 'update_tree_parent'}, {method: :post, remote: true, data: { turbo: false }}) do %>
         <%= hidden_field_tag("update_parent[element_link]", @tree_version_element.element_link) %>
         <%= render partial: "trees/update_parent", locals: {parent_tve: @tree_version_element.parent} %>
         <button type="submit"

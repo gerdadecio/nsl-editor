@@ -2,7 +2,7 @@
            
 <%= form_for(@reference,
              url: @reference.id.present? ? reference_path(id: @reference.id) : references_path,
-             role: 'form', remote: true
+             role: 'form', remote: true, data: { turbo: false }
             ) do |f| %>
  <% if @reference.errors.any? %>
     <div id="error_explanation">

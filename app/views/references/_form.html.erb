@@ -1,6 +1,6 @@
 <%= form_for(@reference,
              as: 'reference',
-             role: 'form', remote: true) do |f| %>
+             role: 'form', remote: true, data: { turbo: false }) do |f| %>
  <% if @reference.errors.any? %>
     <div id="error_explanation" class="red">
       <h6><%= pluralize(@reference.errors.count, "error") %> prohibited this reference from being saved:</h6>

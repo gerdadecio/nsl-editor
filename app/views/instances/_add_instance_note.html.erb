@@ -1,6 +1,6 @@
 <%= form_for(InstanceNote.new, 
              url: instance_notes_path,
-             remote: true,
+             remote: true, data: { turbo: false },
              html:{class:"form-inline",
                    data: {type: 'script'}
                   }) do |f| %>

@@ -1,4 +1,4 @@
-<%= form_for(@instance, remote: true) do |f| %>
+<%= form_for(@instance, remote: true, data: { turbo: false }) do |f| %>
 
     <%= show_field_as_linked_lookup('',@instance.name,'full_name', search_path(query_string: %Q(id:#{@instance.name_id}),query_target: 'name'),'name') %>
     appears in reference*
