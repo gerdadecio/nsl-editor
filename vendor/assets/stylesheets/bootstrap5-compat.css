@@ -74,6 +74,11 @@ a:focus {
 a:not([href]) {
   color: #606060;
 }
+a:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
 
 .btn {
   font-size: 14px;
@@ -315,6 +320,16 @@ select.form-control {
 .btn:first-child:active:focus-visible,
 :not(.btn-check) + .btn:active:focus-visible {
   box-shadow: none;
+}
+.btn:focus,
+.btn.focus,
+.btn:active:focus,
+.btn:active.focus,
+.btn.active:focus,
+.btn.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
 }
 
 /* Extend the app's grey primary-active fill (new-for-rails-6.css only covers
