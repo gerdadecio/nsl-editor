@@ -65,7 +65,7 @@ class Reference::AsTypeahead::OnCitation
              .not_duplicate
              .where.not(reference: { id: excluded_id })
              .where(bound_terms_array(terms))
-             .order("citation")
+             .order(Arel.sql('iso_publication_date DESC NULLS FIRST'), 'citation')
              .limit(SEARCH_LIMIT)
   end
 end

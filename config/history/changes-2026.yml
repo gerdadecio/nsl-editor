@@ -1,3 +1,7 @@
+- :date: 04-August-2026
+  :jira_id: '5789'
+  :description: |-
+    Reference typeahead: apply chronological order using <code>iso_publication_date</code>
 - :date: 03-August-2026
   :jira_id: '5859'
   :description: |-

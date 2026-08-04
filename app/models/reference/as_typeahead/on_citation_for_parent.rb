@@ -73,7 +73,7 @@ class Reference::AsTypeahead::OnCitationForParent
              .not_duplicate
              .where(bound_terms_array(terms))
              .where(ref_type_id: RefType.find(best_ref_type_id).parent_id)
-             .order("citation")
+             .order(Arel.sql('iso_publication_date DESC NULLS FIRST'), 'citation')
              .limit(SEARCH_LIMIT)
   end
 end
