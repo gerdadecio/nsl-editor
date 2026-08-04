@@ -1,3 +1,7 @@
+- :date: 03-August-2026
+  :jira_id: '5859'
+  :description: |-
+    Fixup the stretched checkbox in bs5 and the svg icon in the search results table
 - :date: 04-August-2026
   :jira_id: '5867'
   :description: |-

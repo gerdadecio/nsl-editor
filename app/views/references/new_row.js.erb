@@ -1,8 +1,9 @@
 
 
 if ($('#search-results-table tbody').length == 0) {
-  // No search results
-  $('#search-results-table').append("<%= escape_javascript(h(render partial: partial, locals: locals_for_partial )) %>");
+  // No search results.
+  $('#search-results-table').append('<tbody></tbody>');
+  $('#search-results-table tbody').append("<%= escape_javascript(h(render partial: partial, locals: locals_for_partial )) %>");
 } else {
   // Some search results
   $('#search-results-table tr:first').before("<%= escape_javascript(h(render partial: partial, locals: locals_for_partial )) %>");
