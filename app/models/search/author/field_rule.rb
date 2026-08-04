@@ -111,7 +111,8 @@ from comment where comment.author_id = author.id)" },
                 where_clause: " id = ?",
                 multiple_values_where_clause: " id in (?)" },
     "notes:" => { where_clause: " lower(notes) like lower(?) " },
-    "missed-diacritics:" => { where_clause: " (exists (
+    "missed-diacritics:" => { takes_no_arg: true,
+                              where_clause: " (exists (
     select null
       from regexp_split_to_table(unaccent(name),'') x
     where ascii(x) not between 1 and 127

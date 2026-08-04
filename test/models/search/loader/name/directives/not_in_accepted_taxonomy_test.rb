@@ -27,7 +27,7 @@ class SearchLoaderNameDirectivesNotInAcceptedTaxonomyTest < ActiveSupport::TestC
     params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
                                                           "loader_names",
                                                           query_string:
-                                                          "not-in-accepted-taxonomy: * batch-id: 3",
+                                                          "not-in-accepted-taxonomy: batch-id: 3",
                                                           current_user:
                                                           build_edit_user)
     search = Search::Base.new(params)
