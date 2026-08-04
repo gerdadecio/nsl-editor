@@ -741,6 +741,7 @@ table.search-results > :not(caption) > * > * {
 svg.icon.name-icon {
   width: 7px !important;
   height: 13px !important;
+  padding: 0 !important;
   overflow: hidden !important;
 }
 
