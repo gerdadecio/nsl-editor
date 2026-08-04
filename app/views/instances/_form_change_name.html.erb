@@ -26,7 +26,7 @@
     </select>
 
     <div id="synonym-creation-fields" style="margin-top: 10px;">
-      <div><%= @instance.name.try('full_name') %> (and optional year)<span class="red" aria-hidden="true">*</span>, as referenced below:</div>
+      <div><%= @instance.name.try('full_name') %> (and optional year)<span class="red">*</span>, as referenced below:</div>
       <div class="typeahead-container">
         <section class='block width-100-percent'>
           <input id="change-name-synonymy-typeahead"
@@ -40,7 +40,7 @@
       </div>
       <%= hidden_field_tag "instance[cites_id]", "", id: "change-name-synonymy-cites-id" %>
       <%= hidden_field_tag "change_name_current_name_id", @instance.name_id, id: "change-name-current-name-id" %>
-      is a type<span class="red" aria-hidden="true">*</span>
+      is a type<span class="red">*</span>
       <br>
       <%= select_tag "instance[synonym_instance_type_id]",
                      options_for_select(InstanceType.synonym_options),

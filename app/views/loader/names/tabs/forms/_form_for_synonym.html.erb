@@ -11,7 +11,7 @@
     <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
 
     <div class="form-group">
-      <label for="rank">Rank<span class="red" aria-hidden="true">*</span></label>
+      <label for="rank">Rank<span class="red">*</span></label>
       <%= f.text_field :rank, class: 'form-control', required: true, title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
     </div>
     <%= f.hidden_field :record_type, value: 'synonym' %>
@@ -40,7 +40,7 @@
     <%= f.hidden_field(:loader_batch_id, {}) %>
 
     <div class="form-group">
-      <label for="family">Family<span class="red" aria-hidden="true">*</span></label>
+      <label for="family">Family<span class="red">*</span></label>
       <%= f.text_field :family, class: 'form-control', required: true, title: "Enter family name", tabindex: increment_tab_index, autofocus: true %>
     </div>
 

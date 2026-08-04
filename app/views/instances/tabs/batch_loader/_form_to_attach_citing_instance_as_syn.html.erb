@@ -34,7 +34,7 @@
     <%= form.hidden_field :seq %>
 
     <div class="form-group">
-      <label for="record_type">Record type - accepted or excluded<span class="red" aria-hidden="true">*</span></label>
+      <label for="record_type">Record type - accepted or excluded<span class="red">*</span></label>
       <%= form.select :record_type, ["synonym", "misapplied"], {include_blank: true},
         class: 'form-control',
         required: true,
@@ -43,7 +43,7 @@
     </div>
     
     <div class="form-group">
-      <label for="synonym_type">Synonym type<span class="red" aria-hidden="true">*</span></label>
+      <label for="synonym_type">Synonym type<span class="red">*</span></label>
       <%= form.select :synonym_type, 
         ['alternative name',
          'basionym',

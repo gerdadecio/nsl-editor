@@ -26,7 +26,7 @@
     <br>
   <%= link_to(@instance.this_is_cited_by.try('reference').try('citation'),
               search_path(query_string: %Q(id:#{@instance.this_is_cited_by.reference_id}),query_target: 'reference'),title: 'cited by reference') %>:<%= @instance.page %>
-    as a<span class="red" aria-hidden="true">*</span>
+    as a<span class="red">*</span>
     <br>
     <%= f.select(:instance_type_id, 
                  InstanceType.unpublished_citation_options,{include_blank: true},

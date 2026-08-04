@@ -31,7 +31,7 @@
   <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
 
   <div class="form-group">
-    <label for="reference_ref_type_id">Type<span class="red" aria-hidden="true">*</span></label>
+    <label for="reference_ref_type_id">Type<span class="red">*</span></label>
     <%= f.select("ref_type_id",
                  @reference.ref_type_options,
                  { include_blank: true },
@@ -98,7 +98,7 @@
     <div id="Unknown" class="hidden">An Unknown type reference can belong to another Unknown type reference</div>
   </div>
   <div class="form-group">
-    <label for="reference_title">Title<span class="red" aria-hidden="true">*</span></label>
+    <label for="reference_title">Title<span class="red">*</span></label>
     <%= f.text_field :title, class: 'form-control', required: true, title: "Enter the title", tabindex: increment_tab_index %>
     <p>If no title use 'Not set'</p>
   </div>
@@ -110,7 +110,7 @@
   </div>
 
   <div class="form-group">
-    <label for="reference-author-typeahead">Author<span class="red" aria-hidden="true">*</span></label><br>
+    <label for="reference-author-typeahead">Author<span class="red">*</span></label><br>
     <input id="reference-author-typeahead"
            name="reference[author_typeahead]"
            class="typeahead form-control"
@@ -124,7 +124,7 @@
   <%= f.hidden_field(:author_id) %>
 
   <div class="form-group">
-    <label for="reference_ref_author_role_id">Author role<span class="red" aria-hidden="true">*</span></label><br>
+    <label for="reference_ref_author_role_id">Author role<span class="red">*</span></label><br>
     <%= f.select("ref_author_role_id",
                  RefAuthorRole.options,
                  { include_blank: true },

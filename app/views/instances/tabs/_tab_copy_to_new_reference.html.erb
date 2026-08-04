@@ -29,7 +29,7 @@ The copied instance will remain attached to:
   The copied instance will be attached to a reference other than<br>
   <h6>&mdash; <%= @instance.reference.citation %></h6>
   <br>
-  <label for="instance-reference-typeahead">Reference<span class="red" aria-hidden="true">*</span></label>
+  <label for="instance-reference-typeahead">Reference<span class="red">*</span></label>
   <br>
   <div class="typeahead-container">
     <section class='block width-100-percent'>
@@ -45,7 +45,7 @@ The copied instance will remain attached to:
     </section>
   </div>
 	<br>
-  <label for="instance_type_id">Instance type<span class="red" aria-hidden="true">*</span></label>
+  <label for="instance_type_id">Instance type<span class="red">*</span></label>
   <br> 
   <%= f.select(:instance_type_id,
                InstanceType.standalone_options,{include_blank: true},

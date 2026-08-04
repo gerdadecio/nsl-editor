@@ -1,7 +1,7 @@
 <% if @name.takes_rank? %>
 
   <div class="form-group">
-    <label for="name_rank_id">Rank<span class="red" aria-hidden="true">*</span></label>
+    <label for="name_rank_id">Rank<span class="red">*</span></label>
     <%= select('name', 'name_rank_id', NameRank.options_for_category(@name.category_for_edit, @name.name_rank),
                { include_blank: true }, autocomplete: "off", title: 'Select rank',
                tabindex: increment_tab_index, class: "form-control", disabled: false, required: true) %>

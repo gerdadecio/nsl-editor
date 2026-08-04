@@ -1,5 +1,5 @@
   <div class="form-group margin-top-1em">
-    <label for="name_type_id">Type<span class="red" aria-hidden="true">*</span></label>
+    <label for="name_type_id">Type<span class="red">*</span></label>
     <%
       name_type_options = if can?(:create_common_name, Name) && !can?(:manage, Name) && @name.category_for_edit.other?
                             NameType.common_only_options

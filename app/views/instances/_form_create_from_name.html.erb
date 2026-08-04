@@ -1,7 +1,7 @@
 <%= form_for(@instance, remote: true, data: { turbo: false }) do |f| %>
 
     <%= show_field_as_linked_lookup('',@instance.name,'full_name', search_path(query_string: %Q(id:#{@instance.name_id}),query_target: 'name'),'name') %>
-    appears in reference<span class="red" aria-hidden="true">*</span>
+    appears in reference<span class="red">*</span>
 
     <div class="typeahead-container">
       <section class='block width-100-percent'>
@@ -19,7 +19,7 @@
 
     <script> setUpInstanceReference(); </script>
 
-    as an instance type<span class="red" aria-hidden="true">*</span>
+    as an instance type<span class="red">*</span>
     <%= render partial: 'detail_line', locals: {
             info: f.select(:instance_type_id, InstanceType.standalone_options,{include_blank: true},
                            {value: @instance.instance_type_id,data:{update_url: instance_path},

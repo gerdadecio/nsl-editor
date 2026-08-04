@@ -15,7 +15,7 @@
     <%= form.hidden_field :name_status %>
     <%= form.hidden_field :loaded_from_instance_id %>
 
-    <label for="loader_batch_id">Batch<span class="red" aria-hidden="true">*</span></label>
+    <label for="loader_batch_id">Batch<span class="red">*</span></label>
       <%= form.select :loader_batch_id,
         Loader::Batch.order(:name).map { |batch| [batch.name, batch.id] },
         {include_blank: true},
@@ -44,7 +44,7 @@
 
 
     <div class="form-group">
-      <label for="loader-name-parent-typeahead">Concept/Parent<span class="red" aria-hidden="true">*</span></label>
+      <label for="loader-name-parent-typeahead">Concept/Parent<span class="red">*</span></label>
       <input id="loader-name-parent-typeahead"
              name="loader_name[parent_typeahead]"
              class="typeahead form-control"

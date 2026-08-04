@@ -3,7 +3,7 @@
 <%= form_for(name_tag_name, remote: true, data: { turbo: false }) do |f| %>
   <%= f.hidden_field(:name_id, value: name_tag_name.name_id) %>
   <div class="form-group">
-    <label for="name_tag_name_tag_id">Tag<span class="red" aria-hidden="true">*</span></label>
+    <label for="name_tag_name_tag_id">Tag<span class="red">*</span></label>
     <%= f.select :tag_id,
                  (NameTag.all - name.name_tags).collect{|name_tag| [name_tag.name,name_tag.id]},
                  {include_blank: ''},

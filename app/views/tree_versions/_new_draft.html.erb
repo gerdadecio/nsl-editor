@@ -17,14 +17,14 @@
         <div class="form-group">
           <input id="tree_id" name="tree_id" type="hidden" title="tree_id" value="<%= @tree.id %>"/>
 
-          <label>Name this draft<span class="red" aria-hidden="true">*</span>
+          <label>Name this draft<span class="red">*</span>
             <input class="form-control" id="draft_name" name="draft_name" type="text" required
                    placeholder="e.g. November 2022" title="Enter a name for this draft, e.g. minor edits"/>
           </label>
         </div>
 
         <div class="form-group">
-          <label for="draft_log">Description / work log<span class="red" aria-hidden="true">*</span></label>
+          <label for="draft_log">Description / work log<span class="red">*</span></label>
           <textarea class="form-control"
                     title="Description of work to carry out" required
                     id="draft_log" name="draft_log" rows="10"></textarea>
