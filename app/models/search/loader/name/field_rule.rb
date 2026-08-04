@@ -361,8 +361,10 @@ class Search::Loader::Name::FieldRule
                           takes_no_arg: true},
     "is-mso-normal:" => { where_clause: "hybrid_flag = 'MsoNormal'",
                           takes_no_arg: true},
-    "syn-but-no-syn-type:" => { where_clause: "record_type = 'synonym' and synonym_type is null"},
-    "no-name-match:" => { where_clause: "record_type not in ('heading')
+    "syn-but-no-syn-type:" => { takes_no_arg: true,
+                                where_clause: "record_type = 'synonym' and synonym_type is null"},
+    "no-name-match:" => { takes_no_arg: true,
+                          where_clause: "record_type not in ('heading')
      and not exists (
         select null
           from name
@@ -375,7 +377,8 @@ class Search::Loader::Name::FieldRule
               from name_type nt
             where name.name_type_id = nt.id
               and nt.scientific))"},
-    "no-name-match-unscientific:" => { where_clause: "record_type not in ('heading')
+    "no-name-match-unscientific:" => { takes_no_arg: true,
+                                       where_clause: "record_type not in ('heading')
      and not exists (
         select null
           from name
@@ -383,7 +386,8 @@ class Search::Loader::Name::FieldRule
         and (loader_name.simple_name = name.simple_name
                or
                loader_name.simple_name = name.full_name))"},
-    "no-name-match-unaccent:" => { where_clause: "record_type not in ('heading')
+    "no-name-match-unaccent:" => { takes_no_arg: true,
+                                   where_clause: "record_type not in ('heading')
     and loader_name.id in (select id
   from loader_name
  where lower(f_unaccent(simple_name)) in (
@@ -399,7 +403,8 @@ class Search::Loader::Name::FieldRule
            where duplicate_of_id is null
           )
        ) ) "},
-    "some-name-match:" => { where_clause: "record_type not in ('heading')
+    "some-name-match:" => { takes_no_arg: true,
+                            where_clause: "record_type not in ('heading')
         and exists (
                               select null
                                 from name
@@ -411,7 +416,8 @@ class Search::Loader::Name::FieldRule
               from name_type nt
             where name.name_type_id = nt.id
               and nt.scientific))"},
-    "some-name-match-unscientific:" => { where_clause: "record_type not in ('heading')
+    "some-name-match-unscientific:" => { takes_no_arg: true, 
+                                         where_clause: "record_type not in ('heading')
       and exists (
                               select null
                                 from name
@@ -423,7 +429,8 @@ class Search::Loader::Name::FieldRule
               from name_type nt
             where name.name_type_id = nt.id
               and nt.scientific))"},
-    "many-name-match:" => { where_clause: "record_type not in ('heading')
+    "many-name-match:" => { takes_no_arg: true,
+                            where_clause: "record_type not in ('heading')
      and 1 < (
         select count(*)
           from name
@@ -452,7 +459,8 @@ class Search::Loader::Name::FieldRule
 group by l_fa_sn
 having count(*) > 2
 ))"},
-    "one-name-match:" => { where_clause: "record_type not in ('heading')
+    "one-name-match:" => { takes_no_arg: true,
+                           where_clause: "record_type not in ('heading')
   and 1 = (
       select count(*)
         from name
@@ -539,23 +547,27 @@ select ln.id
                             takes_no_arg: true},
     "not-publ-partly:" => { where_clause: "publ_partly is null",
                             takes_no_arg: true},
-    "name-sharing-name-id:" => { where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match group by name_id having count(*) > 1))"},
+    "name-sharing-name-id:" => { takes_no_arg: true,
+                                 where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match group by name_id having count(*) > 1))"},
     "has-preferred-name:" => { where_clause: " exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)",
                                takes_no_arg: true},
     "has-preferred-name-without-instance:" => { where_clause: " exists (select null from loader_name_match orn where loader_name.id = orn.loader_name_id and orn.standalone_instance_id is null and orn.relationship_instance_id is null)",
                                                 takes_no_arg: true},
-    "use-batch-default-ref:" => { where_clause: " exists (
+    "use-batch-default-ref:" => { takes_no_arg: true,
+                                  where_clause: " exists (
     select null
       from loader_name_match
  where loader_name.id = loader_name_match.loader_name_id
    and loader_name_match.use_batch_default_reference)"},
-    "use-existing-instance:" => { where_clause: " exists (
+    "use-existing-instance:" => { takes_no_arg: true,
+                                  where_clause: " exists (
     select null
       from loader_name_match
  where loader_name.id = loader_name_match.loader_name_id
    and loader_name_match.standalone_instance_id is not null
    and loader_name_match.use_existing_instance)"},
-    "copy-and-append:" => { where_clause: " exists (
+    "copy-and-append:" => { takes_no_arg: true,
+                            where_clause: " exists (
     select null
       from loader_name_match
  where loader_name.id = loader_name_match.loader_name_id
@@ -576,7 +588,8 @@ select ln.id
     "created-by:" => { where_clause: "created_by = ?"},
     "updated-by:" => { where_clause: "updated_by = ?"},
     "not-created-by:" => { where_clause: "created_by != ?"},
-    "not-created-by-batch:" => { where_clause: "created_by != 'batch'"},
+    "not-created-by-batch:" => { takes_no_arg: true,
+                                 where_clause: "created_by != 'batch'"},
     "original-text:" => { where_clause: "lower(original_text) like ?",
                           not_exists_clause: " original_text is null"},
     "original-text-has-×:" => { where_clause: "lower(original_text) like '%×%'",
@@ -596,12 +609,15 @@ select ln.id
                                               where pa.id = loader_name.parent_id
                                                 and pa.no_further_processing)",
                            takes_no_arg: true},
-    "isonym:" => { where_clause: "isonym is not null"},
-    "orth-var:" => { where_clause: "name_status like 'orth%'"},
+    "isonym:" => { takes_no_arg: true,
+                   where_clause: "isonym is not null"},
+    "orth-var:" => { takes_no_arg: true,
+                     where_clause: "name_status like 'orth%'"},
     "name-status:" => { where_clause: "name_status like ?",
                         leading_wildcard: true,
                         trailing_wildcard: true},
-    "name-status-empty-string:" => { where_clause: "name_status = ''"},
+    "name-status-empty-string:" => { takes_no_arg: true,
+                                     where_clause: "name_status = ''"},
     "name-status-exact:" => { where_clause: "name_status like ?"},
     "notes:" => { where_clause: "lower(notes) like ?",
                   leading_wildcard: true,
@@ -609,12 +625,16 @@ select ln.id
     "rank:" => { where_clause: "lower(rank) like ?",
                  not_exists_clause: " rank is null"},
     "not-rank:" => { where_clause: "lower(rank) not like ?"},
-    "no-rank:" => { where_clause: "rank is null"},
+    "no-rank:" => { takes_no_arg: true,
+                    where_clause: "rank is null"},
     "nsl-rank:" => { where_clause: "lower(nsl_rank) like ?"},
     "not-nsl-rank:" => { where_clause: "lower(nsl_rank) not like ?"},
-    "no-nsl-rank:" => { where_clause: "nsl_rank is null"},
-    "doubtful:" => { where_clause: "doubtful"},
-    "not-doubtful:" => { where_clause: "not doubtful"},
+    "no-nsl-rank:" => { takes_no_arg: true,
+                        where_clause: "nsl_rank is null"},
+    "doubtful:" => { takes_no_arg: true,
+                     where_clause: "doubtful"},
+    "not-doubtful:" => { takes_no_arg: true,
+                         where_clause: "not doubtful"},
     "excluded-with-syn:" => { trailing_wildcard: true,
                               where_clause: " (lower(simple_name) like ? and record_type = 'excluded') or (parent_id in (select id from loader_name where lower(simple_name) like ? and record_type = 'excluded'))"},
 
@@ -638,7 +658,8 @@ select ln.id
        leading_wildcard: true,
        trailing_wildcard: true},
 
-    "in-accepted-taxonomy:" => { where_clause: "loader_name.id in (select distinct ln.id
+    "in-accepted-taxonomy:" => { takes_no_arg: true,
+                                 where_clause: "loader_name.id in (select distinct ln.id
   from loader_name_match lnm
   join loader_name ln
     on lnm.loader_name_id = ln.id
@@ -652,7 +673,8 @@ select ln.id
  order by ln.id)",
                                 trailing_wildcard: true},
 
-    "not-in-accepted-taxonomy:" => { where_clause: "loader_name.id in (select distinct ln.id
+    "not-in-accepted-taxonomy:" => { takes_no_arg: true,
+                                     where_clause: "loader_name.id in (select distinct ln.id
   from loader_name_match lnm
   join loader_name ln
     on lnm.loader_name_id = ln.id
@@ -666,7 +688,8 @@ select ln.id
  order by ln.id)",
                                 trailing_wildcard: true},
 
-    "in-or-not-in-accepted-taxonomy:" => { where_clause: "loader_name.id in (select distinct ln.id
+    "in-or-not-in-accepted-taxonomy:" => { takes_no_arg: true,
+                                           where_clause: "loader_name.id in (select distinct ln.id
   from loader_name_match lnm
   join loader_name ln
     on lnm.loader_name_id = ln.id
@@ -675,9 +698,12 @@ select ln.id
                                 trailing_wildcard: true},
 
     "syn-type:" => { where_clause: "lower(synonym_type) like ?"},
-    "manually-drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where manually_drafted)"},
-    "drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where drafted)"},
-    "created-manually:" => { where_clause: "created_manually" },
+    "manually-drafted:" => { takes_no_arg: true,
+                             where_clause: " id in (select loader_name_id from loader_name_match where manually_drafted)"},
+    "drafted:" => { takes_no_arg: true,
+                    where_clause: " id in (select loader_name_id from loader_name_match where drafted)"},
+    "created-manually:" => { takes_no_arg: true,
+                             where_clause: "created_manually" },
 "syn-match-in-tree-faster-join:" => { where_clause: " id in (select ln.id
   from loader_name ln
        join loader_name_match lnm
@@ -768,7 +794,8 @@ select ln.id
    and ln.partly is null
    and lower(ln.family) in (?))",
      },
-  "name-match-in-syn:" => { where_clause: " record_type in ('accepted', 'excluded')
+  "name-match-in-syn:" => { takes_no_arg: true,
+                            where_clause: " record_type in ('accepted', 'excluded')
        and exists (
        select null
        from loader_name_match
@@ -792,7 +819,8 @@ select ln.id
    and pni_type.synonym
    and not pni_type.pro_parte
      )"},
-    "syn-clash-with-syn:" => { where_clause: "
+    "syn-clash-with-syn:" => { takes_no_arg: true,
+                               where_clause: "
                                  ( exists (
        select null
   from loader_name parent
