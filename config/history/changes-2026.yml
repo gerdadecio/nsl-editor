@@ -1,4 +1,8 @@
 - :date: 04-August-2026
+  :jira_id: '4317'
+  :description: |-
+    Instance search : Add directives <code>is-not-novely:</code>, <code>is-relationship:</code>, <code>is-not-relationship:</code>
+- :date: 04-August-2026
   :jira_id: '5789'
   :description: |-
     Reference typeahead: apply chronological order using <code>iso_publication_date</code>
