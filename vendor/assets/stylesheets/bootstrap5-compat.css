@@ -396,6 +396,13 @@ input[type="radio"].form-control:focus {
   box-shadow: none;
 }
 
+input[type="file"]:focus,
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
 /* --- Misc removed helpers --------------------------------------------------- */
 .center-block { display: block; margin-right: auto; margin-left: auto; }
 .text-muted   { color: #6c757d !important; }
@@ -745,11 +752,11 @@ svg.icon.name-icon {
   overflow: hidden !important;
 }
 
-table[border] {
+table[border]:not([border="0"]) {
   border-collapse: collapse;
 }
-table[border] th,
-table[border] td {
+table[border]:not([border="0"]) th,
+table[border]:not([border="0"]) td {
   border: 1px solid #999;
 }
 
