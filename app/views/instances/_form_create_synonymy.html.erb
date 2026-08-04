@@ -11,7 +11,7 @@
 </div>
 <% end %>
 
-The name (and optional year)*, as referenced below:
+The name (and optional year)<span class="red" aria-hidden="true">*</span>, as referenced below:
 <div class="typeahead-container">
   <section class='block width-100-percent'>
     <input id="instance-instance-for-name-showing-reference-typeahead"
@@ -25,7 +25,7 @@ The name (and optional year)*, as referenced below:
   </section>
 </div>
 <script> setUpSynonymyInstance(); </script>
-is a type*
+is a type<span class="red" aria-hidden="true">*</span>
 <br>
 <%= f.select(:instance_type_id,
 InstanceType.synonym_options,

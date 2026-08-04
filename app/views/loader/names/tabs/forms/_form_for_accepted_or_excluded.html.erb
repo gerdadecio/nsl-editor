@@ -26,7 +26,7 @@
     <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
 
     <div class="form-group">
-      <label for="record_type">Record type - accepted or excluded<span class='red'>*</span></label>
+      <label for="record_type">Record type - accepted or excluded<span class="red" aria-hidden="true">*</span></label>
       <%= f.select :record_type, ["accepted", "excluded"], {include_blank: true},
         class: 'form-control',
         required: true,
@@ -39,12 +39,12 @@
     <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
 
     <div class="form-group">
-      <label for="rank">Rank<span class='red'>*</span></label>
+      <label for="rank">Rank<span class="red" aria-hidden="true">*</span></label>
       <%= f.text_field :rank, class: 'form-control', required: true, title: "Enter rank", tabindex: increment_tab_index %>
     </div>
 
     <div class="form-group">
-      <label for="family">Family<span class='red'>*</span></label>
+      <label for="family">Family<span class="red" aria-hidden="true">*</span></label>
       <%= f.text_field :family, class: 'form-control', list: "families",
         required: true, title: "Enter family name", tabindex: increment_tab_index %>
     </div>

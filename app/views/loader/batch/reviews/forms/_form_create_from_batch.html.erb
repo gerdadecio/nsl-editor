@@ -3,7 +3,7 @@
               data: { turbo: false },
               local: false, method: :post do |form| %>
   <%= form.hidden_field :loader_batch_id %>
-  Name*: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", required: true, tabindex: increment_tab_index %>
+  Name<span class="red" aria-hidden="true">*</span>: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", required: true, tabindex: increment_tab_index %>
 <p>A short, descriptive way to refer to this review.</p>
   <%= form.submit id: "save-new-batch-review-btn", class: 'btn-primary', title: "Create a new review", tabindex: increment_tab_index %>
 <% end %>

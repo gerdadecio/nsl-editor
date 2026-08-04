@@ -20,12 +20,12 @@
       <% end %>
 
       <div class="form-group">
-        <%= form.label :username, 'Username*' %>
+        <%= form.label :username do %>Username<span class="red" aria-hidden="true">*</span><% end %>
         <%= form.text_field :username, required: true, autofocus: true, title: "Enter your #{ShardConfig.shard_group_name} Editor username", class: 'form-control' %>
       </div>
 
       <div class="form-group">
-        <%= form.label :password, 'Password*' %>
+        <%= form.label :password do %>Password<span class="red" aria-hidden="true">*</span><% end %>
         <%= form.password_field :password, required: true, title: "Enter your #{ShardConfig.shard_group_name} Editor password", class: 'form-control' %>
       </div>
 

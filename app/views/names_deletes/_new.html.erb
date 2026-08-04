@@ -25,7 +25,7 @@
       disabled: false %>
     <%= cancel_delete_link %>
     <div class="form-group">
-      <label for="names_delete_reason">Reason*</label>
+      <label for="names_delete_reason">Reason<span class="red" aria-hidden="true">*</span></label>
     <br>
     <%= f.select('reason', 
                  names_delete.possible_reasons,

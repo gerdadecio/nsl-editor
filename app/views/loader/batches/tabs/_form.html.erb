@@ -2,7 +2,7 @@
 
   <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
   <div class="form-group">
-    <label for="name">Name<span class="red">*</span></label>
+    <label for="name">Name<span class="red" aria-hidden="true">*</span></label>
     <%= form.text_field :name, class: 'form-control', title: 'Edit the name of the batch', required: true %>
     <p class="help-block">
     Batch name must be unique and should be short &mdash; it will be listed in the search targets dropdown list &mdash;
