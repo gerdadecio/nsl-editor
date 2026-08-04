@@ -1,4 +1,8 @@
 - :date: 05-August-2026
+  :jira_id: '5858'
+  :description: |-
+    Run a sweep of the forms to make asterisks indicating mandatory fields consistent
+- :date: 05-August-2026
   :jira_id: '5872'
   :description: |-
     Name search: Add new directive <code>include-common-and-cultivar:</code> and use its abbreviation <code>icc:</code> in the Novel Names link
