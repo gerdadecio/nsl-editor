@@ -238,18 +238,27 @@ from comment where comment.instance_id = instance.id)",
     "is-novelty:" => { where_clause: " exists (select null
                        from instance_type
                        where instance_type_id = instance_type.id
-                       and instance_type.primary_instance) ",
-                       takes_no_arg: true},
+                       and instance_type.primary_instance) ",},
+    "is-not-novelty:" => { where_clause: " exists (select null
+                       from instance_type
+                       where instance_type_id = instance_type.id
+                       and not instance_type.primary_instance) ",},
     "is-standalone:" => { where_clause: " exists (select null
                                           from instance_type
                                           where instance_type_id = instance_type.id
-                                          and instance_type.standalone) ",
-                         },
+                                          and instance_type.standalone) ",},
     "is-not-standalone:" => { where_clause: " exists (select null
                                           from instance_type
                                           where instance_type_id = instance_type.id
-                                          and not instance_type.standalone) ",
-                         },
+                                          and not instance_type.standalone) ",},
+    "is-relationship:" => { where_clause: " exists (select null
+                                          from instance_type
+                                          where instance_type_id = instance_type.id
+                                          and instance_type.relationship) ",},
+    "is-not-relationship:" => { where_clause: " exists (select null
+                                          from instance_type
+                                          where instance_type_id = instance_type.id
+                                          and not instance_type.relationship) ",},
     "is-tax-nov-for-orth-var-name:" => { where_clause: " exists (select null
                                  from instance_type
                                  where instance_type_id = instance_type.id
