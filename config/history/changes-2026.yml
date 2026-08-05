@@ -315,6 +315,8 @@
   :jira_id: '3931'
   :description: |-
     Reference search from Details tab: link to new search for list of novelties sorted by page
+- :date: 05-August-2026
+  :release: true
 - :date: 26-June-2026
   :jira_id: '5837'
   :description: |-
