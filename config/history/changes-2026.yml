@@ -1,4 +1,8 @@
 - :date: 05-August-2026
+  :jira_id: '5869'
+  :description: |-
+    Fixup the style of the test editor button in the top bar on bs5
+- :date: 05-August-2026
   :jira_id: '5858'
   :description: |-
     Run a sweep of the forms to make asterisks indicating mandatory fields consistent
