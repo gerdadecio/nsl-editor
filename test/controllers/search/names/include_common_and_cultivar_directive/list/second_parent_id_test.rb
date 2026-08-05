@@ -19,18 +19,15 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchNamesCommNCultivarParamList2ndParentId < ActionController::TestCase
+class SearchNamesIncludeCommonAndCultivarDirectiveList2ndParentId < ActionController::TestCase
   tests SearchController
 
-  test "search names second parent id with common and cultivar param true" do
+  test "search names second parent id with include-common-and-cultivar directive true" do
     name = names(:another_species)
     get(:search,
         params: { query_target: "name",
-                  query_string: "second-parent-id: #{name.id}",
-                  query_common_and_cultivar: "t" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+                  query_string: "second-parent-id: #{name.id} include-common-and-cultivar:true" },
+        session: { username: "fred", user_full_name: "Fred Jones", groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
                   /7 names\b/,

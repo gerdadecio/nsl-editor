@@ -1,8 +1,7 @@
 <br>
 <% if @name.second_children.size > 0 %>
   <%= link_to("#{pluralize(@name.combined_children.size,'combined child')} #{editor_icon('search')}".html_safe,
-    search_path(query_string: "parent-or-second-parent-id: #{@name.id}",
-                query_common_and_cultivar: "t",
+    search_path(query_string: "parent-or-second-parent-id: #{@name.id} include-common-and-cultivar:true",
                 query_target: 'name'),
                 tabindex: increment_tab_index,
                 title: "Retrieve #{pluralize(@name.combined_children.size,'combined child')}.",
@@ -11,8 +10,7 @@
 <% end %>
 <% if @name.children.size > 0 %>
   <%= link_to("#{pluralize(@name.children.size,'child')} #{editor_icon('search')}".html_safe,
-    search_path(query_string: "parent-id: #{@name.id}",
-                query_common_and_cultivar: "t",
+    search_path(query_string: "parent-id: #{@name.id} include-common-and-cultivar:true",
                 query_target: 'name'),
                 tabindex: increment_tab_index,
                 title: "Retrieve #{pluralize(@name.children.size,'child')}.",
@@ -21,8 +19,7 @@
 <% end %>
 <% if @name.second_children.size > 0 %>
   <%= link_to("#{pluralize(@name.second_children.size,'second parent child')} #{editor_icon('search')}".html_safe,
-    search_path(query_string: "second-parent-id: #{@name.id}",
-                query_common_and_cultivar: "t",
+    search_path(query_string: "second-parent-id: #{@name.id} include-common-and-cultivar:true",
                 query_target: 'name'),
                 tabindex: increment_tab_index,
                 title: "Retrieve #{pluralize(@name.second_children.size,'second parent child')}.",

@@ -10,6 +10,19 @@
 
 <br>
 <br>
+  <h4>Including Common Names and Cultivars</h4>
+  By default, Name searches exclude common names and cultivars from the results.
+  <p>
+  Whether they are included can depend on your session setting, or on the particular directive you're searching with (some directives always include them).
+  <p>
+  To get a deterministic result regardless of either of those, add <code>include-common-and-cultivar:true</code> or <code>include-common-and-cultivar:false</code> to your search. This directive overrides both your session setting and any directive that would otherwise auto-include them.
+  <p>
+  The argument is optional - a bare <code>include-common-and-cultivar:</code> means true.
+  <p>
+  The <code>include-common-and-cultivar:</code> directive also has an abbreviation: <code>icc:</code>, e.g. <code>icc:true</code>, or bare <code>icc:</code> for true.
+
+<br>
+<br>
   <h4>Searchable Name fields</h4>
   <% link_example = link_to('*costata', search_path(query_string: '*costata', query_target: 'name'),class:'blue', title:"Run the described search.") %>
   <h5>Name</h5>
