@@ -1,3 +1,7 @@
+- :date: 05-August-2026
+  :jira_id: ''
+  :description: |-
+    Fixup missing badge style for jira ticket with unknown status in the release notes
 - :date: 04-August-2026
   :jira_id: '4317'
   :description: |-
