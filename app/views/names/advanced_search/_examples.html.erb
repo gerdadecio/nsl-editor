@@ -15,6 +15,8 @@
        explanation: %Q(Also include common and cultivar names which are normally excluded (i.e. #{excc.sub(/\./,'')}).)},
       {search_target: 'Names', search_string: "*cacia", explanation: %Q(Find names containing "cacia". A trailing wildcard is added automatically. #{excc})},
       {search_target: 'Names', search_string: "acacia type:common,cultivar", explanation: %Q(Find just common or cultivar names exactly matching "acacia". #{incc})},
+      {search_target: 'Names', search_string: "acacia include-common-and-cultivar:true", explanation: %Q(Also include common and cultivar names, regardless of your session setting or any directive that would otherwise exclude them. #{incc})},
+      {search_target: 'Names', search_string: "acacia type:* include-common-and-cultivar:false", explanation: %Q(Exclude common and cultivar names even though type:* would normally include them. #{excc})},
       {search_target: 'Names', search_string: "acacia rank: genus", explanation: %Q(List any name starting with "acacia" that is a genus. #{excc})},
       {search_target: 'Names', search_string: "acacia rank: genus is-not-a-duplicate:", explanation: %Q(List any name starting with "acacia" that is a genus and is not a duplicate. #{excc})},
       ].each do |val| %>

@@ -33,11 +33,20 @@ class Search::OnName::WhereClauses
 
   def build_sql
     args = @parsed_request.where_arguments.downcase
-    @common_and_cultivar_included =
-      @parsed_request.include_common_and_cultivar_session
+    @common_and_cultivar_included = resolve_common_and_cultivar_included
     @sql = @sql.for_id(@parsed_request.id) if @parsed_request.id
     apply_args_to_sql(args)
     @sql = @sql.not_common_or_cultivar unless @common_and_cultivar_included
+  end
+
+  # The include-common-and-cultivar: directive, when present in the query
+  # string, is a deterministic override and takes precedence over the
+  # session-level include_common_and_cultivar setting.
+  def resolve_common_and_cultivar_included
+    directive = @parsed_request.include_common_and_cultivar_directive
+    return directive unless directive.nil?
+
+    @parsed_request.include_common_and_cultivar_session
   end
 
   def apply_args_to_sql(args)
@@ -120,6 +129,10 @@ class Search::OnName::WhereClauses
 
   def apply_common_and_cultivar(rule)
     debug("apply_common_and_cultivar: #{rule.try('where_clause')}")
+    # An explicit include-common-and-cultivar: directive is deterministic,
+    # so it must not be overridden by a rule's allow_common_and_cultivar:
+    # true auto-inclusion, in either direction.
+    return unless @parsed_request.include_common_and_cultivar_directive.nil?
     return if @common_and_cultivar_included
 
     if rule.allow_common_and_cultivar

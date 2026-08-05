@@ -32,6 +32,7 @@ class Search::ParsedRequest
               :defined_query_arg,
               :id,
               :include_common_and_cultivar_session,
+              :include_common_and_cultivar_directive,
               :limit,
               :limited,
               :offset,
@@ -157,6 +158,7 @@ class Search::ParsedRequest
 
   ALLOW_SHOW_INSTANCES_TARGETS = %w[names name references reference]
   ALLOW_SHOW_NOVELTIES_TARGETS = %w[references reference]
+  ALLOW_INCLUDE_COMMON_AND_CULTIVAR_TARGETS = %w[names name]
 
   TRIM_RESULTS = {
     "loader name" => true,
@@ -189,6 +191,7 @@ class Search::ParsedRequest
   SHOW_INSTANCES_BY_PAGE = "show-instances-by-page:"
   SHOW_NOVELTIES = "show-novelties:"
   SHOW_NOVELTIES_BY_PAGE = "show-novelties-by-page:"
+  INCLUDE_COMMON_AND_CULTIVAR = "include-common-and-cultivar:"
 
   def initialize(params)
     @params = params
@@ -235,6 +238,8 @@ class Search::ParsedRequest
     unused_qs_tokens = preprocess_target(unused_qs_tokens)
     unused_qs_tokens = parse_target(unused_qs_tokens)
     unused_qs_tokens = parse_common_and_cultivar(unused_qs_tokens)
+    unused_qs_tokens = inflate_include_common_and_cultivar_abbrev(unused_qs_tokens)
+    unused_qs_tokens = parse_include_common_and_cultivar_directive(unused_qs_tokens)
     unused_qs_tokens = inflate_show_instances_abbrevs(unused_qs_tokens)
     unused_qs_tokens = parse_show_instances(unused_qs_tokens)
     unused_qs_tokens = inflate_show_novelties_abbrevs(unused_qs_tokens)
@@ -552,9 +557,40 @@ query_string: '#{@query_string}'"
   def parse_common_and_cultivar(tokens)
     @common_and_cultivar = false
     @include_common_and_cultivar_session = \
-      @params["include_common_and_cultivar_session"] ||
-      @params["query_common_and_cultivar"] == "t"
+      @params["include_common_and_cultivar_session"]
     tokens
+  end
+
+  def inflate_include_common_and_cultivar_abbrev(tokens)
+    inflate_token(tokens, "icc:", INCLUDE_COMMON_AND_CULTIVAR)
+  end
+
+  # A deterministic, per-query override for whether common names and
+  # cultivars are included in name search results.  Unlike
+  # include_common_and_cultivar_session (a session-wide setting) and the
+  # allow_common_and_cultivar: true rule in config/name-searches.yml (an
+  # auto-inclusion for specific directives), this directive is explicit in
+  # the query string, so it takes precedence over both.  Leave
+  # @include_common_and_cultivar_directive as nil when the directive is
+  # absent, so downstream code can tell "not specified" apart from "false".
+  def parse_include_common_and_cultivar_directive(tokens)
+    joined_tokens = tokens.join(" ")
+    if joined_tokens =~ /include-common-and-cultivar: *(true|false)\b/i
+      include_common_and_cultivar_directive_allowed?
+      @include_common_and_cultivar_directive = (Regexp.last_match(1).downcase == "true")
+      joined_tokens = joined_tokens.gsub(/include-common-and-cultivar: *(true|false)\b/i, "")
+    elsif joined_tokens =~ /include-common-and-cultivar:/i
+      raise "Error: the include-common-and-cultivar: directive needs a true or false argument, e.g. include-common-and-cultivar:true"
+    else
+      @include_common_and_cultivar_directive = nil
+    end
+    joined_tokens.split(" ")
+  end
+
+  def include_common_and_cultivar_directive_allowed?
+    return if ALLOW_INCLUDE_COMMON_AND_CULTIVAR_TARGETS.include?(@query_target)
+
+    raise "The include-common-and-cultivar: directive is not supported for this query"
   end
 
   def parse_show_profiles(tokens)
