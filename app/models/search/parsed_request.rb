@@ -573,6 +573,8 @@ query_string: '#{@query_string}'"
   # the query string, so it takes precedence over both.  Leave
   # @include_common_and_cultivar_directive as nil when the directive is
   # absent, so downstream code can tell "not specified" apart from "false".
+  # Like show-instances: and similar bare-flag directives, an argument is
+  # optional - a bare include-common-and-cultivar: (or icc:) means true.
   def parse_include_common_and_cultivar_directive(tokens)
     joined_tokens = tokens.join(" ")
     if joined_tokens =~ /include-common-and-cultivar: *(true|false)\b/i
@@ -580,7 +582,9 @@ query_string: '#{@query_string}'"
       @include_common_and_cultivar_directive = (Regexp.last_match(1).downcase == "true")
       joined_tokens = joined_tokens.gsub(/include-common-and-cultivar: *(true|false)\b/i, "")
     elsif joined_tokens =~ /include-common-and-cultivar:/i
-      raise "Error: the include-common-and-cultivar: directive needs a true or false argument, e.g. include-common-and-cultivar:true"
+      include_common_and_cultivar_directive_allowed?
+      @include_common_and_cultivar_directive = true
+      joined_tokens = joined_tokens.gsub(/include-common-and-cultivar:/i, "")
     else
       @include_common_and_cultivar_directive = nil
     end
