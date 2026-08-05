@@ -23,15 +23,15 @@
   <div id="change-password-form">
       <h4><%= @current_user.full_name %></h4>
       <div class="form-group">
-        <%= form.label :current_password, 'Current Password*' %>
+        <%= form.label :current_password do %>Current Password<span class="red">*</span><% end %>
         <%= form.password_field :current_password, required: true, title: "Enter your current password", class: 'form-control', autofocus: true %>
       </div>
       <div class="form-group">
-        <%= form.label :new_password, 'New Password*' %>
+        <%= form.label :new_password do %>New Password<span class="red">*</span><% end %>
         <%= form.password_field :new_password, required: true, title: "Enter your new password", class: 'form-control' %>
       </div>
       <div class="form-group">
-        <%= form.label :new_password_confirmation, 'Re-type New Password*' %>
+        <%= form.label :new_password_confirmation do %>Re-type New Password<span class="red">*</span><% end %>
         <%= form.password_field :new_password_confirmation, required: true, title: "Confirm your new password", class: 'form-control' %>
       </div>
 

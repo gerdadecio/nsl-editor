@@ -1,6 +1,6 @@
   <% if @name.category_for_edit.takes_parent_1? %>
     <div class="form-group">
-      <label for="name-parent-typeahead"><%= 'First ' if @name.hybrid? %>Parent<%= "*" if @name.requires_parent_1? %></label>
+      <label for="name-parent-typeahead"><%= 'First ' if @name.hybrid? %>Parent<% if @name.requires_parent_1? %><span class="red">*</span><% end %></label>
       <%= " [#{@name.category_for_edit.parent_1_help_text}]"  unless @name.category_for_edit.parent_1_help_text.blank? %><br>
       <input id="name-parent-typeahead"
              name="name[parent_typeahead]"

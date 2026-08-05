@@ -27,7 +27,7 @@
     <%= f.hidden_field :rank, value: 'none' %>
 
     <div class="form-group">
-      <label for="record_type">Record type - note visible to all or a compiler note*</label>
+      <label for="record_type">Record type - note visible to all or a compiler note<span class="red">*</span></label>
       <%= f.select :record_type, ["in-batch-note", "in-batch-compiler-note"], {include_blank: false},
         class: 'form-control',
         title: 'In-batch-notes are visible to all readers, in-batch-compiler-notes are visible to compilers',
@@ -52,7 +52,7 @@
     </div>
 
     <div class="form-group">
-      <label for="notes">Notes<span class='red'>*</span></label>
+      <label for="notes">Notes<span class="red">*</span></label>
       <%= f.text_area :notes, class: 'form-control', title: "Enter notes",
         required: true, tabindex: increment_tab_index, rows: 10 %>
     </div>

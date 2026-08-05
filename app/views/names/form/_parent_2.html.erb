@@ -1,7 +1,7 @@
   <% if @name.category_for_edit.takes_parent_2? %>
 
     <div class="form-group">
-      <label for="name-second-parent-typeahead">Second parent<%= "*" if @name.category_for_edit.requires_parent_2? %></label><%= " [#{@name.category_for_edit.parent_2_help_text}]" %><br>
+      <label for="name-second-parent-typeahead">Second parent<% if @name.category_for_edit.requires_parent_2? %><span class="red">*</span><% end %></label><%= " [#{@name.category_for_edit.parent_2_help_text}]" %><br>
       <input id="name-second-parent-typeahead"
              name="name[second_parent_typeahead]"
              class="typeahead form-control requires-rank"

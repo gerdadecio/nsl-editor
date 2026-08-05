@@ -48,7 +48,7 @@
 
 
     <div class="form-group">
-      <label for="record_type">Record type - accepted or excluded *</label>
+      <label for="record_type">Record type - accepted or excluded<span class="red">*</span></label>
       <%= form.select :record_type, ["accepted", "excluded"], {include_blank: true},
         class: 'form-control',
         required: true,

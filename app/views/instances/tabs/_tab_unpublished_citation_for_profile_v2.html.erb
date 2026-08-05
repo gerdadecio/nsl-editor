@@ -15,7 +15,7 @@
 
     In
     <%= show_field_as_linked_lookup('',@instance.reference,'citation', search_path(query_string: %Q(id:#{@instance.reference_id}),query_target: 'reference'),'reference') %>
-    the name*
+    the name<span class="red">*</span>
     <div class="typeahead-container">
       <section class='block width-100-percent'>
         <input id="instance-name-typeahead"
@@ -30,7 +30,7 @@
       </section>
     </div>
     <script> setUpInstanceNameForUnpubCitation(); </script>
-    is used as a type*
+    is used as a type<span class="red">*</span>
     <%= render partial: 'detail_line', locals: {
             info: f.select(:instance_type_id, InstanceType.unpublished_citation_options,{include_blank: true},
                            {value: @instance.instance_type_id,data:{update_url: instance_path},
