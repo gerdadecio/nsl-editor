@@ -111,6 +111,12 @@ span.compiler-comment-tag {
   padding: 0 0.2em 0 0.2em;
 }
 
+span.formatted-note-tag {
+  background-color: rebeccapurple;
+  color: white;
+  padding: 0 0.2em 0 0.2em;
+}
+
 tr.review-result span.excluded {
   background-color: red;
   font-size: 9pt;

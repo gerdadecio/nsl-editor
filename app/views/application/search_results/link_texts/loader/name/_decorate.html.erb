@@ -15,6 +15,11 @@
    <% end %>
 <% end %>
 
+<% if search_result.formatted_text_above.present? || search_result.formatted_text_below.present? %>
+     <span class='flag formatted-note-tag'
+           title='Loader name record has formatted note text'>FNote</span>
+<% end %>
+
 <% if search_result.loader_name_matches.blank? %>
   <%= render partial: "#{path}/decorate/no_preferred_match",
     locals: {search_result: search_result}

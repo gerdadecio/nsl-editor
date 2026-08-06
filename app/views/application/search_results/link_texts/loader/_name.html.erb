@@ -9,6 +9,12 @@
    <span class='loader-name <%= search_result.record_type %>'>
    <%= search_result.simple_name %>
    </span>
+
+   <% if search_result.formatted_text_above.present? || search_result.formatted_text_below.present? %>
+        <span class='flag formatted-note-tag'
+              title='Loader name record has formatted note text'>FNote</span>
+   <% end %>
+
 <% when 'in-batch-note' %>
 <% when 'in-batch-compiler-note' %>
 <% else %>

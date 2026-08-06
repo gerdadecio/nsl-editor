@@ -1068,5 +1068,16 @@ and not exists
                  and instance_type.name like '%autonym%'
              )",
             takes_no_arg: true},
+"formatted-note:" => { where_clause: "lower(formatted_text_above) like lower(?) 
+                                      or
+                                      lower(formatted_text_below) like lower(?)",
+                       leading_wildcard: true,
+                       trailing_wildcard: true},
+"formatted-note-above:" => { where_clause: "lower(formatted_text_above) like lower(?)",
+                       leading_wildcard: true,
+                       trailing_wildcard: true},
+"formatted-note-below:" => { where_clause: "lower(formatted_text_below) like lower(?)",
+                       leading_wildcard: true,
+                       trailing_wildcard: true},
   }.freeze
 end

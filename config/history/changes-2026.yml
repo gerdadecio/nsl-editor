@@ -1,4 +1,8 @@
 - :date: 06-August-2026
+  :jira_id: '5616'
+  :description: |-
+    Batch Loader: Provide query and show flags for "formatted note" entries
+- :date: 06-August-2026
   :jira_id: '5787'
   :description: |-
     Improve duplicate reference display with badge styling
