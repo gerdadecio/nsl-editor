@@ -436,10 +436,16 @@
   <% end %>
 </table>
 
-  <h4>Metadata queries</h4>
+  <h4>Metadata queries and similar</h4>
 <table class="table table-striped">
   <tr><th>Field</th><th>Description</th></tr>
   <% [
+    {field_name: 'formatted-note:',
+     description: "queries on formatted_text_above and formatted_text_below, case-insensitive, topped and tailed with wildcard"},
+    {field_name: 'formatted-note-above:',
+     description: "queries on formatted_text_above, case-insensitive, topped and tailed with wildcard"},
+    {field_name: 'formatted-note-below:',
+     description: "queries on formatted_text_below, case-insensitive, topped and tailed with wildcard"},
     {field_name: 'created-by:',
      description: "match on created by field"},
     {field_name: 'updated-by:',

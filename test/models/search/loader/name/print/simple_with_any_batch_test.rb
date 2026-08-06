@@ -33,15 +33,22 @@ class SearchLoaderNameAndPrintSimpleWithAnyBatchTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(Array),
       "Results should be an Array."
-    assert_equal 24,
+    assert_equal 26,
                  search.executed_query.results.size,
-                 "Exactly 24 results expected (9 original + 11 from " \
+                 "Exactly 26 results expected (9 original + 2 extra from " \
+                 "accepted_one/accepted_two's formatted_text_above/" \
+                 "formatted_text_below, each of which " \
+                 "RewriteResultsShowingExtras expands into its own row " \
+                 "(see test/fixtures/loader_names.yml and the " \
+                 "formatted-note: directive tests) + 11 from " \
                  "Loader::Name::MakeOneInstance guard-ordering tests - " \
-                 "none of the 11 set comment/distribution, so " \
+                 "none of the 11 set comment/distribution or " \
+                 "formatted_text_above/below, so " \
                  "RewriteResultsShowingExtras adds exactly 1 entry per " \
                  "record with no expansion, even for the 3 that are " \
                  "record_type accepted - + 4 from the " \
                  "name-match-no-primary: directive tests, which also " \
-                 "don't set comment/distribution)."
+                 "don't set comment/distribution or formatted_text_above/" \
+                 "below)."
   end
 end

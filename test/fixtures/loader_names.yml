@@ -17,6 +17,7 @@ accepted_one:
   distribution: Tas
   comment: a comment
   remark_to_reviewers: a remark to reviewers
+  formatted_text_above: Stray Names From Flora Of Australia Needing Review
   created_by: tester
   updated_by: tester
   created_at: <%= Time.now %>
@@ -34,6 +35,7 @@ accepted_two:
   distribution: NSW
   comment: a comment
   remark_to_reviewers: a remark to reviewers
+  formatted_text_below: See Appendix B For Further Notes
   created_by: tester
   updated_by: tester
   created_at: <%= Time.now %>
