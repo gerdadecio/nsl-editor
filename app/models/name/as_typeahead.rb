@@ -195,7 +195,7 @@ class Name::AsTypeahead < Name
                   .joins(:name_status)
                   .select_fields_for_typeahead
                   .limit(SEARCH_LIMIT)
-                  .order_by_full_name
+                  .order_by_rank_and_full_name
       results = query.collect do |n|
         { value: "#{n.full_name} | #{n.name_status_name}", id: n.id }
       end
