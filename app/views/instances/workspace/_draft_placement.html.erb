@@ -102,12 +102,15 @@
       </a>
     </dd>
 
-    <dt>Taxon link</dt>
-    <dd>
-      <a href="<%= @tree_version_element.full_taxon_link %>" title="Taxon link id">
-        <i class="fa fa-sitemap"></i> ... <%= @tree_version_element.taxon_link %>
-      </a>
-    </dd>
+    <% if @tree_version_element.tree_version.published? %>
+      <dt>Taxon link</dt>
+      <dd>
+        <a href="<%= @tree_version_element.full_taxon_link %>" title="Taxon link id">
+          <i class="fa fa-sitemap"></i> ... <%= @tree_version_element.taxon_link %>
+        </a>
+      </dd>
+    <% end %>
+
     <dt>apni format</dt>
     <dd>
       <a href="<%= %Q(#{Rails.configuration.try('nsl_links')}apni-format/display/#{@instance.name_id}?versionId=#{@tree_version_element.tree_version.id}&drafts=true) %>"
