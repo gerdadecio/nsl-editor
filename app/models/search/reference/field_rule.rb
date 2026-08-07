@@ -244,5 +244,15 @@ inner join ref_type xcrt on xrt.id = xcrt.parent_id))",
     "title-does-not-match-display-title:" => {
                           takes_no_arg: true,
                           where_clause: " display_title != title " },
+    "has-no-instance:" => { where_clause: " not exists
+                             (select null 
+                                from instance i
+                               where i.reference_id = reference.id)",
+                            takes_no_arg: true},
+    "has-instance:" => { where_clause: " exists
+                             (select null 
+                                from instance i
+                               where i.reference_id = reference.id)",
+                            takes_no_arg: true},
   }.freeze
 end

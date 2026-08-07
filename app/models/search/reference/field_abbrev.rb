@@ -46,5 +46,7 @@ class Search::Reference::FieldAbbrev
     "is-duplicate:" => "is-a-duplicate:",
     "duplicate:" => "is-a-duplicate:",
     "page:" => "pages:",
+    "has-instances:" => "has-instance:",
+    "has-no-instances:" => "has-no-instance:",
   }.freeze
 end

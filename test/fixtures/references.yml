@@ -323,19 +323,6 @@ paper_within_journal:
   edition: 1
   volume: 2
 
-
-journal_with_papers:
-  <<: *DEFAULTS
-  title: "  journal with papers  "
-  citation: "  journal with papers  "
-  citation_html: "  journal with papers  "
-  display_title: Journal with Papers
-  author: blume_c_l_von
-  ref_author_role: editor
-  ref_type: journal
-  edition: 1
-  volume: 2
-
 book_by_brassard:
   <<: *DEFAULTS
   title: "   book by brassard  "
