@@ -1,4 +1,8 @@
 - :date: 07-August-2026
+  :jira_id: '5670'
+  :description: |-
+    Reference Search: Add <code>has-instance:</code> and <code>has-no-instance:</code> directives
+- :date: 07-August-2026
   :jira_id: '5880'
   :description: |-
     Taxon Link: Only display "taxon link" on Tree tab after tree publication 

@@ -237,8 +237,10 @@ in the following formats:</p>
       {field_name: 'pub-date-is-year:',
        description: "Publication date is 4 digits alone or 4 digits within
        parentheses."},
-       {field_name: 'has-no-direct-or-child-instances:', description: "References that have no instance and no children with instances. Does <b>not</b> check beyond first generation of children."},
        {field_name: 'title-does-not-match-display-title:', description: "References in which the title and display title are not the same. Takes no arguments"},
+       {field_name: 'has-no-direct-or-child-instances:', description: "References that have no instance and no children with instances. Does <b>not</b> check beyond first generation of children."},
+       {field_name: 'has-instance:', description: "References that have at least one instance."},
+       {field_name: 'has-no-instance:', description: "References that have no instances."},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
