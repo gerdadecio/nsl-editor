@@ -1,4 +1,8 @@
 - :date: 10-August-2026
+  :jira_id: '5876'
+  :description: |-
+    Fixup the flaky test around the soft delete name query in minitest
+- :date: 10-August-2026
   :jira_id: '5884'
   :description: |-
     Typeahead Upgrade: Name Duplicate of field upgraded to use autocomplete library

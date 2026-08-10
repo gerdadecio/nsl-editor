@@ -22,6 +22,15 @@ load "test/models/search/users.rb"
 load "test/models/search/on_name/test_helper.rb"
 
 class SearchOnNameSoftDeletedSimpleTest < ActiveSupport::TestCase
+  # A bare soft-deleted directive matches nearly every name fixture, so the
+  # search truncates at Search::ParsedRequest::DEFAULT_LIST_LIMIT. Its
+  # ORDER BY sort_name cannot break the tie because no name fixture sets
+  # sort_name, so which rows survive the limit is arbitrary. Pairing each
+  # directive with a name: term that matches a single fixture keeps these
+  # assertions independent of both the limit and the row order.
+  LIVE = "name: plantae"        # the_regnum, not soft deleted
+  DELETED = "name: softdeletia" # a_soft_deleted_name, soft deleted
+
   def search_ids(query_string)
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
@@ -34,32 +43,41 @@ class SearchOnNameSoftDeletedSimpleTest < ActiveSupport::TestCase
   end
 
   test "is-soft-deleted: includes a soft deleted name" do
-    assert_includes search_ids("is-soft-deleted:"),
+    assert_includes search_ids("is-soft-deleted: #{DELETED}"),
                     names(:a_soft_deleted_name).id,
                     "Expected the soft deleted name in the results"
   end
 
   test "is-soft-deleted: excludes a name that is not soft deleted" do
-    refute_includes search_ids("is-soft-deleted:"),
+    assert_includes search_ids(LIVE),
+                    names(:the_regnum).id,
+                    "Sanity check: the live name should be findable by name"
+    refute_includes search_ids("is-soft-deleted: #{LIVE}"),
                     names(:the_regnum).id,
                     "Expected a live name to be excluded from the results"
   end
 
   test "is-not-soft-deleted: includes a name that is not soft deleted" do
-    assert_includes search_ids("is-not-soft-deleted:"),
+    assert_includes search_ids("is-not-soft-deleted: #{LIVE}"),
                     names(:the_regnum).id,
                     "Expected a live name in the results"
   end
 
   test "is-not-soft-deleted: excludes a soft deleted name" do
-    refute_includes search_ids("is-not-soft-deleted:"),
+    assert_includes search_ids(DELETED),
+                    names(:a_soft_deleted_name).id,
+                    "Sanity check: the soft deleted name should be findable by name"
+    refute_includes search_ids("is-not-soft-deleted: #{DELETED}"),
                     names(:a_soft_deleted_name).id,
                     "Expected the soft deleted name to be excluded"
   end
 
   test "the two directives return disjoint result sets" do
-    deleted_ids = search_ids("is-soft-deleted:")
-    live_ids = search_ids("is-not-soft-deleted:")
+    # The only assertion here that needs the complete result set, so ask for a
+    # limit that always covers every name rather than a hard coded number.
+    all = "limit: #{Name.count}"
+    deleted_ids = search_ids("is-soft-deleted: #{all}")
+    live_ids = search_ids("is-not-soft-deleted: #{all}")
     assert_empty deleted_ids & live_ids,
                  "A name should never be both soft deleted and not soft deleted"
   end
