@@ -1055,6 +1055,69 @@ not_a_duplicate_genus:
   name_path: 'Plantae/Magnoliophyta/a_family/a_genus/thinguu'
   uri: acm
 
+# Fixtures for the duplicate-suggestions typeahead sort order.
+# Deliberately arranged so rank order is the reverse of alphabetical order:
+#   alphabetical: alpha, delta, mu, zeta
+#   by rank:      zeta (familia), mu (genus), alpha & delta (species)
+# The two species share a rank so the full_name tie-break can be checked too.
+# The group is deliberately self-contained - it hangs off no existing name -
+# so it does not change the child counts other search tests assert on.
+sortcheck_familia:
+  <<: *DEFAULTS
+  simple_name: 'Sortcheck zeta'
+  full_name: 'Sortcheck zeta'
+  name_element: 'zeta'
+  name_rank: familia
+  name_status: legitimate
+  name_type: scientific
+  namespace: apni
+  parent_id: nil
+  family_id: nil
+  name_path: 'Sortcheck zeta'
+  uri: sortcheck_familia
+
+sortcheck_genus:
+  <<: *DEFAULTS
+  simple_name: 'Sortcheck mu'
+  full_name: 'Sortcheck mu'
+  name_element: 'mu'
+  name_rank: genus
+  name_status: legitimate
+  name_type: scientific
+  namespace: apni
+  parent: sortcheck_familia
+  family: sortcheck_familia
+  name_path: 'Sortcheck zeta/Sortcheck mu'
+  uri: sortcheck_genus
+
+sortcheck_species_alpha:
+  <<: *DEFAULTS
+  simple_name: 'Sortcheck alpha'
+  full_name: 'Sortcheck alpha'
+  name_element: 'alpha'
+  name_rank: species
+  name_status: legitimate
+  name_type: scientific
+  namespace: apni
+  parent: sortcheck_genus
+  family: sortcheck_familia
+  name_path: 'Sortcheck zeta/Sortcheck mu/Sortcheck alpha'
+  uri: sortcheck_species_alpha
+
+sortcheck_species_delta:
+  <<: *DEFAULTS
+  simple_name: 'Sortcheck delta'
+  full_name: 'Sortcheck delta'
+  name_element: 'delta'
+  name_rank: species
+  name_status: legitimate
+  name_type: scientific
+  namespace: apni
+  parent: sortcheck_genus
+  family: sortcheck_familia
+  name_path: 'Sortcheck zeta/Sortcheck mu/Sortcheck delta'
+  uri: sortcheck_species_delta
+
 a_genus_without_an_instance:
   <<: *DEFAULTS
   simple_name: a genus without an instance
