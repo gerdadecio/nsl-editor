@@ -179,6 +179,14 @@ Rails.application.routes.draw do
         to: "names#duplicate_suggestions",
         via: :get
 
+  # PROTOTYPE: stimulus-autocomplete evaluation - see
+  # app/javascript/controllers/duplicate_of_autocomplete_controller.js and
+  # the "Duplicate of" field on the name edit form.
+  match "suggestions/name/duplicate_html",
+        as: "name_duplicate_suggestions_html",
+        to: "names#duplicate_suggestions_html",
+        via: :get
+
   match "suggestions/workspace/parent_name",
         as: "workspace_parent_name_suggestions",
         to: "names/typeaheads/for_workspace_parent_name#index",

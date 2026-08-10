@@ -11,7 +11,8 @@ module Name::DuplicateOfResolvable
 
     send("#{key_field}=", Name::AsResolvedTypeahead::ForDuplicateOf.new(
       params[key_field],
-      params[ta_field]
+      params[ta_field],
+      id
     ).value)
   end
 end

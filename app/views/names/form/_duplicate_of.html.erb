@@ -1,17 +1,35 @@
 
   <% if @name.id.present? %>
-  <div class="form-group">
+  <%# Duplicate of: now powered by stimulus-autocomplete instead of the
+      vendored typeahead.js/Bloodhound widget. Markup/labels/classes are
+      kept identical to the original field so the GUI is unchanged; only
+      the JS driving the dropdown (and the data-* attributes it needs) is
+      different. Server-side resolution
+      (Name::AsResolvedTypeahead::ForDuplicateOf) is unchanged - it doesn't
+      know or care which JS widget populated these fields, including the
+      typed-exact-match-without-a-pick case. Styling lives in
+      app/assets/stylesheets/autocomplete/duplicate_of.css. %>
+  <div class="form-group duplicate-of-autocomplete"
+       data-controller="duplicate-of-autocomplete"
+       data-duplicate-of-autocomplete-url-value="<%= name_duplicate_suggestions_html_path %>"
+       data-duplicate-of-autocomplete-avoid-id-value="<%= @name.id %>"
+       data-duplicate-of-autocomplete-min-length-value="1"
+       data-duplicate-of-autocomplete-query-param-value="term"
+       role="combobox">
     <label for="">Duplicate of</label><br>
     <input id="duplicate-of-typeahead"
-           name="name[duplicate_of_typeahead]"   
-           class="typeahead form-control" 
+           name="name[duplicate_of_typeahead]"
+           class="typeahead form-control"
            type="text"
            title="Possible duplicate names will be suggested as you type, so please select from the list or type enough to identify a single name."
            tabindex="<%= increment_tab_index %>"
-           data-name-id="<%= @name.id %>"
+           data-duplicate-of-autocomplete-target="input"
            value="<%= @name.duplicate_of.try('full_name') %>"/>
-    <%= f.hidden_field(:duplicate_of_id) %>
+    <input type="hidden"
+           name="name[duplicate_of_id]"
+           data-duplicate-of-autocomplete-target="hidden"
+           value="<%= @name.duplicate_of_id %>"/>
+    <ul class="duplicate-of-autocomplete-results"
+        data-duplicate-of-autocomplete-target="results"></ul>
   </div>
-  <script> setUpNameDuplicateOf(); </script>
   <% end %>
-

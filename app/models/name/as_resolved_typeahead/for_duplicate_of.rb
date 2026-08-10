@@ -21,10 +21,11 @@ class Name::AsResolvedTypeahead::ForDuplicateOf
   include Resolvable
   attr_reader :value
 
-  def initialize(id_string, param_text)
+  def initialize(id_string, param_text, avoid_id = nil)
     @text = extract_delimited_string(param_text)
     @text.rstrip! unless @text.blank?
     @id_string = id_string
+    @avoid_id = avoid_id.to_i
     @field_name = "duplicate of"
     run
   end
@@ -43,7 +44,7 @@ class Name::AsResolvedTypeahead::ForDuplicateOf
   end
 
   def text_only
-    possibles = ::Name.lower_full_name_like(@text)
+    possibles = candidates(@text)
     case possibles.size
     when 0
       zero_possibles_for_text
@@ -59,7 +60,7 @@ class Name::AsResolvedTypeahead::ForDuplicateOf
   end
 
   def zero_possibles
-    possibles = ::Name.lower_full_name_like(@text + "%")
+    possibles = candidates(@text + "%")
     case possibles.size
     when 1
       @value = possibles.first.id
@@ -69,7 +70,7 @@ class Name::AsResolvedTypeahead::ForDuplicateOf
   end
 
   def id_and_text
-    possibles = ::Name.lower_full_name_like(@text)
+    possibles = candidates(@text)
     case possibles.size
     when 0
       zero_possibles_for_id_and_text
@@ -85,11 +86,21 @@ class Name::AsResolvedTypeahead::ForDuplicateOf
   end
 
   def two_or_more_possibles_for_id_and_text
-    possibles_with_id = Name
-                        .where(id: @id_string.to_i)
-                        .lower_full_name_like(@text)
+    possibles_with_id = candidates(@text).where(id: @id_string.to_i)
     raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
 
     @value = possibles_with_id.first.id
+  end
+
+  private
+
+  # Same exclusions as the suggestion list itself
+  # (Name::AsTypeahead.duplicate_suggestions): never resolve to a record
+  # that's already a duplicate, or to the record being edited. Without
+  # this, typing a string that happens to identify exactly one of those
+  # excluded records would silently save it anyway, bypassing the whole
+  # point of excluding it from the dropdown in the first place.
+  def candidates(text)
+    ::Name.not_a_duplicate.avoids_id(@avoid_id).lower_full_name_like(text)
   end
 end
