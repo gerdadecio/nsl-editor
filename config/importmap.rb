@@ -8,6 +8,10 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 pin "jQuery", to: "https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.js", preload: true
 pin "select2", to: "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"
+# PROTOTYPE (NSL typeahead-replacement spike): raw ESM source, not a bundled
+# build, so its bare "@hotwired/stimulus" import resolves against the pin
+# above instead of pulling in a second copy of Stimulus.
+pin "stimulus-autocomplete", to: "https://unpkg.com/stimulus-autocomplete@3.1.0/src/autocomplete.js"
 pin "bootstrap", to: "bootstrap.bundle.min.js" # BS5.3.8 vendored; includes Popper, no jQuery
 pin "debug", preload: true
 pin "keyboard_nav", preload: true

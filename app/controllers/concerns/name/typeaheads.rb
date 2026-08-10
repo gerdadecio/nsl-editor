@@ -35,6 +35,24 @@ module Name::Typeaheads
     render json: duplicate_suggestions_typeahead
   end
 
+  # PROTOTYPE: stimulus-autocomplete evaluation. Renders an HTML fragment (a
+  # list of <li role="option"> elements) instead of JSON, because that's
+  # what stimulus-autocomplete expects back - see
+  # app/javascript/controllers/duplicate_of_autocomplete_controller.js.
+  # Reuses the exact same Name::AsTypeahead.duplicate_suggestions query as
+  # the existing (JSON) duplicate_suggestions action above; only the
+  # response format differs.
+  def duplicate_suggestions_html
+    suggestions =
+      if params[:term].blank? || params[:name_id].blank?
+        []
+      else
+        Name::AsTypeahead.duplicate_suggestions(params[:term], params[:name_id])
+      end
+    render partial: "names/typeaheads/duplicate_suggestions_html",
+           locals: { suggestions: suggestions }
+  end
+
   # Used on references - new instance tab
   def typeahead_on_full_name
     typeahead = Name::AsTypeahead::OnFullName.new(params)

@@ -1,4 +1,8 @@
 - :date: 10-August-2026
+  :jira_id: '5884'
+  :description: |-
+    Typeahead Upgrade: Name Duplicate of field upgraded to use autocomplete library
+- :date: 10-August-2026
   :jira_id: '5876'
   :description: |-
     Order the typeahead list of duplicate_of field by rank.sort_order and rank full name

@@ -1,0 +1,18 @@
+<%# PROTOTYPE: stimulus-autocomplete evaluation.
+    stimulus-autocomplete expects the server to respond with an HTML
+    fragment of options, rather than the JSON array the existing
+    typeahead.js-based endpoints return. `data-autocomplete-value` supplies
+    the id that ends up in the hidden field on selection; the visible text
+    is the element's own content (or `data-autocomplete-label`, if you want
+    to submit something shorter/plainer than what's displayed). %>
+<% if suggestions.blank? %>
+  <li role="option" aria-disabled="true">No matches</li>
+<% else %>
+  <% suggestions.each do |suggestion| %>
+    <li class="prototype-autocomplete-result"
+        role="option"
+        data-autocomplete-value="<%= suggestion[:id] %>">
+      <%= suggestion[:value] %>
+    </li>
+  <% end %>
+<% end %>
