@@ -1,3 +1,7 @@
+- :date: 10-August-2026
+  :jira_id: '5876'
+  :description: |-
+    Order the typeahead list of duplicate_of field by rank.sort_order and rank full name
 - :date: 07-August-2026
   :jira_id: '5670'
   :description: |-
@@ -5,7 +9,7 @@
 - :date: 07-August-2026
   :jira_id: '5880'
   :description: |-
-    Taxon Link: Only display "taxon link" on Tree tab after tree publication 
+    Taxon Link: Only display "taxon link" on Tree tab after tree publication
 - :date: 06-August-2026
   :jira_id: '5616'
   :description: |-
