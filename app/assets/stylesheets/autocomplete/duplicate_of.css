@@ -1,0 +1,50 @@
+/*
+ * Styling for the Name "Duplicate of" field's stimulus-autocomplete
+ * dropdown (data-controller="duplicate-of-autocomplete", see
+ * app/javascript/controllers/duplicate_of_autocomplete_controller.js and
+ * app/views/names/form/_duplicate_of.html.erb).
+ *
+ * The library's own docs suggest "list-group"/"list-group-item" class
+ * names for styling, but this app's Bootstrap already defines its own
+ * (padded, bordered) styles for those exact class names, which squashes
+ * the dropdown. Using our own class names here instead, plus absolute
+ * positioning so the dropdown overlays the fields below it rather than
+ * pushing them down.
+ *
+ * As other fields are migrated from typeahead.js to stimulus-autocomplete,
+ * add a sibling file per field in this directory, then require it from
+ * application.css the same way this file is required. (Note for anyone
+ * editing this comment: Sprockets' directive scanner treats any header
+ * comment line matching non-word-characters-then-equals as a real
+ * directive, so avoid writing that require syntax literally in here.)
+ */
+
+.duplicate-of-autocomplete { position: relative; }
+
+.duplicate-of-autocomplete-results {
+  position: absolute;
+  z-index: 1000;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 16rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.duplicate-of-autocomplete-results[hidden] { display: none; }
+
+.duplicate-of-autocomplete-result {
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.duplicate-of-autocomplete-result[aria-selected="true"],
+.duplicate-of-autocomplete-result:hover {
+  background: #e9ecef;
+}
