@@ -38,7 +38,7 @@ module Name::Typeaheads
   # Renders an HTML fragment (a list of <li role="option"> elements)
   # instead of JSON, because that's what stimulus-autocomplete expects
   # back - see
-  # app/javascript/controllers/duplicate_of_autocomplete_controller.js.
+  # app/javascript/controllers/nsl_autocomplete_controller.js.
   # Reuses the exact same Name::AsTypeahead.duplicate_suggestions query as
   # the (JSON) duplicate_suggestions action above; only the response
   # format differs.
@@ -49,7 +49,7 @@ module Name::Typeaheads
       else
         Name::AsTypeahead.duplicate_suggestions(params[:term], params[:name_id])
       end
-    render partial: "names/typeaheads/duplicate_suggestions_html",
+    render partial: "shared/autocomplete_suggestions",
            locals: { suggestions: suggestions, term: params[:term] }
   end
 

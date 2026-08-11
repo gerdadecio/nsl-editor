@@ -1,35 +1,21 @@
 
   <% if @name.id.present? %>
-  <%# Duplicate of: now powered by stimulus-autocomplete instead of the
-      vendored typeahead.js/Bloodhound widget. Markup/labels/classes are
-      kept identical to the original field so the GUI is unchanged; only
-      the JS driving the dropdown (and the data-* attributes it needs) is
-      different. Server-side resolution
-      (Name::AsResolvedTypeahead::ForDuplicateOf) is unchanged - it doesn't
-      know or care which JS widget populated these fields, including the
-      typed-exact-match-without-a-pick case. Styling lives in
-      app/assets/stylesheets/autocomplete/duplicate_of.css. %>
-  <div class="form-group duplicate-of-autocomplete"
-       data-controller="duplicate-of-autocomplete"
-       data-duplicate-of-autocomplete-url-value="<%= name_duplicate_suggestions_html_path %>"
-       data-duplicate-of-autocomplete-avoid-id-value="<%= @name.id %>"
-       data-duplicate-of-autocomplete-min-length-value="1"
-       data-duplicate-of-autocomplete-query-param-value="term"
-       role="combobox">
-    <label for="">Duplicate of</label><br>
-    <input id="duplicate-of-typeahead"
-           name="name[duplicate_of_typeahead]"
-           class="typeahead form-control"
-           type="text"
-           title="Possible duplicate names will be suggested as you type, so please select from the list or type enough to identify a single name."
-           tabindex="<%= increment_tab_index %>"
-           data-duplicate-of-autocomplete-target="input"
-           value="<%= @name.duplicate_of.try('full_name') %>"/>
-    <input type="hidden"
-           name="name[duplicate_of_id]"
-           data-duplicate-of-autocomplete-target="hidden"
-           value="<%= @name.duplicate_of_id %>"/>
-    <ul class="duplicate-of-autocomplete-results"
-        data-duplicate-of-autocomplete-target="results"></ul>
-  </div>
+  <%# Duplicate of: powered by stimulus-autocomplete instead of the
+      vendored typeahead.js/Bloodhound widget - see
+      app/views/shared/_autocomplete_field.html.erb. The record's own id
+      goes along with every request so a name is never offered as a
+      duplicate of itself; Name::AsResolvedTypeahead::ForDuplicateOf
+      applies the same exclusion server-side for typed-but-not-picked
+      text. %>
+  <%= render partial: "shared/autocomplete_field",
+             locals: { f: f,
+                       wrapper_class: "duplicate-of",
+                       id_attribute: :duplicate_of_id,
+                       input_id: "duplicate-of-typeahead",
+                       input_name: "name[duplicate_of_typeahead]",
+                       input_value: @name.duplicate_of.try("full_name"),
+                       label: "Duplicate of",
+                       title: "Possible duplicate names will be suggested as you type, so please select from the list or type enough to identify a single name.",
+                       url: name_duplicate_suggestions_html_path,
+                       extra_params: { name_id: @name.id } } %>
   <% end %>

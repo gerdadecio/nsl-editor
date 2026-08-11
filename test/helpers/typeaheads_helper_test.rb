@@ -18,7 +18,7 @@
 #
 require "test_helper"
 
-class NamesHelperTest < ActionView::TestCase
+class TypeaheadsHelperTest < ActionView::TestCase
   test "wraps a matching substring in strong tags" do
     result = highlight_typeahead_match("Angiospermae | legitimate", "ang")
 
