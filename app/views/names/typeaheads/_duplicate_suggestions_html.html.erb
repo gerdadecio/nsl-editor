@@ -16,7 +16,7 @@
     <li class="duplicate-of-autocomplete-result"
         role="option"
         data-autocomplete-value="<%= suggestion[:id] %>">
-      <%= suggestion[:value] %>
+      <%= highlight_typeahead_match(suggestion[:value], term) %>
     </li>
   <% end %>
 <% end %>
