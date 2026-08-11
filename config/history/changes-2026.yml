@@ -1,3 +1,7 @@
+- :date: 11-August-2026
+  :jira_id: '5884'
+  :description: |-
+    Typeahead Upgrade: Name Duplicate of trial - fix styling for hover inverse colours and left margin
 - :date: 10-August-2026
   :jira_id: '5876'
   :description: |-
