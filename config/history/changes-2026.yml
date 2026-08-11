@@ -1,4 +1,8 @@
 - :date: 11-August-2026
+  :jira_id: '5887'
+  :description: |-
+    Loader Batch Elapsed Time reporting: fix conversion of seconds to minutes and seconds format for bulk jobs
+- :date: 11-August-2026
   :jira_id: '5884'
   :description: |-
     Typeahead Upgrade: Name Duplicate of trial - add highlighting of matching characters in the drop down list

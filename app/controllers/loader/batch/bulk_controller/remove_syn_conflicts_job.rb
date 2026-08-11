@@ -18,6 +18,8 @@
 
 # Remove a conflicting synonym
 class Loader::Batch::BulkController::RemoveSynConflictsJob
+  include Loader::Batch::BulkController::ElapsedTimeFormatting
+
   DECLINED_REMOVE = "<span class='firebrick'>Declined to remove conflict</span>"
   def initialize(batch_id, search_string, authorising_user, job_number)
     @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -54,9 +56,7 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
   def record_elapsed
     finish_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     @job_h[:time_seconds] = (finish_time - @start_time).round(1)
-    if @job_h[:time_seconds] > 60
-      @job_h[:time] = "#{((finish_time - @start_time)/60).round} min #{((finish_time - @start_time)%60).round} sec"
-    end
+    @job_h[:time] = format_seconds(@job_h[:time_seconds]) if @job_h[:time_seconds] > 60
   end
 
   def preflight_checks_pass?(tree_join_record)

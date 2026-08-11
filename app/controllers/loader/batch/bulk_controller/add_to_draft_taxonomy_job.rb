@@ -18,6 +18,8 @@
 
 # Record a preferred matching name for a raw loader name record.
 class Loader::Batch::BulkController::AddToDraftTaxonomyJob
+  include Loader::Batch::BulkController::ElapsedTimeFormatting
+
   attr_reader :result
 
   def initialize(batch_id, search_string, working_draft, authorising_user, job_number)
@@ -46,12 +48,10 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
 
   private
 
-   def record_elapsed
+  def record_elapsed
     finish_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     @result[:time_seconds] = (finish_time - @start_time).round(1)
-    if @result[:time_seconds] > 60
-      @result[:time] = "#{((finish_time - @start_time)/60).round} min #{((finish_time - @start_time)%60).round} sec"
-    end
+    @result[:time] = format_seconds(@result[:time_seconds]) if @result[:time_seconds] > 60
   end
 
   def do_one_loader_name(loader_name)
