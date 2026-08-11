@@ -46,5 +46,6 @@
 
 .duplicate-of-autocomplete-result[aria-selected="true"],
 .duplicate-of-autocomplete-result:hover {
-  background: #e9ecef;
+  background-color: #808080;
+  color: #fff;
 }
