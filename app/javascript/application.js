@@ -78,7 +78,6 @@ import "typeaheads_for_reference_author";
 import "typeaheads_for_reference_duplicate";
 import "typeaheads_for_reference_parent";
 
-import "typeaheads_for_name_author";
 import "typeaheads_for_name_authors_by_abbrev";
 import "typeaheads_for_name_base_author";
 import "typeaheads_for_name_cultivar_parent";

@@ -118,6 +118,17 @@ class AuthorsController < ApplicationController
     render json: authors
   end
 
+  # stimulus-autocomplete expects the server to respond with an HTML fragment
+  # of <li role="option"> elements rather than the JSON array the action above
+  # returns. Same Author::AsTypeahead.on_abbrev query, different format - see
+  # app/views/shared/_autocomplete_suggestions.html.erb.
+  def typeahead_on_abbrev_html
+    authors = []
+    authors = Author::AsTypeahead.on_abbrev(params[:term]) unless params[:term].blank?
+    render partial: "shared/autocomplete_suggestions",
+           locals: { suggestions: authors, term: params[:term] }
+  end
+
   def copy
     author = @author
     @author = Author.new author.attributes

@@ -240,6 +240,12 @@ Rails.application.routes.draw do
   match "authors/typeahead_on_abbrev",
         as: "authors_typeahead_on_abbrev",
         to: "authors#typeahead_on_abbrev", via: :get
+  # The stimulus-autocomplete flavour of the route above: same suggestions,
+  # rendered as an HTML fragment. Used by the name form's Author field - see
+  # app/views/names/form/_author.html.erb.
+  match "authors/typeahead_on_abbrev_html",
+        as: "authors_typeahead_on_abbrev_html",
+        to: "authors#typeahead_on_abbrev_html", via: :get
   match "authors/typeahead_on_name",
         as: "authors_typeahead_on_name",
         to: "authors#typeahead_on_name", via: :get
