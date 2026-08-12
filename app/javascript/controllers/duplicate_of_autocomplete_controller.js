@@ -29,4 +29,21 @@ export default class extends Autocomplete {
     url.searchParams.set("name_id", this.avoidIdValue)
     return url.toString()
   }
+
+  // stimulus-autocomplete's own replaceResults() only swaps the results
+  // list's innerHTML - it never touches the results container's own
+  // scrollTop. Since it's the same scrollable element being reused across
+  // fetches (not typeahead.js's approach of rebuilding the dropdown from
+  // scratch), a scroll position set while browsing one set of suggestions
+  // carries straight over onto the next, freshly-fetched set. If the user
+  // had scrolled down, the new list opens already scrolled down too -
+  // hiding its top suggestions above the visible area, with nothing on
+  // screen to suggest they exist. Resetting scrollTop to 0 whenever new
+  // results land keeps every fetch starting from the top, matching what
+  // the old typeahead.js dropdown did (it had no persistent scroll
+  // position to carry over in the first place).
+  replaceResults(html) {
+    super.replaceResults(html)
+    this.resultsTarget.scrollTop = 0
+  }
 }

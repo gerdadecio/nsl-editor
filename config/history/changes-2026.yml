@@ -1,3 +1,7 @@
+- :date: 12-August-2026
+  :jira_id: '5884'
+  :description: |-
+    Typeahead Upgrade: Name Duplicate of field trial: scrolling now resets when the suggestion list changes
 - :date: 11-August-2026
   :jira_id: '5887'
   :description: |-
