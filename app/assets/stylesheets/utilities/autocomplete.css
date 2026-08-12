@@ -1,0 +1,51 @@
+/*
+ * Styling for every stimulus-autocomplete dropdown in the editor
+ * (data-controller="autocomplete", see
+ * app/javascript/controllers/autocomplete_controller.js,
+ * app/views/shared/_autocomplete_field.html.erb and
+ * app/views/shared/_autocomplete_suggestions.html.erb).
+ *
+ * The library's own docs suggest "list-group"/"list-group-item" class
+ * names for styling, but this app's Bootstrap already defines its own
+ * (padded, bordered) styles for those exact class names, which squashes
+ * the dropdown. Using our own class names here instead, plus absolute
+ * positioning so the dropdown overlays the fields below it rather than
+ * pushing them down.
+ *
+ * These class names are deliberately field-agnostic: as more fields are
+ * migrated from typeahead.js they reuse this one stylesheet rather than
+ * adding a sibling file each. The class names are duplicated in the two
+ * shared partials above, with no compile-time link between them, so a
+ * rename on one side silently breaks the styling on the other.
+ */
+
+.autocomplete { position: relative; }
+
+.autocomplete-results {
+  position: absolute;
+  z-index: 1000;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 16rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.autocomplete-results[hidden] { display: none; }
+
+.autocomplete-result {
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.autocomplete-result[aria-selected="true"],
+.autocomplete-result:hover {
+  background-color: #808080;
+  color: #fff;
+}

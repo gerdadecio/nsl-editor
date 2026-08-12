@@ -1,0 +1,30 @@
+<%# The suggestion fragment every stimulus-autocomplete endpoint renders.
+
+    stimulus-autocomplete expects the server to respond with an HTML
+    fragment of options, rather than the JSON array the older
+    typeahead.js-based endpoints return. `data-autocomplete-value` supplies
+    the id that ends up in the hidden field on selection.
+
+    `data-autocomplete-label` supplies the text written back into the
+    visible input. The library would otherwise fall back to the option's
+    trimmed textContent, which is this file's ERB indentation plus the
+    <strong> tags the highlighting adds - close, but not byte-identical to
+    what the server sent. Being exact matters because the server-side
+    resolvers parse that text back (e.g.
+    Name::AsResolvedTypeahead::ForAuthor strips at the "|" separator that
+    Author::AsTypeahead.on_abbrev puts into the value).
+
+    The "autocomplete-result" class must match the class styled in
+    app/assets/stylesheets/utilities/autocomplete.css - they're two
+    separate files with no compile-time link between them, so a rename on
+    one side silently breaks the styling on the other. %>
+<% if suggestions.blank? %>
+  <li class="autocomplete-result" role="option" aria-disabled="true">No matches</li>
+<% else %>
+  <% suggestions.each do |suggestion| %>
+    <li class="autocomplete-result"
+        role="option"
+        data-autocomplete-value="<%= suggestion[:id] %>"
+        data-autocomplete-label="<%= suggestion[:value] %>"><%= highlight_typeahead_match(suggestion[:value], term) %></li>
+  <% end %>
+<% end %>

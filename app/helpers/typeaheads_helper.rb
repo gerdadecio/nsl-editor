@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# View helpers for Name views, including the stimulus-autocomplete
-# suggestion fragments under app/views/names/typeaheads.
-module NamesHelper
+# View helpers shared by the stimulus-autocomplete suggestion fragments
+# (app/views/shared/_autocomplete_suggestions.html.erb), whichever
+# controller renders them.
+module TypeaheadsHelper
   # Wraps case-insensitive occurrences of +term+ in <strong> tags within
   # +text+, matching the highlighting typeahead.js used to do automatically
   # (via its `highlight: true` option) for suggestion dropdowns. Escapes
