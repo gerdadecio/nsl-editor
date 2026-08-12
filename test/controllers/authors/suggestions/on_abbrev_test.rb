@@ -25,8 +25,8 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
   tests AuthorsController
 
   def get_suggestions(term)
-    get(:typeahead_on_abbrev_html,
-        params: { term: term },
+    get(:typeahead_on_abbrev,
+        params: { term: term, format: :html },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: ["edit"] })
@@ -86,5 +86,40 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
                           text: "No matches"
+  end
+
+  # The four author fields still on typeahead.js/Bloodhound ask the same
+  # action for json, so the html format above must not have displaced it.
+  test "should still answer json for the legacy typeahead fields" do
+    author = authors(:maslin_with_abbrev)
+
+    get(:typeahead_on_abbrev,
+        params: { term: "masl", format: :json },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
+
+    assert_response :success
+    suggestions = JSON.parse(@response.body)
+    assert_equal [author.id.to_s], suggestions.map { |s| s["id"] }
+  end
+
+  # Bloodhound sends no format extension - it asks by Accept header, through
+  # jQuery, so the request is an XHR. Both parts matter: ActionDispatch
+  # ignores "browser-like" Accept headers (anything containing ", */*")
+  # unless the request is an XHR, in which case it honours them. Drop the
+  # xhr: true below and this action answers html instead.
+  test "should answer json when asked for by accept header on an xhr" do
+    @request.headers["Accept"] = "application/json, text/javascript, */*; q=0.01"
+
+    get(:typeahead_on_abbrev,
+        params: { term: "masl" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] },
+        xhr: true)
+
+    assert_response :success
+    assert_equal "application/json", @response.media_type
   end
 end

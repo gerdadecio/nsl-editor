@@ -21,6 +21,6 @@
            input_value: @name.author.try("abbrev_if_possible"),
            label: "#{"Original " if @name.changed_combination}Author",
            title: "Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation.",
-           url: authors_typeahead_on_abbrev_html_path,
+           url: authors_typeahead_on_abbrev_path(format: :html),
            wrapper_class: "author",
            dependents_field: "author-by-abbrev" %>

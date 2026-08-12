@@ -237,15 +237,12 @@ Rails.application.routes.draw do
         to: "names/de_duplicates#transfer_all_dependents",
         via: :post
 
+  # Responds as json to the legacy typeahead.js fields and as html to
+  # stimulus-autocomplete, which requests it as .html via the route's
+  # optional format segment.
   match "authors/typeahead_on_abbrev",
         as: "authors_typeahead_on_abbrev",
         to: "authors#typeahead_on_abbrev", via: :get
-  # The stimulus-autocomplete flavour of the route above: same suggestions,
-  # rendered as an HTML fragment. Used by the name form's Author field - see
-  # app/views/names/form/_author.html.erb.
-  match "authors/typeahead_on_abbrev_html",
-        as: "authors_typeahead_on_abbrev_html",
-        to: "authors#typeahead_on_abbrev_html", via: :get
   match "authors/typeahead_on_name",
         as: "authors_typeahead_on_name",
         to: "authors#typeahead_on_name", via: :get

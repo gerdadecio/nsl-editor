@@ -19,11 +19,21 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorsTypeaheadOnAbbrevHtmlRouteTest < ActionController::TestCase
+class AuthorsTypeaheadOnAbbrevRouteTest < ActionController::TestCase
   tests AuthorsController
-  test "should route to authors typeahead on abbrev html" do
-    assert_routing "/authors/typeahead_on_abbrev_html",
+
+  test "should route to authors typeahead on abbrev" do
+    assert_routing "/authors/typeahead_on_abbrev",
                    controller: "authors",
-                   action: "typeahead_on_abbrev_html"
+                   action: "typeahead_on_abbrev"
+  end
+
+  # stimulus-autocomplete asks for the html fragment by extension rather than
+  # by Accept header - see AuthorsController#typeahead_on_abbrev.
+  test "should route the html format to the same action" do
+    assert_routing "/authors/typeahead_on_abbrev.html",
+                   controller: "authors",
+                   action: "typeahead_on_abbrev",
+                   format: "html"
   end
 end
