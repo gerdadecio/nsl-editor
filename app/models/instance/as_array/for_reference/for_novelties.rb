@@ -31,10 +31,38 @@
 # instances = Instance::AsArray::ForReference.new(reference)
 # puts instances.results.size
 #
+# NOTES (N+1 fix, structural): see the equivalent note on
+# Instance::AsArray::ForReference - a caller expanding novelties for many
+# references at once (Search::OnModel::Base#show_novelties) used to
+# instantiate this class once per reference, each running its own query.
+# .preload_for batches that into one query for every given reference, to
+# be passed into .new via preloaded_instances:. A caller with just one
+# reference (or that hasn't been updated) can keep calling .new the old
+# way - it falls back to running its own query exactly as before.
 class Instance::AsArray::ForReference::ForNovelties < Array
   attr_reader :results
 
-  def initialize(reference, sort_by = "name", limit = 1000, offset = 0)
+  class << self
+    def preload_for(references, sort_by: "name")
+      reference_ids = references.map(&:id)
+      return {} if reference_ids.empty?
+
+      base_query(sort_by).where(reference_id: reference_ids).to_a.group_by(&:reference_id)
+    end
+
+    def base_query(sort_by)
+      query = Instance
+              .joins(:name)
+              .includes(name: :name_status)
+              .joins(:instance_type)
+              .where(instance_type: { primary_instance: true })
+              .includes(this_is_cited_by: %i[name instance_type])
+      sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
+    end
+  end
+
+  def initialize(reference, sort_by = "name", limit = 1000, offset = 0,
+                 preloaded_instances: nil)
     debug("init #{reference.citation}")
     @results = []
     @already_shown = []
@@ -44,6 +72,7 @@ class Instance::AsArray::ForReference::ForNovelties < Array
     @sort_by = sort_by
     @offset = offset || 0
     @limit += @offset if @limit < @offset
+    @preloaded_instances = preloaded_instances
     find_instances
   end
 
@@ -60,19 +89,14 @@ class Instance::AsArray::ForReference::ForNovelties < Array
     @results
   end
 
+  # Only used when no preloaded_instances: was given to .new.
   def built_query
-    query = @reference
-            .instances
-            .joins(:name)
-            .includes(name: :name_status)
-            .joins(:instance_type)
-            .where(instance_type: { primary_instance: true })
-            .includes(this_is_cited_by: %i[name instance_type])
-    @sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
+    self.class.base_query(@sort_by).where(reference_id: @reference.id)
   end
 
   def find_instances_for_ref
-    built_query.each do |instance|
+    instances = @preloaded_instances || built_query.to_a
+    instances.each do |instance|
       if instance.cited_by_id.blank?
         if @count < @offset
           @count += 1

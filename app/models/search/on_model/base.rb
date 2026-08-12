@@ -92,15 +92,30 @@ class Search::OnModel::Base
     show_novelties(parsed_request)
   end
 
+  # NOTES (N+1 fix, structural): used to instantiate a fresh
+  # Instance::AsArray::ForReference per matching reference, each running
+  # its own queries - so query count scaled with the number of matching
+  # references (confirmed via the dev log: ~135 references, ~135 extra
+  # queries, on a broad show-instances: search). preload_for batches the
+  # per-reference queries across every reference in @results up front, so
+  # each Instance::AsArray::ForReference built below does no queries of
+  # its own - it's just replaying already-fetched data through the same
+  # counting/expansion logic as before.
   def show_instances(parsed_request)
+    sort_key = instances_sort_key(parsed_request)
+    instances_by_reference, cited_by_map =
+      Instance::AsArray::ForReference.preload_for(@results, sort_by: sort_key)
+
     results_with_instances = []
     @results.each do |ref|
       results_with_instances << ref
       instances_query = Instance::AsArray::ForReference
                         .new(ref,
-                             instances_sort_key(parsed_request),
+                             sort_key,
                              parsed_request.limit,
-                             parsed_request.instance_offset)
+                             parsed_request.instance_offset,
+                             preloaded_instances: instances_by_reference[ref.id] || [],
+                             preloaded_cited_by_map: cited_by_map)
       instances_query.results.each { |i| results_with_instances << i }
     end
     @results = results_with_instances
@@ -110,15 +125,21 @@ class Search::OnModel::Base
     parsed_request.order_instances_by_page ? "page" : "name"
   end
 
+  # See the show_instances note above - same fix, applied to novelties.
   def show_novelties(parsed_request)
+    sort_key = novelties_sort_key(parsed_request)
+    instances_by_reference =
+      Instance::AsArray::ForReference::ForNovelties.preload_for(@results, sort_by: sort_key)
+
     results_with_instances = []
     @results.each do |ref|
       results_with_instances << ref
       instances_query = Instance::AsArray::ForReference::ForNovelties
                         .new(ref,
-                             novelties_sort_key(parsed_request),
+                             sort_key,
                              parsed_request.limit,
-                             parsed_request.instance_offset)
+                             parsed_request.instance_offset,
+                             preloaded_instances: instances_by_reference[ref.id] || [])
       instances_query.results.each { |i| results_with_instances << i }
     end
     @results = results_with_instances
