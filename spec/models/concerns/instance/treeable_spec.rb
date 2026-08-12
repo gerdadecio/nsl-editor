@@ -127,6 +127,73 @@ RSpec.describe Instance::Treeable do
     end
   end
 
+  describe '.published_trees_map_for' do
+    # NOTES: in_published_trees (above) is now just this method called for
+    # a single id, so the specs above already cover the underlying query's
+    # correctness (published trees only, excluded flag, multiple trees,
+    # read-only trees excluded). These specs cover what's new here: batching
+    # several instances' published trees into one query, keyed correctly by
+    # instance id, and not scaling with the number of instances given.
+    let(:tree) { create(:tree, name: 'Published Tree', is_read_only: false) }
+    let(:tree_version) { create(:tree_version, tree: tree) }
+
+    def publish_instance_in(instance, tree, tree_version)
+      tree.update!(current_tree_version_id: tree_version.id)
+      tree_element = create(:tree_element, instance: instance)
+      create(:tree_version_element,
+        tree_element_id: tree_element.id,
+        tree_version_id: tree_version.id,
+        element_link: "test/#{tree_element.id}",
+        taxon_id: tree_element.id)
+    end
+
+    def count_instance_load_queries
+      count = 0
+      callback = lambda do |*args|
+        payload = args.last
+        count += 1 if payload[:name] == 'Instance Load'
+      end
+      ActiveSupport::Notifications.subscribed(callback, 'sql.active_record') { yield }
+      count
+    end
+
+    it 'groups results by instance id, keeping each instance to its own trees' do
+      instance_1 = create(:instance)
+      instance_2 = create(:instance)
+      publish_instance_in(instance_1, tree, tree_version)
+
+      map = Instance.published_trees_map_for([instance_1, instance_2])
+
+      expect(map[instance_1.id].map { |r| r[:tree_name] }).to eq(['Published Tree'])
+      expect(map).not_to have_key(instance_2.id)
+    end
+
+    it 'accepts plain ids as well as instances' do
+      instance = create(:instance)
+      publish_instance_in(instance, tree, tree_version)
+
+      map = Instance.published_trees_map_for([instance.id])
+
+      expect(map[instance.id].map { |r| r[:tree_name] }).to eq(['Published Tree'])
+    end
+
+    it 'returns an empty hash for an empty list' do
+      expect(Instance.published_trees_map_for([])).to eq({})
+    end
+
+    it 'fetches every instance in one query, regardless of how many are given' do
+      instances = Array.new(5) { create(:instance) }
+      instances.each do |i|
+        instance_tree = create(:tree, is_read_only: false)
+        publish_instance_in(i, instance_tree, create(:tree_version, tree: instance_tree))
+      end
+
+      query_count = count_instance_load_queries { Instance.published_trees_map_for(instances) }
+
+      expect(query_count).to eq(1)
+    end
+  end
+
   describe '#in_any_local_tree_ids?' do
     let(:instance) { create(:instance) }
 

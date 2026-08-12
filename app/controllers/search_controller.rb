@@ -73,7 +73,19 @@ class SearchController < ApplicationController
     # Avoid "A copy of Search has been removed from the module tree but is still active" error
     # https://stackoverflow.com/questions/29636334/a-copy-of-xxx-has-been-removed-from-the-module-tree-but-is-still-active
     @search = ::Search::Base.new(params)
+    prepare_published_trees_map
     true
+  end
+
+  # NOTES (N+1 fix): instances/taxo/_widgets.html.erb - rendered once per
+  # instance row across several of the search result partials - used to
+  # call instance.in_published_trees individually, one query per row. This
+  # batches that into a single query covering every Instance in the page
+  # of results, so InstancesHelper#published_trees_for can just look each
+  # row up in memory. See Instance::Treeable.published_trees_map_for.
+  def prepare_published_trees_map
+    results = @search.executed_query&.results || []
+    @published_trees_map = Instance.published_trees_map_for(results.grep(Instance))
   end
 
   def run_empty_search
