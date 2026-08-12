@@ -1,7 +1,7 @@
 /*
  * Styling for every stimulus-autocomplete dropdown in the editor
- * (data-controller="nsl-autocomplete", see
- * app/javascript/controllers/nsl_autocomplete_controller.js,
+ * (data-controller="autocomplete", see
+ * app/javascript/controllers/autocomplete_controller.js,
  * app/views/shared/_autocomplete_field.html.erb and
  * app/views/shared/_autocomplete_suggestions.html.erb).
  *
@@ -19,9 +19,9 @@
  * rename on one side silently breaks the styling on the other.
  */
 
-.nsl-autocomplete { position: relative; }
+.autocomplete { position: relative; }
 
-.nsl-autocomplete-results {
+.autocomplete-results {
   position: absolute;
   z-index: 1000;
   top: 100%;
@@ -37,15 +37,15 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-.nsl-autocomplete-results[hidden] { display: none; }
+.autocomplete-results[hidden] { display: none; }
 
-.nsl-autocomplete-result {
+.autocomplete-result {
   padding: 2px 8px;
   cursor: pointer;
 }
 
-.nsl-autocomplete-result[aria-selected="true"],
-.nsl-autocomplete-result:hover {
+.autocomplete-result[aria-selected="true"],
+.autocomplete-result:hover {
   background-color: #808080;
   color: #fff;
 }

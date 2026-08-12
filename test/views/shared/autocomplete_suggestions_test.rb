@@ -40,7 +40,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
 
     output = render_suggestions(suggestions, "ang")
 
-    assert_select_in output, "li.nsl-autocomplete-result[data-autocomplete-value='123']"
+    assert_select_in output, "li.autocomplete-result[data-autocomplete-value='123']"
   end
 
   test "renders the unhighlighted value as data-autocomplete-label" do
@@ -49,7 +49,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
     output = render_suggestions(suggestions, "ang")
 
     assert_select_in output,
-                     "li.nsl-autocomplete-result[data-autocomplete-label='Angiospermae | legitimate']"
+                     "li.autocomplete-result[data-autocomplete-label='Angiospermae | legitimate']"
   end
 
   test "preserves an author-shaped value's spacing in data-autocomplete-label" do
@@ -62,13 +62,13 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
     output = render_suggestions(suggestions, "ben")
 
     assert_select_in output,
-                     "li.nsl-autocomplete-result[data-autocomplete-label='Benth.  | George Bentham']"
+                     "li.autocomplete-result[data-autocomplete-label='Benth.  | George Bentham']"
   end
 
   test "renders a 'No matches' option, still styled, when there are no suggestions" do
     output = render_suggestions([], "xyz")
 
-    assert_select_in output, "li.nsl-autocomplete-result[aria-disabled='true']", text: "No matches"
+    assert_select_in output, "li.autocomplete-result[aria-disabled='true']", text: "No matches"
   end
 
   def assert_select_in(html, *args, &block)

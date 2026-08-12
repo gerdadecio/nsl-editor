@@ -14,15 +14,15 @@
     Name::AsResolvedTypeahead::ForAuthor strips at the "|" separator that
     Author::AsTypeahead.on_abbrev puts into the value).
 
-    The "nsl-autocomplete-result" class must match the class styled in
-    app/assets/stylesheets/autocomplete/nsl_autocomplete.css - they're two
+    The "autocomplete-result" class must match the class styled in
+    app/assets/stylesheets/utilities/autocomplete.css - they're two
     separate files with no compile-time link between them, so a rename on
     one side silently breaks the styling on the other. %>
 <% if suggestions.blank? %>
-  <li class="nsl-autocomplete-result" role="option" aria-disabled="true">No matches</li>
+  <li class="autocomplete-result" role="option" aria-disabled="true">No matches</li>
 <% else %>
   <% suggestions.each do |suggestion| %>
-    <li class="nsl-autocomplete-result"
+    <li class="autocomplete-result"
         role="option"
         data-autocomplete-value="<%= suggestion[:id] %>"
         data-autocomplete-label="<%= suggestion[:value] %>"><%= highlight_typeahead_match(suggestion[:value], term) %></li>

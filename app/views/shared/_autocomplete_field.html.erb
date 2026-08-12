@@ -24,7 +24,7 @@
     Optional locals:
       wrapper_class   - extra class(es) on the wrapper div
       extra_params    - hash of static params added to every request, see
-                        NslAutocompleteController#buildURL
+                        the autocomplete controller's buildURL
       dependents_field - element id to hand to window.setDependents after a
                          pick; omit unless the field has dependents
       min_length      - characters before suggestions are fetched (default 1)
@@ -37,14 +37,14 @@
 <% extra_params = local_assigns.fetch(:extra_params, {}) %>
 <% dependents_field = local_assigns.fetch(:dependents_field, nil) %>
 <% min_length = local_assigns.fetch(:min_length, 1) %>
-<div class="form-group nsl-autocomplete <%= wrapper_class %>"
-     data-controller="nsl-autocomplete"
-     data-action="autocomplete.change->nsl-autocomplete#syncDependents"
-     data-nsl-autocomplete-url-value="<%= url %>"
-     data-nsl-autocomplete-query-param-value="term"
-     data-nsl-autocomplete-min-length-value="<%= min_length %>"
-     data-nsl-autocomplete-extra-params-value="<%= extra_params.to_json %>"
-     data-nsl-autocomplete-dependents-field-value="<%= dependents_field %>"
+<div class="form-group autocomplete <%= wrapper_class %>"
+     data-controller="autocomplete"
+     data-action="autocomplete.change->autocomplete#syncDependents"
+     data-autocomplete-url-value="<%= url %>"
+     data-autocomplete-query-param-value="term"
+     data-autocomplete-min-length-value="<%= min_length %>"
+     data-autocomplete-extra-params-value="<%= extra_params.to_json %>"
+     data-autocomplete-dependents-field-value="<%= dependents_field %>"
      role="combobox">
   <label for="<%= input_id %>"><%= label %></label><br>
   <input id="<%= input_id %>"
@@ -53,8 +53,8 @@
          type="text"
          title="<%= title %>"
          tabindex="<%= increment_tab_index %>"
-         data-nsl-autocomplete-target="input"
+         data-autocomplete-target="input"
          value="<%= input_value %>"/>
-  <%= f.hidden_field(id_attribute, data: { "nsl-autocomplete-target": "hidden" }) %>
-  <ul class="nsl-autocomplete-results" data-nsl-autocomplete-target="results"></ul>
+  <%= f.hidden_field(id_attribute, data: { "autocomplete-target": "hidden" }) %>
+  <ul class="autocomplete-results" data-autocomplete-target="results"></ul>
 </div>

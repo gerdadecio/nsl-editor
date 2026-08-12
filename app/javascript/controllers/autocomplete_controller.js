@@ -1,6 +1,6 @@
 import { Autocomplete } from "stimulus-autocomplete"
 
-// Connects to data-controller="nsl-autocomplete"
+// Connects to data-controller="autocomplete"
 //
 // The single Stimulus controller behind every field migrated off the
 // vendored, unmaintained typeahead.js + Bloodhound setup. It is a thin
@@ -31,9 +31,17 @@ import { Autocomplete } from "stimulus-autocomplete"
 // 3. replaceResults - resetting the dropdown's scroll position whenever a
 //    new set of suggestions lands. See the override below.
 //
+// The identifier is "autocomplete" - the name the library itself assumes,
+// which is why an option's id attribute reads data-autocomplete-value.
+// Keeping the controller here rather than in a subdirectory keeps it that
+// short: Stimulus builds the identifier from the file path, so
+// controllers/utilities/autocomplete_controller.js would instead have to
+// be spelled data-controller="utilities--autocomplete" in the markup,
+// along with every one of its target and value attributes.
+//
 // Markup lives in app/views/shared/_autocomplete_field.html.erb and the
 // suggestion fragments in app/views/shared/_autocomplete_suggestions.html.erb;
-// styling in app/assets/stylesheets/autocomplete/nsl_autocomplete.css.
+// styling in app/assets/stylesheets/utilities/autocomplete.css.
 export default class extends Autocomplete {
   static values = {
     ...Autocomplete.values,
@@ -50,9 +58,9 @@ export default class extends Autocomplete {
   }
 
   // Wired up in the shared field partial as
-  // data-action="autocomplete.change->nsl-autocomplete#syncDependents".
-  // The library only fires autocomplete.change on a real commit, so this
-  // does not run for the aria-disabled "No matches" row.
+  // data-action="autocomplete.change->autocomplete#syncDependents". The
+  // library only fires autocomplete.change on a real commit, so this does
+  // not run for the aria-disabled "No matches" row.
   syncDependents() {
     if (this.dependentsFieldValue && typeof window.setDependents === "function") {
       window.setDependents(this.dependentsFieldValue)
