@@ -83,15 +83,24 @@ class Search::Reference::DefinedQuery
     @parsed_request.order_instances_by_page ? "page" : "name"
   end
 
+  # See Search::OnModel::Base#show_instances for why this batches via
+  # preload_for rather than instantiating Instance::AsArray::ForReference
+  # (and letting it query) once per reference in @references.
   def show_instances
+    sort_key = instances_sort_key
+    instances_by_reference, cited_by_map =
+      Instance::AsArray::ForReference.preload_for(@references, sort_by: sort_key)
+
     @results = []
     @references.each do |ref|
       @results << ref
       instances_query = Instance::AsArray::ForReference
                         .new(ref,
-                             instances_sort_key,
+                             sort_key,
                              @parsed_request.limit,
-                             @parsed_request.instance_offset)
+                             @parsed_request.instance_offset,
+                             preloaded_instances: instances_by_reference[ref.id] || [],
+                             preloaded_cited_by_map: cited_by_map)
       instances_query.results.each { |i| @results << i }
     end
   end

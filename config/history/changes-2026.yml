@@ -1,4 +1,8 @@
 - :date: 12-August-2026
+  :jira_id: '5890'
+  :description: |-
+    Performance improvements for Reference plus Instance queries - expecting no change to output
+- :date: 12-August-2026
   :jira_id: '5888'
   :description: |-
     Generalise the stimulus autocomplete library to allow it to be used for other typeahead fields in the future

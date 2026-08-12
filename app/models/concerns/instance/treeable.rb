@@ -4,6 +4,37 @@
 module Instance::Treeable
   extend ActiveSupport::Concern
 
+  class_methods do
+    # NOTES (N+1 fix): in_published_trees below used to be called once per
+    # instance from app/views/instances/taxo/_widgets.html.erb - each call
+    # its own 3-join query - so a search results page listing hundreds of
+    # instances (e.g. a reference search with show-instances:) fired
+    # hundreds of these queries. Confirmed via the development log as the
+    # single largest source of query time on a slow "ang si:" search (707ms
+    # across 394 queries - more than every other query type combined).
+    #
+    # This batches the same query across every instance id given, grouped
+    # by instance id, so a whole page of results can be looked up with one
+    # query instead of one per row. in_published_trees itself now just
+    # calls this for a single id, so both stay in sync with one query
+    # definition.
+    def published_trees_map_for(instances_or_ids)
+      ids = Array.wrap(instances_or_ids)
+                 .map { |i| i.respond_to?(:id) ? i.id : i }
+                 .compact.uniq
+      return {} if ids.empty?
+
+      Instance
+        .joins('INNER JOIN tree_element ON instance.id = tree_element.instance_id')
+        .joins('JOIN tree_version_element tve ON tree_element.id = tve.tree_element_id')
+        .joins('JOIN tree t ON tve.tree_version_id = t.current_tree_version_id')
+        .where(id: ids)
+        .where('t.is_read_only = false')
+        .select('instance.id, t.name AS tree_name, tree_element.excluded AS excluded')
+        .group_by(&:id)
+    end
+  end
+
   def accepted_tree_version_element
     Tree.accepted.first.current_tree_version.instance_in_version(self)
   end
@@ -32,13 +63,7 @@ module Instance::Treeable
   end
 
   def in_published_trees
-    Instance
-      .joins('INNER JOIN tree_element ON instance.id = tree_element.instance_id')
-      .joins('JOIN tree_version_element tve ON tree_element.id = tve.tree_element_id')
-      .joins('JOIN tree t ON tve.tree_version_id = t.current_tree_version_id')
-      .where(id: id)
-      .where('t.is_read_only = false')
-      .select('instance.id, t.name AS tree_name, tree_element.excluded AS excluded')
+    self.class.published_trees_map_for(id).fetch(id, [])
   end
 
   def in_workspace?(workspace)

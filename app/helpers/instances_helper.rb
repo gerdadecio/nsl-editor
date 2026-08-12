@@ -2,6 +2,23 @@
 
 # Help for Instance display
 module InstancesHelper
+  # NOTES (N+1 fix): instances/taxo/_widgets.html.erb used to call
+  # instance.in_published_trees directly - one query per rendered instance.
+  # SearchController pre-computes @published_trees_map for a whole page of
+  # results in a single batched query (see
+  # Instance::Treeable.published_trees_map_for) and this helper just looks
+  # the current instance up in it. Any caller that hasn't populated
+  # @published_trees_map (e.g. views outside the search results pages)
+  # falls back to the original per-instance method, so this is safe to use
+  # everywhere _widgets.html.erb is rendered from.
+  def published_trees_for(instance)
+    if @published_trees_map
+      @published_trees_map[instance.id] || []
+    else
+      instance.in_published_trees
+    end
+  end
+
   def instance_citation_types_names(instance)
     instance.citations.collect { |c| c.instance_type.name }
   end
