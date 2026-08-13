@@ -1,4 +1,8 @@
-- :date: 12-August-2026
+- :date: 13-August-2026
+  :jira_id: '5806'
+  :description: |-
+    Search: Fix bug from earlier changes that allowed an invalid search target into the search target field
+- :date: 13-August-2026
   :jira_id: '5888'
   :description: |-
     Typeahead Upgrade: Name edit form's author field typeahead upgraded to use stimulus autocomplete library
