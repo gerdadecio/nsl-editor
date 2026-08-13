@@ -1,16 +1,26 @@
+<%# Author: powered by stimulus-autocomplete instead of the vendored
+    typeahead.js/Bloodhound widget - the first field to use the shared
+    autocomplete partial. Label, title, dom ids, param names and the
+    wrapper's "author" class are all kept as they were, so the GUI is
+    unchanged; only the JS driving the dropdown is different.
 
+    Server-side resolution (Name::AsResolvedTypeahead::ForAuthor) is
+    untouched - it doesn't know or care which JS widget populated these
+    fields, including the typed-exact-match-without-a-pick case.
 
-  <div class="form-group author">
-    <label for="author-by-abbrev"><%= "Original " if @name.changed_combination %>Author</label><br>
-    <input id="author-by-abbrev"
-           name="name[author_typeahead]"   
-           class="typeahead form-control" 
-           type="text" 
-           title="Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation."
-           tabindex="<%= increment_tab_index %>"
-           value="<%= @name.author.try('abbrev_if_possible') %>"/>
-  </div>
-  <%= f.hidden_field(:author_id) %>
-  <script>setUpAuthorByAbbrev(); </script>
-
-
+    dependents_field mirrors the setDependents('author-by-abbrev') call the
+    old typeahead.js wiring made after a pick. Nothing in the app currently
+    declares .requires-author-by-abbrev or .hide-if-author-by-abbrev, so it
+    is a no-op today; passed through for exact fidelity with the old
+    behaviour. %>
+<%= render "shared/autocomplete_field",
+           f: f,
+           id_attribute: :author_id,
+           input_id: "author-by-abbrev",
+           input_name: "name[author_typeahead]",
+           input_value: @name.author.try("abbrev_if_possible"),
+           label: "#{"Original " if @name.changed_combination}Author",
+           title: "Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation.",
+           url: authors_typeahead_on_abbrev_path(format: :html),
+           wrapper_class: "author",
+           dependents_field: "author-by-abbrev" %>

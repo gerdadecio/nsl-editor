@@ -81,8 +81,9 @@ pin "typeaheads_for_reference_author", to: "typeaheads/for_reference/author.js"
 pin "typeaheads_for_reference_duplicate", to: "typeaheads/for_reference/duplicate.js"
 pin "typeaheads_for_reference_parent", to: "typeaheads/for_reference/parent.js"
 
+# Still needed by the four author fields below; the Author field itself now
+# uses stimulus-autocomplete (app/views/names/form/_author.html.erb).
 pin "typeaheads_for_name_authors_by_abbrev", to: "typeaheads/for_name/authors_by_abbrev_bloodhound.js"
-pin "typeaheads_for_name_author", to: "typeaheads/for_name/author.js"
 pin "typeaheads_for_name_base_author", to: "typeaheads/for_name/base_author.js"
 pin "typeaheads_for_name_cultivar_parent", to: "typeaheads/for_name/cultivar_parent.js"
 pin "typeaheads_for_name_cultivar_second_parent", to: "typeaheads/for_name/cultivar_second_parent.js"

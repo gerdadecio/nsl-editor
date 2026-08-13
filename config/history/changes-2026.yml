@@ -1,4 +1,8 @@
 - :date: 12-August-2026
+  :jira_id: '5888'
+  :description: |-
+    Typeahead Upgrade: Name edit form's author field typeahead upgraded to use stimulus autocomplete library
+- :date: 12-August-2026
   :jira_id: '5890'
   :description: |-
     Performance improvements for Reference plus Instance queries - expecting no change to output

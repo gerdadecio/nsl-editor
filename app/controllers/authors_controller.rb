@@ -111,11 +111,36 @@ class AuthorsController < ApplicationController
   end
 
   # Columns such as parent and duplicate_of_id use a typeahead search.
+  #
+  # Two response formats over the one query:
+  #   json - the legacy typeahead.js/Bloodhound fields (ex, base, ex base and
+  #          sanctioning author), which ask for it by Accept header.
+  #   html - the fragment of <li role="option"> elements stimulus-autocomplete
+  #          expects, see app/views/shared/_autocomplete_suggestions.html.erb.
+  #
+  # The html callers must request it as .html (see the name form's Author
+  # field). stimulus-autocomplete sends no Accept header of its own, so the
+  # browser's "*/*" would otherwise leave the choice to whichever format is
+  # declared first here - and a reorder would silently feed JSON to the
+  # dropdown. params[:format] takes precedence over Accept, so the extension
+  # pins it.
+  #
+  # The json callers get away without an extension only because Bloodhound
+  # goes through jQuery: ActionDispatch ignores "browser-like" Accept headers
+  # (anything containing ", */*", which jQuery's is) unless the request is an
+  # XHR, and jQuery sets X-Requested-With. A non-XHR request with no
+  # extension therefore lands on html, not json.
   def typeahead_on_abbrev
     authors = []
     typeahead = Author::AsTypeahead
     authors = typeahead.on_abbrev(params[:term]) unless params[:term].blank?
-    render json: authors
+    respond_to do |format|
+      format.json { render json: authors }
+      format.html do
+        render partial: "shared/autocomplete_suggestions",
+               locals: { suggestions: authors, term: params[:term] }
+      end
+    end
   end
 
   def copy

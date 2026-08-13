@@ -237,6 +237,9 @@ Rails.application.routes.draw do
         to: "names/de_duplicates#transfer_all_dependents",
         via: :post
 
+  # Responds as json to the legacy typeahead.js fields and as html to
+  # stimulus-autocomplete, which requests it as .html via the route's
+  # optional format segment.
   match "authors/typeahead_on_abbrev",
         as: "authors_typeahead_on_abbrev",
         to: "authors#typeahead_on_abbrev", via: :get
