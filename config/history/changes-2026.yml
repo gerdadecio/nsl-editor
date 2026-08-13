@@ -1,4 +1,8 @@
 - :date: 13-August-2026
+  :jira_id: '5891'
+  :description: |-
+    Change the dropdown display for rank field to use the rank.name instead of rank.display_name
+- :date: 13-August-2026
   :jira_id: '5806'
   :description: |-
     Search: Fix bug from earlier changes that allowed an invalid search target into the search target field
