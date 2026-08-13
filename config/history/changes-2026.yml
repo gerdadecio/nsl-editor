@@ -1,7 +1,3 @@
-- :date: 13-August-2026
-  :jira_id: '5806'
-  :description: |-
-    Search: Fix bug from earlier changes that allowed an invalid search target into the search target field
 - :date: 12-August-2026
   :jira_id: '5890'
   :description: |-
