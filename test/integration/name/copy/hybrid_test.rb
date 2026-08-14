@@ -25,12 +25,16 @@ class NamesCopyHybridTest < ActionController::TestCase
 
   def setup
     @source = names(:hybrid_formula) # parent: a_species, second_parent: another_species
-    # New parents, distinct from the source's own parents (the form requires this).
     @new_first_parent = names(:triodia_basedowii)
     @new_second_parent = names(:crotalaria_distans)
     @edit_session = { username: "fred",
                       user_full_name: "Fred Jones",
                       groups: ["edit"] }
+  end
+
+  # What the form's read-only preview field posts: "first parent x second parent".
+  def preview_for(first_parent, second_parent)
+    "#{first_parent.full_name} #{@source.name_type.connector} #{second_parent.full_name}"
   end
 
   def post_copy(name_element:, parent_id:, second_parent_id:)
@@ -44,18 +48,26 @@ class NamesCopyHybridTest < ActionController::TestCase
          session: @edit_session)
   end
 
-  test "copying a hybrid name creates a new name with [n/a] status and the chosen parents" do
-    new_name = nil
-
+  # Wraps the callbacks that need the external services.
+  def copying
     Name.stub_any_instance(:set_names!, nil) do
       Name.stub_any_instance(:refresh_name_paths, 0) do
-        assert_difference("Name.count", 1) do
-          post_copy(name_element: "hybrid copy",
-                    parent_id: @new_first_parent.id,
-                    second_parent_id: @new_second_parent.id)
-        end
-        new_name = Name.find_by(name_element: "hybrid copy")
+        yield
       end
+    end
+  end
+
+  test "copying a hybrid name creates a new name with [n/a] status and the chosen parents" do
+    element = preview_for(@new_first_parent, @new_second_parent)
+    new_name = nil
+
+    copying do
+      assert_difference("Name.count", 1) do
+        post_copy(name_element: element,
+                  parent_id: @new_first_parent.id,
+                  second_parent_id: @new_second_parent.id)
+      end
+      new_name = Name.find_by(name_element: element)
     end
 
     assert_not_nil new_name, "the copied name should have been created"
@@ -64,19 +76,59 @@ class NamesCopyHybridTest < ActionController::TestCase
     assert_equal @new_second_parent.id, new_name.second_parent_id
   end
 
-  test "copying a hybrid name reusing the original's first parent does not create a new name" do
-    assert_difference("Name.count", 0) do
-      post_copy(name_element: "hybrid copy",
-                parent_id: @source.parent_id,
+  test "the copy is named as the form previewed it" do
+    element = preview_for(@new_first_parent, @new_second_parent)
+
+    copying do
+      post_copy(name_element: element,
+                parent_id: @new_first_parent.id,
                 second_parent_id: @new_second_parent.id)
+    end
+
+    copy = Name.find_by(name_element: element)
+
+    assert_not_nil copy, "the copy should keep the previewed name: #{element}"
+    assert_equal "Triodia basedowii E.Pritz x Crotalaria distens Benth.",
+                 copy.name_element
+  end
+
+  test "copying a hybrid name keeping the original's first parent creates a new name" do
+    copying do
+      assert_difference("Name.count", 1) do
+        post_copy(name_element: preview_for(@source.parent, @new_second_parent),
+                  parent_id: @source.parent_id,
+                  second_parent_id: @new_second_parent.id)
+      end
     end
   end
 
-  test "copying a hybrid name reusing the original's second parent does not create a new name" do
+  test "copying a hybrid name keeping the original's second parent creates a new name" do
+    copying do
+      assert_difference("Name.count", 1) do
+        post_copy(name_element: preview_for(@new_first_parent, @source.second_parent),
+                  parent_id: @new_first_parent.id,
+                  second_parent_id: @source.second_parent_id)
+      end
+    end
+  end
+
+  test "copying a hybrid name without changing either parent does not create a new name" do
     assert_difference("Name.count", 0) do
-      post_copy(name_element: "hybrid copy",
-                parent_id: @new_first_parent.id,
+      post_copy(name_element: preview_for(@source.parent, @source.second_parent),
+                parent_id: @source.parent_id,
                 second_parent_id: @source.second_parent_id)
     end
+
+    assert_match(/change at least one parent/, response.body)
+  end
+
+  test "copying a hybrid name without a second parent does not create a new name" do
+    assert_difference("Name.count", 0) do
+      post_copy(name_element: preview_for(@new_first_parent, @new_second_parent),
+                parent_id: @new_first_parent.id,
+                second_parent_id: "")
+    end
+
+    assert_match(/choose a second parent/, response.body)
   end
 end

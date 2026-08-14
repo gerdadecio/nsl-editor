@@ -1,4 +1,8 @@
 - :date: 14-August-2026
+  :jira_id: '3658'
+  :description: |-
+    Preview the name element for a hybrid copy in the copy form, prefill the parents fields, & update the validations
+- :date: 14-August-2026
   :jira_id: '5884'
   :description: |-
     Typeahead Upgrade: Name Duplicate of field trial: adapt code to use the generalised stimulus autocomplete resources
