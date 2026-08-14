@@ -183,14 +183,13 @@ class Name::AsCopier < Name
   private
 
   def validate_new_hybrid_parents!(parent_id, second_parent_id)
-    if parent_id.blank? || parent_id.to_i == self.parent_id
-      raise "Please choose a first parent that is different from " \
-            "the original name's first parent."
-    end
+    raise "Please choose a first parent for the copy." if parent_id.blank?
+    raise "Please choose a second parent for the copy." if second_parent_id.blank?
 
-    if second_parent_id.blank? || second_parent_id.to_i == self.second_parent_id
-      raise "Please choose a second parent that is different from " \
-            "the original name's second parent."
+    if parent_id.to_i == self.parent_id &&
+        second_parent_id.to_i == self.second_parent_id
+      raise "Please change at least one parent - the copy would be " \
+            "the same name."
     end
 
     if !cultivar_hybrid? && parent_id.to_i == second_parent_id.to_i

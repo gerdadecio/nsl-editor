@@ -51,8 +51,8 @@ RSpec.describe Name::AsCopier, type: :model do
     end
 
     context "when the source name is a hybrid" do
-      let(:first_parent)  { FactoryBot.create(:name) }
-      let(:second_parent) { FactoryBot.create(:name) }
+      let(:first_parent)  { FactoryBot.create(:name, full_name: "Aus bus") }
+      let(:second_parent) { FactoryBot.create(:name, full_name: "Aus cus") }
       let(:source) do
         described_class.find(
           FactoryBot.create(:name, name_type: non_hybrid_type, name_element: "orig").id
@@ -60,6 +60,8 @@ RSpec.describe Name::AsCopier, type: :model do
       end
 
       before do
+        # Stubbed before `source` is built - some sources below carry parents.
+        allow_any_instance_of(Name).to receive(:takes_parent_2?).and_return(true)
         allow(source).to receive(:hybrid?).and_return(true)
         allow(source).to receive(:cultivar_hybrid?).and_return(false)
       end
@@ -90,16 +92,49 @@ RSpec.describe Name::AsCopier, type: :model do
             expect(copy.second_parent_id).to eq(second_parent.id)
           end
         end
+
+        it "saves the name element the form previewed" do
+          copy = source.copy_with_username("Aus bus x Aus cus", "tester",
+                                           parent_id: first_parent.id,
+                                           second_parent_id: second_parent.id)
+
+          expect(copy.name_element).to eq("Aus bus x Aus cus")
+        end
       end
 
       it "raises when the first parent is blank" do
         expect { copy_with(parent_id: nil, second_parent_id: second_parent.id) }
-          .to raise_error(/first parent that is different/)
+          .to raise_error("Please choose a first parent for the copy.")
       end
 
       it "raises when the second parent is blank" do
         expect { copy_with(parent_id: first_parent.id, second_parent_id: nil) }
-          .to raise_error(/second parent that is different/)
+          .to raise_error("Please choose a second parent for the copy.")
+      end
+
+      context "when the form is submitted on the original's parents" do
+        let(:source) do
+          described_class.find(
+            FactoryBot.create(:name, name_type: non_hybrid_type, name_element: "orig",
+                                     parent: first_parent, second_parent: second_parent).id
+          )
+        end
+
+        it "raises when neither parent was changed" do
+          expect { copy_with(parent_id: first_parent.id, second_parent_id: second_parent.id) }
+            .to raise_error(/change at least one parent/)
+        end
+
+        it "allows a copy that changes only the second parent" do
+          other = FactoryBot.create(:name)
+
+          copy = copy_with(parent_id: first_parent.id, second_parent_id: other.id)
+
+          aggregate_failures do
+            expect(copy.parent_id).to eq(first_parent.id)
+            expect(copy.second_parent_id).to eq(other.id)
+          end
+        end
       end
 
       it "raises when both parents are the same (non cultivar-hybrid)" do
