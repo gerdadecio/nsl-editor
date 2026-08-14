@@ -31,26 +31,27 @@ module Name::Typeaheads
   end
 
   # Columns such as parent and duplicate_of_id use a typeahead search.
+  #
+  # Two response formats over the one query, matching
+  # AuthorsController#typeahead_on_abbrev:
+  #   json - answered for any caller that doesn't ask for html by extension
+  #          (kept for parity with that action; nothing in this app's own
+  #          views still asks for it).
+  #   html - the fragment of <li role="option"> elements stimulus-autocomplete
+  #          expects, see app/views/shared/_autocomplete_suggestions.html.erb.
+  #          The name form's Duplicate of field asks for this by extension -
+  #          see AuthorsController#typeahead_on_abbrev's comment for why the
+  #          format has to be pinned that way rather than left to the Accept
+  #          header.
   def duplicate_suggestions
-    render json: duplicate_suggestions_typeahead
-  end
-
-  # Renders an HTML fragment (a list of <li role="option"> elements)
-  # instead of JSON, because that's what stimulus-autocomplete expects
-  # back - see
-  # app/javascript/controllers/duplicate_of_autocomplete_controller.js.
-  # Reuses the exact same Name::AsTypeahead.duplicate_suggestions query as
-  # the (JSON) duplicate_suggestions action above; only the response
-  # format differs.
-  def duplicate_suggestions_html
-    suggestions =
-      if params[:term].blank? || params[:name_id].blank?
-        []
-      else
-        Name::AsTypeahead.duplicate_suggestions(params[:term], params[:name_id])
+    suggestions = duplicate_suggestions_typeahead
+    respond_to do |format|
+      format.json { render json: suggestions }
+      format.html do
+        render partial: "shared/autocomplete_suggestions",
+               locals: { suggestions: suggestions, term: params[:term] }
       end
-    render partial: "names/typeaheads/duplicate_suggestions_html",
-           locals: { suggestions: suggestions, term: params[:term] }
+    end
   end
 
   # Used on references - new instance tab

@@ -21,7 +21,6 @@
  *= require components/controls
  *= require utilities/typeahead
  *= require utilities/autocomplete
- *= require autocomplete/duplicate_of
  *= require utilities/colors
  *= require layouts/layout_2015
  *= require components/search-form

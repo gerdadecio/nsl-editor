@@ -1,3 +1,7 @@
+- :date: 14-August-2026
+  :jira_id: '5884'
+  :description: |-
+    Typeahead Upgrade: Name Duplicate of field trial: adapt code to use the generalised stimulus autocomplete resources
 - :date: 13-August-2026
   :jira_id: '5891'
   :description: |-
