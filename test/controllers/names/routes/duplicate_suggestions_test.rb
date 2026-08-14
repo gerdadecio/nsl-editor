@@ -21,9 +21,20 @@ require "test_helper"
 # Single controller test.
 class NameDuplicateSuggestionsRouteTest < ActionController::TestCase
   tests NamesController
+
   test "should route to name duplicate suggestions" do
     assert_routing "/suggestions/name/duplicate",
                    controller: "names",
                    action: "duplicate_suggestions"
+  end
+
+  # stimulus-autocomplete asks for the html fragment by extension rather than
+  # by Accept header - see NamesController#duplicate_suggestions and
+  # AuthorsController#typeahead_on_abbrev's comment for why.
+  test "should route the html format to the same action" do
+    assert_routing "/suggestions/name/duplicate.html",
+                   controller: "names",
+                   action: "duplicate_suggestions",
+                   format: "html"
   end
 end

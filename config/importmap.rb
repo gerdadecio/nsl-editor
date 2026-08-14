@@ -87,7 +87,6 @@ pin "typeaheads_for_name_authors_by_abbrev", to: "typeaheads/for_name/authors_by
 pin "typeaheads_for_name_base_author", to: "typeaheads/for_name/base_author.js"
 pin "typeaheads_for_name_cultivar_parent", to: "typeaheads/for_name/cultivar_parent.js"
 pin "typeaheads_for_name_cultivar_second_parent", to: "typeaheads/for_name/cultivar_second_parent.js"
-pin "typeaheads_for_name_duplicate_of", to: "typeaheads/for_name/duplicate_of.js"
 pin "typeaheads_for_name_ex_author", to: "typeaheads/for_name/ex_author.js"
 pin "typeaheads_for_name_ex_base_author", to: "typeaheads/for_name/ex_base_author.js"
 pin "typeaheads_for_name_family", to: "typeaheads/for_name/family.js"

@@ -174,17 +174,11 @@ Rails.application.routes.draw do
         to: "names#cultivar_parent_suggestions",
         via: :get
 
+  # Two response formats over the one query - see
+  # NamesController/Name::Typeaheads#duplicate_suggestions.
   match "suggestions/name/duplicate",
         as: "name_duplicate_suggestions",
         to: "names#duplicate_suggestions",
-        via: :get
-
-  # PROTOTYPE: stimulus-autocomplete evaluation - see
-  # app/javascript/controllers/duplicate_of_autocomplete_controller.js and
-  # the "Duplicate of" field on the name edit form.
-  match "suggestions/name/duplicate_html",
-        as: "name_duplicate_suggestions_html",
-        to: "names#duplicate_suggestions_html",
         via: :get
 
   match "suggestions/workspace/parent_name",
