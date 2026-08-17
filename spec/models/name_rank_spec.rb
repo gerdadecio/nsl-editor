@@ -27,6 +27,41 @@ RSpec.describe NameRank, type: :model do
   let!(:infraspecies) { build_rank("[infraspecies]", 70) }
   let!(:deprecated_forma) { build_rank("Forma", 80, deprecated: true) }
 
+  describe "#below_family?" do
+    it "is true for a rank sorted below family" do
+      expect(genus).to be_below_family
+      expect(species).to be_below_family
+    end
+
+    it "is false for the family rank itself" do
+      expect(familia).not_to be_below_family
+    end
+
+    it "is false for a rank sorted above family" do
+      expect(regnum).not_to be_below_family
+    end
+
+    context "when there is no family rank" do
+      before { described_class.where(name: "Familia").delete_all }
+
+      it "is false instead of raising" do
+        expect { genus.below_family? }.not_to raise_error
+        expect(genus).not_to be_below_family
+      end
+
+      it "lets #parent fall back to no parent" do
+        expect(genus.parent).to be_a NoParent
+      end
+
+      it "lets .options_for_category return rank options instead of raising" do
+        scientific = create(:name_category, valid_names: ["scientific"])
+
+        expect { described_class.options_for_category(scientific, genus) }
+          .not_to raise_error
+      end
+    end
+  end
+
   describe ".below_family_options" do
     subject(:options) { described_class.below_family_options }
 
