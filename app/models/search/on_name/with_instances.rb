@@ -23,15 +23,33 @@
 #
 # search = Search::OnName::Base.new(parsed_request)
 #
+# NOTES (N+1 fix, structural): used to instantiate a fresh
+# Instance::AsArray::ForName per matching name, each running its own
+# queries - so query count scaled with the number of matching names (and,
+# within each, its own instances). preload_for batches those per-name
+# queries across every name in `names` up front, so each
+# Instance::AsArray::ForName built below does no queries of its own - it's
+# just replaying already-fetched data through the same
+# counting/expansion logic as before. Same fix already applied to
+# Reference plus Instance searches - see
+# Search::OnModel::Base#show_instances.
 class Search::OnName::WithInstances
   attr_reader :names_with_instances
 
   def initialize(names)
+    instances_by_name, standalone_cited_by_map, relationship_cited_by_map =
+      Instance::AsArray::ForName.preload_for(names)
+
     results = []
     names.each do |name|
       name.display_as_part_of_concept
       results << name
-      Instance::AsArray::ForName.new(name).results.each do |usage_rec|
+      Instance::AsArray::ForName.new(
+        name,
+        preloaded_instances: instances_by_name[name.id] || [],
+        preloaded_standalone_cited_by_map: standalone_cited_by_map,
+        preloaded_relationship_cited_by_map: relationship_cited_by_map
+      ).results.each do |usage_rec|
         results << usage_rec
       end
     end

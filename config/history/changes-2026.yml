@@ -1,4 +1,8 @@
 - :date: 17-August-2026
+  :jira_id: '5893'
+  :description: |-
+    Name-plus-instance search: Tune this query, make it faster without changing the output
+- :date: 17-August-2026
   :jira_id: '5801'
   :description: |-
     Loader: Make blocking message when review periods overlap more accurate by naming the periods
