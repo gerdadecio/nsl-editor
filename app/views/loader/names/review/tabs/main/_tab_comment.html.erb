@@ -4,11 +4,20 @@
 <br>
 
 <%= divider %>
-reviews: <%= @loader_name.batch.reviews.size %>
+<% active_review_periods = @loader_name.batch.active_review_periods %>
+Reviews: <%= @loader_name.batch.reviews.size %>
 <br>
-active reviews: <%= @loader_name.batch.active_reviews.map {|x| x.name} %>
+Active reviews: <%= @loader_name.batch.active_reviews.map {|x| x.name}.uniq.join(', ') %>
 <br>
-active review periods: <%= @loader_name.batch.active_review_periods.size %>
+Active review periods: <%= active_review_periods.size %>
+<br>
+<% if active_review_periods.size > 0 %>
+  <ul>
+  <% active_review_periods.each do |period| %>
+    <li><%= period.qualified_name %></li>
+  <% end %>
+  </ul>
+<% end %>
 <br>
 
 <div id="create-one-comment-container">
