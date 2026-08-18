@@ -309,6 +309,8 @@ class NameRank < ApplicationRecord
 
   # NOTE: greater than means below!
   def below_family?
+    return false if NameRank.family.blank?
+
     sort_order > NameRank.family.sort_order
   end
 

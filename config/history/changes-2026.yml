@@ -1,3 +1,7 @@
+- :date: 18-August-2026
+  :jira_id: '5896'
+  :description: |-
+    Afd: Avoid 500 error by adding a guard for nil name_rank.family
 - :date: 17-August-2026
   :jira_id: '5893'
   :description: |-
