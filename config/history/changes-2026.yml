@@ -1,4 +1,8 @@
 - :date: 18-August-2026
+  :jira_id: '5888'
+  :description: |-
+    Typeahead Upgrade: Adjust the spacings of the autocomplete result items via css
+- :date: 18-August-2026
   :jira_id: '5896'
   :description: |-
     Afd: Avoid 500 error by adding a guard for nil name_rank.family
