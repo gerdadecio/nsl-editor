@@ -1,3 +1,7 @@
+- :date: 19-August-2026
+  :jira_id: '5897'
+  :description: |-
+    Create Unpublished Citation: Fix bug that created unpub citations to the current Name instead of to selected Name
 - :date: 18-August-2026
   :jira_id: '5888'
   :description: |-
