@@ -34,7 +34,16 @@ class InstancesCreateCitedBySelfTextMatchRejectedTest < ActionController::TestCa
   tests InstancesController
 
   def setup
-    @cited_by = instances(:gaertner_created_metrosideros_costata)
+    # Deliberately not gaertner_created_metrosideros_costata (used by the
+    # other tests in this directory) - its name's full_name text
+    # ("Metrosideros costata Gaertn.") happens to collide, character for
+    # character, with an unrelated orth_var fixture
+    # (metrosideros_costata_gaertn), so excluding just the self match
+    # still leaves one other genuine, non-self match and the citation
+    # legitimately succeeds - which looks identical to this test passing
+    # for the wrong reason. triodia_basedowii's full_name is unique across
+    # the fixture set, so excluding self here can only leave zero matches.
+    @cited_by = instances(:triodia_in_brassard)
     @request.headers["Accept"] = "application/javascript"
   end
 
