@@ -23,10 +23,11 @@ class Name::AsResolvedTypeahead::ForUnpubCitationInstance
   include Resolvable
   attr_reader :value
 
-  def initialize(id_string, param_text)
+  def initialize(id_string, param_text, context_name_id)
     @text = extract_delimited_string(param_text)
     @text.rstrip! unless @text.blank?
     @id_string = id_string
+    @context_name_id = context_name_id
     @field_name = "name"
     run
   end
@@ -45,7 +46,7 @@ class Name::AsResolvedTypeahead::ForUnpubCitationInstance
   end
 
   def text_only_case_sensitive_equals
-    possibles = ::Name.case_sensitive_full_name_like(@text)
+    possibles = ::Name.case_sensitive_full_name_like(@text).where.not(id: @context_name_id)
     case possibles.size
     when 0
       raise "No case-sensitive exact match for '#{@text}'"

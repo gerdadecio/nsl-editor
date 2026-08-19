@@ -45,7 +45,8 @@
     <br>
     <%= f.text_field :page, title: 'Enter page details', tabindex: increment_tab_index %>
     <br>
-    <%= f.hidden_field :name_id, id: "instance-name-id", value: @instance.name_id %>
+    <%= f.hidden_field :name_id %>
+    <%= f.hidden_field :context_name_id, id: 'context-name-id', value: @instance.name_id %>
     <%= f.hidden_field :reference_id, value: @instance.reference_id %>
     <%= f.hidden_field :cited_by_id, value: @instance.id %>
     <%= f.hidden_field :cites_id %>

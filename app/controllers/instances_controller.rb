@@ -52,6 +52,7 @@ class InstancesController < ApplicationController
     resolve_unpub_citation_name_id(
       instance_params[:name_id],
       instance_name_params[:name_typeahead],
+      context_params[:context_name_id]
     )
     if instance_params[:name_id].blank?
       render_create_error("You must choose a name.", "instance-name-typeahead")
@@ -261,6 +262,12 @@ class InstancesController < ApplicationController
     )
   end
 
+  def context_params
+    params.require(:instance).permit(
+      :context_name_id
+    )
+  end
+
   def instance_name_params
     params.require(:instance).permit(:name_id, :name_typeahead)
   end
@@ -367,10 +374,10 @@ class InstancesController < ApplicationController
     }
   end
 
-  def resolve_unpub_citation_name_id(name_id, name_typeahead)
+  def resolve_unpub_citation_name_id(name_id, name_typeahead, context_name_id)
     return if instance_params[:name_id].present?
 
-    params[:instance][:name_id] = Name::AsResolvedTypeahead::ForUnpubCitationInstance.new(name_id, name_typeahead).value
+    params[:instance][:name_id] = Name::AsResolvedTypeahead::ForUnpubCitationInstance.new(name_id, name_typeahead, context_name_id).value
   end
 
   def find_a_parent(parent)

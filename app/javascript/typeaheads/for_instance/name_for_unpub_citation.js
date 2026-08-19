@@ -27,8 +27,8 @@ window.nameByFullNameForUnpubCit = new Bloodhound({
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/names/typeaheads/for_unpub_cit/index?term=%QUERY',
         replace: function(url,query) {
-            return window.relative_url_root + '/names/typeaheads/for_unpub_cit/index?name_id=' +
-                $('#instance-name-id').val() +
+            return window.relative_url_root + '/names/typeaheads/for_unpub_cit/index?context_name_id=' +
+                $('#context-name-id').val() +
                 '&term=' + encodeURIComponent(query) + '&' + 
                 'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
         }
