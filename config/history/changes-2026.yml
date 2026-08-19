@@ -1,4 +1,8 @@
 - :date: 19-August-2026
+  :jira_id: '5894'
+  :description: |-
+    Typeahead Upgrade: Upgrade typeahead with stimulus autocomplete for the base author field in the name form
+- :date: 19-August-2026
   :jira_id: '5899'
   :description: |-
     History of Changes: Add cache-busting param to links for these pages and log a time retrieved on the page.

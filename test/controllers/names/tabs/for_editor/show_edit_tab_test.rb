@@ -66,7 +66,28 @@ class ShowEditTest < ActionController::TestCase
     assert_select "div.autocomplete label[for='author-by-abbrev']", "Author"
   end
 
-  # The other four author fields have not been migrated, so they must still
+  # Base Author is the second field moved onto the shared partial.
+  test "should render the base author field as a stimulus autocomplete" do
+    @request.headers["Accept"] = "application/javascript"
+    get(:show,
+        params: { id: @name.id, tab: "tab_edit" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
+    assert_response :success
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+                  " input#base-author-by-abbrev" \
+                  "[data-autocomplete-target='input']",
+                  true
+    assert_select "div.autocomplete" \
+                  " input#name_base_author_id" \
+                  "[data-autocomplete-target='hidden']",
+                  true
+    assert_select "div.autocomplete label[for='base-author-by-abbrev']",
+                  "Base Author"
+  end
+
+  # The other three author fields have not been migrated, so they must still
   # render the plain typeahead.js markup and its inline set-up call.
   test "should leave the other author fields on the legacy typeahead" do
     @request.headers["Accept"] = "application/javascript"
@@ -76,9 +97,10 @@ class ShowEditTest < ActionController::TestCase
                    user_full_name: "Fred Jones",
                    groups: ["edit"] })
     assert_response :success
-    assert_select "div.autocomplete input#base-author-by-abbrev", false
-    assert_select "input#base-author-by-abbrev", true
+    assert_select "div.autocomplete input#ex-base-author-by-abbrev", false
+    assert_select "input#ex-base-author-by-abbrev", true
     assert_no_match(/setUpAuthorByAbbrev\(\)/, @response.body)
-    assert_match(/setUpBaseAuthorByAbbrev\(\)/, @response.body)
+    assert_no_match(/setUpBaseAuthorByAbbrev\(\)/, @response.body)
+    assert_match(/setUpExBaseAuthorByAbbrev\(\)/, @response.body)
   end
 end

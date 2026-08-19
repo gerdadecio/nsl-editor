@@ -1,12 +1,11 @@
-  <div class="form-group base-author">
-    <label for="base-author-by-abbrev">Base Name Author</label><br>
-    <input id="base-author-by-abbrev"
-           name="name[base_author_typeahead]"   
-           class="typeahead form-control"
-           type="text" 
-           title="Base Name Author field. Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation."
-           tabindex="<%= increment_tab_index %>"
-           value="<%= @name.base_author.try('abbrev_if_possible') %>"/>
-  </div>
-  <%= f.hidden_field(:base_author_id) %>
-
+<%= render "shared/autocomplete_field",
+           f: f,
+           id_attribute: :base_author_id,
+           input_id: "base-author-by-abbrev",
+           input_name: "name[base_author_typeahead]",
+           input_value: @name.base_author.try("abbrev_if_possible"),
+           label: "#{"Original " if @name.changed_combination}Base Author",
+           title: "Base Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation.",
+           url: authors_typeahead_on_abbrev_path(format: :html),
+           wrapper_class: "author",
+           dependents_field: "base-author-by-abbrev" %>
