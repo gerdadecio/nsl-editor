@@ -1,4 +1,8 @@
 - :date: 20-August-2026
+  :jira_id: '3732'
+  :description: |-
+    Reference plus Instance search: Apply the same limit and count rules as for Name plus Instance search
+- :date: 20-August-2026
   :jira_id: '5901'
   :description: |-
     Typeahead Upgrade: Upgrade typeahead with stimulus autocomplete for the ex author field in the name form
