@@ -27,8 +27,7 @@ class Search::Reference::DefinedQuery
               :id,
               :count,
               :show_csv,
-              :total,
-              :full_count_known
+              :total
 
   def initialize(parsed_request, force_list_query = false)
     @parsed_request = parsed_request
@@ -68,7 +67,7 @@ class Search::Reference::DefinedQuery
     @count = @results.size
     @show_csv = false
     calculate_total
-    @limited = (@full_count_known && @total > @relation.size) || !@full_count_known
+    @limited = @total > @relation.size
   end
 
   def consider_instances
@@ -86,6 +85,11 @@ class Search::Reference::DefinedQuery
   # See Search::OnModel::Base#show_instances for why this batches via
   # preload_for rather than instantiating Instance::AsArray::ForReference
   # (and letting it query) once per reference in @references.
+  #
+  # NOTES (limit/total redesign): no limit: passed here (was
+  # @parsed_request.limit) - same change as Search::OnModel::Base#show_instances,
+  # see Instance::AsArray::ForReference's own NOTES for why. instance_offset:
+  # is still honoured.
   def show_instances
     sort_key = instances_sort_key
     instances_by_reference, cited_by_map =
@@ -97,7 +101,7 @@ class Search::Reference::DefinedQuery
       instances_query = Instance::AsArray::ForReference
                         .new(ref,
                              sort_key,
-                             @parsed_request.limit,
+                             nil,
                              @parsed_request.instance_offset,
                              preloaded_instances: instances_by_reference[ref.id] || [],
                              preloaded_cited_by_map: cited_by_map)
@@ -113,14 +117,18 @@ class Search::Reference::DefinedQuery
     @show_csv
   end
 
+  # NOTES (limit/total redesign): used to special-case show_instances,
+  # setting @total = @results.size - since @results is the reference+
+  # instances interleaved array, that made @total always equal
+  # results.size exactly, so the "N of TOTAL records"/"(limited)" notice
+  # in search/search_result_summary/_list could never trigger even when
+  # a reference's instance list genuinely was truncated. Now that
+  # instance expansion is unlimited (see show_instances/
+  # Instance::AsArray::ForReference's NOTES), there's no truncation to
+  # hide in the first place, and @total can just be the plain count of
+  # matching references in both cases - the same thing
+  # Search::OnName::Base#calculate_total does for names.
   def calculate_total
-    @total = if @parsed_request.show_instances
-               @limited = true
-               @full_count_known = false
-               @results.size
-             else
-               @full_count_known = true
-               @relation.except(:offset, :limit, :order).count
-             end
+    @total = @relation.except(:offset, :limit, :order).count
   end
 end
