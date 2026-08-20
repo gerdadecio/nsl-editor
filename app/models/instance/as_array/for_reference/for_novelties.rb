@@ -39,6 +39,14 @@
 # be passed into .new via preloaded_instances:. A caller with just one
 # reference (or that hasn't been updated) can keep calling .new the old
 # way - it falls back to running its own query exactly as before.
+#
+# NOTES (limit/total redesign): same change as the equivalent note on
+# Instance::AsArray::ForReference - search callers no longer pass
+# parsed_request.limit through as this class's limit: (offset: is still
+# honoured), so every novelty instance for the reference comes back
+# rather than being capped by the same number controlling how many
+# References the search itself returns. limit: remains available for a
+# caller that genuinely wants one (nil, the default, means unlimited).
 class Instance::AsArray::ForReference::ForNovelties < Array
   attr_reader :results
 
@@ -61,14 +69,14 @@ class Instance::AsArray::ForReference::ForNovelties < Array
     end
   end
 
-  def initialize(reference, sort_by = "name", limit = 1000, offset = 0,
+  def initialize(reference, sort_by = "name", limit = nil, offset = 0,
                  preloaded_instances: nil)
     debug("init #{reference.citation}")
     @results = []
     @already_shown = []
     @reference = reference
     @count = 0
-    @limit = limit
+    @limit = limit || Float::INFINITY
     @sort_by = sort_by
     @offset = offset || 0
     @limit += @offset if @limit < @offset

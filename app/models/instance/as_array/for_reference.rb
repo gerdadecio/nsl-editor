@@ -48,6 +48,19 @@
 # with just one reference (or that hasn't been updated) can keep calling
 # .new the old way - it falls back to running its own queries exactly as
 # before.
+#
+# NOTES (limit/total redesign): search callers used to pass
+# parsed_request.limit straight through as this class's own limit: - the
+# same number controlling how many References a search returns also
+# capped how many instances any single one of those references could
+# show, so raising the search limit silently multiplied per-reference
+# query cost, and a truncated reference's instance list had no way to be
+# distinguished from a complete one. Search callers now pass no limit: at
+# all (offset: is still honoured, e.g. instance-offset: in a search
+# query) - every instance for the reference comes back, same as
+# Instance::AsArray::ForName never having a limit concept for a name's
+# instances. limit: remains available for a caller that genuinely wants
+# one (nil, the default, means unlimited).
 class Instance::AsArray::ForReference < Array
   attr_reader :results
 
@@ -99,14 +112,14 @@ class Instance::AsArray::ForReference < Array
     end
   end
 
-  def initialize(reference, sort_by = "name", limit = 1000, offset = 0,
+  def initialize(reference, sort_by = "name", limit = nil, offset = 0,
                  preloaded_instances: nil, preloaded_cited_by_map: nil)
     debug("init #{reference.citation}")
     @results = []
     @already_shown = []
     @reference = reference
     @count = 0
-    @limit = limit
+    @limit = limit || Float::INFINITY
     @sort_by = sort_by
     @offset = offset || 0
     @limit += @offset if @limit < @offset

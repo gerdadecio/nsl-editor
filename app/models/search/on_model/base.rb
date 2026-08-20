@@ -101,6 +101,10 @@ class Search::OnModel::Base
   # each Instance::AsArray::ForReference built below does no queries of
   # its own - it's just replaying already-fetched data through the same
   # counting/expansion logic as before.
+  #
+  # NOTES (limit/total redesign): no limit: passed here (was
+  # parsed_request.limit) - see Instance::AsArray::ForReference's own
+  # NOTES for why. instance_offset: is still honoured.
   def show_instances(parsed_request)
     sort_key = instances_sort_key(parsed_request)
     instances_by_reference, cited_by_map =
@@ -112,7 +116,7 @@ class Search::OnModel::Base
       instances_query = Instance::AsArray::ForReference
                         .new(ref,
                              sort_key,
-                             parsed_request.limit,
+                             nil,
                              parsed_request.instance_offset,
                              preloaded_instances: instances_by_reference[ref.id] || [],
                              preloaded_cited_by_map: cited_by_map)
@@ -126,6 +130,8 @@ class Search::OnModel::Base
   end
 
   # See the show_instances note above - same fix, applied to novelties.
+  # Same limit/total redesign too: no limit: passed here (was
+  # parsed_request.limit), instance_offset: still honoured.
   def show_novelties(parsed_request)
     sort_key = novelties_sort_key(parsed_request)
     instances_by_reference =
@@ -137,7 +143,7 @@ class Search::OnModel::Base
       instances_query = Instance::AsArray::ForReference::ForNovelties
                         .new(ref,
                              sort_key,
-                             parsed_request.limit,
+                             nil,
                              parsed_request.instance_offset,
                              preloaded_instances: instances_by_reference[ref.id] || [])
       instances_query.results.each { |i| results_with_instances << i }
