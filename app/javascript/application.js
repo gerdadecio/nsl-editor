@@ -2,7 +2,7 @@
 // import "@hotwired/turbo-rails";
 // https://github.com/hotwired/turbo-rails - notes on disabling by default
 // import { Turbo } from "@hotwired/turbo-rails"
-import "@hotwired/turbo-rails"
+import "@hotwired/turbo-rails";
 // Turbo.session.drive = false
 import "controllers";
 import "jQuery"; // select2 needs this case-sensitive version of jQuery - "jquery" gives error
@@ -81,7 +81,6 @@ import "typeaheads_for_reference_parent";
 import "typeaheads_for_name_authors_by_abbrev";
 import "typeaheads_for_name_cultivar_parent";
 import "typeaheads_for_name_cultivar_second_parent";
-import "typeaheads_for_name_ex_author";
 import "typeaheads_for_name_ex_base_author";
 import "typeaheads_for_name_family";
 import "typeaheads_for_name_hybrid_parent";
@@ -99,22 +98,19 @@ import "simple_mde_wysiwyg";
 import "prompt_form_save";
 import "print_link";
 
-import Rails from '@rails/ujs';
+import Rails from "@rails/ujs";
 
 Rails.start();
 
-
 console.log($); // ok
 
-
 if (debugSwitch === true) {
-  window.onload = function() {
-    console.log('window loaded via js/application.js');
-  }
+  window.onload = function () {
+    console.log("window loaded via js/application.js");
+  };
 
   $(document).on("turbo:load", () => {
-    console.log('turbo! via javascript/application.js');
-    console.log('Turbo.session.drive: ' + Turbo.session.drive);
+    console.log("turbo! via javascript/application.js");
+    console.log("Turbo.session.drive: " + Turbo.session.drive);
   });
 }
-
