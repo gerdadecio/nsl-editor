@@ -57,17 +57,28 @@ class Search::Reference::DefinedQuery
     @total = nil
   end
 
+  # NOTES (limit/total redesign, follow-up): @count/@total are captured
+  # from @references (the plain reference list) rather than @results,
+  # and calculated BEFORE consider_instances runs and replaces @results
+  # with a reference+instance interleaved array - same fix, and same
+  # reason, as Search::OnModel::Base#run_list_query. Not currently
+  # reachable through any live search (this class is only ever wrapped
+  # by Reference::DefinedQuery::ReferencesNamesFullSynonymy/
+  # ReferencesWithNovelties, and neither ever sets show_instances true
+  # on the parsed_request they pass through - see
+  # Search::ParsedRequest::ALLOW_SHOW_INSTANCES_TARGETS), but kept
+  # correct here too rather than leaving a dormant copy of the same bug.
   def run_list_query
     list_query = Search::Reference::DefinedQuery::List.new(@parsed_request)
     @relation = list_query.sql
     @references = relation.all
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
-    consider_instances
-    @count = @results.size
+    @count = @references.size
     @show_csv = false
     calculate_total
     @limited = @total > @relation.size
+    consider_instances
   end
 
   def consider_instances

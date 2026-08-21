@@ -31,8 +31,14 @@ class SearchRefsDefinedQRefIdWithInstsListHasInst < ActionController::TestCase
                    user_full_name: "Fred Jones",
                    groups: [] })
     assert_response :success
+    # NOTES (limit/total redesign, follow-up): despite the directory name,
+    # this hits the generic (non-defined-query) path - query_target here is
+    # "references", not one of Search::ParsedDefinedQuery::DEFINED_QUERIES'
+    # keys. A single matching reference is now reported as "1 record" (its
+    # attached instances are shown but no longer folded into the count) -
+    # see Search::OnModel::Base#run_list_query.
     assert_select "#search-results-summary",
-                  /[0-9][0-9] records\b/,
-                  "Should find some records"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

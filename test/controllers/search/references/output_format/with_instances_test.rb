@@ -39,8 +39,9 @@ class SearchRefsOutputFormatWithInstancesTest < ActionController::TestCase
                     /orth. var./,
                     "Orth var. name formatted incorrectly"
     end
+    # NOTES (limit/total redesign, follow-up): see on_id/with_instances_test.rb.
     assert_select "#search-results-summary",
-                  /37 records\b/,
-                  "Should find 37 records"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end
