@@ -14,13 +14,23 @@
             <strong title="Limited.  To see more records add larger limit to the search e.g. ' limit: 999'." >(limited)</strong>
           <% end %>
         <% else %>
+          <%# NOTES (limit/total redesign, follow-up): .count, not
+              .results.size - for a References search with show-instances:/
+              show-novelties:, .results is references+instances (or
+              references+novelties) interleaved, while .count is references
+              only (see Search::OnModel::Base#run_list_query). Using
+              .results.size here compared a mixed-unit numerator against a
+              references-only .total, e.g. "4443 of 6755 records" where 4443
+              counted instances too. For every other search type routed
+              through this branch, .count and .results.size are the same
+              value, so this is a no-op there. %>
           <% if @search.executed_query.limited %>
-            <% if @search.executed_query.results.size < @search.executed_query.total %>
-              <%= "#{pluralize(@search.executed_query.results.size,"of #{@search.executed_query.total} record")}" %>
-            <% elsif @search.executed_query.results.size <= @search.parsed_request.limit %>
-              <%= pluralize(@search.executed_query.results.size, "record") %>
+            <% if @search.executed_query.count < @search.executed_query.total %>
+              <%= "#{pluralize(@search.executed_query.count,"of #{@search.executed_query.total} record")}" %>
+            <% elsif @search.executed_query.count <= @search.parsed_request.limit %>
+              <%= pluralize(@search.executed_query.count, "record") %>
             <% else %>
-              <%= pluralize(@search.executed_query.results.size, "record") %> of a larger total
+              <%= pluralize(@search.executed_query.count, "record") %> of a larger total
             <% end %>
           <% else %>
             <%= "#{pluralize(@search.executed_query.total,"record")}" %>

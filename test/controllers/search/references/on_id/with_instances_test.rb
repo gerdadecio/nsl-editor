@@ -47,8 +47,14 @@ class SearchRefsOnIdWithInstancesTest < ActionController::TestCase
                    user_full_name: "Fred Jones",
                    groups: [] })
     assert_response :success
+    # NOTES (limit/total redesign, follow-up): a single matching reference
+    # is 1 record, full stop - its attached instances are shown but no
+    # longer folded into the "N records" count (see
+    # Search::OnModel::Base#run_list_query and
+    # search/search_result_summary/_list.html.erb). Used to assert
+    # "37 records" (1 reference + 36 fixture instances, interleaved).
     assert_select "#search-results-summary",
-                  /37 records\b/,
-                  "Should find 37 records"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

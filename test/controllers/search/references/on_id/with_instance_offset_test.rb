@@ -31,8 +31,13 @@ class SearchRefsOnIdWithInstanceOffsetTest < ActionController::TestCase
                    user_full_name: "Fred Jones",
                    groups: [] })
     assert_response :success
+    # NOTES (limit/total redesign, follow-up): instance-offset: only
+    # changes which instances are shown/skipped within the one matching
+    # reference - it never changes the reference count itself. See
+    # on_id/with_instances_test.rb for why this is "1 record" rather than
+    # the old combined "28".
     assert_select "#search-results-summary",
-                  /28 records\b/,
-                  "Should find 28 records"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

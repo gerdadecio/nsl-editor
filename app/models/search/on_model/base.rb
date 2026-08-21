@@ -69,15 +69,27 @@ class Search::OnModel::Base
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
     @do_count_totals = list_query.do_count_totals
-    consider_instances(parsed_request)
-    consider_novelties(parsed_request)
-    consider_loader_name_extras(parsed_request)
+    # NOTES (limit/total redesign, follow-up): @count/@total must be
+    # captured here, from the plain reference (or author/batch/etc.)
+    # result set - BEFORE consider_instances/consider_novelties replace
+    # @results with a reference+instance (or reference+novelty)
+    # interleaved array. Reported in user testing: a References search
+    # "pl si: limit: 600" showed "4443 of 6755 records" - 4443 was
+    # @results.size AFTER instance expansion (references+instances
+    # combined), 6755 was the reference-only total from calculate_total,
+    # so the numerator and denominator were counting different things.
+    # @count now always means "how many References this search matched
+    # (within the limit)", same as Search::OnName::Base uses @names.size
+    # rather than @results.size for its own count/summary.
     if @do_count_totals
       @count = @results.size
       calculate_total
     else
       @count = @total = 0
     end
+    consider_instances(parsed_request)
+    consider_novelties(parsed_request)
+    consider_loader_name_extras(parsed_request)
   end
 
   def consider_instances(parsed_request)

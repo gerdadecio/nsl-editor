@@ -28,10 +28,18 @@ require "test_helper"
 # `limit:` still governs how many References a search returns, but no
 # longer truncates any single reference's instance list.
 #
-# Not asserting an exact record count here (bucket_reference_for_default_instances
-# has 36 fixture instances at time of writing, i.e. 37 rows with the
-# reference itself, but that's incidental to what this test protects) -
-# what matters is that it's well over the limit:10 that used to cap it.
+# NOTES (limit/total redesign, follow-up): originally checked this by
+# parsing a count out of "#search-results-summary" and asserting it was
+# > 10 - that stopped working once the summary count was fixed to mean
+# "how many References matched" (now always "1 record" here, since id:
+# matches exactly one reference) rather than references+instances
+# combined. Checks the actual rendered instance rows instead, which is a
+# more direct assertion of the thing this test protects anyway.
+#
+# Not asserting an exact row count here (bucket_reference_for_default_instances
+# has 36 fixture instances at time of writing, but that's incidental to
+# what this test protects) - what matters is that it's well over the
+# limit:10 that used to cap it.
 class SrchRefsDefQueriesRefIdWInstListHasInstWLimit < ActionController::TestCase
   tests SearchController
 
@@ -44,11 +52,12 @@ class SrchRefsDefQueriesRefIdWInstListHasInstWLimit < ActionController::TestCase
                    user_full_name: "Fred Jones",
                    groups: [] })
     assert_response :success
-    assert_select "#search-results-summary" do |elements|
-      text = elements.first.text
-      count = text[/([0-9]+) records?/, 1].to_i
-      assert_operator count, :>, 10,
-                       "Expected more than the old limit:10 cap - got: #{text.strip}"
+    assert_select "#search-results-summary", /1 record\b/,
+                  "Should still find exactly 1 reference"
+    assert_select "tr.instance-within-reference-record" do |elements|
+      assert_operator elements.size, :>, 10,
+                       "Expected more than the old limit:10 cap on the " \
+                       "reference's instance rows - got: #{elements.size}"
     end
   end
 end
