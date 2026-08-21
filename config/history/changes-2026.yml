@@ -1,6 +1,10 @@
 - :date: 21-August-2026
   :jira_id: '3732'
   :description: |-
+    Reference plus Instance search: Fix the link offering a search with a higher limit
+- :date: 21-August-2026
+  :jira_id: '3732'
+  :description: |-
     Reference plus Instance search: Stop including Instances in the count of records returned
 - :date: 20-August-2026
   :jira_id: '3732'

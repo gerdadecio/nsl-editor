@@ -1,11 +1,25 @@
-<% next_limit_max = (@search.executed_query.results.size + @search.page_increment_size) %>
+<%# NOTES (limit/total redesign, follow-up): next_limit_max is built from
+    @search.executed_query.count (how many primary records - References,
+    Names, etc. - this search actually matched, within the limit), not
+    .results.size. For a search with show-instances:/show-novelties:,
+    .results is the primary-record+instance interleaved array, so using
+    .results.size here inflated the "List N more" target by however many
+    instance rows were attached - e.g. "pl si: limit: 600" offered
+    "List 4943" (600 + 500 increment, applied to the wrong base: 4443
+    interleaved rows, not 600 references) instead of the expected
+    "List 1100". Comparing against @search.parsed_request.limit rather
+    than params[:limit] similarly fixes the plain-limit case: params[:limit]
+    is a raw query-string param that's blank whenever limit: comes from the
+    query text (the normal case, including the default 100), so that
+    comparison was effectively comparing .total against 0. %>
+<% next_limit_max = (@search.executed_query.count + @search.page_increment_size) %>
 <% if @search.executed_query.total > next_limit_max %>
      &nbsp; | &nbsp;
     <%= link_to("List #{next_limit_max}",
                 search_path(query_string: "#{@search.parsed_request.query_string.sub(/limit: *\d{1,}/,'').sub(/$/,%Q( limit: #{next_limit_max} ))}",
                             query_target: "#{params[:query_target]}"),
                             title: "List #{@search.page_increment_size} more.") %>
-<% elsif @search.executed_query.total > params[:limit].to_i %>
+<% elsif @search.executed_query.total > @search.parsed_request.limit %>
      &nbsp; | &nbsp;
     <%= link_to("List #{@search.executed_query.total}",
                 search_path(query_string: "#{@search.parsed_request.query_string.sub(/limit: *\d{1,}/,'').sub(/$/,%Q( limit: #{@search.executed_query.total} ))}",
