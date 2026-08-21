@@ -19,7 +19,7 @@
     })
   %>
 
-  <% if can?("names", "update") && can_edit_name?(@name) %>
+  <% if can?("names", "update") && can_edit_name?(@name) && @name.deleted_at.blank? %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {
@@ -36,7 +36,7 @@
     %>
   <% end %>
 
-  <% if can?(:create_with_product_reference, Instance) && tab_available?(tabs_array, "new_instance_profile") %>
+  <% if can?(:create_with_product_reference, Instance) && tab_available?(tabs_array, "new_instance_profile") && @name.deleted_at.blank? %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {
@@ -51,7 +51,7 @@
         next_tab: ""
       })
     %>
-  <% elsif can?(:create, Instance) && tab_available?(tabs_array, "new_instance") %>
+  <% elsif can?(:create, Instance) && tab_available?(tabs_array, "new_instance") && @name.deleted_at.blank? %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {
@@ -68,7 +68,7 @@
     %>
   <% end %>
 
-  <% if can?(:create, Instance) && tab_available?(tabs_array, "copy") %>
+  <% if can?(:create, Instance) && tab_available?(tabs_array, "copy") && @name.deleted_at.blank? %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {
@@ -85,7 +85,7 @@
     %>
   <% end %>
 
-  <% if can?("names", "delete") && tab_available?(tabs_array, "delete") %>
+  <% if can?("names", "delete") && tab_available?(tabs_array, "delete") && @name.deleted_at.blank? %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {
@@ -102,7 +102,7 @@
     %>
   <% end %>
 
-  <% if Rails.configuration.try(:resource_tab_enabled) %>
+  <% if Rails.configuration.try(:resource_tab_enabled) && @name.deleted_at.blank? %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {
@@ -119,7 +119,7 @@
     %>
   <% end %>
 
-  <% if can_edit_name?(@name) && tab_available?(tabs_array, "more") %>
+  <% if can_edit_name?(@name) && tab_available?(tabs_array, "more") && @name.deleted_at.blank? %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {
