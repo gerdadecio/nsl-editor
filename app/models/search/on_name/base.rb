@@ -66,6 +66,16 @@ class Search::OnName::Base
     @summary = "#{@names.size} names"
   end
 
+  # NOTES (limit/total redesign, follow-up): @count is @names.size, not
+  # @results.size - include_instances replaces @results with a
+  # names+instances interleaved array, same as
+  # Search::OnModel::Base#run_list_query's reference+instance case. This
+  # was previously latent here (build_summary already correctly used
+  # @names.size, so the visible "N names of Y" text was always right),
+  # but @count itself was still wrong wherever something other than
+  # @summary reads it - e.g.
+  # search/search_result_summary/_more_results_for_limited.html.erb's
+  # "List N more" link, which reads .count, not .summary.
   def run_list_query
     list_query = Search::OnName::ListQuery.new(@parsed_request)
     @relation = list_query.sql
@@ -73,9 +83,9 @@ class Search::OnName::Base
     @limited = list_query.limited
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
-    include_instances
-    @count = @results.size
+    @count = @names.size
     calculate_total
+    include_instances
     @summary = build_summary
   end
 
