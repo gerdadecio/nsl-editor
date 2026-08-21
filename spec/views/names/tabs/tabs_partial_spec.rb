@@ -144,7 +144,7 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
 
     context "when the user can update_common_name on a common name" do
       let(:common_name_type) { instance_double(NameType, name: "common") }
-      let(:name) { instance_double(Name, name_type: common_name_type, duplicate?: false) }
+      let(:name) { instance_double(Name, name_type: common_name_type, duplicate?: false, deleted_at: nil) }
 
       before do
         allow(view).to(receive(:can?).with(:manage, Name).and_return(false))
@@ -179,6 +179,99 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
       it "does not render the More tab" do
         subject
         expect(rendered).not_to(have_link("More", id: "name-more-tab"))
+      end
+    end
+  end
+
+  describe "editing tabs and the soft delete state of the name" do
+    editing_tabs = [
+      {
+        label: "Edit",
+        selector: "a#name-edit-tab",
+        permit: proc {
+          allow(view).to(receive(:can?).with("names", "update").and_return(true))
+          allow(view).to(receive(:can?).with(:manage, Name).and_return(true))
+        }
+      },
+      {
+        label: "New instance (product reference)",
+        selector: "a#name-instances-profile-v2-tab",
+        permit: proc {
+          allow(view).to(receive(:can?).with(:create_with_product_reference, Instance).and_return(true))
+        }
+      },
+      {
+        label: "New instance",
+        selector: "a#name-instances-tab",
+        permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) }
+      },
+      {
+        label: "Copy",
+        selector: "a#name-copy-tab",
+        permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) }
+      },
+      {
+        label: "Delete",
+        selector: "a#name-delete-tab",
+        permit: proc { allow(view).to(receive(:can?).with("names", "delete").and_return(true)) }
+      },
+      {
+        label: "Resource",
+        selector: "a#name-resource-tab",
+        permit: proc { allow(Rails.configuration).to(receive(:resource_tab_enabled).and_return(true)) }
+      },
+      {
+        label: "More",
+        selector: "a#name-more-tab",
+        permit: proc { allow(view).to(receive(:can?).with(:manage, Name).and_return(true)) }
+      }
+    ]
+
+    context "when the name has not been soft deleted" do
+      let(:name) { create(:name, deleted_at: nil) }
+
+      editing_tabs.each do |editing_tab|
+        context "when the user has permission for the '#{editing_tab[:label]}' tab" do
+          before { instance_exec(&editing_tab[:permit]) }
+
+          it "renders the '#{editing_tab[:label]}' tab" do
+            subject
+            expect(rendered).to(have_selector(editing_tab[:selector]))
+          end
+        end
+      end
+    end
+
+    context "when the name has been soft deleted" do
+      let(:name) { create(:name, deleted_at: Time.current) }
+
+      editing_tabs.each do |editing_tab|
+        context "when the user has permission for the '#{editing_tab[:label]}' tab" do
+          before { instance_exec(&editing_tab[:permit]) }
+
+          it "does not render the '#{editing_tab[:label]}' tab" do
+            subject
+            expect(rendered).not_to(have_selector(editing_tab[:selector]))
+          end
+        end
+      end
+
+      context "when the user has every permission" do
+        before do
+          editing_tabs.each { |editing_tab| instance_exec(&editing_tab[:permit]) }
+        end
+
+        it "renders no editing tabs" do
+          subject
+          editing_tabs.each do |editing_tab|
+            expect(rendered).not_to(have_selector(editing_tab[:selector]))
+          end
+        end
+
+        it "still renders the read-only Details tab" do
+          subject
+          expect(rendered).to(have_selector("a#name-details-tab", text: "Details"))
+        end
       end
     end
   end
