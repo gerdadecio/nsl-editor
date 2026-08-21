@@ -27,7 +27,9 @@
     <% end %>
   <% end %>
 
-  <% if @tabs_to_offer.include?("tab_edit") && can?(:edit, @instance) && tab_available?(tabs_array, "edit") %>
+  <% if @tabs_to_offer.include?("tab_edit") &&
+      can?(:edit, @instance) && tab_available?(tabs_array, "edit") &&
+      @instance.deleted_at.blank? %>
     <%= render(
       partial: "instances/tabs/tab",
       locals: {
@@ -44,7 +46,10 @@
     %>
   <% end %>
 
-  <% if @tabs_to_offer.include?("tab_edit_profile_v2") && can?(:manage_draft_secondary_reference, @instance) && tab_available?(tabs_array, "edit_profile") %>
+  <% if @tabs_to_offer.include?("tab_edit_profile_v2") &&
+      can?(:manage_draft_secondary_reference, @instance) &&
+      tab_available?(tabs_array, "edit_profile") &&
+      @instance.deleted_at.blank? %>
     <%= render(
       partial: "instances/tabs/tab",
       locals: {
@@ -62,7 +67,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_edit_notes") && tab_available?(tabs_array, "notes") %>
-    <% if can?("instance_notes", "edit") %>
+    <% if can?("instance_notes", "edit") && @instance.deleted_at.blank? %>
       <%= render(
         partial: "instances/tabs/tab",
         locals: {
@@ -81,7 +86,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_synonymy') && tab_available?(tabs_array, "syn") %>
-    <% if can?(:create, Instance) %>
+    <% if can?(:create, Instance) && @instance.deleted_at.blank? %>
       <%= render(
         partial: "instances/tabs/tab",
         locals: {
@@ -100,7 +105,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_synonymy_for_profile_v2') && tab_available?(tabs_array, "syn_profile") %>
-    <% if can?(:synonymy_as_draft_secondary_reference, @instance) %>
+    <% if can?(:synonymy_as_draft_secondary_reference, @instance) && @instance.deleted_at.blank? %>
       <%= render(
         partial: "instances/tabs/tab",
         locals: {
@@ -119,7 +124,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_unpublished_citation') && tab_available?(tabs_array, "unpub") %>
-    <% if can?(:create, @instance) %>
+    <% if can?(:create, @instance) && @instance.deleted_at.blank? %>
       <%= render(
         partial: "instances/tabs/tab",
         locals: {
@@ -138,7 +143,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_unpublished_citation_for_profile_v2') && tab_available?(tabs_array, "unpub_profile") %>
-    <% if can?(:unpublished_citation_as_draft_secondary_reference, @instance) %>
+    <% if can?(:unpublished_citation_as_draft_secondary_reference, @instance) && @instance.deleted_at.blank? %>
       <%= render(
         partial: "instances/tabs/tab",
         locals: {
@@ -157,7 +162,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_classification") && tab_available?(tabs_array, "tree") %>
-    <% if can?("instances", "tab_classification") %>
+    <% if can?("instances", "tab_classification") && @instance.deleted_at.blank? %>
       <% multi_product_tab_disabled = !Rails.configuration.try('multi_product_tabs_enabled') %>
       <% if @working_draft && (can?(:place_name, @working_draft) && (multi_product_tab_disabled || current_product_from_context&.has_the_same_reference?(@instance) || current_registered_user.roles.blank? ))%>
         <%= render(
@@ -179,7 +184,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_comments") && tab_available?(tabs_array, "adnot") %>
-    <% if can?("comments", "create") %>
+    <% if can?("comments", "create") && @instance.deleted_at.blank? %>
       <% if !Rails.configuration.try('multi_product_tabs_enabled') || can?(:create_adnot, @instance) %>
         <%= render(
           partial: "instances/tabs/tab",
@@ -200,7 +205,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_copy_to_new_reference") && tab_available?(tabs_array, "copy") %>
-    <% if can?("instances", "copy_standalone") %>
+    <% if can?("instances", "copy_standalone") && @instance.deleted_at.blank? %>
       <%= render(
         partial: "instances/tabs/tab",
         locals: {
@@ -219,7 +224,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_copy_to_new_profile_v2") && tab_available?(tabs_array, "copy_profile") %>
-    <% if can?(:copy_as_draft_secondary_reference, Instance) %>
+    <% if can?(:copy_as_draft_secondary_reference, Instance) && @instance.deleted_at.blank? %>
       <%= render(
         partial: "instances/tabs/tab",
         locals: {
@@ -238,7 +243,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_profile_details") && tab_available?(tabs_array, "profile") %>
-    <% if can?("classification", "place") %>
+    <% if can?("classification", "place") && @instance.deleted_at.blank? %>
       <%= render(
         partial: "instances/tabs/tab",
         locals: {
@@ -256,7 +261,7 @@
     <% end %>
   <% end %>
 
-  <% if @tabs_to_offer.include?("tab_edit_profile") %>
+  <% if @tabs_to_offer.include?("tab_edit_profile") && @instance.deleted_at.blank? %>
     <% if Rails.configuration.try('profile_edit_aware') %>
       <% if can?("tree/elements", "update_profile") || (!current_product_from_context&.manages_profile && current_registered_user.role_names.include?("tree-builder"))%>
         <%= render(
@@ -277,7 +282,7 @@
     <% end %>
   <% end %>
 
-  <% if @tabs_to_offer.include?("tab_batch_loader") && tab_available?(tabs_array, "loader") %>
+  <% if @tabs_to_offer.include?("tab_batch_loader") && tab_available?(tabs_array, "loader") && @instance.deleted_at.blank? %>
     <% if can?("loader/batches", "process") %>
         <%= render(
           partial: "instances/tabs/tab",
@@ -314,7 +319,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_profile_v2") && tab_available?(tabs_array, "profile") %>
-    <% if can?(:manage_profile, @instance) %>
+    <% if can?(:manage_profile, @instance) && @instance.deleted_at.blank? %>
       <% if Rails.configuration.try("profile_v2_aware") %>
         <%= render(
           partial: "instances/tabs/tab",

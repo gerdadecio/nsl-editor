@@ -400,4 +400,173 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
       expect(rendered).not_to(have_selector("a"))
     end
   end
+
+  describe "when the instance has been soft deleted" do
+    let(:instance) { FactoryBot.build_stubbed(:instance, deleted_at: Time.current) }
+    let(:user) { FactoryBot.build_stubbed(:user) }
+
+    editing_tabs = [
+      {
+        label: "tab_edit",
+        tab: "tab_edit",
+        selector: "a#instance-edit-tab",
+        permit: proc { allow(view).to(receive(:can?).with(:edit, instance).and_return(true)) }
+      },
+      {
+        label: "tab_edit_profile_v2",
+        tab: "tab_edit_profile_v2",
+        selector: "a#instance-edit-tab-profile-v2-tab",
+        permit: proc {
+          allow(view).to(receive(:can?).with(:manage_draft_secondary_reference, instance).and_return(true))
+        }
+      },
+      {
+        label: "tab_edit_notes",
+        tab: "tab_edit_notes",
+        selector: "a#instance-edit-notes-tab",
+        permit: proc { allow(view).to(receive(:can?).with("instance_notes", "edit").and_return(true)) }
+      },
+      {
+        label: "tab_synonymy",
+        tab: "tab_synonymy",
+        selector: "a#instance-cite-this-instance-tab",
+        permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) }
+      },
+      {
+        label: "tab_synonymy_for_profile_v2",
+        tab: "tab_synonymy_for_profile_v2",
+        selector: "a#instance-cite-this-instance-for-profile-v2-tab",
+        permit: proc {
+          allow(view).to(receive(:can?).with(:synonymy_as_draft_secondary_reference, instance).and_return(true))
+        }
+      },
+      {
+        label: "tab_unpublished_citation",
+        tab: "tab_unpublished_citation",
+        selector: "a#unpublished-citation-tab",
+        permit: proc { allow(view).to(receive(:can?).with(:create, instance).and_return(true)) }
+      },
+      {
+        label: "tab_unpublished_citation_for_profile_v2",
+        tab: "tab_unpublished_citation_for_profile_v2",
+        selector: "a#unpublished-citation-for-profile-v2-tab",
+        permit: proc {
+          allow(view).to(receive(:can?)
+            .with(:unpublished_citation_as_draft_secondary_reference, instance).and_return(true))
+        }
+      },
+      {
+        label: "tab_classification",
+        tab: "tab_classification",
+        selector: "a#instance-classification-tab",
+        permit: proc {
+          working_draft = double("TreeVersion")
+          assign(:working_draft, working_draft)
+          allow(view).to(receive(:can?).with("instances", "tab_classification").and_return(true))
+          allow(view).to(receive(:can?).with(:place_name, working_draft).and_return(true))
+        }
+      },
+      {
+        label: "tab_comments",
+        tab: "tab_comments",
+        selector: "a#instance-comments-tab",
+        permit: proc { allow(view).to(receive(:can?).with("comments", "create").and_return(true)) }
+      },
+      {
+        label: "tab_copy_to_new_reference",
+        tab: "tab_copy_to_new_reference",
+        selector: "a#instance-copy-to-new-reference-tab",
+        permit: proc { allow(view).to(receive(:can?).with("instances", "copy_standalone").and_return(true)) }
+      },
+      {
+        label: "tab_copy_to_new_profile_v2",
+        tab: "tab_copy_to_new_profile_v2",
+        selector: "a#instance-copy-to-new-profile-v2-tab",
+        permit: proc {
+          allow(view).to(receive(:can?).with(:copy_as_draft_secondary_reference, Instance).and_return(true))
+        }
+      },
+      {
+        label: "tab_profile_details",
+        tab: "tab_profile_details",
+        selector: "a#instance-profile-tab",
+        permit: proc { allow(view).to(receive(:can?).with("classification", "place").and_return(true)) }
+      },
+      {
+        label: "tab_edit_profile",
+        tab: "tab_edit_profile",
+        selector: "a#instance-edit-profile-tab",
+        permit: proc {
+          allow(Rails.configuration).to(receive(:profile_edit_aware).and_return(true))
+          allow(view).to(receive(:can?).with("tree/elements", "update_profile").and_return(true))
+        }
+      },
+      {
+        label: "tab_batch_loader",
+        tab: "tab_batch_loader",
+        selector: "a#instance-batch-loader-tab",
+        permit: proc { allow(view).to(receive(:can?).with("loader/batches", "process").and_return(true)) }
+      },
+      {
+        label: "tab_batch_loader_2",
+        tab: "tab_batch_loader",
+        selector: "a#instance-batch-loader-tab-2",
+        permit: proc {
+          allow(view).to(receive(:can?).with("loader/batches", "process").and_return(true))
+          allow(view).to(receive(:can?).with("loader/instances-loader-2", "use").and_return(true))
+        }
+      },
+      {
+        label: "tab_profile_v2",
+        tab: "tab_profile_v2",
+        selector: "a#instance-profile-v2-tab",
+        permit: proc {
+          allow(view).to(receive(:can?).with(:manage_profile, instance).and_return(true))
+          allow(Rails.configuration).to(receive(:profile_v2_aware).and_return(true))
+        }
+      }
+    ]
+
+    editing_tabs.each do |editing_tab|
+      context "when '#{editing_tab[:label]}' is offered and the user has permission" do
+        before do
+          tabs_to_offer << editing_tab[:tab]
+          instance_exec(&editing_tab[:permit])
+        end
+
+        it "does not render the '#{editing_tab[:label]}' tab" do
+          render
+          expect(rendered).not_to(have_selector(editing_tab[:selector]))
+        end
+      end
+    end
+
+    context "when every editing tab is offered and the user has every permission" do
+      before do
+        editing_tabs.each do |editing_tab|
+          tabs_to_offer << editing_tab[:tab]
+          instance_exec(&editing_tab[:permit])
+        end
+      end
+
+      it "renders no editing tabs" do
+        render
+        editing_tabs.each do |editing_tab|
+          expect(rendered).not_to(have_selector(editing_tab[:selector]))
+        end
+      end
+    end
+
+    context "when 'tab_show_1' is offered and the user has permission" do
+      before do
+        tabs_to_offer << "tab_show_1"
+        allow(view).to(receive(:can?).with("instances", "tab_show_1").and_return(true))
+      end
+
+      it "still renders the read-only 'Details' tab" do
+        render
+        expect(rendered).to(have_selector("a#instance-show-tab", text: "Details"))
+      end
+    end
+  end
 end
