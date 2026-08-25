@@ -82,10 +82,6 @@ class User < ApplicationRecord
       .uniq
   end
 
-  def set_audit_fields
-    self.created_by = self.updated_by = @current_user&.username || "self as new user"
-  end
-
   def force_lower_case_user_name
     self.user_name = user_name.downcase
   end
