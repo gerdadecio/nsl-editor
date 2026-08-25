@@ -121,6 +121,36 @@ RSpec.describe SessionUser, type: :model do
         expect(new_user.family_name).to eq('User')
         expect(new_user.given_name).to eq('Test')
       end
+
+      it 'stamps the audit fields with the new user own user name' do
+        new_user = subject
+
+        expect(new_user.created_by).to eq(username)
+        expect(new_user.updated_by).to eq(username)
+      end
+
+      context 'when the username is upper case' do
+        let(:username) { 'TestUser' }
+
+        it 'stamps the audit fields with the downcased user name' do
+          new_user = subject
+
+          expect(new_user.user_name).to eq('testuser')
+          expect(new_user.created_by).to eq('testuser')
+          expect(new_user.updated_by).to eq('testuser')
+        end
+      end
+    end
+
+    context 'when the user is already registered' do
+      let!(:registered_user) do
+        FactoryBot.create(:user, user_name: username, created_by: 'fred', updated_by: 'fred')
+      end
+
+      it 'leaves the existing audit fields untouched' do
+        expect(subject.created_by).to eq('fred')
+        expect(subject.updated_by).to eq('fred')
+      end
     end
   end
 

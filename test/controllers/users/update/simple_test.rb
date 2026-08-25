@@ -39,5 +39,9 @@ class UserUpdateSimpleTest < ActionController::TestCase
     assert_match(changed.user_name, "updated_name")
     assert_match(changed.given_name, "updated_given_name")
     assert_match(changed.family_name, "updated_family_name")
+    assert_equal("fred", changed.updated_by,
+                 "updated_by should be the updating user's user name")
+    assert_equal(user.created_by, changed.created_by,
+                 "created_by should not change on update")
   end
 end

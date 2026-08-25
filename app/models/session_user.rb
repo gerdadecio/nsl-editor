@@ -95,6 +95,7 @@ class SessionUser < ActiveType::Object
     registered_user = User.find_or_initialize_by(user_name: username.downcase) do |user|
       user.family_name = full_name.split(' ').last||'unknown'
       user.given_name = full_name.split(' ').first||'unknown'
+      user.created_by = user.updated_by = username.downcase
     end
 
     registered_user.save if registered_user.new_record?
