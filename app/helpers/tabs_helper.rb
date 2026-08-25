@@ -46,6 +46,8 @@ module TabsHelper
   end
 
   def can_edit_name?(name)
+    return false unless can?(:modify, name) # false once the name is soft deleted
+
     if can?(:manage, Name)
       true
     elsif can?(:update_common_name, name)
