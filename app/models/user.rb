@@ -49,8 +49,7 @@ class User < ApplicationRecord
   has_many :roles, through: :product_roles
   has_many :user_product_role_vs
 
-  before_create :set_audit_fields, :force_lower_case_user_name
-  before_update :set_updated_by
+  before_create :force_lower_case_user_name
 
   def role_names
     @role_names ||= roles.pluck(:name)
@@ -83,16 +82,8 @@ class User < ApplicationRecord
       .uniq
   end
 
-  def set_audit_fields
-    self.created_by = self.updated_by = @current_user&.username || "self as new user"
-  end
-
   def force_lower_case_user_name
     self.user_name = user_name.downcase
-  end
-
-  def set_updated_by
-    self.updated_by = @current_user&.username || "unknown"
   end
 
   # Note, the PK for the users table is the id column.

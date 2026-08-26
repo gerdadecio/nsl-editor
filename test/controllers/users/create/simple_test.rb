@@ -38,4 +38,21 @@ class UserCreateSimpleTest < ActionController::TestCase
                       groups: ["admin"] })
     end
   end
+
+  test "created user is stamped with the creating user's user name" do
+    @request.headers["Accept"] = "application/javascript"
+    post(:create,
+         params: { user: { "user_name" => "buser",
+                           "given_name" => "b",
+                           "family_name" => "user"} },
+         session: { username: @known_user.user_name,
+                    user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
+                    groups: ["admin"] })
+    created = User.find_by(user_name: "buser")
+    assert created.present?, "New user record should have been created"
+    assert_equal(@known_user.user_name, created.created_by,
+                 "created_by should be the creating user's user name")
+    assert_equal(@known_user.user_name, created.updated_by,
+                 "updated_by should be the creating user's user name")
+  end
 end

@@ -12,6 +12,103 @@ RSpec.describe(User, type: :model) do
     it { is_expected.to(have_many(:user_product_role_vs)) }
   end
 
+  describe "callbacks" do
+    describe "before_create :force_lower_case_user_name" do
+      it "downcases the user name on create" do
+        user = User.new(user_name: "MiXeDcAsE", given_name: "Mixed", family_name: "Case",
+          created_by: "tester", updated_by: "tester")
+        user.save!
+
+        expect(user.user_name).to(eq("mixedcase"))
+      end
+    end
+
+    describe "audit fields" do
+      it "keeps the created_by it was given on create" do
+        user = User.new(user_name: "auditcreate", given_name: "Audit", family_name: "Create",
+          created_by: "fred", updated_by: "fred")
+        user.save!
+
+        expect(user.reload.created_by).to(eq("fred"))
+        expect(user.updated_by).to(eq("fred"))
+      end
+
+      it "keeps the updated_by it was given on update" do
+        user = create(:user, created_by: "fred", updated_by: "fred")
+
+        user.given_name = "Changed"
+        user.updated_by = "wilma"
+        user.save!
+
+        expect(user.reload.updated_by).to(eq("wilma"))
+        expect(user.created_by).to(eq("fred"))
+      end
+
+      it "does not overwrite updated_by when the record is updated without one" do
+        user = create(:user, created_by: "fred", updated_by: "fred")
+
+        user.update!(given_name: "Changed")
+
+        expect(user.reload.updated_by).to(eq("fred"))
+      end
+    end
+  end
+
+  describe ".create" do
+    let(:params) { {user_name: "NewUser", given_name: "New", family_name: "User"} }
+
+    it "sets created_by and updated_by to the given username" do
+      user = User.create(params, "fred")
+
+      expect(user).to(be_persisted)
+      expect(user.created_by).to(eq("fred"))
+      expect(user.updated_by).to(eq("fred"))
+    end
+
+    it "downcases the user name" do
+      expect(User.create(params, "fred").user_name).to(eq("newuser"))
+    end
+  end
+
+  describe "#save_with_username" do
+    let(:user) { User.new(user_name: "swu", given_name: "Save", family_name: "With") }
+
+    it "sets both audit fields to the given username" do
+      expect(user.save_with_username("fred")).to(be(true))
+      expect(user.reload.created_by).to(eq("fred"))
+      expect(user.updated_by).to(eq("fred"))
+    end
+  end
+
+  describe "#update_if_changed" do
+    let(:user) { create(:user, user_name: "before", given_name: "Before", family_name: "Name", created_by: "fred", updated_by: "fred") }
+
+    context "when an attribute has changed" do
+      it "saves the record and returns Updated" do
+        result = user.update_if_changed({user_name: "before", given_name: "After", family_name: "Name"}, "wilma")
+
+        expect(result).to(eq("Updated"))
+        expect(user.reload.given_name).to(eq("After"))
+      end
+
+      it "sets updated_by to the given username and leaves created_by alone" do
+        user.update_if_changed({user_name: "before", given_name: "After", family_name: "Name"}, "wilma")
+
+        expect(user.reload.updated_by).to(eq("wilma"))
+        expect(user.created_by).to(eq("fred"))
+      end
+    end
+
+    context "when nothing has changed" do
+      it "returns No change and leaves updated_by alone" do
+        result = user.update_if_changed({user_name: "before", given_name: "Before", family_name: "Name"}, "wilma")
+
+        expect(result).to(eq("No change"))
+        expect(user.reload.updated_by).to(eq("fred"))
+      end
+    end
+  end
+
   describe "#role_names" do
     let(:user) { create(:user) }
     let!(:role1) { create(:role, name: "admin") }
