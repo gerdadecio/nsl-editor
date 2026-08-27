@@ -9,6 +9,9 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
   let(:product_tab_service_mock) { instance_double(Products::ProductTabService, all_available_tabs: { "name" => [] }) }
 
   before do
+    # Ability#soft_deleted_name_auth grants :modify to everyone and withdraws
+    # it once the name is soft deleted.
+    allow(view).to(receive(:can?).with(:modify, name) { name.deleted_at.blank? })
     allow(view).to(receive(:can?).with("instances", "create").and_return(false))
     allow(view).to(receive(:can?).with("names", "update").and_return(false))
     allow(view).to(receive(:can?).with("names", "delete").and_return(false))
