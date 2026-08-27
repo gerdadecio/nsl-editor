@@ -319,6 +319,7 @@ class Ability
     can "names",              :all
     can "names_deletes",      :all
     can "instances/soft_deletes", :all
+    can "names/soft_deletes", :all
     can "references",         :all
     can "names/typeaheads/for_unpub_cit", :all
     can "loader/batch/review/mode", "switch_off"
@@ -407,6 +408,7 @@ class Ability
     can "names",              :all
     can "names_deletes",      :all
     can "instances/soft_deletes", :all
+    can "names/soft_deletes", :all
     can "references",         :all
     can "names/typeaheads/for_unpub_cit", :all
     can "loader/batch/review/mode", "switch_off"
