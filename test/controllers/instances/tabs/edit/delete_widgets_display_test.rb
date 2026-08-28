@@ -64,10 +64,9 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
                   "Should not show the hard delete link."
   end
 
-  # A soft deleted instance is read only, so the edit tab is no longer
-  # reachable - InstancesController#show sends an editing tab back to the
-  # details tab. See Ability#soft_deleted_instance_auth.
-  test "falls back to the details tab when instance is already soft-deleted" do
+  # A soft deleted instance is read only, so InstancesController#show sends an
+  # editing tab request back to the show tab and the edit tab is not offered.
+  test "falls back to the show tab when instance is already soft-deleted" do
     Instance.stub_any_instance(:allow_delete?, false) do
       Instance.stub_any_instance(:allow_soft_delete?, true) do
         Instance.stub_any_instance(:deleted_at, Time.current) do
@@ -77,7 +76,9 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
     end
     assert_response :success
     assert_select "a#instance-show-tab", "Details",
-                  "Should fall back to the read-only details tab."
+                  "Should offer the details tab."
+    assert_select "a#instance-edit-tab", false,
+                  "Should not offer the edit tab."
     assert_select "a#instance-soft-delete-link", false,
                   "Should not show the soft delete link."
     assert_select "a#instance-delete-link", false,
