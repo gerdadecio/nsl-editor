@@ -44,12 +44,10 @@ tree_element_not_attached_to_a_tree_version:
 # Attached to the *current* version of a non-accepted tree (FOA has
 # accepted_tree: false). Regression guard for
 # app/views/instances/widgets/_no_delete_reasons.html.erb: this tree_element
-# IS properly attached (it has a tree_version_element), but it is invisible
-# to both tree_join_v.current_accepted (fails the accepted_tree check) and
-# tree_join_v.old (its tree_version_id *is* the tree's current one). It must
-# never be reported as "DETACHED" - detached-ness has to be decided per
-# tree_element (tree_version_elements.empty?), not inferred from those two
-# scopes.
+# IS properly attached (it has a tree_version_element), so it must never be
+# reported as "DETACHED" - detached-ness has to be decided per tree_element
+# (tree_version_elements.empty?), never inferred from which trees the
+# instance turns up in.
 tree_element_attached_to_current_version_of_a_non_accepted_tree:
   display_html: <data><scientific><element>Metrosideros costata</element></scientific></data>
   excluded: f
@@ -68,8 +66,8 @@ tree_element_attached_to_current_version_of_a_non_accepted_tree:
   updated_by: amonro
 
 # A pair used together: one tree_element properly attached to the current
-# version of an *accepted* tree (so tree_join_v.current_accepted reports a
-# normal reason), and a second, separate tree_element for the same instance
+# version of an *accepted* tree (so the delete tab reports a normal reason
+# naming that tree), and a second, separate tree_element for the same instance
 # that is genuinely detached (no tree_version_element at all). Regression
 # guard: the detached one must still be reported even though the instance
 # already has another, normal reason - it must not be suppressed just
