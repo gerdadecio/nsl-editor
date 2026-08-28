@@ -719,6 +719,10 @@ class Instance < ApplicationRecord
     ::Instances::CheckDeleteService.new(instance: self).execute.soft_delete_allowed?
   end
 
+  def soft_deleted?
+    deleted_at.present?
+  end
+
   # This is not handled via an instance association because the loader is only
   # in the apni database for now.
   def linked_to_loader_name_matches?

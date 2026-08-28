@@ -18,6 +18,7 @@
 
 class Instances::SoftDeletesController < ApplicationController
   before_action :find_instance
+  before_action :authorise_instance_change, only: [:create]
 
   def create
     # set instance as soft-deleted
@@ -38,5 +39,11 @@ class Instances::SoftDeletesController < ApplicationController
 
   def find_instance
     @instance = Instance.find(params[:instance_id])
+  end
+
+  # An already soft deleted instance is read only - see
+  # Ability#soft_deleted_instance_auth.
+  def authorise_instance_change
+    authorize!(:modify, @instance)
   end
 end

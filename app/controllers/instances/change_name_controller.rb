@@ -18,6 +18,7 @@
 
 class Instances::ChangeNameController < ApplicationController
   before_action :find_instance
+  before_action :authorise_instance_change, only: [:update]
 
   def update
     new_name_id = params[:instance]&.fetch(:name_id, nil)
@@ -74,6 +75,12 @@ class Instances::ChangeNameController < ApplicationController
     fields << "an instance (the name and optional year)" if params[:instance][:cites_id].blank?
     fields << "a type" if params[:instance][:synonym_instance_type_id].blank?
     fields
+  end
+
+  # A soft deleted instance is read only -
+  # see Ability#soft_deleted_instance_auth.
+  def authorise_instance_change
+    authorize!(:modify, @instance)
   end
 
   def find_instance
