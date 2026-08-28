@@ -499,6 +499,18 @@ query_string: '#{@query_string}'"
 
   def preprocess_loader_names_any_batch
     @target_button_text = @original_query_target
+    # The "any batch" target must actively override any default-batch
+    # directive rather than merely add "any-batch:" alongside it - the two
+    # where-clauses get AND-ed together (any-batch:'s is a no-op "1=1"), so
+    # a leftover default-batch: clause would still silently restrict the
+    # results to that one batch. Strip it out first, however it got there
+    # (auto-applied because a default batch is set in the session, or typed
+    # explicitly), so "any batch" always really means any batch.
+    # Mirrors the embedded/end-of-string removal in
+    # Search::QueryDefaults#remove_old_defaults.
+    @query_string = @query_string.sub(/default-batch:.*(?= [A-Za-z-]*:)/, '')
+    @query_string = @query_string.sub(/default-batch:\s[^:]{1,500}\s*$/, '')
+    @query_string = @query_string.gsub(/  */, ' ').strip
     @query_string += ' any-batch: ' unless @query_string.match(/any-batch:/)
   end
 

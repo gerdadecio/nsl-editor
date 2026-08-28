@@ -7,6 +7,10 @@ module Search::QueryDefaults
 
   def apply_default_loader_batch?
     return false unless params[:query_target] =~ /loader.name/i
+    # The "Loader names (any batch)" target is explicitly asking to search
+    # across every batch - it must never have a default batch imposed on
+    # it, regardless of what's set in the session. See NSL-5634 follow-up.
+    return false if params[:query_target] =~ /any.?batch/i
 
     if session[:default_loader_batch_name].nil?
       remove_old_defaults
