@@ -1,13 +1,17 @@
-<%
-  tabs = product_tab_service.all_available_tabs["name"] || []
-  tabs_array = tabs.collect{|tab| tab[:tab] }
-%>
+<% if can?(:modify, @name) %>
+  <%
+    tabs = product_tab_service.all_available_tabs["name"] || []
+    tabs_array = tabs.collect{|tab| tab[:tab] }
+  %>
 
-<% if can_edit_name?(@name) %>
-  <% increment_tab_index(0) %>
-  <%= render partial: "names/tabs/tabs_row_2" %>
+  <% if can_edit_name?(@name) %>
+    <% increment_tab_index(0) %>
+    <%= render partial: "names/tabs/tabs_row_2" %>
 
-  <% if tab_available?(tabs_array, "more_comment") %>
-    <%= render partial: "names/tabs/tab_comments" %>
+    <% if tab_available?(tabs_array, "more_comment") %>
+      <%= render partial: "names/tabs/tab_comments" %>
+    <% end %>
   <% end %>
+<% else %>
+  This name has been soft-deleted and cannot be modified. Please contact your administrator.
 <% end %>

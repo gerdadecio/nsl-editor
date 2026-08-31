@@ -1,29 +1,28 @@
 <% increment_tab_index %>
-
-<div>
-<h5>Copy Name</h5>
-<% if @name.duplicate? %>
-  Cannot copy a record that is marked as a duplicate.
+<% if can?(:modify, @name) %>
+  <div>
+    <h5>Copy Name</h5>
+    <% if @name.duplicate? %>
+      Cannot copy a record that is marked as a duplicate.
+      <br>
+      Remove duplicate status to continue.
+    <% else %>
+      <%= render partial: 'names/form/copy' %>
+    <% end %>
+  </div>
   <br>
-  Remove duplicate status to continue.
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="message-container"></div>
+  <%= divider %>
+  <div>
+    <h5>Copy Standalone Instances</h5>
+    <% if @name.standalone_instances.blank? %>
+      No instances available to copy.
+    <% else %>
+      <p>Copy up to <%= pluralize(@name.standalone_instances.size, 'standalone instance') %> to another Name record</p>
+      <%= render partial: 'names/form/copy_instances' %>
+    <% end %>
+  </div>
 <% else %>
-<%= render partial: 'names/form/copy' %>
+  <span class="message">This name has been soft-deleted and cannot be modified. Please contact your administrator.</span>
 <% end %>
-</div>
-<br>
-<div id="search-result-details-info-message-container" class="message-container"></div>
-<div id="search-result-details-error-message-container" class="message-container"></div>
-
-
-
-<%= divider %>
-<div>
-  <h5>Copy Standalone Instances</h5>
-  <% if @name.standalone_instances.blank? %>
-     No instances available to copy. 
-  <% else %>
-    <p>Copy up to <%= pluralize(@name.standalone_instances.size, 'standalone instance') %> to another Name record</p>
-    <%= render partial: 'names/form/copy_instances' %>
-  <% end %>
-</div>
-

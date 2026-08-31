@@ -1,2 +1,6 @@
-<%= render 'names/form/base' %>
-<%= render 'change_category_widgets' %>
+<% if can?(:modify, @name) %>
+  <%= render 'names/form/base' %>
+  <%= render 'change_category_widgets' %>
+<% else %>
+  This name has been soft-deleted and cannot be modified. Please contact your administrator.
+<% end %>
