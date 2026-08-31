@@ -9,9 +9,6 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
   let(:product_tab_service_mock) { instance_double(Products::ProductTabService, all_available_tabs: { "name" => [] }) }
 
   before do
-    # Ability#soft_deleted_name_auth grants :modify to everyone and withdraws
-    # it once the name is soft deleted.
-    allow(view).to(receive(:can?).with(:modify, name) { name.deleted_at.blank? })
     allow(view).to(receive(:can?).with("instances", "create").and_return(false))
     allow(view).to(receive(:can?).with("names", "update").and_return(false))
     allow(view).to(receive(:can?).with("names", "delete").and_return(false))
@@ -206,6 +203,8 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
       {
         label: "New instance",
         selector: "a#name-instances-tab",
+        # Loses to the product reference tab when both are permitted.
+        superseded_by_product_tab: true,
         permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) }
       },
       {
@@ -230,50 +229,44 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
       }
     ]
 
-    context "when the name has not been soft deleted" do
-      let(:name) { create(:name, deleted_at: nil) }
+    # The tabs themselves stay visible whatever the soft delete state of the
+    # name - each tab partial renders a read-only message in place of its form
+    # once :modify is withdrawn. See Ability#soft_deleted_name_auth.
+    [
+      { state: "has not been soft deleted", deleted_at: nil },
+      { state: "has been soft deleted", deleted_at: Time.current }
+    ].each do |soft_delete_state|
+      context "when the name #{soft_delete_state[:state]}" do
+        let(:name) { create(:name, deleted_at: soft_delete_state[:deleted_at]) }
 
-      editing_tabs.each do |editing_tab|
-        context "when the user has permission for the '#{editing_tab[:label]}' tab" do
-          before { instance_exec(&editing_tab[:permit]) }
+        editing_tabs.each do |editing_tab|
+          context "when the user has permission for the '#{editing_tab[:label]}' tab" do
+            before { instance_exec(&editing_tab[:permit]) }
 
-          it "renders the '#{editing_tab[:label]}' tab" do
+            it "renders the '#{editing_tab[:label]}' tab" do
+              subject
+              expect(rendered).to(have_selector(editing_tab[:selector]))
+            end
+          end
+        end
+
+        context "when the user has every permission" do
+          before do
+            editing_tabs.each { |editing_tab| instance_exec(&editing_tab[:permit]) }
+          end
+
+          it "renders every editing tab" do
             subject
-            expect(rendered).to(have_selector(editing_tab[:selector]))
+            editing_tabs.reject { |editing_tab| editing_tab[:superseded_by_product_tab] }
+                        .each do |editing_tab|
+              expect(rendered).to(have_selector(editing_tab[:selector]))
+            end
           end
-        end
-      end
-    end
 
-    context "when the name has been soft deleted" do
-      let(:name) { create(:name, deleted_at: Time.current) }
-
-      editing_tabs.each do |editing_tab|
-        context "when the user has permission for the '#{editing_tab[:label]}' tab" do
-          before { instance_exec(&editing_tab[:permit]) }
-
-          it "does not render the '#{editing_tab[:label]}' tab" do
+          it "renders the Details tab" do
             subject
-            expect(rendered).not_to(have_selector(editing_tab[:selector]))
+            expect(rendered).to(have_selector("a#name-details-tab", text: "Details"))
           end
-        end
-      end
-
-      context "when the user has every permission" do
-        before do
-          editing_tabs.each { |editing_tab| instance_exec(&editing_tab[:permit]) }
-        end
-
-        it "renders no editing tabs" do
-          subject
-          editing_tabs.each do |editing_tab|
-            expect(rendered).not_to(have_selector(editing_tab[:selector]))
-          end
-        end
-
-        it "still renders the read-only Details tab" do
-          subject
-          expect(rendered).to(have_selector("a#name-details-tab", text: "Details"))
         end
       end
     end

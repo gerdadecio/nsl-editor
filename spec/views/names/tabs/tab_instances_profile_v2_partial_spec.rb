@@ -12,6 +12,10 @@ RSpec.describe "names/tabs/_tab_instances_profile_v2.html.erb", type: :view do
   let!(:instance_type) { FactoryBot.create(:instance_type, name: "secondary reference") }
 
   before do
+    # Ability#soft_deleted_name_auth grants :modify to everyone and withdraws
+    # it once the name is soft deleted.
+    allow(view).to receive(:can?).with(:modify, name) { name.deleted_at.blank? }
+
     mock_service = product_context_service
     context_id = product.context_id
 
@@ -71,6 +75,19 @@ RSpec.describe "names/tabs/_tab_instances_profile_v2.html.erb", type: :view do
       render partial: "names/tabs/tab_instances_profile_v2"
 
       expect(rendered).to have_selector("input[type=hidden][name='instance[draft]'][value='true']", visible: false)
+    end
+  end
+
+  # A soft deleted name is read only, so the tab is still offered but its form
+  # is replaced - see Ability#soft_deleted_name_auth.
+  context "for when the name has been soft deleted" do
+    let(:name) { FactoryBot.create(:name, deleted_at: Time.current) }
+
+    it "displays the read-only message instead of the form" do
+      render partial: "names/tabs/tab_instances_profile_v2"
+
+      expect(rendered).to include("This name has been soft-deleted and cannot be modified.")
+      expect(rendered).not_to have_selector("input[type=submit][id='save-new-instance-btn']")
     end
   end
 end

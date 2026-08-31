@@ -40,16 +40,22 @@ RSpec.describe NamesController, type: :controller do
       end
     end
 
-    # A soft deleted name is read only, so an editing tab asked for by a stale
-    # or hand-made link falls back to the details tab - see
+    # A soft deleted name is read only, but the controller no longer redirects
+    # an editing tab to the details tab. The tab is served as asked and each
+    # tab partial renders a read-only message instead of its form - see
     # Ability#soft_deleted_name_auth.
     context 'when the name has been soft deleted' do
       let(:name) { FactoryBot.create(:name, deleted_at: Time.current) }
 
-      it 'falls back to the details tab instead of an editing tab' do
+      it 'serves the editing tab as asked' do
         get :show, params: { id: name.id, tab: 'tab_instances' }
-        expect(assigns(:tab)).to eq('tab_details')
-        expect(assigns(:instance)).to be_nil
+        expect(assigns(:tab)).to eq('tab_instances')
+      end
+
+      it 'still builds the new instance for the editing tab' do
+        get :show, params: { id: name.id, tab: 'tab_instances' }
+        expect(assigns(:instance)).to be_a_new(Instance)
+        expect(assigns(:instance).name).to eq(name)
       end
 
       it 'still serves a read-only tab as asked' do

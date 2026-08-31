@@ -34,6 +34,35 @@ RSpec.describe "names/tabs/_tab_more.html.erb", type: :view do
     end
   end
 
+  # A soft deleted name is read only, so the tab is still offered but its
+  # content is replaced - see Ability#soft_deleted_name_auth.
+  context "when the name has been soft deleted" do
+    let(:name) { create(:name, deleted_at: Time.current) }
+
+    before { allow(view).to receive(:can?).with(:manage, Name).and_return(true) }
+
+    it "renders the read-only message" do
+      subject
+      expect(rendered).to include("This name has been soft-deleted and cannot be modified.")
+    end
+
+    it "does not render the tabs_row_2 partial" do
+      subject
+      expect(rendered).not_to have_selector("#tabs-row-2-stub")
+    end
+
+    context "and the more_comment tab is available" do
+      let(:product_tab_service_mock) do
+        instance_double(Products::ProductTabService, all_available_tabs: { "name" => [{ tab: "more_comment" }] })
+      end
+
+      it "does not render the tab_comments partial" do
+        subject
+        expect(rendered).not_to have_selector("#tab-comments-stub")
+      end
+    end
+  end
+
   context "when the user can edit the name" do
     before { allow(view).to receive(:can?).with(:manage, Name).and_return(true) }
 

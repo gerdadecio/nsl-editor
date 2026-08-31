@@ -62,10 +62,10 @@ class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
                   "Should not show the hard delete link."
   end
 
-  # A soft deleted name is read only, so the delete tab is no longer reachable
-  # - NamesController#show sends an editing tab back to the details tab. See
+  # A soft deleted name is read only. The delete tab is still served, but its
+  # widgets are replaced by a read-only message - see
   # Ability#soft_deleted_name_auth.
-  test "falls back to the details tab when name is already soft-deleted" do
+  test "shows the read-only message when name is already soft-deleted" do
     Name.stub_any_instance(:allow_delete?, false) do
       Name.stub_any_instance(:allow_soft_delete?, true) do
         Name.stub_any_instance(:deleted_at, Time.current) do
@@ -74,8 +74,8 @@ class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
       end
     end
     assert_response :success
-    assert_select "a#name-details-tab", "Details",
-                  "Should fall back to the read-only details tab."
+    assert_match(/This name has been soft-deleted and cannot be modified/,
+                 response.body)
     assert_select "a#name-soft-delete-link", false,
                   "Should not show the soft delete link."
     assert_select "a#name-delete-link", false,

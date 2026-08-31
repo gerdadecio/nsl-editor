@@ -24,19 +24,6 @@ class NamesController < ApplicationController
   include Name::Typeaheads
   include Name::CopyInstances
 
-  # Tabs that offer a change to the name - not offered for a soft deleted
-  # name, which is read only.
-  EDITING_TABS = %w[tab_edit
-                    tab_instances
-                    tab_instances_profile_v2
-                    tab_copy
-                    tab_delete
-                    tab_resource
-                    tab_more
-                    tab_comments
-                    tab_tag
-                    tab_refresh].freeze
-
   # All text/html requests should go to the search page, except for rules.
   before_action :javascript_only, except: %i[rules refresh_children]
   before_action :find_name,
@@ -56,9 +43,6 @@ class NamesController < ApplicationController
     logger.debug("NamesController#show")
     pick_a_tab("tab_details")
     pick_a_tab_index
-    # A stale or hand-made link must not open an editing tab on a soft
-    # deleted name.
-    @tab = "tab_details" if EDITING_TABS.include?(@tab) && cannot?(:modify, @name)
     @name.change_category_name_to = "scientific" if params[:change_category_name_to].present?
     if @tab == "tab_instances" || @tab == "tab_instances_profile_v2"
       @instance = Instance.new

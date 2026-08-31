@@ -145,10 +145,7 @@ RSpec.describe TabsHelper, type: :helper do
       before do
         name_ref = name_with_common_type
         helper.define_singleton_method(:can?) do |action, subject|
-          # :modify is granted to everyone until the name is soft deleted -
-          # see Ability#soft_deleted_name_auth.
-          action == :modify ||
-            (action == :update_common_name && subject == name_ref)
+          action == :update_common_name && subject == name_ref
         end
       end
 
@@ -161,8 +158,7 @@ RSpec.describe TabsHelper, type: :helper do
       before do
         name_ref = name_with_scientific_type
         helper.define_singleton_method(:can?) do |action, subject|
-          action == :modify ||
-            (action == :update_common_name && subject == name_ref)
+          action == :update_common_name && subject == name_ref
         end
       end
 
@@ -171,19 +167,23 @@ RSpec.describe TabsHelper, type: :helper do
       end
     end
 
-    # A soft deleted name is read only, so :modify is withdrawn and no role
-    # can edit it - see Ability#soft_deleted_name_auth.
+    # can_edit_name? is a role check only. A soft deleted name is kept read
+    # only by the :modify check inside each tab partial, not here - see
+    # Ability#soft_deleted_name_auth.
     context "when the name has been soft deleted" do
-      before do
+      it "still returns true when the user can manage Name" do
         helper.define_singleton_method(:can?) { |action, _subject| action != :modify }
+
+        expect(helper.can_edit_name?(name_with_scientific_type)).to be true
       end
 
-      it "returns false even though the user can manage Name" do
-        expect(helper.can_edit_name?(name_with_scientific_type)).to be false
-      end
+      it "still returns true for a common name the user can update" do
+        name_ref = name_with_common_type
+        helper.define_singleton_method(:can?) do |action, subject|
+          action == :update_common_name && subject == name_ref
+        end
 
-      it "returns false even for a common name the user could update" do
-        expect(helper.can_edit_name?(name_with_common_type)).to be false
+        expect(helper.can_edit_name?(name_with_common_type)).to be true
       end
     end
 
