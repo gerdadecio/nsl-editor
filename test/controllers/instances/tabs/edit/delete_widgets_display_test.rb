@@ -65,10 +65,11 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
   end
 
   # A soft deleted instance is read only - see
-  # Ability#soft_deleted_instance_auth. The request is served normally, but
-  # Ability withdraws :edit so the edit heading is not offered, and the tab
-  # partial's own `can?(:modify, @instance)` guard refuses the editing content.
-  test "serves no edit content when instance is already soft-deleted" do
+  # Ability#soft_deleted_instance_auth. Only :modify is withdrawn, so the user
+  # keeps the :edit role and the edit heading is still offered; the tab
+  # partial's own `can?(:modify, @instance)` guard is what refuses the editing
+  # content, and it says why.
+  test "serves the soft-deleted message in place of edit content when instance is already soft-deleted" do
     Instance.stub_any_instance(:allow_delete?, false) do
       Instance.stub_any_instance(:allow_soft_delete?, true) do
         Instance.stub_any_instance(:deleted_at, Time.current) do
@@ -79,11 +80,14 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
     assert_response :success
     assert_select "a#instance-show-tab", "Details",
                   "Should offer the details tab."
-    assert_select "a#instance-edit-tab", false,
-                  "Should not offer the edit tab."
-    assert_match(/The selected tab does not apply to the current instance/,
+    assert_select "a#instance-edit-tab", "Edit",
+                  "Should still offer the edit tab heading."
+    assert_match(/This instance has been soft-deleted and cannot be modified/,
                  response.body,
-                 "Should render the empty tab in place of the edit form.")
+                 "Should say why the edit form is missing.")
+    assert_no_match(/The selected tab does not apply to the current instance/,
+                    response.body,
+                    "Should not fall back to the empty tab.")
     assert_select "form", false,
                   "Should not render any editing form."
     assert_select "a#instance-soft-delete-link", false,

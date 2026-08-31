@@ -38,15 +38,8 @@ class Ability
   # deleted_at of any one instance. Views gate creation with :modify instead.
   SOFT_DELETE_RESTRICTED_INSTANCE_ACTIONS = %i[
     modify
-    edit
-    update
     destroy
     change_name
-    manage_profile
-    create_adnot
-    manage_draft_secondary_reference
-    synonymy_as_draft_secondary_reference
-    unpublished_citation_as_draft_secondary_reference
   ].freeze
 
   # The first argument to `can` is the action you are giving the user
