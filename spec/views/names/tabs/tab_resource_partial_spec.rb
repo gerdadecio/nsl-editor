@@ -40,7 +40,7 @@ RSpec.describe "names/tabs/_tab_resource.html.erb", type: :view do
 
     it "renders the read-only message" do
       subject
-      expect(rendered).to include("You do not have permission to modify this name's resources.")
+      expect(rendered).to include("This name has been soft-deleted and cannot be modified.")
     end
 
     it "does not render the add resource forms" do
