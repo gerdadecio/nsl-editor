@@ -1,6 +1,10 @@
 - :date: 31-August-2026
   :jira_id: '5905'
   :description: |-
+    Soft delete permissions: Don't allow editing or modifying soft-deleted names
+- :date: 31-August-2026
+  :jira_id: '5905'
+  :description: |-
     Soft delete permissions: Don't offer the edit and other tabs for a soft-deleted instance except for the Details tab
 - :date: 31-August-2026
   :jira_id: '5905'
