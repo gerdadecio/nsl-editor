@@ -6,6 +6,9 @@ RSpec.describe "names/tabs/_tab_tag.html.erb", type: :view do
   let(:name) { create(:name) }
 
   before do
+    # Ability#soft_deleted_name_auth grants :modify to everyone and withdraws
+    # it once the name is soft deleted.
+    allow(view).to receive(:can?).with(:modify, name) { name.deleted_at.blank? }
     allow(view).to receive(:can?).with(:manage, Name).and_return(false)
     allow(view).to receive(:can?).with(:update_common_name, name).and_return(false)
     allow(view).to receive(:increment_tab_index).and_return(1)

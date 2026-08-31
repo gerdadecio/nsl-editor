@@ -18,6 +18,7 @@
 
 class Names::SoftDeletesController < ApplicationController
   before_action :find_name, only: [:create]
+  before_action :authorise_name_change, only: [:create]
 
   def create
     # set name as soft-deleted
@@ -38,5 +39,11 @@ class Names::SoftDeletesController < ApplicationController
 
   def find_name
     @name = Name.find(params[:name_id])
+  end
+
+  # An already soft deleted name is read only - see
+  # Ability#soft_deleted_name_auth.
+  def authorise_name_change
+    authorize!(:modify, @name)
   end
 end

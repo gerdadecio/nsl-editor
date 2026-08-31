@@ -11,8 +11,6 @@ RSpec.describe NamesController, type: :controller do
       session[:groups] = user.groups
 
       controller.instance_variable_set(:@current_user, user)
-      allow(controller).to receive(:pick_a_tab)
-      allow(controller).to receive(:pick_a_tab_index)
     end
 
     context "when user is not authorized" do
@@ -39,6 +37,24 @@ RSpec.describe NamesController, type: :controller do
         get :show, params: { id: name.id, tab: 'tab_instances_profile_v2' }
         expect(assigns(:instance)).to be_a_new(Instance)
         expect(assigns(:instance).name).to eq(name)
+      end
+    end
+
+    # A soft deleted name is read only, so an editing tab asked for by a stale
+    # or hand-made link falls back to the details tab - see
+    # Ability#soft_deleted_name_auth.
+    context 'when the name has been soft deleted' do
+      let(:name) { FactoryBot.create(:name, deleted_at: Time.current) }
+
+      it 'falls back to the details tab instead of an editing tab' do
+        get :show, params: { id: name.id, tab: 'tab_instances' }
+        expect(assigns(:tab)).to eq('tab_details')
+        expect(assigns(:instance)).to be_nil
+      end
+
+      it 'still serves a read-only tab as asked' do
+        get :show, params: { id: name.id, tab: 'tab_details' }
+        expect(assigns(:tab)).to eq('tab_details')
       end
     end
 

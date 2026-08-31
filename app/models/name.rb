@@ -200,6 +200,10 @@ class Name < ApplicationRecord
     ::Names::CheckDeleteService.new(name: self).execute.soft_delete_allowed?
   end
 
+  def soft_deleted?
+    deleted_at.present?
+  end
+
   def no_name_resource_dependents?
     return true unless Rails.configuration.try(:resource_tab_enabled)
 

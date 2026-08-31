@@ -18,6 +18,7 @@
 #
 class Names::NameResourcesController < ApplicationController
   before_action :find_name
+  before_action :authorise_name_change, only: %i[create update destroy]
 
   def create
     @name_resource = @name.name_resources.new(permitted_params)
@@ -72,6 +73,11 @@ class Names::NameResourcesController < ApplicationController
     if @name.nil?
       render plain: "Name not found", status: :not_found
     end
+  end
+
+  # A soft deleted name is read only - see Ability#soft_deleted_name_auth.
+  def authorise_name_change
+    authorize!(:modify, @name)
   end
 
   def permitted_params
