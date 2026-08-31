@@ -18,6 +18,7 @@
 #
 class InstanceNotesController < ApplicationController
   before_action :set_instance_note, only: %i[show edit update destroy]
+  before_action :authorise_instance_change, only: %i[create update destroy]
 
   # GET /instance_notes/1
   # GET /instance_notes/1.json
@@ -72,6 +73,14 @@ class InstanceNotesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_instance_note
     @instance_note = InstanceNote.find(params[:id])
+  end
+
+  # A soft deleted instance is read only, so no note may be added to, changed
+  # on, or removed from one - see Ability#soft_deleted_instance_auth.
+  def authorise_instance_change
+    instance = @instance_note&.instance ||
+      Instance.find(instance_note_params[:instance_id])
+    authorize!(:modify, instance)
   end
 
   # Never trust parameters from the scary internet,

@@ -15,7 +15,7 @@
           "type": "controller",
           "class": "InstancesController",
           "method": "show",
-          "line": 44,
+          "line": 48,
           "file": "app/controllers/instances_controller.rb",
           "rendered": {
             "name": "instances/show",
@@ -32,7 +32,7 @@
       "cwe_id": [
         22
       ],
-      "note": ""
+      "note": "False positive. InstancesHelper#tab_for_instance_type resolves the partial name only through the ALLOWED_TABS / ALLOWED_TABS_TO_OFFER / ALLOWED_ROW_TYPES allow lists (presence_in), falling back to tab_empty. params[\"row-type\"] can only select a branch, never reach the render path."
     },
     {
       "warning_type": "Unmaintained Dependency",
@@ -54,6 +54,6 @@
       "note": ""
     }
   ],
-  "updated": "2025-08-04 17:14:31 +1000",
-  "brakeman_version": "6.2.2"
+  "updated": "2026-08-31 14:45:01 +1000",
+  "brakeman_version": "7.1.0"
 }

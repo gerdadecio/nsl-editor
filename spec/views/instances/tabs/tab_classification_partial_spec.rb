@@ -17,6 +17,28 @@ RSpec.describe "instances/tabs/_tab_classification.html.erb", type: :view do
     assign(:instance, instance)
     allow(view).to receive(:increment_tab_index).and_return(0)
     allow(Rails.configuration).to receive(:multi_product_tabs_enabled).and_return(false)
+    # The whole tab is wrapped in a soft delete guard - granted here so the
+    # examples below exercise the classification content itself.
+    allow(view).to receive(:can?).with(:modify, instance).and_return(true)
+  end
+
+  context "when the instance has been soft deleted" do
+    before do
+      allow(view).to receive(:can?).with(:modify, instance).and_return(false)
+      assign(:working_draft, working_draft)
+      allow(view).to receive(:can?).with(:place_name, working_draft).and_return(true)
+    end
+
+    it "renders the soft deleted message instead of the classification content" do
+      render
+      expect(rendered).to have_content("This instance has been soft-deleted and cannot be modified")
+    end
+
+    it "does not render the workspace tab_main partial" do
+      stub_workspace_tab_partial
+      render
+      expect(rendered).not_to render_template(partial: "instances/workspace/_tab_main")
+    end
   end
 
   context "when @working_draft is not present" do

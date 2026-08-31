@@ -1925,5 +1925,39 @@ RSpec.describe Ability, type: :model do
     end
   end
 
-end
 
+  describe "#soft_deleted_instance_auth" do
+    let(:session_user) { create(:session_user, :edit) }
+    let(:live_instance) { create(:instance) }
+    let(:soft_deleted_instance) { create(:instance, deleted_at: Time.current) }
+
+    # Every restricted action is withdrawn once deleted_at is set, whatever
+    # role granted it in the first place.
+    Ability::SOFT_DELETE_RESTRICTED_INSTANCE_ACTIONS.each do |action|
+      it "denies '#{action}' on a soft deleted instance" do
+        expect(subject.can?(action, soft_deleted_instance)).to eq false
+      end
+    end
+
+    # The subset an 'edit' group user holds - proving the rule withdraws a
+    # permission the user really had, rather than one they never had.
+    %i[modify edit update destroy].each do |action|
+      it "allows '#{action}' on an instance that has not been soft deleted" do
+        expect(subject.can?(action, live_instance)).to eq true
+      end
+    end
+
+    it "still allows a soft deleted instance to be read" do
+      expect(subject.can?("instances", "tab_show_1")).to eq true
+    end
+
+    it "does not withdraw the class level create permission" do
+      expect(subject.can?(:create, Instance)).to eq true
+    end
+
+    it "leaves name permissions alone" do
+      expect(subject.can?(:modify, create(:name))).to eq true
+    end
+  end
+
+end

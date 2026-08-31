@@ -19,8 +19,12 @@
 #   Controls instances.
 class InstancesController < ApplicationController
   include ActionView::Helpers::TextHelper
+
   before_action :find_instance, only: [:show, :tab, :destroy]
   before_action :find_instance_for_copy, only: [:copy_standalone, :copy_for_profile_v2]
+  before_action :authorise_instance_change,
+                only: %i[update change_reference destroy
+                         copy_standalone copy_for_profile_v2]
   # TODO: refactor validation error checks to not rely on a copied string comparison as this is very fragile
   CONCEPT_WARNING = "Validation failed: You are trying to change an accepted concept's synonymy."
 
@@ -224,6 +228,12 @@ class InstancesController < ApplicationController
   end
 
   private
+
+  # A soft deleted instance is read only -
+  # see Ability#soft_deleted_instance_auth.
+  def authorise_instance_change
+    authorize!(:modify, @instance || @current_instance_for_copy || Instance.find(params[:id]))
+  end
 
   def find_instance
     @instance = Instance.find(params[:id])

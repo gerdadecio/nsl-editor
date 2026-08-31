@@ -13,6 +13,9 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
     assign(:instance, instance)
     assign(:tabs_to_offer, tabs_to_offer)
     allow(view).to(receive(:can?).and_return(false))
+    # Granted to everyone by Ability#soft_deleted_instance_auth, and withdrawn
+    # only once the instance is soft deleted.
+    allow(view).to(receive(:can?).with(:modify, instance).and_return(true))
     allow(view).to(receive(:increment_tab_index).and_return(1))
     allow(view).to(receive(:user_profile_tab_name).and_return("User"))
     allow(view).to(receive(:tab_available?).and_return(true))
@@ -405,6 +408,14 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
     let(:instance) { FactoryBot.build_stubbed(:instance, deleted_at: Time.current) }
     let(:user) { FactoryBot.build_stubbed(:user) }
 
+    # A soft deleted instance is read only - see
+    # Ability#soft_deleted_instance_auth.
+    #
+    # The headings themselves no longer test :modify. Every tab a user has the
+    # role for is still offered, and each tab partial refuses to render its
+    # editing content - see spec/views/instances/tabs/soft_deleted_tab_guard_spec.rb.
+    before { allow(view).to(receive(:can?).with(:modify, instance).and_return(false)) }
+
     editing_tabs = [
       {
         label: "tab_edit",
@@ -534,9 +545,9 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
           instance_exec(&editing_tab[:permit])
         end
 
-        it "does not render the '#{editing_tab[:label]}' tab" do
+        it "still offers the '#{editing_tab[:label]}' tab" do
           render
-          expect(rendered).not_to(have_selector(editing_tab[:selector]))
+          expect(rendered).to(have_selector(editing_tab[:selector]))
         end
       end
     end
@@ -549,10 +560,10 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         end
       end
 
-      it "renders no editing tabs" do
+      it "still offers every editing tab" do
         render
         editing_tabs.each do |editing_tab|
-          expect(rendered).not_to(have_selector(editing_tab[:selector]))
+          expect(rendered).to(have_selector(editing_tab[:selector]))
         end
       end
     end

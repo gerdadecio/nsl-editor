@@ -10,6 +10,9 @@ RSpec.describe "instances/tabs/_tab_edit_profile_v2.html.erb", type: :view do
     assign(:instance, instance)
     allow(view).to receive(:increment_tab_index).and_return(0)
     allow(view).to receive(:divider).and_return("<hr>".html_safe)
+    # The tab is also gated on the soft delete guard - granted here so the
+    # examples below exercise the edit content itself.
+    allow(view).to receive(:can?).with(:modify, instance).and_return(true)
   end
 
   context "when the user can manage draft secondary references" do
@@ -58,6 +61,26 @@ RSpec.describe "instances/tabs/_tab_edit_profile_v2.html.erb", type: :view do
     it "does not render the edit tab" do
       render
       expect(rendered).not_to have_selector("a#instance-edit-tab-profile-v2-tab", text: "Edit")
+    end
+  end
+
+  # A soft deleted instance is read only - see
+  # Ability#soft_deleted_instance_auth. Unlike most tabs this one falls back to
+  # the pre-existing tab_empty partial rather than a soft delete message.
+  context "when the instance has been soft deleted" do
+    before do
+      allow(view).to receive(:can?).with(:manage_draft_secondary_reference, instance).and_return(true)
+      allow(view).to receive(:can?).with(:modify, instance).and_return(false)
+    end
+
+    it "renders the empty tab instead of the edit content" do
+      render
+      expect(rendered).to render_template(partial: "instances/tabs/_tab_empty")
+    end
+
+    it "does not render the standalone edit form" do
+      render
+      expect(rendered).not_to render_template(partial: "instances/tabs/_show_standalone")
     end
   end
 end
