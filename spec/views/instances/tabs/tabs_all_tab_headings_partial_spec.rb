@@ -410,6 +410,10 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
 
     # A soft deleted instance is read only - see
     # Ability#soft_deleted_instance_auth.
+    #
+    # The headings themselves no longer test :modify. Every tab a user has the
+    # role for is still offered, and each tab partial refuses to render its
+    # editing content - see spec/views/instances/tabs/soft_deleted_tab_guard_spec.rb.
     before { allow(view).to(receive(:can?).with(:modify, instance).and_return(false)) }
 
     editing_tabs = [
@@ -541,9 +545,9 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
           instance_exec(&editing_tab[:permit])
         end
 
-        it "does not render the '#{editing_tab[:label]}' tab" do
+        it "still offers the '#{editing_tab[:label]}' tab" do
           render
-          expect(rendered).not_to(have_selector(editing_tab[:selector]))
+          expect(rendered).to(have_selector(editing_tab[:selector]))
         end
       end
     end
@@ -556,10 +560,10 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         end
       end
 
-      it "renders no editing tabs" do
+      it "still offers every editing tab" do
         render
         editing_tabs.each do |editing_tab|
-          expect(rendered).not_to(have_selector(editing_tab[:selector]))
+          expect(rendered).to(have_selector(editing_tab[:selector]))
         end
       end
     end

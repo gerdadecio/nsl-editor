@@ -1,163 +1,167 @@
-<div id="search-result-details-info-message-container" class="message-container"></div>
-<div id="search-result-details-error-message-container" class="message-container"></div>
-<% increment_tab_index(0) %>
+<% if can?(:modify, @instance) %>
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="message-container"></div>
+  <% increment_tab_index(0) %>
 
-<h5>
-<% if @instance.citations.size == 0 %>
-  Copy the instance
-<% elsif @instance.citations.size == 1 %>
-  Copy the instance and its <%= @instance.citations.first.instance_type.name %>
-<% else %>
-  Copy the instance and its <%= citation_summary(@instance) %>.
-<% end %>
-</h5>
-
-<br>
-The copied instance will remain attached to:
-<br>
-<h6>&mdash; <%= @instance.name.full_name %></h6>
-
-<% @instance.instance_type_id = InstanceType.secondary_reference.id %>
-<%= form_for(@instance,  
-             url: { action: "copy_standalone",
-             format: 'js'}, 
-             id: "copy-instance-for-name-form",
-             remote: true, data: { turbo: false }, 
-             method: :post) do |f| %>
+  <h5>
+  <% if @instance.citations.size == 0 %>
+    Copy the instance
+  <% elsif @instance.citations.size == 1 %>
+    Copy the instance and its <%= @instance.citations.first.instance_type.name %>
+  <% else %>
+    Copy the instance and its <%= citation_summary(@instance) %>.
+  <% end %>
+  </h5>
 
   <br>
-  The copied instance will be attached to a reference other than<br>
-  <h6>&mdash; <%= @instance.reference.citation %></h6>
+  The copied instance will remain attached to:
   <br>
-  <label for="instance-reference-typeahead">Reference<span class="red">*</span></label>
-  <br>
-  <div class="typeahead-container">
-    <section class='block width-100-percent'>
-      <input id="instance-reference-typeahead"
-             class="typeahead form-control width-100-percent give-me-focus" 
-             tabindex="<%= increment_tab_index %>"
-             type="text" 
-             data-excluded-id="<%= @instance.reference.id %>"
-             required
-						 title="Start typing to see a list of references to choose from."
-             placeholder="Reference wildcarded order-insensitive citation search"
-             value=""/>
-    </section>
-  </div>
-	<br>
-  <label for="instance_type_id">Instance type<span class="red">*</span></label>
-  <br> 
-  <%= f.select(:instance_type_id,
-               InstanceType.standalone_options,{include_blank: true},
-               {data:{update_url: instance_path},
-                class: "form-control width-50-percent",
-                title: "Select instance type. Secondary reference is the default for this operation.",
-                required: true,
-                tabindex: increment_tab_index}) %>
+  <h6>&mdash; <%= @instance.name.full_name %></h6>
 
-  <script> setUpInstanceReferenceExcludingCurrent(); </script>
-  <%= f.hidden_field :reference_id, value: '' %>
-  <br>
-	<%= radio_button_tag 'expected', 'page number',     true, id: 'page-number-rb',    tabindex: increment_tab_index %>
-	<%= label_tag "page-number-rb", 'page number'.humanize %>
-	<script>
-	  $('input[name=expected]').change(function() {
-			debug(this.value);
-			if (this.value === 'page number') {
-				$('#instance_page').attr('required','true');
-				$('#instance_page').removeAttr('disabled');
-				$('#label-for-page').html('Page Number*');
-				$('#page-number-message').html('All the new instances will have this page number.');
-			} else {
-				$('#instance_page').val('');
-				$('#instance_page').removeAttr('required');
-				$('#instance_page').attr('disabled','true');
-				$('#label-for-page').html('Page Number');
-				$('#page-number-message').html('None of the new instances will have a page number.');
-				
-			}
-	  });
-	</script>
-  &nbsp;
-	&nbsp;
-	&nbsp;
-  <%= f.text_field :page, value: '', required: true, tabindex: increment_tab_index, class: 'form-control width-20em block-inline', title: 'Page number, page range or similar details of the usage', placeholder: "Page number" %>
-  <br>
-	<%= radio_button_tag 'expected', 'no page number', false, id: 'no-page-number-rb', tabindex: increment_tab_index %>
-	<%= label_tag "no-page-number-rb", 'no page number'.humanize %>
-  <br>
-	<br>
-	<span id="page-number-message">All the new instances will have this page number.</span>
-	<br>
-  <br>
-  <%= render partial: "instances/widgets/as_a_draft", locals: {f: f} %>
-	<br>
-<div class="width-100-percent"> 
-
-  <%= link_to("Copy",
-             "javascript:void(0);",
-             id: "copy-instance-link",
-             class: "btn btn-warning pull-right",
-             title: "Copy the instance - you will be asked to confirm.",
-             tabindex: increment_tab_index,
-             data: {show_this_id: "confirm-or-cancel-copy-instance-link-container",
-                    must_have_value: "instance_reference_id"})
-  %>
-  <div id="pre-submit-error-message" class="error-message red hidden">Please fill out all the fields</div>
-  <div id="confirm-or-cancel-copy-instance-link-container"
-       class="confirm-or-cancel-container pull-right hidden">
-
-    <%= f.submit "Confirm", id: 'create-copy-of-instance', class: 'btn btn-primary width-7em', title: 'Really copy the instance', tabindex: increment_tab_index %>
-    <%= link_to("Cancel",
-                '#',
-                id: "cancel-copy-instance-link",
-                class: "btn btn-default cancel-link",
-                title: "Do not copy the instance.",
-                tabindex: increment_tab_index,
-                data: {enable_this_id: 'copy-instance-link',
-                hide_this_id: "confirm-or-cancel-copy-instance-link-container"})
-    %>
-  </div>
-  <div class="layout-artifact">&nbsp;</div>
-  <div id="copy-instance-info-message-container" class="message-container hidden"></div>
-  <div id="copy-instance-error-message-container" class="error-container hidden"></div>
-  <div id="search-result-details-error-message-container-0" class="error-container"></div>
-  <div id="search-result-details-error-message-container-1" class="error-container"></div>
-  <div id="search-result-details-error-message-container-2" class="error-container"></div>
-  <div id="search-result-details-error-message-container-3" class="error-container"></div>
-
+  <% @instance.instance_type_id = InstanceType.secondary_reference.id %>
+  <%= form_for(@instance,
+              url: { action: "copy_standalone",
+              format: 'js'},
+              id: "copy-instance-for-name-form",
+              remote: true, data: { turbo: false },
+              method: :post) do |f| %>
 
     <br>
-    <div id="multiple-primary-override" class="hidden form-check override-container">
-      <br>
-      <label class="green form-check-label">
-      <%= f.check_box(:multiple_primary_override,{title: "Override the warning message"}) %>
-        Ignore the warning and create the extra primary instance.
-      </label>
+    The copied instance will be attached to a reference other than<br>
+    <h6>&mdash; <%= @instance.reference.citation %></h6>
+    <br>
+    <label for="instance-reference-typeahead">Reference<span class="red">*</span></label>
+    <br>
+    <div class="typeahead-container">
+      <section class='block width-100-percent'>
+        <input id="instance-reference-typeahead"
+              class="typeahead form-control width-100-percent give-me-focus"
+              tabindex="<%= increment_tab_index %>"
+              type="text"
+              data-excluded-id="<%= @instance.reference.id %>"
+              required
+              title="Start typing to see a list of references to choose from."
+              placeholder="Reference wildcarded order-insensitive citation search"
+              value=""/>
+      </section>
     </div>
-    <div id="duplicate-instance-override" class="hidden form-check override-container">
-      <br>
-      <label class="green form-check-label">
-      <%= f.check_box(:duplicate_instance_override,{title: "Override the duplicate instance error message"}) %>
-        Ignore the error and create a duplicate instance.
-      </label>
+    <br>
+    <label for="instance_type_id">Instance type<span class="red">*</span></label>
+    <br>
+    <%= f.select(:instance_type_id,
+                InstanceType.standalone_options,{include_blank: true},
+                {data:{update_url: instance_path},
+                  class: "form-control width-50-percent",
+                  title: "Select instance type. Secondary reference is the default for this operation.",
+                  required: true,
+                  tabindex: increment_tab_index}) %>
+
+    <script> setUpInstanceReferenceExcludingCurrent(); </script>
+    <%= f.hidden_field :reference_id, value: '' %>
+    <br>
+    <%= radio_button_tag 'expected', 'page number',     true, id: 'page-number-rb',    tabindex: increment_tab_index %>
+    <%= label_tag "page-number-rb", 'page number'.humanize %>
+    <script>
+      $('input[name=expected]').change(function() {
+        debug(this.value);
+        if (this.value === 'page number') {
+          $('#instance_page').attr('required','true');
+          $('#instance_page').removeAttr('disabled');
+          $('#label-for-page').html('Page Number*');
+          $('#page-number-message').html('All the new instances will have this page number.');
+        } else {
+          $('#instance_page').val('');
+          $('#instance_page').removeAttr('required');
+          $('#instance_page').attr('disabled','true');
+          $('#label-for-page').html('Page Number');
+          $('#page-number-message').html('None of the new instances will have a page number.');
+
+        }
+      });
+    </script>
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <%= f.text_field :page, value: '', required: true, tabindex: increment_tab_index, class: 'form-control width-20em block-inline', title: 'Page number, page range or similar details of the usage', placeholder: "Page number" %>
+    <br>
+    <%= radio_button_tag 'expected', 'no page number', false, id: 'no-page-number-rb', tabindex: increment_tab_index %>
+    <%= label_tag "no-page-number-rb", 'no page number'.humanize %>
+    <br>
+    <br>
+    <span id="page-number-message">All the new instances will have this page number.</span>
+    <br>
+    <br>
+    <%= render partial: "instances/widgets/as_a_draft", locals: {f: f} %>
+    <br>
+  <div class="width-100-percent">
+
+    <%= link_to("Copy",
+              "javascript:void(0);",
+              id: "copy-instance-link",
+              class: "btn btn-warning pull-right",
+              title: "Copy the instance - you will be asked to confirm.",
+              tabindex: increment_tab_index,
+              data: {show_this_id: "confirm-or-cancel-copy-instance-link-container",
+                      must_have_value: "instance_reference_id"})
+    %>
+    <div id="pre-submit-error-message" class="error-message red hidden">Please fill out all the fields</div>
+    <div id="confirm-or-cancel-copy-instance-link-container"
+        class="confirm-or-cancel-container pull-right hidden">
+
+      <%= f.submit "Confirm", id: 'create-copy-of-instance', class: 'btn btn-primary width-7em', title: 'Really copy the instance', tabindex: increment_tab_index %>
+      <%= link_to("Cancel",
+                  '#',
+                  id: "cancel-copy-instance-link",
+                  class: "btn btn-default cancel-link",
+                  title: "Do not copy the instance.",
+                  tabindex: increment_tab_index,
+                  data: {enable_this_id: 'copy-instance-link',
+                  hide_this_id: "confirm-or-cancel-copy-instance-link-container"})
+      %>
     </div>
+    <div class="layout-artifact">&nbsp;</div>
+    <div id="copy-instance-info-message-container" class="message-container hidden"></div>
+    <div id="copy-instance-error-message-container" class="error-container hidden"></div>
+    <div id="search-result-details-error-message-container-0" class="error-container"></div>
+    <div id="search-result-details-error-message-container-1" class="error-container"></div>
+    <div id="search-result-details-error-message-container-2" class="error-container"></div>
+    <div id="search-result-details-error-message-container-3" class="error-container"></div>
+
+
+      <br>
+      <div id="multiple-primary-override" class="hidden form-check override-container">
+        <br>
+        <label class="green form-check-label">
+        <%= f.check_box(:multiple_primary_override,{title: "Override the warning message"}) %>
+          Ignore the warning and create the extra primary instance.
+        </label>
+      </div>
+      <div id="duplicate-instance-override" class="hidden form-check override-container">
+        <br>
+        <label class="green form-check-label">
+        <%= f.check_box(:duplicate_instance_override,{title: "Override the duplicate instance error message"}) %>
+          Ignore the error and create a duplicate instance.
+        </label>
+      </div>
+  <% end %>
+
+  <br>
+  <br>
+  <%= link_to("Refresh page",
+              '#',
+              id: "refresh-page-after-copy-link",
+              class: "btn btn-default hidden refresh-page-link",
+              title: "Refresh page")
+  %>
+
+  <% if @take_focus %>
+    <script>
+      $(document).ready(function () {
+        focusOnField('instance-reference-typeahead');
+      })
+    </script>
+  <% end %>
+
+<% else %>
+  This instance has been soft-deleted and cannot be modified.
 <% end %>
-
-<br>
-<br>
-<%= link_to("Refresh page",
-            '#', 
-            id: "refresh-page-after-copy-link",
-            class: "btn btn-default hidden refresh-page-link",
-            title: "Refresh page")
-%>
-
-<% if @take_focus %>
-  <script>
-    $(document).ready(function () {
-      focusOnField('instance-reference-typeahead');
-    })
-  </script>
-<% end %>
-

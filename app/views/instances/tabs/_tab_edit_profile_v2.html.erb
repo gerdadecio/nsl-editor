@@ -1,4 +1,4 @@
-<% if can? :manage_draft_secondary_reference, @instance %>
+<% if can?(:manage_draft_secondary_reference, @instance) && can?(:modify, @instance) %>
   <% increment_tab_index(0) %>
 
   <div id="search-result-details-info-message-container" class="message-container"></div>

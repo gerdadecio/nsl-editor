@@ -20,25 +20,6 @@
 class InstancesController < ApplicationController
   include ActionView::Helpers::TextHelper
 
-  # Tabs that offer a change to the instance - not offered for a soft deleted
-  # instance, which is read only.
-  EDITING_TABS = %w[tab_edit
-                    tab_edit_profile_v2
-                    tab_edit_notes
-                    tab_synonymy
-                    tab_synonymy_for_profile_v2
-                    tab_unpublished_citation
-                    tab_unpublished_citation_for_profile_v2
-                    tab_classification
-                    tab_comments
-                    tab_copy_to_new_reference
-                    tab_copy_to_new_profile_v2
-                    tab_profile_details
-                    tab_edit_profile
-                    tab_profile_v2
-                    tab_batch_loader
-                    tab_batch_loader_2].freeze
-
   before_action :find_instance, only: [:show, :tab, :destroy]
   before_action :find_instance_for_copy, only: [:copy_standalone, :copy_for_profile_v2]
   before_action :authorise_instance_change,
@@ -53,9 +34,6 @@ class InstancesController < ApplicationController
   # Displays a specified or default tab.
   def show
     @tab = tab_or_default_tab
-    # A stale or hand-made link must not open an editing tab on a soft
-    # deleted instance.
-    @tab = "tab_show_1" if EDITING_TABS.include?(@tab) && cannot?(:modify, @instance)
     @tab_index = (params[:tabIndex] || "1").to_i
     @tabs_to_offer = tabs_to_offer
     @row_type = params["row-type"]

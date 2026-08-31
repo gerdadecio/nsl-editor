@@ -3,19 +3,19 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "34a510aa74948d8da7d6c535bdc4cd536e7662f013b33060346fd364eaf7ad44",
+      "fingerprint": "1dcdd0e7c0413ea7f796db38000b45d190fef9e58fee3e30e45fdf42a92112c2",
       "check_name": "Render",
       "message": "Render path contains parameter value",
       "file": "app/views/instances/show.html.erb",
       "line": 17,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(partial => \"instances/tabs/#{tab_for_instance_type((tab_or_default_tab or \"tab_show_1\"), params[\"row-type\"])}\", {})",
+      "code": "render(partial => \"instances/tabs/#{tab_for_instance_type(tab_or_default_tab, params[\"row-type\"])}\", {})",
       "render_path": [
         {
           "type": "controller",
           "class": "InstancesController",
           "method": "show",
-          "line": 70,
+          "line": 48,
           "file": "app/controllers/instances_controller.rb",
           "rendered": {
             "name": "instances/show",
@@ -54,6 +54,6 @@
       "note": ""
     }
   ],
-  "updated": "2026-08-31 11:15:15 +1000",
+  "updated": "2026-08-31 14:45:01 +1000",
   "brakeman_version": "7.1.0"
 }

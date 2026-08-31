@@ -1,2 +1,5 @@
-<%= render partial: "instances/tabs/batch_loader/standalone_supplement_ops" %>
-
+<% if can?(:modify, @instance) %>
+  <%= render partial: "instances/tabs/batch_loader/standalone_supplement_ops" %>
+<% else %>
+  This instance has been soft-deleted and cannot be modified.
+<% end %>

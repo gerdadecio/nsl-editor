@@ -1,15 +1,19 @@
-<% if @instance.instance_notes.size > 0 %>
-<h5>Notes for <%= @instance.name.simple_name %></h5>
-<% end %>
-<% if @instance.accepts_notes? %>
-  <div id="search-result-details-info-message-container" 
-       class="message-container">
-  </div>
-  <div id="search-result-details-error-message-container" 
-       class="message-container">
-  </div>
-  <% increment_tab_index(0) %>
-  <%= render partial: 'instances/tabs/non_apc_note_widgets' %>
+<% if can?(:modify, @instance) %>
+  <% if @instance.instance_notes.size > 0 %>
+  <h5>Notes for <%= @instance.name.simple_name %></h5>
+  <% end %>
+  <% if @instance.accepts_notes? %>
+    <div id="search-result-details-info-message-container"
+        class="message-container">
+    </div>
+    <div id="search-result-details-error-message-container"
+        class="message-container">
+    </div>
+    <% increment_tab_index(0) %>
+    <%= render partial: 'instances/tabs/non_apc_note_widgets' %>
+  <% else %>
+    This type of instance doesn't accept Notes.
+  <% end %>
 <% else %>
-  This type of instance doesn't accept Notes.
+  This instance has been soft-deleted and cannot be modified.
 <% end %>

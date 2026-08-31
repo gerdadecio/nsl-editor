@@ -1,4 +1,8 @@
-<h5>Create an unpublished citation.</h5>
-<%= render partial: 'form_create_unpublished_citation' %>
-<div id="search-result-details-info-message-container" class="message-container"></div>
-<div id="search-result-details-error-message-container" class="message-container"></div>
+<% if can?(:modify, @instance) %>
+  <h5>Create an unpublished citation.</h5>
+  <%= render partial: 'form_create_unpublished_citation' %>
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="message-container"></div>
+<% else %>
+  This instance has been soft-deleted and cannot be modified.
+<% end %>
