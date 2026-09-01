@@ -1,10 +1,7 @@
 <div id="soft-delete-info-message-container">
   You may soft delete this instance.<br/>
 
-  <% if @instance.tree_join_v.old.count > 0 %>
-    Instance is in at least one old classification for: <%= @instance.tree_join_v.collect {|tjv| tjv.tree_name}.flatten.uniq.join(', ') %>
-    <br><br>
-  <% end %>
+  <%= render partial: "trees/usage_messages", locals: { record: @instance } %>
 </div>
 
 <% delete_link = link_to("Soft Delete Instance",

@@ -1,4 +1,6 @@
   Blocked: cannot delete
+  <br>
+  <%= render partial: "trees/usage_messages", locals: { record: @name } %>
   <% if @name.instances.size > 0 %>
     <br>
     <%= link_to("#{pluralize(@name.instances.size,'instance')} #{editor_icon('search')}".html_safe,

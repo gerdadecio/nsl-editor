@@ -20,9 +20,9 @@ require "test_helper"
 
 # app/views/instances/widgets/_no_delete_reasons.html.erb decides, per
 # tree_element, whether it is genuinely "detached" (no tree_version_element
-# at all) rather than inferring detachment from the tree_join_v.current_accepted
-# / tree_join_v.old scopes. See Instance#allow_delete? / #in_any_tree? for why
-# any tree_element at all (attached or not) blocks deletion.
+# at all) rather than inferring detachment from the tree usage reported by
+# TreesHelper#tree_usage_messages. See Instance#allow_delete? / #in_any_tree?
+# for why any tree_element at all (attached or not) blocks deletion.
 class NoDeleteReasonsPartialTest < ActionView::TestCase
   def render_reasons_for(instance)
     @instance = instance
@@ -31,10 +31,9 @@ class NoDeleteReasonsPartialTest < ActionView::TestCase
   end
 
   test "a tree_element attached to the current version of a non-accepted tree is not reported as detached" do
-    # FOA has accepted_tree: false, so this tree_element's tree_version_element
-    # is invisible to both tree_join_v.current_accepted (fails the accepted
-    # check) and tree_join_v.old (its tree_version_id *is* the tree's current
-    # one) - but it is still properly attached and must not be mislabelled.
+    # FOA has accepted_tree: false, but this tree_element's tree_version_element
+    # is on the tree's current version, so it is properly attached and must not
+    # be mislabelled as detached.
     instance = instances(:invalid_publication_standalone_instance)
 
     output = render_reasons_for(instance)
@@ -57,7 +56,7 @@ class NoDeleteReasonsPartialTest < ActionView::TestCase
 
     output = render_reasons_for(instance)
 
-    assert_includes output, "Instance is in the current, accepted classification"
+    assert_includes output, "Instance is in the currently accepted APC tree"
     assert_includes output,
                     "Instance is in a DETACHED tree element record for " \
                     "Casuarina inophloia (detached)."

@@ -34,7 +34,7 @@
 #
 FactoryBot.define do
   factory :tree_version_element do
-    element_link { "Sample Element link" }
+    sequence(:element_link) { |n| "http://example.com/tve/#{n}" }
     depth { 1 }
     name_path { "Sample Name path" }
     taxon_id { 1 }

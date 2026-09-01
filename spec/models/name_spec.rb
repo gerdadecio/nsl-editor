@@ -58,6 +58,47 @@ RSpec.describe Name, type: :model do
         end
       end
     end
+
+    describe "tree_join_v" do
+      it { is_expected.to have_many(:tree_join_v) }
+
+      # NOTES: tree_join_v is a view keyed on tree_element.name_id, so the rows
+      # follow the name the placement was made under - not the name of the
+      # placed instance, which can differ.
+      let(:name) { create(:name) }
+      let(:other_name) { create(:name) }
+
+      # NOTES: TreeVersion#stop_if_read_only aborts the save unless the tree
+      # is writable, so the tree has to be built with is_read_only: false.
+      let(:tree) { create(:tree, is_read_only: false) }
+      let(:tree_version) { create(:tree_version, tree: tree) }
+
+      context "when the name itself is placed on a tree" do
+        let!(:placement) do
+          create(:tree_version_element,
+            tree_element: create(:tree_element, name: name,
+              instance: create(:instance, name: name)),
+            tree_version: tree_version)
+        end
+
+        it "returns the tree rows for this name" do
+          expect(name.tree_join_v.pluck(:name_id)).to eq([name.id])
+        end
+      end
+
+      context "when only another name is placed on a tree" do
+        let!(:placement) do
+          create(:tree_version_element,
+            tree_element: create(:tree_element, name: other_name,
+              instance: create(:instance, name: other_name)),
+            tree_version: tree_version)
+        end
+
+        it "does not return the tree rows of another name" do
+          expect(name.tree_join_v).to be_empty
+        end
+      end
+    end
   end
 
   describe "#allow_delete?" do

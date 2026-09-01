@@ -10,6 +10,8 @@
     <%= pluralize(@name.instances.soft_deleted.size,'soft-deleted instance') %>
     <br>
   <% end %>
+
+  <%= render partial: "trees/usage_messages", locals: { record: @name } %>
 </div>
 
 <% delete_link = link_to("Soft delete name",
