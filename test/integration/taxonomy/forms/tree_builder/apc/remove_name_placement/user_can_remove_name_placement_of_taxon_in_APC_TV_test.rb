@@ -70,5 +70,8 @@ class TaxFormsTreeBuilderAPCUserCanRemoveNamePlacementForTaxonOnAPCDraftTest < A
                     draft: apc_draft,
                     groups: ["login"]})
     assert_response :success, 'APC tree builder should be able to remove placement from APC draft'
+    # The services queue the change, so the user is told it may lag.
+    assert_includes @response.body, TreesHelper::TREE_CHANGE_DELAY_MESSAGE,
+                    'Removing should warn that the change may be delayed'
   end
 end

@@ -307,3 +307,9 @@ tr.titleRow {
 .select2-results__message {
   display: none;
 }
+
+/* NOTES: Delay warning shown after a place / replace / remove on a tree. */
+.tree-change-delay-notice {
+  margin: 0.5em 0;
+  font-style: italic;
+}

@@ -5,6 +5,12 @@ module TreesHelper
   # NOTES: The order the messages are shown in.
   TREE_USAGES = %i[current draft historical].freeze
 
+  # NOTES: Tree changes are handed to the services and can take a few minutes
+  # to appear everywhere, so place / replace / remove all say so rather than
+  # let the editor assume the change was lost.
+  TREE_CHANGE_DELAY_MESSAGE =
+    "This change may experience a delay, please re-check in 5 minutes"
+
   # NOTES: The trees a record (an instance or a name) is used in, worded for
   # the delete tabs, which have to tell three kinds of usage apart:
   #
@@ -20,6 +26,10 @@ module TreesHelper
     tree_names_by_usage(record).map do |usage, tree_names|
       tree_usage_message(record, usage, tree_names)
     end
+  end
+
+  def tree_change_delay_notice
+    tag.p(TREE_CHANGE_DELAY_MESSAGE, class: "tree-change-delay-notice")
   end
 
   private

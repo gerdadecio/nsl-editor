@@ -128,4 +128,26 @@ RSpec.describe TreesHelper, type: :helper do
       end
     end
   end
+
+  describe "#tree_change_delay_notice" do
+    subject(:notice) { helper.tree_change_delay_notice }
+
+    # NOTES: The notice is appended into the message containers by the
+    # place / replace / remove js.erb views, so it has to be html_safe markup
+    # rather than a bare string.
+    it "is a paragraph tagged for styling" do
+      expect(notice).to eq(
+        '<p class="tree-change-delay-notice">This change may experience a ' \
+        "delay, please re-check in 5 minutes</p>"
+      )
+    end
+
+    it "is html safe" do
+      expect(notice).to be_html_safe
+    end
+
+    it "says the same thing as the constant" do
+      expect(notice).to include(TreesHelper::TREE_CHANGE_DELAY_MESSAGE)
+    end
+  end
 end
