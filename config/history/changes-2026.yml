@@ -1,4 +1,8 @@
 - :date: 03-September-2026
+  :jira_id: '5912'
+  :description: |-
+    Typeahead upgrade: Upgrade the sanctioning author field in the name form to use stimulus autocomplete
+- :date: 03-September-2026
   :jira_id: '5911'
   :description: |-
     Typeahead upgrade: Upgrade the ex base name author field in the name form to use stimulus autocomplete
