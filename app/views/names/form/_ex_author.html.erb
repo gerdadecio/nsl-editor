@@ -4,7 +4,7 @@
            input_id: "ex-author-by-abbrev",
            input_name: "name[ex_author_typeahead]",
            input_value: @name.ex_author.try("abbrev_if_possible"),
-           label: "#{"Original " if @name.changed_combination}Ex Author",
+           label: "Ex Author",
            title: "Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation.",
            url: authors_typeahead_on_abbrev_path(format: :html),
            wrapper_class: "author",
