@@ -1,13 +1,30 @@
+<%# Sanctioning Author: the last of the five name-author fields to come off
+    the vendored typeahead.js/Bloodhound widget. With it goes the shared
+    Bloodhound source all five drew on
+    (typeaheads/for_name/authors_by_abbrev_bloodhound.js) - nothing else
+    used it.
 
-  <div class="form-group">
-    <label for="sanctioning-author-by-abbrev">Sanctioning Author</label><br>
-    <input id="sanctioning-author-by-abbrev"
-           name="name[sanctioning_author_typeahead]"   
-           class="typeahead form-control" 
-           type="text" 
-           title="Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation."
-           tabindex="<%= increment_tab_index %>"
-           value="<%= @name.sanctioning_author.try('abbrev_if_possible') %>"/>
-  </div>
-  <%= f.hidden_field(:sanctioning_author_id) %>
+    Label, title, dom ids and param names are unchanged, so the JS that
+    keys off them (app/views/names/update.js.erb writes back into
+    input#sanctioning-author-by-abbrev) and the server-side resolution
+    (Name::AsEdited#resolve_author(params, "sanctioning_author")) carry on
+    untouched, including the typed-exact-match-without-a-pick case.
 
+    No dependents_field: unlike the other four author fields, the old
+    sanctioning wiring never called window.setDependents after a pick, so
+    there is nothing to mirror here.
+
+    wrapper_class "author" brings this field into line with the other four.
+    The old markup was the odd one out in leaving the class off, which left
+    its label a different colour (see .author in
+    stylesheets/utilities/colors.css). %>
+<%= render "shared/autocomplete_field",
+           f: f,
+           id_attribute: :sanctioning_author_id,
+           input_id: "sanctioning-author-by-abbrev",
+           input_name: "name[sanctioning_author_typeahead]",
+           input_value: @name.sanctioning_author.try("abbrev_if_possible"),
+           label: "Sanctioning Author",
+           title: "Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation.",
+           url: authors_typeahead_on_abbrev_path(format: :html),
+           wrapper_class: "author" %>

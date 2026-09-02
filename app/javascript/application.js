@@ -78,13 +78,11 @@ import "typeaheads_for_reference_author";
 import "typeaheads_for_reference_duplicate";
 import "typeaheads_for_reference_parent";
 
-import "typeaheads_for_name_authors_by_abbrev";
 import "typeaheads_for_name_cultivar_parent";
 import "typeaheads_for_name_cultivar_second_parent";
 import "typeaheads_for_name_family";
 import "typeaheads_for_name_hybrid_parent";
 import "typeaheads_for_name_parent";
-import "typeaheads_for_name_sanctioning_author";
 import "typeaheads_for_name_second_parent";
 import "typeaheads_for_name_workspace_parent_name";
 

@@ -13,6 +13,5 @@
   <% end %>
   <% if @name.takes_sanctioning_author? %>
     <%= render partial: "names/form/sanctioning_author", locals: {f: f} %>
-    <script>setUpSanctioningAuthorByAbbrev();</script>
   <% end %>
 
