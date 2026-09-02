@@ -1,20 +1,21 @@
 $('#movement-error-message-container').addClass('hidden').html('');
 $('#update-name-placement-btn').find('i.fa').removeClass('fa-spin');
 
+$('#movement-message-container').removeClass('hidden').html('');
+
 <% if @message %>
 $('#movement-message-container')
-    .removeClass('hidden')
-    .html(markdown("<%= escape_javascript(sanitize(@message)) %>"))
-    .append('<button onclick="refreshTreeTab(event);">refresh</button>');
+    .append(markdown("<%= escape_javascript(sanitize(@message)) %>"));
 <% end %>
 
 <% if @html_out %>
 $('#movement-message-container')
-    .removeClass('hidden')
-    .append(markdown("<%= escape_javascript(sanitize(@html_out)) %>"))
-    .append('<button onclick="refreshTreeTab(event);">refresh</button>');
-<% else %>
-  $('#instance-classification-tab').click();
+    .append(markdown("<%= escape_javascript(sanitize(@html_out)) %>"));
 <% end %>
 
-
+<%# NOTES: The change is queued in the services, so tell the user it may lag
+    and let them refresh when they are ready, rather than reloading the tab
+    onto data that has not caught up yet. %>
+$('#movement-message-container')
+    .append("<%= escape_javascript(tree_change_delay_notice) %>")
+    .append('<button onclick="refreshTreeTab(event);">refresh</button>');

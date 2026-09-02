@@ -1,3 +1,7 @@
+- :date: 02-September-2026
+  :jira_id: '5906'
+  :description: |-
+    Add a delay notice for tree changes (e.g placing, replacing, or removing instance in a tree)
 - :date: 01-September-2026
   :jira_id: '5904'
   :description: |-
