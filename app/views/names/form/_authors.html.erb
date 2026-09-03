@@ -1,7 +1,6 @@
 
   <% if @name.takes_ex_base_author? %>
     <%= render partial: "names/form/ex_base_author", locals: {f: f} %>
-    <script>setUpExBaseAuthorByAbbrev();</script>
   <% end %>
   <% if @name.takes_base_author? %>
     <%= render partial: "names/form/base_author", locals: {f: f} %>

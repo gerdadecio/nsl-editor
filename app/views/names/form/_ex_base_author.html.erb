@@ -1,12 +1,18 @@
-<div class="form-group">
-  <label for="ex-base-author-by-abbrev">Ex Base Name Author</label><br>
-  <input id="ex-base-author-by-abbrev"
-         name="name[ex_base_author_typeahead]"
-         class="typeahead form-control"
-         type="text"
-         title="Ex Base Name Author field. Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation."
-         tabindex="<%= increment_tab_index %>"
-         value="<%= @name.ex_base_author.try('abbrev_if_possible') %>"/>
+<%= render "shared/autocomplete_field",
+           f: f,
+           id_attribute: :ex_base_author_id,
+           input_id: "ex-base-author-by-abbrev",
+           input_name: "name[ex_base_author_typeahead]",
+           input_value: @name.ex_base_author.try("abbrev_if_possible"),
+           label: "Ex Base Name Author",
+           title: "Ex Base Name Author field. Authors will be suggested as you type, so please select from the list or type enough to identify a single author by abbreviation.",
+           url: authors_typeahead_on_abbrev_path(format: :html),
+           wrapper_class: "author",
+           dependents_field: "ex-base-author-by-abbrev" %>
+<%# This note covers every author field, not just this one - it has always
+    lived here because Ex Base Author is the first author field rendered
+    (see names/form/_authors). It sits outside the field's wrapper div
+    rather than inside it as before: .autocomplete-results is positioned at
+    top: 100% of that wrapper, so anything else inside would push the
+    suggestion dropdown down below it. %>
 <p>[For all author fields, use standard abbreviations]</p>
-</div>
-<%= f.hidden_field(:ex_base_author_id) %>
