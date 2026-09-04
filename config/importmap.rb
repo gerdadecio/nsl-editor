@@ -92,7 +92,6 @@ pin "typeaheads_for_name_authors_by_abbrev", to: "typeaheads/for_name/authors_by
 # Second parent field still shares with it.
 pin "typeaheads_for_name_cultivar_parent", to: "typeaheads/for_name/cultivar_parent.js"
 pin "typeaheads_for_name_cultivar_second_parent", to: "typeaheads/for_name/cultivar_second_parent.js"
-pin "typeaheads_for_name_family", to: "typeaheads/for_name/family.js"
 pin "typeaheads_for_name_hybrid_parent", to: "typeaheads/for_name/hybrid_parent.js"
 pin "typeaheads_for_name_sanctioning_author", to: "typeaheads/for_name/sanctioning_author.js"
 pin "typeaheads_for_name_second_parent", to: "typeaheads/for_name/second_parent.js"

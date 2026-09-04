@@ -176,6 +176,52 @@ class ShowEditTest < ActionController::TestCase
     assert_equal "|", field["data-autocomplete-term-delimiter-value"]
   end
 
+  # The name form's Family field, off typeahead.js and onto the same shared
+  # markup as the Parent and author fields.
+  test "should render the family field as a stimulus autocomplete" do
+    @request.headers["Accept"] = "application/javascript"
+    get(:show,
+        params: { id: @name.id, tab: "tab_edit" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
+    assert_response :success
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+                  " input#name-family-typeahead" \
+                  "[data-autocomplete-target='input']",
+                  true
+    assert_select "div.autocomplete" \
+                  " input#name_family_id" \
+                  "[data-autocomplete-target='hidden']",
+                  true
+    assert_select "div.autocomplete label[for='name-family-typeahead']",
+                  "Family*"
+    assert_no_match(/setUpNameFamilyTypeahead\(\)/, @response.body)
+  end
+
+  # The field sends the same params the old Bloodhound source did: the
+  # name's own id baked in, and the rank read from the select at query time
+  # because the user can change it without leaving the form.
+  test "should have the family field send the same params as before" do
+    @request.headers["Accept"] = "application/javascript"
+    get(:show,
+        params: { id: @name.id, tab: "tab_edit" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
+    assert_response :success
+    field = css_select("div.autocomplete").find do |div|
+      div.css("input#name-family-typeahead").any?
+    end
+    assert_equal "/names/name_family_suggestions.html",
+                 field["data-autocomplete-url-value"]
+    assert_equal({ "rank_id" => "name_name_rank_id" },
+                 JSON.parse(field["data-autocomplete-live-params-value"]))
+    assert_equal({ "name_id" => @name.id },
+                 JSON.parse(field["data-autocomplete-extra-params-value"]))
+    assert_equal "|", field["data-autocomplete-term-delimiter-value"]
+  end
+
   # Sanctioning Author is the last author field not yet migrated, so it
   # must still render the plain typeahead.js markup and its inline set-up
   # call.

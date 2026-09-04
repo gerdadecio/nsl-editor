@@ -1,22 +1,44 @@
 <% if @name.requires_family? %>
-  <div class="form-group">
-    <label for="name-family-typeahead">Family<span class="red">*</span></label>
-  <input id="name-family-typeahead"
-         name="name[family_typeahead]"
-         class="typeahead form-control requires-rank"
-         data-name-id="<%= @name.id %>"
-         required
-         type="text"
-         tabindex="<%= increment_tab_index %>"
-         title="Name family will be suggested as you type, so please select from the list. Duplicates and names without instances are excluded."
-         value="<%= @name.family.try('full_name') %>"/>
-  <p>
-        <span class="hide-if-rank <%= 'hidden' if @name.name_rank %>">
-          Cannot be set if there is no rank.
-        </span>
-  </p>
-</div>
-<%= hidden_field(:name, :family_id, value: @name.family_id) %>
+  <%# Family: powered by stimulus-autocomplete instead of the vendored
+      typeahead.js/Bloodhound widget. Label, title, dom ids, param names
+      and the input's classes are all kept as they were, so the GUI is
+      unchanged; only the JS driving the dropdown is different.
 
-<script>setUpNameFamilyTypeahead();</script>
+      Server-side resolution (Name::AsResolvedTypeahead::ForFamily) is
+      untouched - it doesn't know or care which JS widget populated these
+      fields.
+
+      The request is the one the old Bloodhound source made, param for
+      param: extra_params sends the name's own id as name_id, which that
+      source read from the input's data-name-id attribute, and live_params
+      sends the rank currently chosen in the form's Rank select, which it
+      read from the select on every keystroke.
+
+      term_delimiter keeps a pick from poisoning the next search: the
+      suggestions read "<full name> | <rank> | <status> | <n> instances"
+      and picking one puts all of that into the input. %>
+  <div>
+    <%= render "shared/autocomplete_field",
+               f: f,
+               id_attribute: :family_id,
+               input_id: "name-family-typeahead",
+               input_name: "name[family_typeahead]",
+               input_value: @name.family.try("full_name"),
+               label: "Family",
+               required: true,
+               title: "Name family will be suggested as you type, so please select from the list. Duplicates and names without instances are excluded.",
+               url: name_name_family_suggestions_path(format: :html),
+               input_class: "requires-rank",
+               extra_params: { name_id: @name.id },
+               live_params: { rank_id: "name_name_rank_id" },
+               term_delimiter: "|" %>
+    <%# Outside the field's own wrapper div: .autocomplete-results is
+        positioned at top: 100% of that wrapper, so anything else inside
+        it would push the suggestion dropdown down below it. %>
+    <p>
+      <span class="hide-if-rank <%= 'hidden' if @name.name_rank %>">
+        Cannot be set if there is no rank.
+      </span>
+    </p>
+  </div>
 <% end %>

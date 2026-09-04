@@ -29,20 +29,19 @@ export default class extends Controller {
     this.showFamily(picked.dataset.familyValue || "")
   }
 
-  // The Family field is still a typeahead.js widget, so set its value
-  // through the widget rather than on the input: typeahead.js keeps its own
-  // copy of the current query, and writing straight to the input would
-  // leave that stale. Falls back to the input for when Family is migrated
-  // too and the plugin is no longer there.
+  // The Family field is a stimulus-autocomplete field too now
+  // (app/views/names/form/_family.html.erb), so its input is a plain input
+  // and writing to it is enough: the library reads the value back off the
+  // element when it queries rather than keeping its own copy, which is
+  // what the typeahead.js widget this replaced did.
+  //
+  // Family is only rendered for names that require one
+  // (Name::Familyable#requires_family?), so the field can legitimately be
+  // absent from the form.
   showFamily(value) {
     const input = document.getElementById("name-family-typeahead")
     if (!input) return
 
-    const jQuery = window.$
-    if (jQuery && jQuery.fn && jQuery.fn.typeahead) {
-      jQuery(input).typeahead("val", value)
-    } else {
-      input.value = value
-    }
+    input.value = value
   }
 }
