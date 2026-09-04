@@ -159,6 +159,8 @@ Rails.application.routes.draw do
         to: "names#name_parent_suggestions",
         via: :get
 
+  # Two response formats over the one query - see
+  # NamesController/Name::Typeaheads#name_family_suggestions.
   match "names/name_family_suggestions",
         as: "name_name_family_suggestions",
         to: "names#name_family_suggestions",

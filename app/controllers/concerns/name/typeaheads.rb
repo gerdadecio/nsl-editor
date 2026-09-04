@@ -29,9 +29,24 @@ module Name::Typeaheads
     end
   end
 
+  # For the name form's Family field.
+  #
+  # Two response formats over the one query, as for #name_parent_suggestions
+  # above:
+  #   json - kept for parity with the other suggestion actions; nothing in
+  #          this app's own views still asks for it.
+  #   html - the fragment of <li role="option"> elements stimulus-autocomplete
+  #          expects, which the Family field asks for by extension.
   def name_family_suggestions
     typeahead = Name::AsTypeahead::ForFamily.new(params)
-    render json: typeahead.suggestions
+    respond_to do |format|
+      format.json { render json: typeahead.suggestions }
+      format.html do
+        render partial: "shared/autocomplete_suggestions",
+               locals: { suggestions: typeahead.suggestions,
+                         term: params[:term] }
+      end
+    end
   end
 
   # Suggests the parent of a cultivar name.
