@@ -18,16 +18,59 @@
 #
 require "test_helper"
 
-# Single controller test.
+# NamesController#cultivar_parent_suggestions. Answers the shared html
+# fragment to the name form's Parent field, now on stimulus-autocomplete,
+# and json to the Second parent field, still on typeahead.js.
 class NameCultivarParentSuggestionsForEditorTest < ActionController::TestCase
   tests NamesController
-  test "should get name cultivar parent suggestions" do
-    @request.headers["Accept"] = "application/javascript"
+
+  def get_suggestions(term, format: :html)
     get(:cultivar_parent_suggestions,
-        params: { rank_id: name_ranks(:unranked).id, term: "search for this" },
+        params: { rank_id: name_ranks(:unranked).id,
+                  term: term,
+                  format: format },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: ["edit"] })
+  end
+
+  def assert_select_in_body(*args, &block)
+    assert_select(Nokogiri::HTML::DocumentFragment.parse(@response.body),
+                  *args, &block)
+  end
+
+  test "should get name cultivar parent suggestions as an html fragment" do
+    get_suggestions("a_gen")
+
     assert_response :success
+    assert_select_in_body(
+      "li.autocomplete-result[data-autocomplete-value='#{names(:a_genus).id}']",
+      true
+    )
+  end
+
+  # A cultivar's suggestions carry no family, so picking one leaves the
+  # Family field alone - as the old typeahead.js wiring also did.
+  test "should not publish a family on the option" do
+    get_suggestions("a_gen")
+
+    assert_response :success
+    assert_select_in_body "li.autocomplete-result[data-family-id]", false
+  end
+
+  test "should render a no matches option for a blank term" do
+    get_suggestions("")
+
+    assert_response :success
+    assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
+                          text: "No matches"
+  end
+
+  test "should still answer json" do
+    get_suggestions("a_gen", format: :json)
+
+    assert_response :success
+    suggestions = JSON.parse(@response.body)
+    assert_includes suggestions.map { |s| s["id"] }, names(:a_genus).id
   end
 end

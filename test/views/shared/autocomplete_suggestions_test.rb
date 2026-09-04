@@ -21,9 +21,9 @@ require "test_helper"
 # Renders the stimulus-autocomplete HTML fragment shared by every migrated
 # typeahead field.
 class AutocompleteSuggestionsPartialTest < ActionView::TestCase
-  def render_suggestions(suggestions, term)
+  def render_suggestions(suggestions, term, **locals)
     render partial: "shared/autocomplete_suggestions",
-           locals: { suggestions: suggestions, term: term }
+           locals: { suggestions: suggestions, term: term }.merge(locals)
     rendered
   end
 
@@ -63,6 +63,30 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
 
     assert_select_in output,
                      "li.autocomplete-result[data-autocomplete-label='Benth.  | George Bentham']"
+  end
+
+  # For a field that has to act on more than the picked record's id: the
+  # name form's Parent field fills in the Family field from the parent's
+  # own family, see
+  # app/javascript/controllers/name_parent_family_controller.js.
+  test "publishes the keys named in data_keys as data attributes" do
+    suggestions = [{ value: "a_genus | Genus", id: 123,
+                     family_id: 7, family_value: "a_family" }]
+
+    output = render_suggestions(suggestions, "a_gen",
+                                data_keys: %i[family_id family_value])
+
+    assert_select_in output,
+                     "li.autocomplete-result[data-family-id='7']" \
+                     "[data-family-value='a_family']"
+  end
+
+  test "publishes no extra data attributes without data_keys" do
+    suggestions = [{ value: "a_genus | Genus", id: 123, family_id: 7 }]
+
+    output = render_suggestions(suggestions, "a_gen")
+
+    assert_select_in output, "li.autocomplete-result[data-family-id]", false
   end
 
   test "renders a 'No matches' option, still styled, when there are no suggestions" do
