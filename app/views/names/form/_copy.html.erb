@@ -52,8 +52,8 @@
   <div class="width-100-percent">
     <% if @name.hybrid? %>
       <%= hidden_field(:name, :name_rank_id, value: @name.name_rank_id) %>
-      <%= render partial: 'names/form/parent_1' %>
-      <%= render partial: 'names/form/parent_2' %>
+      <%= render partial: 'names/form/parent_1', locals: {f: f} %>
+      <%= render partial: 'names/form/parent_2', locals: {f: f} %>
     <% end %>
 
     <%= link_to("Copy...",

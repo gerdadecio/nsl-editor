@@ -6,7 +6,7 @@ import { Autocomplete } from "stimulus-autocomplete"
 // vendored, unmaintained typeahead.js + Bloodhound setup. It is a thin
 // subclass of stimulus-autocomplete's own Autocomplete controller, adding
 // only the things this app's fields need that the library doesn't do out
-// of the box. The first two are opt-in per field; the third applies to
+// of the box. The first four are opt-in per field; the last applies to
 // every field.
 //
 // 1. extraParams - a field often has to send more than the typed term
@@ -17,18 +17,32 @@ import { Autocomplete } from "stimulus-autocomplete"
 //    own params onto it.
 //
 //    These values are set once, from the server, when the page renders.
-//    Fields that need a *live* value from another field on the page (e.g.
-//    name_parent_suggestions reading the current rank_id from a select)
-//    will need to read that field directly inside buildURL instead - a
-//    harder case, not covered here.
+//    A field whose suggestions depend on another field the user can still
+//    change needs liveParams instead.
 //
-// 2. dependentsField - some of the old typeahead wirings called
+// 2. liveParams - the same idea, but read from the page at query time
+//    rather than baked in when it rendered: a hash of param name => the
+//    dom id to read it from. The Parent field's suggestions are restricted
+//    by the rank currently chosen in the form's Rank select, which the
+//    user can change between two queries on the same field, so the rank
+//    has to be read when the query is built. A param whose element isn't
+//    on the page is simply left off the URL.
+//
+// 3. termDelimiter - what a field's suggestions are displayed as isn't
+//    always what should be searched on. The Parent field's suggestions
+//    read "<full name> | <rank> | <status> | <n> instances", and picking
+//    one puts all of that into the input, so a user who then edits the
+//    name would otherwise search for the trailing detail too. A field sets
+//    this to the string its display value is built with ("|") and only the
+//    text before the first one is sent as the term.
+//
+// 4. dependentsField - some of the old typeahead wirings called
 //    window.setDependents(fieldId) after a pick, to enable/disable the
 //    fields that depend on this one. Rather than have callers write their
 //    own data-action for it, a field opts in by setting this value to the
 //    element id setDependents should be given.
 //
-// 3. replaceResults - resetting the dropdown's scroll position whenever a
+// 5. replaceResults - resetting the dropdown's scroll position whenever a
 //    new set of suggestions lands. See the override below.
 //
 // The identifier is "autocomplete" - the name the library itself assumes,
@@ -46,15 +60,32 @@ export default class extends Autocomplete {
   static values = {
     ...Autocomplete.values,
     extraParams: Object,
+    liveParams: Object,
+    termDelimiter: String,
     dependentsField: String
   }
 
   buildURL(query) {
-    const url = new URL(super.buildURL(query))
+    const url = new URL(super.buildURL(this.termFor(query)))
     Object.entries(this.extraParamsValue).forEach(([key, value]) => {
-      url.searchParams.set(key, value)
+      // A param the server had no value for is sent empty rather than as
+      // the string "null" - a name being created has no id of its own yet.
+      url.searchParams.set(key, value === null ? "" : value)
+    })
+    Object.entries(this.liveParamsValue).forEach(([key, elementId]) => {
+      const source = document.getElementById(elementId)
+      if (source) url.searchParams.set(key, source.value)
     })
     return url.toString()
+  }
+
+  // The typed text, minus the display-only detail a previous pick left in
+  // the input - see termDelimiter above. The library has already trimmed
+  // the query, but not what's left after the cut.
+  termFor(query) {
+    if (!this.termDelimiterValue) return query
+
+    return query.split(this.termDelimiterValue)[0].trim()
   }
 
   // Wired up in the shared field partial as

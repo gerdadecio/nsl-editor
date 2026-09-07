@@ -149,7 +149,7 @@ class Name::AsTypeahead < Name
   def self.hybrid_parent_suggestions(term, avoid_id, rank_id = -1)
     logger.debug("hybrid_parent_suggestions term: #{term}
                  avoiding: #{avoid_id} for rank: #{rank_id}")
-    term_for_query = term.strip
+    term_for_query = term.to_s.strip
     if term_for_query.blank?
       results = []
     else

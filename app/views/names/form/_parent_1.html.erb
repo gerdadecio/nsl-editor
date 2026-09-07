@@ -1,31 +1,54 @@
   <% if @name.category_for_edit.takes_parent_1? %>
-    <div class="form-group">
-      <label for="name-parent-typeahead"><%= 'First ' if @name.hybrid? %>Parent<% if @name.requires_parent_1? %><span class="red">*</span><% end %></label>
-      <%= " [#{@name.category_for_edit.parent_1_help_text}]"  unless @name.category_for_edit.parent_1_help_text.blank? %><br>
-      <input id="name-parent-typeahead"
-             name="name[parent_typeahead]"
-             class="typeahead form-control requires-rank"
-             data-name-id="<%= @name.id %>"
-             <% if @name.requires_parent_1? %>
-               required 
-             <% end %>
-             type="text" 
-             tabindex="<%= increment_tab_index %>"
-             title="Name parents will be suggested as you type, so please select from the list. Duplicates and names without instances are excluded.  Rank restrictions also apply."
-             value="<%= @name.parent.try('full_name') %>"/>
-      <p> 
+    <%# Parent: powered by stimulus-autocomplete instead of the vendored
+        typeahead.js/Bloodhound widget. Label, title, dom ids, param names
+        and the input's classes are all kept as they were, so the GUI is
+        unchanged; only the JS driving the dropdown is different.
+
+        Server-side resolution (Name::AsResolvedTypeahead::ForParent) is
+        untouched - it doesn't know or care which JS widget populated these
+        fields.
+
+        Which endpoint suggests the parents depends on the name's category,
+        exactly as the three typeahead.js set-up calls this replaced did -
+        see TypeaheadsHelper#parent_suggestions_url_for.
+
+        live_params sends the rank currently chosen in the form's Rank
+        select, which restricts which names can be a parent - the old
+        Bloodhound sources read it out of the select the same way, on every
+        keystroke, because the user can change rank without leaving the
+        form.
+
+        extra_params sends the name's own id as name_id, as those sources
+        also did from the input's data-name-id attribute.
+
+        term_delimiter keeps a pick from poisoning the next search: the
+        suggestions read "<full name> | <rank> | <status> | <n> instances"
+        and picking one puts all of that into the input. %>
+    <% help_text = @name.category_for_edit.parent_1_help_text %>
+    <div data-controller="name-parent-family"
+         data-action="autocomplete.change->name-parent-family#sync">
+      <%= render "shared/autocomplete_field",
+                 f: f,
+                 id_attribute: :parent_id,
+                 input_id: "name-parent-typeahead",
+                 input_name: "name[parent_typeahead]",
+                 input_value: @name.parent.try("full_name"),
+                 label: "#{"First " if @name.hybrid?}Parent",
+                 label_suffix: (" [#{help_text}]" if help_text.present?),
+                 required: @name.requires_parent_1?,
+                 title: "Name parents will be suggested as you type, so please select from the list. Duplicates and names without instances are excluded.  Rank restrictions also apply.",
+                 url: parent_suggestions_url_for(@name),
+                 input_class: "requires-rank",
+                 extra_params: { name_id: @name.id },
+                 live_params: { rank_id: "name_name_rank_id" },
+                 term_delimiter: "|" %>
+      <%# Outside the field's own wrapper div: .autocomplete-results is
+          positioned at top: 100% of that wrapper, so anything else inside
+          it would push the suggestion dropdown down below it. %>
+      <p>
         <span class="hide-if-rank <%= 'hidden' if @name.name_rank %>">
           Cannot be set if there is no rank.
         </span>
       </p>
     </div>
-    <%= hidden_field(:name,:parent_id, value: @name.parent_id) %>
-
-    <% if @name.category_for_edit.takes_hybrid_scoped_parent? %>   
-      <script>setUpNameHybridParentTypeahead();</script>
-    <% elsif @name.category_for_edit.takes_cultivar_scoped_parent? %>   
-      <script>setUpNameCultivarParentTypeahead();</script>
-    <% else %>
-      <script>setUpNameParentTypeahead();</script>
-    <% end %>
   <% end %>

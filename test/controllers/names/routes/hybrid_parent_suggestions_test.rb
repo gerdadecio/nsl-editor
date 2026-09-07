@@ -26,4 +26,13 @@ class NameHybridParentSuggestionsRouteTest < ActionController::TestCase
                    controller: "names",
                    action: "hybrid_parent_suggestions"
   end
+
+  # stimulus-autocomplete asks for the html fragment by extension - see
+  # Name::Typeaheads#name_parent_suggestions.
+  test "should route the html format to the same action" do
+    assert_routing "/suggestions/name/hybrid_parent.html",
+                   controller: "names",
+                   action: "hybrid_parent_suggestions",
+                   format: "html"
+  end
 end

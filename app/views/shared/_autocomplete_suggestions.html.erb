@@ -14,10 +14,19 @@
     Name::AsResolvedTypeahead::ForAuthor strips at the "|" separator that
     Author::AsTypeahead.on_abbrev puts into the value).
 
+    Optional local:
+      data_keys - extra keys of each suggestion to publish as data
+                  attributes on its option, e.g. [:family_id] renders
+                  data-family-id. For a field that has to act on more than
+                  the picked record's id: the name form's Parent field
+                  fills in the Family field from the parent's own family,
+                  see app/javascript/controllers/name_parent_family_controller.js.
+
     The "autocomplete-result" class must match the class styled in
     app/assets/stylesheets/utilities/autocomplete.css - they're two
     separate files with no compile-time link between them, so a rename on
     one side silently breaks the styling on the other. %>
+<% data_keys = local_assigns.fetch(:data_keys, []) %>
 <% if suggestions.blank? %>
   <li class="autocomplete-result" role="option" aria-disabled="true">No matches</li>
 <% else %>
@@ -25,6 +34,6 @@
     <li class="autocomplete-result"
         role="option"
         data-autocomplete-value="<%= suggestion[:id] %>"
-        data-autocomplete-label="<%= suggestion[:value] %>"><%= highlight_typeahead_match(suggestion[:value], term) %></li>
+        data-autocomplete-label="<%= suggestion[:value] %>"<% data_keys.each do |key| %> data-<%= key.to_s.dasherize %>="<%= suggestion[key] %>"<% end %>><%= highlight_typeahead_match(suggestion[:value], term) %></li>
   <% end %>
 <% end %>

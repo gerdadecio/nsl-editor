@@ -5,6 +5,7 @@
       <input id="name-second-parent-typeahead"
              name="name[second_parent_typeahead]"
              class="typeahead form-control requires-rank"
+             data-name-id="<%= @name.id %>"
              <% if @name.category_for_edit.requires_parent_2? %>
                required
              <% end %>

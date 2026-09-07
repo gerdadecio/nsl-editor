@@ -151,6 +151,53 @@ class ShowEditTest < ActionController::TestCase
                   "Sanctioning Author"
   end
 
+  # The name form's first Parent field, off typeahead.js and onto the same
+  # shared markup as the author fields.
+  test "should render the parent field as a stimulus autocomplete" do
+    @request.headers["Accept"] = "application/javascript"
+    get(:show,
+        params: { id: @name.id, tab: "tab_edit" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
+    assert_response :success
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+                  " input#name-parent-typeahead" \
+                  "[data-autocomplete-target='input']",
+                  true
+    assert_select "div.autocomplete" \
+                  " input#name_parent_id" \
+                  "[data-autocomplete-target='hidden']",
+                  true
+    assert_select "div.autocomplete label[for='name-parent-typeahead']",
+                  "Parent*"
+    assert_no_match(/setUpNameParentTypeahead\(\)/, @response.body)
+    assert_no_match(/setUpNameHybridParentTypeahead\(\)/, @response.body)
+    assert_no_match(/setUpNameCultivarParentTypeahead\(\)/, @response.body)
+  end
+
+  # The rank the parent suggestions are restricted by can be changed without
+  # leaving the form, so it is read from the select at query time rather
+  # than baked into the field when it renders - see the autocomplete
+  # controller's liveParams. The name's own id can be baked in.
+  test "should have the parent field read the rank live" do
+    @request.headers["Accept"] = "application/javascript"
+    get(:show,
+        params: { id: @name.id, tab: "tab_edit" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
+    assert_response :success
+    field = css_select("div.autocomplete").find do |div|
+      div.css("input#name-parent-typeahead").any?
+    end
+    assert_equal({ "rank_id" => "name_name_rank_id" },
+                 JSON.parse(field["data-autocomplete-live-params-value"]))
+    assert_equal({ "name_id" => @name.id },
+                 JSON.parse(field["data-autocomplete-extra-params-value"]))
+    assert_equal "|", field["data-autocomplete-term-delimiter-value"]
+  end
+
   # With Sanctioning Author across, no author field asks for the old
   # typeahead.js set-up any more.
   test "should leave no author field on the legacy typeahead" do

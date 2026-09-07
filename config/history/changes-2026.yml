@@ -1,4 +1,8 @@
 - :date: 07-September-2026
+  :jira_id: '5913'
+  :description: |-
+    Typeahead upgrade: Upgrade the parent typeahead field in the name form to use stimulus autocomplete
+- :date: 07-September-2026
   :jira_id: '5912'
   :description: |-
     Typeahead upgrade: Upgrade the sanctioning author field in the name form to use stimulus autocomplete

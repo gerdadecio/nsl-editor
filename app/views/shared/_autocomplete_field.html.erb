@@ -23,8 +23,22 @@
 
     Optional locals:
       wrapper_class   - extra class(es) on the wrapper div
+      input_class     - extra class(es) on the visible input, e.g.
+                        "requires-rank"
+      required        - marks the input required and adds the red asterisk
+                        the app's other mandatory fields carry
+      label_suffix    - text rendered after the </label>, e.g. a field's
+                        "[help text]" note
       extra_params    - hash of static params added to every request, see
                         the autocomplete controller's buildURL
+      live_params     - hash of param name => dom id, read from the page at
+                        query time; for a field whose suggestions depend on
+                        another field the user can still change (e.g. the
+                        Parent field sending the currently selected rank)
+      term_delimiter  - cut the typed text at this string before querying,
+                        for fields whose suggestions are displayed as
+                        "<name> | <rank> | ..." and so get typed back with
+                        that trailing detail attached
       dependents_field - element id to hand to window.setDependents after a
                          pick; omit unless the field has dependents
       min_length      - characters before suggestions are fetched (default 1)
@@ -34,7 +48,12 @@
     conventional "name_author_id"-style dom id that other JS and the tests
     rely on. %>
 <% wrapper_class = local_assigns.fetch(:wrapper_class, nil) %>
+<% input_class = local_assigns.fetch(:input_class, nil) %>
+<% required = local_assigns.fetch(:required, false) %>
+<% label_suffix = local_assigns.fetch(:label_suffix, nil) %>
 <% extra_params = local_assigns.fetch(:extra_params, {}) %>
+<% live_params = local_assigns.fetch(:live_params, {}) %>
+<% term_delimiter = local_assigns.fetch(:term_delimiter, nil) %>
 <% dependents_field = local_assigns.fetch(:dependents_field, nil) %>
 <% min_length = local_assigns.fetch(:min_length, 1) %>
 <div class="form-group autocomplete <%= wrapper_class %>"
@@ -44,15 +63,18 @@
      data-autocomplete-query-param-value="term"
      data-autocomplete-min-length-value="<%= min_length %>"
      data-autocomplete-extra-params-value="<%= extra_params.to_json %>"
+     data-autocomplete-live-params-value="<%= live_params.to_json %>"
+     data-autocomplete-term-delimiter-value="<%= term_delimiter %>"
      data-autocomplete-dependents-field-value="<%= dependents_field %>"
      role="combobox">
-  <label for="<%= input_id %>"><%= label %></label><br>
+  <label for="<%= input_id %>"><%= label %><% if required %><span class="red">*</span><% end %></label><%= label_suffix %><br>
   <input id="<%= input_id %>"
          name="<%= input_name %>"
-         class="typeahead form-control"
+         class="typeahead form-control <%= input_class %>"
          type="text"
          title="<%= title %>"
          tabindex="<%= increment_tab_index %>"
+         <%= "required" if required %>
          data-autocomplete-target="input"
          value="<%= input_value %>"/>
   <%= f.hidden_field(id_attribute, data: { "autocomplete-target": "hidden" }) %>
