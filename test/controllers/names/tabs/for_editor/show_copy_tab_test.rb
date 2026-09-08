@@ -59,4 +59,30 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
                   "[data-autocomplete-target='hidden']",
                   true
   end
+
+  # The copy form's Second parent is the same shared field, so the
+  # copy-name-form controller can watch both parents through the one pair
+  # of bubbling events.
+  test "should show the second parent field on the copy tab of a hybrid" do
+    hybrid = names(:hybrid_formula)
+    @request.headers["Accept"] = "application/javascript"
+    get(:show,
+        params: { id: hybrid.id, tab: "tab_copy" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
+    assert_response :success
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+                  "[data-autocomplete-url-value=" \
+                  "'/suggestions/name/hybrid_parent.html']" \
+                  " input#name-second-parent-typeahead" \
+                  "[data-autocomplete-target='input']" \
+                  "[value='#{hybrid.second_parent.full_name}']",
+                  true
+    assert_select "div.autocomplete input#name_second_parent_id" \
+                  "[data-autocomplete-target='hidden']" \
+                  "[value='#{hybrid.second_parent_id}']",
+                  true
+    assert_no_match(/setUpNameSecondParentTypeahead\(\)/, @response.body)
+  end
 end
