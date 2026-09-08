@@ -346,6 +346,8 @@
   :jira_id: '5854'
   :description: |-
     Service object and feature flag for soft delete of instances
+- :date: 08-September-2026
+  :release: true
 - :date: 17-July-2026
   :jira_id: '3228'
   :description: |-
