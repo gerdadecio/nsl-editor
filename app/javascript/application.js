@@ -78,9 +78,6 @@ import "typeaheads_for_reference_author";
 import "typeaheads_for_reference_duplicate";
 import "typeaheads_for_reference_parent";
 
-import "typeaheads_for_name_cultivar_parent";
-import "typeaheads_for_name_cultivar_second_parent";
-
 import "typeaheads_for_name_workspace_parent_name";
 
 import "markdown_it_sub_min";

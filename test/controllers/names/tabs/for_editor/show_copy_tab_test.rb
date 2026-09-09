@@ -85,4 +85,31 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
                   true
     assert_no_match(/setUpNameSecondParentTypeahead\(\)/, @response.body)
   end
+
+  # A cultivar hybrid's copy form takes both parents from the
+  # cultivar-scoped endpoint, its Second parent in place of
+  # setUpNameCultivarSecondParentTypeahead.
+  test "should show the second parent field on the copy tab of a cultivar hybrid" do
+    cultivar_hybrid = names(:a_cultivar_hybrid)
+    @request.headers["Accept"] = "application/javascript"
+    get(:show,
+        params: { id: cultivar_hybrid.id, tab: "tab_copy" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["edit"] })
+    assert_response :success
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+                  "[data-autocomplete-url-value=" \
+                  "'/suggestions/name/cultivar_parent.html']" \
+                  " input#name-second-parent-typeahead" \
+                  "[data-autocomplete-target='input']" \
+                  "[value='#{cultivar_hybrid.second_parent.full_name}']",
+                  true
+    assert_select "div.autocomplete input#name_second_parent_id" \
+                  "[data-autocomplete-target='hidden']" \
+                  "[value='#{cultivar_hybrid.second_parent_id}']",
+                  true
+    assert_no_match(/setUpNameCultivarSecondParentTypeahead\(\)/,
+                    @response.body)
+  end
 end

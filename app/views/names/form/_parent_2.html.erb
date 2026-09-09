@@ -1,71 +1,49 @@
   <% if @name.category_for_edit.takes_parent_2? %>
-    <% if @name.category_for_edit.takes_cultivar_scoped_parent? %>
-      <%# A cultivar hybrid's Second parent is still on typeahead.js - see
-          setUpNameCultivarSecondParentTypeahead below. Only the hybrid
-          branch further down has moved to stimulus-autocomplete so far. %>
-      <div class="form-group">
-        <label for="name-second-parent-typeahead">Second parent<% if @name.category_for_edit.requires_parent_2? %><span class="red">*</span><% end %></label><%= " [#{@name.category_for_edit.parent_2_help_text}]" %><br>
-        <input id="name-second-parent-typeahead"
-               name="name[second_parent_typeahead]"
-               class="typeahead form-control requires-rank"
-               data-name-id="<%= @name.id %>"
-               <% if @name.category_for_edit.requires_parent_2? %>
-                 required
-               <% end %>
-               type="text"
-               title="Name parents will be suggested as you type, so please select from the list. Duplicates and names without instances are excluded.  Rank restrictions also apply."
-               tabindex="<%= increment_tab_index %>"
-               value="<%= @name.second_parent.try('full_name') %>"/>
-        <p>
-          <span class="hide-if-rank <%= 'hidden' if @name.name_rank %>">
-            Cannot be set if there is no rank.
-          </span>
-        </p>
-      </div>
-      <%= hidden_field(:name,:second_parent_id, value: @name.second_parent_id) %>
-      <script>setUpNameCultivarSecondParentTypeahead();</script>
-    <% else %>
-      <%# Second parent of a hybrid: powered by stimulus-autocomplete instead
-          of the vendored typeahead.js/Bloodhound widget, exactly as the
-          first Parent field is (see _parent_1.html.erb, which explains the
-          extra_params, live_params and term_delimiter settings repeated
-          here). Label, title, dom ids, param names and the input's classes
-          are all kept as they were, so the GUI is unchanged; only the JS
-          driving the dropdown is different.
+    <%# Second parent: powered by stimulus-autocomplete instead of the
+        vendored typeahead.js/Bloodhound widget, exactly as the first Parent
+        field is (see _parent_1.html.erb, which explains the extra_params,
+        live_params and term_delimiter settings repeated here). Label,
+        title, dom ids, param names and the input's classes are all kept as
+        they were, so the GUI is unchanged; only the JS driving the dropdown
+        is different.
 
-          Server-side resolution (Name::AsResolvedTypeahead::ForParent,
-          called for "second_parent") is untouched.
+        Server-side resolution (Name::AsResolvedTypeahead::ForParent,
+        called for "second_parent") is untouched.
 
-          The suggestions come from the hybrid-scoped endpoint, as the
-          setUpNameSecondParentTypeahead call this replaced was wired to.
+        Which endpoint suggests the second parent depends on the name's
+        category, exactly as the two typeahead.js set-up calls this
+        replaced did: a cultivar hybrid's comes from the cultivar-scoped
+        endpoint (what setUpNameCultivarSecondParentTypeahead wired up),
+        any other hybrid's from the hybrid-scoped one
+        (setUpNameSecondParentTypeahead) - see
+        TypeaheadsHelper#second_parent_suggestions_url_for.
 
-          Unlike the first Parent, picking a second parent has never filled
-          in the Family field, so there is no name-parent-family wrapper. %>
-      <% help_text = @name.category_for_edit.parent_2_help_text %>
-      <div>
-        <%= render "shared/autocomplete_field",
-                   f: f,
-                   id_attribute: :second_parent_id,
-                   input_id: "name-second-parent-typeahead",
-                   input_name: "name[second_parent_typeahead]",
-                   input_value: @name.second_parent.try("full_name"),
-                   label: "Second parent",
-                   label_suffix: (" [#{help_text}]" if help_text.present?),
-                   required: @name.category_for_edit.requires_parent_2?,
-                   title: "Name parents will be suggested as you type, so please select from the list. Duplicates and names without instances are excluded.  Rank restrictions also apply.",
-                   url: name_hybrid_parent_suggestions_path(format: :html),
-                   input_class: "requires-rank",
-                   extra_params: { name_id: @name.id },
-                   live_params: { rank_id: "name_name_rank_id" },
-                   term_delimiter: "|" %>
-        <%# Outside the field's own wrapper div, for the same reason as in
-            _parent_1.html.erb: the suggestion dropdown is positioned at the
-            bottom of that wrapper. %>
-        <p>
-          <span class="hide-if-rank <%= 'hidden' if @name.name_rank %>">
-            Cannot be set if there is no rank.
-          </span>
-        </p>
-      </div>
-    <% end %>
+        Unlike the first Parent, picking a second parent has never filled
+        in the Family field, so there is no name-parent-family wrapper. %>
+    <% help_text = @name.category_for_edit.parent_2_help_text %>
+    <div>
+      <%= render "shared/autocomplete_field",
+                 f: f,
+                 id_attribute: :second_parent_id,
+                 input_id: "name-second-parent-typeahead",
+                 input_name: "name[second_parent_typeahead]",
+                 input_value: @name.second_parent.try("full_name"),
+                 label: "Second parent",
+                 label_suffix: (" [#{help_text}]" if help_text.present?),
+                 required: @name.category_for_edit.requires_parent_2?,
+                 title: "Name parents will be suggested as you type, so please select from the list. Duplicates and names without instances are excluded.  Rank restrictions also apply.",
+                 url: second_parent_suggestions_url_for(@name),
+                 input_class: "requires-rank",
+                 extra_params: { name_id: @name.id },
+                 live_params: { rank_id: "name_name_rank_id" },
+                 term_delimiter: "|" %>
+      <%# Outside the field's own wrapper div, for the same reason as in
+          _parent_1.html.erb: the suggestion dropdown is positioned at the
+          bottom of that wrapper. %>
+      <p>
+        <span class="hide-if-rank <%= 'hidden' if @name.name_rank %>">
+          Cannot be set if there is no rank.
+        </span>
+      </p>
+    </div>
   <% end %>
