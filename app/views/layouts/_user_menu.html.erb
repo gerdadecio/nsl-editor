@@ -49,7 +49,7 @@
       </li>
     <% end %>
 
-    <% if @current_registered_user&.batch_reviewers&.any? %>
+    <% if Rails.configuration.try(:batch_loader_aware) && @current_registered_user&.batch_reviewers&.any? %>
       <li class="dropdown-submenu">
         <a tabindex="-1"
            href="#"
