@@ -90,13 +90,11 @@ pin "typeaheads_for_reference_parent", to: "typeaheads/for_reference/parent.js"
 # (Author, Base, Ex, Ex Base) use stimulus-autocomplete, see
 # app/views/shared/_autocomplete_field.html.erb.
 
-# The name form's first Parent field now uses stimulus-autocomplete
-# (app/views/names/form/_parent_1.html.erb), so cultivar_parent.js and
-# hybrid_parent.js below hold nothing but the Bloodhound sources the
-# Second parent field still shares with it.
-pin "typeaheads_for_name_cultivar_parent", to: "typeaheads/for_name/cultivar_parent.js"
-pin "typeaheads_for_name_cultivar_second_parent", to: "typeaheads/for_name/cultivar_second_parent.js"
-
+# The name form's Parent and Second parent fields all use
+# stimulus-autocomplete now (app/views/names/form/_parent_1.html.erb and
+# _parent_2.html.erb), so the Bloodhound sources and set-up functions they
+# used - cultivar_parent.js, cultivar_second_parent.js, hybrid_parent.js and
+# second_parent.js - have gone.
 pin "typeaheads_for_name_workspace_parent_name", to: "typeaheads/for_name/workspace_parent_name.js"
 
 pin "markdown_it_sub_min", to: "https://cdn.jsdelivr.net/npm/markdown-it-sub/dist/markdown-it-sub.min.js"

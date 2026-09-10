@@ -37,6 +37,25 @@ module TypeaheadsHelper
     end
   end
 
+  # Where the name form's Second parent field fetches its suggestions from,
+  # which also depends on the name's category: a cultivar hybrid takes its
+  # second parent from the cultivar-scoped endpoint, any other hybrid from
+  # the hybrid-scoped one. This is the choice the two typeahead.js set-up
+  # calls the field used to render made
+  # (setUpNameCultivarSecondParentTypeahead and
+  # setUpNameSecondParentTypeahead), each wired to its own Bloodhound
+  # source. Only categories that take a second parent render the field, so
+  # there is no general fallback here.
+  #
+  # Asked for as .html for the same reason as #parent_suggestions_url_for.
+  def second_parent_suggestions_url_for(name)
+    if name.category_for_edit.takes_cultivar_scoped_parent?
+      name_cultivar_parent_suggestions_path(format: :html)
+    else
+      name_hybrid_parent_suggestions_path(format: :html)
+    end
+  end
+
   def highlight_typeahead_match(text, term)
     return ERB::Util.html_escape(text) if term.blank?
 

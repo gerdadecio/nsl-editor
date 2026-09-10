@@ -39,9 +39,23 @@ class ParentSuggestionsUrlTest < ActionView::TestCase
                  parent_suggestions_url_for(names(:a_species))
   end
 
-  # The endpoints answer json to the fields still on typeahead.js, so the
-  # html fragment has to be asked for by extension.
+  # The endpoints answer json unless asked for html by extension - see
+  # AuthorsController#typeahead_on_abbrev for why the Accept header cannot
+  # be relied on - so the helper has to ask for it that way.
   test "asks for the html format by extension" do
     assert parent_suggestions_url_for(names(:a_species)).end_with?(".html")
+  end
+
+  # TypeaheadsHelper#second_parent_suggestions_url_for - where the name
+  # form's Second parent field fetches its suggestions from, which the field
+  # used to decide by rendering one of two typeahead.js set-up calls.
+  test "sends a cultivar hybrid's second parent to the cultivar parent endpoint" do
+    assert_equal "/suggestions/name/cultivar_parent.html",
+                 second_parent_suggestions_url_for(names(:a_cultivar_hybrid))
+  end
+
+  test "sends any other hybrid's second parent to the hybrid parent endpoint" do
+    assert_equal "/suggestions/name/hybrid_parent.html",
+                 second_parent_suggestions_url_for(names(:hybrid_formula))
   end
 end

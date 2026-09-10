@@ -19,8 +19,9 @@
 require "test_helper"
 
 # NamesController#cultivar_parent_suggestions. Answers the shared html
-# fragment to the name form's Parent field, now on stimulus-autocomplete,
-# and json to the Second parent field, still on typeahead.js.
+# fragment to a cultivar's Parent field and a cultivar hybrid's Second
+# parent field, both on stimulus-autocomplete, and still offers json for
+# parity with the other suggestion actions.
 class NameCultivarParentSuggestionsForEditorTest < ActionController::TestCase
   tests NamesController
 

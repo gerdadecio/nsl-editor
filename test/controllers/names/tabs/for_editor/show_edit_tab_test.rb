@@ -336,13 +336,15 @@ class ShowEditTest < ActionController::TestCase
     assert_equal "|", field["data-autocomplete-term-delimiter-value"]
   end
 
-  # Not migrated yet: a cultivar hybrid's Second parent stays on
-  # typeahead.js (setUpNameCultivarSecondParentTypeahead), while its first
-  # Parent is on the shared autocomplete like every other category's.
-  test "should leave a cultivar hybrid's second parent on the legacy typeahead" do
+  # A cultivar hybrid's Second parent is the same shared field as a
+  # hybrid's, on the cultivar-scoped endpoint its first Parent also uses -
+  # what setUpNameCultivarSecondParentTypeahead used to wire up - so no
+  # parent field of any category is left on typeahead.js.
+  test "should render a cultivar hybrid's second parent as a stimulus autocomplete" do
+    cultivar_hybrid = names(:a_cultivar_hybrid)
     @request.headers["Accept"] = "application/javascript"
     get(:show,
-        params: { id: names(:a_cultivar_hybrid).id, tab: "tab_edit" },
+        params: { id: cultivar_hybrid.id, tab: "tab_edit" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: ["edit"] })
@@ -352,10 +354,28 @@ class ShowEditTest < ActionController::TestCase
                   "'/suggestions/name/cultivar_parent.html']" \
                   " input#name-parent-typeahead",
                   true
-    assert_select "input#name-second-parent-typeahead.typeahead", true
-    assert_select "div.autocomplete input#name-second-parent-typeahead", false
-    assert_select "input#name_second_parent_id[data-autocomplete-target]",
-                  false
-    assert_match(/setUpNameCultivarSecondParentTypeahead\(\)/, @response.body)
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+                  "[data-autocomplete-url-value=" \
+                  "'/suggestions/name/cultivar_parent.html']" \
+                  " input#name-second-parent-typeahead" \
+                  "[data-autocomplete-target='input']" \
+                  "[value='#{cultivar_hybrid.second_parent.full_name}']",
+                  true
+    assert_select "div.autocomplete input#name_second_parent_id" \
+                  "[data-autocomplete-target='hidden']" \
+                  "[value='#{cultivar_hybrid.second_parent_id}']",
+                  true
+    assert_select "div.autocomplete label[for='name-second-parent-typeahead']",
+                  /Second parent/
+    assert_no_match(/setUpNameCultivarSecondParentTypeahead\(\)/,
+                    @response.body)
+    field = css_select("div.autocomplete").find do |div|
+      div.css("input#name-second-parent-typeahead").any?
+    end
+    assert_equal({ "rank_id" => "name_name_rank_id" },
+                 JSON.parse(field["data-autocomplete-live-params-value"]))
+    assert_equal({ "name_id" => cultivar_hybrid.id },
+                 JSON.parse(field["data-autocomplete-extra-params-value"]))
+    assert_equal "|", field["data-autocomplete-term-delimiter-value"]
   end
 end

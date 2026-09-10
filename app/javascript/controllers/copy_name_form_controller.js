@@ -15,20 +15,16 @@ export default class extends Controller {
     connector: String
   }
 
-  // Namespaced so disconnect() can unbind only our handlers.
-  static PARENT_EVENTS =
-    "typeahead:selected.copyNamePreview typeahead:autocompleted.copyNamePreview " +
-    "typeahead:change.copyNamePreview input.copyNamePreview change.copyNamePreview"
+  // Namespaced so disconnect() can unbind only our handlers. These cover
+  // the fields clearing their hidden id when the user types again.
+  static PARENT_EVENTS = "input.copyNamePreview change.copyNamePreview"
 
-  // The first parent, and a hybrid's second parent, are stimulus-autocomplete
-  // fields (see app/views/names/form/_parent_1.html.erb and
-  // _parent_2.html.erb), which announce a pick with their own bubbling event
-  // instead of the typeahead.js ones above; the input event above still
-  // covers them clearing their hidden id when the user types again. jQuery
-  // reads the "." in the name as a namespace separator, so this one is
-  // bound natively - on this element, the form, which the event reaches on
-  // its way up from either field. A cultivar hybrid's second parent is
-  // still on typeahead.js and so still needs the events above.
+  // Both parents are stimulus-autocomplete fields (see
+  // app/views/names/form/_parent_1.html.erb and _parent_2.html.erb), which
+  // announce a pick with their own bubbling event. jQuery reads the "." in
+  // the name as a namespace separator, so this one is bound natively - on
+  // this element, the form, which the event reaches on its way up from
+  // either field.
   static AUTOCOMPLETE_EVENT = "autocomplete.change"
 
   connect() {

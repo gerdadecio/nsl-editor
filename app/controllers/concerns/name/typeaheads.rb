@@ -51,11 +51,11 @@ module Name::Typeaheads
 
   # Suggests the parent of a cultivar name.
   #
-  # Answers json to a cultivar hybrid's Second parent field, still on
-  # typeahead.js, and html to the Parent field - see
-  # #name_parent_suggestions. No family is sent with a cultivar's
-  # suggestions, so picking one leaves the Family field alone, as it always
-  # has.
+  # Both a cultivar's Parent field and a cultivar hybrid's Second parent
+  # field are on stimulus-autocomplete and ask for html - see
+  # #name_parent_suggestions; json is kept for parity with the other
+  # suggestion actions. No family is sent with a cultivar's suggestions, so
+  # picking one leaves the Family field alone, as it always has.
   def cultivar_parent_suggestions
     suggestions = Name::AsTypeahead \
       .cultivar_parent_suggestions(params[:term],
@@ -66,7 +66,7 @@ module Name::Typeaheads
 
   # Suggests the parent of a hybrid name. Both the Parent and Second parent
   # fields of a hybrid are on stimulus-autocomplete and ask for html; json
-  # is kept for parity with the cultivar endpoint above.
+  # is kept for parity with the other suggestion actions.
   def hybrid_parent_suggestions
     suggestions = Name::AsTypeahead \
       .hybrid_parent_suggestions(params[:term],
