@@ -1,4 +1,8 @@
 - :date: 10-September-2026
+  :jira_id: '5921'
+  :description: |-
+    Update the admin page to display a dynamic examples of the service endpoints
+- :date: 10-September-2026
   :jira_id: '5917'
   :description: |-
     Typeahead upgrade: Upgrade the cultivar hybrid parent typeahead fields in the name form to use stimulus autocomplete
