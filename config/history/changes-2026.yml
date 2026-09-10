@@ -1,4 +1,8 @@
 - :date: 10-September-2026
+  :jira_id: '5917'
+  :description: |-
+    Typeahead upgrade: Upgrade the cultivar hybrid parent typeahead fields in the name form to use stimulus autocomplete
+- :date: 10-September-2026
   :jira_id: '5919'
   :description: |-
     Admin page update to display latest config or env vars
