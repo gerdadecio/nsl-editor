@@ -1,6 +1,10 @@
 - :date: 11-September-2026
   :jira_id: '5921'
   :description: |-
+    Fixup the sample service URL for the reference strings service on the admin page
+- :date: 11-September-2026
+  :jira_id: '5921'
+  :description: |-
     Update the admin page to display a dynamic examples of the service endpoints
 - :date: 10-September-2026
   :jira_id: '5917'
