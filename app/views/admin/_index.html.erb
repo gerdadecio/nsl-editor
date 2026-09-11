@@ -135,19 +135,19 @@
 
     <tr><td colspan="2"><strong>Services that do not change data</strong></td></tr>
 
-    <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/apc.json" %>
+    <% service_url = admin_service_url("name", "apc.json") %>
     <tr><td class="width-40-percent min-width-10em" >In the accepted taxonomy?</td><td> <%= link_to(service_url, service_url, title: 'Link to the "in APC?" client-side service.') %> </td></tr>
 
-    <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/apni.json" %>
+    <% service_url = admin_service_url("name", "apni.json") %>
     <tr><td class="width-40-percent min-width-10em" >In the nomenclatural set? </td><td> <%= link_to(service_url, service_url, title: 'Link to the "in APNI?" client-side service.') %> </td></tr>
 
-    <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/family.json" %>
-    <tr><td>APNI Name Information</td><td> <%= link_to(service_url, service_url, title: 'Link to an APNI name information service.') %> </td></tr>
+    <% service_url = admin_service_url("name", "family.json") %>
+    <tr><td><%= admin_services_product.upcase %> Name Information</td><td> <%= link_to(service_url, service_url, title: "Link to a #{admin_services_product} name information service.") %> </td></tr>
 
-    <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/name-strings.json" %>
+    <% service_url = admin_service_url("name", "name-strings.json") %>
     <tr><td>Name strings</td><td> <%= link_to(service_url, service_url, title: 'Link to the name strings client-side service.') %> </td></tr>
 
-    <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/reference/apni/17525/api/citation-strings.json" %>
+    <% service_url = admin_service_url("reference", "citation-strings.json") %>
     <tr><td>Reference strings</td><td> <%= link_to(service_url, service_url, title: 'Link to the reference strings client side service.') %> </td></tr>
     </table>
 
