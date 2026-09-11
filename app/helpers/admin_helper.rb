@@ -34,6 +34,10 @@ module AdminHelper
     Integer(Name.minimum(:id) || 0)
   end
 
+  def admin_sample_reference_id
+    Integer(Reference.minimum(:id) || 0)
+  end
+
   # Build a sample client-side services URL for the admin page.
   #
   #   admin_service_url("name", "apc.json")
@@ -41,5 +45,10 @@ module AdminHelper
   def admin_service_url(resource, endpoint)
     root = Rails.configuration.try(:services_clientside_root_url).to_s
     "#{root}rest/#{resource}/#{admin_services_product}/#{admin_sample_name_id}/api/#{endpoint}"
+  end
+
+  def admin_service_reference_url(resource, endpoint)
+    root = Rails.configuration.try(:services_clientside_root_url).to_s
+    "#{root}rest/#{resource}/#{admin_services_product}/#{admin_sample_reference_id}/api/#{endpoint}"
   end
 end
