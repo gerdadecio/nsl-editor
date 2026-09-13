@@ -61,7 +61,6 @@ import "typeaheads_for_author_duplicate_of";
 
 import "typeaheads_for_instance_for_name_showing_reference_update";
 import "typeaheads_for_instance_target_name_for_copy_instances";
-import "typeaheads_for_instance_name";
 import "typeaheads_for_instance_name_for_unpub_citation";
 import "typeaheads_for_instance_reference";
 import "typeaheads_for_instance_reference_profile_v2";

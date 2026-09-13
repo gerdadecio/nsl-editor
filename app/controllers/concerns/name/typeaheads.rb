@@ -99,10 +99,26 @@ module Name::Typeaheads
     end
   end
 
-  # Used on references - new instance tab
+  # Used on references - new instance tab, for the Name field of the
+  # instance form (app/views/instances/_form_create_from_reference.html.erb).
+  #
+  # Two response formats over the one query, as for #duplicate_suggestions
+  # above:
+  #   json - what the field asked for while it was on typeahead.js; kept
+  #          for parity with the other suggestion actions, nothing in this
+  #          app's own views still asks for it.
+  #   html - the fragment of <li role="option"> elements stimulus-autocomplete
+  #          expects, which the Name field asks for by extension.
   def typeahead_on_full_name
     typeahead = Name::AsTypeahead::OnFullName.new(params)
-    render json: typeahead.suggestions
+    respond_to do |format|
+      format.json { render json: typeahead.suggestions }
+      format.html do
+        render partial: "shared/autocomplete_suggestions",
+               locals: { suggestions: typeahead.suggestions,
+                         term: params[:term] }
+      end
+    end
   end
 
   private

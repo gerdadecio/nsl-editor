@@ -63,7 +63,11 @@ pin "typeaheads_for_author_duplicate_of", to: "typeaheads/for_author/duplicate_o
 
 pin "typeaheads_for_instance_for_name_showing_reference_update",
     to: "typeaheads/for_instance/for_name_showing_reference_update.js"
-pin "typeaheads_for_instance_name", to: "typeaheads/for_instance/name.js"
+# The instance form's Name field (references - new instance tab) uses
+# stimulus-autocomplete - see app/views/shared/_autocomplete_field.html.erb -
+# so typeaheads/for_instance/name.js has gone. The nameByFullName Bloodhound
+# source it also set up is still defined, for its own use, by
+# target_name_for_copy_instances.js below.
 pin "typeaheads_for_instance_target_name_for_copy_instances", to: "typeaheads/for_instance/target_name_for_copy_instances.js"
 pin "typeaheads_for_instance_name_for_unpub_citation", to: "typeaheads/for_instance/name_for_unpub_citation.js"
 pin "typeaheads_for_instance_reference", to: "typeaheads/for_instance/reference.js"
