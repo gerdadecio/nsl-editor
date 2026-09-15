@@ -167,11 +167,12 @@
 	
   <div class="form-group">
     <label for="reference_publication_date">Publication date text</label>
-    <%= f.text_field :publication_date, class: 'form-control hide-for-part', title: "Enter publication date", tabindex: increment_tab_index %>
+    <%= f.text_field :publication_date, class: 'form-control hide-for-part', maxlength: 50,
+                     title: "Enter publication date", tabindex: increment_tab_index %>
     <p class='show-for-part'>
         Do not enter publication date text for a Part - the parent's publication date text takes precedence
     </p>
-    <p class='hide-for-part'>e.g. 3-5 Oct. 1776 </p>
+    <p class='hide-for-part'>maximum length: 50; example: 3-5 Oct. 1776 </p>
   </div>
 
   <div class="form-group">

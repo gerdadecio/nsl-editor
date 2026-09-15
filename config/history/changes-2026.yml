@@ -1,4 +1,8 @@
 - :date: 15-September-2026
+  :jira_id: '5923'
+  :description: |-
+    Prevent users entering more than 50 chars in the <code>reference.publication_date</code> field
+- :date: 15-September-2026
   :jira_id: '5550'
   :description: |-
     Offer the name submenu in the top menu for users with name_index_editor role AND product with is_name_index_editor: true
