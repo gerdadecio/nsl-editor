@@ -327,6 +327,7 @@ class Ability
 
   def name_index_editor(user)
     can :manage,              Author
+    can :manage,              Name
     can [:create, :read, :destroy], Reference
     can :update, Reference
     can [:create, :edit, :update, :destroy], Instance

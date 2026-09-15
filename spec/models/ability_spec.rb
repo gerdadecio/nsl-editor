@@ -1204,6 +1204,14 @@ RSpec.describe Ability, type: :model do
         expect(subject.can?(:manage, Author)).to eq true
       end
 
+      it "allows managing Name" do
+        expect(subject.can?(:manage, Name)).to eq true
+        expect(subject.can?(:create, Name)).to eq true
+        expect(subject.can?(:read, Name)).to eq true
+        expect(subject.can?(:update, Name)).to eq true
+        expect(subject.can?(:destroy, Name)).to eq true
+      end
+
       it "allows creating, reading, and destroying Reference" do
         expect(subject.can?(:create, Reference)).to eq true
         expect(subject.can?(:read, Reference)).to eq true
@@ -1232,6 +1240,10 @@ RSpec.describe Ability, type: :model do
         expect(subject.can?(:manage, Author)).to eq true
       end
 
+      it 'can still manage Name' do
+        expect(subject.can?(:manage, Name)).to eq true
+      end
+
       it 'can still update Reference' do
         reference = create(:reference)
         expect(subject.can?(:update, reference)).to eq true
@@ -1245,6 +1257,12 @@ RSpec.describe Ability, type: :model do
 
       it 'cannot manage Author' do
         expect(subject.can?(:manage, Author)).to eq false
+      end
+
+      it 'cannot manage Name' do
+        expect(subject.can?(:manage, Name)).to eq false
+        expect(subject.can?(:update, Name)).to eq false
+        expect(subject.can?(:destroy, Name)).to eq false
       end
 
       it 'cannot update Reference' do
