@@ -2,7 +2,7 @@
 ---
 This is the names and taxonomy Editor for the NSL project, widely known as the "NSL Editor".
 
-This document was last updated in March 2026.
+This document was last updated in September 2026.
 
 ## Background
 
@@ -10,9 +10,9 @@ Greg Whitbread migrated an early Australian Plant Names Index (APNI) from a Pick
 
 This was called the APNI System and was used for Australian Plant Nomenclature and Taxonomy by the joint ANBG/CSIRO project.
 
-In 2010 (or thereabouts) and project started which was founded on the success of Greg's still-running APNI System, but aimed to refine the APNI database design and broaden its application beyond Plants to other Nomenclatural Codes.  The new system was the National Species List - NSL in short.
+In 2010 (or thereabouts) a project started which was founded on the success of Greg's still-running APNI System, but aimed to refine the APNI database design and broaden its application beyond Plants to other groups of names.  The new system was the National Species List - NSL in short.
 
-Greg Whitbread was the intellectual leader for the NSL project and had some hand in choosing the team and the technology for the project.  He chose Ruby on Rails (RoR) as the technology and Postgresql as the database. In 2010 RoR was a relatively new but popular framework for building database-backed web apps, and Postgresql was emerging as a strong open source contender in the RDBMS space previously dominated by commercial products like Oracle.
+Greg Whitbread was the intellectual leader for the NSL project and had some hand in choosing the team and the technology for the project.  He chose Ruby on Rails (RoR) as the technology and Postgresql as the database. In 2010 RoR was a relatively new but popular framework for building database-backed web apps, and Postgresql was emerging as a strong open source RDBMS contender, starting to gain credibility in an area previously dominated by commercial products like Oracle.
 
 After some setbacks and staff changes, several decisions were made in or around 2013 and 2014, one of which was to use separate databases for each body of names - so, for instance, APNI data was migrated to a separate NSL database, and the plan was for other data (e.g. Moss, Lichen, Algae, Fungi) each to be in their own separate databases, while sharing a common NSL schema.
 
@@ -33,6 +33,8 @@ The Editor was upgraded to Rails 7 in 2023, then to Rails 8 in 2025.
 The original Rails 4.x app repository is now archived on Github.  One unfortunate side-effect of starting a new repo for the Rails 6 upgrade was that contributions by others ended up in my (Greg Clarke's) name in the version 6.x app.  You also lose the history and context of the changes.  Neither of those results was my intention at a very frustrating time when I started with a clean Rails 6 application and copied in the controller, model, and view files, etc.
 
 While most of the app going back to its origins in 2012 is down to me (GC), most of the "tree" ops were coded by others, especially Peter McNeil -- look at the archived v4.x app to find out more.
+
+In 2026 I (GC) merged the original repo into the current repo, so you can push back to see the full history of changes.  In the last few years Gerda Decio has joined us as a contractor and is a major contributor to the Editor.
 
 
 ## Some definitions and technical notes
@@ -254,157 +256,29 @@ There was an original (old) search engine - you can see that in the models - und
 
 During the first decade of the Editor I created a generalized search engine, the "new" engine, and entities enrolled in that search engine have just a field_abbrev.rb and a field_rule.rb file.
 
-Below are the files of the search engine, containing old and new - the new engine is concentrated under on_model:
+The diagram below gives a high-level view of the search code.
 
-√  Thu 26 9:09 ruby 3.4.8  ~/anbg/rails/nedruby/app/models
-% tree search
-search
-├── author
-│   ├── field_abbrev.rb
-│   └── field_rule.rb
-├── base.rb
-├── bulk_processing_log
-│   ├── field_abbrev.rb
-│   └── field_rule.rb
-├── empty_executed_query.rb
-├── empty_parsed_request.rb
-├── empty.rb
-├── error.rb
-├── help
-│   └── page_mappings.rb
-├── loader
-│   ├── batch
-│   │   ├── field_abbrev.rb
-│   │   ├── field_rule.rb
-│   │   ├── review
-│   │   │   ├── field_abbrev.rb
-│   │   │   ├── field_rule.rb
-│   │   │   └── period
-│   │   │       ├── field_abbrev.rb
-│   │   │       └── field_rule.rb
-│   │   ├── reviewer
-│   │   │   ├── field_abbrev.rb
-│   │   │   └── field_rule.rb
-│   │   └── stack
-│   │       ├── field_abbrev.rb
-│   │       └── field_rule.rb
-│   └── name
-│       ├── field_abbrev.rb
-│       ├── field_rule.rb
-│       └── rewrite_results_showing_extras.rb
-├── next_criterion.rb
-├── on_instance
-│   ├── base.rb
-│   ├── count_query.rb
-│   ├── field_abbrev.rb
-│   ├── field_rule.rb
-│   ├── list_query.rb
-│   ├── predicate.rb
-│   └── where_clauses.rb
-├── on_model
-│   ├── base.rb
-│   ├── count_query.rb
-│   ├── list_query.rb
-│   ├── predicate.rb
-│   └── where_clauses.rb
-├── on_name
-│   ├── base.rb
-│   ├── count_query.rb
-│   ├── field_abbrev.rb
-│   ├── field_rule.rb
-│   ├── list_query.rb
-│   ├── predicate.rb
-│   ├── where_clauses.rb
-│   ├── with_instances_to_copy.rb
-│   └── with_instances.rb
-├── org
-│   ├── field_abbrev.rb
-│   └── field_rule.rb
-├── parsed_defined_query.rb
-├── parsed_request.rb
-├── reference
-│   ├── defined_query
-│   │   ├── base.rb
-│   │   ├── count.rb
-│   │   ├── list.rb
-│   │   ├── predicate.rb
-│   │   └── where_clauses.rb
-│   ├── defined_query.rb
-│   ├── field_abbrev.rb
-│   └── field_rule.rb
-├── target.rb
-└── user
-    ├── field_abbrev.rb
-    └── field_rule.rb
+```mermaid
+flowchart TD
+    SR["Search Request<br/>search_controller.rb #search,<br/>#run_local_search"]
+    SM["Search Model<br/>@search = ::Search::Base.new(params)"]
+    Old["Old Search Engine"]
+    New["New Search Engine<br/>Search::OnModel::Base"]
+    PR["Parse Request<br/>app/models/search/parsed_request.rb"]
+    CD["Convert Directives to SQL<br/>e.g. app/models/search/loader/name/field_rule.rb"]
+    EX["Execute SQL<br/>app/models/search/base.rb #run_query"]
 
+    SR --> SM
+    SM -->|Search::Base#run_query| Old
+    SM -->|Search::Base#run_query| New
+    New --> PR --> CD --> EX
 
-
-
-
-                               Query in the Editor
-
-
-
-
-
-                     ┌─────────────────┐
-                     │                 │                     app/controllers/search_controller.rb #search
-                     │ Search Request  │
-                     │                 │                     app/controllers/search_controller.rb #run_local_search
-                     └────────┬────────┘
-                              │
-                     ┌────────▼────────┐
-                     │                 │
-                     │  Search Model   │───┐                 @search = ::Search::Base.new(params)
-                     │                 │   │
-                     └────────┬────────┘   │
-                   ┌──────────┘            │                 Search::Base#run_query
-                   ▼                       ▼
-          ┌─────────────────┐     ┌─────────────────┐
-          │      Old        │     │      New        │
-          │  Search Engine  │     │  Search Engine  │        Search::OnModel::Base
-          │                 │     │                 │
-          └─────────────────┘     └─────────────────┘
-                                           │
-                                           │
-                                           ▼
-                                  ┌─────────────────┐
-                                  │                 │
-                                  │  Parse Request  │        app/models/search/parsed_request.rb
-                                  │                 │
-                                  └─────────────────┘
-                                           │
-                                           │
-                                           ▼
-                                  ┌─────────────────┐
-                                  │    Convert      │        e.g.
-                                  │   Directives    │        app/models/search/loader/name/field_rule.rb
-                                  │     to SQL      │
-                                  └─────────────────┘
-                                           │
-                                           │
-                                           ▼
-                                  ┌─────────────────┐
-                                  │                 │
-                                  │   Execute SQL   │       app/models/search/base.rb # run_query
-                                  │                 │
-                                  └─────────────────┘
-                                           │
-                                           ▼
-                            ┌────────────────────────────┐
-                            │       Display Results      │
-                            │ ┌────────────────────────┐ │
-                            │ │                        │ │
-                            │ │   Summarise Results    │ │ app/views/search/search_result_summary
-                            │ │                        │ │
-                            │ └────────────────────────┘ │
-                            │ ┌────────────────────────┐ │
-                            │ │                        │ │
-                            │ │  Apply record-type to  │ │ app/views/application/search_results/standard/_results.html.erb
-                            │ │       display          │ │
-                            │ └────────────────────────┘ │
-                            └────────────────────────────┘
-
+    subgraph disp["Display Results"]
+        SUM["Summarise Results<br/>app/views/search/search_result_summary"]
+        APP["Apply record-type to display<br/>app/views/application/search_results/standard/_results.html.erb"]
+    end
+    EX --> disp
+```
 
 Most Search has been migrated to the new search engine, with these known exceptions:
 
@@ -414,3 +288,5 @@ Name - not migrated to the new search engine
 Activity Search - has it's own little engine  (Note: this was originally called "audit" search and you'll find it under Audit in the source code.)
 Batch tab Search - a small custom engine
 
+
+For a deeper look at how a query string becomes SQL - the parsing pipeline, the generic `OnModel` engine, the YAML-driven field rules, and defined queries - see [doco/search-engine.md](doco/search-engine.md).
