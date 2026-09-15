@@ -46,6 +46,9 @@ module Reference::Validations
     validate :validate_fields_for_part
     validate :validate_uniqueness
     validate :validate_iso_publication_date
+    validates_length_of :publication_date,
+                        maximum: 50,
+                        message: "text cannot be longer than 50 characters"
     validates_length_of :issn,
                         maximum: 16,
                         message: "cannot be longer than 16 characters"
