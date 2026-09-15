@@ -1,4 +1,8 @@
 - :date: 15-September-2026
+  :jira_id: '5550'
+  :description: |-
+    Offer the name submenu in the top menu for users with name_index_editor role AND product with is_name_index_editor: true
+- :date: 15-September-2026
   :jira_id: '5915'
   :description: |-
     Typeahead upgrade: Upgrade the instance name typeahead fields in the instance form to use stimulus autocomplete
