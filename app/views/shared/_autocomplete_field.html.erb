@@ -17,11 +17,16 @@
       input_name   - param name of the visible input, e.g.
                      "name[author_typeahead]"
       input_value  - what to show in the visible input on page load
-      label        - the field's label text
       title        - the input's title/tooltip text
       url          - endpoint rendering shared/_autocomplete_suggestions
 
     Optional locals:
+      label           - the field's label text; leave it out (or nil) for
+                        a field with no label of its own, like the instance
+                        form's Name field, which sits inside a sentence
+                        ("The name ... appears in ...") - no <label> or
+                        line break is rendered then
+      placeholder     - the input's placeholder text
       wrapper_class   - extra class(es) on the wrapper div
       input_class     - extra class(es) on the visible input, e.g.
                         "requires-rank"
@@ -47,6 +52,8 @@
     the target, and is rendered through the form builder so it keeps the
     conventional "name_author_id"-style dom id that other JS and the tests
     rely on. %>
+<% label = local_assigns.fetch(:label, nil) %>
+<% placeholder = local_assigns.fetch(:placeholder, nil) %>
 <% wrapper_class = local_assigns.fetch(:wrapper_class, nil) %>
 <% input_class = local_assigns.fetch(:input_class, nil) %>
 <% required = local_assigns.fetch(:required, false) %>
@@ -67,12 +74,15 @@
      data-autocomplete-term-delimiter-value="<%= term_delimiter %>"
      data-autocomplete-dependents-field-value="<%= dependents_field %>"
      role="combobox">
+  <% if label.present? %>
   <label for="<%= input_id %>"><%= label %><% if required %><span class="red">*</span><% end %></label><%= label_suffix %><br>
+  <% end %>
   <input id="<%= input_id %>"
          name="<%= input_name %>"
          class="typeahead form-control <%= input_class %>"
          type="text"
          title="<%= title %>"
+         <% if placeholder.present? %>placeholder="<%= placeholder %>"<% end %>
          tabindex="<%= increment_tab_index %>"
          <%= "required" if required %>
          data-autocomplete-target="input"

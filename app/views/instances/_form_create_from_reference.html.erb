@@ -12,18 +12,45 @@
         </div>
     <% end %>
     The name
+    <%# Name: powered by stimulus-autocomplete instead of the vendored
+        typeahead.js/Bloodhound widget (the setUpInstanceName call and its
+        nameByFullName source in typeaheads/for_instance/name.js, both now
+        gone), following the name form's author and parent fields. Dom id,
+        classes, title, placeholder and tab order are unchanged, so the GUI
+        is the same and the JS that keys off the id carries on untouched:
+        the focusOnField call at the bottom of this form, the
+        .give-me-focus hook in search_result_focus.js, and the
+        render_create_error calls in InstancesController.
+
+        No label local: this field sits inside the "The name ... appears in
+        ..." sentence the form is written as, and never had a <label>.
+
+        The hidden name_id field the old markup rendered further down the
+        form is now rendered by the shared partial, inside the wrapper,
+        where the library expects it - same dom id and param name.
+
+        input_name is only there because the partial needs one; this form's
+        create action reads the picked name_id and ignores the typed text,
+        as it did when the old input had no name attribute at all. The
+        same param name is what the unpublished-citation form's Name field
+        already submits.
+
+        term_delimiter keeps a pick from poisoning the next search: the
+        suggestions read "<full name> - <status>", and picking one puts all
+        of that into the input. %>
     <div class="typeahead-container">
-      <section class='block width-100-percent'>
-        <input id="instance-name-typeahead"
-               class="typeahead form-control width-100-percent give-me-focus" 
-               tabindex="<%= increment_tab_index %>"
-               type="text" 
-               title="Select a name from the list of suggestions that appears as you type."
-               placeholder="Name"
-               value=""/>
-      </section>
+      <%= render "shared/autocomplete_field",
+                 f: f,
+                 id_attribute: :name_id,
+                 input_id: "instance-name-typeahead",
+                 input_name: "instance[name_typeahead]",
+                 input_value: "",
+                 input_class: "width-100-percent give-me-focus",
+                 placeholder: "Name",
+                 title: "Select a name from the list of suggestions that appears as you type.",
+                 url: names_typeahead_on_full_name_path(format: :html),
+                 term_delimiter: " - " %>
     </div>
-    <script> setUpInstanceName(); </script>
     appears in
     <%= show_field_as_linked_lookup('',@reference,'citation', search_path(query_string: %Q(id:#{@reference.id}),query_target: 'reference'),'reference') %>
     as an instance type<span class="red">*</span>
@@ -44,7 +71,6 @@
     <%= f.text_field :bhl_url, class: "form-control", title: "Biodiversity Heritage Library link address", tabindex: increment_tab_index %>
     <%= render partial: "instances/widgets/as_a_draft", locals: {f: f} %>
     <br>
-    <%= f.hidden_field :name_id %>
     <%= f.hidden_field :reference_id, value: @reference.id %>
     <br>
     <%= f.submit id: "save-new-instance-btn", class: 'btn-primary', title: "Create the new instance", tabindex: increment_tab_index %>
