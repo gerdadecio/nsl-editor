@@ -1,4 +1,8 @@
 - :date: 15-September-2026
+  :jira_id: '5924'
+  :description: |-
+    Setup a github dependabot.yml config
+- :date: 15-September-2026
   :jira_id: '5923'
   :description: |-
     Prevent users entering more than 50 chars in the <code>reference.publication_date</code> field
