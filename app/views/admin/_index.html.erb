@@ -18,6 +18,7 @@
     <tr><td>Ruby version</td><td> <%= RUBY_VERSION %> </td></tr>
 
     <tr><td>Rails</td><td> <%= Rails::VERSION::STRING %> </td></tr>
+    <tr><td>Bundler</td><td> <%= Bundler::VERSION %><% if (simulated = Bundler.settings[:simulate_version]) %> (simulating Bundler <%= simulated %>)<% end %> </td></tr>
 
     <tr><td>Schema version</td><td> <%= DbVersion.current %> </td></tr>
     <tr><td>Application version</td><td> <%= Rails.configuration.try('version') %> </td></tr>
