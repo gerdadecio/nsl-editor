@@ -18,21 +18,19 @@
 #
 require "test_helper"
 
-# Regression test for a real production bug: an instance can be linked to a
-# tree_element that is itself not attached to any tree_version (i.e. there
-# is no tree_version_element pointing at it). The database foreign key from
-# tree_element to instance still blocks deletion, but the tree_join_v view
-# -- which is built by joining tree -> tree_version -> tree_version_element
-# -> tree_element -- cannot see this tree_element, so any check based on
-# tree_join_v alone misses it.
+# Regression test for a real (rare) data state: an instance can be linked to
+# a tree_element that is itself not attached to any tree_version (i.e. there
+# is no tree_version_element pointing at it). The tree_join_v view - built by
+# joining tree -> tree_version -> tree_version_element -> tree_element -
+# cannot see such a tree_element.
 #
-# Instance#allow_delete? / #in_any_tree? query tree_element directly and so
-# already caught this ("You cannot delete this instance" was shown), but
-# the reasons listed in
-# app/views/instances/widgets/_no_delete_reasons.html.erb used to rely only
-# on tree_join_v and so showed no reason at all. That view now also checks
-# @instance.tree_elements directly.
-class CannotDeleteIfTreeElementNotAttachedToATreeVersionTest < ActiveSupport::TestCase
+# Instance#in_any_tree? (and so #allow_delete?) is backed by tree_join_v, so
+# a detached tree_element is not counted as tree usage and does not, on its
+# own, stop the editor from offering a delete. The database foreign key from
+# tree_element to instance still exists, which is why
+# app/views/instances/widgets/_no_delete_reasons.html.erb checks
+# @instance.tree_elements directly and reports the DETACHED record.
+class DetachedTreeElementDoesNotBlockDeleteTest < ActiveSupport::TestCase
   test "the fixture tree_element really has no tree_version_element" do
     tree_element = tree_elements(:tree_element_not_attached_to_a_tree_version)
 
@@ -53,11 +51,23 @@ class CannotDeleteIfTreeElementNotAttachedToATreeVersionTest < ActiveSupport::Te
     assert_includes instance.tree_elements, tree_elements(:tree_element_not_attached_to_a_tree_version)
   end
 
-  test "allow_delete? is false because in_any_tree? finds the tree_element directly" do
+  test "in_any_tree? is false because the tree_element is not in tree_join_v" do
     instance = instances(:no_source_system)
 
-    assert instance.in_any_tree?,
-           "in_any_tree? should find the tree_element even though it is not in tree_join_v"
-    assert_not instance.allow_delete?
+    assert_not instance.in_any_tree?,
+               "in_any_tree? should not count a tree_element that is not in tree_join_v"
+  end
+
+  test "in_any_tree? is true for a tree_element that is attached to a tree version" do
+    instance = instances(:instance_for_name_in_taxonomy)
+
+    assert instance.in_any_tree?
+  end
+
+  test "allow_delete? is not blocked by the detached tree_element" do
+    instance = instances(:no_source_system)
+
+    assert instance.allow_delete?,
+           "a detached tree_element alone should not stop a delete being offered"
   end
 end

@@ -1,3 +1,7 @@
+- :date: 17-September-2026
+  :jira_id: '5906'
+  :description: |-
+    Remove the delay message when placing, replacing, or removing an instance in a tree and use the view table to check for instance tree placement instead
 - :date: 15-September-2026
   :jira_id: '5924'
   :description: |-

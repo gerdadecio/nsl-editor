@@ -21,8 +21,9 @@ require "test_helper"
 # app/views/instances/widgets/_no_delete_reasons.html.erb decides, per
 # tree_element, whether it is genuinely "detached" (no tree_version_element
 # at all) rather than inferring detachment from the tree usage reported by
-# TreesHelper#tree_usage_messages. See Instance#allow_delete? / #in_any_tree?
-# for why any tree_element at all (attached or not) blocks deletion.
+# TreesHelper#tree_usage_messages. Instance#in_any_tree? is backed by
+# tree_join_v and so cannot see a detached tree_element at all, which is why
+# this partial checks @instance.tree_elements directly.
 class NoDeleteReasonsPartialTest < ActionView::TestCase
   def render_reasons_for(instance)
     @instance = instance

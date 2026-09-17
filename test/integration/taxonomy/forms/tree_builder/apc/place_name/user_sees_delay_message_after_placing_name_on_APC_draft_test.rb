@@ -87,8 +87,5 @@ class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest <
     assert_template "place_name"
     assert_includes @response.body, "Placed on the draft",
                     'Placing should report what the services said'
-    # The services queue the change, so the user is told it may lag.
-    assert_includes @response.body, TreesHelper::TREE_CHANGE_DELAY_MESSAGE,
-                    'Placing should warn that the change may be delayed'
   end
 end

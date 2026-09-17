@@ -13,9 +13,5 @@ $('#movement-message-container')
     .append(markdown("<%= escape_javascript(sanitize(@html_out)) %>"));
 <% end %>
 
-<%# NOTES: The change is queued in the services, so tell the user it may lag
-    and let them refresh when they are ready, rather than reloading the tab
-    onto data that has not caught up yet. %>
 $('#movement-message-container')
-    .append("<%= escape_javascript(tree_change_delay_notice) %>")
     .append('<button onclick="refreshTreeTab(event);">refresh</button>');
