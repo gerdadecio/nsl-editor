@@ -20,10 +20,12 @@ red_gum_in_taxonomy:
 # Deliberately has no corresponding tree_version_elements row, i.e. it is
 # not attached to any tree_version. This mirrors a real (rare) data state
 # where a tree_element exists but nothing in tree_version_element points to
-# it, so it is invisible to tree_join_v-based checks even though the
-# instance -> tree_element foreign key still exists and blocks deletion.
-# See Instance#allow_delete? / #in_any_tree? and
-# app/views/instances/widgets/_no_delete_reasons.html.erb.
+# it, so it is invisible to tree_join_v-based checks such as
+# Instance#in_any_tree? even though the instance -> tree_element foreign key
+# still exists. See test/models/instance/delete/
+# detached_tree_element_does_not_block_delete_test.rb and
+# app/views/instances/widgets/_no_delete_reasons.html.erb, which checks
+# tree_elements directly so the record is still reported.
 tree_element_not_attached_to_a_tree_version:
   display_html: <data><scientific><element>Angophora costata</element></scientific></data>
   excluded: f

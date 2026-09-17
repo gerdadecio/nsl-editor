@@ -252,7 +252,7 @@ RSpec.describe Instance::Treeable do
     end
 
     context 'when instance is not in any trees at all' do
-      let(:tree) { create(:tree) }
+      let(:tree) { create(:tree, is_read_only: false) }
 
       it 'returns false' do
         expect(instance.in_any_local_tree_ids?([tree.id])).to eq false
@@ -276,6 +276,95 @@ RSpec.describe Instance::Treeable do
 
       it 'returns false because instance is only in old version' do
         expect(instance.in_any_local_tree_ids?([tree.id])).to eq false
+      end
+    end
+  end
+
+  describe '#in_any_tree?' do
+    # NOTES: Backed by the tree_join_v view (tree -> tree_version ->
+    # tree_version_element -> tree_element), so an instance counts as being
+    # in a tree only while some tree version - published or draft, current
+    # or not - still holds its tree_element. A tree_element that no version
+    # points at any more is not a tree usage and must not count, even though
+    # the tree_element row itself still exists.
+    let(:instance) { create(:instance) }
+    let(:tree) { create(:tree, is_read_only: false) }
+
+    def attach(tree_element, tree_version)
+      create(:tree_version_element,
+        tree_element_id: tree_element.id,
+        tree_version_id: tree_version.id,
+        element_link: "test/in_any_tree/#{tree_element.id}/#{tree_version.id}",
+        taxon_id: tree_element.id)
+    end
+
+    context 'when the instance has no tree_element at all' do
+      it 'returns false' do
+        expect(instance.in_any_tree?).to eq false
+      end
+    end
+
+    context 'when the instance is in the current published version of a tree' do
+      let(:tree_version) { create(:tree_version, tree: tree) }
+      let(:tree_element) { create(:tree_element, instance: instance) }
+
+      before do
+        tree.update!(current_tree_version_id: tree_version.id)
+        attach(tree_element, tree_version)
+      end
+
+      it 'returns true' do
+        expect(instance.in_any_tree?).to eq true
+      end
+    end
+
+    context 'when the instance is only in a draft (unpublished) version' do
+      let(:tree_version) { create(:tree_version, tree: tree, published: false, draft_name: 'Draft') }
+      let(:tree_element) { create(:tree_element, instance: instance) }
+
+      before { attach(tree_element, tree_version) }
+
+      it 'returns true' do
+        expect(instance.in_any_tree?).to eq true
+      end
+    end
+
+    context 'when the instance is only in an old, non-current version' do
+      let(:old_version) { create(:tree_version, tree: tree, draft_name: 'Old') }
+      let(:current_version) { create(:tree_version, tree: tree, draft_name: 'Current') }
+      let(:tree_element) { create(:tree_element, instance: instance) }
+
+      before do
+        tree.update!(current_tree_version_id: current_version.id)
+        attach(tree_element, old_version)
+      end
+
+      it 'returns true' do
+        expect(instance.in_any_tree?).to eq true
+      end
+    end
+
+    context 'when the tree_element is not attached to any tree version' do
+      let!(:tree_element) { create(:tree_element, instance: instance) }
+
+      it 'still has the tree_element' do
+        expect(instance.tree_elements).to include(tree_element)
+      end
+
+      it 'returns false' do
+        expect(instance.in_any_tree?).to eq false
+      end
+    end
+
+    context "when only another instance's tree_element is in a tree" do
+      let(:other_instance) { create(:instance) }
+      let(:tree_version) { create(:tree_version, tree: tree) }
+      let(:tree_element) { create(:tree_element, instance: other_instance) }
+
+      before { attach(tree_element, tree_version) }
+
+      it 'returns false' do
+        expect(instance.in_any_tree?).to eq false
       end
     end
   end

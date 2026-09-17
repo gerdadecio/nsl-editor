@@ -55,7 +55,7 @@ module Instance::Treeable
   end
 
   def in_any_tree?
-    ::Tree::Element.where(instance_id: id).count > 0
+    ::TreeJoinV.exists?(instance_id: id)
   end
 
   def show_taxo?
