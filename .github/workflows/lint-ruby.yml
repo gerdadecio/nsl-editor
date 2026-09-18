@@ -30,6 +30,8 @@ jobs:
 
     env:
       BUNDLE_ONLY: development
+      # Bundler 2.7 behaves like Bundler 4 ahead of the real upgrade
+      BUNDLE_SIMULATE_VERSION: 4
 
     steps:
       - name: Clone repository

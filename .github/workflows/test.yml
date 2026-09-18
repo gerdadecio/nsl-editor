@@ -45,6 +45,8 @@ jobs:
       DB: test_db
       DB_USER: nsl
       DB_PASS: testpassword
+      # Bundler 2.7 behaves like Bundler 4 ahead of the real upgrade
+      BUNDLE_SIMULATE_VERSION: 4
 
     strategy:
       matrix:

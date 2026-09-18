@@ -30,5 +30,7 @@ class AdminControllerAdminUserCanSeeDBConnsTest < ActionController::TestCase
                    groups: ["admin"] },
         xhr: true)
     assert_response :success
+    assert_match(/Bundler.*#{Regexp.escape(Bundler::VERSION)}/m, response.body,
+                 "expected the admin page to show the Bundler version")
   end
 end

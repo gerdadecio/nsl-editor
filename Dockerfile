@@ -16,7 +16,15 @@ RUN apt-get update -qq && apt-get install -y \
 # Copy the Gemfile and Gemfile.lock
 COPY ./Gemfile ./Gemfile.lock ./
 
-# Install gems
+# Make Bundler 2.7 behave like Bundler 4 (deprecations become errors, checksums verified)
+# ahead of the real upgrade. path.system keeps gems in the system gem dir; in
+# simulation mode Bundler 2.7 would otherwise install them into ./.bundle, which the
+# dev bind mount over /app hides.
+ENV BUNDLE_SIMULATE_VERSION=4 \
+    BUNDLE_PATH__SYSTEM=true
+
+# Install the Bundler version pinned in Gemfile.lock (BUNDLED WITH), then the gems
+RUN gem install bundler -v "$(tail -1 Gemfile.lock | tr -d ' ')" --no-document
 RUN bundle install
 
 WORKDIR /ruby-editor
