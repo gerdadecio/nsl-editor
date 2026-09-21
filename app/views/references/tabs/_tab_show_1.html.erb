@@ -114,6 +114,4 @@
 <% if @reference.source_system %>
   <br>Migrated from <%= "#{@reference.source_system.downcase} ##{@reference.source_id}" %>
 <% end %>
-<% if @reference.api_name && @reference.api_at %>
-  <br>Record changed by: <%= "#{@reference.api_name} #{formatted_timestamp(@reference.api_at)}"%>
-<% end %>
+<%= updated_by_api_and_when(@reference).html_safe %>
