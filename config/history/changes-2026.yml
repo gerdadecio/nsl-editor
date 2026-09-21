@@ -1,4 +1,8 @@
 - :date: 21-September-2026
+  :jira_id: '5932'
+  :description: |-
+    Display audit records for api_name and api_at in the details tab for reference
+- :date: 21-September-2026
   :jira_id: '5906'
   :description: |-
     Backend model validation for instance and name soft delete
