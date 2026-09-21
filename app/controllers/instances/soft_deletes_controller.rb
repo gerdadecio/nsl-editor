@@ -20,19 +20,16 @@ class Instances::SoftDeletesController < ApplicationController
   before_action :find_instance
   before_action :authorise_instance_change, only: [:create]
 
+  # Whether the soft delete is allowed is decided by the model - see
+  # SoftDeletable#soft_delete_must_be_allowed - so a save failure here
+  # carries the reason from the database's check_delete_instance function.
   def create
-    # set instance as soft-deleted
-    if @instance.allow_soft_delete?
-      @instance.current_user = current_user
-      @instance.deleted_at = Time.current
-      unless @instance.save
-        @message = @instance.errors.full_messages.join("; ")
-        return render "create_error", status: :unprocessable_content
-      end
-    else
-      @message = "Soft delete not allowed for this instance."
-      return render "create_error", status: :unprocessable_content
-    end
+    @instance.current_user = current_user
+    @instance.deleted_at = Time.current
+    return if @instance.save
+
+    @message = @instance.errors.full_messages.join("; ")
+    render "create_error", status: :unprocessable_content
   end
 
   private
