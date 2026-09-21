@@ -1,6 +1,10 @@
 - :date: 21-September-2026
   :jira_id: '5932'
   :description: |-
+    Switch the display of the migrated from and bulk changed informations in the reference details
+- :date: 21-September-2026
+  :jira_id: '5932'
+  :description: |-
     Display audit records for api_name and api_at in the details tab for reference
 - :date: 21-September-2026
   :jira_id: '5906'
