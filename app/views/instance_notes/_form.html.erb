@@ -16,25 +16,25 @@
    <table class="width-100-percent">
     <tr>
       <td class="align-top width-25-percent">
-      <%= lov_select_field("instance_note", 
-                       "instance_note_key_id",  
-                       edit_options, 
+      <%= lov_select_field("instance_note",
+                       "instance_note_key_id",
+                       edit_options,
                        {include_blank: false },
                        {data: {update_url: instance_note_path,
-                                           instance_note_id: @instance_note.id}, 
+                                           instance_note_id: @instance_note.id},
                         id: "instance-note-key-id-select-#{@instance_note.id}",
-                        class:'instance-note-key-id-select form-control give-me-focus', 
+                        class:'instance-note-key-id-select form-control give-me-focus',
                         title: "Select the type of note.",
                         tabindex:"#{increment_tab_index}"},
                        '') %>
     </td>
     <td>
 
-      <%= f.text_area(:value, 
-                      rows: '3', 
+      <%= f.text_area(:value,
+                      rows: '3',
                       class: 'width-100-percent instance-note-value-text-area',
                       tabindex: increment_tab_index,
-                      data: {instance_note_id: @instance_note.id}, 
+                      data: {instance_note_id: @instance_note.id},
                       title: "Enter the note here.",
                       id: "instance-note-value-text-area-#{@instance_note.id}",
                       ) %>
@@ -49,6 +49,7 @@
     <tr>
       <td colspan="3">
           <%= updated_by_whom_and_when(instance_note).html_safe %>
+          <%= updated_by_api_and_when(instance_note).html_safe %>
       </td>
     </tr>
     <tr>
@@ -58,45 +59,45 @@
     </tr>
     <tr>
       <td>
-        <%= f.submit id: "instance-note-save-btn-#{@instance_note.id}", 
-          class: 'btn btn-primary width-6em', 
-          value: 'Save Note', 
+        <%= f.submit id: "instance-note-save-btn-#{@instance_note.id}",
+          class: 'btn btn-primary width-6em',
+          value: 'Save Note',
           title: "Select to save the note.",
           tabindex: increment_tab_index %>
       </td>
 
 <% delete_link = link_to("Delete Note...",
-                         '#', 
+                         '#',
                          id: "instance-note-delete-link-#{@instance_note.id}",
                          title: "Select to delete the note.  A confirmation dialog follows.",
-                         class: "btn btn-warning instance-note-delete-link pull-right xhidden", 
+                         class: "btn btn-warning instance-note-delete-link pull-right xhidden",
                          tabindex: increment_tab_index,
                            data: {instance_note_id: @instance_note.id,
-                                  confirm_btn_id: "confirm-or-cancel-delete-instance-note-#{@instance_note.id}"}) 
+                                  confirm_btn_id: "confirm-or-cancel-delete-instance-note-#{@instance_note.id}"})
 %>
 
 <% confirm_delete_link = link_to("Confirm delete",
-                                 instance_note_path(@instance_note.id), 
-                                 class: "btn btn-danger", 
+                                 instance_note_path(@instance_note.id),
+                                 class: "btn btn-danger",
                                  tabindex: increment_tab_index,
                                  title: "Select to confirm the delete.",
-                                 remote: true, data: { turbo: false }, 
-                                 method: :delete) 
+                                 remote: true, data: { turbo: false },
+                                 method: :delete)
 %>
- 
+
 <% cancel_delete_link = link_to("Cancel delete",
-                                '#', 
+                                '#',
                                 id: "instance-note-cancel-delete-link-#{@instance_note.id}",
                                 class: "btn btn-default instance-note-cancel-delete-link",
                                 tabindex: increment_tab_index,
                                 title: "Select to cancel the delete.",
-                                data: {instance_note_id: @instance_note.id}) 
+                                data: {instance_note_id: @instance_note.id})
 %>
-  
-<% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-delete-instance-note-#{@instance_note.id}" 
+
+<% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-delete-instance-note-#{@instance_note.id}"
                                   class="instance-note confirm-or-cancel-delete-link pull-right hidden" tabindex="#{increment_tab_index}">
-                                  #{confirm_delete_link} 
-                                  #{cancel_delete_link}</div>) 
+                                  #{confirm_delete_link}
+                                  #{cancel_delete_link}</div>)
 %>
       <td class="align-right">
         <%= delete_link.html_safe %>
