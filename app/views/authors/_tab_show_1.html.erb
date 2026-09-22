@@ -107,7 +107,5 @@
   <br>Migrated from <%= "#{@author.source_system.downcase} ##{@author.source_id}" %>
 <% end %>
 
-<% if @author.api_name && @author.api_at %>
-  <br>Record changed by: <%= "#{@author.api_name} #{formatted_timestamp(@author.api_at)}"%>
-<% end %>
+<%= updated_by_api_and_when(@author).html_safe %>
 

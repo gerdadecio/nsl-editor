@@ -1,4 +1,8 @@
 - :date: 22-September-2026
+  :jira_id: '5934'
+  :description: |-
+    Audit display update in Author details tab to use Bulk Changed instead of Record changed by and use the new helper method
+- :date: 22-September-2026
   :jira_id: '5933'
   :description: |-
     Update the wording of the audit display for api name/at to use Bulk Changed instead of Record changed by and use the new helper method
