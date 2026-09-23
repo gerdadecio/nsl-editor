@@ -1,4 +1,8 @@
 - :date: 23-September-2026
+  :jira_id: ''
+  :description: |-
+    Several dev and test gems updated via dependabot
+- :date: 23-September-2026
   :jira_id: '5937'
   :description: |-
     Audit display in org tab details
