@@ -111,6 +111,7 @@
 <%= created_by_whom_and_when(@reference).html_safe %>
 <br>
 <%= updated_by_whom_and_when(@reference).html_safe %>
+<%= updated_by_api_and_when(@reference).html_safe %>
 <% if @reference.source_system %>
   <br>Migrated from <%= "#{@reference.source_system.downcase} ##{@reference.source_id}" %>
 <% end %>

@@ -78,6 +78,7 @@ class Instance < ApplicationRecord
   include Instance::Treeable
   include Instance::InTaxonomy
   include UserTrackable
+  include SoftDeletable
   include Instance::ForCopyToLoaderName
   include Instance::CopyableToNewName
   include Instance::Displayable
@@ -713,14 +714,9 @@ class Instance < ApplicationRecord
       profile_items.blank?
   end
 
-  def allow_soft_delete?
-    return false unless Rails.configuration.try(:soft_delete_enabled)
-
-    ::Instances::CheckDeleteService.new(instance: self).execute.soft_delete_allowed?
-  end
-
-  def soft_deleted?
-    deleted_at.present?
+  # Required by SoftDeletable - the delete rules live in the database.
+  def check_delete_result
+    ::Instances::CheckDeleteService.new(instance: self).execute
   end
 
   # This is not handled via an instance association because the loader is only

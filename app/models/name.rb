@@ -94,6 +94,7 @@ class Name < ApplicationRecord
   include AuditScopable
   include UserTrackable
   include Name::Validatable
+  include SoftDeletable
   include Name::Parentable
   include Name::Familyable
   include Name::NamePathable
@@ -195,14 +196,9 @@ class Name < ApplicationRecord
       !family_dependents?
   end
 
-  def allow_soft_delete?
-    return false unless Rails.configuration.try(:soft_delete_enabled)
-
-    ::Names::CheckDeleteService.new(name: self).execute.soft_delete_allowed?
-  end
-
-  def soft_deleted?
-    deleted_at.present?
+  # Required by SoftDeletable - the delete rules live in the database.
+  def check_delete_result
+    ::Names::CheckDeleteService.new(name: self).execute
   end
 
   def no_name_resource_dependents?

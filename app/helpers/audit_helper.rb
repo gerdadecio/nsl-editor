@@ -45,6 +45,14 @@ module AuditHelper
     end
   end
 
+  def updated_by_api_and_when(record)
+    return "" if record.api_at.blank?
+
+    %(<br>Bulk changed <span class="purple"
+    >#{time_ago_in_words(record.api_at)}&nbsp;ago</span>
+    by #{h(record.api_name.presence || "unknown")} #{formatted_timestamp(record.api_at)})
+  end
+
   def meaningful_update(record)
     %(Last updated
     <span class="purple">#{time_ago_in_words(record.updated_at)}&nbsp;ago

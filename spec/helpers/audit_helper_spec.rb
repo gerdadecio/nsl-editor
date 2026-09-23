@@ -27,6 +27,41 @@ RSpec.describe AuditHelper, type: :helper do
     end
   end
 
+  describe "#updated_by_api_and_when" do
+    it "shows who bulk changed the record and when" do
+      record = double("Record", api_at: 3.days.ago, api_name: "bulk-loader")
+      expect(normalize(helper.updated_by_api_and_when(record))).to match(/\ABulk changed 3 days ago by bulk-loader .+\z/)
+    end
+
+    it "includes the formatted api_at timestamp" do
+      api_at = Time.zone.parse("2026-01-15 14:05:00")
+      record = double("Record", api_at: api_at, api_name: "bulk-loader")
+      expect(normalize(helper.updated_by_api_and_when(record))).to end_with("by bulk-loader #{helper.formatted_timestamp(api_at)}")
+    end
+
+    it "starts on a new line" do
+      record = double("Record", api_at: 3.days.ago, api_name: "bulk-loader")
+      expect(helper.updated_by_api_and_when(record)).to start_with("<br>")
+    end
+
+    it "shows unknown when there is no api_name" do
+      record = double("Record", api_at: 3.days.ago, api_name: nil)
+      expect(normalize(helper.updated_by_api_and_when(record))).to match(/\ABulk changed 3 days ago by unknown .+\z/)
+    end
+
+    it "escapes html in the api_name" do
+      record = double("Record", api_at: 3.days.ago, api_name: "<script>alert(1)</script>")
+      result = helper.updated_by_api_and_when(record)
+      expect(result).not_to include("<script>")
+      expect(result).to include("&lt;script&gt;")
+    end
+
+    it "is blank when there is no api_at" do
+      record = double("Record", api_at: nil, api_name: "bulk-loader")
+      expect(helper.updated_by_api_and_when(record)).to eq("")
+    end
+  end
+
   describe "#meaningful_update_when_no_created_at" do
     it "shows 'Created or last updated' with who and when" do
       record = double("Record", updated_at: 4.days.ago, updated_by: "system")
