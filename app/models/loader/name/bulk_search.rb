@@ -34,7 +34,7 @@ class Loader::Name::BulkSearch
 
   def search_s_to_a
     add_default_directive
-    array = @search_s.gsub(/(?<![a-z-])([a-z-]+:)/, SPLITTER + '\1')
+    array = @search_s.gsub(/(?<![a-z-])([a-z-]{1,50}:)/, SPLITTER + '\1')
       .split(SPLITTER)
       .compact_blank
     remove_empty_default_directive(array)
