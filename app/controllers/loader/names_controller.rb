@@ -373,7 +373,7 @@ class Loader::NamesController < ApplicationController
   def embedded_parent_typeahead_id(typeahead_value)
     raise ArgumentError, "Input too long" if typeahead_value.length > 1000
 
-    typeahead_value.sub(/.*\(/, "").sub(/\).*/, "")
+    typeahead_value.rpartition("(").last.partition(")").first
   end
 
   def current_families
