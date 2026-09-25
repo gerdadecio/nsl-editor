@@ -60,7 +60,7 @@ module Search::QueryDefaults
 
   def remove_old_default_embedded
     # Define regex to capture "default-batch: <value>" embedded within the query string
-    regex = /default-batch:.*(?= [A-Za-z-]*:)/
+    regex = /default-batch:[^:]*(?= [A-Za-z-]*:)/
     params[:query_string].sub!(regex, "") if params[:query_string].match?(regex)
   end
 
