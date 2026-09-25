@@ -54,7 +54,7 @@ class Instance::AsTypeahead::ForSynonymy
   def initialize(terms, name_id)
     @results = []
     @name_binds = []
-    terms_without_year = terms.gsub(/[1,2][0-9]{3}/, "").strip.gsub("  ", " ")
+    terms_without_year = terms.gsub(/[12][0-9]{3}/, "").strip.gsub("  ", " ")
     Rails.logger.debug { "terms_without_year: #{terms_without_year}" }
     return if terms_without_year.blank?
 
