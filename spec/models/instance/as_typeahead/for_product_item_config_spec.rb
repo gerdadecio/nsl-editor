@@ -48,6 +48,12 @@ RSpec.describe(Instance::AsTypeahead::ForProductItemConfig, type: :model) do
           expect(result.instances).to(be_empty)
         end
 
+        it "returns an empty array if instance is soft deleted" do
+          instance.update_column(:deleted_at, Time.current)
+          result = described_class.new(product_item_config_id: profile_item.product_item_config_id, term: term)
+          expect(result.instances).to be_empty
+        end
+
         it "returns an empty array if profile_item is draft" do
           profile_item.update(is_draft: true)
           result = described_class.new(product_item_config_id: profile_item.product_item_config_id, term: term)

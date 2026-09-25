@@ -44,6 +44,7 @@ class Instance::AsTypeahead::ForProductItemConfig
       INNER JOIN name ON i.name_id = name.id
       WHERE pic.id = ?
       AND i.draft = false
+      AND i.deleted_at IS NULL
       AND pi.is_draft = false AND pi.statement_type = 'fact'
       AND (lower(r.citation) like lower('%'||?||'%') or lower(f_unaccent(name.full_name)) like lower('%'||?||'%')) order by r.iso_publication_date"
   end

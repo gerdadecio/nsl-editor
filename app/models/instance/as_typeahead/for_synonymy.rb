@@ -89,10 +89,10 @@ class Instance::AsTypeahead::ForSynonymy
       .joins(:instance_type)
       .where("cited_by_id is null")
       .where.not(name_id: name_id.to_i)
+      .where("instance.deleted_at is null")
       .order(Arel.sql("name_rank.sort_order,lower(f_unaccent(full_name)), " \
         "#{ISO_PUBLICATION_DATE_ORDER}"))
       .limit(SEARCH_LIMIT)
-
     restrict_ranks(query, name_id)
   end
 
