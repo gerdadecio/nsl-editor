@@ -114,7 +114,7 @@ abbrev, count(reference.id) as ref_count")
     else
       Author.lower_name_like(term)
         .not_duplicate
-        .where([" author.id <> ?", excluded_id])
+        .where(" author.id <> ?", excluded_id)
         .joins("left outer join reference on " \
           "reference.author_id = author.id")
         .select("author.name as name, author.id as id, author.abbrev as \
