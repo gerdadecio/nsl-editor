@@ -79,7 +79,7 @@ class Loader::Batch < ApplicationRecord
   end
 
   def self.id_of(canonical_query_target)
-    Loader::Batch.where(["lower(name) = ?", canonical_query_target]).first.id
+    Loader::Batch.where("lower(name) = ?", canonical_query_target).first.id
   end
 
   def update_if_changed(params, username)

@@ -34,7 +34,7 @@ class Loader::Name::BulkSearch
 
   def search_s_to_a
     add_default_directive
-    array = @search_s.gsub(/([a-z-]+:)/, SPLITTER + '\1')
+    array = @search_s.gsub(/(?<![a-z-])([a-z-]+:)/, SPLITTER + '\1')
       .split(SPLITTER)
       .compact_blank
     remove_empty_default_directive(array)
@@ -92,7 +92,7 @@ class Loader::Name::BulkSearch
     family_directive = @search_a.select { |i| i[/family:/] }.first
     @search_a.reject! { |i| i[/family:/] }
     family_string = family_directive.sub(/\Afamily: */i, "").strip
-    family_a = family_string.split(/ *, */)
+    family_a = family_string.split(",").collect(&:strip)
     if family_a.length < 2
       @search.family_string_search(family_string)
     else
