@@ -25,11 +25,11 @@ class NameHybridFormulaParAnd2ndParentCannotBeSameTest < ActiveSupport::TestCase
     assert name.parent_id != name.second_parent_id, "Name parent and second
                                                     par must differ for test."
     assert name.valid?, "Name should be valid.
-    Errors: #{name.errors.full_messages.join('; ')}"
+    Errors: #{name.errors.full_messages.join("; ")}"
     name.second_parent_id = name.parent_id
     assert_not name.valid?,
-               "Name not valid when parent is the same as second_parent."
+      "Name not valid when parent is the same as second_parent."
     assert_equal "Second parent cannot be the same as the first parent",
-                 name.errors.full_messages.join("; ")
+      name.errors.full_messages.join("; ")
   end
 end

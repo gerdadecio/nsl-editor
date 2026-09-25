@@ -40,31 +40,45 @@ class LoaderNameMakeOneInstanceMakeOneSynonymyInstanceTest < ActiveSupport::Test
 
   test "declines with synonym_has_no_parent when the synonym has no parent" do
     result = creator_for(:synonym_no_parent).create
-    assert_equal({declines: 1, declines_reasons: {synonym_has_no_parent: 1}},
-                 result)
+    assert_equal(
+      { declines: 1, declines_reasons: { synonym_has_no_parent: 1 } },
+      result,
+    )
   end
 
   test "declines with parent_no_preferred_match when the parent has " \
-       "no preferred match" do
+    "no preferred match" do
     result = creator_for(:synonym_parent_no_pref_match).create
-    assert_equal({declines: 1,
-                  declines_reasons: {parent_no_preferred_match: 1}},
-                 result)
+    assert_equal(
+      {
+        declines: 1,
+        declines_reasons: { parent_no_preferred_match: 1 },
+      },
+      result,
+    )
   end
 
   test "declines with parent_is_using_existing_instance when the " \
-       "parent's preferred match uses an existing instance" do
+    "parent's preferred match uses an existing instance" do
     result = creator_for(:synonym_parent_using_existing).create
-    assert_equal({declines: 1,
-                  declines_reasons: {parent_is_using_existing_instance: 1}},
-                 result)
+    assert_equal(
+      {
+        declines: 1,
+        declines_reasons: { parent_is_using_existing_instance: 1 },
+      },
+      result,
+    )
   end
 
   test "does not raise once all parent guards pass, and falls through " \
-       "to the next check" do
+    "to the next check" do
     result = creator_for(:synonym_guards_pass).create
-    assert_equal({declines: 1,
-                  declines_reasons: {parent_has_no_standalone_instance: 1}},
-                 result)
+    assert_equal(
+      {
+        declines: 1,
+        declines_reasons: { parent_has_no_standalone_instance: 1 },
+      },
+      result,
+    )
   end
 end

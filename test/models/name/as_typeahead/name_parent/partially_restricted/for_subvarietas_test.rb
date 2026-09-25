@@ -26,16 +26,18 @@ class ForSubvarietasPartiallyRestrictedTest < ActiveSupport::TestCase
   end
 
   test "name parent suggestion for subvarietas" do
-    assert !ShardConfig.name_parent_rank_restriction?,
-           "Name parent rank restriction should be off for this test."
+    assert_not ShardConfig.name_parent_rank_restriction?,
+      "Name parent rank restriction should be off for this test."
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "Subvarietas").id
+      rank_id: NameRank.find_by(name: "Subvarietas").id,
     )
     typeahead.suggestions.each do |suggestion|
-      suggestion_rank_should_be_at_or_below(suggestion,
-                                            NameRank.find_by(name: "Species"))
+      suggestion_rank_should_be_at_or_below(
+        suggestion,
+        NameRank.find_by(name: "Species"),
+      )
     end
   end
 end

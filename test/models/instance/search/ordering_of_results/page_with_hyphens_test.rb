@@ -30,29 +30,29 @@ class InstanceSearchOrderOfResultsPageWithHyphensTest < ActiveSupport::TestCase
   # otherwise, the second test might succeed due to name order.
   test "instance search ordering of results by name" do
     results = Instance
-              .joins(:reference) \
-              .joins(:name) \
-              .where(reference_id: @reference.id) \
-              .ordered_by_name
+      .joins(:reference)
+      .joins(:name)
+      .where(reference_id: @reference.id)
+      .ordered_by_name
     # print_results(results)
     assert results.first.id == @with_hyphen.id,
-           "Wrong name order at first value: #{results[0].id}."
+      "Wrong name order at first value: #{results[0].id}."
     assert results.second.id == @without_hyphen.id,
-           "Wrong name order at second value: #{results[1].id}."
+      "Wrong name order at second value: #{results[1].id}."
   end
 
   # This is the important test.
   test "instance search ordering of results by page" do
     results = Instance
-              .joins(:reference) \
-              .joins(:name) \
-              .where(reference_id: @reference.id) \
-              .ordered_by_page
+      .joins(:reference)
+      .joins(:name)
+      .where(reference_id: @reference.id)
+      .ordered_by_page
     # print_results(results)
     assert results.first.id == @without_hyphen.id,
-           "Wrong page order at first value: #{results[0].id}."
+      "Wrong page order at first value: #{results[0].id}."
     assert results.second.id == @with_hyphen.id,
-           "Wrong page order at second value: #{results[1].id}."
+      "Wrong page order at second value: #{results[1].id}."
   end
 
   def print_results(results)

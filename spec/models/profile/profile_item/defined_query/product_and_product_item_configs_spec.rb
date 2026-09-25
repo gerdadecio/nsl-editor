@@ -87,7 +87,7 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
                 :profile_item,
                 product_item_config: product_item_config,
                 instance: instance,
-                end_date: Time.current
+                end_date: Time.current,
               )
             end
 
@@ -109,7 +109,7 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
                 :profile_item,
                 product_item_config: product_item_config,
                 instance: instance,
-                end_date: nil
+                end_date: nil,
               )
             end
 

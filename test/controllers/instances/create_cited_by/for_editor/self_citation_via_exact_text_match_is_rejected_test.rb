@@ -49,16 +49,22 @@ class InstancesCreateCitedBySelfTextMatchRejectedTest < ActionController::TestCa
 
   test "typing the citing instance's own exact name is rejected, not self-cited" do
     assert_no_difference("Instance.count") do
-      post(:create_cited_by,
-           params: { instance: { "name_typeahead" => @cited_by.name.full_name,
-                                 "name_id" => "",
-                                 "context_name_id" => @cited_by.name.id,
-                                 "page" => "",
-                                 "reference_id" => @cited_by.reference.id,
-                                 "cited_by_id" => @cited_by.id,
-                                 "cites_id" => "",
-                                 "instance_type_id" => instance_types(:common_name) } },
-           session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] })
+      post(
+        :create_cited_by,
+        params: {
+          instance: {
+            "name_typeahead" => @cited_by.name.full_name,
+            "name_id" => "",
+            "context_name_id" => @cited_by.name.id,
+            "page" => "",
+            "reference_id" => @cited_by.reference.id,
+            "cited_by_id" => @cited_by.id,
+            "cites_id" => "",
+            "instance_type_id" => instance_types(:common_name),
+          },
+        },
+        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] },
+      )
     end
 
     assert_match(/No case-sensitive exact match/, assigns(:message))

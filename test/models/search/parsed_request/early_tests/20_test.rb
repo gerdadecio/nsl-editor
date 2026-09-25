@@ -29,16 +29,18 @@ class SearchParsedRequest20Test < ActiveSupport::TestCase
     params[:include_common_and_cultivar_session] = true
     parsed_request = Search::ParsedRequest.new(params)
     assert parsed_request.list, "This should be parsed as a list query."
-    assert !parsed_request.count, "This should not be parsed as a count query."
-    assert_match(/\Aname\z/,
-                 parsed_request.target_table,
-                 "This should be parsed as a query on the name table.")
+    assert_not parsed_request.count, "This should not be parsed as a count query."
+    assert_match(
+      /\Aname\z/,
+      parsed_request.target_table,
+      "This should be parsed as a query on the name table.",
+    )
     assert_equal 20,
-                 parsed_request.limit,
-                 "This should be parsed as a query with a limit of 20."
+      parsed_request.limit,
+      "This should be parsed as a query with a limit of 20."
     assert parsed_request.include_common_and_cultivar_session,
-           "Parser should notice session switch to incl common and cultivars."
+      "Parser should notice session switch to incl common and cultivars."
     assert parsed_request.where_arguments.blank?,
-           "Should be parsed as a query with no where arguments."
+      "Should be parsed as a query with no where arguments."
   end
 end

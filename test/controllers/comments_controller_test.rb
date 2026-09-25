@@ -26,56 +26,76 @@ class CommentsControllerTest < ActionController::TestCase
 
   test "xhr request should create comment" do
     assert_difference("Comment.count") do
-      post(:create,
-           params: { comment: { text: @comment.text, author_id: authors("haeckel") } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] },
-           xhr: true)
+      post(
+        :create,
+        params: { comment: { text: @comment.text, author_id: authors("haeckel") } },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["edit"],
+        },
+        xhr: true,
+      )
     end
     # assert_redirected_to comment_path(assigns(:comment))
   end
 
   test "should not show comment" do
     skip "Failing during rails6 transition testing. Not sure what it is testing"
-    get(:show,
-        params: { id: @comment.id },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @comment.id },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :service_unavailable
   end
 
   test "should not get edit" do
     skip "Failing during rails6 transition testing. Not sure what it is testing"
-    get(:edit,
-        params: { id: @comment.id },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :edit,
+      params: { id: @comment.id },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :service_unavailable
   end
 
   test "xhr request should destroy comment" do
     assert_difference("Comment.count", -1) do
-      delete(:destroy,
-             params: { id: @comment.id },
-             session: { username: "fred",
-                        user_full_name: "Fred Jones",
-                        groups: ["edit"] },
-             xhr: true)
+      delete(
+        :destroy,
+        params: { id: @comment.id },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["edit"],
+        },
+        xhr: true,
+      )
     end
   end
 
   test "should create comment when multi_product_tabs_enabled is false" do
     CommentsController.stub_any_instance(:authorize_for_instance!, nil) do
       assert_difference("Comment.count") do
-        post(:create,
-             params: { comment: { text: "Test comment", instance_id: instances(:triodia_in_brassard).id } },
-             session: { username: "fred",
-                        user_full_name: "Fred Jones",
-                        groups: ["edit"] },
-             xhr: true)
+        post(
+          :create,
+          params: { comment: { text: "Test comment", instance_id: instances(:triodia_in_brassard).id } },
+          session: {
+            username: "fred",
+            user_full_name: "Fred Jones",
+            groups: ["edit"],
+          },
+          xhr: true,
+        )
       end
     end
   end
@@ -85,12 +105,16 @@ class CommentsControllerTest < ActionController::TestCase
 
     CommentsController.stub_any_instance(:authorize_for_instance!, nil) do
       assert_difference("Comment.count") do
-        post(:create,
-             params: { comment: { text: "Test comment", instance_id: instance.id } },
-             session: { username: "fred",
-                        user_full_name: "Fred Jones",
-                        groups: ["edit"] },
-             xhr: true)
+        post(
+          :create,
+          params: { comment: { text: "Test comment", instance_id: instance.id } },
+          session: {
+            username: "fred",
+            user_full_name: "Fred Jones",
+            groups: ["edit"],
+          },
+          xhr: true,
+        )
       end
     end
   end
@@ -100,12 +124,16 @@ class CommentsControllerTest < ActionController::TestCase
 
     CommentsController.stub_any_instance(:authorize_for_instance!, -> { raise CanCan::AccessDenied.new("Access Denied!", :create_adnot, instance) }) do
       assert_no_difference("Comment.count") do
-        post(:create,
-             params: { comment: { text: "Test comment", instance_id: instance.id } },
-             session: { username: "fred",
-                        user_full_name: "Fred Jones",
-                        groups: ["edit"] },
-             xhr: true)
+        post(
+          :create,
+          params: { comment: { text: "Test comment", instance_id: instance.id } },
+          session: {
+            username: "fred",
+            user_full_name: "Fred Jones",
+            groups: ["edit"],
+          },
+          xhr: true,
+        )
       end
       assert_response :forbidden
     end
@@ -116,12 +144,16 @@ class CommentsControllerTest < ActionController::TestCase
 
     CommentsController.stub_any_instance(:authorize_for_instance!, -> { raise CanCan::AccessDenied.new("Access Denied!", :create_adnot, comment.instance) }) do
       assert_no_difference("Comment.count") do
-        delete(:destroy,
-               params: { id: comment.id },
-               session: { username: "fred",
-                          user_full_name: "Fred Jones",
-                          groups: ["edit"] },
-               xhr: true)
+        delete(
+          :destroy,
+          params: { id: comment.id },
+          session: {
+            username: "fred",
+            user_full_name: "Fred Jones",
+            groups: ["edit"],
+          },
+          xhr: true,
+        )
       end
       assert_response :forbidden
     end

@@ -27,11 +27,11 @@ class LanguageOptionsSimpleTest < ActiveSupport::TestCase
   end
 
   def try_pair(pair, str)
-    assert pair[0] == str, "Expected #{str}, not #{pair[0]}"
+    assert(pair[0] == str, "Expected #{str}, not #{pair[0]}")
   end
 
   def first_set(options)
-    assert options[0][0] == "Undetermined", "Unexpected option 0,0"
+    assert(options[0][0] == "Undetermined", "Unexpected option 0,0")
     try_pair(options[1], "English")
     try_pair(options[2], "French")
     try_pair(options[3], "German")
@@ -39,8 +39,8 @@ class LanguageOptionsSimpleTest < ActiveSupport::TestCase
   end
 
   def second_set(options)
-    assert options[5][0] == "──────────", "Missing line separator."
-    assert options[5][1] == "disabled", "Separator not prepared to be disabled."
+    assert(options[5][0] == "──────────", "Missing line separator.")
+    assert(options[5][1] == "disabled", "Separator not prepared to be disabled.")
     try_pair(options[6], "Abkhazian")
     try_pair(options.last, "Zuni")
   end

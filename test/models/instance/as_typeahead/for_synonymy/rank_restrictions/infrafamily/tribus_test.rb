@@ -21,8 +21,10 @@ require "test_helper"
 # Single instance typeahead search.
 class TypeaheadForSynonymyTribusTest < ActiveSupport::TestCase
   def setup
-    @ta = Instance::AsTypeahead::ForSynonymy.new("*",
-                                                 names(:a_tribus).id)
+    @ta = Instance::AsTypeahead::ForSynonymy.new(
+      "*",
+      names(:a_tribus).id,
+    )
   end
 
   test "instance typeahead for synonymy rank restriction for a tribus" do
@@ -35,22 +37,51 @@ class TypeaheadForSynonymyTribusTest < ActiveSupport::TestCase
   end
 
   def check_exclusions
-    %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Genus
-       Subgenus Sectio Subsectio Series Subseries Superspecies Species
-       Subspecies Nothovarietas Varietas
-       Subvarietas Forma Subforma Tribus].each do |rank_string|
+    [
+      "Regio",
+      "Regnum",
+      "Division",
+      "Classis",
+      "Subclassis",
+      "Superordo",
+      "Ordo",
+      "Subordo",
+      "Genus",
+      "Subgenus",
+      "Sectio",
+      "Subsectio",
+      "Series",
+      "Subseries",
+      "Superspecies",
+      "Species",
+      "Subspecies",
+      "Nothovarietas",
+      "Varietas",
+      "Subvarietas",
+      "Forma",
+      "Subforma",
+      "Tribus"
+    ].each do |rank_string|
       escape_s = Regexp.escape(rank_string)
-      assert @rank_names.none? { |e| e.match(/\A#{escape_s}\z/) },
-             "Expect no #{rank_string} to be suggested"
+      assert(
+        @rank_names.none? { |e| e.match(/\A#{escape_s}\z/) },
+        "Expect no #{rank_string} to be suggested",
+      )
     end
   end
 
   def check_inclusions
-    %w(Familia Subfamilia Subtribus
-       [unranked]).each do |rank_string|
+    [
+      "Familia",
+      "Subfamilia",
+      "Subtribus",
+      "[unranked]"
+    ].each do |rank_string|
       escape_s = Regexp.escape(rank_string)
-      assert @rank_names.select { |e| e.match(/\A#{escape_s}\z/) }.size >= 1,
-             "Expect one #{rank_string} to be suggested"
+      assert(
+        @rank_names.select { |e| e.match(/\A#{escape_s}\z/) }.size >= 1,
+        "Expect one #{rank_string} to be suggested",
+      )
     end
   end
 end

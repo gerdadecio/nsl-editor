@@ -23,14 +23,18 @@ class SearchAuditCountSimpleTest < ActionController::TestCase
   tests SearchController
 
   test "count records created in the last 50 days" do
-    get(:search,
-        params: { query_target: "activity", query_string: "count 50" },
-        session: { username: "greg",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "activity", query_string: "count 50" },
+      session: {
+        username: "greg",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /[0-9][0-9] records\b/,
-                  "Should give count of records created or updated by greg"
+      /[0-9][0-9] records\b/,
+      "Should give count of records created or updated by greg"
   end
 end

@@ -27,14 +27,14 @@ load "test/models/search/users.rb"
 class SearchOnReferenceCitationHookersApostropheTest < ActiveSupport::TestCase
   test "search on reference citation text for hookers apostrophe" do
     params = ActiveSupport::HashWithIndifferentAccess
-             .new(query_target: "reference",
-                  query_string: "citation-text: hookers icon pl",
-                  current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "citation-text: hookers icon pl",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 0,
-                 search.executed_query.results.size,
-                 "No matches expected."
+      search.executed_query.results.size,
+      "No matches expected."
   end
 end

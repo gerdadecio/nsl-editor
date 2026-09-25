@@ -25,25 +25,27 @@ require "test_helper"
 class SearchParsedRequestCountDirectiveTest < ActiveSupport::TestCase
   test "search parse query count directive" do
     params = ActiveSupport::HashWithIndifferentAccess
-             .new(query_target: "name",
-                  canonical_query_target: "name",
-                  query_string: "count:")
+      .new(query_target: "name",
+        canonical_query_target: "name",
+        query_string: "count:")
     parsed_request = Search::ParsedRequest.new(params)
     assert parsed_request.count, "This should be parsed as a count query."
     assert_not parsed_request.list,
-               "This should not be parsed as a list query."
-    assert_match(/\Aname\z/,
-                 parsed_request.target_table,
-                 "This should be parsed as a query on the name table.")
+      "This should not be parsed as a list query."
+    assert_match(
+      /\Aname\z/,
+      parsed_request.target_table,
+      "This should be parsed as a query on the name table.",
+    )
     assert_not parsed_request.limited,
-               "This should be parsed as a query with no limit."
+      "This should be parsed as a query with no limit."
     assert_equal 0,
-                 parsed_request.limit,
-                 "This should be parsed as a query with a limit of 0."
+      parsed_request.limit,
+      "This should be parsed as a query with a limit of 0."
     assert_not parsed_request.common_and_cultivar,
-               "This should be parsed as a query excluding common and \
+      "This should be parsed as a query excluding common and \
 cultivars."
     assert parsed_request.where_arguments.blank?,
-           "This should be parsed as a query with no where arguments."
+      "This should be parsed as a query with no where arguments."
   end
 end

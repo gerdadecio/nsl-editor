@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class NameTagNamesController < ApplicationController
-  before_action :set_name_tag_name, only: %i[show edit destroy]
+  before_action :set_name_tag_name, only: [:show, :edit, :destroy]
 
   # GET /name_tag_names/1
   # GET /name_tag_names/1.json
@@ -36,7 +36,7 @@ class NameTagNamesController < ApplicationController
   rescue StandardError => e
     logger.error("Name Tag Name create failed: #{e}")
     @message = "Could not attach that tag because #{e}"
-    render :create_failed, format: :js, status: :unprocessable_content
+    render(:create_failed, format: :js, status: :unprocessable_content)
   end
 
   # DELETE /name_tag_names/1
@@ -44,8 +44,8 @@ class NameTagNamesController < ApplicationController
   def destroy
     @name_tag_name.destroy
     respond_to do |format|
-      format.html { redirect_to name_tag_names_url, notice: "Deleted." }
-      format.json { head :no_content }
+      format.html { redirect_to(name_tag_names_url, notice: "Deleted.") }
+      format.json { head(:no_content) }
       format.js   {}
     end
   end
@@ -55,8 +55,8 @@ class NameTagNamesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_name_tag_name
     @name_tag_name = NameTagName
-                     .where(name_id: params[:name_id])
-                     .where(tag_id: params[:tag_id]).first
+      .where(name_id: params[:name_id])
+      .where(tag_id: params[:tag_id]).first
   end
 
   # White list

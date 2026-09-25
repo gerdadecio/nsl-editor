@@ -18,6 +18,7 @@
 #
 class Audit::DefinedQuery::WhereClause::Predicate
   attr_reader :sql
+
   SQL_TRUE = "1 = 1"
   SQL_FALSE = "1 = 2"
 
@@ -31,7 +32,7 @@ class Audit::DefinedQuery::WhereClause::Predicate
   end
 
   def debug(s)
-    Rails.logger.debug("Audit::DefinedQuery::WhereClause::Predicates #{s}")
+    Rails.logger.debug { "Audit::DefinedQuery::WhereClause::Predicates #{s}" }
   end
 
   def build_predicate(field, value)
@@ -45,7 +46,7 @@ class Audit::DefinedQuery::WhereClause::Predicate
       canonical_field = canon_field(field)
       canonical_value = value.blank? ? "" : canon_value(value)
       if ALLOWS_MULTIPLE_VALUES.key?(canonical_field) &&
-         canonical_value.split(",").size > 1
+          canonical_value.split(",").size > 1
       elsif WHERE_VALUE_HASH.key?(canonical_field) && value.blank?
         raise "Stopping because #{canonical_field} needs a value"
       elsif WHERE_VALUE_HASH_2_VALUES.key?(canonical_field) && value.blank?
@@ -60,8 +61,11 @@ class Audit::DefinedQuery::WhereClause::Predicate
       elsif WHERE_INTEGER_VALUE_HASH.key?(canonical_field)
         @sql = @sql.where(WHERE_INTEGER_VALUE_HASH[canonical_field], canonical_value.to_i)
       elsif WHERE_VALUE_HASH_2_VALUES.key?(canonical_field)
-        @sql = @sql.where(WHERE_VALUE_HASH_2_VALUES[canonical_field], canonical_value.downcase,
-                          canonical_value.downcase)
+        @sql = @sql.where(
+          WHERE_VALUE_HASH_2_VALUES[canonical_field],
+          canonical_value.downcase,
+          canonical_value.downcase,
+        )
       else
         unless WHERE_VALUE_HASH.key?(canonical_field)
           raise "No way to handle field: '#{canonical_field}' in an author search."
@@ -97,7 +101,7 @@ class Audit::DefinedQuery::WhereClause::Predicate
   end
 
   WHERE_INTEGER_VALUE_HASH = {
-    "limit:" => "limit = ?"
+    "limit:" => "limit = ?",
   }.freeze
 
   WHERE_ASSERTION_HASH = {}.freeze

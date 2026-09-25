@@ -25,10 +25,10 @@ class SearchOnAuthorCommentsBySimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "comments-by: greg",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Authors with comments by greg expected."
+    assert_not search.executed_query.results.empty?,
+      "Authors with comments by greg expected."
   end
 end

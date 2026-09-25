@@ -26,15 +26,21 @@ class SearchRefsDQRefSharedNamesListMT2IDTest < ActionController::TestCase
     ref_1 = references(:de_fructibus_et_seminibus_plantarum)
     ref_2 = references(:paper_by_britten_on_angophora)
     ref_3 = references(:paper_by_brassard)
-    get(:search,
-        params: { query_target: "references shared names",
-                  query_string: "#{ref_1.id},#{ref_2.id},#{ref_3.id}" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "references shared names",
+        query_string: "#{ref_1.id},#{ref_2.id},#{ref_3.id}",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /Exactly 2 reference IDs are expected/,
-                  "Should report Reference does not exist"
+      /Exactly 2 reference IDs are expected/,
+      "Should report Reference does not exist"
   end
 end

@@ -32,15 +32,20 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
 
   def run
     log_start
-    @job_h = {Job: 'Remove Syn Conflicts',
-              Job_batch: @batch.name,
-              Job_search: @search_string,
-              attempts: 0, creates: 0, declines: 0, errors: 0}
+    @job_h = {
+      Job: "Remove Syn Conflicts",
+      Job_batch: @batch.name,
+      Job_search: @search_string,
+      attempts: 0,
+      creates: 0,
+      declines: 0,
+      errors: 0,
+    }
     @search.order(:seq).each do |tree_join_record|
       if preflight_checks_pass?(tree_join_record)
         do_one_instance(tree_join_record)
         # trial to avoid catastrophic failures in Services/Mapper
-        sleep(Rails.configuration.try('bulk_job_delay_seconds') || 5)
+        sleep(Rails.configuration.try("bulk_job_delay_seconds") || 5)
       end
     end
     record_elapsed
@@ -65,8 +70,8 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
     true
   rescue => e
     log_preflight_decline_to_table(tree_join_record, e.to_s)
-    result_h = {attempts: 1, declines: 1, declines_reasons: {"#{e.to_s}": 1}}
-    @job_h.deep_merge!(result_h) { |key, old, new| old + new}
+    result_h = { attempts: 1, declines: 1, declines_reasons: { "#{e}": 1 } }
+    @job_h.deep_merge!(result_h) { |_key, old, new| old + new }
     false
   end
 
@@ -86,19 +91,21 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
 
   def do_one_instance(tree_join_record)
     @job_h[:attempts] += 1
-    taxo_remover = ::Loader::Name::DraftTaxonomyRemover.new(tree_join_record,
-                                                        @working_draft,
-                                                        @authorising_user,
-                                                        @job_number)
-    result = taxo_remover.remove
-    @job_h.deep_merge!(taxo_remover.result_h) { |key, old, new| old + new}
+    taxo_remover = ::Loader::Name::DraftTaxonomyRemover.new(
+      tree_join_record,
+      @working_draft,
+      @authorising_user,
+      @job_number,
+    )
+    taxo_remover.remove
+    @job_h.deep_merge!(taxo_remover.result_h) { |_key, old, new| old + new }
 
   rescue StandardError => e
     Rails.logger.error("Loader::Batch::BulkController::RemoveSynConflictsJob.do_one_instance: #{e}")
     entry = "<span class='red'>Error: remove syn conflict failed</span>: #{e}"
     content = "#{tree_join_record.element_link} #{tree_join_record.simple_name} #{entry}"
     log_to_table(content)
-    @job_h.deep_merge!({errors: 1, errors_reasons: {"#{e.to_s}": 1}}) { | key, old, new | old + new }
+    @job_h.deep_merge!({ errors: 1, errors_reasons: { "#{e}": 1 } }) { |_key, old, new| old + new }
   end
 
   def log_to_table(payload)
@@ -122,6 +129,6 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
 
   def debug(s)
     tag = "Loader::Name::AsRemoveSynConflictsJob"
-    Rails.logger.debug("#{tag}: #{s}")
+    Rails.logger.debug { "#{tag}: #{s}" }
   end
 end

@@ -28,7 +28,7 @@ class BaseAuthorExBaseAuthorMustDifferOnCreateTest < ActiveSupport::TestCase
     @name.name_rank = name_ranks(:species)
     @name.name_status = name_statuses(:legitimate)
     @name.parent = names(:a_genus)
-    @name.name_path = 'must_not_by_empty'
+    @name.name_path = "must_not_by_empty"
     @name.created_by = "fred"
     @name.updated_by = "fred"
   end
@@ -40,32 +40,44 @@ class BaseAuthorExBaseAuthorMustDifferOnCreateTest < ActiveSupport::TestCase
   end
 
   def part1
-    assert @name.valid?,
-           "New name should be valid without authorr.
-           Errors: #{@name.errors.full_messages.join('; ')}"
+    assert(
+      @name.valid?,
+      "New name should be valid without authorr.
+           Errors: #{@name.errors.full_messages.join("; ")}",
+    )
     @name.author = authors(:bentham)
-    assert @name.valid?,
-           "New name should be valid with an author.
-           Errors: #{@name.errors.full_messages.join('; ')}"
+    assert(
+      @name.valid?,
+      "New name should be valid with an author.
+           Errors: #{@name.errors.full_messages.join("; ")}",
+    )
     @name.base_author = authors(:joe)
   end
 
   def part2
-    assert @name.valid?,
-           "New name should be valid with a base author.
-           Errors: #{@name.errors.full_messages.join('; ')}"
+    assert(
+      @name.valid?,
+      "New name should be valid with a base author.
+           Errors: #{@name.errors.full_messages.join("; ")}",
+    )
     @name.ex_base_author = authors(:bentham)
-    assert @name.valid?,
-           "New name should be valid with an ex-base author.
-           Errors: #{@name.errors.full_messages.join('; ')}"
+    assert(
+      @name.valid?,
+      "New name should be valid with an ex-base author.
+           Errors: #{@name.errors.full_messages.join("; ")}",
+    )
     @name.ex_base_author = authors(:joe)
-    assert_not @name.valid?,
-               "New name shldnt be valid with same base and ex-base author"
+    assert_not(
+      @name.valid?,
+      "New name shldnt be valid with same base and ex-base author",
+    )
   end
 
   def part3
-    assert_equal @name.errors.full_messages.first,
-                 "The ex-base author cannot be the same as the base author.",
-                 "Wrong error message."
+    assert_equal(
+      @name.errors.full_messages.first,
+      "The ex-base author cannot be the same as the base author.",
+      "Wrong error message.",
+    )
   end
 end

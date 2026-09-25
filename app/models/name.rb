@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Name model
 # == Schema Information
 #
@@ -107,10 +109,10 @@ class Name < ApplicationRecord
   include Name::InstancesCopyable
 
   attr_accessor :display_as,
-                :give_me_focus,
-                :change_category_name_to,
-                :target_name_id,
-                :instance_ids_to_copy
+    :give_me_focus,
+    :change_category_name_to,
+    :target_name_id,
+    :instance_ids_to_copy
 
   belongs_to :name_type, optional: false
   has_one :name_category, through: :name_type
@@ -122,13 +124,13 @@ class Name < ApplicationRecord
   has_many   :members, class_name: "Name", foreign_key: "family_id"
 
   has_many :duplicates,
-           class_name: "Name",
-           foreign_key: "duplicate_of_id",
-           dependent: :restrict_with_exception
+    class_name: "Name",
+    foreign_key: "duplicate_of_id",
+    dependent: :restrict_with_exception
 
   has_many :instances,
-           foreign_key: "name_id",
-           dependent: :restrict_with_error
+    foreign_key: "name_id",
+    dependent: :restrict_with_error
 
   has_many :instance_types, through: :instances
   has_many :comments
@@ -138,16 +140,16 @@ class Name < ApplicationRecord
   has_many :tree_elements
   has_many :tree_join_v
   has_many :intended_tree_children,
-           class_name: "Loader::Name::Match",
-           foreign_key: "intended_tree_parent_name_id"
+    class_name: "Loader::Name::Match",
+    foreign_key: "intended_tree_parent_name_id"
   has_many :name_resources, dependent: :destroy
 
   SEARCH_LIMIT = 50
   DECLARED_BT = "DeclaredBt"
 
+  before_save :validate
   before_create :set_defaults
   before_update :set_name_element_if_blank
-  before_save :validate
 
   def primary_instances
     instances.where("instance_type_id in (select id from instance_type where primary_instance)")
@@ -176,9 +178,7 @@ class Name < ApplicationRecord
     end
   end
 
-  def only_one_type?
-    name_category.only_one_type?
-  end
+  delegate :only_one_type?, to: :name_category
 
   def full_name_or_default
     full_name || "[this record has no full name]"
@@ -223,28 +223,24 @@ class Name < ApplicationRecord
   end
 
   def migrated_from_apni?
-    !source_system.blank?
+    source_system.present?
   end
 
   def anchor_id
     "Name-#{id}"
   end
 
-  def hybrid?
-    name_type.hybrid?
-  end
+  delegate :hybrid?, to: :name_type
 
   def self.dummy_record
     find_by_name_element("Unknown")
   end
 
   def duplicate?
-    !duplicate_of_id.blank?
+    duplicate_of_id.present?
   end
 
-  def cultivar_hybrid?
-    name_category.cultivar_hybrid?
-  end
+  delegate :cultivar_hybrid?, to: :name_category
 
   def names_in_path
     parents = []
@@ -299,7 +295,7 @@ class Name < ApplicationRecord
 
   def self.transfer_all_dependents(dependent_type)
     total = 0
-    Name.where("duplicate_of_id is not null").each do |duplicate|
+    Name.where.not(duplicate_of_id: nil).each do |duplicate|
       dd = Name::DeDuper.new(duplicate)
       total += dd.transfer_dependents(dependent_type)
     end
@@ -310,10 +306,10 @@ class Name < ApplicationRecord
 
   def set_defaults
     self.namespace_id = Namespace.default.id if namespace_id.blank?
-    self.name_element = '[unknown]' if name_element.blank?
+    self.name_element = "[unknown]" if name_element.blank?
   end
 
   def set_name_element_if_blank
-    self.name_element = '[unknown]' if name_element.blank?
+    self.name_element = "[unknown]" if name_element.blank?
   end
 end

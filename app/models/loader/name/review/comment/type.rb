@@ -22,8 +22,9 @@ class Loader::Name::Review::Comment::Type < ApplicationRecord
   self.table_name = "name_review_comment_type"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-  has_many :name_review_comments, class_name: "Loader::Name::Review::Comment",
-                                  foreign_key: "name_review_comment_type_id"
+  has_many :name_review_comments,
+    class_name: "Loader::Name::Review::Comment",
+    foreign_key: "name_review_comment_type_id"
   alias_method :comments, :name_review_comments
 
   attr_accessor :give_me_focus, :message

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::MakeOneInstance::MakeOneSynonymyInstance::Constants
   DECLINED_INSTANCE = "<span class='firebrick'>Declined to make synonymy instance</span>"
   CREATED_INSTANCE = "<span class='darkgreen'>Made synonymy instance</span>"

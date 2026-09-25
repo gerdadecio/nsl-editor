@@ -21,7 +21,7 @@ require "test_helper"
 module Profile
   class ProductItemConfigTest < ActiveSupport::TestCase
     def setup
-      @product_item_config = product_item_config(:ecology_pic)  # Assuming fixtures are set up
+      @product_item_config = product_item_config(:ecology_pic) # Assuming fixtures are set up
     end
 
     # Test associations
@@ -34,8 +34,8 @@ module Profile
     end
 
     test "should have many profile_items" do
-      profile_item1 = profile_item(:ecology_pi)
-      profile_item2 = profile_item(:notes_pi)
+      profile_item(:ecology_pi)
+      profile_item(:notes_pi)
       assert_respond_to @product_item_config, :profile_items
     end
 
@@ -58,8 +58,8 @@ module Profile
 
     test "order by sort_order asc" do
       product_item_config = Profile::ProductItemConfig.all
-      product_item_config_sort_orders = product_item_config.collect{|p| p.sort_order.to_i}
-      assert_equal product_item_config_sort_orders, product_item_config_sort_orders.sort{|x,y| x <=> y}
+      product_item_config_sort_orders = product_item_config.collect { |p| p.sort_order.to_i }
+      assert_equal product_item_config_sort_orders, product_item_config_sort_orders.sort
     end
   end
 end

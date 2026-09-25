@@ -19,6 +19,7 @@
 # Work out the typeahead params for the parent name field.
 class Name::AsResolvedTypeahead::ForWorkspaceParent
   include Resolvable
+
   attr_reader :value
 
   def initialize(id_string, param_text)

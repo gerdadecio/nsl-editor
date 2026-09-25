@@ -26,31 +26,43 @@ class FromHybridFormulaToHybridFormulaUnkn2ndParTest < ActiveSupport::TestCase
 
   def skipped
     name = names(:hybrid_formula)
-    assert_equal name.raw_category, Name::SCIENTIFIC_HYBRID_FORMULA_CATEGORY
-    assert name.valid?, "hybrid formula name should be valid"
+    assert_equal(name.raw_category, Name::SCIENTIFIC_HYBRID_FORMULA_CATEGORY)
+    assert(name.valid?, "hybrid formula name should be valid")
 
     name.change_category_to =
       Name::SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY
-    assert_equal name.category,
-                 Name::SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY
+    assert_equal(
+      name.category,
+      Name::SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY,
+    )
 
-    assert_not name.valid?,
-               "hyb w/ 2 par shd not b valid now as hybrid with unk 2nd parent"
-    assert name.errors.size == 2, "There should be two errors."
-    assert name.errors.collect { |k, _v| k.to_s }.include?("name_type_id"),
-           "There should be an error for name_type_id."
-    assert name.errors.collect { |k, _v| k.to_s }.include?("second_parent_id"),
-           "There should be an error for second_parent_id."
+    assert_not(
+      name.valid?,
+      "hyb w/ 2 par shd not b valid now as hybrid with unk 2nd parent",
+    )
+    assert(name.errors.size == 2, "There should be two errors.")
+    assert(
+      name.errors.collect { |k, _v| k.to_s }.include?("name_type_id"),
+      "There should be an error for name_type_id.",
+    )
+    assert(
+      name.errors.collect { |k, _v| k.to_s }.include?("second_parent_id"),
+      "There should be an error for second_parent_id.",
+    )
 
     name.name_type_id =
       NameType.find_by(name: "hybrid formula unknown 2nd parent").id
     name.second_parent_id = nil
 
-    assert name.valid?,
-           "Hybrid Name sh now be valid as hybrid name with unknown 2nd parent"
+    assert(
+      name.valid?,
+      "Hybrid Name sh now be valid as hybrid name with unknown 2nd parent",
+    )
     name.save!
-    assert name.raw_category ==
-           Name::SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY,
-           "name should now be a scientific hybrid with unknown 2nd parent"
+    assert(
+      name.raw_category ==
+            Name::SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY,
+      "name should now be a scientific hybrid with unknown 2nd parent",
+    )
   end
 end

@@ -34,11 +34,15 @@ class AuthorEditorNewTest < ActionController::TestCase
     #      protection on this action to permit cross-origin
     #      JavaScript embedding. (pid:78529)
     @request.headers["Accept"] = "application/javascript"
-    get(:new,
-        params: { random_id: "12345" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :new,
+      params: { random_id: "12345" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     # puts response.body
     # assert_select "li.active a#author-edit-tab",
     #               "Edit",

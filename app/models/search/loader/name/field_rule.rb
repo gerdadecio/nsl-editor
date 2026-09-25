@@ -18,7 +18,8 @@
 #
 class Search::Loader::Name::FieldRule
   RULES = {
-    "simple-name:" => { where_clause: "(lower(simple_name) like ?)
+    "simple-name:" => {
+      where_clause: "(lower(simple_name) like ?)
         or exists (
         select null
           from loader_name parent
@@ -34,8 +35,10 @@ class Search::Loader::Name::FieldRule
           from loader_name sibling
         where sibling.parent_id = loader_name.parent_id
        and lower(sibling.simple_name) like ?)",
-                        trailing_wildcard: true},
-    "bulk-ops:" => { where_clause: "(
+      trailing_wildcard: true,
+    },
+    "bulk-ops:" => {
+      where_clause: "(
       (
         (
           lower(simple_name) like ?
@@ -56,8 +59,10 @@ class Search::Loader::Name::FieldRule
                   )
                   and record_type in ('accepted', 'excluded')
                 )
-        )"},
-    "bulk-ops-family:" => { where_clause: "(
+        )",
+    },
+    "bulk-ops-family:" => {
+      where_clause: "(
       ( lower(simple_name) like ? and rank = 'family')
     or
       (
@@ -80,8 +85,10 @@ class Search::Loader::Name::FieldRule
                   )
                   and record_type in ('accepted', 'excluded')
                 )
-        )"},
-    "simple-name-as-loaded:" => { where_clause: "(lower(simple_name_as_loaded) like ?)
+        )",
+    },
+    "simple-name-as-loaded:" => {
+      where_clause: "(lower(simple_name_as_loaded) like ?)
         or exists (
         select null
           from loader_name parent
@@ -97,24 +104,29 @@ class Search::Loader::Name::FieldRule
           from loader_name sibling
         where sibling.parent_id = loader_name.parent_id
        and lower(sibling.simple_name_as_loaded) like ?)",
-                                  trailing_wildcard: true},
-    "batch-id:" => { where_clause: "loader_batch_id = ? "},
-    "batch-name:" => { where_clause: "loader_batch_id in (select id from loader_batch where lower(name) like ?)  "},
-    "default-batch:" => { where_clause: "loader_batch_id = (select id from loader_batch where lower(name) = ?)  "},
-    "id:" => { multiple_values: true,
-               where_clause: "id = ? or parent_id = ?
+      trailing_wildcard: true,
+    },
+    "batch-id:" => { where_clause: "loader_batch_id = ? " },
+    "batch-name:" => { where_clause: "loader_batch_id in (select id from loader_batch where lower(name) like ?)  " },
+    "default-batch:" => { where_clause: "loader_batch_id = (select id from loader_batch where lower(name) = ?)  " },
+    "id:" => {
+      multiple_values: true,
+      where_clause: "id = ? or parent_id = ?
                               or id = (select parent_id from loader_name my_parent where my_parent.id = ?)
                               or parent_id = (select parent_id from loader_name my_sibling where my_sibling.id = ?)",
-               multiple_values_where_clause: "id in (?) or parent_id in (?)
+      multiple_values_where_clause: "id in (?) or parent_id in (?)
                               or id in (select parent_id from loader_name my_parent where my_parent.id in (?))
                               or parent_id in (select parent_id from loader_name my_sibling where my_sibling.id in (?))",
-               },
-    "raw-id:" => { multiple_values: true,
-                   where_clause: "raw_id = ? or parent_raw_id = ? ",
-                   multiple_values_where_clause: " raw_id in (?) or parent_raw_id in (?)"},
+    },
+    "raw-id:" => {
+      multiple_values: true,
+      where_clause: "raw_id = ? or parent_raw_id = ? ",
+      multiple_values_where_clause: " raw_id in (?) or parent_raw_id in (?)",
+    },
 
     "has-review-comment:" =>
-    { takes_no_arg: true,
+    {
+      takes_no_arg: true,
       where_clause: "exists (
         select null
           from name_review_comment nrc
@@ -134,10 +146,12 @@ class Search::Loader::Name::FieldRule
           from name_review_comment pnrc
      where pnrc.loader_name_id in (select id from loader_name sibling where loader_name.parent_id = sibling.parent_id)
                      )
-      "},
+      ",
+    },
 
     "has-review-comment-by:" =>
-    { where_clause: "exists (
+    {
+      where_clause: "exists (
         select null
           from name_review_comment nrc
           join batch_reviewer br
@@ -173,10 +187,12 @@ class Search::Loader::Name::FieldRule
             on br.user_id = u.id
      where snrc.loader_name_id in (select id from loader_name sibling where loader_name.parent_id = sibling.parent_id)
        and lower(u.user_name)      = ?)
-      "},
+      ",
+    },
 
     "review-comment:" =>
-    { where_clause: "exists (
+    {
+      where_clause: "exists (
         select null
           from name_review_comment nrc
      where nrc.loader_name_id = loader_name.id
@@ -202,10 +218,12 @@ class Search::Loader::Name::FieldRule
                      )
       ",
       leading_wildcard: true,
-      trailing_wildcard: true},
+      trailing_wildcard: true,
+    },
 
     "comment-type:" =>
-    { where_clause: "exists (
+    {
+      where_clause: "exists (
         select null
           from name_review_comment nrc
                join name_review_comment_type nrct
@@ -239,22 +257,26 @@ class Search::Loader::Name::FieldRule
                      )
       ",
       leading_wildcard: true,
-      trailing_wildcard: true},
+      trailing_wildcard: true,
+    },
     "simple-name-not-like:" => { where_clause: "(lower(simple_name) not like '%'||?||'%')" },
     "family-members:" => {
-        multiple_values: true,
-        takes_optional_arg: true,
-        where_clause: "lower(family) like ? || '%' ",
-        multiple_values_where_clause: " lower(family) in (?)"},
+      multiple_values: true,
+      takes_optional_arg: true,
+      where_clause: "lower(family) like ? || '%' ",
+      multiple_values_where_clause: " lower(family) in (?)",
+    },
     "family-list:" => {
-        multiple_values: true,
-        takes_optional_arg: true,
-        where_clause: "lower(family) like ? || '%'  and lower(rank) = 'family'",
-        multiple_values_where_clause: " lower(family) in (?) and lower(rank) = 'family'"},
+      multiple_values: true,
+      takes_optional_arg: true,
+      where_clause: "lower(family) like ? || '%'  and lower(rank) = 'family'",
+      multiple_values_where_clause: " lower(family) in (?) and lower(rank) = 'family'",
+    },
     "family-id:" => { where_clause: "(lower(family) like (select lower(simple_name) from loader_name where id = ?))" },
-    "record-type:" => { where_clause: " record_type = ?"},
+    "record-type:" => { where_clause: " record_type = ?" },
 
-    "remark:" => { where_clause: "(lower(remark_to_reviewers) like ?)
+    "remark:" => {
+      where_clause: "(lower(remark_to_reviewers) like ?)
         or exists (
         select null
           from loader_name parent
@@ -270,10 +292,12 @@ class Search::Loader::Name::FieldRule
           from loader_name sibling
         where sibling.parent_id = loader_name.parent_id
        and lower(sibling.remark_to_reviewers) like ?)",
-                   leading_wildcard: true,
-                   trailing_wildcard: true},
+      leading_wildcard: true,
+      trailing_wildcard: true,
+    },
 
-    "higher-rank-comment:" => { where_clause: "(lower(higher_rank_comment) like ?)
+    "higher-rank-comment:" => {
+      where_clause: "(lower(higher_rank_comment) like ?)
         or exists (
         select null
           from loader_name parent
@@ -289,28 +313,33 @@ class Search::Loader::Name::FieldRule
           from loader_name sibling
         where sibling.parent_id = loader_name.parent_id
        and lower(sibling.higher_rank_comment) like ?)",
-                                leading_wildcard: true,
-                                trailing_wildcard: true},
+      leading_wildcard: true,
+      trailing_wildcard: true,
+    },
 
     "distribution:" =>
-       { where_clause: "(lower(distribution) like ?)
+       {
+         where_clause: "(lower(distribution) like ?)
           or exists (
           select null
             from loader_name parent
           where parent.id = loader_name.parent_id
          and lower(parent.distribution) like ?)",
          leading_wildcard: true,
-         trailing_wildcard: true},
+         trailing_wildcard: true,
+       },
 
     "distribution-not:" =>
-           { where_clause: "(lower(distribution) not like ?)
+           {
+             where_clause: "(lower(distribution) not like ?)
         or exists (
         select null
           from loader_name parent
         where parent.id = loader_name.parent_id
        and lower(parent.distribution) not like ?)",
              leading_wildcard: true,
-             trailing_wildcard: true},
+             trailing_wildcard: true,
+           },
 
     "no-distribution:" => {
       takes_no_arg: true,
@@ -320,12 +349,16 @@ class Search::Loader::Name::FieldRule
           from loader_name parent
         where parent.id = loader_name.parent_id
        and record_type= 'accepted'
-       and (distribution is null or distribution = ''))"},
-    "name:" => { trailing_wildcard: true,
-                 where_clause: " lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||? "},
-    "name-no-wildcard:" => { where_clause: " lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?"},
-    "name-with-syn:" => { trailing_wildcard: true,
-                          where_clause: " ((lower(simple_name) like ?
+       and (distribution is null or distribution = ''))",
+    },
+    "name:" => {
+      trailing_wildcard: true,
+      where_clause: " lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||? ",
+    },
+    "name-no-wildcard:" => { where_clause: " lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?" },
+    "name-with-syn:" => {
+      trailing_wildcard: true,
+      where_clause: " ((lower(simple_name) like ?
                                    or lower(simple_name) like 'x '||?
                                    or lower(simple_name) like '('||?)
                                   and record_type = 'accepted')
@@ -335,36 +368,64 @@ class Search::Loader::Name::FieldRule
                                     where (lower(simple_name) like ?
                                       or lower(simple_name) like 'x '||?
                                       or lower(simple_name) like '('||?)
-                                      and record_type = 'accepted'))"},
-    "id-with-syn:" => { where_clause: "id = ? or parent_id = ?"},
-    "has-parent:" => { where_clause: "parent_id is not null",
-                       takes_no_arg: true},
-    "has-no-parent:" => { where_clause: "parent_id is null",
-                       takes_no_arg: true},
-    "accepted:" => { where_clause: "record_type = 'accepted'",
-                       takes_no_arg: true},
-    "excluded:" => { where_clause: "record_type = 'excluded'",
-                       takes_no_arg: true},
-    "not-excluded:" => { where_clause: " record_type != 'excluded'",
-                         takes_no_arg: true},
-    "syn:" => { where_clause: "record_type = 'synonym'",
-                takes_no_arg: true},
-    "misapplied:" => { where_clause: "record_type = 'misapplied'",
-                       takes_no_arg: true},
-    "not-misapplied:" => { where_clause: "record_type != 'misapplied'",
-                       takes_no_arg: true},
-    "in-batch-note:" => { where_clause: "record_type = 'in-batch-note'",
-                       takes_no_arg: true},
-    "is-hybrid:" => { where_clause: "hybrid_flag = 'hybrid'",
-                      takes_no_arg: true},
-    "is-intergrade:" => { where_clause: "hybrid_flag = 'intergrade'",
-                          takes_no_arg: true},
-    "is-mso-normal:" => { where_clause: "hybrid_flag = 'MsoNormal'",
-                          takes_no_arg: true},
-    "syn-but-no-syn-type:" => { takes_no_arg: true,
-                                where_clause: "record_type = 'synonym' and synonym_type is null"},
-    "no-name-match:" => { takes_no_arg: true,
-                          where_clause: "record_type not in ('heading')
+                                      and record_type = 'accepted'))",
+    },
+    "id-with-syn:" => { where_clause: "id = ? or parent_id = ?" },
+    "has-parent:" => {
+      where_clause: "parent_id is not null",
+      takes_no_arg: true,
+    },
+    "has-no-parent:" => {
+      where_clause: "parent_id is null",
+      takes_no_arg: true,
+    },
+    "accepted:" => {
+      where_clause: "record_type = 'accepted'",
+      takes_no_arg: true,
+    },
+    "excluded:" => {
+      where_clause: "record_type = 'excluded'",
+      takes_no_arg: true,
+    },
+    "not-excluded:" => {
+      where_clause: " record_type != 'excluded'",
+      takes_no_arg: true,
+    },
+    "syn:" => {
+      where_clause: "record_type = 'synonym'",
+      takes_no_arg: true,
+    },
+    "misapplied:" => {
+      where_clause: "record_type = 'misapplied'",
+      takes_no_arg: true,
+    },
+    "not-misapplied:" => {
+      where_clause: "record_type != 'misapplied'",
+      takes_no_arg: true,
+    },
+    "in-batch-note:" => {
+      where_clause: "record_type = 'in-batch-note'",
+      takes_no_arg: true,
+    },
+    "is-hybrid:" => {
+      where_clause: "hybrid_flag = 'hybrid'",
+      takes_no_arg: true,
+    },
+    "is-intergrade:" => {
+      where_clause: "hybrid_flag = 'intergrade'",
+      takes_no_arg: true,
+    },
+    "is-mso-normal:" => {
+      where_clause: "hybrid_flag = 'MsoNormal'",
+      takes_no_arg: true,
+    },
+    "syn-but-no-syn-type:" => {
+      takes_no_arg: true,
+      where_clause: "record_type = 'synonym' and synonym_type is null",
+    },
+    "no-name-match:" => {
+      takes_no_arg: true,
+      where_clause: "record_type not in ('heading')
      and not exists (
         select null
           from name
@@ -376,18 +437,22 @@ class Search::Loader::Name::FieldRule
             select null
               from name_type nt
             where name.name_type_id = nt.id
-              and nt.scientific))"},
-    "no-name-match-unscientific:" => { takes_no_arg: true,
-                                       where_clause: "record_type not in ('heading')
+              and nt.scientific))",
+    },
+    "no-name-match-unscientific:" => {
+      takes_no_arg: true,
+      where_clause: "record_type not in ('heading')
      and not exists (
         select null
           from name
         where duplicate_of_id is null
         and (loader_name.simple_name = name.simple_name
                or
-               loader_name.simple_name = name.full_name))"},
-    "no-name-match-unaccent:" => { takes_no_arg: true,
-                                   where_clause: "record_type not in ('heading')
+               loader_name.simple_name = name.full_name))",
+    },
+    "no-name-match-unaccent:" => {
+      takes_no_arg: true,
+      where_clause: "record_type not in ('heading')
     and loader_name.id in (select id
   from loader_name
  where lower(f_unaccent(simple_name)) in (
@@ -402,9 +467,11 @@ class Search::Loader::Name::FieldRule
           from name n
            where duplicate_of_id is null
           )
-       ) ) "},
-    "some-name-match:" => { takes_no_arg: true,
-                            where_clause: "record_type not in ('heading')
+       ) ) ",
+    },
+    "some-name-match:" => {
+      takes_no_arg: true,
+      where_clause: "record_type not in ('heading')
         and exists (
                               select null
                                 from name
@@ -415,9 +482,11 @@ class Search::Loader::Name::FieldRule
             select null
               from name_type nt
             where name.name_type_id = nt.id
-              and nt.scientific))"},
-    "some-name-match-unscientific:" => { takes_no_arg: true, 
-                                         where_clause: "record_type not in ('heading')
+              and nt.scientific))",
+    },
+    "some-name-match-unscientific:" => {
+      takes_no_arg: true,
+      where_clause: "record_type not in ('heading')
       and exists (
                               select null
                                 from name
@@ -428,9 +497,11 @@ class Search::Loader::Name::FieldRule
             select null
               from name_type nt
             where name.name_type_id = nt.id
-              and nt.scientific))"},
-    "many-name-match:" => { takes_no_arg: true,
-                            where_clause: "record_type not in ('heading')
+              and nt.scientific))",
+    },
+    "many-name-match:" => {
+      takes_no_arg: true,
+      where_clause: "record_type not in ('heading')
      and 1 < (
         select count(*)
           from name
@@ -442,8 +513,10 @@ class Search::Loader::Name::FieldRule
             select null
               from name_type nt
             where name.name_type_id = nt.id
-              and nt.scientific))"},
-    "many-name-match-unaccent:" => { where_clause: "record_type not in ('heading')
+              and nt.scientific))",
+    },
+    "many-name-match-unaccent:" => {
+      where_clause: "record_type not in ('heading')
  and loader_name.id in (select id
   from loader_name
  where lower(f_unaccent(simple_name)) in
@@ -458,9 +531,11 @@ class Search::Loader::Name::FieldRule
     )  fred
 group by l_fa_sn
 having count(*) > 2
-))"},
-    "one-name-match:" => { takes_no_arg: true,
-                           where_clause: "record_type not in ('heading')
+))",
+    },
+    "one-name-match:" => {
+      takes_no_arg: true,
+      where_clause: "record_type not in ('heading')
   and 1 = (
       select count(*)
         from name
@@ -472,9 +547,10 @@ having count(*) > 2
           select null
             from name_Type nt
           where name.name_type_id       = nt.id
-     and nt.scientific))"},
-  "name-match-no-primary:" => {
-    where_clause:
+     and nt.scientific))",
+    },
+    "name-match-no-primary:" => {
+      where_clause:
     "id in (
 select ln.id
   from loader_name ln
@@ -501,8 +577,10 @@ select ln.id
      from loader_name_match lnm
     where ln.id = lnm.loader_name_id)
     )",
-      takes_no_arg: true, },
-    "name-match-eq:" => { where_clause: "record_type not in ('heading')
+      takes_no_arg: true,
+    },
+    "name-match-eq:" => {
+      where_clause: "record_type not in ('heading')
  and ? = (
       select count(*)
         from name
@@ -514,8 +592,10 @@ select ln.id
           select null
             from name_Type nt
             where name.name_type_id       = nt.id
-      and nt.scientific))"},
-    "name-match-gt:" => { where_clause: "record_type not in ('heading')
+      and nt.scientific))",
+    },
+    "name-match-gt:" => {
+      where_clause: "record_type not in ('heading')
  and ? < (
         select count(*)
           from name
@@ -526,8 +606,10 @@ select ln.id
             select null
               from name_Type nt
             where name.name_type_id       = nt.id
-       and nt.scientific))"},
-    "name-match-gte:" => { where_clause: "record_type not in ('heading')
+       and nt.scientific))",
+    },
+    "name-match-gte:" => {
+      where_clause: "record_type not in ('heading')
  and ? <= (
         select count(*)
           from name
@@ -538,41 +620,62 @@ select ln.id
             select null
               from name_Type nt
             where name.name_type_id       = nt.id
-       and nt.scientific))"},
-       "partly:" => { where_clause: "partly = 'p.p.' or publ_partly = 'p.p.' or synonym_type like 'pro parte%'",
-                   takes_no_arg: true},
-       "not-partly:" => { where_clause: "not (coalesce(partly,'x') = 'p.p.' or coalesce(publ_partly,'x') = 'p.p.' or coalesce(synonym_type,'x') like 'pro parte%')",
-                   takes_no_arg: true},
-    "publ-partly:" => { where_clause: "publ_partly is not null",
-                            takes_no_arg: true},
-    "not-publ-partly:" => { where_clause: "publ_partly is null",
-                            takes_no_arg: true},
-    "name-sharing-name-id:" => { takes_no_arg: true,
-                                 where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match group by name_id having count(*) > 1))"},
-    "has-preferred-name:" => { where_clause: " exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)",
-                               takes_no_arg: true},
-    "has-preferred-name-without-instance:" => { where_clause: " exists (select null from loader_name_match orn where loader_name.id = orn.loader_name_id and orn.standalone_instance_id is null and orn.relationship_instance_id is null)",
-                                                takes_no_arg: true},
-    "use-batch-default-ref:" => { takes_no_arg: true,
-                                  where_clause: " exists (
+       and nt.scientific))",
+    },
+    "partly:" => {
+      where_clause: "partly = 'p.p.' or publ_partly = 'p.p.' or synonym_type like 'pro parte%'",
+      takes_no_arg: true,
+    },
+    "not-partly:" => {
+      where_clause: "not (coalesce(partly,'x') = 'p.p.' or coalesce(publ_partly,'x') = 'p.p.' or coalesce(synonym_type,'x') like 'pro parte%')",
+      takes_no_arg: true,
+    },
+    "publ-partly:" => {
+      where_clause: "publ_partly is not null",
+      takes_no_arg: true,
+    },
+    "not-publ-partly:" => {
+      where_clause: "publ_partly is null",
+      takes_no_arg: true,
+    },
+    "name-sharing-name-id:" => {
+      takes_no_arg: true,
+      where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match group by name_id having count(*) > 1))",
+    },
+    "has-preferred-name:" => {
+      where_clause: " exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)",
+      takes_no_arg: true,
+    },
+    "has-preferred-name-without-instance:" => {
+      where_clause: " exists (select null from loader_name_match orn where loader_name.id = orn.loader_name_id and orn.standalone_instance_id is null and orn.relationship_instance_id is null)",
+      takes_no_arg: true,
+    },
+    "use-batch-default-ref:" => {
+      takes_no_arg: true,
+      where_clause: " exists (
     select null
       from loader_name_match
  where loader_name.id = loader_name_match.loader_name_id
-   and loader_name_match.use_batch_default_reference)"},
-    "use-existing-instance:" => { takes_no_arg: true,
-                                  where_clause: " exists (
+   and loader_name_match.use_batch_default_reference)",
+    },
+    "use-existing-instance:" => {
+      takes_no_arg: true,
+      where_clause: " exists (
     select null
       from loader_name_match
  where loader_name.id = loader_name_match.loader_name_id
    and loader_name_match.standalone_instance_id is not null
-   and loader_name_match.use_existing_instance)"},
-    "copy-and-append:" => { takes_no_arg: true,
-                            where_clause: " exists (
+   and loader_name_match.use_existing_instance)",
+    },
+    "copy-and-append:" => {
+      takes_no_arg: true,
+      where_clause: " exists (
     select null
       from loader_name_match
  where loader_name.id = loader_name_match.loader_name_id
    and loader_name_match.instance_choice_confirmed
-   and loader_name_match.copy_append_from_existing_use_batch_def_ref)"},
+   and loader_name_match.copy_append_from_existing_use_batch_def_ref)",
+    },
     "no-nomination:" => {
       where_clause: " loader_name.record_type in ('accepted','excluded')
                 and exists (
@@ -582,24 +685,38 @@ select ln.id
                      and not loader_name_match.use_batch_default_reference
                      and not copy_append_from_existing_use_batch_def_ref
                      and loader_name_match.standalone_instance_id is null)",
-      takes_no_arg: true},
-    "has-no-preferred-name:" => { where_clause: " not exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)",
-                                  takes_no_arg: true},
-    "created-by:" => { where_clause: "created_by = ?"},
-    "updated-by:" => { where_clause: "updated_by = ?"},
-    "not-created-by:" => { where_clause: "created_by != ?"},
-    "not-created-by-batch:" => { takes_no_arg: true,
-                                 where_clause: "created_by != 'batch'"},
-    "original-text:" => { where_clause: "lower(original_text) like ?",
-                          not_exists_clause: " original_text is null"},
-    "original-text-has-×:" => { where_clause: "lower(original_text) like '%×%'",
-                                takes_no_arg: true},
-    "original-text-has-x:" => { where_clause: "lower(original_text) like '%×%'",
-                                takes_no_arg: true},
-    "hybrid-flag:" => { where_clause: "hybrid_flag like ?"},
-    "no-hybrid-flag:" => { where_clause: "hybrid_flag is null",
-                           takes_no_arg: true},
-    "no-further-processing:" => { where_clause: " no_further_processing
+      takes_no_arg: true,
+    },
+    "has-no-preferred-name:" => {
+      where_clause: " not exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)",
+      takes_no_arg: true,
+    },
+    "created-by:" => { where_clause: "created_by = ?" },
+    "updated-by:" => { where_clause: "updated_by = ?" },
+    "not-created-by:" => { where_clause: "created_by != ?" },
+    "not-created-by-batch:" => {
+      takes_no_arg: true,
+      where_clause: "created_by != 'batch'",
+    },
+    "original-text:" => {
+      where_clause: "lower(original_text) like ?",
+      not_exists_clause: " original_text is null",
+    },
+    "original-text-has-×:" => {
+      where_clause: "lower(original_text) like '%×%'",
+      takes_no_arg: true,
+    },
+    "original-text-has-x:" => {
+      where_clause: "lower(original_text) like '%×%'",
+      takes_no_arg: true,
+    },
+    "hybrid-flag:" => { where_clause: "hybrid_flag like ?" },
+    "no-hybrid-flag:" => {
+      where_clause: "hybrid_flag is null",
+      takes_no_arg: true,
+    },
+    "no-further-processing:" => {
+      where_clause: " no_further_processing
                                   or exists (select null
                                                from loader_name kids
                                               where kids.parent_id = loader_name.id
@@ -608,38 +725,62 @@ select ln.id
                                                from loader_name pa
                                               where pa.id = loader_name.parent_id
                                                 and pa.no_further_processing)",
-                           takes_no_arg: true},
-    "isonym:" => { takes_no_arg: true,
-                   where_clause: "isonym is not null"},
-    "orth-var:" => { takes_no_arg: true,
-                     where_clause: "name_status like 'orth%'"},
-    "name-status:" => { where_clause: "name_status like ?",
-                        leading_wildcard: true,
-                        trailing_wildcard: true},
-    "name-status-empty-string:" => { takes_no_arg: true,
-                                     where_clause: "name_status = ''"},
-    "name-status-exact:" => { where_clause: "name_status like ?"},
-    "notes:" => { where_clause: "lower(notes) like ?",
-                  leading_wildcard: true,
-                  trailing_wildcard: true},
-    "rank:" => { where_clause: "lower(rank) like ?",
-                 not_exists_clause: " rank is null"},
-    "not-rank:" => { where_clause: "lower(rank) not like ?"},
-    "no-rank:" => { takes_no_arg: true,
-                    where_clause: "rank is null"},
-    "nsl-rank:" => { where_clause: "lower(nsl_rank) like ?"},
-    "not-nsl-rank:" => { where_clause: "lower(nsl_rank) not like ?"},
-    "no-nsl-rank:" => { takes_no_arg: true,
-                        where_clause: "nsl_rank is null"},
-    "doubtful:" => { takes_no_arg: true,
-                     where_clause: "doubtful"},
-    "not-doubtful:" => { takes_no_arg: true,
-                         where_clause: "not doubtful"},
-    "excluded-with-syn:" => { trailing_wildcard: true,
-                              where_clause: " (lower(simple_name) like ? and record_type = 'excluded') or (parent_id in (select id from loader_name where lower(simple_name) like ? and record_type = 'excluded'))"},
+      takes_no_arg: true,
+    },
+    "isonym:" => {
+      takes_no_arg: true,
+      where_clause: "isonym is not null",
+    },
+    "orth-var:" => {
+      takes_no_arg: true,
+      where_clause: "name_status like 'orth%'",
+    },
+    "name-status:" => {
+      where_clause: "name_status like ?",
+      leading_wildcard: true,
+      trailing_wildcard: true,
+    },
+    "name-status-empty-string:" => {
+      takes_no_arg: true,
+      where_clause: "name_status = ''",
+    },
+    "name-status-exact:" => { where_clause: "name_status like ?" },
+    "notes:" => {
+      where_clause: "lower(notes) like ?",
+      leading_wildcard: true,
+      trailing_wildcard: true,
+    },
+    "rank:" => {
+      where_clause: "lower(rank) like ?",
+      not_exists_clause: " rank is null",
+    },
+    "not-rank:" => { where_clause: "lower(rank) not like ?" },
+    "no-rank:" => {
+      takes_no_arg: true,
+      where_clause: "rank is null",
+    },
+    "nsl-rank:" => { where_clause: "lower(nsl_rank) like ?" },
+    "not-nsl-rank:" => { where_clause: "lower(nsl_rank) not like ?" },
+    "no-nsl-rank:" => {
+      takes_no_arg: true,
+      where_clause: "nsl_rank is null",
+    },
+    "doubtful:" => {
+      takes_no_arg: true,
+      where_clause: "doubtful",
+    },
+    "not-doubtful:" => {
+      takes_no_arg: true,
+      where_clause: "not doubtful",
+    },
+    "excluded-with-syn:" => {
+      trailing_wildcard: true,
+      where_clause: " (lower(simple_name) like ? and record_type = 'excluded') or (parent_id in (select id from loader_name where lower(simple_name) like ? and record_type = 'excluded'))",
+    },
 
     "comment:" =>
-     { where_clause: "(lower(comment) like ?)
+     {
+       where_clause: "(lower(comment) like ?)
         or exists (
         select null
           from loader_name parent
@@ -656,10 +797,12 @@ select ln.id
         where sibling.parent_id = loader_name.parent_id
        and lower(sibling.comment) like ?)",
        leading_wildcard: true,
-       trailing_wildcard: true},
+       trailing_wildcard: true,
+     },
 
-    "in-accepted-taxonomy:" => { takes_no_arg: true,
-                                 where_clause: "loader_name.id in (select distinct ln.id
+    "in-accepted-taxonomy:" => {
+      takes_no_arg: true,
+      where_clause: "loader_name.id in (select distinct ln.id
   from loader_name_match lnm
   join loader_name ln
     on lnm.loader_name_id = ln.id
@@ -671,10 +814,12 @@ select ln.id
     and tree_version_id = current_tree_version_id
        )
  order by ln.id)",
-                                trailing_wildcard: true},
+      trailing_wildcard: true,
+    },
 
-    "not-in-accepted-taxonomy:" => { takes_no_arg: true,
-                                     where_clause: "loader_name.id in (select distinct ln.id
+    "not-in-accepted-taxonomy:" => {
+      takes_no_arg: true,
+      where_clause: "loader_name.id in (select distinct ln.id
   from loader_name_match lnm
   join loader_name ln
     on lnm.loader_name_id = ln.id
@@ -686,25 +831,35 @@ select ln.id
     and tree_version_id = current_tree_version_id
        )
  order by ln.id)",
-                                trailing_wildcard: true},
+      trailing_wildcard: true,
+    },
 
-    "in-or-not-in-accepted-taxonomy:" => { takes_no_arg: true,
-                                           where_clause: "loader_name.id in (select distinct ln.id
+    "in-or-not-in-accepted-taxonomy:" => {
+      takes_no_arg: true,
+      where_clause: "loader_name.id in (select distinct ln.id
   from loader_name_match lnm
   join loader_name ln
     on lnm.loader_name_id = ln.id
  where ln.record_type = 'accepted'
  order by ln.id)",
-                                trailing_wildcard: true},
+      trailing_wildcard: true,
+    },
 
-    "syn-type:" => { where_clause: "lower(synonym_type) like ?"},
-    "manually-drafted:" => { takes_no_arg: true,
-                             where_clause: " id in (select loader_name_id from loader_name_match where manually_drafted)"},
-    "drafted:" => { takes_no_arg: true,
-                    where_clause: " id in (select loader_name_id from loader_name_match where drafted)"},
-    "created-manually:" => { takes_no_arg: true,
-                             where_clause: "created_manually" },
-"syn-match-in-tree-faster-join:" => { where_clause: " id in (select ln.id
+    "syn-type:" => { where_clause: "lower(synonym_type) like ?" },
+    "manually-drafted:" => {
+      takes_no_arg: true,
+      where_clause: " id in (select loader_name_id from loader_name_match where manually_drafted)",
+    },
+    "drafted:" => {
+      takes_no_arg: true,
+      where_clause: " id in (select loader_name_id from loader_name_match where drafted)",
+    },
+    "created-manually:" => {
+      takes_no_arg: true,
+      where_clause: "created_manually",
+    },
+    "syn-match-in-tree-faster-join:" => {
+      where_clause: " id in (select ln.id
   from loader_name ln
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
@@ -725,9 +880,9 @@ select ln.id
    and not rel_type.pro_parte
    and ln.partly is null
    and lower(ln.simple_name) like lower(?))",
-   not_exists_clause: " needs an argument",
-   multiple_values: true,
-   multiple_values_where_clause: " id in (select ln.id
+      not_exists_clause: " needs an argument",
+      multiple_values: true,
+      multiple_values_where_clause: " id in (select ln.id
   from loader_name ln
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
@@ -748,8 +903,9 @@ select ln.id
    and not rel_type.pro_parte
    and ln.partly is null
    and lower(ln.simple_name) in (?))",
-     },
-"syn-match-in-tree-family:" => { where_clause: " id in (select ln.id
+    },
+    "syn-match-in-tree-family:" => {
+      where_clause: " id in (select ln.id
   from loader_name ln
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
@@ -770,9 +926,9 @@ select ln.id
    and not rel_type.pro_parte
    and ln.partly is null
    and lower(ln.family) like lower(?))",
-   not_exists_clause: " needs an argument",
-   multiple_values: true,
-   multiple_values_where_clause: " id in (select ln.id
+      not_exists_clause: " needs an argument",
+      multiple_values: true,
+      multiple_values_where_clause: " id in (select ln.id
   from loader_name ln
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
@@ -793,9 +949,10 @@ select ln.id
    and not rel_type.pro_parte
    and ln.partly is null
    and lower(ln.family) in (?))",
-     },
-  "name-match-in-syn:" => { takes_no_arg: true,
-                            where_clause: " record_type in ('accepted', 'excluded')
+    },
+    "name-match-in-syn:" => {
+      takes_no_arg: true,
+      where_clause: " record_type in ('accepted', 'excluded')
        and exists (
        select null
        from loader_name_match
@@ -818,9 +975,11 @@ select ln.id
    and tree_join_v.tree_version_id = tree_join_v.current_tree_version_id
    and pni_type.synonym
    and not pni_type.pro_parte
-     )"},
-    "syn-clash-with-syn:" => { takes_no_arg: true,
-                               where_clause: "
+     )",
+    },
+    "syn-clash-with-syn:" => {
+      takes_no_arg: true,
+      where_clause: "
                                  ( exists (
        select null
   from loader_name parent
@@ -880,11 +1039,14 @@ select ln.id
    and citer_tree.tree_version_id = current_tree_version_id
    and parent_match.name_id != cot_name.id
    and child.record_type != 'misapplied'
-     ))"},
-  "any-batch:" => { where_clause: "1=1",
-                    takes_no_arg: true},
-  "org-voted-yes:" => {
-    where_clause: "id in ( select id from loader_name where
+     ))",
+    },
+    "any-batch:" => {
+      where_clause: "1=1",
+      takes_no_arg: true,
+    },
+    "org-voted-yes:" => {
+      where_clause: "id in ( select id from loader_name where
                            (
                              (
                               record_type in ('accepted','excluded')
@@ -924,10 +1086,10 @@ select ln.id
                                                   where loader_name.id = name_review_vote.loader_name_id
                                                     and name_review_vote.vote = true)
                                        )
-                                )"
-       },
-  "org-voted-no:" => {
-    where_clause: "id in ( select id from loader_name where
+                                )",
+    },
+    "org-voted-no:" => {
+      where_clause: "id in ( select id from loader_name where
                            (
                              (
                               record_type in ('accepted','excluded')
@@ -967,10 +1129,10 @@ select ln.id
                                                   where loader_name.id = name_review_vote.loader_name_id
                                                     and name_review_vote.vote = false)
                                        )
-                                )"
-       },
-  "org-voted:" => {
-    where_clause: "id in ( select id from loader_name where
+                                )",
+    },
+    "org-voted:" => {
+      where_clause: "id in ( select id from loader_name where
                            (
                              (
                               record_type in ('accepted','excluded')
@@ -1008,8 +1170,9 @@ select ln.id
                                                   where loader_name.id = name_review_vote.loader_name_id)
                                        )
                                 )",
-       },
-  "org-not-voted:" => { where_clause: "id not in ( select id from loader_name subq_loader_name where
+    },
+    "org-not-voted:" => {
+      where_clause: "id not in ( select id from loader_name subq_loader_name where
                            (
                              (
                               record_type in ('accepted','excluded')
@@ -1047,10 +1210,10 @@ select ln.id
                                                   where parent_loader_name.id = name_review_vote.loader_name_id)
                                        )
                                 )
-                              )"
-       },
-  "no-family-heading:" => {
-    where_clause: "record_type in ('accepted','excluded')
+                              )",
+    },
+    "no-family-heading:" => {
+      where_clause: "record_type in ('accepted','excluded')
 and not exists
 (select null
   from loader_name family
@@ -1058,8 +1221,9 @@ and not exists
    and loader_name.family = family.simple_name
 )",
       takes_no_arg: true,
-  },
-"syn-matched-to-autonym:" => { where_clause: "record_type = 'synonym'
+    },
+    "syn-matched-to-autonym:" => {
+      where_clause: "record_type = 'synonym'
   and exists (select null
                 from loader_name_match
                      join instance on loader_name_match.instance_id = instance.id
@@ -1067,17 +1231,24 @@ and not exists
                where loader_name.id = loader_name_match.loader_name_id
                  and instance_type.name like '%autonym%'
              )",
-            takes_no_arg: true},
-"formatted-note:" => { where_clause: "lower(formatted_text_above) like lower(?) 
+      takes_no_arg: true,
+    },
+    "formatted-note:" => {
+      where_clause: "lower(formatted_text_above) like lower(?)
                                       or
                                       lower(formatted_text_below) like lower(?)",
-                       leading_wildcard: true,
-                       trailing_wildcard: true},
-"formatted-note-above:" => { where_clause: "lower(formatted_text_above) like lower(?)",
-                       leading_wildcard: true,
-                       trailing_wildcard: true},
-"formatted-note-below:" => { where_clause: "lower(formatted_text_below) like lower(?)",
-                       leading_wildcard: true,
-                       trailing_wildcard: true},
+      leading_wildcard: true,
+      trailing_wildcard: true,
+    },
+    "formatted-note-above:" => {
+      where_clause: "lower(formatted_text_above) like lower(?)",
+      leading_wildcard: true,
+      trailing_wildcard: true,
+    },
+    "formatted-note-below:" => {
+      where_clause: "lower(formatted_text_below) like lower(?)",
+      leading_wildcard: true,
+      trailing_wildcard: true,
+    },
   }.freeze
 end

@@ -82,10 +82,10 @@ class Instance::AsArray::ForReference < Array
 
     def base_query(sort_by)
       query = Instance
-              .joins(:name)
-              .includes(name: :name_status)
-              .includes(:instance_type)
-              .includes(this_is_cited_by: %i[name instance_type])
+        .joins(:name)
+        .includes(name: :name_status)
+        .includes(:instance_type)
+        .includes(this_is_cited_by: [:name, :instance_type])
       sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
     end
 
@@ -100,20 +100,20 @@ class Instance::AsArray::ForReference < Array
       return {} if standalone_ids.empty?
 
       cited_by_instances = Instance.where(cited_by_id: standalone_ids)
-                                    .joins(:instance_type, :name)
-                                    .joins("inner join name_status ns on name.name_status_id = ns.id")
-                                    .joins("left outer join instance cites on instance.cites_id = cites.id")
-                                    .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
-                                    .includes(:instance_type, :name)
-                                    .in_synonymy_order
-                                    .to_a
+        .joins(:instance_type, :name)
+        .joins("inner join name_status ns on name.name_status_id = ns.id")
+        .joins("left outer join instance cites on instance.cites_id = cites.id")
+        .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
+        .includes(:instance_type, :name)
+        .in_synonymy_order
+        .to_a
       cited_by_instances.each { |instance| instance.display_as = "cited-by-instance" }
       cited_by_instances.group_by(&:cited_by_id)
     end
   end
 
   def initialize(reference, sort_by = "name", limit = nil, offset = 0,
-                 preloaded_instances: nil, preloaded_cited_by_map: nil)
+    preloaded_instances: nil, preloaded_cited_by_map: nil)
     debug("init #{reference.citation}")
     @results = []
     @already_shown = []
@@ -129,11 +129,11 @@ class Instance::AsArray::ForReference < Array
   end
 
   def debug(s)
-    Rails.logger.debug("Instance::AsArray::ForReference: #{s}")
+    Rails.logger.debug { "Instance::AsArray::ForReference: #{s}" }
   end
 
   def find_instances
-    debug "find_instances"
+    debug("find_instances")
     @reference.display_as_part_of_concept
     @count = 1
     find_instances_for_ref

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
+RSpec.describe(Instance::AsTypeahead::ForChangeName, type: :model) do
   let(:name_rank) { create(:name_rank) }
   let(:name_type) { create(:name_type) }
   let(:name) do
@@ -16,9 +16,9 @@ RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
           term: "",
           name_type_id: name_type.id,
           name_rank_id: name_rank.id,
-          exclude_name_id: 0
+          exclude_name_id: 0,
         )
-        expect(result.suggestions).to eq([])
+        expect(result.suggestions).to(eq([]))
       end
 
       it "returns an empty array for nil term" do
@@ -26,9 +26,9 @@ RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
           term: nil,
           name_type_id: name_type.id,
           name_rank_id: name_rank.id,
-          exclude_name_id: 0
+          exclude_name_id: 0,
         )
-        expect(result.suggestions).to eq([])
+        expect(result.suggestions).to(eq([]))
       end
     end
 
@@ -40,9 +40,9 @@ RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
           term: "Acacia",
           name_type_id: name_type.id,
           name_rank_id: name_rank.id,
-          exclude_name_id: 0
+          exclude_name_id: 0,
         )
-        expect(result.suggestions).to include({ value: "Acacia dealbata", id: name.id })
+        expect(result.suggestions).to(include({ value: "Acacia dealbata", id: name.id }))
       end
 
       it "is case-insensitive" do
@@ -50,9 +50,9 @@ RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
           term: "acacia",
           name_type_id: name_type.id,
           name_rank_id: name_rank.id,
-          exclude_name_id: 0
+          exclude_name_id: 0,
         )
-        expect(result.suggestions).to include({ value: "Acacia dealbata", id: name.id })
+        expect(result.suggestions).to(include({ value: "Acacia dealbata", id: name.id }))
       end
     end
 
@@ -64,9 +64,9 @@ RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
           term: "Banksia",
           name_type_id: name_type.id,
           name_rank_id: name_rank.id,
-          exclude_name_id: 0
+          exclude_name_id: 0,
         )
-        expect(result.suggestions).to eq([])
+        expect(result.suggestions).to(eq([]))
       end
     end
 
@@ -83,10 +83,10 @@ RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
           term: "Acacia",
           name_type_id: name_type.id,
           name_rank_id: name_rank.id,
-          exclude_name_id: 0
+          exclude_name_id: 0,
         )
         ids = result.suggestions.map { |s| s[:id] }
-        expect(ids).not_to include(other_name.id)
+        expect(ids).not_to(include(other_name.id))
       end
     end
 
@@ -103,10 +103,10 @@ RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
           term: "Acacia",
           name_type_id: name_type.id,
           name_rank_id: name_rank.id,
-          exclude_name_id: 0
+          exclude_name_id: 0,
         )
         ids = result.suggestions.map { |s| s[:id] }
-        expect(ids).not_to include(other_name.id)
+        expect(ids).not_to(include(other_name.id))
       end
     end
 
@@ -118,10 +118,10 @@ RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
           term: "Acacia",
           name_type_id: name_type.id,
           name_rank_id: name_rank.id,
-          exclude_name_id: name.id
+          exclude_name_id: name.id,
         )
         ids = result.suggestions.map { |s| s[:id] }
-        expect(ids).not_to include(name.id)
+        expect(ids).not_to(include(name.id))
       end
     end
 
@@ -136,10 +136,10 @@ RSpec.describe Instance::AsTypeahead::ForChangeName, type: :model do
           term: "Acacia",
           name_type_id: name_type.id,
           name_rank_id: name_rank.id,
-          exclude_name_id: 0
+          exclude_name_id: 0,
         )
         ids = result.suggestions.map { |s| s[:id] }
-        expect(ids).not_to include(name.id)
+        expect(ids).not_to(include(name.id))
       end
     end
   end

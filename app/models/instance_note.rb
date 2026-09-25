@@ -90,9 +90,11 @@ class InstanceNote < ApplicationRecord
     return unless instance_note_key_id == InstanceNoteKey.apc_dist.first.id
     return if instance.can_have_apc_dist?
 
-    errors.add(:instance_note_key_id,
-               "for APC Dist. Instance already has an APC Dist. note. \
-                Only one APC Dist. Note allowed per instance.")
+    errors.add(
+      :instance_note_key_id,
+      "for APC Dist. Instance already has an APC Dist. note. \
+                Only one APC Dist. Note allowed per instance.",
+    )
   end
 
   def update_one_apc_dist_per_instance
@@ -100,9 +102,11 @@ class InstanceNote < ApplicationRecord
     return unless changed_attributes.key?(:instance_note_key_id)
     return unless instance_note_key.apc_dist?
 
-    errors.add(:instance_note_key_id,
-               "for APC Dist. Instance already has an APC Dist. note. \
-                Only one APC Dist. Note allowed per instance.")
+    errors.add(
+      :instance_note_key_id,
+      "for APC Dist. Instance already has an APC Dist. note. \
+                Only one APC Dist. Note allowed per instance.",
+    )
   end
 
   def deprecated_instance_note_key_cannot_be_used
@@ -112,7 +116,5 @@ class InstanceNote < ApplicationRecord
     errors.add(:instance_note_key_id, "is deprecated, cannot be used")
   end
 
-  def apc_dist?
-    instance_note_key.apc_dist?
-  end
+  delegate :apc_dist?, to: :instance_note_key
 end

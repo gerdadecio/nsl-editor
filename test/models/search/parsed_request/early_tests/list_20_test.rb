@@ -22,21 +22,25 @@ require "test_helper"
 class SearchParsedRequestList20Test < ActiveSupport::TestCase
   test "search parse query list 20" do
     query_string = "limit:20"
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target: "name",
-                                                          canonical_query_target: "name",
-                                                          query_string:
-                                                          query_string)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target: "name",
+      canonical_query_target: "name",
+      query_string:
+            query_string,
+    )
     parsed_request = Search::ParsedRequest.new(params)
     assert parsed_request.list, "This should be parsed as a list query."
-    assert !parsed_request.count, "This should not be parsed as a count query."
-    assert_match(/\Aname\z/,
-                 parsed_request.target_table,
-                 "This should be parsed as a query on the name table.")
+    assert_not parsed_request.count, "This should not be parsed as a count query."
+    assert_match(
+      /\Aname\z/,
+      parsed_request.target_table,
+      "This should be parsed as a query on the name table.",
+    )
     assert parsed_request.limited, "Should be parsed as a query with a limit."
     assert_equal parsed_request.limit, 20, "Should be parsed with limit of 20."
-    assert !parsed_request.common_and_cultivar,
-           "Should be parsed as query excluding common and cultivars."
+    assert_not parsed_request.common_and_cultivar,
+      "Should be parsed as query excluding common and cultivars."
     assert parsed_request.where_arguments.blank?,
-           "Should be parsed as a query with no where arguments."
+      "Should be parsed as a query with no where arguments."
   end
 end

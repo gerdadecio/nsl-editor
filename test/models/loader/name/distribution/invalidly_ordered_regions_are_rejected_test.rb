@@ -1,10 +1,9 @@
-
+# frozen_string_literal: true
 
 require "test_helper"
 
 # Single model test.
 class InvalidlyOrderedRegionsAreRejectedTest < ActiveSupport::TestCase
-
   def setup
     @dist_s = "WA (naturalised), SA, NT (native and naturalised)"
     @allowed_regions = DistRegion.all.order(:sort_order).collect(&:name)

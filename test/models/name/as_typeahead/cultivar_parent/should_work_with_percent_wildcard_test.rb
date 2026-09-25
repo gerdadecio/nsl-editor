@@ -22,13 +22,21 @@ require "test_helper"
 class CultivarParSuggestsShldWorkWPercentWildcardTest < ActiveSupport::TestCase
   test "cultivar parent suggestion should work with percent wildcard" do
     suggestions = Name::AsTypeahead.cultivar_parent_suggestions("%", -1)
-    assert(suggestions.is_a?(Array),
-           "percent wildcard search should be an array")
-    assert(!suggestions.empty?,
-           "percent wildcard search should not be empty")
-    assert(suggestions.first[:value].present?,
-           "percent wildcard search first element should have a value")
-    assert(suggestions.first[:id].present?,
-           "percent wildcard search first element should have an id")
+    assert(
+      suggestions.is_a?(Array),
+      "percent wildcard search should be an array",
+    )
+    assert(
+      !suggestions.empty?,
+      "percent wildcard search should not be empty",
+          )
+    assert(
+      suggestions.first[:value].present?,
+      "percent wildcard search first element should have a value",
+    )
+    assert(
+      suggestions.first[:id].present?,
+      "percent wildcard search first element should have an id",
+    )
   end
 end

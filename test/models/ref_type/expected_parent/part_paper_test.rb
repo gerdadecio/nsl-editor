@@ -23,8 +23,8 @@ class PartShouldHavePaperParentTest < ActiveSupport::TestCase
   test "part ref type parent is paper" do
     ref_type = ref_types(:part)
     assert ref_type.parent.present?,
-           "Part should have a parent."
+      "Part should have a parent."
     assert ref_type.parent.name == ref_types(:paper).name,
-           "Part should have paper as parent."
+      "Part should have paper as parent."
   end
 end

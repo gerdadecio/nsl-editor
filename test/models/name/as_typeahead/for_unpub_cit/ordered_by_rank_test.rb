@@ -25,6 +25,6 @@ class NameTAForUCitOrderedByRankTest < ActiveSupport::TestCase
     # suggestions.each {|e| puts e }
     assert(suggestions.is_a?(Array), "suggestions should be an array")
     assert suggestions.first[:value].match(/Plantae Haeckel/),
-           "Kingdom should be first"
+      "Kingdom should be first"
   end
 end

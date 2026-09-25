@@ -22,8 +22,10 @@ class InstanceRecordPartialTest < ActionView::TestCase
   def render_record_for(instance)
     view.lookup_context.prefixes.unshift("application")
 
-    render partial: "application/search_results/instance/instance_record",
-           locals: { search_result: instance, give_me_focus: false }
+    render(
+      partial: "application/search_results/instance/instance_record",
+      locals: { search_result: instance, give_me_focus: false },
+    )
     rendered
   end
 

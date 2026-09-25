@@ -41,10 +41,10 @@ class SessionUser < ActiveType::Object
     return false unless user && product_from_context
 
     user.user_product_roles
-        .joins(product_role: :role)
-        .where(product_role: { product_id: product_from_context.id },
-               roles: { name: requested_role_name })
-        .exists?
+      .joins(product_role: :role)
+      .where(product_role: { product_id: product_from_context.id },
+        roles: { name: requested_role_name })
+      .exists?
   end
 
   #
@@ -93,8 +93,8 @@ class SessionUser < ActiveType::Object
   # I couldn't get that to work
   def registered_user
     registered_user = User.find_or_initialize_by(user_name: username.downcase) do |user|
-      user.family_name = full_name.split(' ').last||'unknown'
-      user.given_name = full_name.split(' ').first||'unknown'
+      user.family_name = full_name.split(" ").last || "unknown"
+      user.given_name = full_name.split(" ").first || "unknown"
       user.created_by = user.updated_by = username.downcase
     end
 
@@ -119,7 +119,7 @@ class SessionUser < ActiveType::Object
       username: @username,
       full_name: @full_name,
       groups: @groups,
-      user: @user.inspect
+      user: @user.inspect,
     }
   end
 end

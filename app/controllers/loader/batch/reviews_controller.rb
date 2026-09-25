@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Loader::Batch::ReviewsController < ApplicationController
-  before_action :find_batch_review, only: %i[show destroy tab update]
+  before_action :find_batch_review, only: [:show, :destroy, :tab, :update]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
@@ -26,15 +26,15 @@ class Loader::Batch::ReviewsController < ApplicationController
     set_tab_index
     @review_period = Loader::Batch::Review::Period.new if params[:tab] == "tab_periods"
     @take_focus = params[:take_focus] == "true"
-    render "show", layout: false
+    render("show", layout: false)
   end
 
-  alias tab show
+  alias_method :tab, :show
 
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
     respond_to do |format|
-      format.html { redirect_to new_search_path }
+      format.html { redirect_to(new_search_path) }
       format.js {}
     end
   end
@@ -47,22 +47,24 @@ class Loader::Batch::ReviewsController < ApplicationController
     @batch_review.updated_by = current_user.username
     @batch_review.created_by = current_user.username
     @batch_review.save!
-    render "create"
+    render("create")
   rescue StandardError => e
     logger.error("Loader::Batch::Review.create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_content
+    render("create_error", status: :unprocessable_content)
   end
 
   # POST /batch_reviews
   def update
-    @message = @batch_review.update_if_changed(batch_review_params,
-                                               current_user.username)
-    render "update"
+    @message = @batch_review.update_if_changed(
+      batch_review_params,
+      current_user.username,
+    )
+    render("update")
   rescue StandardError => e
     logger.error("Loader::Batch::Review.update:rescuing exception #{e}")
     @error = e.to_s
-    render "update_error", status: :unprocessable_content
+    render("update_error", status: :unprocessable_content)
   end
 
   def destroy
@@ -70,7 +72,7 @@ class Loader::Batch::ReviewsController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::Batch::Review.destroy:rescuing exception #{e}")
     @error = e.to_s
-    render "destroy_error", status: :unprocessable_content
+    render("destroy_error", status: :unprocessable_content)
   end
 
   private
@@ -79,7 +81,7 @@ class Loader::Batch::ReviewsController < ApplicationController
     @batch_review = Loader::Batch::Review.find(params[:id] || batch_review_params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the batch review record."
-    redirect_to batch_reviews_path
+    redirect_to(batch_reviews_path)
   end
 
   def batch_review_params
@@ -88,10 +90,10 @@ class Loader::Batch::ReviewsController < ApplicationController
 
   def set_tab
     @tab = if params[:tab].present? && params[:tab] != "undefined"
-             params[:tab]
-           else
-             "tab_details"
-           end
+      params[:tab]
+    else
+      "tab_details"
+    end
   end
 
   def set_tab_index

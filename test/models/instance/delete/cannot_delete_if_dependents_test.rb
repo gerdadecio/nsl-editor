@@ -25,6 +25,6 @@ class CannotDeleteSynonymIfDependentsTest < ActiveSupport::TestCase
     dependents = Instance.where(cited_by_id: instance.id).count
     assert dependents.positive?, "The test fixture should have dependents."
     assert_not instance.allow_delete?,
-               "Should not be allowed to delete synonym with dependents."
+      "Should not be allowed to delete synonym with dependents."
   end
 end

@@ -30,14 +30,18 @@ class TreeBuilderFoaUserCannotUnsetWorkspaceTest < ActionController::TestCase
   test "foa tree builder cannot unset apc workspace version" do
     user = users(:foa_tax_builder)
     draft = tree_versions(:apc_draft_version)
-    post(:toggle,
-         params: {id: draft.id},
-         format: :js,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    groups: ["login"],
-                    draft: draft})
-    assert_response :forbidden, 'Should not be able to remove current workspace draft setting'
-    assert_not_nil session[:draft], 'Should not have unset the session draft'
+    post(
+      :toggle,
+      params: { id: draft.id },
+      format: :js,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: draft,
+      },
+    )
+    assert_response :forbidden, "Should not be able to remove current workspace draft setting"
+    assert_not_nil session[:draft], "Should not have unset the session draft"
   end
 end

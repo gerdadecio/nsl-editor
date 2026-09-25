@@ -32,12 +32,12 @@ class Instance::AsTypeahead::ForChangeName
 
   def query(term, name_type_id, name_rank_id, exclude_name_id)
     Name.not_a_duplicate
-        .where("lower(full_name) like lower(?)", term.tr("*", "%") + "%")
-        .where(name_type_id: name_type_id, name_rank_id: name_rank_id)
-        .where.not(id: exclude_name_id)
-        .joins(:name_rank)
-        .order("name_rank.sort_order, lower(full_name)")
-        .limit(SEARCH_LIMIT)
-        .map { |n| { value: n.full_name, id: n.id } }
+      .where("lower(full_name) like lower(?)", term.tr("*", "%") + "%")
+      .where(name_type_id: name_type_id, name_rank_id: name_rank_id)
+      .where.not(id: exclude_name_id)
+      .joins(:name_rank)
+      .order("name_rank.sort_order, lower(full_name)")
+      .limit(SEARCH_LIMIT)
+      .map { |n| { value: n.full_name, id: n.id } }
   end
 end

@@ -23,30 +23,40 @@ class CanUpdateStandaloneToDuplicateWithOverride < ActionController::TestCase
   tests InstancesController
   def setup
     @instance = instances(:casuarina_inophloia_by_mueller)
-    assert @instance.instance_type == instance_types(:secondary_reference)
+    assert(@instance.instance_type == instance_types(:secondary_reference))
     @target = instances(:casuarina_inophloia_by_mueller)
-    assert Instance.find(@instance.id).name_id == @target.name_id
+    assert(Instance.find(@instance.id).name_id == @target.name_id)
     @request.headers["Accept"] = "application/javascript"
   end
 
   test "editor can add override to update standalone instance to a duplicate" do
-    put(:update,
-        params: { id: @instance.id,
-                  instance: { "reference_id" => @target.reference_id,
-                              "instance_type_id" => @target.instance_type_id,
-                              "page" => @target.page,
-                              "duplicate_instance_override" => "1" } },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    put(
+      :update,
+      params: {
+        id: @instance.id,
+        instance: {
+          "reference_id" => @target.reference_id,
+          "instance_type_id" => @target.instance_type_id,
+          "page" => @target.page,
+          "duplicate_instance_override" => "1",
+        },
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     check_assertions
   end
 
   def check_assertions
-    assert_response :success
+    assert_response(:success)
     es = "Name already has an instance with the same reference, type and page."
-    assert_no_match(/#{es}/,
-                    response.body,
-                    "Expected error message did not appear")
+    assert_no_match(
+      /#{es}/,
+      response.body,
+      "Expected error message did not appear",
+    )
   end
 end

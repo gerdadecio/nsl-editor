@@ -22,28 +22,41 @@ class Loader::Name::Match < ApplicationRecord
   self.table_name = "loader_name_match"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-  belongs_to :loader_name, class_name: "Loader::Name",
-                foreign_key: "loader_name_id"
+  belongs_to :loader_name,
+    class_name: "Loader::Name",
+    foreign_key: "loader_name_id"
   belongs_to :name, class_name: "::Name", foreign_key: "name_id"
   belongs_to :instance
-  belongs_to :standalone_instance, class_name: "::Instance",
-                foreign_key: "standalone_instance_id", optional: true
-  belongs_to :relationship_instance, class_name: "::Instance",
-                foreign_key: "relationship_instance_id", optional: true
+  belongs_to :standalone_instance,
+    class_name: "::Instance",
+    foreign_key: "standalone_instance_id",
+    optional: true
+  belongs_to :relationship_instance,
+    class_name: "::Instance",
+    foreign_key: "relationship_instance_id",
+    optional: true
 
   # would like to deprecate instance_type in favour of
   # relationship_instance_type
   belongs_to :instance_type,
-                foreign_key: :relationship_instance_type_id, optional: true
-  belongs_to :relationship_instance_type, class_name: "::InstanceType",
-                foreign_key: "relationship_instance_type_id", optional: true
+    foreign_key: :relationship_instance_type_id,
+    optional: true
+  belongs_to :relationship_instance_type,
+    class_name: "::InstanceType",
+    foreign_key: "relationship_instance_type_id",
+    optional: true
 
-  belongs_to :source_for_copy, class_name: "::Instance",
-                foreign_key: "source_for_copy_instance_id", optional: true
-  belongs_to :intended_tree_parent_name, class_name: "::Name",
-                foreign_key: "intended_tree_parent_name_id", optional: true
-  validates :loader_name_id, uniqueness: true,
-                unless: proc { |a| a.loader_name.record_type == "misapplied" }
+  belongs_to :source_for_copy,
+    class_name: "::Instance",
+    foreign_key: "source_for_copy_instance_id",
+    optional: true
+  belongs_to :intended_tree_parent_name,
+    class_name: "::Name",
+    foreign_key: "intended_tree_parent_name_id",
+    optional: true
+  validates :loader_name_id,
+    uniqueness: true,
+    unless: proc { |a| a.loader_name.record_type == "misapplied" }
   validate :misapp_pref_matches_from_only_one_name
 
   before_destroy :can_destroy?
@@ -52,28 +65,30 @@ class Loader::Name::Match < ApplicationRecord
     return unless loader_name.misapplied?
 
     return if Loader::Name::Match.where(loader_name_id: loader_name_id)
-                                 .where.not(name_id: name_id)
-                                 .count == 0
+      .where.not(name_id: name_id)
+      .count == 0
 
-    errors.add :base,
-               "Misapplications cannot select matches from more than one name"
+    errors.add(
+      :base,
+      "Misapplications cannot select matches from more than one name",
+    )
   end
 
   # how does this work when reversing?
   def choice_must_match_details
     if instance_choice_confirmed == true &&
-       !(use_batch_default_reference ||
-         standalone_instance_id.present?)
+        !(use_batch_default_reference ||
+          standalone_instance_id.present?)
       errors.add("Choice must be batch default ref or an identified instance")
     elsif instance_choice_confirmed == false &&
-          (use_batch_default_reference ||
-           standalone_instance_id.present?)
+        (use_batch_default_reference ||
+         standalone_instance_id.present?)
       errors.add("Choice has been made, so must be noted")
     end
   end
 
   def can_destroy?
-    throw :abort
+    throw(:abort)
   end
 
   def old_taxonomy_choice_made?
@@ -90,8 +105,8 @@ class Loader::Name::Match < ApplicationRecord
   end
 
   def standalone?
-    throw "standalone? what does this mean?"
-    !standalone_instance_id.blank? && !copy_append_from_existing_use_batch_def_ref
+    throw("standalone? what does this mean?")
+    standalone_instance_id.present? && !copy_append_from_existing_use_batch_def_ref
   end
 
   def standalone_instance?
@@ -155,8 +170,8 @@ class Loader::Name::Match < ApplicationRecord
   end
 
   def note_standalone_instance_found(instance)
-    throw "Already noted as found" if standalone_instance_found
-    throw "Already noted as created" if standalone_instance_created
+    throw("Already noted as found") if standalone_instance_found
+    throw("Already noted as created") if standalone_instance_created
 
     self.standalone_instance_id = instance.id
     self.standalone_instance_found = true
@@ -165,8 +180,8 @@ class Loader::Name::Match < ApplicationRecord
   end
 
   def clear_relationship_instance
-    throw "cannot clear relationship" unless can_do_relationship_instance?
-    throw "has standalone" if has_standalone?
+    throw("cannot clear relationship") unless can_do_relationship_instance?
+    throw("has standalone") if has_standalone?
 
     self.relationship_instance_id = nil
     self.relationship_instance_created = false

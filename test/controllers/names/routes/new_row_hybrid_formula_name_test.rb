@@ -23,8 +23,8 @@ class NameNewRowRouteTest < ActionController::TestCase
   tests NamesController
   test "should route to names new row for a hybrid-formula type" do
     assert_routing "/names/new_row/hybrid-formula",
-                   controller: "names",
-                   action: "new_row",
-                   type: "hybrid-formula"
+      controller: "names",
+      action: "new_row",
+      type: "hybrid-formula"
   end
 end

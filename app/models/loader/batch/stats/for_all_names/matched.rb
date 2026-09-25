@@ -24,35 +24,37 @@ class Loader::Batch::Stats::ForAllNames::Matched
   end
 
   def report
-    { accepted_with_preferred_match: accepted_with_preferred_match,
+    {
+      accepted_with_preferred_match: accepted_with_preferred_match,
       excluded_with_preferred_match: excluded_with_preferred_match,
       synonym_with_preferred_match: synonym_with_preferred_match,
       misapplied_with_preferred_match: misapplied_with_preferred_match,
       total_with_preferred_match: total_with_at_least_one_preferred_match,
-      misapplied_preferred_matches: misapplied_preferred_matches }
+      misapplied_preferred_matches: misapplied_preferred_matches,
+    }
   end
 
   def accepted_with_preferred_match
     @core_search.where("record_type = 'accepted'")
-                .joins(:loader_name_matches)
-                .count
+      .joins(:loader_name_matches)
+      .count
   end
 
   def excluded_with_preferred_match
     @core_search.where("record_type = 'excluded'")
-                .joins(:loader_name_matches)
-                .count
+      .joins(:loader_name_matches)
+      .count
   end
 
   def synonym_with_preferred_match
     @core_search.where("record_type = 'synonym'")
-                .joins(:loader_name_matches)
-                .count
+      .joins(:loader_name_matches)
+      .count
   end
 
   def misapplied_with_preferred_match
     @core_search.where("record_type = 'misapplied'")
-                .where("exists
+      .where("exists
                       (select null
                          from loader_name_match match
                         where loader_name.id = match.loader_name_id)").count
@@ -71,8 +73,8 @@ class Loader::Batch::Stats::ForAllNames::Matched
 
   def misapplied_preferred_matches
     @core_search.where("record_type = 'misapplied'")
-                .where(" not no_further_processing ")
-                .joins(:loader_name_matches)
-                .count
+      .where(" not no_further_processing ")
+      .joins(:loader_name_matches)
+      .count
   end
 end

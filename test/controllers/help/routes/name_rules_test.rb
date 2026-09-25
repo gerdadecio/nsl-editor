@@ -23,7 +23,7 @@ class HelpRoutesNameRulesTest < ActionController::TestCase
   tests HelpController
   test "help on name rules should route ok" do
     assert_routing "/help/name/rules",
-                   controller: "help",
-                   action: "name_rules"
+      controller: "help",
+      action: "name_rules"
   end
 end

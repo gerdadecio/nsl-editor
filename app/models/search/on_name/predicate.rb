@@ -18,21 +18,21 @@
 #
 class Search::OnName::Predicate
   attr_reader :canon_field,
-              :canon_value,
-              :trailing_wildcard,
-              :leading_wildcard,
-              :multiple_values,
-              :allow_split_on_semicolon,
-              :predicate,
-              :value_frequency,
-              :processed_value,
-              :tokenize,
-              :field,
-              :value,
-              :has_scope,
-              :scope_,
-              :order,
-              :allow_common_and_cultivar
+    :canon_value,
+    :trailing_wildcard,
+    :leading_wildcard,
+    :multiple_values,
+    :allow_split_on_semicolon,
+    :predicate,
+    :value_frequency,
+    :processed_value,
+    :tokenize,
+    :field,
+    :value,
+    :has_scope,
+    :scope_,
+    :order,
+    :allow_common_and_cultivar
 
   def initialize(field, value)
     @field = field
@@ -48,7 +48,7 @@ class Search::OnName::Predicate
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnName::Predicate - #{s}")
+    Rails.logger.debug { "Search::OnName::Predicate - #{s}" }
   end
 
   def inspect
@@ -72,17 +72,17 @@ class Search::OnName::Predicate
   def apply_scope
     @has_scope = @scope_.present?
     @value_frequency = if @has_scope
-                         1
-                       else
-                         @predicate.count("?")
-                       end
+      1
+    else
+      @predicate.count("?")
+    end
   end
 
   def work_out_split_char
-    return ',' unless @multiple_values
-    return ',' unless @allow_split_on_semicolon
+    return "," unless @multiple_values
+    return "," unless @allow_split_on_semicolon
 
-    @value.match(/;/) ? ';' : ','
+    /;/.match?(@value) ? ";" : ","
   end
 
   def process_value
@@ -112,13 +112,9 @@ class Search::OnName::Predicate
   end
 
   def build_is_null_predicate(rule)
-    if rule[:not_exists_clause].present?
-      rule[:not_exists_clause]
-    else
-      rule[:where_clause].gsub("= ?", "is null")
-                         .gsub("like lower(?)", "is null")
-                         .gsub("like lower(f_unaccent(?))", "is null")
-    end
+    rule[:not_exists_clause].presence || rule[:where_clause].gsub("= ?", "is null")
+      .gsub("like lower(?)", "is null")
+      .gsub("like lower(f_unaccent(?))", "is null")
   end
 
   def build_canon_value(val)
@@ -133,7 +129,7 @@ class Search::OnName::Predicate
     if Search::OnName::FieldRule.rules.key?(field)
       field
     elsif Search::OnName::FieldRule.rules.key?(
-      Search::OnName::FieldAbbrev::ABBREVS[field]
+      Search::OnName::FieldAbbrev::ABBREVS[field],
     )
       Search::OnName::FieldAbbrev::ABBREVS[field]
     else

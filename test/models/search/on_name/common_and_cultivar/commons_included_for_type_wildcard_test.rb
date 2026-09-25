@@ -25,15 +25,18 @@ load "test/models/search/on_name/test_helper.rb"
 class SearchOnNameNameCommonsIncluded4TypeWildcardTest < ActiveSupport::TestCase
   test "search on name name commons included for type wildcard" do
     params =
-      ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                   "name",
-                                                   query_string:
-                                                   "name: argyle apple type: *",
-                                                   current_user:
-                                                   build_edit_user)
+      ActiveSupport::HashWithIndifferentAccess.new(
+        query_target:
+                                                           "name",
+        query_string:
+                "name: argyle apple type: *",
+        current_user:
+                build_edit_user,
+      )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
-    assert_equal 1, search.executed_query.results.size,
-                 "Expected common name to be included for type wildcard"
+    assert_equal 1,
+      search.executed_query.results.size,
+      "Expected common name to be included for type wildcard"
   end
 end

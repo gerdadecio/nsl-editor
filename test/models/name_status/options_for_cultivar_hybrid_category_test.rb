@@ -25,7 +25,7 @@ class OptionsForCultivarHybridCategoryTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:cultivar_hybrid))
       .collect(&:first)
       .include?("[deleted]"),
-           'Cultivar hybrid name status options should include "[deleted]"'
+      'Cultivar hybrid name status options should include "[deleted]"'
   end
 
   test "should include [default]" do
@@ -33,7 +33,7 @@ class OptionsForCultivarHybridCategoryTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:cultivar_hybrid))
       .collect(&:first)
       .include?("[default]"),
-           'Cultivar hybrid name status options should include "[default]"'
+      'Cultivar hybrid name status options should include "[default]"'
   end
 
   test "should include  [n/a]" do
@@ -41,14 +41,14 @@ class OptionsForCultivarHybridCategoryTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:cultivar_hybrid))
       .collect(&:first)
       .include?("[n/a]"),
-           'Cultivar hybrid category name status options should include "[n/a]"'
+      'Cultivar hybrid category name status options should include "[n/a]"'
   end
 
   test "should have only two entries" do
     assert_equal 3,
-                 NameStatus
-                   .options_for_category(name_categories(:cultivar_hybrid))
-                   .size,
-                 "Wrong no of name status options for cultivar hybrid category"
+      NameStatus
+        .options_for_category(name_categories(:cultivar_hybrid))
+        .size,
+      "Wrong no of name status options for cultivar hybrid category"
   end
 end

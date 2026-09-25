@@ -36,24 +36,24 @@ class NameTypeAutonymForRestrictedRanksOnlyTest < ActiveSupport::TestCase
   test "autonym fixture starts out valid (infraspecific rank)" do
     name = autonym
     assert name.valid?,
-           "Autonym at subspecies should be valid. " \
-           "Errs: #{name.errors.full_messages.join('; ')}"
+      "Autonym at subspecies should be valid. " \
+        "Errs: #{name.errors.full_messages.join("; ")}"
   end
 
   test "autonym is valid at an infrageneric rank (subgenus)" do
     name = autonym
     name.name_rank = name_ranks(:subgenus)
     assert name.valid?,
-           "Autonym at subgenus should be valid. " \
-           "Errs: #{name.errors.full_messages.join('; ')}"
+      "Autonym at subgenus should be valid. " \
+        "Errs: #{name.errors.full_messages.join("; ")}"
   end
 
   test "autonym is valid at an infraspecific rank (varietas)" do
     name = autonym
     name.name_rank = name_ranks(:varietas)
     assert name.valid?,
-           "Autonym at varietas should be valid. " \
-           "Errs: #{name.errors.full_messages.join('; ')}"
+      "Autonym at varietas should be valid. " \
+        "Errs: #{name.errors.full_messages.join("; ")}"
   end
 
   test "autonym is invalid at genus rank" do
@@ -81,8 +81,8 @@ class NameTypeAutonymForRestrictedRanksOnlyTest < ActiveSupport::TestCase
     name = names(:scientific_name)
     assert_equal name_ranks(:species), name.name_rank
     assert name.valid?,
-           "Non-autonym scientific name at species should be valid. " \
-           "Errs: #{name.errors.full_messages.join('; ')}"
+      "Non-autonym scientific name at species should be valid. " \
+        "Errs: #{name.errors.full_messages.join("; ")}"
     assert_not_includes name.errors.full_messages, ERROR
   end
 
@@ -91,7 +91,7 @@ class NameTypeAutonymForRestrictedRanksOnlyTest < ActiveSupport::TestCase
     assert name.valid?, "Scientific name should start out valid."
     name.name_type = name_types(:autonym)
     assert_not name.valid?,
-               "Autonym at species rank should not be valid."
+      "Autonym at species rank should not be valid."
     assert_includes name.errors.full_messages, ERROR
   end
 end

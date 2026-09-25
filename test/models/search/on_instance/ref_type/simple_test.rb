@@ -25,10 +25,10 @@ class SearchOnInstanceRefTypeSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "ref-type: book",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instances with matching ref type expected."
+    assert_not search.executed_query.results.empty?,
+      "Instances with matching ref type expected."
   end
 end

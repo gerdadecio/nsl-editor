@@ -24,10 +24,10 @@ class NameAsResolvedTADuplicateOfIdWithMatchingString < ActiveSupport::TestCase
     name = names(:the_regnum)
     result = Name::AsResolvedTypeahead::ForDuplicateOf.new(
       name.id.to_s,
-      name.full_name
+      name.full_name,
     )
     assert_equal name.id,
-                 result.value,
-                 "Should get a matching id for the duplicate of name"
+      result.value,
+      "Should get a matching id for the duplicate of name"
   end
 end

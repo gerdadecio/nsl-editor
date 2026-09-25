@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Help display profile_item information.
 module Profile::ProfileItemsHelper
   def sourced_in_profile_items_info(profile_item, action: :delete)
@@ -7,7 +9,7 @@ module Profile::ProfileItemsHelper
     action_message = ""
     action_message = "You cannot delete this profile item" if action == :delete
     content_tag(:div, style: "padding: 10px;") do
-      "#{action_message}. This item is cited by #{ActionController::Base.helpers.pluralize(count, 'other profile item')}."
+      "#{action_message}. This item is cited by #{ActionController::Base.helpers.pluralize(count, "other profile item")}."
     end
   end
 end

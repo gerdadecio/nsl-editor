@@ -25,10 +25,10 @@ class SearchOnAuthorCommentsExactSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "comments-exact: MyText",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?,
-           "No Authors with comments for comments-exact search expected."
+      "No Authors with comments for comments-exact search expected."
   end
 end

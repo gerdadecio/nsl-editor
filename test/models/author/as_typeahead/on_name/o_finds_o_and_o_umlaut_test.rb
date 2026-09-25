@@ -27,8 +27,8 @@ class AuthorAsTheadOnNameOFindsOAndOUmlautOrOTest < ActiveSupport::TestCase
     assert_equal 2, results.size, "Expecting 2 record for 'Doll'."
     ids = results.collect { |author| author[:id] }
     assert ids.include?(authors(:doll_no_umlaut).id.to_s),
-           "Expecting doll_no_umlaut"
+      "Expecting doll_no_umlaut"
     assert ids.include?(authors(:doll_with_umlaut).id.to_s),
-           "Expecting doll_with_umlaut"
+      "Expecting doll_with_umlaut"
   end
 end

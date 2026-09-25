@@ -31,8 +31,10 @@ class Reference::AsTypeahead::OnCitation
     # Rails.logger.debug("Reference::AsTypeahead::OnCitation: initialize; terms: #{terms}")
     # Rails.logger.debug(query(terms, excluded_id).class)
     @results = query(terms, excluded_id).collect do |ref|
-      { value: ref.typeahead_display_value,
-        id: ref.id.to_s }
+      {
+        value: ref.typeahead_display_value,
+        id: ref.id.to_s,
+      }
     end
   end
 
@@ -45,7 +47,7 @@ class Reference::AsTypeahead::OnCitation
     terms_as_frequency_hash(terms).each do |hash|
       where += " lower(f_unaccent(citation)) like lower(f_unaccent(?)) and "
       search_term = "#{hash[:value]}%" * hash[:freq]
-      binds.push "%#{search_term}"
+      binds.push("%#{search_term}")
     end
     where += " 1=1 "
     binds.unshift(where)
@@ -61,11 +63,11 @@ class Reference::AsTypeahead::OnCitation
 
   def query(terms, excluded_id)
     Reference.includes(:ref_type)
-             .where.not(ref_type: { name: "Journal" })
-             .not_duplicate
-             .where.not(reference: { id: excluded_id })
-             .where(bound_terms_array(terms))
-             .order(Arel.sql('iso_publication_date DESC NULLS FIRST'), 'citation')
-             .limit(SEARCH_LIMIT)
+      .where.not(ref_type: { name: "Journal" })
+      .not_duplicate
+      .where.not(reference: { id: excluded_id })
+      .where(bound_terms_array(terms))
+      .order(Arel.sql("iso_publication_date DESC NULLS FIRST"), "citation")
+      .limit(SEARCH_LIMIT)
   end
 end

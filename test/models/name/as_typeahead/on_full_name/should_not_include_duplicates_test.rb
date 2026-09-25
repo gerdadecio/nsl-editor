@@ -22,10 +22,12 @@ require "test_helper"
 class NameTAOnFullNameSuggestsShldNotInclDupesTest < ActiveSupport::TestCase
   test "name on full name suggestions should not include duplicates" do
     suggestions = Name::AsTypeahead::OnFullName
-                  .new(term: "a duplicate species")
-                  .suggestions
+      .new(term: "a duplicate species")
+      .suggestions
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert(suggestions.empty?,
-           'suggestions for "a duplicate species" should be empty')
+    assert(
+      suggestions.empty?,
+      'suggestions for "a duplicate species" should be empty',
+    )
   end
 end

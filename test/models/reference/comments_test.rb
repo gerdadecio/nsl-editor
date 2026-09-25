@@ -22,11 +22,11 @@ require "test_helper"
 class ReferenceCommentsTest < ActiveSupport::TestCase
   test "comments? is true when reference has a comment" do
     assert references(:handbook_of_the_vascular_plants_of_sydney).comments?,
-           "Should be true when reference has a comment"
+      "Should be true when reference has a comment"
   end
 
   test "comments? is false when reference has no comments" do
     assert_not references(:simple).comments?,
-               "Should be false when reference has no comments"
+      "Should be false when reference has no comments"
   end
 end

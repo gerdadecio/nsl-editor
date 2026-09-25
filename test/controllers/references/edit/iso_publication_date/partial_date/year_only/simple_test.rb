@@ -54,28 +54,38 @@ class ReferencesesUpdateIsoPartialYearOnlyTest < ActionController::TestCase
   def stub_it
     stub_request(:get, %r{http://#{host}/#{path}/\d+/api/citation-strings})
       .with(
-        headers: { "Accept" => "text/json",
-                   "Accept-Encoding" => encoding,
-                   "User-Agent" => /rest-client.*ruby.*/ }
+        headers: {
+          "Accept" => "text/json",
+          "Accept-Encoding" => encoding,
+          "User-Agent" => /rest-client.*ruby.*/,
+        },
       )
       .to_return(status: 200, body: body, headers: {})
   end
 
   test "update reference iso partial year only" do
     @request.headers["Accept"] = "application/javascript"
-    patch(:update,
-          params: { id: references(:simple).id,
-                    reference: { "ref_type_id" => ref_types(:book),
-                                 "title" => "Some book",
-                                 "author_id" => authors(:dash),
-                                 "author_typeahead" => "-",
-                                 "published" => true,
-                                 "parent_typeahead" => @parent_typeahead,
-                                 "ref_author_role_id" => ref_author_roles(:author),
-                                 "year" => "2004" } },
-          session: { username: "fred",
-                     user_full_name: "Fred Jones",
-                     groups: ["edit"] })
+    patch(
+      :update,
+      params: {
+        id: references(:simple).id,
+        reference: {
+          "ref_type_id" => ref_types(:book),
+          "title" => "Some book",
+          "author_id" => authors(:dash),
+          "author_typeahead" => "-",
+          "published" => true,
+          "parent_typeahead" => @parent_typeahead,
+          "ref_author_role_id" => ref_author_roles(:author),
+          "year" => "2004",
+        },
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
   end
 end

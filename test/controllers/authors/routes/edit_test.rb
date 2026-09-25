@@ -23,8 +23,8 @@ class AuthorsRouteEditTest < ActionController::TestCase
   tests AuthorsController
   test "authors edit should route to the catch-all" do
     assert_routing "/authors/edit/1",
-                   controller: "search",
-                   action: "search",
-                   random: "authors/edit/1"
+      controller: "search",
+      action: "search",
+      random: "authors/edit/1"
   end
 end

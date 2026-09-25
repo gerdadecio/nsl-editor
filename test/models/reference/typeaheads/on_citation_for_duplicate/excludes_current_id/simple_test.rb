@@ -23,17 +23,19 @@ class TypeaheadsOnCitForDuplicateExcludesCurrentIdTest < ActiveSupport::TestCase
   test "reference typeahead on citation for duplicate excludes current id" do
     curr_ref = references(:simple)
     other_ref = references(:paper_by_brassard)
-    typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new("simple",
-                                                                   other_ref.id)
+    typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
+      "simple",
+      other_ref.id,
+    )
     assert typeahead.results.size == 1,
-           "Should be at least one result for asterisk wildcard"
+      "Should be at least one result for asterisk wildcard"
     assert_equal typeahead.results.first[:id].to_i,
-                 curr_ref.id,
-                 "The current ref should be found because it is not excluded."
+      curr_ref.id,
+      "The current ref should be found because it is not excluded."
     typeahead_2 = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "simple", curr_ref.id
     )
     assert typeahead_2.results.empty?,
-           "Should be no records found if current reference is excluded."
+      "Should be no records found if current reference is excluded."
   end
 end

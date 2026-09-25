@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Products
   class ProductTabConfig
-
     attr_reader :flag_config, :tabs_config
 
     def initialize
@@ -19,7 +20,7 @@ module Products
       active_flags.each do |flag|
         flag_config = model_config[flag.to_s]
         if flag_config
-          flag_tabs = flag_config.is_a?(Hash) ? flag_config['tabs'] : flag_config
+          flag_tabs = flag_config.is_a?(Hash) ? flag_config["tabs"] : flag_config
           if flag_tabs
             combined_tabs.concat(flag_tabs.map(&:to_s))
           end
@@ -27,8 +28,8 @@ module Products
       end
 
       if combined_tabs.empty?
-        default_config = model_config['default'] || []
-        default_tabs = default_config.is_a?(Hash) ? default_config['tabs'] : default_config
+        default_config = model_config["default"] || []
+        default_tabs = default_config.is_a?(Hash) ? default_config["tabs"] : default_config
         combined_tabs = (default_tabs || []).map(&:to_s)
       end
 
@@ -50,17 +51,16 @@ module Products
       enabled_models.uniq
     end
 
-
     private
 
     def parse_flag_config
-      JSON.parse(File.read(Rails.root.join('config/product_tabs/product_flag_configurations.json')))
+      JSON.parse(File.read(Rails.root.join("config/product_tabs/product_flag_configurations.json")))
     rescue JSON::ParserError, Errno::ENOENT
       {}
     end
 
     def parse_tabs_config
-      JSON.parse(File.read(Rails.root.join('config/product_tabs/tabs.json')))
+      JSON.parse(File.read(Rails.root.join("config/product_tabs/tabs.json")))
     rescue JSON::ParserError, Errno::ENOENT
       {}
     end

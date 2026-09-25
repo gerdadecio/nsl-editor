@@ -23,36 +23,40 @@ load "test/models/search/users.rb"
 # Single Search model test.
 class ForMullerWithUmlautAdvancedInlineTest < ActiveSupport::TestCase
   test "inline search for muller with umlaut using umlaut" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "author",
-                                                          query_string:
-                                                          "a: fr.müLl",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "author",
+      query_string:
+            "a: fr.müLl",
+      current_user:
+            build_edit_user,
+    )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result is expected."
+      search.executed_query.results.size,
+      "Exactly 1 result is expected."
     assert_equal authors(:muller_f_with_umlaut).name,
-                 search.executed_query.results.first[:name]
+      search.executed_query.results.first[:name]
   end
 
   test "inline search for muller with umlaut using u" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "author",
-                                                          query_string:
-                                                          "a: fr.muLl",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "author",
+      query_string:
+            "a: fr.muLl",
+      current_user:
+            build_edit_user,
+    )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result is expected - perhaps müll wasn't found"
+      search.executed_query.results.size,
+      "Exactly 1 result is expected - perhaps müll wasn't found"
     assert_equal authors(:muller_f_with_umlaut).name,
-                 search.executed_query.results.first[:name]
+      search.executed_query.results.first[:name]
   end
 end

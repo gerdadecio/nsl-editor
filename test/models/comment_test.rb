@@ -67,7 +67,7 @@ class CommentTest < ActiveSupport::TestCase
     assert author_comment.present?
     author_comment.instance = instances("triodia_in_brassard")
     assert_not author_comment.valid?,
-               "Comment with 2 parents (author and instance) should be invalid"
+      "Comment with 2 parents (author and instance) should be invalid"
   end
 
   test "author comment with name parent" do
@@ -75,7 +75,7 @@ class CommentTest < ActiveSupport::TestCase
     assert author_comment.present?
     author_comment.name = names("a_species")
     assert_not author_comment.valid?,
-               "Comment with 2 parents (author and name) should be invalid"
+      "Comment with 2 parents (author and name) should be invalid"
   end
 
   test "author comment with reference parent" do
@@ -84,7 +84,7 @@ class CommentTest < ActiveSupport::TestCase
     author_comment.reference =
       references("handbook_of_the_vascular_plants_of_sydney")
     assert_not author_comment.valid?,
-               "Comment with 2 parents (author and reference) should be invalid"
+      "Comment with 2 parents (author and reference) should be invalid"
   end
 
   test "create comment with no text" do

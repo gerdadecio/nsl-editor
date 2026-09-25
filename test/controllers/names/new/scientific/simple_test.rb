@@ -27,17 +27,21 @@ class NamesNewScientificSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new,
-        params: { category: "scientific",
-                  random_id: "123445",
-                  tabIndex: "107" },
-        session: {},
-        xhr: true)
+    get(
+      :new,
+      params: {
+        category: "scientific",
+        random_id: "123445",
+        tabIndex: "107",
+      },
+      session: {},
+      xhr: true,
+    )
     assert_response :success, "Cannot start enter new scientific name"
     assert_select("h4", /New Scientific Name/)
     assert_select "input" do |inputs|
       inputs.each do |input|
-        if input.to_s.match(/name-parent-typeahead/)
+        if /name-parent-typeahead/.match?(input.to_s)
           assert_match "required", input.to_s, "name-parent-typeahead should be required"
         end
       end

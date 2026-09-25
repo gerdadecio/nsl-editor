@@ -23,12 +23,14 @@ load "models/search/users.rb"
 class SearchOnAuthorAssertionNameHasTest < ActiveSupport::TestCase
   test "has name" do
     search = Search::Base.new(
-      ActiveSupport::HashWithIndifferentAccess.new(query_string: "has-name:",
-                                                   query_target: "Author",
-                                                   current_user:
-                                                   build_edit_user)
+      ActiveSupport::HashWithIndifferentAccess.new(
+        query_string: "has-name:",
+        query_target: "Author",
+        current_user:
+                build_edit_user,
+      ),
     )
-    assert !search.executed_query.results.empty?,
-           "Should find authors with name."
+    assert_not search.executed_query.results.empty?,
+      "Should find authors with name."
   end
 end

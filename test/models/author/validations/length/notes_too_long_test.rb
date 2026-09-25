@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single author model test.
 class AuthorNotesTooLongTest < ActiveSupport::TestCase
-
   def setup
     @max = 1000
   end

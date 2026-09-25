@@ -25,7 +25,7 @@ class Loader::Batch::Bulk::JobLock < ApplicationRecord
     rec.job_name = name
     rec.save!
     true
-  rescue StandardError => e
+  rescue StandardError
     false
   end
 
@@ -36,7 +36,7 @@ class Loader::Batch::Bulk::JobLock < ApplicationRecord
   def self.unlock!
     destroy_all
     true
-  rescue StandardError => e
+  rescue StandardError
     false
   end
 end

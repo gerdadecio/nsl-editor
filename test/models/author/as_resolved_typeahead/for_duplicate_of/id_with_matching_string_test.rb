@@ -26,10 +26,10 @@ class AuthorARTA4DuplicateOfIdWithMatchingString < ActiveSupport::TestCase
     result = Author::AsResolvedTypeahead::ForDuplicateOf.new(
       author.id.to_s,
       author.name,
-      author_to_avoid
+      author_to_avoid,
     )
     assert_equal author.id,
-                 result.value,
-                 "Should get a matching id for the duplicate of author"
+      result.value,
+      "Should get a matching id for the duplicate of author"
   end
 end

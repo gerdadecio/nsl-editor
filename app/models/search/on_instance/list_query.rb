@@ -29,20 +29,22 @@ class Search::OnInstance::ListQuery
   def prepare_query
     Rails.logger.debug("Search::OnInstance::ListQuery#prepare_query")
     prepared_query = Instance.where("1=1")
-                             .includes(:name, [name: :name_status])
-                             .includes(:reference)
-                             .includes(:instance_type)
-    where_clauses = Search::OnInstance::WhereClauses.new(@parsed_request,
-                                                         prepared_query)
+      .includes(:name, [name: :name_status])
+      .includes(:reference)
+      .includes(:instance_type)
+    where_clauses = Search::OnInstance::WhereClauses.new(
+      @parsed_request,
+      prepared_query,
+    )
     prepared_query = where_clauses.sql
     prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
     prepared_query = prepared_query.offset(@parsed_request.offset) if @parsed_request.offsetted
     include_profiles(prepared_query)
     prepared_query = if @parsed_request.order_instance_query_by_page
-                       prepared_query.joins(:name).ordered_by_page_only
-                     else
-                       prepared_query.order("instance.id")
-                     end
+      prepared_query.joins(:name).ordered_by_page_only
+    else
+      prepared_query.order("instance.id")
+    end
     @sql = prepared_query
   end
 
@@ -50,6 +52,7 @@ class Search::OnInstance::ListQuery
 
   def include_profiles(prepared_query)
     return [] unless @parsed_request.show_profiles
+
     prepared_query.joins(:profile_items)
   end
 end

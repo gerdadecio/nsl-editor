@@ -25,10 +25,10 @@ class SearchOnInstanceNameRankSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "rank: species",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instances for names with rank species expected."
+    assert_not search.executed_query.results.empty?,
+      "Instances for names with rank species expected."
   end
 end

@@ -39,10 +39,10 @@ class SearchOnReferenceNoDoiSimpleTest < ActiveSupport::TestCase
 
   test "every result actually has no doi recorded" do
     results = run_search("no-doi:")
-    assert !results.empty?, "Results expected."
+    assert_not results.empty?, "Results expected."
     results.each do |reference|
       assert reference.doi.blank?,
-             "#{reference.citation} should have no doi recorded"
+        "#{reference.citation} should have no doi recorded"
     end
   end
 
@@ -62,7 +62,7 @@ class SearchOnReferenceNoDoiSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "reference",
       query_string: query_string,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     Search::Base.new(params).executed_query.results
   end

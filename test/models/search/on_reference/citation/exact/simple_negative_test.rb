@@ -24,9 +24,9 @@ class SearchOnReferenceCitationExactSimpleNegativeTest < ActiveSupport::TestCase
   test "search on reference citation exact simple negative" do
     reference = references(:journal_with_papers)
     params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: %(citation-exact: #{reference.citation.chop}),
-                   current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: %(citation-exact: #{reference.citation.chop}),
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?, "No results expected."
   end

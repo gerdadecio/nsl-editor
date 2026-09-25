@@ -27,11 +27,17 @@ class InstancesCreateByEditorTest < ActionController::TestCase
     reference = references(:a_book)
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Instance.count") do
-      post(:create,
-           params: { instance: { "name_id" => name.id,
-                                 "reference_id" => reference.id,
-                                 "instance_type_id" => instance_types(:basionym) } },
-           session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] })
+      post(
+        :create,
+        params: {
+          instance: {
+            "name_id" => name.id,
+            "reference_id" => reference.id,
+            "instance_type_id" => instance_types(:basionym),
+          },
+        },
+        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] },
+      )
     end
   end
 end

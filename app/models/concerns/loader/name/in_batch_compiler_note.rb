@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::InBatchCompilerNote
   extend ActiveSupport::Concern
 

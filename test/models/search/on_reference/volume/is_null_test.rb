@@ -22,14 +22,14 @@ load "test/models/search/users.rb"
 # Single Search model test for Reference target.
 class SearchOnReferenceVolumeIsNullTest < ActiveSupport::TestCase
   test "search on volume is null" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "on the origin of species volume: ",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "reference",
+        query_string: "on the origin of species volume: ",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|
       assert r.volume.blank?, "Volume should be blank"
     end

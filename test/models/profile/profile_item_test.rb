@@ -32,26 +32,26 @@ class Profile::ProfileItemTest < ActiveSupport::TestCase
       updated_by: "tester",
       updated_at: Time.now,
       profile_text_id: @profile_text.id,
-      product_item_config_id: @product_item_config.id
+      product_item_config_id: @product_item_config.id,
     })
   end
 
-  test 'belongs to product item config' do
+  test "belongs to product item config" do
     assert_equal @product_item_config, @profile_item.product_item_config
   end
 
-  test 'belongs to profile text' do
+  test "belongs to profile text" do
     assert_equal @profile_text, @profile_item.profile_text
   end
 
-  test 'belongs to profile object type (optional)' do
+  test "belongs to profile object type (optional)" do
     assert_nil @profile_item.profile_object_type
 
     @profile_item.update(profile_object_rdf_id: @profile_object_type.rdf_id)
     assert_equal @profile_object_type, @profile_item.profile_object_type
   end
 
-  test 'has many profile item references' do
+  test "has many profile item references" do
     reference1 = references(:paper_by_brassard)
     profile_item_reference1 = profile_item_reference(:one_pir)
     profile_item_reference1.update(profile_item: @profile_item, reference: reference1)
@@ -65,11 +65,11 @@ class Profile::ProfileItemTest < ActiveSupport::TestCase
     assert_equal profile_item_references.include?(profile_item_reference2.profile_item_id_reference_id), true
   end
 
-  test 'has one product through product item config' do
+  test "has one product through product item config" do
     assert_equal @product_item_config.product, @profile_item.product
   end
 
-  test 'has one profile item annotation' do
+  test "has one profile item annotation" do
     annotation = profile_item_annotation(:one_pia)
     annotation.update(profile_item: @profile_item)
     assert_equal annotation.id, @profile_item.profile_item_annotation.id
@@ -77,7 +77,7 @@ class Profile::ProfileItemTest < ActiveSupport::TestCase
 
   test "order by product item config's sort_order asc" do
     profile_items = Profile::ProfileItem.all
-    profile_items_sort_orders = profile_items.collect{|p| p.product_item_config.sort_order.to_i}
-    assert_equal profile_items_sort_orders, profile_items_sort_orders.sort{|x,y| x <=> y}
+    profile_items_sort_orders = profile_items.collect { |p| p.product_item_config.sort_order.to_i }
+    assert_equal profile_items_sort_orders, profile_items_sort_orders.sort
   end
 end

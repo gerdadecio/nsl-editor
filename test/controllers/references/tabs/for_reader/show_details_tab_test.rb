@@ -27,11 +27,15 @@ class ReferenceShowReaderDetailsTabTest < ActionController::TestCase
 
   test "should show reader reference details tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @reference.id, tab: "tab_show_1" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :show,
+      params: { id: @reference.id, tab: "tab_show_1" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
   end
 end

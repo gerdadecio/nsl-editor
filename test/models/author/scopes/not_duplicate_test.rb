@@ -10,7 +10,7 @@ class AuthorScopeNotDuplicateTest < ActiveSupport::TestCase
 
   test "not_duplicate scope excludes authors with a duplicate_of_id" do
     results = Author.not_duplicate
-    refute_includes results, @duplicate
+    assert_not_includes results, @duplicate
   end
 
   test "not_duplicate scope includes authors without a duplicate_of_id" do

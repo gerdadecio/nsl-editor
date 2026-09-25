@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: profile_object_type(The supported object types within the National Species List infrastructure i.e text, reference, (later distribution etc))

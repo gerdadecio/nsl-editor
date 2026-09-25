@@ -27,11 +27,11 @@ class SearchOnNameNameEmbeddedSpaceWildcardTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "name: ang hora",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert search.executed_query.results.empty?,
-           "Expected no search results due to embedded space"
+      "Expected no search results due to embedded space"
   end
 end

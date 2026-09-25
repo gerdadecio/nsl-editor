@@ -28,12 +28,12 @@ class SearchOnNameRankMultipleValuesTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "rank: #{name.name_rank.name}, #{n2.name_rank.name}",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 2,
-                 search.executed_query.results.size,
-                 "Exactly 2 results are expected."
+      search.executed_query.results.size,
+      "Exactly 2 results are expected."
   end
 end

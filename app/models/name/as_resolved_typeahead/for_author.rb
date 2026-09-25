@@ -19,12 +19,13 @@
 #   Identify an author entered into or selected into a typeahead.
 class Name::AsResolvedTypeahead::ForAuthor
   include Resolvable
+
   attr_reader :value
 
   def initialize(id_string, param_text, field_name)
     @text = param_text # .sub(/ *\|.*\z/, "")
-    @text.sub!(/\|.*/,'') unless @text.blank?
-    @text.rstrip! unless @text.blank?
+    @text.presence&.sub!(/\|.*/, "")
+    @text.presence&.rstrip!
     @id_string = id_string
     @field_name = field_name
     run
@@ -70,11 +71,11 @@ class Name::AsResolvedTypeahead::ForAuthor
   end
 
   def zero_possibles
-    no_abbrevs = ::Author.lower_name_like(@text + '%').where(abbrev: nil)
+    no_abbrevs = ::Author.lower_name_like(@text + "%").where(abbrev: nil)
     if no_abbrevs.size > 0
-     raise "Please choose #{@field_name} from suggestions - that Author has no abbreviation recorded"
+      raise "Please choose #{@field_name} from suggestions - that Author has no abbreviation recorded"
     else
-     raise "Please choose #{@field_name} from suggestions"
+      raise "Please choose #{@field_name} from suggestions"
     end
   end
 
@@ -96,8 +97,8 @@ class Name::AsResolvedTypeahead::ForAuthor
 
   def two_or_more_possibles_for_id_and_text
     possibles_with_id = ::Author
-                        .where(id: @id_string.to_i)
-                        .lower_abbrev_equals(@text)
+      .where(id: @id_string.to_i)
+      .lower_abbrev_equals(@text)
     raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
 
     @value = possibles_with_id.first.id

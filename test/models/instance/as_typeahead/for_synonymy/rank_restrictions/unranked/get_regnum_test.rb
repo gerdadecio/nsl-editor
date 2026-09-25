@@ -25,7 +25,7 @@ class TypeaheadForSynonymyUnrankedGetRegnumTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "pla",
-      names(:an_unranked_with_an_instance).id
+      names(:an_unranked_with_an_instance).id,
     )
   end
 

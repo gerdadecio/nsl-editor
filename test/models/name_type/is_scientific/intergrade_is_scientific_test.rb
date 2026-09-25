@@ -24,6 +24,6 @@ class IntergradeIsScientificTest < ActiveSupport::TestCase
     assert NameType
       .find_by(name: "intergrade")
       .scientific?,
-           'Intergrade should be categorised as a "scientific" name type'
+      'Intergrade should be categorised as a "scientific" name type'
   end
 end

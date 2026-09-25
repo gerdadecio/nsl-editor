@@ -87,16 +87,16 @@ class InstanceType < ApplicationRecord
   # For new records: just the standard set.
   def self.standalone_options
     where("standalone").where.not("deprecated")
-                       .sort_by(&:name)
-                       .collect { |i| [i.name, i.id] }
+      .sort_by(&:name)
+      .collect { |i| [i.name, i.id] }
   end
 
   # For new records: just the standard set.
   def self.synonym_options
     where("relationship").where.not("deprecated")
-                   .where.not("unsourced")
-                   .sort_by(&:name)
-                   .collect { |i| [i.name, i.id] }
+      .where.not("unsourced")
+      .sort_by(&:name)
+      .collect { |i| [i.name, i.id] }
   end
 
   # For new records: just the standard set.
@@ -144,7 +144,7 @@ class InstanceType < ApplicationRecord
 
   def self.query_form_options
     all.sort_by(&:name)
-       .collect { |n| [n.name, n.name.downcase, { class: "" }] }
+      .collect { |n| [n.name, n.name.downcase, { class: "" }] }
   end
 
   def self.secondary_reference

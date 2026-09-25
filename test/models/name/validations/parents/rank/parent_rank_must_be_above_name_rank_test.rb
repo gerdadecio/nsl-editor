@@ -26,7 +26,7 @@ class ParentRankMustBeAboveNameRank < ActiveSupport::TestCase
     name.name_rank = name_ranks(:genus)
     name.parent.name_rank = name_ranks(:species)
     assert_not name.valid?,
-               "Parent name rank should not be lower than name's rank."
+      "Parent name rank should not be lower than name's rank."
   end
 
   test "scientific name with parent of same rank is invalid" do
@@ -35,6 +35,6 @@ class ParentRankMustBeAboveNameRank < ActiveSupport::TestCase
     name.name_rank = name_ranks(:species)
     name.parent.name_rank = name_ranks(:species)
     assert_not name.valid?,
-               "Parent name rank should not be the same as name's rank."
+      "Parent name rank should not be the same as name's rank."
   end
 end

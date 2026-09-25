@@ -25,10 +25,10 @@ class SearchOnInstanceRefYearAbbrevYearTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "year: 1987",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instances with matching ref year abbrev year expected."
+    assert_not search.executed_query.results.empty?,
+      "Instances with matching ref year abbrev year expected."
   end
 end

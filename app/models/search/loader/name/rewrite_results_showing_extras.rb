@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Always show concept-notes and distributions
 # Optionally show review comments
@@ -21,11 +23,11 @@ class Search::Loader::Name::RewriteResultsShowingExtras
   private
 
   def one_record(rec)
-    top_level_record(rec) if %w[accepted excluded].include? rec[:record_type]
-    push_preceding if %w[in-batch-note in-batch-compiler-note heading].include? rec[:record_type]
-    @results_with_comments << formatted_text_above(rec) unless rec.formatted_text_above.blank?
+    top_level_record(rec) if ["accepted", "excluded"].include?(rec[:record_type])
+    push_preceding if ["in-batch-note", "in-batch-compiler-note", "heading"].include?(rec[:record_type])
+    @results_with_comments << formatted_text_above(rec) if rec.formatted_text_above.present?
     @results_with_comments << rec
-    @results_with_comments << formatted_text_below(rec) unless rec.formatted_text_below.blank?
+    @results_with_comments << formatted_text_below(rec) if rec.formatted_text_below.present?
     review_comments(rec) if @show_review_comments
   end
 
@@ -80,7 +82,7 @@ class Search::Loader::Name::RewriteResultsShowingExtras
     return unless @show_review_comments
 
     dist_comments = Loader::Name::Review::Comment::AsArray::ForLoaderName
-                    .new(rec, "distribution")
+      .new(rec, "distribution")
     dist_comments.results.each { |i| @results_with_comments << i }
   end
 
@@ -103,13 +105,13 @@ class Search::Loader::Name::RewriteResultsShowingExtras
     return unless @show_review_comments
 
     comments_query = Loader::Name::Review::Comment::AsArray::ForLoaderName
-                     .new(rec, "concept-note")
+      .new(rec, "concept-note")
     comments_query.results.each { |i| @results_with_comments << i }
   end
 
   def review_comments(rec)
     comments_query = Loader::Name::Review::Comment::AsArray::ForLoaderName
-                     .new(rec, rec[:record_type])
+      .new(rec, rec[:record_type])
     comments_query.results.each { |i| @results_with_comments << i }
   end
 

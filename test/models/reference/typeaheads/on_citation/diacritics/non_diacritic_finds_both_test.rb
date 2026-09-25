@@ -26,15 +26,15 @@ class RefTypeaheadOnCitNonDiacriticFindsBothTest < ActiveSupport::TestCase
     curr_ref = references(:ref_type_is_paper)
     typeahead = Reference::AsTypeahead::OnCitation.new(
       "Hulten",
-      curr_ref.id
+      curr_ref.id,
     )
     assert_equal 2,
-                 typeahead.results.length,
-                 "Expecting 2 records for 'Hulten'."
+      typeahead.results.length,
+      "Expecting 2 records for 'Hulten'."
     ids = typeahead.results.collect { |reference| reference[:id] }
     assert ids.include?(references(:hulten_with_diacritic).id.to_s),
-           "Expecting hulten_with_diacritic"
+      "Expecting hulten_with_diacritic"
     assert ids.include?(references(:hulten_without_diacritic).id.to_s),
-           "Expecting hulten_without_diacritic"
+      "Expecting hulten_without_diacritic"
   end
 end

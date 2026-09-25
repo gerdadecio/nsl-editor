@@ -21,8 +21,10 @@ require "test_helper"
 # Search model tests for the api-name: activity (audit) search directive.
 class SearchAuditApiNameSimpleTest < ActiveSupport::TestCase
   setup do
-    names(:a_family).update_columns(api_name: "JIRA-Sync",
-      api_at: Time.utc(2026, 7, 27, 12))
+    names(:a_family).update_columns(
+      api_name: "JIRA-Sync",
+      api_at: Time.utc(2026, 7, 27, 12),
+    )
     references(:paper_by_brassard)
       .update_columns(api_name: "batch-loader",
         api_at: Time.utc(2026, 8, 15, 12))
@@ -41,7 +43,7 @@ class SearchAuditApiNameSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "activity",
       query_string: query_string,
-      current_user: build_qa_user
+      current_user: build_qa_user,
     )
     search = Search::Base.new(params)
     search.executed_query.results.collect { |r| "#{r.class.base_class.name}##{r.id}" }
@@ -60,7 +62,7 @@ class SearchAuditApiNameSimpleTest < ActiveSupport::TestCase
   end
 
   test "api-name: excludes records changed by another api" do
-    refute_includes search_keys("api-name: jira-sync"),
+    assert_not_includes search_keys("api-name: jira-sync"),
       "Reference##{references(:paper_by_brassard).id}",
       "Expected the reference changed by batch-loader to be excluded"
   end
@@ -70,7 +72,7 @@ class SearchAuditApiNameSimpleTest < ActiveSupport::TestCase
     assert_includes keys,
       "Reference##{references(:paper_by_brassard).id}",
       "Expected a wildcard search to match batch-loader"
-    refute_includes keys,
+    assert_not_includes keys,
       "Name##{names(:a_family).id}",
       "Expected a *loader* search to exclude JIRA-Sync"
   end
@@ -86,7 +88,7 @@ class SearchAuditApiNameSimpleTest < ActiveSupport::TestCase
   end
 
   test "api-name: excludes records never changed by an api" do
-    refute_includes search_keys("api-name: *"),
+    assert_not_includes search_keys("api-name: *"),
       "Author##{authors(:brassard).id}",
       "Expected an author with no api_name to be excluded"
   end
@@ -96,7 +98,7 @@ class SearchAuditApiNameSimpleTest < ActiveSupport::TestCase
     assert_includes keys,
       "Reference##{references(:paper_by_brassard).id}",
       "Expected the batch-loader reference api-changed in August to match"
-    refute_includes keys,
+    assert_not_includes keys,
       "Name##{names(:a_family).id}",
       "Expected the JIRA-Sync name to be excluded by both criteria"
   end

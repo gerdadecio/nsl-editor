@@ -23,14 +23,14 @@ class NameCultHybFormParNSecParentCannotBeTheSameTest < ActiveSupport::TestCase
   test "name cult hybrid formula parent and second parent cannot be the same" do
     name = names(:a_cultivar_hybrid_formula)
     assert name.parent_id != name.second_parent_id,
-           "Name parent and second_parent must differ for this test."
+      "Name parent and second_parent must differ for this test."
     assert name.valid?,
-           "Name should be valid. Errs: #{name.errors.full_messages.join('; ')}"
+      "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
     name.second_parent_id = name.parent_id
     assert_not name.valid?,
-               "Cultivar Hybrid Formula Name should not be valid even when
+      "Cultivar Hybrid Formula Name should not be valid even when
                parent is the same as second_parent."
     assert_equal "Second parent cannot be the same as the first parent",
-                 name.errors.full_messages.join("; ")
+      name.errors.full_messages.join("; ")
   end
 end

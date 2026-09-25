@@ -57,19 +57,23 @@ class OrgsTabsForQaDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionContro
   test "escapes html in api_name" do
     @org.update_columns(api_name: "<b>bad</b>", api_at: @api_at)
     show_details_tab
-    assert_match(/by &lt;b&gt;bad&lt;\\?\/b&gt;/, response.body)
+    assert_match(%r{by &lt;b&gt;bad&lt;\\?/b&gt;}, response.body)
   end
 
   private
 
   def show_details_tab
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @org.id, tab: "tab_details" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["QA"] })
-    assert_response :success
+    get(
+      :show,
+      params: { id: @org.id, tab: "tab_details" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["QA"],
+      },
+    )
+    assert_response(:success)
     assert_match(/Organisation ##{@org.id}/, response.body)
   end
 end

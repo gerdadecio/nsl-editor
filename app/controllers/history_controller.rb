@@ -20,7 +20,7 @@ class HistoryController < ApplicationController
   before_action :hide_details, :empty_search
 
   def for_year
-    if Rails.configuration.try('jira_status_aware')
+    if Rails.configuration.try("jira_status_aware")
       JiraTicket.keys = JiraTicket.keys_for_year(history_params[:year].to_i)
       JiraTicket.query_keys
       @tickets = JiraTicket.results
@@ -33,5 +33,4 @@ class HistoryController < ApplicationController
   def history_params
     params.permit(:year, :show_status, :target)
   end
-
 end

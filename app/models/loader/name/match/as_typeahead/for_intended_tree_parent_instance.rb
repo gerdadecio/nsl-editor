@@ -23,7 +23,7 @@
 # Only accepted names
 class Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance
   attr_reader :suggestions,
-              :params
+    :params
 
   SEARCH_LIMIT = 50
 
@@ -50,21 +50,25 @@ class Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance
   # I will dismiss the alert.
   def core_query
     Name.joins(:name_rank)
-        .joins(:name_status)
-        .joins(:name_type)
-        .where(['lower(f_unaccent(name.full_name)) like lower(f_unaccent(?))',
-                prepared_search_term])
-        .where("name_type.name = 'scientific'")
-        .select("name.id, name.full_name, case name_status.name when 'legitimate' then null else name_status.name end as status")
-        .order("name_rank.sort_order, name.full_name")
-        .limit(SEARCH_LIMIT)
+      .joins(:name_status)
+      .joins(:name_type)
+      .where([
+        "lower(f_unaccent(name.full_name)) like lower(f_unaccent(?))",
+        prepared_search_term
+      ])
+      .where("name_type.name = 'scientific'")
+      .select("name.id, name.full_name, case name_status.name when 'legitimate' then null else name_status.name end as status")
+      .order("name_rank.sort_order, name.full_name")
+      .limit(SEARCH_LIMIT)
   end
 
   def query
     @qry = core_query
     @qry = @qry.collect do |qry|
-      { value: "#{qry.full_name} #{qry.status}",
-        id: qry.id }
+      {
+        value: "#{qry.full_name} #{qry.status}",
+        id: qry.id,
+      }
     end
   end
 end

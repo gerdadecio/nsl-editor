@@ -25,14 +25,22 @@ class UserCreateUnauthorisedTest < ActionController::TestCase
   test "create user unauthorised" do
     @request.headers["Accept"] = "application/javascript"
     assert_no_difference("User.count") do
-    post(:create,
-         params: { user: { "user_name" => "auser",
-                           "given_name" => "a",
-                           "family_name" => "user"} },
-         session: { username: "uone",
-                    user_full_name: "auser One",
-                    groups: ["edit"] })
+      post(
+        :create,
+        params: {
+          user: {
+            "user_name" => "auser",
+            "given_name" => "a",
+            "family_name" => "user",
+          },
+        },
+        session: {
+          username: "uone",
+          user_full_name: "auser One",
+          groups: ["edit"],
+        },
+      )
     end
-    #assert_response(:forbidden, 'Non-admin users should not create a user')
+    # assert_response(:forbidden, 'Non-admin users should not create a user')
   end
 end

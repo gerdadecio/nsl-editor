@@ -24,7 +24,7 @@ class NameTAForUCitNoSearchTermTest < ActiveSupport::TestCase
     suggestions = Name::AsTypeahead::ForUnpubCit.new({}).suggestions
     assert(suggestions.is_a?(Array), "suggestions should be an array")
     assert_equal suggestions.size,
-                 0,
-                 "suggestions for no search term should be empty"
+      0,
+      "suggestions for no search term should be empty"
   end
 end

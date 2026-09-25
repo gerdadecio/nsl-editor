@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Users::ProductRoles::CreateService < BaseService
   validate :user_exists, :product_role_exists
 
@@ -24,11 +26,13 @@ class Users::ProductRoles::CreateService < BaseService
 
   def user_exists
     return if user.present?
+
     errors.add(:base, "User with ID #{@user_id} does not exist")
   end
 
   def product_role_exists
     return if Product::Role.exists?(@product_role_id)
+
     errors.add(:base, "Product role with ID #{@product_role_id} does not exist")
   end
 

@@ -19,8 +19,8 @@
 class CommentsController < ApplicationController
   # All text/html requests should go to the search page.
   before_action :javascript_only
-  before_action :set_comment, only: %i[show edit update destroy]
-  before_action :authorize_for_instance!, only: %i[create update destroy]
+  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_for_instance!, only: [:create, :update, :destroy]
 
   # GET /comments/1
   # GET /comments/1.json
@@ -36,7 +36,7 @@ class CommentsController < ApplicationController
         format.js {}
       else
         @message = "Not saved: #{@comment.errors.full_messages.first}"
-        format.js { render :create_failed }
+        format.js { render(:create_failed) }
       end
     end
   end
@@ -54,20 +54,20 @@ class CommentsController < ApplicationController
   # I had to hack it a bit and it certainly needs more looking at, but
   # the check for a javascript request seemed not important enough to delay for.
   def destroy
-    throw "request must be js" unless request.format == "text/javascript" || request.format == "application/json"
+    throw("request must be js") unless request.format == "text/javascript" || request.format == "application/json"
     username = current_user.username
     if @comment.update(updated_by: username) && @comment.destroy
       respond_to do |format|
-        format.html { redirect_to comments_url, notice: "Comment deleted." }
-        format.json { head :no_content }
+        format.html { redirect_to(comments_url, notice: "Comment deleted.") }
+        format.json { head(:no_content) }
         format.js {}
       end
     else
-      throw "There was a problem deleting that record."
+      throw("There was a problem deleting that record.")
     end
   rescue StandardError => e
     @message = e.to_s
-    render "destroy_failed", status: 503
+    render("destroy_failed", status: :service_unavailable)
   end
 
   private
@@ -79,21 +79,25 @@ class CommentsController < ApplicationController
   # Never trust parameters from the scary internet,
   # only allow the white list through.
   def comment_params
-    params.require(:comment).permit(:instance_id,
-                                    :author_id,
-                                    :reference_id,
-                                    :name_id,
-                                    :text)
+    params.require(:comment).permit(
+      :instance_id,
+      :author_id,
+      :reference_id,
+      :name_id,
+      :text,
+    )
   end
 
   def really_update
-    if @comment.update_attributes_with_username(comment_params,
-                                                current_user.username)
+    if @comment.update_attributes_with_username(
+      comment_params,
+      current_user.username,
+    )
       @message = "Updated"
-      render :update
+      render(:update)
     else
       @message = "Not saved. #{@comment.errors.full_messages.first}"
-      render :update_failed
+      render(:update_failed)
     end
   end
 

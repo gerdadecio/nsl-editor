@@ -29,12 +29,12 @@ class ForSubseriesFullyRestrictedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "Subseries").id
+      rank_id: NameRank.find_by(name: "Subseries").id,
     )
     suggestions_should_only_include(
       typeahead.suggestions,
       "Subseries",
-      %w[Series Subsectio Sectio Subgenus Genus]
+      ["Series", "Subsectio", "Sectio", "Subgenus", "Genus"],
     )
   end
 end

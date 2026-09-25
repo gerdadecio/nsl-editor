@@ -25,11 +25,12 @@ class NamesDeletesController < ApplicationController
 
     delete_via_service(names_delete_params)
     raise "Name delete was requested but not confirmed" unless name_is_gone?
-    render partial: "ok"
+
+    render(partial: "ok")
   rescue StandardError => e
     logger.error("Exception deleting name: #{e}")
     assemble_error_message(e)
-    render partial: "error"
+    render(partial: "error")
   end
 
   private
@@ -38,7 +39,7 @@ class NamesDeletesController < ApplicationController
     @name = Name::AsServices.find(names_delete_params[:name_id])
     @name.update_attribute(:updated_by, current_user.username)
     raise "Not saved" unless @name.delete_with_reason(
-      @names_delete.assembled_reason
+      @names_delete.assembled_reason,
     )
   end
 
@@ -53,7 +54,7 @@ class NamesDeletesController < ApplicationController
     @message = err.to_s
     return if err.try("http_body").nil?
 
-    json = JSON.parse err.http_body
+    json = JSON.parse(err.http_body)
     return if json["errors"].blank?
 
     @message += ": "

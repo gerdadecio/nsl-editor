@@ -45,19 +45,28 @@ class SrchRefsDefQueriesRefIdWInstListHasInstWLimit < ActionController::TestCase
 
   test "limit: no longer truncates a single reference's instance list" do
     ref = references(:bucket_reference_for_default_instances)
-    get(:search,
-        params: { query_target: "references",
-                  query_string: "id: #{ref.id} show-instances: limit:10" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "references",
+        query_string: "id: #{ref.id} show-instances: limit:10",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
-    assert_select "#search-results-summary", /1 record\b/,
-                  "Should still find exactly 1 reference"
+    assert_select "#search-results-summary",
+      /1 record\b/,
+      "Should still find exactly 1 reference"
     assert_select "tr.instance-within-reference-record" do |elements|
-      assert_operator elements.size, :>, 10,
-                       "Expected more than the old limit:10 cap on the " \
-                       "reference's instance rows - got: #{elements.size}"
+      assert_operator elements.size,
+        :>,
+        10,
+        "Expected more than the old limit:10 cap on the " \
+          "reference's instance rows - got: #{elements.size}"
     end
   end
 end

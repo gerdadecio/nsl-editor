@@ -27,12 +27,18 @@ class InstancesUpdateForEditorPageTest < ActionController::TestCase
     new_page_value = "xxxxxx"
     assert instance.page != new_page_value
     @request.headers["Accept"] = "application/javascript"
-    put(:update,
-        params: { id: instance.id,
-                  instance: { "page" => new_page_value } },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    put(
+      :update,
+      params: {
+        id: instance.id,
+        instance: { "page" => new_page_value },
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert Instance.find(instance.id).page == new_page_value
   end

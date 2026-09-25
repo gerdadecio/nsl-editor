@@ -23,23 +23,37 @@ class NameParentSuggestionsMustAvoidIdTest < ActiveSupport::TestCase
   test "name parent suggestions must avoid id" do
     name = names(:angophora_costata)
     typeahead =
-      Name::AsTypeahead::ForParent.new(term: "angophora costata",
-                                       avoid_id: name.id + 1,
-                                       rank_id: name_ranks(:unranked).id)
-    assert(typeahead.suggestions.is_a?(Array),
-           "SUggestions should be an array")
-    assert(typeahead.suggestions.size == 1,
-           "SUggestions for 'angophora costata' should have 1 element")
-    assert(typeahead.suggestions.first[:value].match(/Angophora costata/),
-           "Suggestions should include 'Angophora costata'.")
+      Name::AsTypeahead::ForParent.new(
+        term: "angophora costata",
+        avoid_id: name.id + 1,
+        rank_id: name_ranks(:unranked).id,
+      )
+    assert(
+      typeahead.suggestions.is_a?(Array),
+      "SUggestions should be an array",
+    )
+    assert(
+      typeahead.suggestions.size == 1,
+      "SUggestions for 'angophora costata' should have 1 element",
+    )
+    assert(
+      typeahead.suggestions.first[:value].match(/Angophora costata/),
+      "Suggestions should include 'Angophora costata'.",
+    )
     typeahead =
-      Name::AsTypeahead::ForParent.new(term: "angophora costata",
-                                       avoid_id: name.id,
-                                       rank_id: name_ranks(:unranked).id)
-    assert(typeahead.suggestions.is_a?(Array),
-           "SUggestions should be an array")
-    assert(typeahead.suggestions.empty?,
-           "Suggestions for 'angophora costata' should have no elements
-           since it is told to avoid Angophora costata's id.")
+      Name::AsTypeahead::ForParent.new(
+        term: "angophora costata",
+        avoid_id: name.id,
+        rank_id: name_ranks(:unranked).id,
+      )
+    assert(
+      typeahead.suggestions.is_a?(Array),
+      "SUggestions should be an array",
+    )
+    assert(
+      typeahead.suggestions.empty?,
+      "Suggestions for 'angophora costata' should have no elements
+           since it is told to avoid Angophora costata's id.",
+    )
   end
 end

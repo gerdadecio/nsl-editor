@@ -23,12 +23,12 @@ load "test/models/search/users.rb"
 class SearchOnReferenceIsbnSimpleTest < ActiveSupport::TestCase
   test "search on reference isbn simple" do
     params = ActiveSupport::HashWithIndifferentAccess
-             .new(query_target: "reference",
-                  query_string: "isbn: an_isbn_number",
-                  current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "isbn: an_isbn_number",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

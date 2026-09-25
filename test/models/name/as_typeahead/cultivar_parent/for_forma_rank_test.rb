@@ -26,9 +26,24 @@ class CultivarParentForFormaRankTest < ActiveSupport::TestCase
     cultivar_parent_suggestions_should_only_include(
       suggestions,
       "Forma",
-      %w(Genus Subgenus Sectio Subsectio Series Subseries Superspecies Species \
-         Subspecies Varietas Nothovarietas Subvarietas Forma Subforma
-         [infraspecies])
+      [
+        "Genus",
+        "Subgenus",
+        "Sectio",
+        "Subsectio",
+        "Series",
+        "Subseries",
+        "Superspecies",
+        "Species",
+        "\n",
+        "Subspecies",
+        "Varietas",
+        "Nothovarietas",
+        "Subvarietas",
+        "Forma",
+        "Subforma",
+        "[infraspecies]"
+      ],
     )
   end
 end

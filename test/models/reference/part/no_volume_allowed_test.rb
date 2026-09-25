@@ -29,14 +29,14 @@ class ReferencePartNoVolumeAllowedTest < ActiveSupport::TestCase
     assert reference.valid?, "Part should be valid"
     reference.volume = "xyz"
     assert_raises ActiveRecord::RecordInvalid,
-                  "A reference part with a volume should be invalid" do
+      "A reference part with a volume should be invalid" do
       reference.save!
     end
     assert_equal :volume,
-                 reference.errors.first.attribute,
-                 "Error should be on :volume"
+      reference.errors.first.attribute,
+      "Error should be on :volume"
     assert_equal "is not allowed for a Part",
-                 reference.errors.first.message,
-                 "Incorrect error message"
+      reference.errors.first.message,
+      "Incorrect error message"
   end
 end

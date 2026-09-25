@@ -13,10 +13,10 @@ module Name::Treeable
   end
 
   def draft_instance_id(draft_version)
-    return nil unless draft_version.present?
+    return unless draft_version.present?
 
     tree_version_element = draft_version.name_in_version(self)
-    return nil unless tree_version_element.present?
+    return unless tree_version_element.present?
 
     tree_version_element.tree_element.instance.id
   end
@@ -67,7 +67,7 @@ module Name::Treeable
     if accepted_concept?
       accepted_tree_version_element.tree_element.distribution_value
     else
-      ''
+      ""
     end
   end
 
@@ -77,7 +77,7 @@ module Name::Treeable
     elsif excluded_concept?
       accepted_tree_version_element.tree_element.comment_value
     else
-      ''
+      ""
     end
   end
 end

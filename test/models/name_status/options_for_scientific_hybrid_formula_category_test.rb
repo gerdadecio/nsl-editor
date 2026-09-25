@@ -24,13 +24,15 @@ class OptionsForScientificHybridFormulaCategoryTest < ActiveSupport::TestCase
     assert NameStatus
       .options_for_category(name_categories(:scientific_hybrid_formula))
       .collect(&:first).include?("[n/a]"),
-           'Scientific hybrid formula name status opts should include "[n/a]"'
+      'Scientific hybrid formula name status opts should include "[n/a]"'
   end
 
   test "should have only one entry" do
-    assert_equal(1,
-                 NameStatus
+    assert_equal(
+      1,
+      NameStatus
       .options_for_category(name_categories(:scientific_hybrid_formula)).size,
-                 "Wrong number of name status options for scientific hybrid formula category")
+      "Wrong number of name status options for scientific hybrid formula category",
+    )
   end
 end

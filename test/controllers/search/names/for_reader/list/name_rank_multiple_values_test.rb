@@ -26,11 +26,15 @@ class ReaderSearchContNamesNameRankMultiValsListTst < ActionController::TestCase
     tribus = names(:a_tribus)
     subgenus = names(:a_subgenus)
     forma = names(:a_forma)
-    get(:search,
-        params: { query_target: "name", query_string: "rank: tribus,subgenus,forma" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "name", query_string: "rank: tribus,subgenus,forma" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "a#name-#{tribus.id}", /a_tribus/, "Should see tribus."
     assert_select "a#name-#{subgenus.id}", true, "Should see subgenus."

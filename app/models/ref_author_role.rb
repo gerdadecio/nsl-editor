@@ -37,11 +37,11 @@ class RefAuthorRole < ApplicationRecord
   has_many :references
 
   def as_citation
-    name.downcase =~ /editor/ ? "(ed.)" : ""
+    /editor/.match?(name.downcase) ? "(ed.)" : ""
   end
 
   def as_excitation
-    name.downcase =~ /editor/ ? "(ed.)" : ""
+    /editor/.match?(name.downcase) ? "(ed.)" : ""
   end
 
   def self.author

@@ -34,7 +34,7 @@ class SearchLoaderNameDirectivesFormattedNoteTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "loader_names",
       query_string: query_string,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     Search::Base.new(params).executed_query.results.map(&:id)
   end

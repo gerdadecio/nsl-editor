@@ -33,14 +33,18 @@ class TaxFormsTreePubAPCUserCanOpenEditFormToEdAPCDraftTest < ActionController::
   test "APC tree publisher user can open edit draft form" do
     user = users(:apc_tax_publisher)
     apc_draft = tree_versions(:apc_draft_version)
-    get(:edit_draft,
-        params: {},
-        format: :js,
-        xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"],
-                   draft: apc_draft})
+    get(
+      :edit_draft,
+      params: {},
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: apc_draft,
+      },
+    )
     assert_response :success
   end
 end

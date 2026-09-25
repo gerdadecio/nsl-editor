@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Loader::Name::PreferredMatch
   extend ActiveSupport::Concern
+
   class NoPrimaryInstanceError < StandardError; end
 
   def can_clear_matches?
@@ -17,7 +20,7 @@ module Loader::Name::PreferredMatch
     loader_name_match.created_by = loader_name_match.updated_by = current_user
     loader_name_match.save!
   rescue NoPrimaryInstanceError => e
-    Rails.logger.error("#{e.to_s} - Instance: #{instance.id}; Name: #{instance.name.id}")
+    Rails.logger.error("#{e} - Instance: #{instance.id}; Name: #{instance.name.id}")
     Rails.logger.error("No primary instance isn't fatal, but no preferred match will be made.")
   end
 
@@ -35,6 +38,7 @@ module Loader::Name::PreferredMatch
     if primary_instance.nil?
       raise NoPrimaryInstanceError.new
     end
+
     primary_instance.id
   end
 end

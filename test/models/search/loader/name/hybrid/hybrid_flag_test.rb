@@ -23,17 +23,19 @@ load "test/models/search/users.rb"
 # Single Search model test.
 class SearchLoaderNameHybridFlagTest < ActiveSupport::TestCase
   test "search loader name with hybrid flag" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "loader_names",
-                                                          query_string:
-                                                          "hybrid-flag: xxx any-batch:",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "loader_names",
+      query_string:
+            "hybrid-flag: xxx any-batch:",
+      current_user:
+            build_edit_user,
+    )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 0,
-                 search.executed_query.results.size,
-                 "Exactly 0 result is expected."
+      search.executed_query.results.size,
+      "Exactly 0 result is expected."
   end
 end

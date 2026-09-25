@@ -26,15 +26,18 @@ class NoRoleUserCannotRunValidationReportForFOADraftTest < ActionController::Tes
   test "user with no role cannot run validation report for FOA draft" do
     user = users(:no_role)
     draft = tree_versions(:foa_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:run_valrep,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'User with no role should not be able to run validation report for FOA draft'
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :run_valrep,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "User with no role should not be able to run validation report for FOA draft"
   end
 end
-

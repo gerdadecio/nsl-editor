@@ -23,12 +23,18 @@ above_family/above_family_helper"
 # Single instance typeahead search.
 class TypeaheadForSynonymyRegnumTest < ActiveSupport::TestCase
   def setup
-    @ta = Instance::AsTypeahead::ForSynonymy.new("a*",
-                                                 names(:the_regnum).id)
-    @tb = Instance::AsTypeahead::ForSynonymy.new("plantae",
-                                                 names(:the_regnum).id)
-    @tc = Instance::AsTypeahead::ForSynonymy.new("magnolio",
-                                                 names(:the_regnum).id)
+    @ta = Instance::AsTypeahead::ForSynonymy.new(
+      "a*",
+      names(:the_regnum).id,
+    )
+    @tb = Instance::AsTypeahead::ForSynonymy.new(
+      "plantae",
+      names(:the_regnum).id,
+    )
+    @tc = Instance::AsTypeahead::ForSynonymy.new(
+      "magnolio",
+      names(:the_regnum).id,
+    )
   end
 
   test "instance typeahead for synonymy rank restriction for a regnum" do
@@ -52,6 +58,6 @@ class TypeaheadForSynonymyRegnumTest < ActiveSupport::TestCase
     @rank_names = @tc.results.collect do |result|
       Instance.find(result[:id]).name.name_rank.name
     end
-    check_rank_names_inclusions(%w[Division Classis])
+    check_rank_names_inclusions(["Division", "Classis"])
   end
 end

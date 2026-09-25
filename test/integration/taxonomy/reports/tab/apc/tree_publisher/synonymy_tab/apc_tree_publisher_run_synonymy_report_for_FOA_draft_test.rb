@@ -26,15 +26,18 @@ class APCTreePublisherRunSynonymyTabForFOADraftTest < ActionController::TestCase
   test "APC tree publisher cannot run syn report for FOA draft" do
     user = users(:apc_tax_publisher)
     draft = tree_versions(:foa_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:run_cas,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree publisher should not be able to run syn report for FOA draft'
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :run_cas,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree publisher should not be able to run syn report for FOA draft"
   end
 end
-

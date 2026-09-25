@@ -62,6 +62,7 @@ class Author < ApplicationRecord
   include AuditScopable
   include Author::Validations
   include Author::Scopes
+
   self.table_name = "author"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -76,22 +77,22 @@ class Author < ApplicationRecord
   has_many :ex_names, foreign_key: "ex_author_id", class_name: "Name"
   has_many :base_names, foreign_key: "base_author_id", class_name: "Name"
   has_many :ex_base_names,
-           foreign_key: "ex_base_author_id",
-           class_name: "Name"
+    foreign_key: "ex_base_author_id",
+    class_name: "Name"
   has_many :sanctioned_names,
-           foreign_key: "sanctioning_author_id",
-           class_name: "Name"
+    foreign_key: "sanctioning_author_id",
+    class_name: "Name"
 
   belongs_to :duplicate_of, class_name: "Author", foreign_key: "duplicate_of_id", optional: true
   has_many :duplicates,
-           -> { order("name") },
-           class_name: "Author",
-           foreign_key: "duplicate_of_id",
-           dependent: :restrict_with_error
+    -> { order("name") },
+    class_name: "Author",
+    foreign_key: "duplicate_of_id",
+    dependent: :restrict_with_error
   has_many :comments
 
   scope :lower_abbrev_equals,
-        ->(string) { where("lower(abbrev) = lower(?) ", string) }
+    ->(string) { where("lower(abbrev) = lower(?) ", string) }
 
   DEFAULT_DESCRIPTOR = "n" # for name
   DEFAULT_ORDER_BY = "name asc "
@@ -120,7 +121,7 @@ class Author < ApplicationRecord
   end
 
   def duplicate?
-    !duplicate_of_id.blank?
+    duplicate_of_id.present?
   end
 
   def abbrev_if_possible
@@ -149,8 +150,8 @@ class Author < ApplicationRecord
 
   # TODO: replace with calls to squish!
   def compress_whitespace
-    self.name = name.gsub(/ +/, " ") unless name.nil?
-    self.abbrev = abbrev.gsub(/ +/, " ") unless abbrev.nil?
+    self.name = name.squeeze(" ") unless name.nil?
+    self.abbrev = abbrev.squeeze(" ") unless abbrev.nil?
   end
 
   def citation
@@ -186,12 +187,16 @@ class Author < ApplicationRecord
   end
 
   def normalised_name
-    Author.find_by_sql(["select f_unaccent(name) as normalised_name from author where id = ?",
-                        id]).first["normalised_name"]
+    Author.find_by_sql([
+      "select f_unaccent(name) as normalised_name from author where id = ?",
+      id
+    ]).first["normalised_name"]
   end
 
   def normalised_abbrev
-    Author.find_by_sql(["select f_unaccent(abbrev) as normalised_abbrev from author where id = ?",
-                        id]).first["normalised_abbrev"]
+    Author.find_by_sql([
+      "select f_unaccent(abbrev) as normalised_abbrev from author where id = ?",
+      id
+    ]).first["normalised_abbrev"]
   end
 end

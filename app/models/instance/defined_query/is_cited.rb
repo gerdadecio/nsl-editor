@@ -20,14 +20,14 @@
 #   instantiate.
 class Instance::DefinedQuery::IsCited
   attr_reader :common_and_cultivar_included,
-              :count,
-              :has_relation,
-              :limited,
-              :relation,
-              :results,
-              :show_csv,
-              :total,
-              :do_count_totals
+    :count,
+    :has_relation,
+    :limited,
+    :relation,
+    :results,
+    :show_csv,
+    :total,
+    :do_count_totals
 
   def initialize(parsed_request)
     @do_count_totals = true
@@ -36,7 +36,7 @@ class Instance::DefinedQuery::IsCited
 
   def debug(s)
     tag = "Instance::DefinedQuery::IsCited"
-    Rails.logger.debug("#{tag}: #{s}")
+    Rails.logger.debug { "#{tag}: #{s}" }
   end
 
   def run_query(parsed_request)

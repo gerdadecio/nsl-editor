@@ -24,14 +24,18 @@ class TreePublisherFoaCanSeeTaxonomyMenuTest < ActionController::TestCase
 
   test "tree publisher can see taxonomy menu" do
     user = users(:foa_tax_publisher)
-    get(:search,
-        params: {},
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"] })
+    get(
+      :search,
+      params: {},
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+      },
+    )
     assert_response :success
     assert_select "a#draft-taxo-dropdown-menu-link",
-                  /Draft Taxonomies/,
-                  "Should show Draft Taxonomies menu link."
+      /Draft Taxonomies/,
+      "Should show Draft Taxonomies menu link."
   end
 end

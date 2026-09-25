@@ -21,8 +21,10 @@ require "test_helper"
 # Reference model typeahead test.
 class ReferenceARTA4AuthorNoIdWithInvalidString < ActiveSupport::TestCase
   test "no author id with invalid string" do
-    assert_raise(RuntimeError,
-                 "Should raise a RuntimeError for invalid reference string.") do
+    assert_raise(
+      RuntimeError,
+      "Should raise a RuntimeError for invalid reference string.",
+    ) do
       Reference::AsResolvedTypeahead::ForAuthor.new("", "asdfasfdasd")
     end
   end

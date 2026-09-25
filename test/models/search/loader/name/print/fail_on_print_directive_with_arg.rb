@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 #   Copyright 2015 Australian National Botanic Gardens
@@ -24,14 +23,16 @@ load "test/models/search/users.rb"
 # Single Search model test.
 class SearchLoaderNameAndPrintFailWithDirective < ActiveSupport::TestCase
   test "search loader name with any-batch print print" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "loader_names",
-                                                          query_string:
-                                                          "* any-batch: print: arg",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "loader_names",
+      query_string:
+            "* any-batch: print: arg",
+      current_user:
+            build_edit_user,
+    )
     error = assert_raises(RuntimeError) do
-      search = Search::Base.new(params)
+      Search::Base.new(params)
     end
     assert_match(/Error: the print: directive has an argument, please remove the argument/i, error.message)
   end

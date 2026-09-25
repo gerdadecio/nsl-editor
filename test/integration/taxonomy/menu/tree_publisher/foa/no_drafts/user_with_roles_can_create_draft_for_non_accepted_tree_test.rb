@@ -41,14 +41,18 @@ class TreePublisherWithRolesCanCreateDraftForNonAcceptedTreeTest < ActionControl
   test "FOA tree publisher with roles sees create draft for FOA (non-accepted tree)" do
     # FOA has accepted_tree: false, but user has product roles
     user = users(:foa_tax_publisher)
-    get(:search,
-        params: {},
-        session: {username: user.user_name,
-                  user_full_name: user.full_name,
-                  groups: ["login"]})
+    get(
+      :search,
+      params: {},
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+      },
+    )
     assert_response :success
     assert_select "a#create-draft-taxonomy-menu-link",
-                  /Create draft taxonomy for FOA/,
-                  "Should show Create Draft Taxonomy link for FOA even though it's a non-accepted tree, because user has roles."
+      /Create draft taxonomy for FOA/,
+      "Should show Create Draft Taxonomy link for FOA even though it's a non-accepted tree, because user has roles."
   end
 end

@@ -3,9 +3,10 @@
 # Name scopes
 module Name::Namable
   extend ActiveSupport::Concern
+
   def apni_json
     logger.info("apni_json; service call unless cached...")
-    Rails.cache.fetch("#{cache_key}/in_apni", expires_in: 1.minutes) do
+    Rails.cache.fetch("#{cache_key}/in_apni", expires_in: 1.minute) do
       JSON.load(RestClient.get(Name::AsServices.in_apni_url(id), "Accept" => "text/json", read_timeout: 1))
     end
   rescue StandardError => e
@@ -23,7 +24,7 @@ module Name::Namable
   end
 
   def apni_family_json
-    Rails.cache.fetch("#{cache_key}/apni_info", expires_in: 1.minutes) do
+    Rails.cache.fetch("#{cache_key}/apni_info", expires_in: 1.minute) do
       JSON.load(RestClient.get(Name::AsServices.apni_family_url(id), "Accept" => "text/json", read_timeout: 1))
     end
   end
@@ -45,16 +46,18 @@ module Name::Namable
   def refresh_constructed_name_fields
     names_json = get_names_json
     if full_name != names_json["result"]["fullName"] ||
-       full_name_html != names_json["result"]["fullMarkedUpName"] ||
-       simple_name != names_json["result"]["simpleName"] ||
-       simple_name_html != names_json["result"]["simpleMarkedUpName"]
+        full_name_html != names_json["result"]["fullMarkedUpName"] ||
+        simple_name != names_json["result"]["simpleName"] ||
+        simple_name_html != names_json["result"]["simpleMarkedUpName"]
 
-      update_columns(full_name: names_json["result"]["fullName"],
-                     full_name_html: names_json["result"]["fullMarkedUpName"],
-                     simple_name: names_json["result"]["simpleName"],
-                     simple_name_html:
-                     names_json["result"]["simpleMarkedUpName"],
-                     sort_name: names_json["result"]["sortName"])
+      update_columns(
+        full_name: names_json["result"]["fullName"],
+        full_name_html: names_json["result"]["fullMarkedUpName"],
+        simple_name: names_json["result"]["simpleName"],
+        simple_name_html:
+                names_json["result"]["simpleMarkedUpName"],
+        sort_name: names_json["result"]["sortName"],
+      )
       1
     else
       0

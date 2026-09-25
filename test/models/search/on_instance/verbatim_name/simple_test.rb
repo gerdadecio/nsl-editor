@@ -25,10 +25,10 @@ class SearchOnInstanceVerbatimNameSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "verbatim-name: erb",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instance with matching verbatim name string expected."
+    assert_not search.executed_query.results.empty?,
+      "Instance with matching verbatim name string expected."
   end
 end

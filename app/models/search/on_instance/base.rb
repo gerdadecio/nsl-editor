@@ -18,17 +18,17 @@
 #
 class Search::OnInstance::Base
   attr_reader :results,
-              :limited,
-              :info_for_display,
-              :rejected_pairings,
-              :common_and_cultivar_included,
-              :has_relation,
-              :relation,
-              :id,
-              :count,
-              :show_csv,
-              :total,
-              :do_count_totals
+    :limited,
+    :info_for_display,
+    :rejected_pairings,
+    :common_and_cultivar_included,
+    :has_relation,
+    :relation,
+    :id,
+    :count,
+    :show_csv,
+    :total,
+    :do_count_totals
 
   def initialize(parsed_request)
     run_query(parsed_request)
@@ -73,7 +73,7 @@ class Search::OnInstance::Base
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnInstance::Base: #{s}")
+    Rails.logger.debug { "Search::OnInstance::Base: #{s}" }
   end
 
   def csv?

@@ -28,7 +28,8 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
     stub_request(:get, %r{#{path}/[0-9]{1,}/api/name-strings})
       .with(headers: headers)
       .to_return(status: 200,
-                 body: returned_body.to_json, headers: {})
+        body: returned_body.to_json,
+        headers: {})
   end
 
   def returned_body
@@ -37,7 +38,7 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
       _links: { permalink: [] },
       name_element: "redundant name element for id 960477440",
       action: "unnecessary action",
-      result: returned_body_result
+      result: returned_body_result,
     }
   end
 
@@ -46,7 +47,7 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
       fullMarkedUpName: "full marked up name for id 960477440",
       simpleMarkedUpName: "simple marked up name for id 960477440",
       fullName: "full name for id 960477440",
-      simpleName: "simple name for id 960477440"
+      simpleName: "simple name for id 960477440",
     }
   end
 
@@ -55,9 +56,11 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
   end
 
   def headers
-    { "Accept" => "text/json",
+    {
+      "Accept" => "text/json",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-      "User-Agent" => /rest-client.*ruby.*/ }
+      "User-Agent" => /rest-client.*ruby.*/,
+    }
   end
 
   test "copy name with all instances for 2 identical instances should fail" do
@@ -66,12 +69,12 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
     dummy_name_element = "xyz"
     dummy_username = "fred"
     assert_equal 2,
-                 master_name.instances.size,
-                 "Master should have two instances."
+      master_name.instances.size,
+      "Master should have two instances."
     assert_raises(ActiveRecord::RecordInvalid) do
       master_name.copy_with_all_instances(
         dummy_name_element,
-        dummy_username
+        dummy_username,
       )
     end
     after = Name.count

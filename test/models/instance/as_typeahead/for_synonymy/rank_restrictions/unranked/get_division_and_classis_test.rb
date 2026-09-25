@@ -25,7 +25,7 @@ class TypeaheadForSynonymyUnrankedGetDivisionTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "magnolio",
-      names(:an_unranked_with_an_instance).id
+      names(:an_unranked_with_an_instance).id,
     )
   end
 

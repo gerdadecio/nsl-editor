@@ -81,14 +81,14 @@ class NameType < ApplicationRecord
 
   def self.query_form_options
     not_deprecated.sort_by(&:name)
-                  .collect { |n| [n.capitalised_name, n.name.to_s, { class: "" }] }
-                  .unshift(["Include common, cultivars", "type:*"])
-                  .unshift(["Exclude common, cultivars", ""])
+      .collect { |n| [n.capitalised_name, n.name.to_s, { class: "" }] }
+      .unshift(["Include common, cultivars", "type:*"])
+      .unshift(["Exclude common, cultivars", ""])
   end
 
   def self.options
     all.sort_by(&:name)
-       .collect { |n| [n.capitalised_name, n.id, { class: "" }] }
+      .collect { |n| [n.capitalised_name, n.id, { class: "" }] }
   end
 
   def self.option_ids_for_category(name_category)
@@ -182,8 +182,8 @@ class NameType < ApplicationRecord
 
   def self.other_options
     where(scientific: false).where(cultivar: false)
-                            .sort_by(&:name)
-                            .collect do |n|
+      .sort_by(&:name)
+      .collect do |n|
       [n.name, n.id, { class: "other" }]
     end
   end

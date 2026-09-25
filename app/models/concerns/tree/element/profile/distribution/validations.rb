@@ -1,17 +1,18 @@
+# frozen_string_literal: true
+
 #
 # Tree Element Profile is jsonb and it may include a distribution value
 module Tree::Element::Profile::Distribution::Validations
   extend ActiveSupport::Concern
+
   included do
     def self.dist_options
-      DistEntry.all.sort do |a, b|
-        a.sort_order <=> b.sort_order
-      end.collect(&:display)
+      DistEntry.all.sort_by(&:sort_order).collect(&:display)
     end
 
     def self.cleanup_distribution_string(s)
-      s = s.strip.chomp(",").split(",").collect { |s| s.strip }
-           .sort_by { |s| Tree::Element.region_position(s) || 99 }.uniq.join(", ")
+      s.strip.chomp(",").split(",").collect { |s| s.strip }
+        .sort_by { |s| Tree::Element.region_position(s) || 99 }.uniq.join(", ")
     end
 
     def self.validate_distribution_string(s)
@@ -24,8 +25,8 @@ module Tree::Element::Profile::Distribution::Validations
 
     def self.reject_duplicates(s)
       a = remove_bracketed_qualifiers(s)
-          .split(",")
-          .collect { |e| e = e.strip }
+        .split(",")
+        .collect { |e| e.strip }
       dupe = a.detect { |e| a.count(e) > 1 }
       raise %(duplicate value: '#{dupe}') unless dupe.nil?
     end

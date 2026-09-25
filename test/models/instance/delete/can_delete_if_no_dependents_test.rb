@@ -24,8 +24,8 @@ class CanDeleteSynonymIfNoDependentsTest < ActiveSupport::TestCase
     instance = instances(:angophora_lanceolata_cav_in_stanley)
     dependents = Instance.where(cited_by_id: instance.id).count
     assert dependents.zero?,
-           "The test fixture should have no dependents but has #{dependents}."
+      "The test fixture should have no dependents but has #{dependents}."
     assert instance.allow_delete?,
-           "Should be allowed to delete synonym with no dependents."
+      "Should be allowed to delete synonym with no dependents."
   end
 end

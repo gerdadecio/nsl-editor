@@ -28,14 +28,17 @@ class Tree::Workspace::Reparent < ActiveType::Object
     url = build_url
     payload = {
       currentElementUri: target.element_link,
-      newParentElementUri: parent.element_link
+      newParentElementUri: parent.element_link,
     }
     raise errors.full_messages.first unless valid?
 
-    logger.info "REPARENT REPLACE calling #{url} WITH PAYLOAD: #{payload}"
+    logger.info("REPARENT REPLACE calling #{url} WITH PAYLOAD: #{payload}")
 
-    RestClient.put(url, payload.to_json,
-                   { content_type: :json, accept: :json })
+    RestClient.put(
+      url,
+      payload.to_json,
+      { content_type: :json, accept: :json },
+    )
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::Workspace::Reparent error: #{e}")
     raise

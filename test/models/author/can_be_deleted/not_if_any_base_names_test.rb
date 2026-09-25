@@ -28,6 +28,6 @@ class AuthorCannotBeDeletedIfHasBaseNameTest < ActiveSupport::TestCase
     name.base_author = author
     name.save!
     assert_not author.can_be_deleted?,
-               "Should not be able to delete author of base name"
+      "Should not be able to delete author of base name"
   end
 end

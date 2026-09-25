@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::MakeOneInstance::MakeOneMisappInstance::Constants
   DECLINED_INSTANCE = "<span class='firebrick'>Declined to make misapp instance</span>"
   CREATED_INSTANCE = "<span class='darkgreen'>Made misapp instance</span>"

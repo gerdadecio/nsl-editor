@@ -27,14 +27,14 @@ class SearchOnNameOnDuplicateOfIdTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: query_string,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     assert_equal Array,
-                 search.executed_query.results.class,
-                 "Results should be an Array"
+      search.executed_query.results.class,
+      "Results should be an Array"
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result is expected."
+      search.executed_query.results.size,
+      "Exactly 1 result is expected."
   end
 end

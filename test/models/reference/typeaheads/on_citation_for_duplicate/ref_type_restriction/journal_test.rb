@@ -22,9 +22,11 @@ require "test_helper"
 class TAOnCitnForDuplicateRefTypeRestrictionJournal < ActiveSupport::TestCase
   test "reference typeahead on citation ref type restriction journal" do
     curr_ref = references(:journal_with_papers)
-    typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new("o",
-                                                                   curr_ref.id)
-    assert !typeahead.results.empty?, "Should be at least one result"
+    typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
+      "o",
+      curr_ref.id,
+    )
+    assert_not typeahead.results.empty?, "Should be at least one result"
     journals = 0
     unknowns = 0
     others = 0
@@ -39,8 +41,8 @@ class TAOnCitnForDuplicateRefTypeRestrictionJournal < ActiveSupport::TestCase
       end
     end
     assert_equal 0,
-                 others,
-                 "Only journals and unknown type references expected."
+      others,
+      "Only journals and unknown type references expected."
     assert journals.positive?, "Expecting at least 1 journal."
     assert unknowns.positive?, "Expecting at least 1 unknown ref type."
   end

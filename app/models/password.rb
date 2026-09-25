@@ -32,7 +32,7 @@ class Password < ActiveType::Object
     true
   rescue StandardError => e
     # Hide the params because they contain password
-    Rails.logger.error("Error changing password: #{e.to_s.sub(/ for .*/, '...')}")
+    Rails.logger.error("Error changing password: #{e.to_s.sub(/ for .*/, "...")}")
     @error = e.to_s.sub(/ for .*/, "...")
     false
   end
@@ -53,14 +53,14 @@ class Password < ActiveType::Object
     raise "The new password is too long." if new_password.size > 50
 
     return unless Rails.configuration.try("ldap_via_active_directory")
-    unless new_password.match(/[[:upper:]]/)
+    unless /[[:upper:]]/.match?(new_password)
       raise "The new password must contain at least one upper-case character A-Z."
     end
-    unless new_password.match(/[[:lower:]]/)
+    unless /[[:lower:]]/.match?(new_password)
       raise "The new password must contain at least one lower-case character a-z."
     end
     # a digit or non-word char
-    raise "The new password must contain at least one symbol or digit." unless new_password.match(/[\d\W]/)
+    raise "The new password must contain at least one symbol or digit." unless /[\d\W]/.match?(new_password)
   end
 
   def change_password

@@ -20,6 +20,6 @@ class NameScopeFullNameLikeTest < ActiveSupport::TestCase
   end
 
   test "full_name_like excludes names that do not match" do
-    refute_includes Name.full_name_like("Triodia"), @name
+    assert_not_includes Name.full_name_like("Triodia"), @name
   end
 end

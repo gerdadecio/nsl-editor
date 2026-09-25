@@ -25,10 +25,10 @@ class RefART4ParIdWStringMatchingAnotherRefTest < ActiveSupport::TestCase
     reference_2 = references(:origin_of_species)
     result = Reference::AsResolvedTypeahead::ForParent.new(
       reference_1.id.to_s,
-      reference_2.citation
+      reference_2.citation,
     )
     assert_equal reference_2.id,
-                 result.value,
-                 "Should get matching ID for citation despite mismatched ID"
+      result.value,
+      "Should get matching ID for citation despite mismatched ID"
   end
 end

@@ -73,7 +73,7 @@
 #
 class Instance::AsServices < Instance
   def self.name_strings_url(id)
-    "#{Rails.configuration.try('name_services')}#{id}/api/name-strings"
+    "#{Rails.configuration.try("name_services")}#{id}/api/name-strings"
   end
 
   def self.tag
@@ -112,23 +112,23 @@ class Instance::AsServices < Instance
   def self.delete(id)
     instance = Instance.find_by(id: id)
     url = delete_uri(id)
-    response = RestClient.delete(url, accept: :json)
+    RestClient.delete(url, accept: :json)
 
     delay = Rails.configuration.try("instance_delete_delay_seconds") || 3
     logger.info("#{tag} sleeping #{delay}sec before checking services delete")
     sleep(delay)
 
     records = Instance.where(id: id)
-                      .where(instance_type_id: instance.try(:instance_type_id)).reload
-    throw "Check after #{delay}s shows record not deleted" unless records.blank?
+      .where(instance_type_id: instance.try(:instance_type_id)).reload
+    throw("Check after #{delay}s shows record not deleted") if records.present?
   rescue RestClient::ExceptionWithResponse => e
     case e.response.code
     when 403
-      logger.error("#{tag} 403 from Services delete ##{instance.try('id')}")
+      logger.error("#{tag} 403 from Services delete ##{instance.try("id")}")
       raise " from Services: #{e}"
     when 404
-      logger.error("#{tag} 404 from Services delete ##{instance.try('id')}")
-      logger.error("Editor will now delete instance #{instance.try('id')}")
+      logger.error("#{tag} 404 from Services delete ##{instance.try("id")}")
+      logger.error("Editor will now delete instance #{instance.try("id")}")
       instance.try("destroy")
       logger.info("Instance destroyed or didn't exist")
     else
@@ -143,7 +143,7 @@ class Instance::AsServices < Instance
 
   def self.delete_uri(id)
     api_key = Rails.configuration.try("api_key")
-    host_path = "#{Rails.configuration.try('services')}rest/instance/apni/#{id}/api/delete"
+    host_path = "#{Rails.configuration.try("services")}rest/instance/apni/#{id}/api/delete"
     "#{host_path}?apiKey=#{api_key}&reason=Edit"
   end
 end

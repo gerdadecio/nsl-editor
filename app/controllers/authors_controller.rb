@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class AuthorsController < ApplicationController
-  before_action :find_author, only: %i[show destroy tab]
+  before_action :find_author, only: [:show, :destroy, :tab]
 
   # GET /authors/1
   # GET /authors/1/tab/:tab
@@ -28,23 +28,27 @@ class AuthorsController < ApplicationController
     set_tab_index
     copy if @tab == "tab_copy"
     @take_focus = params[:take_focus] == "true"
-    render "show", layout: false
+    render("show", layout: false)
   end
 
-  alias tab show
+  alias_method :tab, :show
 
   # GET /authors/new_row
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    render :new_row,
-       locals: {partial: 'new_row',
-                locals_for_partial:
-           {tab_path: "#{new_author_with_random_id_path(@random_id)}",
+    render(
+      :new_row,
+      locals: {
+        partial: "new_row",
+        locals_for_partial:
+          {
+            tab_path: "#{new_author_with_random_id_path(@random_id)}",
             link_id: "link-new-author-#{@random_id}",
             link_title: "New Author",
-            link_text: "New Author"
-           }
-               }
+            link_text: "New Author",
+          },
+      },
+    )
   end
 
   # GET /authors/new
@@ -52,34 +56,38 @@ class AuthorsController < ApplicationController
     @author = Author.new
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
-    render :new
+    render(:new)
   end
 
   # POST /authors
   def create
-    @author = Author::AsEdited.create(author_params,
-                                      typeahead_params,
-                                      current_user.username)
-    render "create"
+    @author = Author::AsEdited.create(
+      author_params,
+      typeahead_params,
+      current_user.username,
+    )
+    render("create")
   rescue StandardError => e
     logger.error("Controller:Authors:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_content
+    render("create_error", status: :unprocessable_content)
   end
 
   def update
     @author = Author::AsEdited.find(params[:id])
 
-    raise CanCan::AccessDenied.new("Access Denied!", :update, @author) unless can? :update, @author
+    raise CanCan::AccessDenied.new("Access Denied!", :update, @author) unless can?(:update, @author)
 
-    @message = @author.update_if_changed(author_params,
-                                         typeahead_params,
-                                         current_user.username)
-    render "update"
+    @message = @author.update_if_changed(
+      author_params,
+      typeahead_params,
+      current_user.username,
+    )
+    render("update")
   rescue StandardError => e
     logger.error("Author#update rescuing #{e}")
     @message = e.to_s
-    render "update_error", status: :unprocessable_content
+    render("update_error", status: :unprocessable_content)
   end
 
   # DELETE /authors/1
@@ -89,16 +97,16 @@ class AuthorsController < ApplicationController
     if @author.update_attribute(:updated_by, username) && @author.destroy
       render
     else
-      render js: "alert('Could not delete that record.');"
+      render(js: "alert('Could not delete that record.');")
     end
   end
 
   # Columns such as parent and duplicate_of_id use a typeahead search.
   def typeahead_on_name
     if params[:term].blank?
-      render json: []
+      render(json: [])
     else
-      render json: Author::AsTypeahead.on_name(params[:term])
+      render(json: Author::AsTypeahead.on_name(params[:term]))
     end
   end
 
@@ -106,8 +114,8 @@ class AuthorsController < ApplicationController
   def typeahead_on_name_duplicate_of_current
     authors = []
     typeahead = Author::AsTypeahead
-    authors = typeahead.on_name_duplicate_of(params[:term], params[:id]) unless params[:term].blank?
-    render json: authors
+    authors = typeahead.on_name_duplicate_of(params[:term], params[:id]) if params[:term].present?
+    render(json: authors)
   end
 
   # Columns such as parent and duplicate_of_id use a typeahead search.
@@ -134,19 +142,21 @@ class AuthorsController < ApplicationController
   def typeahead_on_abbrev
     authors = []
     typeahead = Author::AsTypeahead
-    authors = typeahead.on_abbrev(params[:term]) unless params[:term].blank?
+    authors = typeahead.on_abbrev(params[:term]) if params[:term].present?
     respond_to do |format|
-      format.json { render json: authors }
+      format.json { render(json: authors) }
       format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: authors, term: params[:term] }
+        render(
+          partial: "shared/autocomplete_suggestions",
+          locals: { suggestions: authors, term: params[:term] },
+        )
       end
     end
   end
 
   def copy
     author = @author
-    @author = Author.new author.attributes
+    @author = Author.new(author.attributes)
   end
 
   private
@@ -155,7 +165,7 @@ class AuthorsController < ApplicationController
     @author = Author.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the author."
-    redirect_to authors_path
+    redirect_to(authors_path)
   end
 
   def author_params
@@ -168,10 +178,10 @@ class AuthorsController < ApplicationController
 
   def set_tab
     @tab = if params[:tab].present? && params[:tab] != "undefined"
-             params[:tab]
-           else
-             "tab_show_1"
-           end
+      params[:tab]
+    else
+      "tab_show_1"
+    end
   end
 
   def set_tab_index

@@ -49,36 +49,36 @@ class Tree < ApplicationRecord
   self.sequence_name = "nsl_global_seq"
 
   belongs_to :default_draft_version,
-             class_name: "TreeVersion",
-             foreign_key: "default_draft_tree_version_id",
-             optional: true
+    class_name: "TreeVersion",
+    foreign_key: "default_draft_tree_version_id",
+    optional: true
 
   belongs_to :current_tree_version,
-             class_name: "TreeVersion",
-             foreign_key: "current_tree_version_id",
-             optional: true
+    class_name: "TreeVersion",
+    foreign_key: "current_tree_version_id",
+    optional: true
 
   has_many :tree_versions,
-           foreign_key: "tree_id"
+    foreign_key: "tree_id"
 
   has_many :products
 
   has_many :user_product_role_vs
 
   scope :accepted,
-        (lambda do
-          where(name: ShardConfig.classification_tree_key)
-        end)
+    (lambda do
+      where(name: ShardConfig.classification_tree_key)
+    end)
 
   def self.menu_drafts
     Tree.joins("LEFT OUTER JOIN tree_version draft_version on draft_version.tree_id = tree.id")
-        .where("draft_version.published = false")
-        .where(is_read_only: false)
+      .where("draft_version.published = false")
+      .where(is_read_only: false)
       .select("tree.id, name, draft_version.id as draft_id,
                draft_version.draft_name, draft_version.log_entry,
                tree.accepted_tree, tree.default_draft_tree_version_id,
                draft_version.id = tree.default_draft_tree_version_id as default_draft")
-        .order("tree.name")
+      .order("tree.name")
   end
 
   def read_only?

@@ -36,13 +36,17 @@ class InstanceAsArrayForReferencePreloadForTest < ActiveSupport::TestCase
     [ref_a, ref_b].each do |ref|
       separately_queried = Instance::AsArray::ForReference.new(ref).results.map(&:id)
       from_preload = Instance::AsArray::ForReference.new(
-        ref, "name", 1000, 0,
+        ref,
+        "name",
+        1000,
+        0,
         preloaded_instances: instances_by_reference[ref.id] || [],
-        preloaded_cited_by_map: cited_by_map
+        preloaded_cited_by_map: cited_by_map,
       ).results.map(&:id)
 
-      assert_equal separately_queried, from_preload,
-                   "Batched results for #{ref.citation} should match querying it alone"
+      assert_equal separately_queried,
+        from_preload,
+        "Batched results for #{ref.citation} should match querying it alone"
     end
   end
 
@@ -74,21 +78,23 @@ class InstanceAsArrayForReferencePreloadForTest < ActiveSupport::TestCase
       refs.each { |ref| Instance::AsArray::ForReference.new(ref) }
     end
 
-    assert_operator batched_count, :<, per_reference_count,
-                     "Expected preload_for (#{batched_count} queries) to cost less than " \
-                     "querying these #{refs.size} references one at a time " \
-                     "(#{per_reference_count} queries)"
+    assert_operator batched_count,
+      :<,
+      per_reference_count,
+      "Expected preload_for (#{batched_count} queries) to cost less than " \
+        "querying these #{refs.size} references one at a time " \
+        "(#{per_reference_count} queries)"
   end
 
   private
 
-  def count_instance_table_queries
+  def count_instance_table_queries(&block)
     count = 0
     callback = lambda do |*args|
       payload = args.last
       count += 1 if payload[:name].to_s.match?(/\AInstance( Eager)? Load\z/)
     end
-    ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { yield }
+    ActiveSupport::Notifications.subscribed(callback, "sql.active_record", &block)
     count
   end
 end

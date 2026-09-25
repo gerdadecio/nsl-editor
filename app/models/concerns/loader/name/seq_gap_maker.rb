@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::SeqGapMaker
   extend ActiveSupport::Concern
 
@@ -9,8 +11,9 @@ module Loader::Name::SeqGapMaker
                            (select id \
                               from loader_batch \
                              where lower(name) = ?)"
-      sanitized_s = ActiveRecord::Base::sanitize_sql(
-        [update_s, batch.name.downcase])
+      sanitized_s = ActiveRecord::Base.sanitize_sql(
+        [update_s, batch.name.downcase],
+      )
       ActiveRecord::Base.connection.execute(sanitized_s)
     end
   end

@@ -62,13 +62,13 @@ class Loader::Name::DraftTaxonomyAdder
 
   def record_failure(msg)
     msg.sub!("uncaught throw ", "")
-    msg.gsub!('"', "")
+    msg.delete!('"')
     msg.sub!(/^Failing/, "")
     Rails.logger.error("Loader::Name::AsInstanceCreator failure: #{msg}")
     log_to_table("Loader::Name::AsInstanceCreator failure: #{msg}")
   end
 
   def debug(msg)
-    Rails.logger.debug("Loader::Name::AsInstanceCreator #{msg} #{@tag}")
+    Rails.logger.debug { "Loader::Name::AsInstanceCreator #{msg} #{@tag}" }
   end
 end

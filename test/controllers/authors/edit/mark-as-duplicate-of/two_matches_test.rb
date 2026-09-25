@@ -26,17 +26,27 @@ class AuthorEditMarkAsDuplicateOfTwoMatchesTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     author = authors(:hesp_1)
     intended_dupe = authors(:hesp_3)
-    patch(:update,
-          params: { id: intended_dupe.id,
-                    author: { "name" => "Hesp",
-                              "duplicate_of_typeahead" => "Hesp",
-                              "duplicate_of_id" => author }, },
-          session: { username: "fred",
-                     user_full_name: "Fred Jones",
-                     groups: ["edit"] })
+    patch(
+      :update,
+      params: {
+        id: intended_dupe.id,
+        author: {
+          "name" => "Hesp",
+          "duplicate_of_typeahead" => "Hesp",
+          "duplicate_of_id" => author,
+        },
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :unprocessable_entity
-    assert_match("Error: Validation failed: Name has already been used ",
-                 response.body, "Should report Name has already been used")
+    assert_match(
+      "Error: Validation failed: Name has already been used ",
+      response.body,
+      "Should report Name has already been used",
+    )
   end
 end
-

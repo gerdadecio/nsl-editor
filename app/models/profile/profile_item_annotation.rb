@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/models/profile/profile_item_annotation.rb
 # == Schema Information
 #
@@ -26,17 +28,16 @@
 #  profile_item_annotation_profile_item_id_fkey  (profile_item_id => profile_item.id)
 #
 module Profile
-    class ProfileItemAnnotation < ApplicationRecord
-      include UserTrackable
+  class ProfileItemAnnotation < ApplicationRecord
+    include UserTrackable
 
-      self.table_name = "profile_item_annotation"
-      self.primary_key = "id"
+    self.table_name = "profile_item_annotation"
+    self.primary_key = "id"
 
-      belongs_to :profile_item, class_name: 'Profile::ProfileItem', foreign_key: 'profile_item_id'
-      has_one :product_item_config, through: :profile_item
+    belongs_to :profile_item, class_name: "Profile::ProfileItem", foreign_key: "profile_item_id"
+    has_one :product_item_config, through: :profile_item
 
-      validates :value, presence: true
-      validates :profile_item_id, uniqueness: { message: "Profile item annotation must be unique per profile item" }
-    end
+    validates :value, presence: true
+    validates :profile_item_id, uniqueness: { message: "Profile item annotation must be unique per profile item" }
   end
-
+end

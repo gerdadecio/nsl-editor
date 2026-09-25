@@ -22,12 +22,12 @@ load "test/models/search/users.rb"
 # Single Search model test for Name target.
 class SearchOneNameCommentsExactWildcardTest < ActiveSupport::TestCase
   test "search on name comments exact works with wildcards" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "name",
-                   query_string: "comments-exact: *xY*",
-                   include_common_and_cultivar_session: true,
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "name",
+        query_string: "comments-exact: *xY*",
+        include_common_and_cultivar_session: true,
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?, "Name expected."
+    assert_not search.executed_query.results.empty?, "Name expected."
   end
 end

@@ -20,8 +20,7 @@ require "test_helper"
 
 # Single name model test.
 class NewRegisteredUserTest < ActiveSupport::TestCase
-
   test "new_registered_user" do
-    new_user = SessionUser.new(username: 'nuser', full_name: 'new user', groups: 'login')
+    SessionUser.new(username: "nuser", full_name: "new user", groups: "login")
   end
 end

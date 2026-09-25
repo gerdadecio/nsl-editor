@@ -22,10 +22,12 @@ require "test_helper"
 class NameTAOnFullNameSuggsShldInclNamesWOInstTest < ActiveSupport::TestCase
   test "name on full name suggestions shd not incl names without instances" do
     suggestions = Name::AsTypeahead::OnFullName
-                  .new(term: "a name without instances")
-                  .suggestions
+      .new(term: "a name without instances")
+      .suggestions
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert_not(suggestions.empty?,
-           'suggestions for "a name without instances" should not be empty')
+    assert_not(
+      suggestions.empty?,
+      'suggestions for "a name without instances" should not be empty',
+    )
   end
 end

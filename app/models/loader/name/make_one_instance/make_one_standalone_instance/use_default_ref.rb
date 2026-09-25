@@ -37,51 +37,59 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::UseDefaultRef
     instance.created_by = instance.updated_by = "bulk for #{@user}"
     instance.save!
     note_standalone_instance_created(instance)
-    {creates: 1}
+    { creates: 1 }
   rescue StandardError => e
     Rails.logger.error("#{self.class}#create: #{e}")
-    Rails.logger.error e.backtrace.join("\n")
-    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
+    Rails.logger.error(e.backtrace.join("\n"))
+    @message = e.to_s.sub("uncaught throw", "").delete('"')
     raise
   end
 
   def no_def_ref
-    log_to_table("#{Constants::DECLINED_INSTANCE} - no default reference " +
-                 "for #{@loader_name.simple_name} #{@loader_name.id}", @user, @job)
-    {declines: 1, declines_reasons: {no_default_reference: 1} }
+    log_to_table(
+      "#{Constants::DECLINED_INSTANCE} - no default reference " +
+                       "for #{@loader_name.simple_name} #{@loader_name.id}",
+      @user,
+      @job,
+    )
+    { declines: 1, declines_reasons: { no_default_reference: 1 } }
   end
 
   def no_source_for_copy
-    log_to_table("#{Constants::DECLINED_INSTANCE} - no source instance to " +
-                 "copy #{@loader_name.simple_name} #{@loader_name.id}", @user, @job)
-    {declines: 1, declines_reasons: {no_source_instance_to_copy: 1} }
+    log_to_table(
+      "#{Constants::DECLINED_INSTANCE} - no source instance to " +
+                       "copy #{@loader_name.simple_name} #{@loader_name.id}",
+      @user,
+      @job,
+    )
+    { declines: 1, declines_reasons: { no_source_instance_to_copy: 1 } }
   end
 
   def stand_already_noted
     log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "already noted for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
-    {declines: 1, declines_reasons: {standalone_instance_already_noted: 1} }
+    { declines: 1, declines_reasons: { standalone_instance_already_noted: 1 } }
   end
 
   def stand_already_for_default_ref
     log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "exists for def ref for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
-    {declines: 1, declines_reasons: {standalone_instance_exists_for_default_ref: 1} }
+    { declines: 1, declines_reasons: { standalone_instance_exists_for_default_ref: 1 } }
   end
 
   def unknown_option
     log_to_table(
-      "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}"
+      "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}",
     )
     log_error("Unknown option: ##{@match.id} #{@match.loader_name_id}")
     log_error("#{@match.inspect}")
-    {errors: 1, errors_reasons: {unknown_option: 1} }
+    { errors: 1, errors_reasons: { unknown_option: 1 } }
   end
 
   def standalone_instance_already_noted?
-    true unless @match.standalone_instance_id.blank?
+    true if @match.standalone_instance_id.present?
   end
 
   def note_standalone_instance_created(instance)

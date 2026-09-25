@@ -29,7 +29,7 @@ class Instances::SoftDeletesController < ApplicationController
     return if @instance.save
 
     @message = @instance.errors.full_messages.join("; ")
-    render "create_error", status: :unprocessable_content
+    render("create_error", status: :unprocessable_content)
   end
 
   private

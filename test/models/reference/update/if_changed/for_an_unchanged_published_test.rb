@@ -23,21 +23,21 @@ require "models/reference/update/if_changed/test_helper"
 class ForAnUnchangedRefPublishedTest < ActiveSupport::TestCase
   test "unchanged published" do
     reference = Reference::AsEdited.find(
-      references(:for_whole_record_change_detection).id
+      references(:for_whole_record_change_detection).id,
     )
     field_name = "published"
     unchanged_field_value = reference.send(field_name) ? 1 : 0
     assert reference.update_if_changed(
       { field_name => unchanged_field_value },
       {},
-      "a user"
+      "a user",
     )
     changed_reference = Reference.find_by(id: reference.id)
     assert_equal reference.send(field_name) || "isnil",
-                 changed_reference.send(field_name) || "isnil",
-                 "#{field_name} should not have changed"
+      changed_reference.send(field_name) || "isnil",
+      "#{field_name} should not have changed"
     assert_equal reference.created_at,
-                 changed_reference.updated_at,
-                 "Reference should not have been updated."
+      changed_reference.updated_at,
+      "Reference should not have been updated."
   end
 end

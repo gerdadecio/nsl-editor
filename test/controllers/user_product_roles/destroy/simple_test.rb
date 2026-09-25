@@ -29,14 +29,19 @@ class UserProductRoleDestroySimpleTest < ActionController::TestCase
 
   test "destroy user product role simple" do
     assert_difference("User::ProductRole.count", -1) do
-      post(:destroy,
-           params: { "user_id" => @user_product_role.user_id,
-                     "product_role_id" => @user_product_role.product_role_id
-                   },
-           format: :turbo_stream,
-           session: { username: @admin.user_name,
-                      user_full_name: "#{@admin.given_name} #{@admin.family_name}",
-                      groups: ["admin"] })
+      post(
+        :destroy,
+        params: {
+          "user_id" => @user_product_role.user_id,
+          "product_role_id" => @user_product_role.product_role_id,
+        },
+        format: :turbo_stream,
+        session: {
+          username: @admin.user_name,
+          user_full_name: "#{@admin.given_name} #{@admin.family_name}",
+          groups: ["admin"],
+        },
+      )
       assert_response :success
     end
   end

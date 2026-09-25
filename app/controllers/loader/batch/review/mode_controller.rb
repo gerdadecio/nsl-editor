@@ -20,12 +20,12 @@ class Loader::Batch::Review::ModeController < ApplicationController
   def switch_on
     session[:view_mode_set_by_user] = true
     @view_mode = session[:view_mode] = ::ViewMode::REVIEW
-    render :switch_on, layout: false
+    render(:switch_on, layout: false)
   end
 
   def switch_off
     session[:view_mode_set_by_user] = false
     @view_mode = session[:view_mode] = ::ViewMode::STANDARD
-    render :switch_off, layout: false
+    render(:switch_off, layout: false)
   end
 end

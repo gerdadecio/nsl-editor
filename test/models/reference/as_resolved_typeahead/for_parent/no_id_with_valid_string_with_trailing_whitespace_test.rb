@@ -24,10 +24,10 @@ class RefARTA4PNoIdWValidStringWithTrailingWhitespace < ActiveSupport::TestCase
     reference = references(:origin_of_species)
     result = Reference::AsResolvedTypeahead::ForParent.new(
       "",
-      "#{reference.citation} "
+      "#{reference.citation} ",
     )
     assert_equal reference.id,
-                 result.value,
-                 "Should get a matching id for the reference"
+      result.value,
+      "Should get a matching id for the reference"
   end
 end

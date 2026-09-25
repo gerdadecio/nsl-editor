@@ -28,12 +28,18 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     @profile_item = profile_item(:ecology_pi)
     @request.headers["Accept"] = "application/javascript"
 
-    get(:show,
-        params: { id: @instance.id,
-                  tab: "tab_profile_v2" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["foa"] })
+    get(
+      :show,
+      params: {
+        id: @instance.id,
+        tab: "tab_profile_v2",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["foa"],
+      },
+    )
   end
 
   def asserts
@@ -48,92 +54,122 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
   end
 
   def asserts1
-    assert_response :success
-    assert_select "a#instance-profile-v2-tab",
-                   /FOA/
-                   "Should not show 'FOA Profile' tab link"
-    assert_select "h4",
-                   @product_item_config.display_html,
-                   "Should show the product item config display_html"
+    assert_response(:success)
+    assert_select(
+      "a#instance-profile-v2-tab",
+      /FOA/,
+    )
+    assert_select(
+      "h4",
+      @product_item_config.display_html,
+      "Should show the product item config display_html",
+    )
   end
 
   def asserts2
-    assert_select "li.active a#instance-show-tab",
-                  /Details/,
-                  "Shows 'Details' tab link."
+    assert_select(
+      "li.active a#instance-show-tab",
+      /Details/,
+      "Shows 'Details' tab link.",
+    )
   end
 
   def asserts3
-    assert_select "a#instance-edit-tab",
-                  false,
-                  "Does not show 'Edit' tab link."
-    assert_select "a#instance-edit-notes-tab",
-                  false,
-                  "Does not show 'Notes' tab link."
+    assert_select(
+      "a#instance-edit-tab",
+      false,
+      "Does not show 'Edit' tab link.",
+    )
+    assert_select(
+      "a#instance-edit-notes-tab",
+      false,
+      "Does not show 'Notes' tab link.",
+    )
   end
 
   def asserts4
-    assert_select "a#instance-cite-this-instance-tab",
-                  false,
-                  "Does not show 'Syn' tab link."
-    assert_select "a#unpublished-citation-tab",
-                  false,
-                  "Does not show 'Unpub' tab link."
-    assert_select "a#instance-apc-placement-tab",
-                  false,
-                  "Should not show 'APC' tab link."
+    assert_select(
+      "a#instance-cite-this-instance-tab",
+      false,
+      "Does not show 'Syn' tab link.",
+    )
+    assert_select(
+      "a#unpublished-citation-tab",
+      false,
+      "Does not show 'Unpub' tab link.",
+    )
+    assert_select(
+      "a#instance-apc-placement-tab",
+      false,
+      "Should not show 'APC' tab link.",
+    )
   end
 
   def asserts5
-    assert_select "a#instance-comments-tab",
-                  false,
-                  "Does not show 'Adnot' tab link."
-    assert_select "a#instance-copy-to-new-reference-tab",
-                  false,
-                  "Should not show 'Copy' tab link."
+    assert_select(
+      "a#instance-comments-tab",
+      false,
+      "Does not show 'Adnot' tab link.",
+    )
+    assert_select(
+      "a#instance-copy-to-new-reference-tab",
+      false,
+      "Should not show 'Copy' tab link.",
+    )
   end
 
   def asserts6
     @product = @profile_item.product
     @product.update(name: "not foa")
-    assert_response :success
-    assert_select "a#instance-profile-v2-tab",
-                   /FOA/
-                   "Should not show 'FOA Profile' tab link"
-    assert_select "#message_no_product_configs",
-                   "There are no product or product configs setup yet.",
-                   "Should show a message"
+    assert_response(:success)
+    assert_select(
+      "a#instance-profile-v2-tab",
+      /FOA/,
+    )
+    assert_select(
+      "#message_no_product_configs",
+      "There are no product or product configs setup yet.",
+      "Should show a message",
+    )
   end
 
   def asserts7
     Instance.delete_all
-    assert_response :success
-    assert_select "a#instance-profile-v2-tab",
-                   /FOA/
-                   "Should not show 'FOA Profile' tab link"
-    assert_select "#message_no_product_configs",
-                   "There are no product or product configs setup yet.",
-                   "Should show a message"
+    assert_response(:success)
+    assert_select(
+      "a#instance-profile-v2-tab",
+      /FOA/,
+    )
+    assert_select(
+      "#message_no_product_configs",
+      "There are no product or product configs setup yet.",
+      "Should show a message",
+    )
   end
 
   def asserts8
     Rails.configuration.profile_v2_dropdown_ui = true
-    assert_select "select#item_type",
-                   true
-                   "Should show a dropdown of the available product item configs when flag is on"
+    assert_select(
+      "select#item_type",
+      true,
+    )
 
-    assert_select "h4",
+    assert_select(
+      "h4",
       false,
-      "Should not display profile items immediately"
+      "Should not display profile items immediately",
+    )
 
     Rails.configuration.profile_v2_dropdown_ui = false
-    assert_select "select#item_type",
-                  false
-                  "Should not show a dropdown of the available product item configs when flag is off"
+    assert_select(
+      "select#item_type",
+      false,
+    )
 
-    assert_select "h4",
+    assert_select(
+      "h4",
       @product_item_config.display_html,
-      "Should show the product item config display_html"
+      "Should show the product item config display_html",
+    )
   end
-
 end

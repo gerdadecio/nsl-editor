@@ -30,26 +30,34 @@ class SearchLoaderNameAnyBatchTargetTest < ActionController::TestCase
   tests SearchController
 
   test "loader names (any batch) target does not require a default batch" do
-    get(:search,
-        params: { query_target: "loader names (any batch)", query_string: "*" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [:login, :"batch-loader"] })
+    get(
+      :search,
+      params: { query_target: "loader names (any batch)", query_string: "*" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [:login, :"batch-loader"],
+      },
+    )
     assert_response :success
     assert_not_select "#search-results-summary",
-                       /Please set a default batch/,
-                       "Should not be asked to set a default batch"
+      /Please set a default batch/,
+      "Should not be asked to set a default batch"
   end
 
   test "loader names (any batch) target searches across batches without an explicit any-batch directive" do
-    get(:search,
-        params: { query_target: "loader names (any batch)", query_string: "Hardenbergia violacea" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [:login, :"batch-loader"] })
+    get(
+      :search,
+      params: { query_target: "loader names (any batch)", query_string: "Hardenbergia violacea" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [:login, :"batch-loader"],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /\b1 record*\b/,
-                  "Should find one loader name record for Hardenbergia violacea across all batches"
+      /\b1 record*\b/,
+      "Should find one loader name record for Hardenbergia violacea across all batches"
   end
 end

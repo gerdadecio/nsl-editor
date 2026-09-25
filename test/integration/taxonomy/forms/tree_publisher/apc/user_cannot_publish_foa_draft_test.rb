@@ -33,16 +33,23 @@ class TaxFormsTreePubAPCUserCannotPublishFOADraftTest < ActionController::TestCa
   test "APC tree publisher user cannot publish FOA draft" do
     user = users(:apc_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
-    post(:publish,
-         params: {"version_id"=> foa_draft.id, "next_draft_name"=>'zyz', "draft_log"=>'xyz'},
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    groups: ["login"],
-                    draft: foa_draft})
+    post(
+      :publish,
+      params: { "version_id" => foa_draft.id, "next_draft_name" => "zyz", "draft_log" => "xyz" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: foa_draft,
+      },
+    )
     assert_response :forbidden, "Should not be allowed"
-    assert_match /Access Denied\! Please contact the admin for proper permissions/,
-      response.body, "Expecting Access Denied message"
+    assert_match(
+      /Access Denied\! Please contact the admin for proper permissions/,
+      response.body,
+      "Expecting Access Denied message",
+    )
   end
 end

@@ -23,7 +23,8 @@ class RefARTA4AutNoIdWPartValidStringMatchingOneAuthor < ActiveSupport::TestCase
   test "no id with partial valid string matching one author" do
     author = authors(:chaplin)
     result = Reference::AsResolvedTypeahead::ForAuthor.new("", author.name.chop)
-    assert_equal author.id, result.value,
-                 "Should get a matching id for the author"
+    assert_equal author.id,
+      result.value,
+      "Should get a matching id for the author"
   end
 end

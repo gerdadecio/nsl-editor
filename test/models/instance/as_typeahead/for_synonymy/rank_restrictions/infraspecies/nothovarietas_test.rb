@@ -21,8 +21,10 @@ require "test_helper"
 # Single instance typeahead search.
 class TypeaheadForSynonymyNothovarietasTest < ActiveSupport::TestCase
   def setup
-    @ta = Instance::AsTypeahead::ForSynonymy.new("*",
-                                                 names(:a_nothovarietas).id)
+    @ta = Instance::AsTypeahead::ForSynonymy.new(
+      "*",
+      names(:a_nothovarietas).id,
+    )
   end
 
   test "instance typeahead for synonymy rank restriction for nothovarietas" do
@@ -35,33 +37,69 @@ class TypeaheadForSynonymyNothovarietasTest < ActiveSupport::TestCase
   end
 
   def check_infraspecific_exclusions
-    %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Familia
-       Subfamilia Tribus Subtribus Genus Subgenus Sectio Subsectio Series
-       Subseries Superspecies Nothovarietas].each do |rank_string|
-      assert @rank_names.none? { |e| e.match(/\A#{rank_string}\z/) },
-             "Expect no #{Regexp.escape(rank_string)} to be suggested"
+    [
+      "Regio",
+      "Regnum",
+      "Division",
+      "Classis",
+      "Subclassis",
+      "Superordo",
+      "Ordo",
+      "Subordo",
+      "Familia",
+      "Subfamilia",
+      "Tribus",
+      "Subtribus",
+      "Genus",
+      "Subgenus",
+      "Sectio",
+      "Subsectio",
+      "Series",
+      "Subseries",
+      "Superspecies",
+      "Nothovarietas"
+    ].each do |rank_string|
+      assert(
+        @rank_names.none? { |e| e.match(/\A#{rank_string}\z/) },
+        "Expect no #{Regexp.escape(rank_string)} to be suggested",
+      )
     end
   end
 
   def check_infraspecific_inclusions
     check_species
     check_the_rest
-end
+  end
 
   def check_species
-    assert @rank_names.select { |e| e == "Species" }.size >= 5,
-           "Expect correct number of species to be suggested"
+    assert(
+      @rank_names.select { |e| e == "Species" }.size >= 5,
+      "Expect correct number of species to be suggested",
+    )
   end
 
   def check_the_rest
-    %w[Subspecies Varietas Subvarietas Subforma [n/a] [unknown] [unranked]
-     [infraspecies] Forma nothomorph. morphological\ var.]
+    [
+      "Subspecies",
+      "Varietas",
+      "Subvarietas",
+      "Subforma",
+      "[n/a]",
+      "[unknown]",
+      "[unranked]",
+      "[infraspecies]",
+      "Forma",
+      "nothomorph.",
+      "morphological var."
+    ]
       .each do |rank_string|
       matches = @rank_names.select do |e|
         e.match(/\A#{Regexp.escape(rank_string)}\z/)
       end
-      assert matches.size >= 1,
-             "Expect at least one #{rank_string} to be suggested"
+      assert(
+        matches.size >= 1,
+        "Expect at least one #{rank_string} to be suggested",
+      )
     end
   end
 end

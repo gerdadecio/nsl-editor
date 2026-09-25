@@ -26,10 +26,10 @@ class SearchOnInstanceIsCitedByInstanceTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "instance",
         query_string: "is-cited-by-an-instance:",
-        current_user: build_edit_user
-      )
+        current_user: build_edit_user,
+      ),
     )
-    assert !search.executed_query.results.empty?, 'Should find instance that
+    assert_not search.executed_query.results.empty?, 'Should find instance that
     is cited by an instance.'
   end
 end

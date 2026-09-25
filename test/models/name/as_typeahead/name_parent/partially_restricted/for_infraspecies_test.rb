@@ -26,17 +26,17 @@ class ForInfraspeciesPartiallyRestrictedTest < ActiveSupport::TestCase
   end
 
   test "name parent suggestion for infraspecies" do
-    assert !ShardConfig.name_parent_rank_restriction?,
-           "Name parent rank restriction should be off for this test."
+    assert_not ShardConfig.name_parent_rank_restriction?,
+      "Name parent rank restriction should be off for this test."
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "a_",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "[infraspecies]").id
+      rank_id: NameRank.find_by(name: "[infraspecies]").id,
     )
     suggestions_should_only_include(
       typeahead.suggestions,
       "[infraspecies]",
-      %w[Species Subspecies Nothovarietas Varietas Subvarietas Forma Subforma]
+      ["Species", "Subspecies", "Nothovarietas", "Varietas", "Subvarietas", "Forma", "Subforma"],
     )
   end
 end

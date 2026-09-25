@@ -25,7 +25,7 @@ require "test_helper"
 # be built; the fixtures only have current versions.
 class TreeUsageMessagesPartialTest < ActionView::TestCase
   def render_messages_for(record)
-    render partial: "trees/usage_messages", locals: {record: record}
+    render(partial: "trees/usage_messages", locals: { record: record })
     rendered
   end
 

@@ -26,10 +26,10 @@ class NameAsEdPar2IdWPartStringMatchingAnotherNameTest < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForParent.new(
       name_1.id.to_s,
       name_2.full_name.chop,
-      "second_parent"
+      "second_parent",
     )
     assert_equal name_2.id,
-                 result.value,
-                 "Should get matching ID for the name partial string"
+      result.value,
+      "Should get matching ID for the name partial string"
   end
 end

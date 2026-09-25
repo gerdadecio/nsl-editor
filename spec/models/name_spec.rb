@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Name, type: :model do
+RSpec.describe(Name, type: :model) do
   describe ".soft_deleted" do
     let!(:name) { create(:name) }
     let!(:soft_deleted_name) { create(:name, deleted_at: Time.current) }
@@ -10,11 +10,11 @@ RSpec.describe Name, type: :model do
     subject { described_class.soft_deleted }
 
     it "returns names with a deleted_at timestamp" do
-      expect(subject).to include(soft_deleted_name)
+      expect(subject).to(include(soft_deleted_name))
     end
 
     it "does not return names without a deleted_at timestamp" do
-      expect(subject).not_to include(name)
+      expect(subject).not_to(include(name))
     end
 
     context "when chained off the children association" do
@@ -24,11 +24,11 @@ RSpec.describe Name, type: :model do
       subject { name.children.soft_deleted }
 
       it "returns only the soft deleted children" do
-        expect(subject).to contain_exactly(soft_deleted_child)
+        expect(subject).to(contain_exactly(soft_deleted_child))
       end
 
       it "does not return soft deleted names belonging to another parent" do
-        expect(subject).not_to include(soft_deleted_name)
+        expect(subject).not_to(include(soft_deleted_name))
       end
     end
   end
@@ -42,11 +42,11 @@ RSpec.describe Name, type: :model do
         it "destroys associated name_resources when name is destroyed" do
           name_resource_id = name_resource.id
           name.destroy
-          expect(NameResource.exists?(name_resource_id)).to be false
+          expect(NameResource.exists?(name_resource_id)).to(be(false))
         end
 
         it "destroys the name successfully" do
-          expect { name.destroy }.to change(Name, :count).by(-1)
+          expect { name.destroy }.to(change(Name, :count).by(-1))
         end
       end
 
@@ -54,13 +54,13 @@ RSpec.describe Name, type: :model do
         let!(:name) { create(:name) }
 
         it "allows destruction when no name_resources exist" do
-          expect { name.destroy }.to change(Name, :count).by(-1)
+          expect { name.destroy }.to(change(Name, :count).by(-1))
         end
       end
     end
 
     describe "tree_join_v" do
-      it { is_expected.to have_many(:tree_join_v) }
+      it { is_expected.to(have_many(:tree_join_v)) }
 
       # NOTES: tree_join_v is a view keyed on tree_element.name_id, so the rows
       # follow the name the placement was made under - not the name of the
@@ -75,27 +75,37 @@ RSpec.describe Name, type: :model do
 
       context "when the name itself is placed on a tree" do
         let!(:placement) do
-          create(:tree_version_element,
-            tree_element: create(:tree_element, name: name,
-              instance: create(:instance, name: name)),
-            tree_version: tree_version)
+          create(
+            :tree_version_element,
+            tree_element: create(
+              :tree_element,
+              name: name,
+              instance: create(:instance, name: name),
+            ),
+            tree_version: tree_version,
+          )
         end
 
         it "returns the tree rows for this name" do
-          expect(name.tree_join_v.pluck(:name_id)).to eq([name.id])
+          expect(name.tree_join_v.pluck(:name_id)).to(eq([name.id]))
         end
       end
 
       context "when only another name is placed on a tree" do
         let!(:placement) do
-          create(:tree_version_element,
-            tree_element: create(:tree_element, name: other_name,
-              instance: create(:instance, name: other_name)),
-            tree_version: tree_version)
+          create(
+            :tree_version_element,
+            tree_element: create(
+              :tree_element,
+              name: other_name,
+              instance: create(:instance, name: other_name),
+            ),
+            tree_version: tree_version,
+          )
         end
 
         it "does not return the tree rows of another name" do
-          expect(name.tree_join_v).to be_empty
+          expect(name.tree_join_v).to(be_empty)
         end
       end
     end
@@ -108,7 +118,7 @@ RSpec.describe Name, type: :model do
       let!(:instance) { create(:instance, name: name) }
 
       it "returns false" do
-        expect(name.allow_delete?).to be false
+        expect(name.allow_delete?).to(be(false))
       end
     end
 
@@ -116,7 +126,7 @@ RSpec.describe Name, type: :model do
       let!(:child) { create(:name, parent: name) }
 
       it "returns false" do
-        expect(name.allow_delete?).to be false
+        expect(name.allow_delete?).to(be(false))
       end
     end
 
@@ -124,7 +134,7 @@ RSpec.describe Name, type: :model do
       let!(:comment) { create(:comment, name: name) }
 
       it "returns false" do
-        expect(name.allow_delete?).to be false
+        expect(name.allow_delete?).to(be(false))
       end
     end
 
@@ -132,7 +142,7 @@ RSpec.describe Name, type: :model do
       let!(:duplicate) { create(:name, duplicate_of: name) }
 
       it "returns false" do
-        expect(name.allow_delete?).to be false
+        expect(name.allow_delete?).to(be(false))
       end
     end
 
@@ -140,13 +150,13 @@ RSpec.describe Name, type: :model do
       let!(:name_resource) { create(:name_resource, name: name) }
 
       it "returns true as name_resources will be destroyed automatically" do
-        expect(name.allow_delete?).to be true
+        expect(name.allow_delete?).to(be(true))
       end
     end
 
     context "when name has no dependencies" do
       it "returns true" do
-        expect(name.allow_delete?).to be true
+        expect(name.allow_delete?).to(be(true))
       end
     end
   end
@@ -155,29 +165,29 @@ RSpec.describe Name, type: :model do
     let(:name) { create(:name) }
 
     before do
-      allow(Rails.configuration).to receive(:try).with(:resource_tab_enabled).and_return(true)
+      allow(Rails.configuration).to(receive(:try).with(:resource_tab_enabled).and_return(true))
     end
     context "when name has name_resources" do
       let!(:name_resource) { create(:name_resource, name: name) }
 
       it "returns false" do
-        expect(name.no_name_resource_dependents?).to be false
+        expect(name.no_name_resource_dependents?).to(be(false))
       end
     end
 
     context "when name has no name_resources" do
       it "returns true" do
-        expect(name.no_name_resource_dependents?).to be true
+        expect(name.no_name_resource_dependents?).to(be(true))
       end
     end
 
     context "when resource_tab_enabled is false" do
       before do
-        allow(Rails.configuration).to receive(:try).with(:resource_tab_enabled).and_return(false)
+        allow(Rails.configuration).to(receive(:try).with(:resource_tab_enabled).and_return(false))
       end
 
       it "returns true regardless of name_resources" do
-        expect(name.no_name_resource_dependents?).to be true
+        expect(name.no_name_resource_dependents?).to(be(true))
       end
     end
   end
@@ -187,32 +197,32 @@ RSpec.describe Name, type: :model do
 
     context "when soft_delete_enabled is false" do
       before do
-        allow(Rails.configuration).to receive(:try).with(:soft_delete_enabled).and_return(false)
+        allow(Rails.configuration).to(receive(:try).with(:soft_delete_enabled).and_return(false))
       end
 
       it "returns false without calling the check delete service" do
-        expect(::Names::CheckDeleteService).not_to receive(:new)
-        expect(name.allow_soft_delete?).to be false
+        expect(Names::CheckDeleteService).not_to(receive(:new))
+        expect(name.allow_soft_delete?).to(be(false))
       end
     end
 
     context "when soft_delete_enabled is true" do
-      let(:result) { instance_double(::Names::CheckDeleteService::Result) }
-      let(:service) { instance_double(::Names::CheckDeleteService, execute: result) }
+      let(:result) { instance_double(Names::CheckDeleteService::Result) }
+      let(:service) { instance_double(Names::CheckDeleteService, execute: result) }
 
       before do
-        allow(Rails.configuration).to receive(:try).with(:soft_delete_enabled).and_return(true)
-        allow(::Names::CheckDeleteService).to receive(:new).with(name: name).and_return(service)
+        allow(Rails.configuration).to(receive(:try).with(:soft_delete_enabled).and_return(true))
+        allow(Names::CheckDeleteService).to(receive(:new).with(name: name).and_return(service))
       end
 
       it "returns true when the service allows a soft delete" do
-        allow(result).to receive(:soft_delete_allowed?).and_return(true)
-        expect(name.allow_soft_delete?).to be true
+        allow(result).to(receive(:soft_delete_allowed?).and_return(true))
+        expect(name.allow_soft_delete?).to(be(true))
       end
 
       it "returns false when the service does not allow a soft delete" do
-        allow(result).to receive(:soft_delete_allowed?).and_return(false)
-        expect(name.allow_soft_delete?).to be false
+        allow(result).to(receive(:soft_delete_allowed?).and_return(false))
+        expect(name.allow_soft_delete?).to(be(false))
       end
     end
   end

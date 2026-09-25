@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: profile_item_reference(The use of a reference for a profile i.e. list of general references for the taxon being described by this profile.)

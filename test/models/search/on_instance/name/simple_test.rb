@@ -25,10 +25,10 @@ class SearchOnInstanceNameSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "name: triodia",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instances with matching names expected."
+    assert_not search.executed_query.results.empty?,
+      "Instances with matching names expected."
   end
 end

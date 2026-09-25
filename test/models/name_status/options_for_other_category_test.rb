@@ -25,12 +25,12 @@ class OptionsForOtherCategoryTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:other))
       .collect(&:first)
       .include?("[n/a]"),
-           'Other category name status options should include "[n/a]"'
+      'Other category name status options should include "[n/a]"'
   end
 
   test "should have only one entry" do
     assert_equal 1,
-                 NameStatus.options_for_category(name_categories(:other)).size,
-                 "Wrong number of name status options for other category"
+      NameStatus.options_for_category(name_categories(:other)).size,
+      "Wrong number of name status options for other category"
   end
 end

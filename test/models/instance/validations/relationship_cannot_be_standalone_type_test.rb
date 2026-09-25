@@ -35,54 +35,54 @@ class RelationshipCannotBeStandaloneTypeTest < ActiveSupport::TestCase
       name: cites_target.name,
       page: "synonymy instance cannot have a standalone instance type",
       created_by: "tester",
-      updated_by: "tester"
+      updated_by: "tester",
     )
     # Bypasses the unrelated "changing an accepted concept's synonymy"
     # warning, which isn't what this test is about.
     synonymy_instance.concept_warning_bypassed = true
     assert synonymy_instance.synonymy?,
-           "Precondition: instance must be a synonymy instance."
+      "Precondition: instance must be a synonymy instance."
     assert synonymy_instance.valid?,
-           "Starting synonymy instance must be valid for this test; errors:
-           #{synonymy_instance.errors.full_messages.join(';')}"
+      "Starting synonymy instance must be valid for this test; errors:
+           #{synonymy_instance.errors.full_messages.join(";")}"
 
     synonymy_instance.instance_type = instance_types(:comb_nov)
 
     assert_not synonymy_instance.valid?,
-               "Should not be valid with a standalone instance type."
+      "Should not be valid with a standalone instance type."
     assert_includes synonymy_instance.errors.full_messages,
-                     "A relationship instance cannot be a standalone type"
+      "A relationship instance cannot be a standalone type"
   end
 
   test "unpublished citation instance cannot have a standalone instance type" do
     unpub_cit_instance =
       instances(:rusty_gum_is_a_common_name_of_angophora_costata)
     assert unpub_cit_instance.valid?,
-           "Starting unpublished citation instance must be valid; errors:
-           #{unpub_cit_instance.errors.full_messages.join(';')}"
+      "Starting unpublished citation instance must be valid; errors:
+           #{unpub_cit_instance.errors.full_messages.join(";")}"
     assert unpub_cit_instance.cited_by_id.present?,
-           "Precondition: instance must have a cited_by_id."
+      "Precondition: instance must have a cited_by_id."
     assert_nil unpub_cit_instance.cites_id,
-               "Precondition: instance must not have a cites_id."
+      "Precondition: instance must not have a cites_id."
 
     unpub_cit_instance.instance_type = instance_types(:comb_nov)
 
     assert_not unpub_cit_instance.valid?,
-               "Should not be valid with a standalone instance type."
+      "Should not be valid with a standalone instance type."
     assert_includes unpub_cit_instance.errors.full_messages,
-                     "A relationship instance cannot be a standalone type"
+      "A relationship instance cannot be a standalone type"
   end
 
   test "standalone instance can have a standalone instance type" do
     standalone_instance =
       instances(:britten_created_angophora_costata)
     assert standalone_instance.cited_by_id.blank?,
-           "Precondition: instance must not have a cited_by_id."
+      "Precondition: instance must not have a cited_by_id."
     assert standalone_instance.instance_type.standalone?,
-           "Precondition: instance type must be standalone."
+      "Precondition: instance type must be standalone."
 
     assert standalone_instance.valid?,
-           "Standalone instance with standalone type should be valid; errors:
-           #{standalone_instance.errors.full_messages.join(';')}"
+      "Standalone instance with standalone type should be valid; errors:
+           #{standalone_instance.errors.full_messages.join(";")}"
   end
 end

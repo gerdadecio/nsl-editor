@@ -22,11 +22,11 @@ load "test/models/search/users.rb"
 # Single Search model test for Reference target.
 class SearchOnReferenceCommentsCaseInsensitiveTest < ActiveSupport::TestCase
   test "search on reference comments is case insensitive" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "comments: tEXT",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "reference",
+        query_string: "comments: tEXT",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?, "Results expected."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

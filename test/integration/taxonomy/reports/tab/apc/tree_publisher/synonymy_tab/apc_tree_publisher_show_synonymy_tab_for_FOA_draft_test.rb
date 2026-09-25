@@ -26,16 +26,19 @@ class APCTreePublisherShowSynonymyTabForFOADraftTest < ActionController::TestCas
   test "APC tree publisher cannot show syn tab for FOA draft" do
     user = users(:apc_tax_publisher)
     draft = tree_versions(:foa_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:show_cas,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree publisher should not be able to show syn tab for FOA draft'
-    assert_match /Access Denied/i, response.body, "Expecting error message"
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :show_cas,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree publisher should not be able to show syn tab for FOA draft"
+    assert_match(/Access Denied/i, response.body, "Expecting error message")
   end
 end
-

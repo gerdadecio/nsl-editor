@@ -35,8 +35,8 @@ class Loader::Name::BulkSearch
   def search_s_to_a
     add_default_directive
     array = @search_s.gsub(/([a-z-]+:)/, SPLITTER + '\1')
-                     .split(SPLITTER)
-                     .compact_blank
+      .split(SPLITTER)
+      .compact_blank
     remove_empty_default_directive(array)
   end
 
@@ -45,29 +45,29 @@ class Loader::Name::BulkSearch
   end
 
   def remove_empty_default_directive(array)
-    array.delete_if { |e| e.match(/\A#{DEFAULT_DIRECTIVE} *\z/) }
+    array.delete_if { |e| e.match(/\A#{DEFAULT_DIRECTIVE} *\z/o) }
     array
   end
 
   def bulk_processing_search
     @search = Loader::Name.joins(:loader_batch)
-                          .where(loader_batch: { id: @batch_id })
-                          .order(' sort_key, seq, id')
+      .where(loader_batch: { id: @batch_id })
+      .order(" sort_key, seq, id")
     consume_directives
-    raise "Unknown search #{'directive'.pluralize(@search_a.size)}: #{@search_a.join(' ')}" unless @search_a.empty?
+    raise "Unknown search #{"directive".pluralize(@search_a.size)}: #{@search_a.join(" ")}" unless @search_a.empty?
   end
 
   def consume_directives
-    @search = add_simple_name_clause unless @search_a.grep(/\b#{DEFAULT_DIRECTIVE}/).blank?
-    @search = add_family_clause unless @search_a.grep(/\bfamily:/).blank?
-    @search = add_acc_clause unless @search_a.grep(/\bacc:/).blank?
-    @search = add_exc_clause unless @search_a.grep(/\bexc:/).blank?
+    @search = add_simple_name_clause if @search_a.grep(/\b#{DEFAULT_DIRECTIVE}/o).present?
+    @search = add_family_clause if @search_a.grep(/\bfamily:/).present?
+    @search = add_acc_clause if @search_a.grep(/\bacc:/).present?
+    @search = add_exc_clause if @search_a.grep(/\bexc:/).present?
     @search = must_be_accepted_or_excluded if @accepted_or_excluded_only
   end
 
   def add_simple_name_clause
     sn_directive = @search_a.select { |i| i[/simple-name:/] }.first
-    @search_a.reject! { |i| i[/simple-name:/]}
+    @search_a.reject! { |i| i[/simple-name:/] }
     sn_string = sn_directive.sub(/\Asimple-name: */i, "").strip
     @search.simple_name_search(sn_string)
   end
@@ -90,7 +90,7 @@ class Loader::Name::BulkSearch
   #
   def add_family_clause
     family_directive = @search_a.select { |i| i[/family:/] }.first
-    @search_a.reject! { |i| i[/family:/]}
+    @search_a.reject! { |i| i[/family:/] }
     family_string = family_directive.sub(/\Afamily: */i, "").strip
     family_a = family_string.split(/ *, */)
     if family_a.length < 2
@@ -104,23 +104,23 @@ class Loader::Name::BulkSearch
   def search_family_in_list_of_families(family_a)
     s = "lower(family) in ("
     family_a.size.times do
-      s += '?,'
+      s += "?,"
     end
     s.chop!
-    s += ')'
+    s += ")"
     @search.where([s] + family_a.map(&:downcase))
   end
 
   def add_acc_clause
     acc_directive = @search_a.select { |i| i[/acc:/] }.first
-    @search_a.reject! { |i| i[/acc:/]}
+    @search_a.reject! { |i| i[/acc:/] }
     acc_string = acc_directive.sub(/\Aacc: */i, "").strip
     @search.acc_string_search(acc_string)
   end
 
   def add_exc_clause
     exc_directive = @search_a.select { |i| i[/exc:/] }.first
-    @search_a.reject! { |i| i[/exc:/]}
+    @search_a.reject! { |i| i[/exc:/] }
     exc_string = exc_directive.sub(/\Aexc: */i, "").strip
     @search.exc_string_search(exc_string)
   end

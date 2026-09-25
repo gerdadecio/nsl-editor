@@ -35,17 +35,17 @@ class DistStatus < ApplicationRecord
   self.sequence_name = "nsl_global_seq"
 
   has_and_belongs_to_many :dist_entries,
-                          join_table: "dist_entry_dist_status",
-                          foreign_key: "dist_status_id"
+    join_table: "dist_entry_dist_status",
+    foreign_key: "dist_status_id"
 
   has_and_belongs_to_many :dist_statuses,
-                          join_table: "dist_status_dist_status",
-                          foreign_key: "dist_status_id",
-                          association_foreign_key: "dist_status_combining_status_id"
+    join_table: "dist_status_dist_status",
+    foreign_key: "dist_status_id",
+    association_foreign_key: "dist_status_combining_status_id"
 
   def self.status_names
     DistStatus.all
-              .sort { |a, b| a.sort_order <=> b.sort_order }
-              .collect { |ds| ds.name }
+      .sort_by(&:sort_order)
+      .collect { |ds| ds.name }
   end
 end

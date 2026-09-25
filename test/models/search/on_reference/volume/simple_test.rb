@@ -24,12 +24,12 @@ class SearchOnReferenceVolumeSimpleTest < ActiveSupport::TestCase
   test "search on reference volume simple" do
     reference = references(:a_book)
     params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "volume: #{reference.volume}",
-                   current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "volume: #{reference.volume}",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

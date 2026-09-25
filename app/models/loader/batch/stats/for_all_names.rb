@@ -20,7 +20,7 @@
 # Returns a hash
 class Loader::Batch::Stats::ForAllNames
   def initialize(name_string, batch_id)
-    @name_string = name_string.downcase.gsub("*", "%")
+    @name_string = name_string.downcase.tr("*", "%")
     @batch_id = batch_id
     core_search
     @report = {}
@@ -48,24 +48,28 @@ class Loader::Batch::Stats::ForAllNames
 
   def end_part
     @report[:matched_with_decision] = MatchedWithDecision.new(@core_search)
-                                                         .report
+      .report
     @report[:instances] = Instances.new(@core_search).report
     @report[:instances_breakdown] = InstancesBreakdown.new(@core_search).report
   end
 
   def search
-    { string: @name_string,
-      reported: Time.now.strftime("%d-%b-%Y %H:%M:%S") }
+    {
+      string: @name_string,
+      reported: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
+    }
   end
 
   def record_types
-    { accepted: accepteds,
+    {
+      accepted: accepteds,
       excluded: excludeds,
       synonym: synonyms,
       misapplied: misapplieds,
       headings: headings,
       none_of_the_above: none_of_the_aboves,
-      total: names_and_synonyms_count }
+      total: names_and_synonyms_count,
+    }
   end
 
   def core_search
@@ -104,6 +108,6 @@ class Loader::Batch::Stats::ForAllNames
     @core_search.where("record_type not in " +
                       " ('accepted','excluded','synonym','misapplied'," +
                       "'heading')")
-                .count
+      .count
   end
 end

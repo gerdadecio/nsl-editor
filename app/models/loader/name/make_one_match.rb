@@ -20,7 +20,6 @@
 class Loader::Name::MakeOneMatch
   include Constants
 
-
   def initialize(loader_name, user, job)
     @tag = "#{self.class} for #{loader_name.simple_name} (#{loader_name.record_type})"
     @loader_name = loader_name
@@ -36,7 +35,7 @@ class Loader::Name::MakeOneMatch
     return decline("heading") if @loader_name.heading?
     return decline("parent_using_existing") if @loader_name.parent&.preferred_match&.use_existing_instance
 
-    return decline("not_exactly_one_match")  unless exactly_one_matching_name?
+    return decline("not_exactly_one_match") unless exactly_one_matching_name?
     return decline("match_has_no_primary_instance") unless match_name_has_primary?
     return decline("match_has_2_or_more_primary_instances") unless match_name_just_one_primary?
 
@@ -44,11 +43,11 @@ class Loader::Name::MakeOneMatch
   rescue StandardError => e
     Rails.logger.error("#{@tag}: #{e}")
     log_to_table("#{ERROR} - #{e}")
-    {errors: 1}
+    { errors: 1 }
   end
 
   def stop(msg)
-    Rails.logger.debug("Stopping because: #{msg}")
+    Rails.logger.debug { "Stopping because: #{msg}" }
   end
 
   def preferred_match?
@@ -56,14 +55,14 @@ class Loader::Name::MakeOneMatch
   end
 
   def decline(reason)
-    log_to_table("#{DECLINED} - #{reason.gsub(/_/,' ')}")
-    {declines: 1, declines_reasons: {reason.gsub(/ /,'_').to_sym => 1}}
+    log_to_table("#{DECLINED} - #{reason.tr("_", " ")}")
+    { declines: 1, declines_reasons: { reason.tr(" ", "_").to_sym => 1 } }
   end
 
   def make_preferred_match?
     create_match
     log_to_table(CREATED)
-    {creates: 1}
+    { creates: 1 }
   end
 
   def create_match
@@ -88,19 +87,17 @@ class Loader::Name::MakeOneMatch
   end
 
   def relationship_instance_type_id
-    return nil if @loader_name.accepted?
+    return if @loader_name.accepted?
 
     @loader_name.riti
   end
 
-  def simple_name
-    @loader_name.simple_name
-  end
+  delegate :simple_name, to: :@loader_name
 
   def log_to_table(entry)
     tag = " ##{@loader_name.id}, batch: #{@loader_name.batch.name},  " +
-          "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
-          " (#{@loader_name.record_type})"
+      "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
+      " (#{@loader_name.record_type})"
     tag = "#{tag} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if defined? @task_start_time
     payload = "#{entry} #{tag}"
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
@@ -109,6 +106,6 @@ class Loader::Name::MakeOneMatch
   end
 
   def debug(msg)
-    Rails.logger.debug("${@tag}: #{msg}")
+    Rails.logger.debug { "${@tag}: #{msg}" }
   end
 end

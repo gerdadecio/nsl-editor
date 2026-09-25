@@ -18,20 +18,30 @@
 #
 class Search::Loader::Batch::Reviewer::FieldRule
   RULES = {
-    "user-name:" => { where_clause: " exists (select null from users where batch_reviewer.user_id = users.id and lower(users.user_name) like ?)",
-                 trailing_wildcard: true,
-                 order: "id" },
-    "id:" => { multiple_values: true,
-               where_clause: "id = ? ",
-               multiple_values_where_clause: " id in (?)",
-               order: "id" },
-    "ids:" => { multiple_values: true,
-                where_clause: " id = ?",
-                multiple_values_where_clause: " id in (?)",
-                order: "id" },
-    "batch-id:" => { where_clause: "loader_batch_id = ? ",
-                     order: "id" },
-    "review-period-id:" => { where_clause: "batch_review_period_id = ? ",
-                             order: "id" },
+    "user-name:" => {
+      where_clause: " exists (select null from users where batch_reviewer.user_id = users.id and lower(users.user_name) like ?)",
+      trailing_wildcard: true,
+      order: "id",
+    },
+    "id:" => {
+      multiple_values: true,
+      where_clause: "id = ? ",
+      multiple_values_where_clause: " id in (?)",
+      order: "id",
+    },
+    "ids:" => {
+      multiple_values: true,
+      where_clause: " id = ?",
+      multiple_values_where_clause: " id in (?)",
+      order: "id",
+    },
+    "batch-id:" => {
+      where_clause: "loader_batch_id = ? ",
+      order: "id",
+    },
+    "review-period-id:" => {
+      where_clause: "batch_review_period_id = ? ",
+      order: "id",
+    },
   }.freeze
 end

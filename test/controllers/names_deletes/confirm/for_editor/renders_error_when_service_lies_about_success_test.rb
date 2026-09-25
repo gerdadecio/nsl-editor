@@ -47,21 +47,31 @@ class NamesDeleteConfirmForEditorRendersErrorWhenServiceLiesAboutSuccessTest < A
 
   def stub_it
     stub_request(:delete, "#{a}#{b}")
-      .with(headers: { "Accept" => "application/json",
-                       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-                       "Host" => "localhost:9090"})
+      .with(headers: {
+        "Accept" => "application/json",
+        "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+        "Host" => "localhost:9090",
+      })
       .to_return(status: 200, body: '{"ok": true}', headers: { "Content-Type" => "application/json" })
   end
 
   test "renders an error and does not claim success when the service says ok but the name is still there" do
     @request.headers["Accept"] = "application/javascript"
-    delete(:confirm,
-           params: { names_delete: { name_id: @name.id,
-                                     reason: @reason,
-                                     extra_info: @extra_info } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
+    delete(
+      :confirm,
+      params: {
+        names_delete: {
+          name_id: @name.id,
+          reason: @reason,
+          extra_info: @extra_info,
+        },
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_includes @response.body, "Name delete was requested but not confirmed"
     assert_not_includes @response.body, "Record deleted"

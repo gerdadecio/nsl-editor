@@ -27,12 +27,12 @@ class SearchOnNameHasMultipleBasionymsSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "has-multiple-basionyms:",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert :success
     assert search.executed_query.results.empty?,
-           "Expected no hits"
+      "Expected no hits"
   end
 end

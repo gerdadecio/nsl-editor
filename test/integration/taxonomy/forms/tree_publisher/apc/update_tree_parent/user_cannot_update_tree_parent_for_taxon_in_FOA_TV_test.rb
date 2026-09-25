@@ -34,21 +34,31 @@ class TaxFormsTreePublisherAPCUserCannotUpdateTreeParentForTaxonOnFOADraftTest <
     user = users(:apc_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(:update_tree_parent,
-         params: {"update_parent"=>{"element_link"=>tve.element_link,
-                                    "parent_name_typeahead_string"=>"Sersalisia R.Br. - Genus",
-                                    "parent_element_link"=>"/tree/52410590/51363635",
-                                    "version_id"=>foa_draft.id,
-                                    "update"=>""}
-                 },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: foa_draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree publisher should not be able to update tree parent of taxon on FOA'
-    assert_match /Access Denied\! Please contact the admin for proper permissions/,
-      response.body, "Expecting Access Denied message"
+    post(
+      :update_tree_parent,
+      params: {
+        "update_parent" => {
+          "element_link" => tve.element_link,
+          "parent_name_typeahead_string" => "Sersalisia R.Br. - Genus",
+          "parent_element_link" => "/tree/52410590/51363635",
+          "version_id" => foa_draft.id,
+          "update" => "",
+        },
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: foa_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree publisher should not be able to update tree parent of taxon on FOA"
+    assert_match(
+      /Access Denied\! Please contact the admin for proper permissions/,
+      response.body,
+      "Expecting Access Denied message",
+    )
   end
 end

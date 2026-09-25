@@ -27,23 +27,23 @@ module ProfileItemReferences
       @profile_item = @profile_item_reference.profile_item
       @profile_item_reference.update!(annotation: nil, updated_by: current_user.username)
       @message = "Annotation deleted"
-      render :delete
+      render(:delete)
     rescue StandardError => e
       @message = e.to_s
-      render :delete_failed, status: :unprocessable_content
+      render(:delete_failed, status: :unprocessable_content)
     end
 
     private
 
     def authorise_user!
-      raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item_reference) unless can? :manage, @profile_item_reference
+      raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item_reference) unless can?(:manage, @profile_item_reference)
     end
 
     def set_profile_item_reference
       profile_item_id, reference_id = params[:id].split("_")
       @profile_item_reference = Profile::ProfileItemReference.find_by!(
         profile_item_id: profile_item_id,
-        reference_id: reference_id
+        reference_id: reference_id,
       )
     end
   end

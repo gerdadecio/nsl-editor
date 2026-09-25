@@ -23,8 +23,8 @@ class NameFamilySuggestionsRouteTest < ActionController::TestCase
   tests NamesController
   test "should route to name family suggestions" do
     assert_routing "/names/name_family_suggestions",
-                   controller: "names",
-                   action: "name_family_suggestions"
+      controller: "names",
+      action: "name_family_suggestions"
   end
 
   # stimulus-autocomplete asks for the html fragment by extension rather than
@@ -32,8 +32,8 @@ class NameFamilySuggestionsRouteTest < ActionController::TestCase
   # AuthorsController#typeahead_on_abbrev's comment for why.
   test "should route the html format to the same action" do
     assert_routing "/names/name_family_suggestions.html",
-                   controller: "names",
-                   action: "name_family_suggestions",
-                   format: "html"
+      controller: "names",
+      action: "name_family_suggestions",
+      format: "html"
   end
 end

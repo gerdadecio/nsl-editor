@@ -33,13 +33,17 @@ class TaxFormsTreeBuilderAPCUserCannotCreateAPCDraftTest < ActionController::Tes
   test "APC tree builder user cannot create APC draft" do
     user = users(:apc_tax_builder)
     apc_tree = trees(:APC)
-    post(:create_draft,
-         params: {"tree_id"=>apc_tree.id, "draft_name"=>"abcde name", "draft_log"=>"abcde log"},
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    groups: ["login"]})
+    post(
+      :create_draft,
+      params: { "tree_id" => apc_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+      },
+    )
     assert_response :forbidden, "APC tree builder should not be able to create FOA draft"
   end
 end

@@ -36,7 +36,7 @@ class SearchOnReferenceHasInstanceSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "reference",
       query_string: query_string,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     search.executed_query.results.collect(&:id)
@@ -44,54 +44,60 @@ class SearchOnReferenceHasInstanceSimpleTest < ActiveSupport::TestCase
 
   test "has-instance: includes a reference with a direct instance" do
     assert_includes search_ids("has-instance: #{ALL}"),
-                    references(:paper_by_brassard).id,
-                    "Expected the reference with an instance in the results"
+      references(:paper_by_brassard).id,
+      "Expected the reference with an instance in the results"
   end
 
   test "has-instance: excludes a reference with no direct instance" do
     ids = search_ids("has-instance: #{ALL}")
-    refute_includes ids, references(:book_by_brassard).id,
-                    "Expected a reference with no instance to be excluded"
-    refute_includes ids, references(:journal_with_papers).id,
-                    "Expected a reference with no instance to be excluded"
+    assert_not_includes ids,
+      references(:book_by_brassard).id,
+      "Expected a reference with no instance to be excluded"
+    assert_not_includes ids,
+      references(:journal_with_papers).id,
+      "Expected a reference with no instance to be excluded"
   end
 
   test "has-no-instance: includes a reference with no direct instance" do
     ids = search_ids("has-no-instance: #{ALL}")
-    assert_includes ids, references(:book_by_brassard).id,
-                    "Expected a reference with no instance in the results"
-    assert_includes ids, references(:journal_with_papers).id,
-                    "Expected a reference with no instance in the results"
+    assert_includes ids,
+      references(:book_by_brassard).id,
+      "Expected a reference with no instance in the results"
+    assert_includes ids,
+      references(:journal_with_papers).id,
+      "Expected a reference with no instance in the results"
   end
 
   test "has-no-instance: excludes a reference with a direct instance" do
-    refute_includes search_ids("has-no-instance: #{ALL}"),
-                    references(:paper_by_brassard).id,
-                    "Expected the reference with an instance to be excluded"
+    assert_not_includes search_ids("has-no-instance: #{ALL}"),
+      references(:paper_by_brassard).id,
+      "Expected the reference with an instance to be excluded"
   end
 
   test "the two directives return disjoint result sets" do
     with_instance = search_ids("has-instance: #{ALL}")
     without_instance = search_ids("has-no-instance: #{ALL}")
     assert_empty with_instance & without_instance,
-                 "A reference cannot both have and not have an instance"
+      "A reference cannot both have and not have an instance"
   end
 
   test "has-instances: abbreviation behaves the same as has-instance:" do
     assert_equal search_ids("has-instance: #{ALL}"),
-                 search_ids("has-instances: #{ALL}")
+      search_ids("has-instances: #{ALL}")
   end
 
   test "has-no-instances: abbreviation behaves the same as has-no-instance:" do
     assert_equal search_ids("has-no-instance: #{ALL}"),
-                 search_ids("has-no-instances: #{ALL}")
+      search_ids("has-no-instances: #{ALL}")
   end
 
   test "has-instance: combines with a leading citation search term" do
     ids = search_ids("brassard has-instance: #{ALL}")
-    assert_includes ids, references(:paper_by_brassard).id,
-                    "Expected the citation term and has-instance: to combine"
-    refute_includes ids, references(:book_by_brassard).id,
-                    "Expected a brassard reference with no instance to be excluded"
+    assert_includes ids,
+      references(:paper_by_brassard).id,
+      "Expected the citation term and has-instance: to combine"
+    assert_not_includes ids,
+      references(:book_by_brassard).id,
+      "Expected a brassard reference with no instance to be excluded"
   end
 end

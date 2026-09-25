@@ -62,29 +62,34 @@ class TreeVersionElement < ApplicationRecord
   self.sequence_name = "nsl_global_seq"
 
   belongs_to :tree_version,
-             foreign_key: "tree_version_id",
-             class_name: "TreeVersion"
+    foreign_key: "tree_version_id",
+    class_name: "TreeVersion"
 
   belongs_to :tree_element,
-             foreign_key: "tree_element_id",
-             class_name: "Tree::Element"
+    foreign_key: "tree_element_id",
+    class_name: "Tree::Element"
 
   belongs_to :parent,
-             foreign_key: "parent_id",
-             class_name: "TreeVersionElement",
-             optional: true
+    foreign_key: "parent_id",
+    class_name: "TreeVersionElement",
+    optional: true
 
   def count_children
     pattern = "^#{tree_path}/.*"
 
-    TreeVersionElement.find_by_sql(["select count(tve) c
+    TreeVersionElement.find_by_sql([
+      "select count(tve) c
 from tree_version_element tve
 where tve.tree_version_id = ?
-  and tve.tree_path ~ ?", tree_version_id, pattern]).first["c"]
+  and tve.tree_path ~ ?",
+      tree_version_id,
+      pattern
+    ]).first["c"]
   end
 
   def tree_ordered_name_ids
-    Name.find_by_sql(["
+    Name.find_by_sql([
+      "
 with RECURSIVE walk (name_id, rank, parent_id) as (
   SELECT
     te.name_id,
@@ -100,7 +105,9 @@ with RECURSIVE walk (name_id, rank, parent_id) as (
   from walk, tree_version_element tve join tree_element te on tve.tree_element_id = te.id
   where element_link = walk.parent_id
 )
-select name_id from walk", element_link])
+select name_id from walk",
+      element_link
+    ])
   end
 
   def tree_ordered_names
@@ -108,9 +115,7 @@ select name_id from walk", element_link])
     name_ids.reverse.collect { |nameId| Name.includes(:name_rank).find(nameId.name_id) }
   end
 
-  def comment_key
-    tree_version.comment_key
-  end
+  delegate :comment_key, to: :tree_version
 
   def comment?
     tree_element.profile_key(comment_key).present?
@@ -120,9 +125,7 @@ select name_id from walk", element_link])
     tree_element.profile_value(comment_key)
   end
 
-  def distribution_key
-    tree_version.distribution_key
-  end
+  delegate :distribution_key, to: :tree_version
 
   def distribution?
     tree_element.profile_key(distribution_key).present?
@@ -140,9 +143,7 @@ select name_id from walk", element_link])
     "#{host_part}#{taxon_link}"
   end
 
-  def host_part
-    tree_version.host_part
-  end
+  delegate :host_part, to: :tree_version
 
   # returns a record containing identifying information to edit the distribution
   def distribution_record
@@ -150,23 +151,23 @@ select name_id from walk", element_link])
     record.tree_version_element = self
     record.field_name = tree_element.distribution? ? tree_element.distribution_key : "Distribution"
     record.field_value = if tree_element.distribution?
-                           tree_element.distribution_value
-                         else
-                           "WA, CoI, ChI, AR, CaI, NT, SA, Qld, CSI, NSW, LHI, NI, ACT, Vic, Tas, HI, MDI, MI"
-                         end
+      tree_element.distribution_value
+    else
+      "WA, CoI, ChI, AR, CaI, NT, SA, Qld, CSI, NSW, LHI, NI, ACT, Vic, Tas, HI, MDI, MI"
+    end
     record.multiline = false
     record
   end
 
   def comment_record
-    record = new Object
+    record = new(Object)
     record.tree_version_element = self
     record.field_name = tree_element.comment? ? tree_element.comment_key : "Comment"
     record.field_value = if tree_element.comment?
-                           tree_element.comment_value
-                         else
-                           ""
-                         end
+      tree_element.comment_value
+    else
+      ""
+    end
     record.multiline = false
     record
   end

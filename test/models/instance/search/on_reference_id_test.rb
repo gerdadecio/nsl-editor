@@ -27,15 +27,15 @@ class OnReferenceIdTest < ActiveSupport::TestCase
 
   test "instance search on Reference ID" do
     search = Search::Base
-             .new(ActiveSupport::HashWithIndifferentAccess
+      .new(ActiveSupport::HashWithIndifferentAccess
              .new(query_string:
                   "id:#{@ref.id} show-instances:",
-                  query_target: "references",
-                  current_user: build_edit_user))
+               query_target: "references",
+               current_user: build_edit_user))
     assert_equal Array,
-                 search.executed_query.results.class,
-                 "Results should be an Array"
+      search.executed_query.results.class,
+      "Results should be an Array"
     assert search.executed_query.results.size >= 4,
-           "At least four results expected."
+      "At least four results expected."
   end
 end

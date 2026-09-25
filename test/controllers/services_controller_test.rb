@@ -24,9 +24,9 @@ class ServicesControllerTest < ActionController::TestCase
   end
 
   test "no user should get index" do
-    assert_raises(ActionController::UrlGenerationError) {
-    get(:index, params: {}, session: {})
-    }
+    assert_raises(ActionController::UrlGenerationError) do
+      get(:index, params: {}, session: {})
+    end
   end
 
   test "unauthenticated user should get ping" do

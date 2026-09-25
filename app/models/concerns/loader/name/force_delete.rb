@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::ForceDelete
   extend ActiveSupport::Concern
 
@@ -19,23 +21,22 @@ module Loader::Name::ForceDelete
 
     loader_name_deleted_ids = []
     ActiveRecord::Base.transaction do
-      self.children.each do |child|
+      children.each do |child|
         child.preferred_matches.each do |match|
           match.delete
         end
-        loader_name_deleted_ids.push child.id
+        loader_name_deleted_ids.push(child.id)
         child.delete
       end
-      self.preferred_matches.each do |match|
+      preferred_matches.each do |match|
         match.delete
       end
-      loader_name_deleted_ids.push self.id
-      self.delete
-    end #transaction
-    return loader_name_deleted_ids
+      loader_name_deleted_ids.push(id)
+      delete
+    end # transaction
+    loader_name_deleted_ids
   rescue => e
-    Rails.logger.error("Error: #{e.to_s}")
-    return []
+    Rails.logger.error("Error: #{e}")
+    []
   end
 end
-

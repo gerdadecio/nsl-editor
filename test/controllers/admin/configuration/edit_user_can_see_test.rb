@@ -23,12 +23,16 @@ class AdminControllerEditUserCanSeeConfTest < ActionController::TestCase
   tests AdminController
 
   test "edit user should get configuration" do
-    get(:index,
-        params: {},
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] },
-        xhr: true)
+    get(
+      :index,
+      params: {},
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+      xhr: true,
+    )
     assert_response :success, "Edit user should see configuration"
   end
 end

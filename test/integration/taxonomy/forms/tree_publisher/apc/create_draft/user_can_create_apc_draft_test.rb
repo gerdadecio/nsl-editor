@@ -32,19 +32,20 @@ class TaxFormsTreePubAPCUserCanCreateAPCDraftTest < ActionController::TestCase
 
   def setup
     publish_existing_draft
-    response_body = %Q({"payload":{"draftName":"blah","versionNumber":#{tree_versions(:apc_draft_version).id}}})
-    stub_request(:put, %r{http:..localhost:90...nsl.services.api.tree.createVersion.apiKey=test-api-key&as=apc-tax-publisher}).
-  with(
-    body: "{\"treeId\":\"460813214\",\"fromVersionId\":null,\"draftName\":\"abcde name\",\"log\":\"abcde log\",\"defaultDraft\":null}",
-    headers: {
-	  'Accept'=>/json/,
-    'Accept-Encoding'=>/.*/,
-    'Content-Length'=>/.*/,
-    'Content-Type'=>/json/,
-    'Host'=>/localhost:.*/,
-	  'User-Agent'=>/ruby/
-    }).
-  to_return(status: 200, body: response_body, headers: {})
+    response_body = %({"payload":{"draftName":"blah","versionNumber":#{tree_versions(:apc_draft_version).id}}})
+    stub_request(:put, /http:..localhost:90...nsl.services.api.tree.createVersion.apiKey=test-api-key&as=apc-tax-publisher/)
+      .with(
+        body: "{\"treeId\":\"460813214\",\"fromVersionId\":null,\"draftName\":\"abcde name\",\"log\":\"abcde log\",\"defaultDraft\":null}",
+        headers: {
+          "Accept" => /json/,
+          "Accept-Encoding" => /.*/,
+          "Content-Length" => /.*/,
+          "Content-Type" => /json/,
+          "Host" => /localhost:.*/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200, body: response_body, headers: {})
   end
 
   def publish_existing_draft
@@ -57,13 +58,17 @@ class TaxFormsTreePubAPCUserCanCreateAPCDraftTest < ActionController::TestCase
   test "APC tree publisher user can create APC draft" do
     user = users(:apc_tax_publisher)
     apc_tree = trees(:APC)
-    post(:create_draft,
-         params: {"tree_id"=>apc_tree.id, "draft_name"=>"abcde name", "draft_log"=>"abcde log"},
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    groups: ["login"]})
+    post(
+      :create_draft,
+      params: { "tree_id" => apc_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+      },
+    )
     assert_response :success
   end
 end

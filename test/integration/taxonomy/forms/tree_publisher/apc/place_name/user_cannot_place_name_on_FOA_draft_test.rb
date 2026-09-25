@@ -48,25 +48,34 @@ class TaxFormsTreePublisherAPCUserCannotPlaceNameOnFOADraftTest < ActionControll
     # Raising this exception means it got as far as calling the API
     # The processing after calling the API, based on what the API returns
     # (in our case, that's from a stub) is complex.  No need to simulate all that.
-    post(:place_name,
-         params: {"place_name"=>{"instance_id"=>12345,
-                                       "comment"=>"blah",
-                                       "distribution"=>["NSW"],
-                                       "parent_name_typeahead_string"=>"Angophora bakeri E.C.Hall",
-                                       "parent_element_link"=>"/tree/52410589/52410645",
-                                       "version_id"=>foa_draft.id,
-                                       "place"=>""},
-                  "id" => tve.id
-                 },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: foa_draft,
-                    groups: ["login"]})
+    post(
+      :place_name,
+      params: {
+        "place_name" => {
+          "instance_id" => 12345,
+          "comment" => "blah",
+          "distribution" => ["NSW"],
+          "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
+          "parent_element_link" => "/tree/52410589/52410645",
+          "version_id" => foa_draft.id,
+          "place" => "",
+        },
+        "id" => tve.id,
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: foa_draft,
+        groups: ["login"],
+      },
+    )
     assert_response :forbidden, "Should be forbidden"
-    assert_match /access denied/i, response.body,
-      "Expecting Not authorized message"
+    assert_match(
+      /access denied/i,
+      response.body,
+      "Expecting Not authorized message",
+    )
   end
 end
-

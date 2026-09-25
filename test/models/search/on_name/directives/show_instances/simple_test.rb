@@ -23,15 +23,17 @@ load "test/models/search/on_name/test_helper.rb"
 # Single instance model test.
 class SimpleTest < ActiveSupport::TestCase
   def assert_with_args(_results, index, expected, actual)
-    assert(/\A#{Regexp.escape(expected)}\z/.match(actual),
-           "Wrong at index #{index}; should be: #{expected} NOT #{actual}")
+    assert(
+      /\A#{Regexp.escape(expected)}\z/.match(actual),
+      "Wrong at index #{index}; should be: #{expected} NOT #{actual}",
+    )
   end
 
   test "name search directive show instances simple" do
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "name: angophora costata show-instances:",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     check_results_1(search)
@@ -43,9 +45,11 @@ class SimpleTest < ActiveSupport::TestCase
     confirm_results_class(search.executed_query.results)
     debug = false
     show_results(search) if debug
-    assert_equal 9,
-                 search.executed_query.results.size,
-                 "Expected 9 results not #{search.executed_query.results.size}"
+    assert_equal(
+      9,
+      search.executed_query.results.size,
+      "Expected 9 results not #{search.executed_query.results.size}",
+    )
   end
 
   def check_results_2(search)
@@ -91,19 +95,25 @@ class SimpleTest < ActiveSupport::TestCase
 
   def confirm_disp(search, index, expected)
     actual = search.executed_query.results[index].display_as
-    assert(/\A#{Regexp.escape(expected)}\z/.match(actual),
-           "Wrong at index #{index}; should be: #{expected} NOT #{actual}")
+    assert(
+      /\A#{Regexp.escape(expected)}\z/.match(actual),
+      "Wrong at index #{index}; should be: #{expected} NOT #{actual}",
+    )
   end
 
   def confirm_name(search, index, expected)
     actual = search.executed_query.results[index].full_name
-    assert(/\A#{Regexp.escape(expected)}\z/.match(actual),
-           "Wrong at index #{index}; should be: #{expected} NOT #{actual}")
+    assert(
+      /\A#{Regexp.escape(expected)}\z/.match(actual),
+      "Wrong at index #{index}; should be: #{expected} NOT #{actual}",
+    )
   end
 
   def confirm_inst(search, index, expected)
     actual = Name.find(search.executed_query.results[index].name_id).full_name
-    assert(/\A#{Regexp.escape(expected)}\z/.match(actual),
-           "Wrong at index #{index}; should be: #{expected} NOT #{actual}")
+    assert(
+      /\A#{Regexp.escape(expected)}\z/.match(actual),
+      "Wrong at index #{index}; should be: #{expected} NOT #{actual}",
+    )
   end
 end

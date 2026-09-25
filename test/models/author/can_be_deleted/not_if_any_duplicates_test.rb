@@ -26,6 +26,6 @@ class AuthorCannotBeDeletedIfHasDuplicateTest < ActiveSupport::TestCase
     moe.duplicate_of = author
     moe.save!
     assert_not author.can_be_deleted?,
-               "Should not be able to delete author with duplicates"
+      "Should not be able to delete author with duplicates"
   end
 end

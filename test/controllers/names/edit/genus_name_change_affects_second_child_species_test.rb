@@ -31,22 +31,28 @@ class GenusNameChangeAffects2ndChildSpAndSubspTest < ActionController::TestCase
     subspecies = names(:hybrid_formula)
     @request.headers["Accept"] = "application/javascript"
     # post(:update, { name: { 'name_element' => genus.name_element+'XYZ'},
-    post(:update,
-         params: { name: { "name_element" => "XYZ" },
-                   id: genus.id },
-         session: { username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: ["edit"] })
+    post(
+      :update,
+      params: {
+        name: { "name_element" => "XYZ" },
+        id: genus.id,
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     sleep(2) # to allow for the asynch job
     species_afterwards = Name.find(species.id)
     # puts species_afterwards.full_name
     assert species.full_name != species_afterwards.full_name,
-           "The genus's name has changed and this should affect the
+      "The genus's name has changed and this should affect the
            species's name."
     subspecies_afterwards = Name.find(subspecies.id)
     assert subspecies.full_name != subspecies_afterwards.full_name,
-           "The genus's name has changed and this should affect the
+      "The genus's name has changed and this should affect the
            subspecies's name."
   end
 end

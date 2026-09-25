@@ -85,9 +85,13 @@ class Instance::AsArray::ForName < Array
       return [{}, {}, {}] if name_ids.empty?
 
       instances = Instance.where(name_id: name_ids)
-                           .includes([{ reference: :author }, :instance_type,
-                                      :this_is_cited_by, :profile_items])
-                           .to_a
+        .includes([
+          { reference: :author },
+          :instance_type,
+          :this_is_cited_by,
+          :profile_items
+        ])
+        .to_a
       instances_by_name = instances.group_by(&:name_id)
 
       standalone_ids = instances.select(&:standalone?).map(&:id)
@@ -99,9 +103,11 @@ class Instance::AsArray::ForName < Array
       # than reused from standalone_ids.
       citing_ids = instances.reject(&:standalone?).map(&:cited_by_id).uniq
 
-      [instances_by_name,
-       standalone_cited_by_map_for(standalone_ids),
-       relationship_cited_by_map_for(citing_ids)]
+      [
+        instances_by_name,
+        standalone_cited_by_map_for(standalone_ids),
+        relationship_cited_by_map_for(citing_ids)
+      ]
     end
 
     # Same query show_standalone_instance's records_cited_by_standalone
@@ -114,15 +120,15 @@ class Instance::AsArray::ForName < Array
       return {} if standalone_ids.empty?
 
       Instance.joins(:instance_type, :name, :reference)
-              .joins("left outer join instance cites on instance.cites_id = cites.id")
-              .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
-              .joins("inner join name_status ns on name.name_status_id = ns.id")
-              .includes(:instance_type, name: :name_status)
-              .where(cited_by_id: standalone_ids)
-              .in_synonymy_order
-              .order("reference.iso_publication_date,lower(name.full_name)")
-              .to_a
-              .group_by(&:cited_by_id)
+        .joins("left outer join instance cites on instance.cites_id = cites.id")
+        .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
+        .joins("inner join name_status ns on name.name_status_id = ns.id")
+        .includes(:instance_type, name: :name_status)
+        .where(cited_by_id: standalone_ids)
+        .in_synonymy_order
+        .order("reference.iso_publication_date,lower(name.full_name)")
+        .to_a
+        .group_by(&:cited_by_id)
     end
 
     # Same query show_relationship_instance's records_cited_by_relationship
@@ -138,26 +144,30 @@ class Instance::AsArray::ForName < Array
       return {} if citing_ids.empty?
 
       Instance.joins(:instance_type, :name, :reference)
-              .joins("left outer join instance cites on instance.cites_id = cites.id")
-              .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
-              .joins("inner join name_status ns on name.name_status_id = ns.id")
-              .includes(:instance_type, name: :name_status)
-              .where(cited_by_id: citing_ids)
-              .in_synonymy_order
-              .to_a
-              .group_by(&:cited_by_id)
+        .joins("left outer join instance cites on instance.cites_id = cites.id")
+        .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
+        .joins("inner join name_status ns on name.name_status_id = ns.id")
+        .includes(:instance_type, name: :name_status)
+        .where(cited_by_id: citing_ids)
+        .in_synonymy_order
+        .to_a
+        .group_by(&:cited_by_id)
     end
   end
 
   def initialize(name, preloaded_instances: nil,
-                 preloaded_standalone_cited_by_map: nil,
-                 preloaded_relationship_cited_by_map: nil)
+    preloaded_standalone_cited_by_map: nil,
+    preloaded_relationship_cited_by_map: nil)
     @results = []
     @already_shown = []
     @preloaded_standalone_cited_by_map = preloaded_standalone_cited_by_map
     @preloaded_relationship_cited_by_map = preloaded_relationship_cited_by_map
-    instances = preloaded_instances || name.instances.includes([{ reference: :author }, :instance_type,
-                                                                  :this_is_cited_by, :profile_items])
+    instances = preloaded_instances || name.instances.includes([
+      { reference: :author },
+      :instance_type,
+      :this_is_cited_by,
+      :profile_items
+    ])
     sorted_instances(instances).each do |instance|
       if instance.standalone?
         show_standalone_instance(instance)
@@ -168,7 +178,7 @@ class Instance::AsArray::ForName < Array
   end
 
   def debug(s)
-    Rails.logger.debug("Instance::AsArray::ForName: #{s}")
+    Rails.logger.debug { "Instance::AsArray::ForName: #{s}" }
   end
 
   # NOTES (perf): was `.sort { |i1, i2| sort_fields(i1) <=> sort_fields(i2) }`
@@ -292,10 +302,10 @@ class Instance::AsArray::ForName < Array
   def with_display_as(instance)
     debug("with_display_as for instance #{instance.id}")
     instance.display_as = if instance.misapplied?
-                            "cited-by-relationship-instance"
-                          else
-                            "cited-by-relationship-instance-name-only"
-                          end
+      "cited-by-relationship-instance"
+    else
+      "cited-by-relationship-instance-name-only"
+    end
     instance
   end
 

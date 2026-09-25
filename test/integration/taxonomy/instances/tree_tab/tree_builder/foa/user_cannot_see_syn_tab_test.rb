@@ -27,18 +27,22 @@ class TaxoInstanceTreeBuilderFoaCannotSeeSynTab < ActionController::TestCase
     foa_draft = tree_versions(:foa_draft_version)
     instance = instances(:triodia_in_brassard)
     assert_routing "/instances/1/tab/tree",
-                   controller: "instances",
-                   action: "tab",
-                   id: "1",
-                   tab: "tree"
-    get('tab',
-        params: {id: "#{instance.id}", tab: 'tab_synonymy'},
-        format: :js,
-        xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login", "xedit"],
-                   draft: foa_draft})
+      controller: "instances",
+      action: "tab",
+      id: "1",
+      tab: "tree"
+    get(
+      "tab",
+      params: { id: "#{instance.id}", tab: "tab_synonymy" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login", "xedit"],
+        draft: foa_draft,
+      },
+    )
     assert_response :forbidden, "Tree builder should not see Synonmy tab"
   end
 end

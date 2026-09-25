@@ -20,10 +20,9 @@ require "test_helper"
 
 # Test fixtures are intact
 class SessionUserNoRoleHasNoRolesTest < ActiveSupport::TestCase
-
   test "no role user has no roles" do
     user = users(:no_role)
-    session_user = SessionUser.new(username: user.user_name, full_name: "#{user.given_name} #{user.family_name}", groups: 'login')
+    session_user = SessionUser.new(username: user.user_name, full_name: "#{user.given_name} #{user.family_name}", groups: "login")
     assert_empty(session_user.user.roles, "Expecting #{user.user_name} user to have no roles")
   end
 end

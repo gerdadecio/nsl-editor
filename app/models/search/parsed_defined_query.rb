@@ -20,7 +20,7 @@
 # and if it is, which one.
 class Search::ParsedDefinedQuery
   attr_reader :defined_query,
-              :target_button_text
+    :target_button_text
 
   DEFINED_QUERIES = {
     "references_with_instances" => "references-name-full-synonymy",
@@ -38,12 +38,12 @@ class Search::ParsedDefinedQuery
   }.freeze
 
   def initialize(query_target)
-    @query_target = query_target.downcase.gsub(", ", "_").gsub(" ", "_")
+    @query_target = query_target.downcase.gsub(", ", "_").tr(" ", "_")
     parse_query_target
   end
 
   def debug(s)
-    Rails.logger.debug("Search::ParsedDefinedQuery: #{s}")
+    Rails.logger.debug { "Search::ParsedDefinedQuery: #{s}" }
   end
 
   def parse_query_target

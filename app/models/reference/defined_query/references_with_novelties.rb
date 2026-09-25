@@ -20,14 +20,14 @@
 #   instantiate.
 class Reference::DefinedQuery::ReferencesWithNovelties
   attr_reader :results,
-              :limited,
-              :common_and_cultivar_included,
-              :has_relation,
-              :relation,
-              :count,
-              :show_csv,
-              :total,
-              :do_count_totals
+    :limited,
+    :common_and_cultivar_included,
+    :has_relation,
+    :relation,
+    :count,
+    :show_csv,
+    :total,
+    :do_count_totals
 
   def initialize(parsed_request)
     run_query(parsed_request)
@@ -36,7 +36,7 @@ class Reference::DefinedQuery::ReferencesWithNovelties
 
   def debug(s)
     tag = "Reference::DefinedQuery::ReferencesWithNovelties"
-    Rails.logger.debug("#{tag}: #{s}")
+    Rails.logger.debug { "#{tag}: #{s}" }
   end
 
   def run_query(parsed_request)

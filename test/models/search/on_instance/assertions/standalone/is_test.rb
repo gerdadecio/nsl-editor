@@ -28,10 +28,10 @@ class SearchOnInstanceIsStandaloneTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "instance",
         query_string: "is-standalone:",
-        current_user: build_edit_user
-      )
+        current_user: build_edit_user,
+      ),
     )
-    assert !search.executed_query.results.empty?,
-           "Expected results for is-standalone: — fixtures include comb_nov and secondary_reference instances"
+    assert_not search.executed_query.results.empty?,
+      "Expected results for is-standalone: — fixtures include comb_nov and secondary_reference instances"
   end
 end

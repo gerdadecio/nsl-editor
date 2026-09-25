@@ -38,9 +38,9 @@ class Instance::AsTypeahead::ForSynonymy
   attr_reader :results
 
   COLUMNS = " name.full_name, reference.citation,  " \
-            "reference.iso_publication_date, instance.page, " \
-            "instance.id, instance.source_system,  " \
-            "instance_type.name as instance_type_name"
+    "reference.iso_publication_date, instance.page, " \
+    "instance.id, instance.source_system,  " \
+    "instance_type.name as instance_type_name"
   SEARCH_LIMIT = 50
 
   # ref_parent_date(ref_id) is an existing db function (see db/structure.sql)
@@ -55,7 +55,7 @@ class Instance::AsTypeahead::ForSynonymy
     @results = []
     @name_binds = []
     terms_without_year = terms.gsub(/[1,2][0-9]{3}/, "").strip.gsub("  ", " ")
-    Rails.logger.debug("terms_without_year: #{terms_without_year}")
+    Rails.logger.debug { "terms_without_year: #{terms_without_year}" }
     return if terms_without_year.blank?
 
     @name_binds.push(" lower(f_unaccent(full_name)) like lower(f_unaccent(?)) ")
@@ -71,14 +71,14 @@ class Instance::AsTypeahead::ForSynonymy
 
   def build_query(terms, name_id)
     query = Instance.select(COLUMNS)
-                    .joins(name: :name_rank).where(@name_binds)
-                    .joins(:reference).where(reference_binds(terms))
-                    .joins(:instance_type)
-                    .where("cited_by_id is null")
-                    .where("name_id != ?", name_id.to_i)
-                    .order(Arel.sql("name_rank.sort_order,lower(f_unaccent(full_name)), " \
-                                    "#{ISO_PUBLICATION_DATE_ORDER}"))
-                    .limit(SEARCH_LIMIT)
+      .joins(name: :name_rank).where(@name_binds)
+      .joins(:reference).where(reference_binds(terms))
+      .joins(:instance_type)
+      .where("cited_by_id is null")
+      .where.not(name_id: name_id.to_i)
+      .order(Arel.sql("name_rank.sort_order,lower(f_unaccent(full_name)), " \
+        "#{ISO_PUBLICATION_DATE_ORDER}"))
+      .limit(SEARCH_LIMIT)
     restrict_ranks(query, name_id)
   end
 
@@ -110,7 +110,7 @@ class Instance::AsTypeahead::ForSynonymy
 
   def display_value(i)
     value = "#{i.full_name} in #{i.citation}:#{i.iso_publication_date}"
-    value += " [#{i.page}]" unless i.page.blank? || i.page.match(/\Anull - null\z/)
+    value += " [#{i.page}]" unless i.page.blank? || i.page == "null - null"
     value += " [#{i.instance_type_name}]" unless i.instance_type_name == "secondary reference"
     value
   end
@@ -122,7 +122,7 @@ class Instance::AsTypeahead::ForSynonymy
 
     reference_year = match.to_s
     if reference_year.present? &&
-       reference_year.to_i > 1000 && reference_year.to_i < 3000
+        reference_year.to_i > 1000 && reference_year.to_i < 3000
       reference_binds.push(" reference.iso_publication_date like ? ||'%' ")
       reference_binds.push(reference_year)
     end

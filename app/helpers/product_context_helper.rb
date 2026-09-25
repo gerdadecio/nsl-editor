@@ -1,5 +1,6 @@
-module ProductContextHelper
+# frozen_string_literal: true
 
+module ProductContextHelper
   def available_contexts_for_current_user
     return [] unless current_registered_user&.available_products_from_roles
 

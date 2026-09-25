@@ -25,7 +25,7 @@ class AuthorARTA4DuplicateOfIdWithNoString < ActiveSupport::TestCase
     result = Author::AsResolvedTypeahead::ForDuplicateOf.new(
       "1",
       "",
-      author_to_avoid
+      author_to_avoid,
     )
     assert_match "", result.value, "Should get nothing - treating as delete."
   end

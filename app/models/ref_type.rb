@@ -43,8 +43,10 @@ class RefType < ApplicationRecord
   self.primary_key = "id"
 
   belongs_to :parent, class_name: "RefType", foreign_key: "parent_id", optional: true
-  has_many :children, class_name: "RefType", foreign_key: "parent_id",
-                      dependent: :restrict_with_exception
+  has_many :children,
+    class_name: "RefType",
+    foreign_key: "parent_id",
+    dependent: :restrict_with_exception
 
   has_many :references
 
@@ -83,8 +85,8 @@ class RefType < ApplicationRecord
 
   def self.options_with_preference(pref)
     all.order(:name)
-       .collect do |r|
-      if r.name =~ /#{pref}/
+      .collect do |r|
+      if /#{pref}/.match?(r.name)
         [r.name, r.id, { class: "none" }]
       else
         ["#{r.name} - may be incompatible with child", r.id, { class: "red" }]
@@ -94,17 +96,17 @@ class RefType < ApplicationRecord
 
   def self.query_form_options
     all.sort_by(&:name)
-       .collect { |n| [n.name, n.name.downcase, { class: "" }] }
+      .collect { |n| [n.name, n.name.downcase, { class: "" }] }
   end
 
   def rule
     rule = if parent_id.blank?
-             "cannot be within another reference"
-           elsif parent_optional == true
-             optional_parent_rule(parent)
-           else
-             required_parent_rule(parent)
-           end
+      "cannot be within another reference"
+    elsif parent_optional == true
+      optional_parent_rule(parent)
+    else
+      required_parent_rule(parent)
+    end
     "#{indefinite_article.capitalize} #{name.downcase} #{rule}."
   end
 
@@ -125,7 +127,13 @@ class RefType < ApplicationRecord
   end
 
   def reference_year_required?
-    ["chapter", "database record", "herbarium annotation", "personal communication", "paper",
-     "section"].include? name.downcase
+    [
+      "chapter",
+      "database record",
+      "herbarium annotation",
+      "personal communication",
+      "paper",
+      "section"
+    ].include?(name.downcase)
   end
 end

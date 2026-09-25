@@ -29,17 +29,11 @@ class SignIn < ActiveType::Object
     @ldap.users_groups
   end
 
-  def user_full_name
-    @ldap.user_full_name
-  end
+  delegate :user_full_name, to: :@ldap
 
-  def user_cn
-    @ldap.user_cn
-  end
+  delegate :user_cn, to: :@ldap
 
-  def generic_active_directory_user
-    @ldap.generic_active_directory_user
-  end
+  delegate :generic_active_directory_user, to: :@ldap
 
   def make_invalid
     errors.add(:credentials, "not authorised.")

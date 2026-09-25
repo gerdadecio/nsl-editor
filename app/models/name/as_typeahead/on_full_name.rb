@@ -21,17 +21,17 @@
 #   for the Instance.
 class Name::AsTypeahead::OnFullName
   attr_reader :suggestions,
-              :params
+    :params
 
   SEARCH_LIMIT = 50
 
   def initialize(params)
     @params = params
     @suggestions = if @params[:term].blank?
-                     []
-                   else
-                     query
-                   end
+      []
+    else
+      query
+    end
   end
 
   def prepared_search_term
@@ -40,12 +40,12 @@ class Name::AsTypeahead::OnFullName
 
   def query
     Name.not_a_duplicate
-        .where("lower(full_name) like lower(?)", prepared_search_term)
-        .includes(:name_status)
-        .joins(:name_rank)
-        .order("name_rank.sort_order, lower(full_name)")
-        .limit(SEARCH_LIMIT)
-        .collect do |n|
+      .where("lower(full_name) like lower(?)", prepared_search_term)
+      .includes(:name_status)
+      .joins(:name_rank)
+      .order("name_rank.sort_order, lower(full_name)")
+      .limit(SEARCH_LIMIT)
+      .collect do |n|
       { value: "#{n.full_name} - #{n.name_status.name}", id: n.id }
     end
   end

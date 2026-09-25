@@ -23,7 +23,7 @@ class Search::NextCriterion
   end
 
   def debug(s)
-    Rails.logger.debug("Search::NextCriterion - #{s}")
+    Rails.logger.debug { "Search::NextCriterion - #{s}" }
   end
 
   def get
@@ -56,7 +56,7 @@ class Search::NextCriterion
     found_field = false
     num = 0
     @tokens.each do |x|
-      found_field = true if x =~ /:/
+      found_field = true if /:/.match?(x)
       unless found_field
         num += 1
         value = value += " #{x}" unless found_field

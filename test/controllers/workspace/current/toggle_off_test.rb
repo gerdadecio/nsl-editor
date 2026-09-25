@@ -28,11 +28,15 @@ class WorkspaceCurrentToggleOffTest < ActionController::TestCase
   test "toggle workspace off" do
     @request.headers["Accept"] = "application/javascript"
     @request.session["draft"] = @tree
-    post(:toggle,
-         params: { id: @tree.id },
-         session: { username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: %w[edit treebuilder] })
+    post(
+      :toggle,
+      params: { id: @tree.id },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit", "treebuilder"],
+      },
+    )
     assert_response :success
     assert_not @request.session["draft"].present?
   end

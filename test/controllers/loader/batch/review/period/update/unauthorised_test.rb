@@ -25,22 +25,30 @@ class BatchReviewPeriodUpdateUnauthorisedTest < ActionController::TestCase
   test "update batch review period unauthorised" do
     @request.headers["Accept"] = "application/javascript"
     target = loader_batch_batch_review_batch_review_period(:review_period_one)
-    patch(:update,
-          params: { id: target.id,
-                    "loader_batch_review_period"=>
-                       {"id"=>"52329126",
-                        "batch_review_id"=>"51785034",
-                        "name"=>"asdfas",
-                        "start_date(3i)"=>target.start_date.day.to_s,
-                        "start_date(2i)"=>target.start_date.month.to_s,
-                        "start_date(1i)"=>target.start_date.year.to_s,
-                        "end_date(3i)"=>"",
-                        "end_date(2i)"=>"",
-                        "end_date(1i)"=>""},
-                   "commit"=>"Save"},
-         session: { username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: ["edit"] })
+    patch(
+      :update,
+      params: {
+        id: target.id,
+        "loader_batch_review_period" =>
+                   {
+                     "id" => "52329126",
+                     "batch_review_id" => "51785034",
+                     "name" => "asdfas",
+                     "start_date(3i)" => target.start_date.day.to_s,
+                     "start_date(2i)" => target.start_date.month.to_s,
+                     "start_date(1i)" => target.start_date.year.to_s,
+                     "end_date(3i)" => "",
+                     "end_date(2i)" => "",
+                     "end_date(1i)" => "",
+                   },
+        "commit" => "Save",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :forbidden
   end
 end

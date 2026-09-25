@@ -30,10 +30,10 @@ class SearchOnInstanceIsNotRelationshipTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "instance",
         query_string: "is-not-relationship:",
-        current_user: build_edit_user
-      )
+        current_user: build_edit_user,
+      ),
     )
-    assert !search.executed_query.results.empty?,
-           "Expected results for is-not-relationship: — fixtures include comb_nov instances"
+    assert_not search.executed_query.results.empty?,
+      "Expected results for is-not-relationship: — fixtures include comb_nov instances"
   end
 end

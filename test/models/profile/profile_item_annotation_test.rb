@@ -49,7 +49,7 @@ module Profile
     test "should not allow duplicate profile_item_id" do
       duplicate_annotation = Profile::ProfileItemAnnotation.new(
         profile_item: @profile_item_annotation.profile_item,
-        value: "Duplicate value"
+        value: "Duplicate value",
       )
       assert_not duplicate_annotation.valid?
       assert_includes duplicate_annotation.errors[:profile_item_id], "Profile item annotation must be unique per profile item"

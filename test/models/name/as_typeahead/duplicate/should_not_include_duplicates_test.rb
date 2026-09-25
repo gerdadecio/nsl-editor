@@ -24,13 +24,17 @@ class ShouldNotIncludeDuplicatesTest < ActiveSupport::TestCase
     avoid_id = 1
     suggestions = Name::AsTypeahead.duplicate_suggestions(
       "a duplicate genus",
-      avoid_id
+      avoid_id,
     )
-    assert(suggestions.is_a?(Array),
-           "suggestions should be an array")
-    assert(suggestions.size == 1,
-           'suggestions for "a duplicate genus" should have 1 entry')
+    assert(
+      suggestions.is_a?(Array),
+      "suggestions should be an array",
+    )
+    assert(
+      suggestions.size == 1,
+      'suggestions for "a duplicate genus" should have 1 entry',
+    )
     assert suggestions.first[:value].start_with?("a duplicate genus not "),
-           "Should match the non-duplicate genus"
+      "Should match the non-duplicate genus"
   end
 end

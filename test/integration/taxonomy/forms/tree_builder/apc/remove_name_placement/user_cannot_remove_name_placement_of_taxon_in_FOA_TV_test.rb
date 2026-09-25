@@ -30,9 +30,9 @@ require "test_helper"
 class TaxFormsTreeBuilderAPCUserCannotRemoveNamePlacementForTaxonOnFOADraftTest < ActionController::TestCase
   tests TreesController
 
-  #r6editor Started DELETE "/nsl/editor/trees/723297/remove_name_placement" for ::1 at 2025-07-18 11:51:43 +1000 (pid:642)
-  #r6editor Processing by TreesController#remove_name_placement as JS (pid:642)
-  #r6editor Parameters: {"authenticity_token"=>"[FILTERED]",
+  # r6editor Started DELETE "/nsl/editor/trees/723297/remove_name_placement" for ::1 at 2025-07-18 11:51:43 +1000 (pid:642)
+  # r6editor Processing by TreesController#remove_name_placement as JS (pid:642)
+  # r6editor Parameters: {"authenticity_token"=>"[FILTERED]",
   #                      "remove_placement"=>{"taxon_uri"=>"/tree/52410589/52410645",
   #                                           "delete"=>""},
   #                                           "cancel_remove_placement"=>{"delete"=>""},
@@ -41,21 +41,28 @@ class TaxFormsTreeBuilderAPCUserCannotRemoveNamePlacementForTaxonOnFOADraftTest 
     user = users(:apc_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    delete(:remove_name_placement,
-         params: {"remove_placement"=>{"taxon_uri"=>tve.element_link,
-                                       "delete"=>"",
-                                       "cancel_remove_placement"=>{"delete"=>""}
-                                      },
-                  "id" => tve.id
-                 },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: foa_draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree builder should not be able to remove placement from FOA draft'
-    assert_match 'You are not authorized to remove names from FOA draft', response.body,
+    delete(
+      :remove_name_placement,
+      params: {
+        "remove_placement" => {
+          "taxon_uri" => tve.element_link,
+          "delete" => "",
+          "cancel_remove_placement" => { "delete" => "" },
+        },
+        "id" => tve.id,
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: foa_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree builder should not be able to remove placement from FOA draft"
+    assert_match "You are not authorized to remove names from FOA draft",
+      response.body,
       "Expecting Not authorized message"
   end
 end

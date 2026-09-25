@@ -23,7 +23,7 @@ class InstanceTypeSynonymOptionsTest < ActiveSupport::TestCase
   setup do
     options = InstanceType.synonym_options
     assert options.instance_of?(Array), "Should be an array."
-    #assert_equal 13, options.size, "Should be 13 of them."
+    # assert_equal 13, options.size, "Should be 13 of them."
     @names = options.collect(&:first)
     @expected = [
       "alternative name",
@@ -47,11 +47,11 @@ class InstanceTypeSynonymOptionsTest < ActiveSupport::TestCase
   test "instance type synonym options" do
     @expected.each do |expected|
       assert @names.include?(expected),
-             "Synonym type options should include #{expected}"
+        "Synonym type options should include #{expected}"
     end
     @names.each do |name|
       assert @expected.include?(name),
-             "#{name} is unexpected as a synonym type option"
+        "#{name} is unexpected as a synonym type option"
     end
   end
 end

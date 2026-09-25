@@ -23,14 +23,18 @@ class ReaderSearchControllerNamesSimpleListTest < ActionController::TestCase
   tests SearchController
 
   test "reader can search for a name" do
-    get(:search,
-        params: { query_target: "name", query_string: "angophora costata" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "name", query_string: "angophora costata" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /\b1 name\b/,
-                  "Should find recs for a simple search on 'angophora costata'"
+      /\b1 name\b/,
+      "Should find recs for a simple search on 'angophora costata'"
   end
 end

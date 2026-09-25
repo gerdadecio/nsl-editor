@@ -25,43 +25,43 @@ class SearchOnInstanceProfileSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "show-profiles: some",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instances with matching profile item expected."
+    assert_not search.executed_query.results.empty?,
+      "Instances with matching profile item expected."
   end
 
   test "search on instance without profile result" do
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "show-profiles: idontexist",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?,
-           "No profile item result"
+      "No profile item result"
   end
 
   test "search on instance profile default result" do
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "show-profiles:",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instances with profile items return by default."
+    assert_not search.executed_query.results.empty?,
+      "Instances with profile items return by default."
   end
 
   test "search on instance id and profile result" do
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "id: #{Profile::ProfileText.last.profile_item.instance_id} show-profiles:",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instances with matching profile item expected."
+    assert_not search.executed_query.results.empty?,
+      "Instances with matching profile item expected."
   end
 end

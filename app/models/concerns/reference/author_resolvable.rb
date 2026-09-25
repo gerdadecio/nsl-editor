@@ -13,7 +13,7 @@ module Reference::AuthorResolvable
     send("#{key_field}=", Reference::AsResolvedTypeahead::ForAuthor.new(
       params[key_field],
       params[ta_field],
-      field_prefix.capitalize
+      field_prefix.capitalize,
     ).value)
   end
 end

@@ -30,14 +30,16 @@ class Loader::Name::DraftTaxonomyRemover::Remover
   end
 
   def remove
-    removement = Tree::Workspace::Removement.new(username: @user,
-                                                 target: @tree_join_record)
+    removement = Tree::Workspace::Removement.new(
+      username: @user,
+      target: @tree_join_record,
+    )
     @response = removement.remove
     log_to_table("Remove #{@tree_join_record.element_link}, #{@tree_join_record.simple_name}, instance: #{@tree_join_record.instance_id}")
-    @result_h = {removes: 1}
+    @result_h = { removes: 1 }
     @result = true
   rescue RestClient::ExceptionWithResponse => e
-    @result_h = {errors: 1, errors_reasons: {"#{e.to_s}": 1}}
+    @result_h = { errors: 1, errors_reasons: { "#{e}": 1 } }
     raise
   end
 
@@ -48,9 +50,7 @@ class Loader::Name::DraftTaxonomyRemover::Remover
   private
 
   def debug(msg)
-    Rails.logger.debug(
-      "Loader::Name::DraftTaxonomyRemover::Remover: #{msg}"
-    )
+    Rails.logger.debug { "Loader::Name::DraftTaxonomyRemover::Remover: #{msg}" }
   end
 
   def log_to_table(payload)

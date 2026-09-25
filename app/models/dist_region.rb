@@ -35,17 +35,17 @@ class DistRegion < ApplicationRecord
   self.sequence_name = "nsl_global_seq"
 
   has_many :dist_entries,
-           foreign_key: "region_id"
+    foreign_key: "region_id"
 
   def self.sorted
     DistRegion.all
-              .sort { |a, b| a.sort_order <=> b.sort_order }
+      .sort_by(&:sort_order)
   end
 
   def self.region_names
     DistRegion.all
-              .sort { |a, b| a.sort_order <=> b.sort_order }
-              .collect { |dr| dr.name }
+      .sort_by(&:sort_order)
+      .collect { |dr| dr.name }
   end
 
   def self.as_hash

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/models/profile/profile_reference.rb
 # == Schema Information
 #
@@ -21,26 +23,25 @@
 #  profile_item_reference_reference_id_fkey     (reference_id => reference.id)
 #
 module Profile
-    class ProfileItemReference < ApplicationRecord
-      include UserTrackable
+  class ProfileItemReference < ApplicationRecord
+    include UserTrackable
 
-      self.table_name = "profile_item_reference"
-      self.primary_key = [:profile_item_id, :reference_id]
+    self.table_name = "profile_item_reference"
+    self.primary_key = [:profile_item_id, :reference_id]
 
-      belongs_to :profile_item, class_name: 'Profile::ProfileItem', foreign_key: 'profile_item_id'
-      belongs_to :reference, class_name: 'Reference', foreign_key: 'reference_id'
+    belongs_to :profile_item, class_name: "Profile::ProfileItem", foreign_key: "profile_item_id"
+    belongs_to :reference, class_name: "Reference", foreign_key: "reference_id"
 
-      validate :reference_and_profile_item_uniqueness, on: :create
+    validate :reference_and_profile_item_uniqueness, on: :create
 
-      def profile_item_id_reference_id
-        [profile_item_id, reference_id].join('_')
-      end
+    def profile_item_id_reference_id
+      [profile_item_id, reference_id].join("_")
+    end
 
-      private
+    private
 
-      def reference_and_profile_item_uniqueness
-        errors.add(:base, "Only one reference per profile item is permitted") if Profile::ProfileItemReference.exists?(profile_item_id: self.profile_item_id, reference_id: self.reference_id)
-      end
+    def reference_and_profile_item_uniqueness
+      errors.add(:base, "Only one reference per profile item is permitted") if Profile::ProfileItemReference.exists?(profile_item_id: profile_item_id, reference_id: reference_id)
     end
   end
-
+end

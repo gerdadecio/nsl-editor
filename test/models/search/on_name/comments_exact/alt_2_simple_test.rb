@@ -22,13 +22,13 @@ load "test/models/search/users.rb"
 # Single Search model test for Name target.
 class SearchOneNameCommentsExactAlt2SimpleTest < ActiveSupport::TestCase
   test "search on name comments exact alt 2 simple" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "name",
-                   query_string: "exact-comment: *",
-                   include_common_and_cultivar_session: true,
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "name",
+        query_string: "exact-comment: *",
+        include_common_and_cultivar_session: true,
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Results expected for exact-comment."
+    assert_not search.executed_query.results.empty?,
+      "Results expected for exact-comment."
   end
 end

@@ -22,10 +22,12 @@ require "test_helper"
 class RefARTA4ParentIdWithMatchingString < ActiveSupport::TestCase
   test "id with matching string" do
     reference = references(:origin_of_species)
-    result = Reference::AsResolvedTypeahead::ForParent.new(reference.id.to_s,
-                                                           reference.citation)
+    result = Reference::AsResolvedTypeahead::ForParent.new(
+      reference.id.to_s,
+      reference.citation,
+    )
     assert_equal reference.id,
-                 result.value,
-                 "Should get a matching id for the parent citation"
+      result.value,
+      "Should get a matching id for the parent citation"
   end
 end

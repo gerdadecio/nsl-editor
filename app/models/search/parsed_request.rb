@@ -24,46 +24,46 @@
 #   "is-orth-var-and-sec-ref-first: limit: 2" })
 class Search::ParsedRequest
   attr_reader :show_instances,
-              :show_novelties,
-              :canonical_query_string,
-              :common_and_cultivar,
-              :count,
-              :defined_query,
-              :defined_query_arg,
-              :id,
-              :include_common_and_cultivar_session,
-              :include_common_and_cultivar_directive,
-              :limit,
-              :limited,
-              :offset,
-              :offsetted,
-              :instance_offset,
-              :list,
-              :order,
-              :order_instances_by_page,
-              :order_novelties_by_page,
-              :params,
-              :query_string,
-              :query_target,
-              :target_table,
-              :target_button_text,
-              :target_model,
-              :user,
-              :where_arguments,
-              :order_instance_query_by_page,
-              :default_order_column,
-              :default_query_directive,
-              :include_instances,
-              :include_instances_class,
-              :default_query_scope,
-              :apply_default_query_scope,
-              :original_query_target,
-              :original_query_target_for_display,
-              :print,
-              :display,
-              :show_loader_name_comments,
-              :show_profiles,
-              :note_to_user
+    :show_novelties,
+    :canonical_query_string,
+    :common_and_cultivar,
+    :count,
+    :defined_query,
+    :defined_query_arg,
+    :id,
+    :include_common_and_cultivar_session,
+    :include_common_and_cultivar_directive,
+    :limit,
+    :limited,
+    :offset,
+    :offsetted,
+    :instance_offset,
+    :list,
+    :order,
+    :order_instances_by_page,
+    :order_novelties_by_page,
+    :params,
+    :query_string,
+    :query_target,
+    :target_table,
+    :target_button_text,
+    :target_model,
+    :user,
+    :where_arguments,
+    :order_instance_query_by_page,
+    :default_order_column,
+    :default_query_directive,
+    :include_instances,
+    :include_instances_class,
+    :default_query_scope,
+    :apply_default_query_scope,
+    :original_query_target,
+    :original_query_target_for_display,
+    :print,
+    :display,
+    :show_loader_name_comments,
+    :show_profiles,
+    :note_to_user
 
   DEFAULT_LIST_LIMIT = 100
   SIMPLE_QUERY_TARGETS = {
@@ -114,7 +114,7 @@ class Search::ParsedRequest
     "bulk processing log" => "BulkProcessingLog",
   }.freeze
 
-  TARGET_MODEL_SUPPORTS_PRINT_DIRECTIVE = %w[Loader::Name Instance]
+  TARGET_MODEL_SUPPORTS_PRINT_DIRECTIVE = ["Loader::Name", "Instance"]
 
   DEFAULT_QUERY_DIRECTIVES = {
     "author" => "name-or-abbrev:",
@@ -130,7 +130,7 @@ class Search::ParsedRequest
     "users" => "user-name:",
     "org" => "name_or_abbrev:",
     "bulk processing log" => "log-entry:",
-    "profile item" => "show-profiles:"
+    "profile item" => "show-profiles:",
   }.freeze
 
   DEFAULT_ORDER_COLUMNS = {
@@ -149,38 +149,40 @@ class Search::ParsedRequest
     "bulk processing log" => " logged_at desc ",
   }.freeze
 
-  INCLUDE_INSTANCES_FOR = %w[name reference]
+  INCLUDE_INSTANCES_FOR = ["name", "reference"]
 
   INCLUDE_INSTANCES_CLASS = {
     "name" => "Search::OnName::WithInstances",
     "references" => "Search::OnName::WithInstances",
   }.freeze
 
-  ALLOW_SHOW_INSTANCES_TARGETS = %w[names name references reference]
-  ALLOW_SHOW_NOVELTIES_TARGETS = %w[references reference]
-  ALLOW_INCLUDE_COMMON_AND_CULTIVAR_TARGETS = %w[names name]
+  ALLOW_SHOW_INSTANCES_TARGETS = ["names", "name", "references", "reference"]
+  ALLOW_SHOW_NOVELTIES_TARGETS = ["references", "reference"]
+  ALLOW_INCLUDE_COMMON_AND_CULTIVAR_TARGETS = ["names", "name"]
 
   TRIM_RESULTS = {
     "loader name" => true,
   }.freeze
 
-  ADDITIONAL_NON_PREPROCESSED_TARGETS = ["activity",
-                                         "references_shared_names",
-                                         "references_with_novelties",
-                                         "references_names_full_synonymy",
-                                         "references, names, full synonymy",
-                                         "references with instances",
-                                         "references_with_instances",
-                                         "references + instances",
-                                         "references with novelties",
-                                         "references_with_novelties",
-                                         "references, accepted names for id",
-                                         "references_accepted_names_for_id",
-                                         "instance is cited",
-                                         "instance_is_cited",
-                                         "instance is cited by",
-                                         "instance_is_cited_by",
-                                         "audit"]
+  ADDITIONAL_NON_PREPROCESSED_TARGETS = [
+    "activity",
+    "references_shared_names",
+    "references_with_novelties",
+    "references_names_full_synonymy",
+    "references, names, full synonymy",
+    "references with instances",
+    "references_with_instances",
+    "references + instances",
+    "references with novelties",
+    "references_with_novelties",
+    "references, accepted names for id",
+    "references_accepted_names_for_id",
+    "instance is cited",
+    "instance_is_cited",
+    "instance is cited by",
+    "instance_is_cited_by",
+    "audit"
+  ]
 
   PREPROCESSING_TARGETS = {
     "loader_names" => "preprocess_loader_names",
@@ -195,11 +197,11 @@ class Search::ParsedRequest
 
   def initialize(params)
     @params = params
-    @note_to_user = ''
+    @note_to_user = ""
     @original_query_target_for_display = params[:query_target]
     @query_string = canonical_query_string
-    @query_string = @query_string.gsub(/  */, " ") unless @query_string.blank?
-    @query_target = (@params["canonical_query_target"] || "").gsub(')','').gsub('(','').strip.downcase
+    @query_string = @query_string.gsub(/  */, " ") if @query_string.present?
+    @query_target = (@params["canonical_query_target"] || "").delete(")").delete("(").strip.downcase
     @user = @params[:current_user]
     @default_query_scope = ""
     @apply_default_query_scope = false
@@ -208,7 +210,7 @@ class Search::ParsedRequest
   end
 
   def debug(s)
-    Rails.logger.debug("Search::ParsedRequest #{s}")
+    Rails.logger.debug { "Search::ParsedRequest #{s}" }
   end
 
   def inspect
@@ -268,12 +270,13 @@ class Search::ParsedRequest
   # they are only recognised as the first token, whereas the directives may
   # appear anywhere in the query string.
   def parse_count_or_list(tokens)
-    if tokens.blank? then default_list_and_count
-    elsif tokens.first =~ /\Acount\z/i
+    if tokens.blank?
+      default_list_and_count
+    elsif /\Acount\z/i.match?(tokens.first)
       log_deprecated_bare_word("count")
       tokens = tokens.drop(1)
       counting
-    elsif tokens.first =~ /\Alist\z/i
+    elsif /\Alist\z/i.match?(tokens.first)
       log_deprecated_bare_word("list")
       tokens = tokens.drop(1)
       listing
@@ -295,7 +298,7 @@ class Search::ParsedRequest
     Rails.logger.warn(
       "DEPRECATED_BARE_WORD_DIRECTIVE: '#{word}' used as a bare-word prefix; \
 use '#{word}:' instead. query_target: '#{@query_target}', \
-query_string: '#{@query_string}'"
+query_string: '#{@query_string}'",
     )
   end
 
@@ -319,30 +322,32 @@ query_string: '#{@query_string}'"
 
   def confirm_valid_print_directive(tokens)
     force_max_one_print_directive(tokens)
-    raise 'Error: the print: directive has an argument, please remove the argument' if print_directive_has_arg?(tokens)
+    raise "Error: the print: directive has an argument, please remove the argument" if print_directive_has_arg?(tokens)
   end
 
   def confirm_valid_print_with_comments_directive(tokens)
     force_max_one_print_with_comments_directive(tokens)
-    raise 'Error: the print-with-comments: directive has an argument, please remove the argument' if print_with_comments_directive_has_arg?(tokens)
+    raise "Error: the print-with-comments: directive has an argument, please remove the argument" if print_with_comments_directive_has_arg?(tokens)
   end
 
   def force_max_one_print_directive(tokens)
-    raise 'Error: more than one print directive - please review and try again' if tokens.count('print:') > 1
+    raise "Error: more than one print directive - please review and try again" if tokens.count("print:") > 1
   end
 
   def force_max_one_print_with_comments_directive(tokens)
-    raise 'Error: more than one print-with-comments directive - please review and try again' if tokens.count('print-with-comments:') > 1
+    raise "Error: more than one print-with-comments directive - please review and try again" if tokens.count("print-with-comments:") > 1
   end
 
   def print_directive_has_arg?(tokens)
-    return false if tokens.last == 'print:'
-    tokens[tokens.index("print:")+1].match(/:\z/).blank?
+    return false if tokens.last == "print:"
+
+    tokens[tokens.index("print:") + 1].match(/:\z/).blank?
   end
 
   def print_with_comments_directive_has_arg?(tokens)
-    return false if tokens.last == 'print-with-comments:'
-    tokens[tokens.index("print-with-comments:")+1].match(/:\z/).blank?
+    return false if tokens.last == "print-with-comments:"
+
+    tokens[tokens.index("print-with-comments:") + 1].match(/:\z/).blank?
   end
 
   def default_to_display_not_print
@@ -371,15 +376,15 @@ query_string: '#{@query_string}'"
     @limited = @list
     joined_tokens = tokens.join(" ")
     joined_tokens = if @list
-                      apply_list_limit(joined_tokens)
-                    else # count
-                      remove_limit_for_count(joined_tokens)
-                    end
+      apply_list_limit(joined_tokens)
+    else # count
+      remove_limit_for_count(joined_tokens)
+    end
     filter_bad_limit(joined_tokens).split(" ")
   end
 
   def apply_list_limit(joined_tokens)
-    if joined_tokens =~ /limit: \d{1,}/i
+    if /limit: \d{1,}/i.match?(joined_tokens)
       @limit = joined_tokens.match(/limit: (\d{1,})/i)[1].to_i
       joined_tokens = joined_tokens.gsub(/limit: *\d{1,}/i, "")
     else
@@ -420,7 +425,7 @@ query_string: '#{@query_string}'"
   end
 
   def apply_list_offset(joined_tokens)
-    if joined_tokens =~ /offset: \d{1,}/i
+    if /offset: \d{1,}/i.match?(joined_tokens)
       @offset = joined_tokens.match(/offset: (\d{1,})/i)[1].to_i
       joined_tokens = joined_tokens.gsub(/offset: *\d{1,}/i, "")
     else
@@ -439,7 +444,7 @@ query_string: '#{@query_string}'"
   end
 
   def apply_list_instance_offset(joined_tokens)
-    if joined_tokens =~ /instance-offset: \d{1,}/i
+    if /instance-offset: \d{1,}/i.match?(joined_tokens)
       @instance_offset = joined_tokens.match(/instance-offset: (\d{1,})/i)[1].to_i
       joined_tokens = joined_tokens.gsub(/instance-offset: *\d{1,}/i, "")
     else
@@ -485,14 +490,14 @@ query_string: '#{@query_string}'"
   # processing at this time.
   # Called via send
   def preprocess_loader_names
-    result = loader_batch_preprocessing?
+    loader_batch_preprocessing?
     unless @params["query_string"].match(/\bdefault-batch:/) ||
-           @params["query_string"].match(/\bbatch-id:/i) ||
-           @params["query_string"].match(/\bbatch-name:/i) ||
-           @params["query_string"].match(/\bany-batch:/i) ||
-           @params["query_string"].match(/[^-]id:/i) ||
-           @params["query_string"].match(/\Aid:/i) ||
-           @params["query_string"].match(/\bid-with-syn:/i)
+        @params["query_string"].match(/\bbatch-id:/i) ||
+        @params["query_string"].match(/\bbatch-name:/i) ||
+        @params["query_string"].match(/\bany-batch:/i) ||
+        @params["query_string"].match(/[^-]id:/i) ||
+        @params["query_string"].match(/\Aid:/i) ||
+        @params["query_string"].match(/\bid-with-syn:/i)
       raise "Please set a default batch, or specify a 'batch-id:', a 'batch-name:' or 'any-batch:'"
     end
   end
@@ -508,10 +513,10 @@ query_string: '#{@query_string}'"
     # explicitly), so "any batch" always really means any batch.
     # Mirrors the embedded/end-of-string removal in
     # Search::QueryDefaults#remove_old_defaults.
-    @query_string = @query_string.sub(/default-batch:.*(?= [A-Za-z-]*:)/, '')
-    @query_string = @query_string.sub(/default-batch:\s[^:]{1,500}\s*$/, '')
-    @query_string = @query_string.gsub(/  */, ' ').strip
-    @query_string += ' any-batch: ' unless @query_string.match(/any-batch:/)
+    @query_string = @query_string.sub(/default-batch:.*(?= [A-Za-z-]*:)/, "")
+    @query_string = @query_string.sub(/default-batch:\s[^:]{1,500}\s*$/, "")
+    @query_string = @query_string.gsub(/  */, " ").strip
+    @query_string += " any-batch: " unless /any-batch:/.match?(@query_string)
   end
 
   # TODO: convert this procedural code that refers to specific models to model
@@ -524,8 +529,8 @@ query_string: '#{@query_string}'"
   def loader_batch_preprocessing?
     if ::Loader::Batch.user_reviewable(@params[:current_user].username).collect do |batch|
          batch.name.downcase.gsub(", ", " ").rstrip
-       end.include?(@query_target.downcase.gsub("_", " ").rstrip)
-      @default_query_scope = "batch-id: #{::Loader::Batch.id_of(@query_target.gsub('_', ' '))}"
+       end.include?(@query_target.downcase.tr("_", " ").rstrip)
+      @default_query_scope = "batch-id: #{::Loader::Batch.id_of(@query_target.tr("_", " "))}"
       debug("here is @default_query_scope: #{@default_query_scope}")
       @original_query_target = @query_target
       @target_button_text = @query_target
@@ -568,7 +573,7 @@ query_string: '#{@query_string}'"
 
   def parse_common_and_cultivar(tokens)
     @common_and_cultivar = false
-    @include_common_and_cultivar_session = \
+    @include_common_and_cultivar_session =
       @params["include_common_and_cultivar_session"]
     tokens
   end
@@ -593,7 +598,7 @@ query_string: '#{@query_string}'"
       include_common_and_cultivar_directive_allowed?
       @include_common_and_cultivar_directive = (Regexp.last_match(1).downcase == "true")
       joined_tokens = joined_tokens.gsub(/include-common-and-cultivar: *(true|false)\b/i, "")
-    elsif joined_tokens =~ /include-common-and-cultivar:/i
+    elsif /include-common-and-cultivar:/i.match?(joined_tokens)
       include_common_and_cultivar_directive_allowed?
       @include_common_and_cultivar_directive = true
       joined_tokens = joined_tokens.gsub(/include-common-and-cultivar:/i, "")
@@ -610,10 +615,10 @@ query_string: '#{@query_string}'"
   end
 
   def parse_show_profiles(tokens)
-    if tokens.include?("show-profiles:")
-      @show_profiles = true
+    @show_profiles = if tokens.include?("show-profiles:")
+      true
     else
-      @show_profiles = false
+      false
     end
     tokens
   end

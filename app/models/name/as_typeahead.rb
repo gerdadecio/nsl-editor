@@ -119,23 +119,23 @@ class Name::AsTypeahead < Name
       results = []
     else
       query = Name.not_a_duplicate
-                  .full_name_like(term)
-                  .avoids_id(avoid_id.try("to_i") || -1)
-                  .joins(:name_rank)
-                  .joins(:name_status)
-                  .name_rank_not_deprecated
-                  .name_rank_not_infra
-                  .name_rank_not_na
-                  .name_rank_not_unknown
-                  .name_rank_genus_and_below
-                  .select_fields_for_typeahead
-                  .order_by_full_name
-                  .limit(SEARCH_LIMIT)
+        .full_name_like(term)
+        .avoids_id(avoid_id.try("to_i") || -1)
+        .joins(:name_rank)
+        .joins(:name_status)
+        .name_rank_not_deprecated
+        .name_rank_not_infra
+        .name_rank_not_na
+        .name_rank_not_unknown
+        .name_rank_genus_and_below
+        .select_fields_for_typeahead
+        .order_by_full_name
+        .limit(SEARCH_LIMIT)
       query = if rank_id != "undefined" && NameRank.id_is_unranked?(rank_id.to_i)
-                query.ranks_for_unranked_assumes_join
-              else
-                query.name_rank_not_unranked
-              end
+        query.ranks_for_unranked_assumes_join
+      else
+        query.name_rank_not_unranked
+      end
       query = query.collect do |n|
         { value: "#{n.full_name} | #{n.name_rank_name} ", id: n.id }
       end
@@ -154,26 +154,29 @@ class Name::AsTypeahead < Name
       results = []
     else
       query = Name.not_a_duplicate
-                  .full_name_like(term_for_query)
-                  .avoids_id(avoid_id.try("to_i") || -1)
-                  .joins(:name_rank)
-                  .joins(:name_status)
-                  .name_rank_not_deprecated
-                  .name_rank_not_infra
-                  .name_rank_not_na
-                  .name_rank_not_unknown
-                  .name_rank_species_and_below
-                  .select_fields_for_typeahead
-                  .order_by_full_name
-                  .limit(SEARCH_LIMIT)
+        .full_name_like(term_for_query)
+        .avoids_id(avoid_id.try("to_i") || -1)
+        .joins(:name_rank)
+        .joins(:name_status)
+        .name_rank_not_deprecated
+        .name_rank_not_infra
+        .name_rank_not_na
+        .name_rank_not_unknown
+        .name_rank_species_and_below
+        .select_fields_for_typeahead
+        .order_by_full_name
+        .limit(SEARCH_LIMIT)
       query = if rank_id != "undefined" && NameRank.id_is_unranked?(rank_id.to_i)
-                query.ranks_for_unranked_assumes_join
-              else
-                query.name_rank_not_unranked
-              end
+        query.ranks_for_unranked_assumes_join
+      else
+        query.name_rank_not_unranked
+      end
       query = query.collect do |n|
-        { value: "#{n.full_name} | #{n.name_rank_name}#{n.pipe_for_name_status}" \
-               "#{n.name_status_name} ", id: n.id }
+        {
+          value: "#{n.full_name} | #{n.name_rank_name}#{n.pipe_for_name_status}" \
+            "#{n.name_status_name} ",
+          id: n.id,
+        }
       end
       results = query
     end
@@ -189,13 +192,13 @@ class Name::AsTypeahead < Name
       results = []
     else
       query = Name.not_a_duplicate
-                  .full_name_like(term)
-                  .avoids_id(avoid_id.to_i)
-                  .joins(:name_rank)
-                  .joins(:name_status)
-                  .select_fields_for_typeahead
-                  .limit(SEARCH_LIMIT)
-                  .order_by_rank_and_full_name
+        .full_name_like(term)
+        .avoids_id(avoid_id.to_i)
+        .joins(:name_rank)
+        .joins(:name_status)
+        .select_fields_for_typeahead
+        .limit(SEARCH_LIMIT)
+        .order_by_rank_and_full_name
       results = query.collect do |n|
         { value: "#{n.full_name} | #{n.name_status_name}", id: n.id }
       end

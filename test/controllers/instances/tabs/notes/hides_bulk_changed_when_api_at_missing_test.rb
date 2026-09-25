@@ -47,13 +47,20 @@ class InstanceTabsNotesHidesBulkChangedWhenApiAtMissingTest < ActionController::
 
   def show_notes_tab
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @instance.id, tab: "tab_edit_notes" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
-    assert_response :success
-    assert_select "form#edit_instance_note_#{@instance_note.id}", 1,
-                  "Needs the edit form for the existing note."
+    get(
+      :show,
+      params: { id: @instance.id, tab: "tab_edit_notes" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
+    assert_response(:success)
+    assert_select(
+      "form#edit_instance_note_#{@instance_note.id}",
+      1,
+      "Needs the edit form for the existing note.",
+    )
   end
 end

@@ -22,7 +22,7 @@ class Loader::Batch::Stack < ApplicationRecord
   self.table_name = "batch_stack_v"
 
   def fresh?
-    created_at > 2.hour.ago
+    created_at > 2.hours.ago
   end
 
   def allow_delete?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/models/profile/product_item_config.rb
 # == Schema Information
 #
@@ -38,10 +40,10 @@ module Profile
     self.table_name = "product_item_config"
     self.primary_key = "id"
 
-    belongs_to :product, class_name: '::Product'
-    belongs_to :profile_item_type, class_name: 'Profile::ProfileItemType', foreign_key: 'profile_item_type_id'
+    belongs_to :product, class_name: "::Product"
+    belongs_to :profile_item_type, class_name: "Profile::ProfileItemType", foreign_key: "profile_item_type_id"
 
-    has_many :profile_items, class_name: 'Profile::ProfileItem', foreign_key: 'product_item_config_id'
+    has_many :profile_items, class_name: "Profile::ProfileItem", foreign_key: "product_item_config_id"
 
     validates :product_id, presence: true
     validates :profile_item_type_id, presence: true

@@ -27,14 +27,18 @@ class NameShowDeDuplicateTabForEditorTest < ActionController::TestCase
 
   test "should show refresh tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @name.id, tab: "tab_more" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @name.id, tab: "tab_more" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_select "li a#name-de-duplicate-tab",
-                  "De-duplicate",
-                  "Should show 'De-duplicate' tab."
+      "De-duplicate",
+      "Should show 'De-duplicate' tab."
   end
 end

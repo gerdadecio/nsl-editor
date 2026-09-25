@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.4.8"
 
-gem 'rails', '~> 8.1.0'
+gem "rails", "~> 8.1.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -33,7 +35,7 @@ gem "jbuilder", "~> 2.7"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[windows]
+gem "tzinfo-data", platforms: [:windows]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -106,8 +108,8 @@ gem "addressable", ">= 2.8.0"
 
 gem "simplecov", require: false, group: :test
 
-gem "standard", group: %i[development test]
-gem "standardrb", group: %i[development test]
+gem "standard", group: [:development, :test]
+gem "standardrb", group: [:development, :test]
 
 gem "csv"
 gem "font-awesome-sass", "~> 6.4"

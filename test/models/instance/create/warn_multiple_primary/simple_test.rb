@@ -30,12 +30,14 @@ class InstCreateWarnMultiplePrimarySimpleTest < ActiveSupport::TestCase
     i2.reference = references(:simple)
     i2.created_by = "test"
     i2.updated_by = "test"
-    assert_raises(ActiveRecord::RecordInvalid,
-                  "Second primary instance should be rejected") do
+    assert_raises(
+      ActiveRecord::RecordInvalid,
+      "Second primary instance should be rejected",
+    ) do
       i2.save!
     end
     name_after = Name.find(name.id)
     assert name_after.instances.size == 1,
-           "Should still be only 1 primary instance"
+      "Should still be only 1 primary instance"
   end
 end

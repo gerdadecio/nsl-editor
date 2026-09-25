@@ -25,10 +25,10 @@ class SearchOnAuthorNotesSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "notes: abc",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Authors with notes expected."
+    assert_not search.executed_query.results.empty?,
+      "Authors with notes expected."
   end
 end

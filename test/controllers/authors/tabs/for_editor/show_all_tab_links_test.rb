@@ -27,23 +27,27 @@ class AuthorEditorShowAllTabsTest < ActionController::TestCase
 
   test "should show all tab links if editor requests details tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @author.id, tab: "tab_edit" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @author.id, tab: "tab_edit" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_select "a#author-show-tab",
-                  "Details",
-                  "Should show 'Detail' tab."
+      "Details",
+      "Should show 'Detail' tab."
     assert_select "a#author-edit-tab",
-                  "Edit",
-                  "Should show 'Edit' tab."
+      "Edit",
+      "Should show 'Edit' tab."
     assert_select "a#author-comments-tab",
-                  "Comments",
-                  "Should show 'Comments' tab."
+      "Comments",
+      "Should show 'Comments' tab."
     assert_select "a#tab-heading",
-                  /Bentham/,
-                  "Should have tab heading showing Bentham."
+      /Bentham/,
+      "Should have tab heading showing Bentham."
   end
 end

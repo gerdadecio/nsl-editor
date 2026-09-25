@@ -22,20 +22,20 @@ load "test/models/search/users.rb"
 # Single Search model test for Name target.
 class SearchOneReferenceCommentsEmptyFieldTest < ActiveSupport::TestCase
   def setup
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "citation-text: handbook vascular plants sydney",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "reference",
+        query_string: "citation-text: handbook vascular plants sydney",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert search.executed_query.results.size == 1, "One result expected."
+    assert(search.executed_query.results.size == 1, "One result expected.")
   end
 
   test "search on reference comments empty field" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string:
-                   "handbook vascular plants sydney comments: ",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "reference",
+        query_string:
+        "handbook vascular plants sydney comments: ",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?, "No results expected."
   end

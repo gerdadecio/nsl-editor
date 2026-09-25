@@ -28,12 +28,12 @@ class SearchOnReferenceDisplayTitleSimplePositiveTest < ActiveSupport::TestCase
   test "search on reference display-title simple positive" do
     reference = references(:simple)
     params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "display-title: #{reference.display_title}",
-                   current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "display-title: #{reference.display_title}",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_includes search.executed_query.results.map(&:id), reference.id
   end
 end

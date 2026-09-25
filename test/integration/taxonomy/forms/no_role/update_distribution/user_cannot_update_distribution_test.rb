@@ -34,20 +34,26 @@ class TaxFormsNoRoleUserCannotUpdateDistributionOnFOADraftTest < ActionControlle
     user = users(:no_role)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(:update_distribution,
-         params: {"update_distribution"=>{"element_link"=>tve.element_link,
-                                          "dist"=>["NSW", "Tas"],
-                                          "delete"=>"",
-                                          "update"=>""}},
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: foa_draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'No role user should not be able to update distribution on FoA draft entry'
-    assert_match 'Access Denied', response.body, "Expecting Access Denied message"
+    post(
+      :update_distribution,
+      params: {
+        "update_distribution" => {
+          "element_link" => tve.element_link,
+          "dist" => ["NSW", "Tas"],
+          "delete" => "",
+          "update" => "",
+        },
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: foa_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "No role user should not be able to update distribution on FoA draft entry"
+    assert_match "Access Denied", response.body, "Expecting Access Denied message"
   end
 end
-
-

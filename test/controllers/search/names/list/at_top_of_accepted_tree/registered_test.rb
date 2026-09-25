@@ -23,20 +23,28 @@ class NamesSearchAtTopOfAcceptedTreeRegTest < ActionController::TestCase
   tests SearchController
 
   test "search names at top of accepted tree is registered" do
-    get(:search,
-        params: { query_target: "Names",
-                  query_string: "at-top-of-accepted-tree:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "Names",
+        query_string: "at-top-of-accepted-tree:",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /Names.*at-top-of-accepted-tree:/,
-                  "Report should be recognised"
+      /Names.*at-top-of-accepted-tree:/,
+      "Report should be recognised"
     assert_select "#search-results-summary" do |summary|
       summary.each do |s|
-        assert_no_match(/Cannot search name for: at-top-of-accepted-tree:/,
-                        s.to_s)
+        assert_no_match(
+          /Cannot search name for: at-top-of-accepted-tree:/,
+          s.to_s,
+        )
       end
     end
   end

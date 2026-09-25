@@ -23,12 +23,14 @@ load "test/models/search/users.rb"
 # Single Search model test.
 class SearchLoaderNameWithoutAnyBatchIdentTest < ActiveSupport::TestCase
   test "search loader name without any batch ident" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "loader_names",
-                                                          query_string:
-                                                          "*",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "loader_names",
+      query_string:
+            "*",
+      current_user:
+            build_edit_user,
+    )
     # TODO: rails 7.1 has a better way
     # https://blog.saeloun.com/2023/07/17/
     # add-ability-to-match-exception-messages-to-assert-raises-assertion/

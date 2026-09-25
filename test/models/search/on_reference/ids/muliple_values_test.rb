@@ -25,14 +25,14 @@ class SearchOnReferenceIdsMultipleValuesTest < ActiveSupport::TestCase
     reference = references(:simple)
     r2 = references(:paper_by_brassard)
     params = ActiveSupport::HashWithIndifferentAccess
-             .new(query_target: "reference",
-                  query_string: "ids: #{reference.id},#{r2.id}",
-                  current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "ids: #{reference.id},#{r2.id}",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 2,
-                 search.executed_query.results.size,
-                 "Exactly 2 results are expected."
+      search.executed_query.results.size,
+      "Exactly 2 results are expected."
   end
 end

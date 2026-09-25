@@ -25,33 +25,33 @@
 # 2025-04-01 11:51:27.618 [omg] r6editor AbstractController::ActionNotFound (The action 'create' could not be found for Users::ProductRolesController):
 
 class User::ProductRolesController < ApplicationController
-  before_action :find_upr, only: %i[destroy]
+  before_action :find_upr, only: [:destroy]
 
   # POST
   def create
-    authorize! :create, User::ProductRole.new(product_role_id: user_product_role_params[:product_role_id])
+    authorize!(:create, User::ProductRole.new(product_role_id: user_product_role_params[:product_role_id]))
     service = Users::ProductRoles::CreateService.call(
       user_id: user_product_role_params[:user_id],
       product_role_id: user_product_role_params[:product_role_id],
-      username: current_user.username
+      username: current_user.username,
     )
 
     if service.errors.present?
       @error = service.errors.full_messages.join(", ")
       logger.error("User::ProductRolesController#create error: #{@error}")
-      render "create_error", status: :unprocessable_content
+      render("create_error", status: :unprocessable_content)
     else
       @upr = service.user_product_role
     end
   end
 
   def destroy
-    authorize! :destroy, @upr
+    authorize!(:destroy, @upr)
     service = Users::ProductRoles::DestroyService.call(user_product_role: @upr)
     if service.errors.present?
       @error = service.errors.full_messages.join(", ")
       logger.error("User::ProductRolesController#destroy error: #{@error}")
-      render "destroy_error", status: :unprocessable_content
+      render("destroy_error", status: :unprocessable_content)
     end
   end
 

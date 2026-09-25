@@ -24,12 +24,14 @@ class RefARTA4DupeOfNoIdWStrMatchingTwoReferencesTest < ActiveSupport::TestCase
     reference_1 = references(:has_a_matching_citation_1)
     reference_2 = references(:has_a_matching_citation_2)
     assert reference_1.citation.match(reference_2.citation),
-           "Should be two references with the same citation."
-    assert_raise(RuntimeError,
-                 "Should object to 2 matches without ID to help.") do
+      "Should be two references with the same citation."
+    assert_raise(
+      RuntimeError,
+      "Should object to 2 matches without ID to help.",
+    ) do
       Reference::AsResolvedTypeahead::ForDuplicateOf.new(
         "",
-        reference_2.citation
+        reference_2.citation,
       )
     end
   end

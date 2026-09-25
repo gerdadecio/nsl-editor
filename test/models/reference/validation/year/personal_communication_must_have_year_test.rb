@@ -29,8 +29,8 @@ class RefValYearPersCommMustHaveYearTest < ActiveSupport::TestCase
     assert @reference.valid?, "Should start out valid"
     @reference.iso_publication_date = ""
     assert_not @reference.valid?,
-               "Personal comm. should be invalid without date"
+      "Personal comm. should be invalid without date"
     assert @reference.errors.full_messages
-                     .include?("Iso publication date is required")
+      .include?("Iso publication date is required")
   end
 end

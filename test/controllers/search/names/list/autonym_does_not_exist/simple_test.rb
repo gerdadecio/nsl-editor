@@ -23,12 +23,18 @@ class NamesSearchAutonymDoesNotExist < ActionController::TestCase
   tests SearchController
 
   test "search for autonyms that do not exist" do
-    get(:search,
-        params: { query_target: "Names",
-                  query_string: "autonym-does-not-exist:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "Names",
+        query_string: "autonym-does-not-exist:",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary", true, "Should run"
   end

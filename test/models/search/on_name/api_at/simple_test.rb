@@ -22,7 +22,6 @@ load "test/models/search/users.rb"
 load "test/models/search/on_name/test_helper.rb"
 
 class SearchOnNameApiAtSimpleTest < ActiveSupport::TestCase
-
   DISPLAY_ZONE = "Australia/Melbourne"
 
   setup do
@@ -36,7 +35,7 @@ class SearchOnNameApiAtSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: query_string,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
@@ -45,78 +44,86 @@ class SearchOnNameApiAtSimpleTest < ActiveSupport::TestCase
 
   test "api-at: matches a name changed on that date" do
     assert_includes search_ids("api-at: 27-07-2026"),
-                    names(:the_regnum).id,
-                    "Expected the name changed on 27-07-2026 in the results"
+      names(:the_regnum).id,
+      "Expected the name changed on 27-07-2026 in the results"
   end
 
   test "api-at: excludes a name changed on another date" do
-    refute_includes search_ids("api-at: 27-07-2026"),
-                    names(:a_family).id,
-                    "Expected the name changed on 15-08-2026 to be excluded"
+    assert_not_includes search_ids("api-at: 27-07-2026"),
+      names(:a_family).id,
+      "Expected the name changed on 15-08-2026 to be excluded"
   end
 
   test "api-at: uses the display timezone, not UTC" do
-    refute_includes search_ids("api-at: 26-07-2026"),
-                    names(:the_regnum).id,
-                    "9am on the 27th in #{DISPLAY_ZONE} must not match the 26th"
+    assert_not_includes search_ids("api-at: 26-07-2026"),
+      names(:the_regnum).id,
+      "9am on the 27th in #{DISPLAY_ZONE} must not match the 26th"
   end
 
   test "api-at: matches on month and year alone" do
     assert_includes search_ids("api-at: 07-2026"),
-                    names(:the_regnum).id,
-                    "Expected a month-and-year search to match"
-    refute_includes search_ids("api-at: 07-2026"),
-                    names(:a_family).id,
-                    "Expected a name changed in August to be excluded"
+      names(:the_regnum).id,
+      "Expected a month-and-year search to match"
+    assert_not_includes search_ids("api-at: 07-2026"),
+      names(:a_family).id,
+      "Expected a name changed in August to be excluded"
   end
 
   test "api-at: matches on year alone" do
     ids = search_ids("api-at: 2026")
-    assert_includes ids, names(:the_regnum).id,
-                    "Expected a year search to match the July name"
-    assert_includes ids, names(:a_family).id,
-                    "Expected a year search to match the August name"
+    assert_includes ids,
+      names(:the_regnum).id,
+      "Expected a year search to match the July name"
+    assert_includes ids,
+      names(:a_family).id,
+      "Expected a year search to match the August name"
   end
 
   test "api-at: excludes names that have never been changed by the api" do
-    refute_includes search_ids("api-at: 2026"),
-                    names(:a_species).id,
-                    "Expected a name with no api_at to be excluded"
+    assert_not_includes search_ids("api-at: 2026"),
+      names(:a_species).id,
+      "Expected a name with no api_at to be excluded"
   end
 
   test "api-at-after: excludes the named day itself" do
-    refute_includes search_ids("api-at-after: 27-07-2026"),
-                    names(:the_regnum).id,
-                    "Expected after: to exclude names changed on that same day"
+    assert_not_includes search_ids("api-at-after: 27-07-2026"),
+      names(:the_regnum).id,
+      "Expected after: to exclude names changed on that same day"
   end
 
   test "api-at-after: includes a name changed on a later day" do
     ids = search_ids("api-at-after: 26-07-2026")
-    assert_includes ids, names(:the_regnum).id,
-                    "Expected the 27th to be after the 26th"
-    assert_includes ids, names(:a_family).id,
-                    "Expected the 15th of August to be after the 26th of July"
+    assert_includes ids,
+      names(:the_regnum).id,
+      "Expected the 27th to be after the 26th"
+    assert_includes ids,
+      names(:a_family).id,
+      "Expected the 15th of August to be after the 26th of July"
   end
 
   test "api-at-before: excludes the named day itself" do
-    refute_includes search_ids("api-at-before: 27-07-2026"),
-                    names(:the_regnum).id,
-                    "Expected before: to exclude names changed on that same day"
+    assert_not_includes search_ids("api-at-before: 27-07-2026"),
+      names(:the_regnum).id,
+      "Expected before: to exclude names changed on that same day"
   end
 
   test "api-at-before: includes a name changed on an earlier day" do
     ids = search_ids("api-at-before: 28-07-2026")
-    assert_includes ids, names(:the_regnum).id,
-                    "Expected the 27th to be before the 28th"
-    refute_includes ids, names(:a_family).id,
-                     "Expected the 15th of August to be excluded"
+    assert_includes ids,
+      names(:the_regnum).id,
+      "Expected the 27th to be before the 28th"
+    assert_not_includes ids,
+      names(:a_family).id,
+      "Expected the 15th of August to be excluded"
   end
 
   test "api-at-after: and api-at-before: combine into a date range" do
     ids = search_ids("api-at-after: 26-07-2026 api-at-before: 28-07-2026")
-    assert_includes ids, names(:the_regnum).id,
-                    "Expected the 27th to fall inside the range"
-    refute_includes ids, names(:a_family).id,
-                     "Expected the 15th of August to fall outside the range"
+    assert_includes ids,
+      names(:the_regnum).id,
+      "Expected the 27th to fall inside the range"
+    assert_not_includes ids,
+      names(:a_family).id,
+      "Expected the 15th of August to fall outside the range"
   end
 end

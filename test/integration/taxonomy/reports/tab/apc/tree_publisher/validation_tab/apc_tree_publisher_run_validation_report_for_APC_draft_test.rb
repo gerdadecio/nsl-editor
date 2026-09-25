@@ -22,16 +22,17 @@ class APCTreePublisherRunValidationReportForAPCDraftTest < ActionController::Tes
   tests TreesController
 
   def setup
-    stub_request(:get, /http:..localhost:90...*treeVersion.validate.embed=true.version=146236284/).
-    with(
-      headers: {
-	    'Accept'=>'text/html',
-	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-	    'Content-Type'=>'text/html',
-	    'Host'=>/localhost/,
-	    'User-Agent'=>/ruby/
-      }).
-    to_return(status: 200, body: "", headers: {})
+    stub_request(:get, /http:..localhost:90...*treeVersion.validate.embed=true.version=146236284/)
+      .with(
+        headers: {
+          "Accept" => "text/html",
+          "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+          "Content-Type" => "text/html",
+          "Host" => /localhost/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200, body: "", headers: {})
   end
 
   # r6editor Started GET "/nsl/editor/trees/run/valrep"
@@ -39,15 +40,18 @@ class APCTreePublisherRunValidationReportForAPCDraftTest < ActionController::Tes
   test "APC tree publisher can run validation report for APC draft" do
     user = users(:apc_tax_publisher)
     draft = tree_versions(:apc_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:run_valrep,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :success, 'APC tree publisher should be able to run validation report for APC draft'
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :run_valrep,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :success, "APC tree publisher should be able to run validation report for APC draft"
   end
 end
-

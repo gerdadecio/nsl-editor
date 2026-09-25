@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: product(Describes a product available within the NSL infrastructure.)
@@ -43,8 +45,8 @@ class Product < ApplicationRecord
 
   belongs_to :tree, optional: true
   belongs_to :reference, optional: true
-  has_many :product_item_configs, class_name: 'Profile::ProductItemConfig', foreign_key: 'product_id'
-  has_many :profile_items, through: :product_item_configs, class_name: 'Profiles::ProfileItem'
+  has_many :product_item_configs, class_name: "Profile::ProductItemConfig", foreign_key: "product_id"
+  has_many :profile_items, through: :product_item_configs, class_name: "Profiles::ProfileItem"
   has_many :product_roles, class_name: "Product::Role"
   has_many :user_product_roles, class_name: "User::ProductRole", through: :product_roles
   has_many :user_product_role_vs

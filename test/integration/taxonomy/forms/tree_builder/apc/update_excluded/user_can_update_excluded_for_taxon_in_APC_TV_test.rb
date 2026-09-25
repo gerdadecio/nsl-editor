@@ -31,18 +31,19 @@ class TaxFormsTreeBuilderAPCUserCanUpdateExcludedForTaxonOnAPCDraftTest < Action
   tests TreesController
 
   def setup
-    stub_request(:post, %r{http:..localhost:90...nsl.services.api.treeElement.editElementStatus.apiKey=test-api-key.as=apc-tax-builder}).
-  with(
-    body: "{\"taxonUri\":null,\"excluded\":null}",
-    headers: {
-	  'Accept'=>/json/,
-    'Accept-Encoding'=>/.*/,
-    'Content-Length'=>/.*/,
-    'Content-Type'=>/json/,
-    'Host'=>/localhost:.*/,
-	  'User-Agent'=>/ruby/
-    }).
-  to_return(status: 200, body: "", headers: {})
+    stub_request(:post, /http:..localhost:90...nsl.services.api.treeElement.editElementStatus.apiKey=test-api-key.as=apc-tax-builder/)
+      .with(
+        body: "{\"taxonUri\":null,\"excluded\":null}",
+        headers: {
+          "Accept" => /json/,
+          "Accept-Encoding" => /.*/,
+          "Content-Length" => /.*/,
+          "Content-Type" => /json/,
+          "Host" => /localhost:.*/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200, body: "", headers: {})
   end
 
   # r6editor Started POST "/nsl/editor/trees/update_excluded" for ::1 at 2025-07-17 09:44:34 +1000 (pid:642)
@@ -52,17 +53,24 @@ class TaxFormsTreeBuilderAPCUserCanUpdateExcludedForTaxonOnAPCDraftTest < Action
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(:update_excluded,
-         params: {"update_parent"=>{"taxonUri"=>tve.element_link,
-                                    "excluded"=>"false"}
-                 },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: apc_draft,
-                    groups: ["login"]})
-    assert_response :success, 'APC tree builder should be able to update excluded on APC draft entry'
-    assert_no_match 'Error', response.body, "Not expecting an error message"
+    post(
+      :update_excluded,
+      params: {
+        "update_parent" => {
+          "taxonUri" => tve.element_link,
+          "excluded" => "false",
+        },
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: apc_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :success, "APC tree builder should be able to update excluded on APC draft entry"
+    assert_no_match "Error", response.body, "Not expecting an error message"
   end
 end

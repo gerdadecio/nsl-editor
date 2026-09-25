@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: author
@@ -40,7 +42,7 @@
 FactoryBot.define do
   factory :author do
     lock_version { 1 }
-    sequence(:abbrev) {|n| "Sample Abbrev #{n}" }
+    sequence(:abbrev) { |n| "Sample Abbrev #{n}" }
     created_by { "Sample Created by" }
     date_range { "Sample Date range" }
     full_name { "Sample Full name" }
@@ -51,7 +53,7 @@ FactoryBot.define do
     source_system { "Sample Source system" }
     updated_by { "Sample Updated by" }
     valid_record { true }
-    sequence(:uri) {|n| "Sample Uri #{n}" }
+    sequence(:uri) { |n| "Sample Uri #{n}" }
 
     association :namespace
   end

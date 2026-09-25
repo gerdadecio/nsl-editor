@@ -22,16 +22,17 @@ class APCTreeBuilderUpdateSynByInstanceForAPCDraftTest < ActionController::TestC
   tests TreesController
 
   def setup
-    stub_request(:post, %r{http:..localhost:90...*tree-element.update-synonymy-by-instance.apiKey=test-api-key.as=apc-tax-builder}).
-    with(
-      headers: {
-	    'Accept'=>/json/,
-      'Accept-Encoding'=>/.*/,
-      'Content-Length'=>/.*/,
-      'Host'=>/localhost:.*/,
-	    'User-Agent'=>/ruby/
-      }).
-    to_return(status: 200, body: "", headers: {})
+    stub_request(:post, /http:..localhost:90...*tree-element.update-synonymy-by-instance.apiKey=test-api-key.as=apc-tax-builder/)
+      .with(
+        headers: {
+          "Accept" => /json/,
+          "Accept-Encoding" => /.*/,
+          "Content-Length" => /.*/,
+          "Host" => /localhost:.*/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200, body: "", headers: {})
   end
 
   # r6editor Started POST "/nsl/editor/trees/update_synonymy_by_instance"
@@ -40,15 +41,17 @@ class APCTreeBuilderUpdateSynByInstanceForAPCDraftTest < ActionController::TestC
   test "APC tree builder can update synonymy by instance for APC draft" do
     user = users(:apc_tax_builder)
     draft = tree_versions(:apc_draft_version)
-    post(:update_synonymy_by_instance,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :success, 'APC tree builder should be able to update synonymy by instance for APC draft'
+    post(
+      :update_synonymy_by_instance,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :success, "APC tree builder should be able to update synonymy by instance for APC draft"
   end
 end
-
-

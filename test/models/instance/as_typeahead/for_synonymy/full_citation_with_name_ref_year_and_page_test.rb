@@ -26,10 +26,10 @@ class ForFullCitationWithNameRefYearPageTest < ActiveSupport::TestCase
       "Panicum brownei Hughes in Hughes, D.K. (1923), \
       The genus Panicum of the Flora Australiensis. Bulletin of \
       Miscellaneous Information 1923(9):1923 [305-332]",
-      names(:a_species).id
+      names(:a_species).id,
     )
     assert typeahead.results.instance_of?(Array), "Results should be an array."
     assert typeahead.results.empty?,
-           "No results expected but also no exception should be thrown."
+      "No results expected but also no exception should be thrown."
   end
 end

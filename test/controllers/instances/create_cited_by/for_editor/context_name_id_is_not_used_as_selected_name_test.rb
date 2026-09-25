@@ -44,26 +44,35 @@ class InstancesCreateCitedByContextNameIdIgnoredTest < ActionController::TestCas
   test "created instance uses the selected name_id, not context_name_id" do
     context_name = @cited_by.name
 
-    assert_not_equal @selected_name.id, context_name.id,
-                      "Fixture sanity check: selected name and context name must differ"
+    assert_not_equal @selected_name.id,
+      context_name.id,
+      "Fixture sanity check: selected name and context name must differ"
 
     assert_difference("Instance.count") do
-      post(:create_cited_by,
-           params: { instance: { "name_id" => @selected_name.id,
-                                 "context_name_id" => context_name.id,
-                                 "name_typeahead" => "",
-                                 "page" => "",
-                                 "reference_id" => @cited_by.reference.id,
-                                 "cited_by_id" => @cited_by.id,
-                                 "cites_id" => "",
-                                 "instance_type_id" => instance_types(:common_name) } },
-           session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] })
+      post(
+        :create_cited_by,
+        params: {
+          instance: {
+            "name_id" => @selected_name.id,
+            "context_name_id" => context_name.id,
+            "name_typeahead" => "",
+            "page" => "",
+            "reference_id" => @cited_by.reference.id,
+            "cited_by_id" => @cited_by.id,
+            "cites_id" => "",
+            "instance_type_id" => instance_types(:common_name),
+          },
+        },
+        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] },
+      )
     end
 
     created = assigns(:instance)
-    assert_equal @selected_name.id, created.name_id,
-                 "Should use the selected name, not the context/self name"
-    assert_not_equal context_name.id, created.name_id,
-                      "Must not silently fall back to citing the name from itself"
+    assert_equal @selected_name.id,
+      created.name_id,
+      "Should use the selected name, not the context/self name"
+    assert_not_equal context_name.id,
+      created.name_id,
+      "Must not silently fall back to citing the name from itself"
   end
 end

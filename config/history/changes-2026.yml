@@ -1,4 +1,8 @@
 - :date: 25-September-2026
+  :jira_id: '5947'
+  :description: |-
+    Code cleanup using rubocop software
+- :date: 25-September-2026
   :jira_id: '5940'
   :description: |-
     Audit display update in profile item details tab

@@ -26,13 +26,22 @@ class HybridParentForUnrankedTest < ActiveSupport::TestCase
     suggestions = Name::AsTypeahead.hybrid_parent_suggestions(
       "%",
       avoid_id,
-      NameRank.find_by(name: "[unranked]").id
+      NameRank.find_by(name: "[unranked]").id,
     )
     hybrid_parent_suggestions_should_only_include(
       suggestions,
       "[unranked]",
-      %w([unranked] Subforma Forma Subvarietas Varietas Nothovarietas \
-         Subspecies Species)
+      [
+        "[unranked]",
+        "Subforma",
+        "Forma",
+        "Subvarietas",
+        "Varietas",
+        "Nothovarietas",
+        "\n",
+        "Subspecies",
+        "Species"
+      ],
     )
   end
 end

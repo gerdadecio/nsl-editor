@@ -28,7 +28,7 @@ class NameAsCopierMakeACopySimpleTest < ActiveSupport::TestCase
     @dummy_username = "fred"
     @copied_name = @master_name.copy_with_username(
       @dummy_name_element,
-      @dummy_username
+      @dummy_username,
     )
     @after = Name.count
   end
@@ -56,9 +56,11 @@ class NameAsCopierMakeACopySimpleTest < ActiveSupport::TestCase
   end
 
   def headers
-    { "Accept" => "text/json",
+    {
+      "Accept" => "text/json",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-      "User-Agent" => /rest-client.*ruby.*/ }
+      "User-Agent" => /rest-client.*ruby.*/,
+    }
   end
 
   test "copy one name" do
@@ -71,44 +73,44 @@ class NameAsCopierMakeACopySimpleTest < ActiveSupport::TestCase
   end
 
   def test1
-    assert_equal @before + 1, @after, "There should be one extra name."
-    assert_equal @master_name.name_type_id, @copied_name.name_type_id
-    assert_equal @master_name.name_rank_id, @copied_name.name_rank_id
-    assert_equal @master_name.name_status_id, @copied_name.name_status_id
-    assert_equal @master_name.namespace_id, @copied_name.namespace_id
+    assert_equal(@before + 1, @after, "There should be one extra name.")
+    assert_equal(@master_name.name_type_id, @copied_name.name_type_id)
+    assert_equal(@master_name.name_rank_id, @copied_name.name_rank_id)
+    assert_equal(@master_name.name_status_id, @copied_name.name_status_id)
+    assert_equal(@master_name.namespace_id, @copied_name.namespace_id)
   end
 
   def test2
-    assert_nil @master_name.author_id
-    assert_nil @copied_name.author_id
-    assert_nil @master_name.base_author_id
-    assert_nil @copied_name.base_author_id
-    assert_nil @master_name.ex_author_id
-    assert_nil @copied_name.ex_author_id
+    assert_nil(@master_name.author_id)
+    assert_nil(@copied_name.author_id)
+    assert_nil(@master_name.base_author_id)
+    assert_nil(@copied_name.base_author_id)
+    assert_nil(@master_name.ex_author_id)
+    assert_nil(@copied_name.ex_author_id)
   end
 
   def test3
-    assert_nil @master_name.ex_base_author_id
-    assert_nil @copied_name.ex_base_author_id
-    assert_nil @master_name.sanctioning_author_id
-    assert_nil @copied_name.sanctioning_author_id
+    assert_nil(@master_name.ex_base_author_id)
+    assert_nil(@copied_name.ex_base_author_id)
+    assert_nil(@master_name.sanctioning_author_id)
+    assert_nil(@copied_name.sanctioning_author_id)
   end
 
   def test4
-    assert_equal @master_name.orth_var, @copied_name.orth_var
-    assert_equal @master_name.parent_id, @copied_name.parent_id
-    assert_nil @master_name.second_parent_id
+    assert_equal(@master_name.orth_var, @copied_name.orth_var)
+    assert_equal(@master_name.parent_id, @copied_name.parent_id)
+    assert_nil(@master_name.second_parent_id)
   end
 
   def test5
-    assert_nil @copied_name.second_parent_id
-    assert_nil @master_name.verbatim_rank
-    assert_nil @copied_name.verbatim_rank
-    assert_match @dummy_name_element, @copied_name.name_element
+    assert_nil(@copied_name.second_parent_id)
+    assert_nil(@master_name.verbatim_rank)
+    assert_nil(@copied_name.verbatim_rank)
+    assert_match(@dummy_name_element, @copied_name.name_element)
   end
 
   def test6
-    assert_equal @dummy_username, @copied_name.created_by
-    assert_equal @dummy_username, @copied_name.updated_by
+    assert_equal(@dummy_username, @copied_name.created_by)
+    assert_equal(@dummy_username, @copied_name.updated_by)
   end
 end

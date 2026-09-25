@@ -26,7 +26,7 @@ class Name::ValidatableTest < ActiveSupport::TestCase
   test "a root name's name_path may not have a leading slash" do
     name = names(:the_regnum)
     assert_nil name.parent, "fixture should have no parent"
-    assert name.valid?, "Name should be valid. Errs: #{name.errors.full_messages.join('; ')}"
+    assert name.valid?, "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
 
     name.name_path = "/Plantae"
 
@@ -38,7 +38,7 @@ class Name::ValidatableTest < ActiveSupport::TestCase
     name = names(:the_regnum)
     name.name_path = "Plantae"
 
-    assert name.valid?, "Name should be valid. Errs: #{name.errors.full_messages.join('; ')}"
+    assert name.valid?, "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
   end
 
   test "a blank name_path on a root name does not raise, though it is invalid for a different reason" do
@@ -46,7 +46,7 @@ class Name::ValidatableTest < ActiveSupport::TestCase
     name.name_path = ""
 
     assert_not name.valid?
-    refute_includes name.errors[:name_path], "should have no leading slash because no parent"
+    assert_not_includes name.errors[:name_path], "should have no leading slash because no parent"
     assert_includes name.errors[:name_path], "can't be blank"
   end
 
@@ -62,6 +62,6 @@ class Name::ValidatableTest < ActiveSupport::TestCase
     assert name.parent.present?, "fixture should have a parent"
     name.name_path = "/Plantae/Magnoliophyta"
 
-    assert name.valid?, "Name should be valid. Errs: #{name.errors.full_messages.join('; ')}"
+    assert name.valid?, "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
   end
 end

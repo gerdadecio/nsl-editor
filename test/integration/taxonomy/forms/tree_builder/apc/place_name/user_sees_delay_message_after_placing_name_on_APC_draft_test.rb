@@ -37,55 +37,65 @@ class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest <
   def setup
     # First call: look up the instance's preferred link, needed to build the
     # second call's payload.
-    stub_request(:get, %r{http:..localhost:90...*broker.preferredLink.idNumber=12345.nameSpace=anamespace.objectType=instance}).
-      with(
+    stub_request(:get, /http:..localhost:90...*broker.preferredLink.idNumber=12345.nameSpace=anamespace.objectType=instance/)
+      .with(
         headers: {
-          'Accept'=>/json/,
-          'Accept-Encoding'=>/.*/,
-          'Content-Type'=>/json/,
-          'Host'=>/localhost/,
-          'User-Agent'=>/ruby/
-        }).
-      to_return(status: 200, body: { link: "http://localhost:9091/nsl/instance/apni/12345" }.to_json, headers: {})
+          "Accept" => /json/,
+          "Accept-Encoding" => /.*/,
+          "Content-Type" => /json/,
+          "Host" => /localhost/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200, body: { link: "http://localhost:9091/nsl/instance/apni/12345" }.to_json, headers: {})
 
     # Second call: the actual placeElement request, using the link from the first call.
-    stub_request(:put, %r{http:..localhost:909..nsl.services.api.treeElement.placeElement.apiKey=.*.as=apc-tax-builder}).
-      with(
+    stub_request(:put, /http:..localhost:909..nsl.services.api.treeElement.placeElement.apiKey=.*.as=apc-tax-builder/)
+      .with(
         headers: {
-          'Accept'=>/json/,
-          'Accept-Encoding'=>/.*/,
-          'Content-Type'=>/json/,
-          'Host'=>/localhost/,
-          'User-Agent'=>/ruby/
-        }).
-      to_return(status: 200,
-                body: { ok: true, payload: { message: "Placed on the draft" } }.to_json,
-                headers: {})
+          "Accept" => /json/,
+          "Accept-Encoding" => /.*/,
+          "Content-Type" => /json/,
+          "Host" => /localhost/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200,
+        body: { ok: true, payload: { message: "Placed on the draft" } }.to_json,
+        headers: {})
   end
 
   test "APC tree builder user is told a placement may be delayed" do
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(:place_name,
-         params: {"place_name"=>{"instance_id"=>12345,
-                                 "comment"=>"blah",
-                                 "distribution"=>["NSW"],
-                                 "parent_name_typeahead_string"=>"Angophora bakeri E.C.Hall",
-                                 "parent_element_link"=>tve.element_link,
-                                 "version_id"=>apc_draft.id,
-                                 "place"=>""},
-                  "id" => tve.id
-                 },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: apc_draft,
-                    groups: ["login"]})
-    assert_response :success, 'APC tree builder should be able to place a name on APC draft'
+    post(
+      :place_name,
+      params: {
+        "place_name" => {
+          "instance_id" => 12345,
+          "comment" => "blah",
+          "distribution" => ["NSW"],
+          "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
+          "parent_element_link" => tve.element_link,
+          "version_id" => apc_draft.id,
+          "place" => "",
+        },
+        "id" => tve.id,
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: apc_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :success, "APC tree builder should be able to place a name on APC draft"
     assert_template "place_name"
-    assert_includes @response.body, "Placed on the draft",
-                    'Placing should report what the services said'
+    assert_includes @response.body,
+      "Placed on the draft",
+      "Placing should report what the services said"
   end
 end

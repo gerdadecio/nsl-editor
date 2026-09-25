@@ -34,13 +34,17 @@ class SearchControllerQueryTargetPreservedWithoutOriginalTest < ActionController
   test "an error during a non-'Names plus instances' search preserves the actual query target" do
     SearchController.stub_any_instance(
       :run_local_search,
-      -> { raise StandardError, "boom" }
+      -> { raise StandardError, "boom" },
     ) do
-      get(:search,
-          params: { query_target: "References", query_string: "linnaeus" },
-          session: { username: "fred",
-                     user_full_name: "Fred Jones",
-                     groups: [] })
+      get(
+        :search,
+        params: { query_target: "References", query_string: "linnaeus" },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: [],
+        },
+      )
     end
 
     assert_response :success

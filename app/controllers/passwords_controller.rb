@@ -22,18 +22,18 @@ class PasswordsController < ApplicationController
 
   def edit
     if session[:generic_active_directory_user]
-      render :edit_error
+      render(:edit_error)
     else
       edit_inner
     end
   rescue StandardError => e
     logger.error("Password change error: #{e}")
-    render :edit_error
+    render(:edit_error)
   end
 
   def update
     if session[:generic_active_directory_user]
-      render :edit_error
+      render(:edit_error)
     else
       update_inner
     end
@@ -47,7 +47,7 @@ class PasswordsController < ApplicationController
 
   def edit_inner
     @password = Password.new
-    redirect_to action: :show_password_form
+    redirect_to(action: :show_password_form)
   end
 
   def update_inner
@@ -58,12 +58,12 @@ class PasswordsController < ApplicationController
     @password.username = @current_user.username
     @password.user_cn = session[:user_cn]
     if @password.save!
-      redirect_to :password_changed
+      redirect_to(:password_changed)
     else
-      render :show_password_form, status: :unprocessable_content
+      render(:show_password_form, status: :unprocessable_content)
     end
   rescue StandardError => e
     Rails.logger.error(e.to_s)
-    render :show_password_form, status: :unprocessable_content
+    render(:show_password_form, status: :unprocessable_content)
   end
 end

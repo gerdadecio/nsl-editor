@@ -28,14 +28,18 @@ class InstEditTabForEditWithTreeBuilderAndDraftTest < ActionController::TestCase
 
   test "should include as a draft checkbox for edit" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @triodia_in_brassard.id, tab: "tab_edit" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   draft: @draft_tree_version,
-                   groups: ["edit", "treebuilder"] })
+    get(
+      :show,
+      params: { id: @triodia_in_brassard.id, tab: "tab_edit" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        draft: @draft_tree_version,
+        groups: ["edit", "treebuilder"],
+      },
+    )
     assert_response :success
-    assert_match 'on page', @response.body, "Missing: 'on page'"
-    assert_match 'as a draft', @response.body, "Missing: 'as a draft'"
+    assert_match "on page", @response.body, "Missing: 'on page'"
+    assert_match "as a draft", @response.body, "Missing: 'as a draft'"
   end
 end

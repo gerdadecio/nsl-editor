@@ -23,9 +23,9 @@ class InstanceRouteToAPCTabTest < ActionController::TestCase
   tests InstancesController
   test "should route to instance APC tab" do
     assert_routing "/instances/1/tab/apc",
-                   controller: "instances",
-                   action: "tab",
-                   id: "1",
-                   tab: "apc"
+      controller: "instances",
+      action: "tab",
+      id: "1",
+      tab: "apc"
   end
 end

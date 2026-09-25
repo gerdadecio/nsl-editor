@@ -21,13 +21,13 @@ class ProfileTextsController < ApplicationController
 
   skip_before_action :authorise
 
-  before_action :set_profile_text, :find_profile_item, only: %i[update]
+  before_action :set_profile_text, :find_profile_item, only: [:update]
   before_action :authorise_user!, except: [:create]
 
   # POST /profile_texts
   # POST /profile_texts.json
   def create
-    raise CanCan::AccessDenied.new("Not authorized!", :create, Profile::ProfileText) unless can? :create, Profile::ProfileText
+    raise CanCan::AccessDenied.new("Not authorized!", :create, Profile::ProfileText) unless can?(:create, Profile::ProfileText)
 
     @profile_item = Profile::ProfileItem.find_or_create_by(permitted_profile_item_params)
 
@@ -42,18 +42,18 @@ class ProfileTextsController < ApplicationController
       value: markdown_to_html(permitted_profile_text_params[:value_md].to_s),
       value_md: permitted_profile_text_params[:value_md],
       created_by: current_user.username,
-      updated_by: current_user.username
+      updated_by: current_user.username,
     )
 
     if @profile_text.persisted?
       raise("Profile text already exists")
     elsif @profile_text.save! && @profile_item.save!
       @message = "Saved"
-      render :create
+      render(:create)
     end
   rescue StandardError => e
     @message = e.to_s
-    render "create_failed", status: :unprocessable_content
+    render("create_failed", status: :unprocessable_content)
   end
 
   # PATCH/PUT /profile_texts/1
@@ -66,7 +66,7 @@ class ProfileTextsController < ApplicationController
   private
 
   def authorise_user!
-    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item) unless can? :manage, @profile_item
+    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item) unless can?(:manage, @profile_item)
   end
 
   def permitted_profile_text_params
@@ -92,15 +92,15 @@ class ProfileTextsController < ApplicationController
   def really_update
     if @profile_text.update(permitted_profile_text_params.merge(
       value: markdown_to_html(permitted_profile_text_params[:value_md].to_s),
-      updated_by: current_user.username
+      updated_by: current_user.username,
     ))
       @message = "Updated"
-      render :update
+      render(:update)
     else
       raise("Not updated")
     end
   rescue StandardError => e
     @message = e.to_s
-    render :update_failed, status: :unprocessable_content
+    render(:update_failed, status: :unprocessable_content)
   end
 end

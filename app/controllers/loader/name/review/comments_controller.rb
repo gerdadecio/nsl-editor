@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Loader::Name::Review::CommentsController < ApplicationController
-  before_action :find_comment, only: %i[edit cancel_edit destroy dialog_to_delete cancel_dialog_to_delete]
+  before_action :find_comment, only: [:edit, :cancel_edit, :destroy, :dialog_to_delete, :cancel_dialog_to_delete]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
@@ -25,71 +25,75 @@ class Loader::Name::Review::CommentsController < ApplicationController
     set_tab
     set_tab_index
     @take_focus = params[:take_focus] == "true"
-    render "show", layout: false
+    render("show", layout: false)
   end
-  alias tab show
+  alias_method :tab, :show
 
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
     respond_to do |format|
-      format.html { redirect_to new_search_path }
+      format.html { redirect_to(new_search_path) }
       format.js {}
     end
+  end
+
+  def edit
+    @offer_context = params[:offer_context] == "offer_context"
+    render(:edit, layout: false)
   end
 
   def create
     @review_comment = Loader::Name::Review::Comment.new(review_comment_params)
     @review_comment.save_with_username(current_user.username)
-    render "create"
+    render("create")
   rescue => e
     logger.error("Loader::Name::Review::Comment.create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_content
+    render("create_error", status: :unprocessable_content)
   end
 
   def update
     @review_comment = Loader::Name::Review::Comment.find(review_comment_params[:id])
 
     unless @review_comment.batch_review_period.active? || @current_user.batch_loader?
-      raise 'Update not permitted because Review is not active'
+      raise "Update not permitted because Review is not active"
     end
-    raise 'You cannot update a comment that is not your own' unless @current_user.username == @review_comment.reviewer.user.user_name
-    @message = @review_comment.update_if_changed(review_comment_params,
-                                                 current_user.username)
-    render "update"
+    raise "You cannot update a comment that is not your own" unless @current_user.username == @review_comment.reviewer.user.user_name
+
+    @message = @review_comment.update_if_changed(
+      review_comment_params,
+      current_user.username,
+    )
+    render("update")
   rescue StandardError => e
     logger.error("Loader::Name::Review::Comment#update rescuing #{e}")
     @message = e.to_s
-    render "update_error", status: :unprocessable_content
-  end
-
-  def edit
-    @offer_context = params[:offer_context] == 'offer_context'
-    render :edit, layout: false
+    render("update_error", status: :unprocessable_content)
   end
 
   def cancel_edit
-    render :cancel_edit, layout: false
+    render(:cancel_edit, layout: false)
   end
 
   def dialog_to_delete
-    render :dialog_to_delete, layout: false
+    render(:dialog_to_delete, layout: false)
   end
 
   def cancel_dialog_to_delete
-    render :cancel_dialog_to_delete, layout: false
+    render(:cancel_dialog_to_delete, layout: false)
   end
 
   def destroy
     unless @review_comment.batch_review_period.active? || @current_user.batch_loader?
-      raise 'Delete is not permitted because Review is not active'
+      raise "Delete is not permitted because Review is not active"
     end
-    raise 'You cannot delete a comment that is not your own' unless @current_user.username == @review_comment.reviewer.user.user_name
+    raise "You cannot delete a comment that is not your own" unless @current_user.username == @review_comment.reviewer.user.user_name
+
     @review_comment.destroy
   rescue StandardError => e
     logger.error("Loader::Name::Review::Comment#destroy rescuing #{e}")
     @message = e.to_s
-    render "destroy_error", status: :unprocessable_content
+    render("destroy_error", status: :unprocessable_content)
   end
 
   private
@@ -102,21 +106,23 @@ class Loader::Name::Review::CommentsController < ApplicationController
   end
 
   def review_comment_params
-    params.require(:loader_name_review_comment).permit(:id,
-                                                       :loader_name_id,
-                                                       :batch_review_period_id,
-                                                       :batch_reviewer_id,
-                                                       :name_review_comment_type_id,
-                                                       :comment,
-                                                       :context)
+    params.require(:loader_name_review_comment).permit(
+      :id,
+      :loader_name_id,
+      :batch_review_period_id,
+      :batch_reviewer_id,
+      :name_review_comment_type_id,
+      :comment,
+      :context,
+    )
   end
 
   def set_tab
     @tab = if params[:tab].present? && params[:tab] != "undefined"
-             params[:tab]
-           else
-             "tab_details"
-           end
+      params[:tab]
+    else
+      "tab_details"
+    end
   end
 
   def set_tab_index

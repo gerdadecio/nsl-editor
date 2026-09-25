@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Search::QueryDefaults
   extend ActiveSupport::Concern
 
@@ -6,11 +8,11 @@ module Search::QueryDefaults
   end
 
   def apply_default_loader_batch?
-    return false unless params[:query_target] =~ /loader.name/i
+    return false unless /loader.name/i.match?(params[:query_target])
     # The "Loader names (any batch)" target is explicitly asking to search
     # across every batch - it must never have a default batch imposed on
     # it, regardless of what's set in the session. See NSL-5634 follow-up.
-    return false if params[:query_target] =~ /any.?batch/i
+    return false if /any.?batch/i.match?(params[:query_target])
 
     if session[:default_loader_batch_name].nil?
       remove_old_defaults
@@ -21,7 +23,7 @@ module Search::QueryDefaults
     true
   end
 
-  # Note: default batch is deliberately case-sensitive, because it is added by the Editor,
+  # NOTE: default batch is deliberately case-sensitive, because it is added by the Editor,
   # not by the user (typically), and its processing is different and quite complex.
   # Also, the regex below for default-batch will vary if there is no default batch in the session.
   # So far that doesn't seem to be a problem.
@@ -42,7 +44,7 @@ module Search::QueryDefaults
   def value_not_needed?
     id_regex = /\bid:/
     id_with_syn_regex = /\bid-with-syn:/
-    params[:query_string].gsub(/-/,'') =~ id_regex ||
+    params[:query_string].delete("-") =~ id_regex ||
       params[:query_string] =~ id_with_syn_regex
   end
 
@@ -59,12 +61,11 @@ module Search::QueryDefaults
   def remove_old_default_embedded
     # Define regex to capture "default-batch: <value>" embedded within the query string
     regex = /default-batch:.*(?= [A-Za-z-]*:)/
-    params[:query_string].sub!(regex, '') if params[:query_string].match?(regex)
+    params[:query_string].sub!(regex, "") if params[:query_string].match?(regex)
   end
-
 
   def remove_old_default_at_end_of_string
     regex = /default-batch:\s[^:]{1,500}\s*$/
-    params[:query_string].sub!(regex, '') if params[:query_string].match?(regex)
+    params[:query_string].sub!(regex, "") if params[:query_string].match?(regex)
   end
 end

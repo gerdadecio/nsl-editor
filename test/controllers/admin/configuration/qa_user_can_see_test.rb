@@ -23,12 +23,16 @@ class AdminControllerQAUserCanSeeConfigTest < ActionController::TestCase
   tests AdminController
 
   test "qa user should get configuration" do
-    get(:index,
-        params: {},
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["QA"] },
-        xhr: true)
+    get(
+      :index,
+      params: {},
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["QA"],
+      },
+      xhr: true,
+    )
     assert_response :success, "QA user should see configuration"
   end
 end

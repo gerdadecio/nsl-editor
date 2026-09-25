@@ -35,7 +35,7 @@ class SearchOnNameSoftDeletedSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: query_string,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
@@ -44,32 +44,32 @@ class SearchOnNameSoftDeletedSimpleTest < ActiveSupport::TestCase
 
   test "is-soft-deleted: includes a soft deleted name" do
     assert_includes search_ids("is-soft-deleted: #{DELETED}"),
-                    names(:a_soft_deleted_name).id,
-                    "Expected the soft deleted name in the results"
+      names(:a_soft_deleted_name).id,
+      "Expected the soft deleted name in the results"
   end
 
   test "is-soft-deleted: excludes a name that is not soft deleted" do
     assert_includes search_ids(LIVE),
-                    names(:the_regnum).id,
-                    "Sanity check: the live name should be findable by name"
-    refute_includes search_ids("is-soft-deleted: #{LIVE}"),
-                    names(:the_regnum).id,
-                    "Expected a live name to be excluded from the results"
+      names(:the_regnum).id,
+      "Sanity check: the live name should be findable by name"
+    assert_not_includes search_ids("is-soft-deleted: #{LIVE}"),
+      names(:the_regnum).id,
+      "Expected a live name to be excluded from the results"
   end
 
   test "is-not-soft-deleted: includes a name that is not soft deleted" do
     assert_includes search_ids("is-not-soft-deleted: #{LIVE}"),
-                    names(:the_regnum).id,
-                    "Expected a live name in the results"
+      names(:the_regnum).id,
+      "Expected a live name in the results"
   end
 
   test "is-not-soft-deleted: excludes a soft deleted name" do
     assert_includes search_ids(DELETED),
-                    names(:a_soft_deleted_name).id,
-                    "Sanity check: the soft deleted name should be findable by name"
-    refute_includes search_ids("is-not-soft-deleted: #{DELETED}"),
-                    names(:a_soft_deleted_name).id,
-                    "Expected the soft deleted name to be excluded"
+      names(:a_soft_deleted_name).id,
+      "Sanity check: the soft deleted name should be findable by name"
+    assert_not_includes search_ids("is-not-soft-deleted: #{DELETED}"),
+      names(:a_soft_deleted_name).id,
+      "Expected the soft deleted name to be excluded"
   end
 
   test "the two directives return disjoint result sets" do
@@ -79,6 +79,6 @@ class SearchOnNameSoftDeletedSimpleTest < ActiveSupport::TestCase
     deleted_ids = search_ids("is-soft-deleted: #{all}")
     live_ids = search_ids("is-not-soft-deleted: #{all}")
     assert_empty deleted_ids & live_ids,
-                 "A name should never be both soft deleted and not soft deleted"
+      "A name should never be both soft deleted and not soft deleted"
   end
 end

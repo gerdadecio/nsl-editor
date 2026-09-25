@@ -26,17 +26,22 @@ class TaxoInstanceTreeBuilderAPCCannotSeeFOATreeTab < ActionController::TestCase
     user = users(:apc_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
     instance = instances(:triodia_in_brassard)
-    get('tab',
-        params: {id: "#{instance.id}", tab: 'tab_classification', "row-type": 'instance_record'},
-        format: :js,
-        xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"],
-                   draft: foa_draft})
+    get(
+      "tab",
+      params: { id: "#{instance.id}", tab: "tab_classification", "row-type": "instance_record" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: foa_draft,
+      },
+    )
     assert_response :success, "Tree tab request should be successful"
-    assert_match 'You do not have permission to place names in this draft taxonomy.',
-                    response.body, "Tab should inform user they lack permission"
-    assert_no_match '<form', response.body, 'Tab should not contain a form'
+    assert_match "You do not have permission to place names in this draft taxonomy.",
+      response.body,
+      "Tab should inform user they lack permission"
+    assert_no_match "<form", response.body, "Tab should not contain a form"
   end
 end

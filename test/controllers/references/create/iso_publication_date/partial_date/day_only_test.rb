@@ -25,21 +25,31 @@ class ReferencesesCreateDayOnlyTest < ActionController::TestCase
   test "create reference day only" do
     @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Reference.count") do
-      post(:create,
-           params: { reference: { "ref_type_id" => ref_types(:book),
-                                  "title" => "Some book",
-                                  "author_id" => authors(:dash),
-                                  "author_typeahead" => "-",
-                                  "published" => true,
-                                  "parent_typeahead" => @parent_typeahead,
-                                  "ref_author_role_id" => ref_author_roles(:author),
-                                  "day" => "03" } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
+      post(
+        :create,
+        params: {
+          reference: {
+            "ref_type_id" => ref_types(:book),
+            "title" => "Some book",
+            "author_id" => authors(:dash),
+            "author_typeahead" => "-",
+            "published" => true,
+            "parent_typeahead" => @parent_typeahead,
+            "ref_author_role_id" => ref_author_roles(:author),
+            "day" => "03",
+          },
+        },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["edit"],
+        },
+      )
     end
-    assert_match(/Error: Day entered but no month/,
-                 response.body.to_s,
-                 "Missing or incorrect error message")
+    assert_match(
+      /Error: Day entered but no month/,
+      response.body.to_s,
+      "Missing or incorrect error message",
+    )
   end
 end

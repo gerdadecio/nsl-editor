@@ -35,6 +35,7 @@ class Loader::Name < ApplicationRecord
   include Voting
   include ReviewCommentContext
   include ForceDelete
+
   attr_accessor :add_sibling_synonyms
   attr_accessor :add_sourced_synonyms
 
@@ -43,7 +44,7 @@ class Loader::Name < ApplicationRecord
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-   def self.for_batch(batch_id)
+  def self.for_batch(batch_id)
     if batch_id.nil? || batch_id == -1
       where("1=1")
     else
@@ -51,7 +52,7 @@ class Loader::Name < ApplicationRecord
     end
   end
 
-  scope :avoids_id, ->(avoid_id) { where("loader_name.id != ?", avoid_id) }
+  scope :avoids_id, ->(avoid_id) { where.not(loader_name: { id: avoid_id }) }
 
   validates :record_type, presence: true
   validate :validate_family_record
@@ -70,14 +71,14 @@ class Loader::Name < ApplicationRecord
   alias_method :review_comments, :name_review_comments
 
   has_many :children,
-           class_name: "Loader::Name",
-           foreign_key: "parent_id",
-           dependent: :restrict_with_exception
+    class_name: "Loader::Name",
+    foreign_key: "parent_id",
+    dependent: :restrict_with_exception
 
   belongs_to :parent,
-             class_name: "Loader::Name",
-             foreign_key: "parent_id",
-             optional: true
+    class_name: "Loader::Name",
+    foreign_key: "parent_id",
+    optional: true
 
   has_many :loader_name_matches, class_name: "Loader::Name::Match", foreign_key: "loader_name_id"
   alias_method :preferred_matches, :loader_name_matches
@@ -98,13 +99,13 @@ class Loader::Name < ApplicationRecord
       child.loader_batch_id = loader_batch_id
       # Have to set sort_key here - the default callback to set it fails
       # because at that point in processing the parent's sort_key is empty
-      child.sort_key = if child.record_type == 'synonym'
-                         synonym_sort_key(sort_key, child.synonym_type)
-                       elsif child.record_type = 'misapplied'
-                         misapp_sort_key(sort_key)
-                       else
-                         "unknown record type: #{child.record_type}"
-                       end
+      child.sort_key = if child.record_type == "synonym"
+        synonym_sort_key(sort_key, child.synonym_type)
+      elsif child.record_type = "misapplied"
+        misapp_sort_key(sort_key)
+      else
+        "unknown record type: #{child.record_type}"
+      end
       child.save!
     end
   end
@@ -118,7 +119,7 @@ class Loader::Name < ApplicationRecord
   end
 
   def has_parent?
-    !parent_id.blank?
+    parent_id.present?
   end
 
   def update_if_changed(params, username)
@@ -159,7 +160,7 @@ class Loader::Name < ApplicationRecord
   end
 
   def child?
-    !parent_id.blank?
+    parent_id.present?
   end
 
   def self.record_to_flush_results
@@ -200,29 +201,37 @@ class Loader::Name < ApplicationRecord
   end
 
   def names_simple_or_full_name_matching
-    ::Name.where(["simple_name = ? or full_name = ?",
-                  simple_name, simple_name])
-          .where(duplicate_of_id: nil)
-          .joins(:name_type).where(name_type: { scientific: true })
-          .order("simple_name, name.id")
+    ::Name.where([
+      "simple_name = ? or full_name = ?",
+      simple_name,
+      simple_name
+    ])
+      .where(duplicate_of_id: nil)
+      .joins(:name_type).where(name_type: { scientific: true })
+      .order("simple_name, name.id")
   end
 
   def names_simple_or_full_name_matching_allow_for_ms
-    ::Name.where(["simple_name = ? or full_name = ? or simple_name = ? or full_name = ?",
-                  simple_name, simple_name, simple_name + " MS", simple_name + " MS"])
-          .where(duplicate_of_id: nil)
-          .joins(:name_type).where(name_type: { scientific: true })
-          .order("simple_name, name.id")
+    ::Name.where([
+      "simple_name = ? or full_name = ? or simple_name = ? or full_name = ?",
+      simple_name,
+      simple_name,
+      simple_name + " MS",
+      simple_name + " MS"
+    ])
+      .where(duplicate_of_id: nil)
+      .joins(:name_type).where(name_type: { scientific: true })
+      .order("simple_name, name.id")
   end
 
   # Tried this - much slower, not sure why given Name is set up for lower(f_unaccent()) searches
   def names_unaccent_simple_name_matching
     ::Name.where(
-      ["lower(f_unaccent(simple_name)) = lower(f_unaccent(?))", simple_name]
+      ["lower(f_unaccent(simple_name)) = lower(f_unaccent(?))", simple_name],
     )
-          .where(duplicate_of_id: nil)
-          .joins(:name_type).where(name_type: { scientific: true })
-          .order("simple_name, name.id")
+      .where(duplicate_of_id: nil)
+      .joins(:name_type).where(name_type: { scientific: true })
+      .order("simple_name, name.id")
   end
 
   def matches(type: :strict)
@@ -235,7 +244,7 @@ class Loader::Name < ApplicationRecord
     elsif type == :phrase
       matches_tweaked_for_phrase_name
     else
-      throw "Unknown type of matches requested: #{type}'"
+      throw("Unknown type of matches requested: #{type}'")
     end
   end
 
@@ -249,8 +258,8 @@ class Loader::Name < ApplicationRecord
   end
 
   def partly?
-    publ_partly == 'p.p.' ||
-      partly == 'p.p.' ||
+    publ_partly == "p.p." ||
+      partly == "p.p." ||
       synonym_type&.match(/pro parte/)
   end
 
@@ -275,10 +284,10 @@ class Loader::Name < ApplicationRecord
   # Also, no requirement for scientific name type
   def matches_tweaked_for_phrase_name
     ::Name.where([
-                   "regexp_replace(simple_name,'[)(]','','g') = regexp_replace(regexp_replace(?,' [A-z][A-z]* Herbarium','','i'),'[)(]','','g')", simple_name
-                 ])
-          .where(duplicate_of_id: nil)
-          .order("simple_name, name.id")
+      "regexp_replace(simple_name,'[)(]','','g') = regexp_replace(regexp_replace(?,' [A-z][A-z]* Herbarium','','i'),'[)(]','','g')", simple_name
+    ])
+      .where(duplicate_of_id: nil)
+      .order("simple_name, name.id")
   end
 
   def likely_cultivar?
@@ -288,8 +297,8 @@ class Loader::Name < ApplicationRecord
   # No requirement for scientific name type
   def matches_tweaked_for_cultivar
     ::Name.where(simple_name: simple_name)
-          .where(duplicate_of_id: nil)
-          .order("simple_name, name.id")
+      .where(duplicate_of_id: nil)
+      .order("simple_name, name.id")
   end
 
   def synonym_without_synonym_type?
@@ -301,8 +310,8 @@ class Loader::Name < ApplicationRecord
   # t type
   # i id
   def riti
-    return nil if accepted?
-    return nil if excluded?
+    return if accepted?
+    return if excluded?
 
     return InstanceType.find_by_name(synonym_type || "misapplied").id if misapplied?
 
@@ -348,9 +357,16 @@ class Loader::Name < ApplicationRecord
 
   # This is different to the default name search
   def self.bulk_operations_search(name_string)
-    ns = name_string.downcase.gsub("*", "%")
-    Loader::Name.where([Constants::BULK_OPERATIONS_WHERE_FRAG,
-                        ns, ns, ns, ns, ns, ns])
+    ns = name_string.downcase.tr("*", "%")
+    Loader::Name.where([
+      Constants::BULK_OPERATIONS_WHERE_FRAG,
+      ns,
+      ns,
+      ns,
+      ns,
+      ns,
+      ns
+    ])
   end
 
   def self.simple_name_search(name_string)
@@ -359,28 +375,36 @@ class Loader::Name < ApplicationRecord
 
   # This is used in bulk jobs
   def self.family_string_search(family_string)
-    fam = family_string.downcase.gsub("*", "%")
+    fam = family_string.downcase.tr("*", "%")
     Loader::Name.where(["lower(family) like lower(?) ", fam])
   end
 
   # This is used in bulk jobs
   def self.acc_string_search(acc_string)
-    name = acc_string.downcase.gsub("*", "%")
-    Loader::Name.where(["(record_type = 'accepted' and lower(simple_name) like lower(?))  or
+    name = acc_string.downcase.tr("*", "%")
+    Loader::Name.where([
+      "(record_type = 'accepted' and lower(simple_name) like lower(?))  or
                         (exists (select null from loader_name parent
                                   where parent.id = loader_name.parent_id
                                     and parent.record_type = 'accepted'
-                                    and lower(parent.simple_name) like lower(?)))", name, name])
+                                    and lower(parent.simple_name) like lower(?)))",
+      name,
+      name
+    ])
   end
 
   # This is used in bulk jobs
   def self.exc_string_search(exc_string)
-    name = exc_string.downcase.gsub("*", "%")
-    Loader::Name.where(["(record_type = 'excluded' and lower(simple_name) like lower(?))  or
+    name = exc_string.downcase.tr("*", "%")
+    Loader::Name.where([
+      "(record_type = 'excluded' and lower(simple_name) like lower(?))  or
                         (exists (select null from loader_name parent
                                   where parent.id = loader_name.parent_id
                                     and parent.record_type = 'excluded'
-                                    and lower(parent.simple_name) like lower(?)))", name, name])
+                                    and lower(parent.simple_name) like lower(?)))",
+      name,
+      name
+    ])
   end
 
   def self.accepted_or_excluded_search
@@ -393,7 +417,7 @@ class Loader::Name < ApplicationRecord
     loader_name.created_manually = true
     if loader_name.loader_batch_id.blank?
       loader_name.loader_batch_id = find(params[:parent_id])
-                                    .loader_batch_id
+        .loader_batch_id
     end
     loader_name.doubtful = false
     raise loader_name.errors.full_messages.first.to_s unless loader_name.save_with_username(username)
@@ -429,7 +453,7 @@ class Loader::Name < ApplicationRecord
   def new_synonym(base_seq: seq)
     loader_name = new_child(base_seq)
     loader_name.record_type = "synonym"
-    unless sort_key.blank?
+    if sort_key.present?
       loader_name.sort_key = sort_key + ".a-synonym." + "user-to-complete"
     end
     loader_name
@@ -438,7 +462,7 @@ class Loader::Name < ApplicationRecord
   def new_misapp(base_seq: seq)
     loader_name = new_child(base_seq)
     loader_name.record_type = "misapplied"
-    unless sort_key.blank?
+    if sort_key.present?
       loader_name.sort_key = sort_key + ".b-misapp." + "user-to-complete"
     end
     loader_name
@@ -458,9 +482,9 @@ class Loader::Name < ApplicationRecord
   end
 
   def preferred_match
-    return nil unless preferred_match?
+    return unless preferred_match?
 
-    throw "more than one preferred match" unless preferred_matches.size == 1
+    throw("more than one preferred match") unless preferred_matches.size == 1
     preferred_matches.first
   end
 
@@ -501,12 +525,13 @@ class Loader::Name < ApplicationRecord
   def validate_distribution
     return unless accepted?
 
-    dv = DistributionValidator.new(distribution,
-                                   DistRegion.all
-                                             .order(:sort_order)
-                                             .collect(&:name))
+    dv = DistributionValidator.new(
+      distribution,
+      DistRegion.all
+                .order(:sort_order)
+                .collect(&:name),
+    )
     return if dv.validate
-
 
     errors.add(:distribution, dv.error)
   end
@@ -516,6 +541,6 @@ class Loader::Name < ApplicationRecord
     return if parent.accepted?
     return if parent.excluded?
 
-    errors.add(:parent_id, 'Must be accepted or excluded')
+    errors.add(:parent_id, "Must be accepted or excluded")
   end
 end

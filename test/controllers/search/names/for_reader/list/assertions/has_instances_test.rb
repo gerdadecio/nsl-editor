@@ -23,14 +23,18 @@ class SearchNamesAsReaderListAssertionsHasInstTest < ActionController::TestCase
   tests SearchController
 
   test "reader can search for names that have instances" do
-    get(:search,
-        params: { query_target: "name", query_string: "has-instances:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "name", query_string: "has-instances:" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /[0-9][0-9] names\b/,
-                  "Should find some names"
+      /[0-9][0-9] names\b/,
+      "Should find some names"
   end
 end

@@ -27,7 +27,7 @@ require "test_helper"
 class NoDeleteReasonsPartialTest < ActionView::TestCase
   def render_reasons_for(instance)
     @instance = instance
-    render partial: "instances/widgets/no_delete_reasons"
+    render(partial: "instances/widgets/no_delete_reasons")
     rendered
   end
 
@@ -48,8 +48,8 @@ class NoDeleteReasonsPartialTest < ActionView::TestCase
     output = render_reasons_for(instance)
 
     assert_includes output,
-                    "Instance is in a DETACHED tree element record for " \
-                    "Angophora costata not attached to a tree version."
+      "Instance is in a DETACHED tree element record for " \
+        "Angophora costata not attached to a tree version."
   end
 
   test "a detached tree_element is still reported even when another tree_element already gives a normal reason" do
@@ -59,7 +59,7 @@ class NoDeleteReasonsPartialTest < ActionView::TestCase
 
     assert_includes output, "Instance is in the currently accepted APC tree"
     assert_includes output,
-                    "Instance is in a DETACHED tree element record for " \
-                    "Casuarina inophloia (detached)."
+      "Instance is in a DETACHED tree element record for " \
+        "Casuarina inophloia (detached)."
   end
 end

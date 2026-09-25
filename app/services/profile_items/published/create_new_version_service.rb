@@ -1,5 +1,6 @@
-class ProfileItems::Published::CreateNewVersionService < BaseService
+# frozen_string_literal: true
 
+class ProfileItems::Published::CreateNewVersionService < BaseService
   validate :published_profile_item
   validate :any_draft_profile_items
 
@@ -33,6 +34,7 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
 
   def published_profile_item
     return unless profile_item.is_draft
+
     errors.add(:base, "Profile item must be published before creating a new version")
   end
 
@@ -81,7 +83,7 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
     @new_profile_item.profile_text = new_profile_text
     @new_profile_item.save
 
-    return errors.merge!(@new_profile_item.errors) if @new_profile_item.errors.any?
+    errors.merge!(@new_profile_item.errors) if @new_profile_item.errors.any?
   end
 
   def copy_profile_item_annotation
@@ -95,7 +97,7 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
 
     new_profile_item_annotation.save
 
-    return errors.merge!(new_profile_item_annotation.errors) if new_profile_item_annotation.errors.any?
+    errors.merge!(new_profile_item_annotation.errors) if new_profile_item_annotation.errors.any?
   end
 
   def copy_profile_item_references
@@ -105,7 +107,7 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
       new_profile_item_reference = Profile::ProfileItemReference.new(
         profile_item_reference
           .attributes
-          .except("profile_item_id", "created_by", "updated_by", "created_at", "updated_at")
+          .except("profile_item_id", "created_by", "updated_by", "created_at", "updated_at"),
       )
       new_profile_item_reference.profile_item_id = new_profile_item.id
       new_profile_item_reference.current_user = user
@@ -122,7 +124,7 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
     service = ProfileItems::Links::UpdateService.call(
       user: user,
       profile_item: profile_item,
-      params: params
+      params: params,
     )
 
     return errors.merge!(service.errors) if service.errors.any?
@@ -130,7 +132,6 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
     @profile_item = service.profile_item
     @profile_item.is_draft = false
     @profile_item.save
-    return errors.merge!(@profile_item.errors) if @profile_item.errors.any?
+    errors.merge!(@profile_item.errors) if @profile_item.errors.any?
   end
-
 end

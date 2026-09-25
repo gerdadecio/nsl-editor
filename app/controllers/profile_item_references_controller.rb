@@ -19,7 +19,7 @@
 class ProfileItemReferencesController < ApplicationController
   skip_before_action :authorise
 
-  before_action :set_profile_item_reference, only: %i[update destroy]
+  before_action :set_profile_item_reference, only: [:update, :destroy]
 
   before_action :authorise_user!, except: [:create]
 
@@ -27,20 +27,20 @@ class ProfileItemReferencesController < ApplicationController
     @profile_item_reference = Profile::ProfileItemReference.new(
       permitted_params.merge(
         created_by: current_user.username,
-        updated_by: current_user.username
-      )
+        updated_by: current_user.username,
+      ),
     )
 
     authorise_user!
 
     if @profile_item_reference.save!
       @message = "Saved"
-      render :create
+      render(:create)
     end
 
   rescue StandardError => e
     @message = "Error creating profile item reference: #{e.message}"
-    render "create_failed", status: :unprocessable_content
+    render("create_failed", status: :unprocessable_content)
   end
 
   def update
@@ -58,13 +58,13 @@ class ProfileItemReferencesController < ApplicationController
     end
   rescue StandardError => e
     @message = "Error deleting profile item reference: #{e.message}"
-    render "destroy_failed", status: :unprocessable_content
+    render("destroy_failed", status: :unprocessable_content)
   end
 
   private
 
   def authorise_user!
-    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item_reference) unless can? :manage, @profile_item_reference
+    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item_reference) unless can?(:manage, @profile_item_reference)
   end
 
   def set_profile_item_reference
@@ -78,17 +78,17 @@ class ProfileItemReferencesController < ApplicationController
   def really_update
     if permitted_params[:annotation].blank?
       @message = "Annotation can't be blank. Use 'Delete annotation' to remove it."
-      return render :update_failed, status: :unprocessable_content
+      return render(:update_failed, status: :unprocessable_content)
     end
     if @profile_item_reference.update(permitted_params.merge(updated_by: current_user.username))
       @message = "Saved"
-      render :update
+      render(:update)
     else
       raise("Not updated")
     end
   rescue StandardError => e
     @message = e.to_s
-    render :update_failed, status: :unprocessable_content
+    render(:update_failed, status: :unprocessable_content)
   end
 
   def permitted_params

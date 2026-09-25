@@ -22,7 +22,7 @@ require "test_helper"
 class NumberDeprecatedTest < ActiveSupport::TestCase
   test "number of deprecated name types" do
     assert_equal 6,
-                 NameType.where(deprecated: true).size,
-                 "Should be only 6 deprecated name types."
+      NameType.where(deprecated: true).size,
+      "Should be only 6 deprecated name types."
   end
 end

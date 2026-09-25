@@ -27,11 +27,11 @@ class SearchOnNameReportsNameSynOfItselfSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "name-synonym-of-itself:",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert search.executed_query.results.size >= 0,
-           "Expected report name-synonym-of-itself to run:"
+      "Expected report name-synonym-of-itself to run:"
   end
 end

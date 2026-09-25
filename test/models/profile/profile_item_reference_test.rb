@@ -43,7 +43,7 @@ module Profile
     test "should not allow duplicate reference for the same profile item" do
       duplicate_profile_item_reference = Profile::ProfileItemReference.new(
         profile_item: @profile_item_reference.profile_item,
-        reference: @profile_item_reference.reference
+        reference: @profile_item_reference.reference,
       )
       assert_not duplicate_profile_item_reference.valid?
       assert_includes duplicate_profile_item_reference.errors[:base], "Only one reference per profile item is permitted"

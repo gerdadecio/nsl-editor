@@ -1,6 +1,8 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe Instance, type: :model do
+require "rails_helper"
+
+RSpec.describe(Instance, type: :model) do
   let!(:name) { create(:name) }
   let!(:instance) { create(:instance, name:) }
 
@@ -10,11 +12,11 @@ RSpec.describe Instance, type: :model do
     subject { described_class.soft_deleted }
 
     it "returns instances with a deleted_at timestamp" do
-      expect(subject).to include(soft_deleted_instance)
+      expect(subject).to(include(soft_deleted_instance))
     end
 
     it "does not return instances without a deleted_at timestamp" do
-      expect(subject).not_to include(instance)
+      expect(subject).not_to(include(instance))
     end
   end
 
@@ -32,57 +34,57 @@ RSpec.describe Instance, type: :model do
         :profile_item,
         instance: product_item_instance,
         instance_id: product_item_instance.id,
-        product_item_config: product_item_config
+        product_item_config: product_item_config,
       )
     end
 
     subject { described_class.product_item_config_id(product_item_config.id) }
 
     it "returns instances associated with the given product_item_config_id" do
-      expect(subject).to include(product_item_instance)
+      expect(subject).to(include(product_item_instance))
     end
 
     it "does not return instances associated with other product_item_config_id" do
       product_item_config2 = create(:product_item_config, profile_item_type: product_item_config.profile_item_type)
       create(:profile_item, instance: instance, product_item_config: product_item_config2)
-      expect(subject).not_to include(instance)
+      expect(subject).not_to(include(instance))
     end
 
     it "returns distinct instances" do
       create(:profile_item, instance: product_item_instance, product_item_config: product_item_config)
-      expect(subject.count).to eq(1)
+      expect(subject.count).to(eq(1))
     end
   end
 
   describe "#delete_as_user" do
-    let(:instance_type) { create(:instance_type, secondary_instance: false)}
+    let(:instance_type) { create(:instance_type, secondary_instance: false) }
     let(:instance) { create(:instance, name:, instance_type: instance_type) }
     let(:username) { "test_user" }
 
     context "when deletion is successful" do
       before do
-        allow(Instance::AsServices).to receive(:delete).with(instance.id).and_return(true)
+        allow(Instance::AsServices).to(receive(:delete).with(instance.id).and_return(true))
       end
 
       it "updates the updated_by field with the username" do
-        expect(instance).to receive(:update_attribute).with(:updated_by, username)
+        expect(instance).to(receive(:update_attribute).with(:updated_by, username))
         instance.delete_as_user(username)
       end
     end
 
     context "when an exception occurs" do
       before do
-        allow(Instance::AsServices).to receive(:delete).with(instance.id).and_raise(StandardError, "Deletion failed")
-        allow(Rails.logger).to receive(:error)
+        allow(Instance::AsServices).to(receive(:delete).with(instance.id).and_raise(StandardError, "Deletion failed"))
+        allow(Rails.logger).to(receive(:error))
       end
 
       it "logs the exception" do
-        expect(Rails.logger).to receive(:error).with(/delete_as_user exception: Deletion failed/)
-        expect { instance.delete_as_user(username) }.to raise_error(StandardError, "Deletion failed")
+        expect(Rails.logger).to(receive(:error).with(/delete_as_user exception: Deletion failed/))
+        expect { instance.delete_as_user(username) }.to(raise_error(StandardError, "Deletion failed"))
       end
 
       it "raises the exception" do
-        expect { instance.delete_as_user(username) }.to raise_error(StandardError, "Deletion failed")
+        expect { instance.delete_as_user(username) }.to(raise_error(StandardError, "Deletion failed"))
       end
     end
   end
@@ -91,16 +93,16 @@ RSpec.describe Instance, type: :model do
     let(:instance) { create(:instance, name:, instance_type: instance_type) }
 
     context "when instance type is not a secondary instance" do
-      let(:instance_type) { create(:instance_type, secondary_instance: false)}
+      let(:instance_type) { create(:instance_type, secondary_instance: false) }
       it "returns false" do
-        expect(instance.secondary_reference?).to eq false
+        expect(instance.secondary_reference?).to(eq(false))
       end
     end
 
     context "when instance type is a secondary instance" do
-      let(:instance_type) { create(:instance_type, secondary_instance: true)}
+      let(:instance_type) { create(:instance_type, secondary_instance: true) }
       it "returns true" do
-        expect(instance.secondary_reference?).to eq true
+        expect(instance.secondary_reference?).to(eq(true))
       end
     end
   end
@@ -108,154 +110,154 @@ RSpec.describe Instance, type: :model do
   describe "#allow_delete?" do
     context "when all conditions are met for deletion" do
       before do
-        allow(instance).to receive(:instance_notes).and_return([])
-        allow(instance).to receive(:reverse_of_this_cites).and_return([])
-        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
-        allow(instance).to receive(:comments).and_return([])
-        allow(instance).to receive(:in_any_tree?).and_return(false)
-        allow(instance).to receive(:children).and_return([])
-        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:instance_notes).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
+        allow(instance).to(receive(:comments).and_return([]))
+        allow(instance).to(receive(:in_any_tree?).and_return(false))
+        allow(instance).to(receive(:children).and_return([]))
+        allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns true" do
-        expect(instance.allow_delete?).to be true
+        expect(instance.allow_delete?).to(be(true))
       end
     end
 
     context "when instance_notes are present" do
       before do
-        allow(instance).to receive(:instance_notes).and_return([double])
-        allow(instance).to receive(:reverse_of_this_cites).and_return([])
-        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
-        allow(instance).to receive(:comments).and_return([])
-        allow(instance).to receive(:in_any_tree?).and_return(false)
-        allow(instance).to receive(:children).and_return([])
-        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:instance_notes).and_return([double]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
+        allow(instance).to(receive(:comments).and_return([]))
+        allow(instance).to(receive(:in_any_tree?).and_return(false))
+        allow(instance).to(receive(:children).and_return([]))
+        allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns false" do
-        expect(instance.allow_delete?).to be false
+        expect(instance.allow_delete?).to(be(false))
       end
     end
 
     context "when reverse_of_this_cites are present" do
       before do
-        allow(instance).to receive(:instance_notes).and_return([])
-        allow(instance).to receive(:reverse_of_this_cites).and_return([double])
-        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
-        allow(instance).to receive(:comments).and_return([])
-        allow(instance).to receive(:in_any_tree?).and_return(false)
-        allow(instance).to receive(:children).and_return([])
-        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:instance_notes).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([double]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
+        allow(instance).to(receive(:comments).and_return([]))
+        allow(instance).to(receive(:in_any_tree?).and_return(false))
+        allow(instance).to(receive(:children).and_return([]))
+        allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns false" do
-        expect(instance.allow_delete?).to be false
+        expect(instance.allow_delete?).to(be(false))
       end
     end
 
     context "when reverse_of_this_is_cited_by are present" do
       before do
-        allow(instance).to receive(:instance_notes).and_return([])
-        allow(instance).to receive(:reverse_of_this_cites).and_return([])
-        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([double])
-        allow(instance).to receive(:comments).and_return([])
-        allow(instance).to receive(:in_any_tree?).and_return(false)
-        allow(instance).to receive(:children).and_return([])
-        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:instance_notes).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([double]))
+        allow(instance).to(receive(:comments).and_return([]))
+        allow(instance).to(receive(:in_any_tree?).and_return(false))
+        allow(instance).to(receive(:children).and_return([]))
+        allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns false" do
-        expect(instance.allow_delete?).to be false
+        expect(instance.allow_delete?).to(be(false))
       end
     end
 
     context "when comments are present" do
       before do
-        allow(instance).to receive(:instance_notes).and_return([])
-        allow(instance).to receive(:reverse_of_this_cites).and_return([])
-        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
-        allow(instance).to receive(:comments).and_return([double])
-        allow(instance).to receive(:in_any_tree?).and_return(false)
-        allow(instance).to receive(:children).and_return([])
-        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:instance_notes).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
+        allow(instance).to(receive(:comments).and_return([double]))
+        allow(instance).to(receive(:in_any_tree?).and_return(false))
+        allow(instance).to(receive(:children).and_return([]))
+        allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns false" do
-        expect(instance.allow_delete?).to be false
+        expect(instance.allow_delete?).to(be(false))
       end
     end
 
     context "when the instance is in a tree" do
       before do
-        allow(instance).to receive(:instance_notes).and_return([])
-        allow(instance).to receive(:reverse_of_this_cites).and_return([])
-        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
-        allow(instance).to receive(:comments).and_return([])
-        allow(instance).to receive(:in_any_tree?).and_return(true)
-        allow(instance).to receive(:children).and_return([])
-        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:instance_notes).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
+        allow(instance).to(receive(:comments).and_return([]))
+        allow(instance).to(receive(:in_any_tree?).and_return(true))
+        allow(instance).to(receive(:children).and_return([]))
+        allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns false" do
-        expect(instance.allow_delete?).to be false
+        expect(instance.allow_delete?).to(be(false))
       end
     end
 
     context "when children are present" do
       before do
-        allow(instance).to receive(:instance_notes).and_return([])
-        allow(instance).to receive(:reverse_of_this_cites).and_return([])
-        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
-        allow(instance).to receive(:comments).and_return([])
-        allow(instance).to receive(:in_any_tree?).and_return(false)
-        allow(instance).to receive(:children).and_return([double])
-        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:instance_notes).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
+        allow(instance).to(receive(:comments).and_return([]))
+        allow(instance).to(receive(:in_any_tree?).and_return(false))
+        allow(instance).to(receive(:children).and_return([double]))
+        allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns false" do
-        expect(instance.allow_delete?).to be false
+        expect(instance.allow_delete?).to(be(false))
       end
     end
 
     context "when linked to loader name matches" do
       before do
-        allow(instance).to receive(:instance_notes).and_return([])
-        allow(instance).to receive(:reverse_of_this_cites).and_return([])
-        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
-        allow(instance).to receive(:comments).and_return([])
-        allow(instance).to receive(:in_any_tree?).and_return(false)
-        allow(instance).to receive(:children).and_return([])
-        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(false)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:instance_notes).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
+        allow(instance).to(receive(:comments).and_return([]))
+        allow(instance).to(receive(:in_any_tree?).and_return(false))
+        allow(instance).to(receive(:children).and_return([]))
+        allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(false))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns false" do
-        expect(instance.allow_delete?).to be false
+        expect(instance.allow_delete?).to(be(false))
       end
     end
 
     context "when profile_items are present" do
       before do
-        allow(instance).to receive(:instance_notes).and_return([])
-        allow(instance).to receive(:reverse_of_this_cites).and_return([])
-        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
-        allow(instance).to receive(:comments).and_return([])
-        allow(instance).to receive(:in_any_tree?).and_return(false)
-        allow(instance).to receive(:children).and_return([])
-        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([double])
+        allow(instance).to(receive(:instance_notes).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
+        allow(instance).to(receive(:comments).and_return([]))
+        allow(instance).to(receive(:in_any_tree?).and_return(false))
+        allow(instance).to(receive(:children).and_return([]))
+        allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([double]))
       end
 
       it "returns false" do
-        expect(instance.allow_delete?).to be false
+        expect(instance.allow_delete?).to(be(false))
       end
     end
   end
@@ -269,26 +271,26 @@ RSpec.describe Instance, type: :model do
     end
 
     before do
-      allow(Rails.configuration).to receive(:try).and_call_original
-      allow(Rails.configuration).to receive(:try).with(:soft_delete_enabled).and_return(true)
+      allow(Rails.configuration).to(receive(:try).and_call_original)
+      allow(Rails.configuration).to(receive(:try).with(:soft_delete_enabled).and_return(true))
       allow(Instances::CheckDeleteService)
-        .to receive(:new).with(instance: instance).and_return(check_delete_service)
+        .to(receive(:new).with(instance: instance).and_return(check_delete_service))
     end
 
     context "when soft delete is not enabled in configuration" do
       before do
-        allow(Rails.configuration).to receive(:try).with(:soft_delete_enabled).and_return(false)
+        allow(Rails.configuration).to(receive(:try).with(:soft_delete_enabled).and_return(false))
       end
 
       it "returns false without calling the check delete service" do
-        expect(instance.allow_soft_delete?).to be false
-        expect(Instances::CheckDeleteService).not_to have_received(:new)
+        expect(instance.allow_soft_delete?).to(be(false))
+        expect(Instances::CheckDeleteService).not_to(have_received(:new))
       end
     end
 
     context "when the check delete service allows soft delete" do
       it "returns true" do
-        expect(instance.allow_soft_delete?).to be true
+        expect(instance.allow_soft_delete?).to(be(true))
       end
     end
 
@@ -298,7 +300,7 @@ RSpec.describe Instance, type: :model do
       end
 
       it "returns false" do
-        expect(instance.allow_soft_delete?).to be false
+        expect(instance.allow_soft_delete?).to(be(false))
       end
     end
   end
@@ -306,23 +308,23 @@ RSpec.describe Instance, type: :model do
   describe "#draft_for_sorting?" do
     context "when instance is draft and has no profile items" do
       before do
-        allow(instance).to receive(:draft).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:draft).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns true" do
-        expect(instance.draft_for_sorting?).to be true
+        expect(instance.draft_for_sorting?).to(be(true))
       end
     end
 
     context "when instance is not draft and has no profile items" do
       before do
-        allow(instance).to receive(:draft).and_return(false)
-        allow(instance).to receive(:profile_items).and_return([])
+        allow(instance).to(receive(:draft).and_return(false))
+        allow(instance).to(receive(:profile_items).and_return([]))
       end
 
       it "returns false" do
-        expect(instance.draft_for_sorting?).to be false
+        expect(instance.draft_for_sorting?).to(be(false))
       end
     end
 
@@ -330,12 +332,12 @@ RSpec.describe Instance, type: :model do
       let(:draft_profile_item) { double(is_draft: true) }
 
       before do
-        allow(instance).to receive(:draft).and_return(false)
-        allow(instance).to receive(:profile_items).and_return([draft_profile_item])
+        allow(instance).to(receive(:draft).and_return(false))
+        allow(instance).to(receive(:profile_items).and_return([draft_profile_item]))
       end
 
       it "returns true" do
-        expect(instance.draft_for_sorting?).to be true
+        expect(instance.draft_for_sorting?).to(be(true))
       end
     end
 
@@ -343,12 +345,12 @@ RSpec.describe Instance, type: :model do
       let(:published_profile_item) { double(is_draft: false) }
 
       before do
-        allow(instance).to receive(:draft).and_return(false)
-        allow(instance).to receive(:profile_items).and_return([published_profile_item])
+        allow(instance).to(receive(:draft).and_return(false))
+        allow(instance).to(receive(:profile_items).and_return([published_profile_item]))
       end
 
       it "returns false" do
-        expect(instance.draft_for_sorting?).to be false
+        expect(instance.draft_for_sorting?).to(be(false))
       end
     end
 
@@ -356,12 +358,12 @@ RSpec.describe Instance, type: :model do
       let(:draft_profile_item) { double(is_draft: true) }
 
       before do
-        allow(instance).to receive(:draft).and_return(true)
-        allow(instance).to receive(:profile_items).and_return([draft_profile_item])
+        allow(instance).to(receive(:draft).and_return(true))
+        allow(instance).to(receive(:profile_items).and_return([draft_profile_item]))
       end
 
       it "returns true" do
-        expect(instance.draft_for_sorting?).to be true
+        expect(instance.draft_for_sorting?).to(be(true))
       end
     end
 
@@ -370,12 +372,12 @@ RSpec.describe Instance, type: :model do
       let(:published_profile_item) { double(is_draft: false) }
 
       before do
-        allow(instance).to receive(:draft).and_return(false)
-        allow(instance).to receive(:profile_items).and_return([published_profile_item, draft_profile_item])
+        allow(instance).to(receive(:draft).and_return(false))
+        allow(instance).to(receive(:profile_items).and_return([published_profile_item, draft_profile_item]))
       end
 
       it "returns true" do
-        expect(instance.draft_for_sorting?).to be true
+        expect(instance.draft_for_sorting?).to(be(true))
       end
     end
   end

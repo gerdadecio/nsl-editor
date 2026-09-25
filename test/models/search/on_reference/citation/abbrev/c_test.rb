@@ -24,12 +24,12 @@ class SearchOnReferenceCitationAbbrevCTest < ActiveSupport::TestCase
   test "search on reference citation abbrev c simple" do
     reference = references(:ref_type_is_book)
     params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "c: #{reference.citation}",
-                   current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "c: #{reference.citation}",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

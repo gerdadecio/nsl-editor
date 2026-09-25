@@ -24,16 +24,24 @@ class UserDeleteUnauthorisedTest < ActionController::TestCase
 
   test "update user simple" do
     @request.headers["Accept"] = "application/javascript"
-    user= users(:user_two)
-    patch(:update,
-          params: {  id: user.id,
-                     "user"=>{"user_name"=>"updated_name",
-                              "given_name"=>"updated_given_name",
-                              "family_name"=>"updated_family_name"},
-                              "commit"=>"Save"},
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
+    user = users(:user_two)
+    patch(
+      :update,
+      params: {
+        id: user.id,
+        "user" => {
+          "user_name" => "updated_name",
+          "given_name" => "updated_given_name",
+          "family_name" => "updated_family_name",
+        },
+        "commit" => "Save",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response(:forbidden)
     unchanged = User.find(user.id)
     assert_match(unchanged.user_name, user.user_name)

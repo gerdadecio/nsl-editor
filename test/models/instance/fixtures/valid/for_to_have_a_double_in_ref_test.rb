@@ -23,8 +23,8 @@ class InstanceFixturesValidHasADoubleInRefTest < ActiveSupport::TestCase
   test "for_to_have_a_double_in_ref should be a standalone instance" do
     instance = instances(:for_to_have_a_double_in_ref)
     assert instance.type_of_instance == "Standalone",
-           "Instance should be Standalone."
+      "Instance should be Standalone."
     assert instance.valid?,
-           "should be valid; errors: #{instance.errors.full_messages.join(';')}"
+      "should be valid; errors: #{instance.errors.full_messages.join(";")}"
   end
 end

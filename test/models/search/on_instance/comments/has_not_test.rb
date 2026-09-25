@@ -22,14 +22,14 @@ load "test/models/search/users.rb"
 # Single Search model test for Instance target.
 class SearchOnInstanceHasNoCommentsTest < ActiveSupport::TestCase
   test "search for instances without comments" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "instance",
-                   query_string: "comments: ",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "instance",
+        query_string: "comments: ",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|
       assert_equal 0, r.comments.size, "Should be no comments"
     end

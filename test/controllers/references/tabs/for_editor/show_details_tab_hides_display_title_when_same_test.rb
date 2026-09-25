@@ -32,11 +32,15 @@ class ReferenceShowEditorDetailsTabHidesDisplayTitleWhenSameTest < ActionControl
 
   test "hides the Display Title line when title and display_title are the same" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @reference.id, tab: "tab_show_1" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @reference.id, tab: "tab_show_1" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_no_match(/Display Title/, response.body)
   end

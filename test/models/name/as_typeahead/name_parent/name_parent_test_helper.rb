@@ -19,31 +19,35 @@
 
 def suggestions_should_include(suggestions, given_rank_name, expected_rank_name)
   # rank is the second field in the pipe-separated string
-  assert(suggestions.collect do |h|
-    re = Regexp.quote(expected_rank_name)
-    if h[:value].split("|")[1].strip =~ /\A#{re}\z/
-      1
-    else
-      0
-    end
-  end.sum.positive?,
-         "#{given_rank_name} should suggest #{expected_rank_name}")
+  assert(
+    suggestions.collect do |h|
+      re = Regexp.quote(expected_rank_name)
+      if /\A#{re}\z/.match?(h[:value].split("|")[1].strip)
+        1
+      else
+        0
+      end
+    end.sum.positive?,
+    "#{given_rank_name} should suggest #{expected_rank_name}",
+  )
 end
 
 def suggestions_should_not_include(suggestions,
-                                   given_rank_name,
-                                   unexpected_rank_name)
-  assert_not(suggestions.collect do |h|
-    # rank is the second field in the pipe-separated string
-    rank = h[:value].split("|")[1].strip
-    rank =~ /\A#{Regexp.quote(unexpected_rank_name)}\z/ ? 1 : 0
-  end.sum.positive?,
-             "#{given_rank_name} should not suggest #{unexpected_rank_name}")
+  given_rank_name,
+  unexpected_rank_name)
+  assert_not(
+    suggestions.collect do |h|
+      # rank is the second field in the pipe-separated string
+      rank = h[:value].split("|")[1].strip
+      /\A#{Regexp.quote(unexpected_rank_name)}\z/.match?(rank) ? 1 : 0
+    end.sum.positive?,
+    "#{given_rank_name} should not suggest #{unexpected_rank_name}",
+  )
 end
 
 def suggestions_should_only_include(suggestions,
-                                    given_rank_name,
-                                    expected_rank_names)
+  given_rank_name,
+  expected_rank_names)
   NameRank.all.sort_by(&:sort_order).each do |rank|
     if expected_rank_names.include?(rank.name)
       suggestions_should_include(suggestions, given_rank_name, rank.name)
@@ -68,10 +72,12 @@ def rank_from_suggestion(suggestion)
 end
 
 def suggestion_rank_should_be_at_or_below(suggestion,
-                                          upper_rank)
+  upper_rank)
   rank = rank_from_suggestion(suggestion)
-  assert rank.sort_order >= upper_rank.sort_order,
-         "#{rank.name} is higher than #{upper_rank.name}"
+  assert(
+    rank.sort_order >= upper_rank.sort_order,
+    "#{rank.name} is higher than #{upper_rank.name}",
+  )
 end
 
 def set_name_parent_rank_restrictions_off

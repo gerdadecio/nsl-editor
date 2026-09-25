@@ -28,8 +28,10 @@ class NameLinkTextPartialTest < ActionView::TestCase
   end
 
   def render_link_text_for(name)
-    render partial: "application/search_results/link_texts/name_link_text",
-           locals: { search_result: name }
+    render(
+      partial: "application/search_results/link_texts/name_link_text",
+      locals: { search_result: name },
+    )
     rendered
   end
 

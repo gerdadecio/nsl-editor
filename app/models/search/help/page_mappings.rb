@@ -24,14 +24,14 @@ class Search::Help::PageMappings
   def initialize(params, view_mode)
     debug("Start for #{params[:help_id]}")
     @partial = if view_mode == ::ViewMode::REVIEW
-                 REVIEW_MAP[params[:help_id]]
-               else
-                 MAP[params[:help_id]]
-               end
+      REVIEW_MAP[params[:help_id]]
+    else
+      MAP[params[:help_id]]
+    end
   end
 
   def debug(s)
-    Rails.logger.debug("Search::Extras::Mapper #{s}")
+    Rails.logger.debug { "Search::Extras::Mapper #{s}" }
   end
 
   MAP = {

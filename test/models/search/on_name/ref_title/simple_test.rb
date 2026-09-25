@@ -27,11 +27,11 @@ class SearchOnNameRefTitleSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "ref-title: *default* ",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
-    assert !search.executed_query.results.empty?,
-           "Expected > 0 search result for ref-title: match"
+    assert_not search.executed_query.results.empty?,
+      "Expected > 0 search result for ref-title: match"
   end
 end

@@ -35,14 +35,17 @@ class Tree::Workspace::Replacement < ActiveType::Object
       newParentElementUri: parent.element_link,
       instanceUri: instance_url,
       excluded: excluded,
-      profile: profile
+      profile: profile,
     }
     raise errors.full_messages.first unless valid?
 
-    logger.info "REPLACEMENT calling #{url} WITH PAYLOAD: #{payload}"
+    logger.info("REPLACEMENT calling #{url} WITH PAYLOAD: #{payload}")
 
-    RestClient.put(url, payload.to_json,
-                   { content_type: :json, accept: :json })
+    RestClient.put(
+      url,
+      payload.to_json,
+      { content_type: :json, accept: :json },
+    )
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::Workspace::Replacement error: #{e}")
     raise

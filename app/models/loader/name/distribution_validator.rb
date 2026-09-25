@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Loader::Name::DistributionValidator
   attr_reader :dist
   attr_reader :allowed_regions
@@ -30,12 +32,12 @@ class Loader::Name::DistributionValidator
     else
       @allowed_regions = allowed_regions
       @dist_regions = dist_s&.gsub(/ *\([^)]*\)/, "")&.split(/, */)
-      @dist_qualifiers = dist_s&.split(/, */)&.collect {|e| e.sub(/.*(\(.*\)).*/, '\1')}
+      @dist_qualifiers = dist_s&.split(/, */)&.collect { |e| e.sub(/.*(\(.*\)).*/, '\1') }
     end
   end
 
   def dist_region_indexes
-    @dist_regions.collect {|dist_name| @allowed_regions.index(dist_name)}
+    @dist_regions.collect { |dist_name| @allowed_regions.index(dist_name) }
   end
 
   def validate
@@ -68,7 +70,7 @@ class Loader::Name::DistributionValidator
   end
 
   def dist_regions_are_ordered_correctly
-    if dist_region_indexes == dist_region_indexes.sort {|x,y| x <=> y}
+    if dist_region_indexes == dist_region_indexes.sort
       true
     else
       @error = "Regions not ordered correctly in: #{@dist_s}"
@@ -97,7 +99,7 @@ class Loader::Name::DistributionValidator
   end
 
   def dist_has_no_trailing_comma
-    if @dist_s.match(/, *\z/)
+    if /, *\z/.match?(@dist_s)
       @error = "Trailing commas aren't allowed in: #{@dist_s}"
       false
     else
@@ -105,4 +107,3 @@ class Loader::Name::DistributionValidator
     end
   end
 end
-

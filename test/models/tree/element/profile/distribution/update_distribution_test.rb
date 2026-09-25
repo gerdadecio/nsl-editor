@@ -46,11 +46,16 @@ class UpdateDistributionTest < ActiveSupport::TestCase
 
   def confirm_changed(new_dist, trel, tag)
     te_changed = Tree::Element.find(trel.id)
-    assert_equal(new_dist.split(",").collect(&:strip).sort.join(", "),
-                 te_changed.distribution_value.split(",").collect(&:strip).sort.join(", "),
-                 "Expected sorted distributions to be equal for #{tag}")
-    assert_not_equal(new_dist, te_changed.distribution_value,
-                     "Expected unsorted distributions to be unequal for #{tag}")
+    assert_equal(
+      new_dist.split(",").collect(&:strip).sort.join(", "),
+      te_changed.distribution_value.split(",").collect(&:strip).sort.join(", "),
+      "Expected sorted distributions to be equal for #{tag}",
+    )
+    assert_not_equal(
+      new_dist,
+      te_changed.distribution_value,
+      "Expected unsorted distributions to be unequal for #{tag}",
+    )
     te_changed
   end
 
@@ -59,17 +64,24 @@ class UpdateDistributionTest < ActiveSupport::TestCase
     tag = "remove_dist_leaving_comment"
     new_dist = ""
     assert_not_nil(trel.profile, "Expect profile to start #{tag} test")
-    assert_not_nil(trel.distribution,
-                   "Expect profile distribution to start #{tag} test")
+    assert_not_nil(
+      trel.distribution,
+      "Expect profile distribution to start #{tag} test",
+    )
     original_updated_by = trel.updated_by
     original_updated_at = trel.updated_at
     message, refresh = trel.update_distribution(new_dist, "rdlcuser")
     te_changed = Tree::Element.find(trel.id)
-    assert_match(/Distribution removed/, message,
-                 "Wrong message '#{message}' for #{tag}")
+    assert_match(
+      /Distribution removed/,
+      message,
+      "Wrong message '#{message}' for #{tag}",
+    )
     assert(refresh, "Expected refresh for #{tag}")
-    assert_nil(te_changed.distribution_value,
-               "Expected no distribution for #{tag}")
+    assert_nil(
+      te_changed.distribution_value,
+      "Expected no distribution for #{tag}",
+    )
     assert_nil(te_changed.distribution_value)
     assert_not_equal(original_updated_at, te_changed.updated_at)
     assert_not_equal(original_updated_by, te_changed.updated_by)
@@ -83,11 +95,17 @@ class UpdateDistributionTest < ActiveSupport::TestCase
     original_updated_at = trel.updated_at
     message, refresh = trel.update_distribution(new_dist, "dnd2vduser")
     te_changed = Tree::Element.find(trel.id)
-    assert_match(/Distribution added to a fresh profile/i,
-                 message, "Unexpected message '#{message}' for #{tag}")
+    assert_match(
+      /Distribution added to a fresh profile/i,
+      message,
+      "Unexpected message '#{message}' for #{tag}",
+    )
     assert(refresh, "Expected refresh for #{tag}")
-    assert_equal(new_dist, te_changed.distribution_value,
-                 "Expected distribution to be changed for #{tag}")
+    assert_equal(
+      new_dist,
+      te_changed.distribution_value,
+      "Expected distribution to be changed for #{tag}",
+    )
     assert_not_equal(original_updated_at, te_changed.updated_at)
     assert_not_equal(original_updated_by, te_changed.updated_by)
     assert_equal("dnd2vduser", te_changed.updated_by)
@@ -100,11 +118,17 @@ class UpdateDistributionTest < ActiveSupport::TestCase
     original_updated_at = trel.updated_at
     message, refresh = trel.update_distribution(new_dist, "ud2vduser")
     te_changed = Tree::Element.find(trel.id)
-    assert_match(/Distribution changed/i,
-                 message, "Unexpected message '#{message}' for #{tag}")
+    assert_match(
+      /Distribution changed/i,
+      message,
+      "Unexpected message '#{message}' for #{tag}",
+    )
     assert(refresh, "Expected refresh for #{tag}")
-    assert_equal(new_dist.sub(/,,*$/, ""), te_changed.distribution_value,
-                 "Expected distribution to be add for #{tag}")
+    assert_equal(
+      new_dist.sub(/,,*$/, ""),
+      te_changed.distribution_value,
+      "Expected distribution to be add for #{tag}",
+    )
     assert_not_equal(original_updated_at, te_changed.updated_at)
     assert_not_equal(original_updated_by, te_changed.updated_by)
     assert_equal("ud2vduser", te_changed.updated_by)
@@ -114,6 +138,6 @@ class UpdateDistributionTest < ActiveSupport::TestCase
   def show_tede(trel)
     puts "TEDE: #{trel.distribution_value}"
     Tree::Element::DistributionEntry.where(tree_element_id: trel.id)
-                                    .joins(:dist_entry).order("sort_order").each { |tede| puts(tede.show) }
+      .joins(:dist_entry).order("sort_order").each { |tede| puts(tede.show) }
   end
 end

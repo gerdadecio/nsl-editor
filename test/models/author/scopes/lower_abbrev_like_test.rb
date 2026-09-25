@@ -19,6 +19,6 @@ class AuthorScopeLowerAbbrevLikeTest < ActiveSupport::TestCase
 
   test "lower_abbrev_like excludes authors whose abbrev does not match" do
     results = Author.lower_abbrev_like("benth*")
-    refute_includes results, authors(:haeckel)
+    assert_not_includes results, authors(:haeckel)
   end
 end

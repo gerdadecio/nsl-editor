@@ -24,14 +24,20 @@ class AuthorTest < ActiveSupport::TestCase
     typeahead = Author::AsTypeahead.on_name("for typeahead on name")
     assert_instance_of(Array, typeahead, "Typeahead on name shld return array")
     typeahead_ids = typeahead.collect { |val| val[:id].to_i }
-    assert_includes(typeahead_ids,
-                    authors(:for_typeahead_on_name_null_abbrev).id,
-                    "Author should be in typeahead list")
-    assert_includes(typeahead_ids,
-                    authors(:for_typeahead_on_name_has_abbrev).id,
-                    "Author should be in typeahead list")
-    assert_includes(typeahead_ids,
-                    authors(:for_typeahead_on_name_empty_string_abbrev).id,
-                    "Author with empty string abbrev shld be in typeahead")
+    assert_includes(
+      typeahead_ids,
+      authors(:for_typeahead_on_name_null_abbrev).id,
+      "Author should be in typeahead list",
+    )
+    assert_includes(
+      typeahead_ids,
+      authors(:for_typeahead_on_name_has_abbrev).id,
+      "Author should be in typeahead list",
+    )
+    assert_includes(
+      typeahead_ids,
+      authors(:for_typeahead_on_name_empty_string_abbrev).id,
+      "Author with empty string abbrev shld be in typeahead",
+    )
   end
 end

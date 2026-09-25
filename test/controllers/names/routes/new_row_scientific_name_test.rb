@@ -23,8 +23,8 @@ class NameNewRowRouteTest < ActionController::TestCase
   tests NamesController
   test "should route to names new row for a scientific type" do
     assert_routing "/names/new_row/scientific",
-                   controller: "names",
-                   action: "new_row",
-                   type: "scientific"
+      controller: "names",
+      action: "new_row",
+      type: "scientific"
   end
 end

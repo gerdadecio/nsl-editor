@@ -29,11 +29,13 @@ class TAOnCitnOrdersByPublicationDateTest < ActiveSupport::TestCase
 
     ids = typeahead.results.collect { |result| result[:id] }
 
-    assert_equal [references(:flibbertigibbet_no_date).id.to_s,
-                  references(:flibbertigibbet_late).id.to_s,
-                  references(:flibbertigibbet_early).id.to_s],
-                 ids,
-                 "Expected no-date reference first (nulls first), then " \
-                 "most recently published, then the earliest."
+    assert_equal [
+      references(:flibbertigibbet_no_date).id.to_s,
+      references(:flibbertigibbet_late).id.to_s,
+      references(:flibbertigibbet_early).id.to_s
+    ],
+      ids,
+      "Expected no-date reference first (nulls first), then " \
+        "most recently published, then the earliest."
   end
 end

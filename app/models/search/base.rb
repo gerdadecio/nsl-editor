@@ -19,12 +19,12 @@
 # Core class for queries.
 class Search::Base
   attr_reader :empty,
-              :error,
-              :error_message,
-              :executed_query,
-              :more_allowed,
-              :parsed_request,
-              :specific_search
+    :error,
+    :error_message,
+    :executed_query,
+    :more_allowed,
+    :parsed_request,
+    :specific_search
 
   DEFAULT_PAGE_SIZE = 100
   PAGE_INCREMENT_SIZE = 500
@@ -33,7 +33,7 @@ class Search::Base
   def initialize(params)
     @params = params
     @params[:canonical_query_target] = @params[:query_target]
-    @params[:canonical_query_target] = @params[:canonical_query_target].downcase.gsub(", ", "_").gsub(" ", "_")
+    @params[:canonical_query_target] = @params[:canonical_query_target].downcase.gsub(", ", "_").tr(" ", "_")
     set_defaults
     run_query
   end
@@ -48,7 +48,7 @@ class Search::Base
   end
 
   def debug(s)
-    Rails.logger.debug("Search::Base #{s}")
+    Rails.logger.debug { "Search::Base #{s}" }
   end
 
   def set_defaults
@@ -58,12 +58,14 @@ class Search::Base
   end
 
   def to_history
-    { "query_string" => @params[:query_string],
+    {
+      "query_string" => @params[:query_string],
       "query_target" => @parsed_request.query_target,
       "canonical_query_target" => @parsed_request.canonical_query_target,
       "result_size" => @executed_query.count,
       "time_stamp" => Time.now,
-      "error" => false }
+      "error" => false,
+    }
   end
 
   def page_increment_size
@@ -93,7 +95,7 @@ class Search::Base
 
   def run_defined_query
     if @parsed_request.defined_query_arg.blank? &&
-       @parsed_request.where_arguments.blank?
+        @parsed_request.where_arguments.blank?
       raise "Defined queries need an argument."
     else
       run_specific_defined_query
@@ -105,7 +107,7 @@ class Search::Base
       case @parsed_request.defined_query
       when /references.name.full.synonymy/
         Reference::DefinedQuery::ReferencesNamesFullSynonymy
-      .new(@parsed_request)
+          .new(@parsed_request)
       when /\Ainstance.is.cited\z/
         Instance::DefinedQuery::IsCited.new(@parsed_request)
       when /\Ainstance.is.cited.by\z/
@@ -116,12 +118,12 @@ class Search::Base
         ::Reference::DefinedQuery::ReferencesWithNovelties.new(@parsed_request)
       when /\Areferences.accepted.names.for.id\z/i
         Reference::DefinedQuery::ReferencesAcceptedNamesForId
-      .new(@parsed_request)
+          .new(@parsed_request)
       when /\Areferences.shared.names\z/i
         Reference::DefinedQuery::ReferencesSharedNames.new(@parsed_request)
       else
         Rails.logger.error("Search::Base failed to run defined query: " \
-                           "#{@parsed_request.defined_query}")
+          "#{@parsed_request.defined_query}")
         raise "No such defined query: #{@parsed_request.defined_query}"
       end
   end

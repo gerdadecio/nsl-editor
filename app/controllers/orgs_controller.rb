@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class OrgsController < ApplicationController
-  before_action :find_org, only: %i[show tab]
+  before_action :find_org, only: [:show, :tab]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
@@ -25,15 +25,15 @@ class OrgsController < ApplicationController
     set_tab
     set_tab_index
     @take_focus = params[:take_focus] == "true"
-    render "show", layout: false
+    render("show", layout: false)
   end
 
-  alias tab show
+  alias_method :tab, :show
 
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
     respond_to do |format|
-      format.html { redirect_to new_search_path }
+      format.html { redirect_to(new_search_path) }
       format.js {}
     end
   end
@@ -44,7 +44,7 @@ class OrgsController < ApplicationController
     @org = Org.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the organisation record."
-    redirect_to org_path
+    redirect_to(org_path)
   end
 
   def org_params
@@ -53,10 +53,10 @@ class OrgsController < ApplicationController
 
   def set_tab
     @tab = if params[:tab].present? && params[:tab] != "undefined"
-             params[:tab]
-           else
-             "tab_details"
-           end
+      params[:tab]
+    else
+      "tab_details"
+    end
   end
 
   def set_tab_index

@@ -27,15 +27,19 @@ class WorkspaceCurrentToggleOnTest < ActionController::TestCase
 
   test "toggle workspace on" do
     @request.headers["Accept"] = "application/javascript"
-    post(:toggle,
-         params: { id: @tree.id },
-         session: { username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: %w[edit treebuilder] })
+    post(
+      :toggle,
+      params: { id: @tree.id },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit", "treebuilder"],
+      },
+    )
     assert_response :success
     assert @request.session["draft"].present?,
-           "Session draft expected, but not there."
+      "Session draft expected, but not there."
     assert @request.session["draft"]["id"].to_i == @tree.id,
-           "Session draft ID should match expected."
+      "Session draft ID should match expected."
   end
 end

@@ -23,11 +23,14 @@ class NameUpdateSetNamesSimpleTest < ActiveSupport::TestCase
   setup do
     @name = names(:a_species)
     stub_request(:get, "#{address}#{@name.id}/api/name-strings")
-      .with(headers: { "Accept" => "text/json",
-                       "Accept-Encoding" =>
+      .with(headers: {
+        "Accept" => "text/json",
+        "Accept-Encoding" =>
                        "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-                       "User-Agent" => /rest-client.*ruby.*/ })
-      .to_return(status: 200, body: %({ "class": "silly name class",
+        "User-Agent" => /rest-client.*ruby.*/,
+      })
+      .to_return(status: 200,
+        body: %({ "class": "silly name class",
     "_links": {
         "permalink": [ ]
     },
@@ -38,7 +41,8 @@ class NameUpdateSetNamesSimpleTest < ActiveSupport::TestCase
         "simpleMarkedUpName": "simple marked up name for id #{@name.id}",
         "fullName": "full name for id #{@name.id}",
         "simpleName": "simple name for id #{@name.id}"
-    } }), headers: {})
+    } }),
+        headers: {})
   end
 
   def address
@@ -51,19 +55,19 @@ class NameUpdateSetNamesSimpleTest < ActiveSupport::TestCase
     @name.set_names!
     updated_name = Name.find(@name.id)
     assert_equal "full name for id #{@name.id}",
-                 @name.full_name,
-                 "Full name not set - make sure the test mock server running."
+      @name.full_name,
+      "Full name not set - make sure the test mock server running."
     assert_equal "full name for id #{@name.id}",
-                 updated_name.full_name,
-                 "Full name not set"
+      updated_name.full_name,
+      "Full name not set"
     assert_equal "full marked up name for id #{@name.id}",
-                 updated_name.full_name_html,
-                 "Full name html not set"
+      updated_name.full_name_html,
+      "Full name html not set"
     assert_equal "simple name for id #{@name.id}",
-                 updated_name.simple_name,
-                 "Simple name not set"
+      updated_name.simple_name,
+      "Simple name not set"
     assert_equal "simple marked up name for id #{@name.id}",
-                 updated_name.simple_name_html,
-                 "Simple name html not set"
+      updated_name.simple_name_html,
+      "Simple name html not set"
   end
 end

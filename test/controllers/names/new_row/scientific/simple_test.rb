@@ -27,16 +27,22 @@ class NamesNewRowScientificSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new_row,
-        params: { type: "scientific" },
-        session: {},
-        xhr: true)
+    get(
+      :new_row,
+      params: { type: "scientific" },
+      session: {},
+      xhr: true,
+    )
     assert_response :success, "Cannot start new row for a scientific name"
-    assert_match(/search-results-table/,
-                 response.body.to_s,
-                 "Missing expected element")
-    assert_match(/New Scientific Name/,
-                 response.body.to_s,
-                 "Missing expected element")
+    assert_match(
+      /search-results-table/,
+      response.body.to_s,
+      "Missing expected element",
+    )
+    assert_match(
+      /New Scientific Name/,
+      response.body.to_s,
+      "Missing expected element",
+    )
   end
 end

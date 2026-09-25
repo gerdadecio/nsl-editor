@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/models/profile/profile_object_type.rb
 # == Schema Information
 #
@@ -25,7 +27,7 @@ module Profile
     self.table_name = "profile_object_type"
     self.primary_key = "id"
 
-    has_many :profile_items, class_name: 'Profile::ProfileItem', primary_key: 'rdf_id', foreign_key: 'profile_object_rdf_id'
+    has_many :profile_items, class_name: "Profile::ProfileItem", primary_key: "rdf_id", foreign_key: "profile_object_rdf_id"
 
     validates :name, presence: true
   end

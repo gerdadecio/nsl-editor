@@ -28,12 +28,16 @@ class NamesNewPhraseNameSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new,
-        params: { category: "phrase",
-                  random_id: "123445",
-                  tabIndex: "107" },
-        session: {},
-        xhr: true)
+    get(
+      :new,
+      params: {
+        category: "phrase",
+        random_id: "123445",
+        tabIndex: "107",
+      },
+      session: {},
+      xhr: true,
+    )
     assert_response :success, "Cannot edit new phrase name in details tab"
     check_status
   end

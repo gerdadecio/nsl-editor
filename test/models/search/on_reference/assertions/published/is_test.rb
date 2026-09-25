@@ -24,9 +24,9 @@ class SearchOnReferenceAssertionIsPublishedTest < ActiveSupport::TestCase
   test "reference asertion is published" do
     search = Search::Base.new(ActiveSupport::HashWithIndifferentAccess
              .new(query_target: "reference",
-                  query_string: "is-published:",
-                  current_user: build_edit_user))
-    assert !search.executed_query.results.empty?,
-           "Should find reference that is published."
+               query_string: "is-published:",
+               current_user: build_edit_user))
+    assert_not search.executed_query.results.empty?,
+      "Should find reference that is published."
   end
 end

@@ -23,15 +23,15 @@ load "test/models/search/users.rb"
 class IsADuplicateAndCTIsSearchTest < ActiveSupport::TestCase
   test "is a duplicate and ct for citation text is search" do
     params = ActiveSupport::HashWithIndifferentAccess
-             .new(query_target: "reference",
-                  query_string: "is-duplicate: ct: uplica",
-                  current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "is-duplicate: ct: uplica",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 0,
-                 search.executed_query.results.size,
-                 "No results are expected.  Citation text search does not
+      search.executed_query.results.size,
+      "No results are expected.  Citation text search does not
                  support pure text fragments."
   end
 end

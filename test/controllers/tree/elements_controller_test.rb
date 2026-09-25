@@ -28,7 +28,7 @@ class TreeElementsControllerTest < ActionController::TestCase
   tests Tree::ElementsController
 
   def valid_session
-    { username: "fred", user_full_name: "Fred Jones", groups: %w[edit treebuilder] }
+    { username: "fred", user_full_name: "Fred Jones", groups: ["edit", "treebuilder"] }
   end
 
   test "distribution error on an excluded taxon renders the error view and skips the comment update" do
@@ -37,21 +37,31 @@ class TreeElementsControllerTest < ActionController::TestCase
     assert_nil(trel.comment_value, "Expect no comment to start this test")
 
     @request.headers["Accept"] = "application/javascript"
-    patch(:update_profile,
-          params: { id: trel.id,
-                    tree_element: { distribution_value: "WA, NSW",
-                                    comment_value: "should not be applied" } },
-          session: valid_session)
+    patch(
+      :update_profile,
+      params: {
+        id: trel.id,
+        tree_element: {
+          distribution_value: "WA, NSW",
+          comment_value: "should not be applied",
+        },
+      },
+      session: valid_session,
+    )
 
     assert_response :unprocessable_content
     assert_template "update_profile_error"
     assert_match(/Distribution update error:.*excluded taxa/i, assigns(:message))
-    assert_nil(assigns(:comment_message),
-               "Comment should never have been processed")
+    assert_nil(
+      assigns(:comment_message),
+      "Comment should never have been processed",
+    )
 
     te_unchanged = Tree::Element.find(trel.id)
-    assert_nil(te_unchanged.comment_value,
-               "Expected comment to be unchanged when the distribution update errors")
+    assert_nil(
+      te_unchanged.comment_value,
+      "Expected comment to be unchanged when the distribution update errors",
+    )
   end
 
   test "a normal distribution and comment update succeeds" do
@@ -59,11 +69,17 @@ class TreeElementsControllerTest < ActionController::TestCase
     assert_nil(trel.profile, "Expect no profile to start this test")
 
     @request.headers["Accept"] = "application/javascript"
-    patch(:update_profile,
-          params: { id: trel.id,
-                    tree_element: { distribution_value: "NSW, WA",
-                                    comment_value: "a new comment" } },
-          session: valid_session)
+    patch(
+      :update_profile,
+      params: {
+        id: trel.id,
+        tree_element: {
+          distribution_value: "NSW, WA",
+          comment_value: "a new comment",
+        },
+      },
+      session: valid_session,
+    )
 
     assert_response :success
     assert_template "update_profile"

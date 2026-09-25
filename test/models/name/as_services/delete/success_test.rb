@@ -21,8 +21,10 @@ require "test_helper"
 # Single name model test.
 class NameAsServicesDeleteSuccessTest < ActiveSupport::TestCase
   setup do
-    stub_request(:delete,
-                 "#{action}?apiKey=test-api-key&reason=#{reason}")
+    stub_request(
+      :delete,
+      "#{action}?apiKey=test-api-key&reason=#{reason}",
+    )
       .with(headers: headers)
       .to_return(status: 200, body: { ok: true }.to_json, headers: {})
   end
@@ -36,16 +38,18 @@ class NameAsServicesDeleteSuccessTest < ActiveSupport::TestCase
   end
 
   def headers
-    { "Accept" => "application/json",
+    {
+      "Accept" => "application/json",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
       "Host" => "localhost:9090",
-      "User-Agent" => /ruby/ }
+      "User-Agent" => /ruby/,
+    }
   end
 
   test "url" do
     name_id = names(:name_to_delete).id
     name = Name::AsServices.find(name_id)
     assert name.delete_with_reason("200 this is the reason....."),
-           "Should be true"
+      "Should be true"
   end
 end

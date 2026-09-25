@@ -24,14 +24,18 @@ class NonTreePublisherDoesNotSeeTaxonomyMenuTest < ActionController::TestCase
 
   test "non tree publisher does not see taxonomy menu" do
     user = users(:no_role)
-    get(:search,
-        params: {},
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"] })
+    get(
+      :search,
+      params: {},
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+      },
+    )
     assert_response :success
     assert_select "a#draft-taxo-dropdown-menu-link",
-                  false,
-                  "Should not show #{user.user_name} user the Draft Taxonomies menu link."
+      false,
+      "Should not show #{user.user_name} user the Draft Taxonomies menu link."
   end
 end

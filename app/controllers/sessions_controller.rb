@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
   def retry_new
     build_sign_in
     @sign_in.errors[:base] << "Please retry.  There was a system problem."
-    render "new"
+    render("new")
   end
 
   # Known problem: if login is rejected due to no login authority
@@ -36,18 +36,18 @@ class SessionsController < ApplicationController
     build_sign_in
     if @sign_in.save && authorised_to_login?
       set_up_session
-      deep_link || (redirect_to :root)
+      deep_link || redirect_to(:root)
     else
-      render "new", status: :unprocessable_content
+      render("new", status: :unprocessable_content)
     end
   rescue StandardError => e
-    logger.error("Exception signing in: #{e.to_s.gsub(/password:[^,]*/, 'password: [filtered]')}")
-    redirect_to :retry_start_sign_in
+    logger.error("Exception signing in: #{e.to_s.gsub(/password:[^,]*/, "password: [filtered]")}")
+    redirect_to(:retry_start_sign_in)
   end
 
   def destroy
     reset_session
-    redirect_to :start_sign_in
+    redirect_to(:start_sign_in)
   end
 
   # For testing.
@@ -83,7 +83,7 @@ class SessionsController < ApplicationController
     if session[:url_after_sign_in].present?
       url_after_sign_in = session[:url_after_sign_in]
       session[:url_after_sign_in] = ""
-      redirect_to url_after_sign_in
+      redirect_to(url_after_sign_in)
     else
       false
     end
@@ -95,7 +95,7 @@ class SessionsController < ApplicationController
   end
 
   def authorised_to_login?
-    if @sign_in.groups.include?('login')
+    if @sign_in.groups.include?("login")
       true
     else
       @sign_in.make_invalid # simulate failed credentials

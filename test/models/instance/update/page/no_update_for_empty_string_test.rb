@@ -30,10 +30,10 @@ class InstanceUpdatePageNoUpdateForEmptyStringTest < ActiveSupport::TestCase
     message = @instance.update_if_changed({ "page" => @empty_string }, "fred")
     assert @unchanged.page.blank?, "Page should be blank for this test."
     assert message.start_with?("No change"),
-           "Message should be 'No change' not '#{message}'"
+      "Message should be 'No change' not '#{message}'"
     assert @instance.page.blank?, "Page should still be blank."
     assert @instance.updated_at == @unchanged.updated_at,
-           "Updated date-time should be untouched."
+      "Updated date-time should be untouched."
     assert @instance.updated_by != "fred", "Updated by should be untouched."
   end
 end

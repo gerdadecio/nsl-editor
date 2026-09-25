@@ -22,12 +22,12 @@ load "test/models/search/users.rb"
 # Single Search model test for Instance target.
 class SearchOnInstanceAuthorIsNullTest < ActiveSupport::TestCase
   test "search on intance page is null" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "instance",
-                   query_string: "page: ",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "instance",
+        query_string: "page: ",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?, "Results expected."
+    assert_not search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|
       assert r.page.blank?, "page should be blank"
     end

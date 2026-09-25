@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 module Loader::Name::Partials
   extend ActiveSupport::Concern
 
   # synonym_type takes precedence
   def partial_misapplied?
-    unless synonym_type.blank?
-      synonym_type&.match?(/pro parte/)
-    else
+    if synonym_type.blank?
       publ_partly&.match(/p\.p\./)
+    else
+      synonym_type&.match?(/pro parte/)
     end
   end
 

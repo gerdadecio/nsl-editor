@@ -1,5 +1,6 @@
-class BaseService
+# frozen_string_literal: true
 
+class BaseService
   include ActiveModel::Validations
 
   def initialize(params, options = nil)

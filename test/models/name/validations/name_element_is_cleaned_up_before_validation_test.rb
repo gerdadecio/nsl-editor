@@ -24,10 +24,10 @@ class NameElementIsCleanedUpBeforeValidation < ActiveSupport::TestCase
     name = Name.first
     name.name_element = "  has spaces   "
     assert name.valid?,
-           "Name.name_element with leading trailing spaces shld be cleaned up."
+      "Name.name_element with leading trailing spaces shld be cleaned up."
     name.save
     name_saved = Name.find(name.id)
     assert name_saved.name_element.size == 10,
-           "Name.name_element with leading trailing spaces should lose spaces."
+      "Name.name_element with leading trailing spaces should lose spaces."
   end
 end

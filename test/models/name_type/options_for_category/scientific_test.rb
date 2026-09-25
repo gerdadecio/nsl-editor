@@ -32,30 +32,40 @@ class ScientificTest < ActiveSupport::TestCase
   end
 
   def part1
-    assert_equal 4,
-                 NameType.options_for_category(@current_category).size,
-                 "Should be 4 #{@current_category.name} name types."
-    assert NameType.options_for_category(@current_category)
-                   .collect(&:first)
-                   .include?("scientific"),
-           "Scientific should be a #{@current_category.name} name type."
+    assert_equal(
+      4,
+      NameType.options_for_category(@current_category).size,
+      "Should be 4 #{@current_category.name} name types.",
+    )
+    assert(
+      NameType.options_for_category(@current_category)
+            .collect(&:first)
+            .include?("scientific"),
+      "Scientific should be a #{@current_category.name} name type.",
+    )
   end
 
   def part2
-    assert NameType.options_for_category(@current_category)
-                   .collect(&:first)
-                   .include?("autonym"),
-           "Autonym should be a #{@current_category} name type."
-    assert NameType.options_for_category(@current_category)
-                   .collect(&:first)
-                   .include?("sanctioned"),
-           "Sanctioned should be a #{@current_category.name} name type."
+    assert(
+      NameType.options_for_category(@current_category)
+            .collect(&:first)
+            .include?("autonym"),
+      "Autonym should be a #{@current_category} name type.",
+    )
+    assert(
+      NameType.options_for_category(@current_category)
+            .collect(&:first)
+            .include?("sanctioned"),
+      "Sanctioned should be a #{@current_category.name} name type.",
+    )
   end
 
   def part3
-    assert NameType.options_for_category(@current_category)
-                   .collect(&:first)
-                   .include?("named hybrid autonym"),
-           "Named hybrid autonym should be a #{@current_category.name} name type."
+    assert(
+      NameType.options_for_category(@current_category)
+            .collect(&:first)
+            .include?("named hybrid autonym"),
+      "Named hybrid autonym should be a #{@current_category.name} name type.",
+    )
   end
 end

@@ -37,15 +37,15 @@ class DistEntry < ApplicationRecord
   self.sequence_name = "nsl_global_seq"
 
   belongs_to :dist_region,
-             foreign_key: "region_id"
+    foreign_key: "region_id"
 
   has_and_belongs_to_many :dist_statuses,
-                          join_table: "dist_entry_dist_status",
-                          foreign_key: "dist_entry_status_id"
+    join_table: "dist_entry_dist_status",
+    foreign_key: "dist_entry_status_id"
 
   has_and_belongs_to_many :tree_elements,
-                          join_table: "tree_element_distribution_entries",
-                          foreign_key: "dist_entry_id"
+    join_table: "tree_element_distribution_entries",
+    foreign_key: "dist_entry_id"
 
   def region
     dist_region.name

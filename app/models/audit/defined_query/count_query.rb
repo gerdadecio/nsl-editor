@@ -18,10 +18,10 @@
 #
 class Audit::DefinedQuery::CountQuery
   attr_reader :common_and_cultivar_included,
-              :info_for_display,
-              :limited,
-              :results,
-              :sql
+    :info_for_display,
+    :limited,
+    :results,
+    :sql
 
   def initialize(parsed_request)
     @parsed_request = parsed_request
@@ -32,45 +32,53 @@ class Audit::DefinedQuery::CountQuery
   end
 
   def debug(s)
-    Rails.logger.debug("Audit::DefinedQuery::CountQuery - #{s}")
+    Rails.logger.debug { "Audit::DefinedQuery::CountQuery - #{s}" }
   end
 
   def author_query
     start_author_query = Author.all
     author_where_clauses =
-      Audit::DefinedQuery::WhereClause::ForAuthor.new(@parsed_request,
-                                                      start_author_query)
+      Audit::DefinedQuery::WhereClause::ForAuthor.new(
+        @parsed_request,
+        start_author_query,
+      )
     author_where_clauses.sql
   end
 
   def name_query
     start_name_query = Name.all
     name_where_clauses =
-      Audit::DefinedQuery::WhereClause::ForName.new(@parsed_request,
-                                                    start_name_query)
+      Audit::DefinedQuery::WhereClause::ForName.new(
+        @parsed_request,
+        start_name_query,
+      )
     name_where_clauses.sql
   end
 
   def reference_query
     start_reference_query = Reference.all
     reference_where_clauses =
-      Audit::DefinedQuery::WhereClause::ForReference.new(@parsed_request,
-                                                         start_reference_query)
+      Audit::DefinedQuery::WhereClause::ForReference.new(
+        @parsed_request,
+        start_reference_query,
+      )
     reference_where_clauses.sql
   end
 
   def instance_query
     start_instance_query = Instance.all
     instance_where_clauses =
-      Audit::DefinedQuery::WhereClause::ForInstance.new(@parsed_request,
-                                                        start_instance_query)
+      Audit::DefinedQuery::WhereClause::ForInstance.new(
+        @parsed_request,
+        start_instance_query,
+      )
     instance_where_clauses.sql
   end
 
   def run_query
     @results = author_query.to_a +
-               name_query.to_a +
-               reference_query.to_a +
-               instance_query.to_a
+      name_query.to_a +
+      reference_query.to_a +
+      instance_query.to_a
   end
 end

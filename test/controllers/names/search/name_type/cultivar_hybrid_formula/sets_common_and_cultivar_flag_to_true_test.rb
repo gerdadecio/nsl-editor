@@ -26,21 +26,25 @@ class NameTypeSrchCultHybFormSetsCommCultFlagAutoT < ActionController::TestCase
     skip # Expect this to be no longer needed under revised search.
     cultivar_hybrid_formula = names(:a_cultivar_hybrid_formula)
     # Set the common-and-cultivar flag to false.
-    get(:search,
-        params: ActiveSupport::HashWithIndifferentAccess.new(
-          query_string: "nt:cultivar hybrid formula",
-          query_target: "name"
-        ),
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :search,
+      params: ActiveSupport::HashWithIndifferentAccess.new(
+        query_string: "nt:cultivar hybrid formula",
+        query_target: "name",
+      ),
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     # assert_select "input.checkbox[type=checkbox]
     #               [id=query_common_and_cultivar][value=t]",
     #               true,
     #               "The query-common-and-cultivar checkbox should be true"
     assert_select "tr[id=search-result-#{cultivar_hybrid_formula.id}]",
-                  true,
-                  "Should find one cultivar hybrid formula at least"
+      true,
+      "Should find one cultivar hybrid formula at least"
   end
 end

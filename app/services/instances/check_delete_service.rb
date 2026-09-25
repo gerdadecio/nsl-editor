@@ -25,12 +25,18 @@ module Instances
     def execute
       row = ActiveRecord::Base.connection.select_one(
         ActiveRecord::Base.sanitize_sql(
-          ["SELECT action_code, delete_action, explanation
-            FROM check_delete_instance(?)", @instance.id]
-        )
+          [
+            "SELECT action_code, delete_action, explanation
+            FROM check_delete_instance(?)",
+            @instance.id
+          ],
+        ),
       )
-      @result = Result.new(row["action_code"], row["delete_action"],
-        row["explanation"])
+      @result = Result.new(
+        row["action_code"],
+        row["delete_action"],
+        row["explanation"],
+      )
     end
   end
 end

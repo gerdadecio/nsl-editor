@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe NameRank, type: :model do
+RSpec.describe(NameRank, type: :model) do
   # Every rank here is built with a display_name that differs from its name, so
   # each example proves which column the option label comes from.
   let(:name_group) { create(:name_group) }
@@ -14,7 +14,7 @@ RSpec.describe NameRank, type: :model do
       display_name: "#{name} display",
       sort_order: sort_order,
       deprecated: deprecated,
-      name_group: name_group
+      name_group: name_group,
     )
   end
 
@@ -29,35 +29,35 @@ RSpec.describe NameRank, type: :model do
 
   describe "#below_family?" do
     it "is true for a rank sorted below family" do
-      expect(genus).to be_below_family
-      expect(species).to be_below_family
+      expect(genus).to(be_below_family)
+      expect(species).to(be_below_family)
     end
 
     it "is false for the family rank itself" do
-      expect(familia).not_to be_below_family
+      expect(familia).not_to(be_below_family)
     end
 
     it "is false for a rank sorted above family" do
-      expect(regnum).not_to be_below_family
+      expect(regnum).not_to(be_below_family)
     end
 
     context "when there is no family rank" do
       before { described_class.where(name: "Familia").delete_all }
 
       it "is false instead of raising" do
-        expect { genus.below_family? }.not_to raise_error
-        expect(genus).not_to be_below_family
+        expect { genus.below_family? }.not_to(raise_error)
+        expect(genus).not_to(be_below_family)
       end
 
       it "lets #parent fall back to no parent" do
-        expect(genus.parent).to be_a NoParent
+        expect(genus.parent).to(be_a(NoParent))
       end
 
       it "lets .options_for_category return rank options instead of raising" do
         scientific = create(:name_category, valid_names: ["scientific"])
 
         expect { described_class.options_for_category(scientific, genus) }
-          .not_to raise_error
+          .not_to(raise_error)
       end
     end
   end
@@ -66,21 +66,21 @@ RSpec.describe NameRank, type: :model do
     subject(:options) { described_class.below_family_options }
 
     it "labels each option with the rank name, not the display name" do
-      expect(options).to eq [
+      expect(options).to(eq([
         ["Genus", genus.id],
         ["Species", species.id],
         ["Varietas", varietas.id],
         ["[unranked]", unranked.id],
         ["[infraspecies]", infraspecies.id]
-      ]
+      ]))
     end
 
     it "excludes ranks at or above family" do
-      expect(options.collect(&:first)).not_to include("Familia", "Regnum")
+      expect(options.collect(&:first)).not_to(include("Familia", "Regnum"))
     end
 
     it "excludes deprecated ranks" do
-      expect(options.collect(&:first)).not_to include("Forma")
+      expect(options.collect(&:first)).not_to(include("Forma"))
     end
   end
 
@@ -88,14 +88,14 @@ RSpec.describe NameRank, type: :model do
     subject(:options) { described_class.above_family_options }
 
     it "labels each option with the rank name, not the display name" do
-      expect(options).to eq [
+      expect(options).to(eq([
         ["Regnum", regnum.id],
         ["Familia", familia.id]
-      ]
+      ]))
     end
 
     it "excludes ranks below family" do
-      expect(options.collect(&:first)).not_to include("Genus", "Species")
+      expect(options.collect(&:first)).not_to(include("Genus", "Species"))
     end
   end
 
@@ -103,19 +103,19 @@ RSpec.describe NameRank, type: :model do
     subject(:options) { described_class.cultivar_options }
 
     it "labels each option with the rank name, not the display name" do
-      expect(options).to eq [
+      expect(options).to(eq([
         ["Species", species.id],
         ["Varietas", varietas.id],
         ["[unranked]", unranked.id]
-      ]
+      ]))
     end
 
     it "excludes bracketed ranks other than [unranked]" do
-      expect(options.collect(&:first)).not_to include("[infraspecies]")
+      expect(options.collect(&:first)).not_to(include("[infraspecies]"))
     end
 
     it "excludes ranks above species" do
-      expect(options.collect(&:first)).not_to include("Genus", "Familia")
+      expect(options.collect(&:first)).not_to(include("Genus", "Familia"))
     end
   end
 
@@ -123,15 +123,15 @@ RSpec.describe NameRank, type: :model do
     subject(:options) { described_class.cultivar_hybrid_options }
 
     it "labels each option with the rank name, not the display name" do
-      expect(options).to eq [
+      expect(options).to(eq([
         ["Species", species.id],
         ["Varietas", varietas.id],
         ["[unranked]", unranked.id]
-      ]
+      ]))
     end
 
     it "excludes bracketed ranks other than [unranked]" do
-      expect(options.collect(&:first)).not_to include("[infraspecies]")
+      expect(options.collect(&:first)).not_to(include("[infraspecies]"))
     end
   end
 
@@ -141,21 +141,21 @@ RSpec.describe NameRank, type: :model do
     it "uses the below-family options when the current rank is below family" do
       options = described_class.options_for_category(scientific, species)
 
-      expect(options).to eq described_class.below_family_options
-      expect(options.collect(&:first)).to include("Genus", "Species")
+      expect(options).to(eq(described_class.below_family_options))
+      expect(options.collect(&:first)).to(include("Genus", "Species"))
     end
 
     it "uses the above-family options when the current rank is family" do
       options = described_class.options_for_category(scientific, familia)
 
-      expect(options).to eq described_class.above_family_options
-      expect(options.collect(&:first)).to eq %w[Regnum Familia]
+      expect(options).to(eq(described_class.above_family_options))
+      expect(options.collect(&:first)).to(eq(["Regnum", "Familia"]))
     end
   end
 
   describe ".options" do
     it "still labels each option with the display name" do
-      expect(described_class.options).to eq [
+      expect(described_class.options).to(eq([
         ["Regnum display", regnum.id],
         ["Familia display", familia.id],
         ["Genus display", genus.id],
@@ -163,7 +163,7 @@ RSpec.describe NameRank, type: :model do
         ["Varietas display", varietas.id],
         ["[unranked] display", unranked.id],
         ["[infraspecies] display", infraspecies.id]
-      ]
+      ]))
     end
   end
 end

@@ -97,6 +97,7 @@ class Reference < ApplicationRecord
   include Reference::IsoDateParts
   include Reference::RefTypeValidations
   include Reference::Citations
+
   require "open-uri"
   self.table_name = "reference"
   self.primary_key = "id"
@@ -107,8 +108,8 @@ class Reference < ApplicationRecord
   has_many :products, foreign_key: "reference_id"
 
   before_validation :set_defaults
-  before_create :set_defaults
   before_save :validate
+  before_create :set_defaults
 
   def children?
     children.size.positive?
@@ -140,7 +141,7 @@ class Reference < ApplicationRecord
   end
 
   def pages_useless?
-    pages.blank? || pages.match(/\Anull - null\z/)
+    pages.blank? || pages == "null - null"
   end
 
   def self.find_authors
@@ -160,7 +161,7 @@ class Reference < ApplicationRecord
   end
 
   def duplicate?
-    !duplicate_of_id.blank?
+    duplicate_of_id.present?
   end
 
   def published?
@@ -175,13 +176,13 @@ class Reference < ApplicationRecord
 
   def parent_has_same_author?
     parent && author.name
-                    .match(/\A#{Regexp.escape(parent.author.name)}\z/)
-                    .positive?
+      .match(/\A#{Regexp.escape(parent.author.name)}\z/)
+      .positive?
   end
 
   def typeahead_display_value
     type = ref_type.name.downcase
-    "#{citation} |#{' [' + pages + ']' unless pages_useless?} [#{type}]"
+    "#{citation} |#{" [" + pages + "]" unless pages_useless?} [#{type}]"
   end
 
   def self.count_search_results(raw)
@@ -201,7 +202,7 @@ class Reference < ApplicationRecord
   end
 
   def part_parent_year
-    return nil unless ref_type.part?
+    return unless ref_type.part?
 
     parent.iso_publication_date
   end
@@ -212,6 +213,6 @@ class Reference < ApplicationRecord
 
   def self.ref_types
     sql = "select rt.name, count(*) total from reference r join ref_type rt on r.ref_type_id = rt.id group by rt.name order by rt.name"
-    records_array = ActiveRecord::Base.connection.execute(sql)
+    ActiveRecord::Base.connection.execute(sql)
   end
 end

@@ -23,7 +23,7 @@ class AuthTypeaheadsOnNameDupeOfDuplicatesExcludedTest < ActiveSupport::TestCase
   test "author typeahead on name duplicate of duplicates excluded" do
     duplicate = authors(:schlechter_a_duplicate)
     results = Author::AsTypeahead.on_name_duplicate_of("s", -1)
-    assert !results.collect { |r| r[:id] }.include?(duplicate.id.to_s),
-           "Duplicate author should not be in typeahead"
+    assert_not results.collect { |r| r[:id] }.include?(duplicate.id.to_s),
+      "Duplicate author should not be in typeahead"
   end
 end

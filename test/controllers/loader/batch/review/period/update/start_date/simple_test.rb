@@ -25,26 +25,35 @@ class BatchReviewPeriodUpdateStartDateSimpleTest < ActionController::TestCase
   test "update batch review period start date simple" do
     @request.headers["Accept"] = "application/javascript"
     target = loader_batch_batch_review_batch_review_period(:review_period_one)
-    patch(:update,
-          params: { id: target.id,
-                    "loader_batch_review_period"=>{"id"=>target.id,
-                                                   "batch_review_id"=>target.batch_review.id,
-                                                   "name"=>"Review Period One",
-                                                   "start_date(3i)"=>Date.today.day.to_s,
-                                                   "start_date(2i)"=>Date.today.month.to_s,
-                                                   "start_date(1i)"=>Date.today.year.to_s,
-                                                   "end_date(3i)"=>Date.today.next_week.day.to_s,
-                                                   "end_date(2i)"=>Date.today.next_week.month.to_s,
-                                                   "end_date(1i)"=>Date.today.next_week.year.to_s
-                    },
-                   "commit"=>"Save"},
-         session: { username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: ["batch-loader"] })
+    patch(
+      :update,
+      params: {
+        id: target.id,
+        "loader_batch_review_period" => {
+          "id" => target.id,
+          "batch_review_id" => target.batch_review.id,
+          "name" => "Review Period One",
+          "start_date(3i)" => Date.today.day.to_s,
+          "start_date(2i)" => Date.today.month.to_s,
+          "start_date(1i)" => Date.today.year.to_s,
+          "end_date(3i)" => Date.today.next_week.day.to_s,
+          "end_date(2i)" => Date.today.next_week.month.to_s,
+          "end_date(1i)" => Date.today.next_week.year.to_s,
+        },
+        "commit" => "Save",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["batch-loader"],
+      },
+    )
     assert_response :success
-    updated = Loader::Batch::Review::Period.find(target.id)
-    assert_match(/Updated/,
-                 response.body.to_s,
-                 "Expected updated message not found")
+    Loader::Batch::Review::Period.find(target.id)
+    assert_match(
+      /Updated/,
+      response.body.to_s,
+      "Expected updated message not found",
+    )
   end
 end

@@ -25,18 +25,18 @@
 #
 class Search::OnName::Base
   attr_reader :names,
-              :limited,
-              :info_for_display,
-              :rejected_pairings,
-              :common_and_cultivar_included,
-              :has_relation,
-              :relation,
-              :id,
-              :count,
-              :show_csv,
-              :results,
-              :summary,
-              :total
+    :limited,
+    :info_for_display,
+    :rejected_pairings,
+    :common_and_cultivar_included,
+    :has_relation,
+    :relation,
+    :id,
+    :count,
+    :show_csv,
+    :results,
+    :summary,
+    :total
 
   def initialize(parsed_request)
     @parsed_request = parsed_request
@@ -91,14 +91,14 @@ class Search::OnName::Base
 
   def include_instances
     @results = if @parsed_request.include_instances && @parsed_request.show_instances
-                 Search::OnName::WithInstances.new(@names).names_with_instances
-               else
-                 @names.to_a
-               end
+      Search::OnName::WithInstances.new(@names).names_with_instances
+    else
+      @names.to_a
+    end
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnName::Base: #{s}")
+    Rails.logger.debug { "Search::OnName::Base: #{s}" }
   end
 
   def csv?

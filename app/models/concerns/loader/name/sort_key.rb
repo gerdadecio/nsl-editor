@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::SortKey
   extend ActiveSupport::Concern
 
@@ -11,42 +13,43 @@ module Loader::Name::SortKey
   end
 
   def should_reset_sort_key?
-    return false if %w(in-batch-note in-batch-compile-note heading).include? record_type
-    return true if self.changed? && !self.changes_to_save.keys.include?('sort_key')
+    return false if ["in-batch-note", "in-batch-compile-note", "heading"].include?(record_type)
+    return true if changed? && !changes_to_save.keys.include?("sort_key")
+
     false
   end
 
   def set_sort_key
-    normalise_sort_key unless sort_key.blank?
-    case record_type
+    normalise_sort_key if sort_key.present?
+    self.sort_key = case record_type
     when "accepted"
       if rank.downcase == "family"
-        self.sort_key = "#{family.downcase}.family"
+        "#{family.downcase}.family"
       else
-        self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase} #{'1genus' if rank == 'genus'}"
+        "#{family.downcase}.family.#{record_type}.#{simple_name.downcase} #{"1genus" if rank == "genus"}"
       end
     when "excluded"
       if rank.downcase == "family"
-        self.sort_key = "#{family.downcase}.family"
+        "#{family.downcase}.family"
       else
-        self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase} #{'1genus' if rank == 'genus'}"
+        "#{family.downcase}.family.#{record_type}.#{simple_name.downcase} #{"1genus" if rank == "genus"}"
       end
     when "synonym"
-      self.sort_key = synonym_sort_key(parent.sort_key)
+      synonym_sort_key(parent.sort_key)
     when "misapplied"
-      self.sort_key = misapp_sort_key(parent.sort_key)
+      misapp_sort_key(parent.sort_key)
     when "heading"
-      self.sort_key = if rank.blank? || rank.downcase == "family"
-                        "#{family.downcase}.family"
-                      else
-                        "aaa-rank-#{rank}-heading"
-                      end
+      if rank.blank? || rank.downcase == "family"
+        "#{family.downcase}.family"
+      else
+        "aaa-rank-#{rank}-heading"
+      end
     when "in-batch-note"
-      self.sort_key = in_batch_note_sort_key
+      in_batch_note_sort_key
     when "in-batch-compiler-note"
-      self.sort_key = in_batch_compiler_note_sort_key
+      in_batch_compiler_note_sort_key
     else
-      self.sort_key = "aaaaaa-unexpected-record-type-#{record_type}"
+      "aaaaaa-unexpected-record-type-#{record_type}"
     end
   rescue StandardError => e
     puts e
@@ -59,8 +62,8 @@ module Loader::Name::SortKey
   # to place it under its parent, but not enough to determine its sorting
   # position within other synonyms for that parent.
   def set_short_sort_key
-    normalise_sort_key unless sort_key.blank?
-    if sort_key.blank? && record_type == 'synonym'
+    normalise_sort_key if sort_key.present?
+    if sort_key.blank? && record_type == "synonym"
       self.sort_key = synonym_short_sort_key(parent.sort_key)
     end
   rescue StandardError => e

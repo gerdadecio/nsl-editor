@@ -24,17 +24,19 @@ load "test/models/search/users.rb"
 # This really just tests that the directive is understood
 class SearchLoaderNameDirectivesNotInAcceptedTaxonomyTest < ActiveSupport::TestCase
   test "search loader name directive not in accepted taxonomy" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "loader_names",
-                                                          query_string:
-                                                          "not-in-accepted-taxonomy: batch-id: 3",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "loader_names",
+      query_string:
+            "not-in-accepted-taxonomy: batch-id: 3",
+      current_user:
+            build_edit_user,
+    )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 0,
-                 search.executed_query.results.size,
-                 "Exactly 0 result is expected."
+      search.executed_query.results.size,
+      "Exactly 0 result is expected."
   end
 end

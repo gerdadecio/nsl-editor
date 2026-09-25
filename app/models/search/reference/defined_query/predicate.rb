@@ -18,19 +18,19 @@
 #
 class Search::Reference::DefinedQuery::Predicate
   attr_reader :canon_field,
-              :canon_value,
-              :trailing_wildcard,
-              :leading_wildcard,
-              :multiple_values,
-              :predicate,
-              :value_frequency,
-              :processed_value,
-              :tokenize,
-              :field,
-              :value,
-              :has_scope,
-              :scope_,
-              :order
+    :canon_value,
+    :trailing_wildcard,
+    :leading_wildcard,
+    :multiple_values,
+    :predicate,
+    :value_frequency,
+    :processed_value,
+    :tokenize,
+    :field,
+    :value,
+    :has_scope,
+    :scope_,
+    :order
 
   def initialize(field, value)
     @field = field
@@ -46,7 +46,7 @@ class Search::Reference::DefinedQuery::Predicate
   end
 
   def debug(s)
-    Rails.logger.debug("Search::Reference::Predicate - #{s}")
+    Rails.logger.debug { "Search::Reference::Predicate - #{s}" }
   end
 
   def inspect
@@ -70,10 +70,10 @@ class Search::Reference::DefinedQuery::Predicate
   def apply_scope
     @has_scope = @scope_.present?
     @value_frequency = if @has_scope
-                         1
-                       else
-                         @predicate.count("?")
-                       end
+      1
+    else
+      @predicate.count("?")
+    end
   end
 
   def process_value
@@ -99,12 +99,8 @@ class Search::Reference::DefinedQuery::Predicate
   end
 
   def build_is_null_predicate(rule)
-    if rule[:not_exists_clause].present?
-      rule[:not_exists_clause]
-    else
-      rule[:where_clause].gsub("= ?", "is null")
-                         .gsub("like lower(?)", "is null")
-    end
+    rule[:not_exists_clause].presence || rule[:where_clause].gsub("= ?", "is null")
+      .gsub("like lower(?)", "is null")
   end
 
   def build_canon_value(val)
@@ -121,7 +117,7 @@ class Search::Reference::DefinedQuery::Predicate
     if Search::Reference::FieldRule::RULES.key?(field)
       field
     elsif Search::Reference::FieldRule::RULES.key?(
-      Search::Reference::FieldAbbrev::ABBREVS[field]
+      Search::Reference::FieldAbbrev::ABBREVS[field],
     )
       Search::Reference::FieldAbbrev::ABBREVS[field]
     else

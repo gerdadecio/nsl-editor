@@ -1,4 +1,6 @@
-#efrozen_string_literal: true
+# frozen_string_literal: true
+
+# efrozen_string_literal: true
 
 #   Copyright 2015 Australian National Botanic Gardens
 #
@@ -29,11 +31,15 @@ class NewSessionUnknownUserUpperCaseCreatesUserRecordTest < ActionController::Te
 
   test "new session for unknown user upper case creates user record" do
     assert_difference("User.count") do
-      get(:search,
-          params: {},
-          session: { username: @unknown_user_name,
-                     user_full_name: @unknown_user_full_name,
-                     groups: [:login] })
+      get(
+        :search,
+        params: {},
+        session: {
+          username: @unknown_user_name,
+          user_full_name: @unknown_user_full_name,
+          groups: [:login],
+        },
+      )
       assert_response :success
     end
     assert assigns(:current_registered_user), "Current registered user should be assigned"

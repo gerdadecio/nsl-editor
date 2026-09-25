@@ -26,17 +26,17 @@ class ParentSuggestionsUrlTest < ActionView::TestCase
 
   test "sends a hybrid name to the hybrid parent endpoint" do
     assert_equal "/suggestions/name/hybrid_parent.html",
-                 parent_suggestions_url_for(names(:hybrid_formula))
+      parent_suggestions_url_for(names(:hybrid_formula))
   end
 
   test "sends a cultivar name to the cultivar parent endpoint" do
     assert_equal "/suggestions/name/cultivar_parent.html",
-                 parent_suggestions_url_for(names(:a_cultivar))
+      parent_suggestions_url_for(names(:a_cultivar))
   end
 
   test "sends every other name to the general parent endpoint" do
     assert_equal "/names/name_parent_suggestions.html",
-                 parent_suggestions_url_for(names(:a_species))
+      parent_suggestions_url_for(names(:a_species))
   end
 
   # The endpoints answer json unless asked for html by extension - see
@@ -51,11 +51,11 @@ class ParentSuggestionsUrlTest < ActionView::TestCase
   # used to decide by rendering one of two typeahead.js set-up calls.
   test "sends a cultivar hybrid's second parent to the cultivar parent endpoint" do
     assert_equal "/suggestions/name/cultivar_parent.html",
-                 second_parent_suggestions_url_for(names(:a_cultivar_hybrid))
+      second_parent_suggestions_url_for(names(:a_cultivar_hybrid))
   end
 
   test "sends any other hybrid's second parent to the hybrid parent endpoint" do
     assert_equal "/suggestions/name/hybrid_parent.html",
-                 second_parent_suggestions_url_for(names(:hybrid_formula))
+      second_parent_suggestions_url_for(names(:hybrid_formula))
   end
 end

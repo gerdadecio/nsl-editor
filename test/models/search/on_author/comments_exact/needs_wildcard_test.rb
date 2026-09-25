@@ -25,10 +25,10 @@ class SearchOnAuthorCommentsExactNeedsWildcardTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "comments-exact: xy",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?,
-           "No author with comment for comments-exact search expected."
+      "No author with comment for comments-exact search expected."
   end
 end

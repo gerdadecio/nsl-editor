@@ -23,12 +23,14 @@ load "test/models/search/users.rb"
 # Single Search model test.
 class SearchLoaderNameWithXBatchIdTest < ActiveSupport::TestCase
   test "search loader name with xbatch-id" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "loader_names",
-                                                          query_string:
-                                                          "* xbatch-id:",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "loader_names",
+      query_string:
+            "* xbatch-id:",
+      current_user:
+            build_edit_user,
+    )
 
     # TODO: rails 7.1 has a better way
     # https://blog.saeloun.com/2023/07/17/

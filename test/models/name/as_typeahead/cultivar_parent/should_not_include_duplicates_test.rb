@@ -23,10 +23,12 @@ class CultivarParentSuggestsShldNotIncludeDupesTest < ActiveSupport::TestCase
   test "name parent suggestions should not include duplicates" do
     suggestions = Name::AsTypeahead.cultivar_parent_suggestions(
       "a duplicate species",
-      -1
+      -1,
     )
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert(suggestions.empty?,
-           'suggestions for "a duplicate species" should be empty')
+    assert(
+      suggestions.empty?,
+      'suggestions for "a duplicate species" should be empty',
+    )
   end
 end

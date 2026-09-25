@@ -28,15 +28,15 @@ class SimpleSearchForOUmlaut < ActiveSupport::TestCase
       query_target: "name",
       query_string: "belonia Körb.",
       include_common_and_cultivar_session: true,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result is expected."
+      search.executed_query.results.size,
+      "Exactly 1 result is expected."
     assert_equal names(:belonia_korb_with_diacrit).full_name,
-                 search.executed_query.results.first[:full_name]
+      search.executed_query.results.first[:full_name]
   end
 
   test "simple search for o umlaut with just o" do
@@ -44,14 +44,14 @@ class SimpleSearchForOUmlaut < ActiveSupport::TestCase
       query_target: "name",
       query_string: "belonia Korb.",
       include_common_and_cultivar_session: true,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result is expected."
+      search.executed_query.results.size,
+      "Exactly 1 result is expected."
     assert_equal names(:belonia_korb_with_diacrit).full_name,
-                 search.executed_query.results.first[:full_name]
+      search.executed_query.results.first[:full_name]
   end
 end

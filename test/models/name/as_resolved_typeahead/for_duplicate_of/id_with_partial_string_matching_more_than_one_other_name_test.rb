@@ -23,11 +23,13 @@ class NameARTA4DupeOfIdWPartStrMatchMoreThan1OtherName < ActiveSupport::TestCase
   test "duplicate of id with partial string matching more than 1 other name" do
     name_1 = names(:name_matches_another_1)
     name_2 = names(:name_matches_another_1)
-    assert_raise(RuntimeError,
-                 "Should fail - string does not identify just one name") do
+    assert_raise(
+      RuntimeError,
+      "Should fail - string does not identify just one name",
+    ) do
       Name::AsResolvedTypeahead::ForDuplicateOf.new(
         name_1.id.to_s,
-        name_2.full_name[0]
+        name_2.full_name[0],
       )
     end
   end

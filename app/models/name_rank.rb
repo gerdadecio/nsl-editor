@@ -89,8 +89,8 @@ class NameRank < ApplicationRecord
   scope :not_deprecated, -> { where(deprecated: false) }
 
   scope :infraspecific,
-        (lambda do
-          where("(name_rank.sort_order >= (select iga.sort_order
+    (lambda do
+      where("(name_rank.sort_order >= (select iga.sort_order
                                              from name_rank iga
                                             where name = 'Species')
                   and
@@ -101,11 +101,11 @@ class NameRank < ApplicationRecord
                   or name_rank.name = '[n/a]'
                   or name_rank.name = '[unknown]'
                   or name_rank.name = '[unranked]' ")
-        end)
+    end)
 
   scope :infrageneric,
-        (lambda do
-          where("(name_rank.sort_order >= (select iga.sort_order
+    (lambda do
+      where("(name_rank.sort_order >= (select iga.sort_order
                                              from name_rank iga
                                             where name = 'Genus')
                   and
@@ -114,11 +114,11 @@ class NameRank < ApplicationRecord
                                            where name = 'Species') )
                   or name_rank.name = '[infragenus]'
                   or name_rank.name = '[unranked]' ")
-        end)
+    end)
 
   scope :infrafamilial,
-        (lambda do
-          where("(name_rank.sort_order >= (select iga.sort_order
+    (lambda do
+      where("(name_rank.sort_order >= (select iga.sort_order
                                              from name_rank iga
                                             where name = 'Familia')
                   and
@@ -127,7 +127,7 @@ class NameRank < ApplicationRecord
                                            where name = 'Genus') )
                  or name_rank.name = '[infrafamily]'
                  or name_rank.name = '[unranked]' ")
-        end)
+    end)
 
   def self.default
     NameRank.where(name: "Species").push(NameRank.first).first
@@ -214,15 +214,15 @@ class NameRank < ApplicationRecord
   end
 
   def family?
-    !name.match(/\A#{FAMILY}\z/).nil?
+    !name.match(/\A#{FAMILY}\z/o).nil?
   end
 
   def species?
-    !name.match(/\A#{SPECIES}\z/).nil?
+    !name.match(/\A#{SPECIES}\z/o).nil?
   end
 
   def genus?
-    !name.match(/\A#{GENUS}\z/).nil?
+    !name.match(/\A#{GENUS}\z/o).nil?
   end
 
   def self.not_applicable
@@ -230,33 +230,51 @@ class NameRank < ApplicationRecord
   end
 
   def na?
-    !name.match(/\A#{Regexp.escape(NA)}\z/).nil?
+    !name.match(/\A#{Regexp.escape(NA)}\z/o).nil?
   end
 
   def unranked?
-    !name.match(/\A#{Regexp.escape(UNRANKED)}\z/).nil?
+    !name.match(/\A#{Regexp.escape(UNRANKED)}\z/o).nil?
   end
 
   def infrafamily?
-    !name.match(/\A#{Regexp.escape(INFRAFAMILY)}\z/).nil?
+    !name.match(/\A#{Regexp.escape(INFRAFAMILY)}\z/o).nil?
   end
 
   def infragenus?
-    !name.match(/\A#{Regexp.escape(INFRAGENUS)}\z/).nil?
+    !name.match(/\A#{Regexp.escape(INFRAGENUS)}\z/o).nil?
   end
 
   def infraspecies?
-    uname.match(/\A#{Regexp.escape(INFRASPECIES)}\z/).nil?
+    uname.match(/\A#{Regexp.escape(INFRASPECIES)}\z/o).nil?
   end
 
   def infraspecific?
-    [SPECIES, SUBSPECIES, NOTHOVARIETAS, VARIETAS, SUBVARIETAS, FORMA, SUBFORMA,
-     INFRASPECIES, NOTHOMORPH, MORPHOLOGICAL_VAR].include?(name)
+    [
+      SPECIES,
+      SUBSPECIES,
+      NOTHOVARIETAS,
+      VARIETAS,
+      SUBVARIETAS,
+      FORMA,
+      SUBFORMA,
+      INFRASPECIES,
+      NOTHOMORPH,
+      MORPHOLOGICAL_VAR
+    ].include?(name)
   end
 
   def infrageneric?
-    [GENUS, SUBGENUS, SECTIO, SUBSECTIO, SERIES, SUBSERIES, SUPERSPECIES,
-     INFRAGENUS].include?(name)
+    [
+      GENUS,
+      SUBGENUS,
+      SECTIO,
+      SUBSECTIO,
+      SERIES,
+      SUBSERIES,
+      SUPERSPECIES,
+      INFRAGENUS
+    ].include?(name)
   end
 
   def infrafamilial?
@@ -306,7 +324,6 @@ class NameRank < ApplicationRecord
     sort_order >= NameRank.genus.sort_order
   end
 
-
   # NOTE: greater than means below!
   def below_family?
     return false if NameRank.family.blank?
@@ -339,7 +356,7 @@ class NameRank < ApplicationRecord
   end
 
   def not_bracketed?
-    !(name.match(/\[/))
+    !name.match(/\[/)
   end
 
   def can_impact_child_name_construction?

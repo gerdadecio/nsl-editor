@@ -16,8 +16,8 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     return parent_no_standalone if @loader_name.parent.preferred_match.try("standalone_instance_id").blank?
     return no_misapplied_type if @loader_name.synonym_type.blank?
     return no_relationship_instance_type if @match
-                                            .relationship_instance_type_id
-                                            .blank?
+      .relationship_instance_type_id
+      .blank?
 
     create_misapp_instance
   rescue StandardError => e
@@ -29,39 +29,39 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     entry = "#{Constants::FAILED_INSTANCE} for #{@loader_name.simple_name} "
     entry += "#{@loader_name.id} - error in make_one_misapp_instance: #{error}"
     log_to_table(entry)
-    {errors: 1, errors_reasons: {"#{error}": 1}}
+    { errors: 1, errors_reasons: { "#{error}": 1 } }
   end
 
   def no_relationship_instance_type
     log_to_table(declined_entry("No relationship instance type id "))
-    {declines: 1, declines_reasons: {no_relationship_instance_type_id: 1}}
+    { declines: 1, declines_reasons: { no_relationship_instance_type_id: 1 } }
   end
 
   def parent_no_standalone
     log_to_table(declined_entry(
-                   "parent has no standalone instance so cannot proceed"
-                 ))
-    {declines: 1, declines_reasons: {parent_has_no_standalone_instance: 1}}
+      "parent has no standalone instance so cannot proceed",
+    ))
+    { declines: 1, declines_reasons: { parent_has_no_standalone_instance: 1 } }
   end
 
   def no_misapplied_type
     log_to_table(declined_entry(
-                   "record has no misapplied type so cannot proceed"
-                 ))
-    {declines: 1, declines_reasons: {record_has_no_misapplied_type: 1}}
+      "record has no misapplied type so cannot proceed",
+    ))
+    { declines: 1, declines_reasons: { record_has_no_misapplied_type: 1 } }
   end
 
   def already_noted
     log_to_table(declined_entry(
-                   "relationship instance already noted (##{@match.relationship_instance_id})"
-                 ))
-    {declines: 1, declines_reasons: {relationship_instance_already_noted: 1}}
+      "relationship instance already noted (##{@match.relationship_instance_id})",
+    ))
+    { declines: 1, declines_reasons: { relationship_instance_already_noted: 1 } }
   end
 
   def misapp_already_attached
     record_misapp_already_there
     log_to_table(declined_entry("misapplied instance already there"))
-    {declines: 1, declines_reasons: {misapplied_instance_already_there: 1}}
+    { declines: 1, declines_reasons: { misapplied_instance_already_there: 1 } }
   end
 
   def declined_entry(message)
@@ -73,15 +73,15 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     return false if @loader_name.parent.loader_name_matches.first.try("standalone_instance_id").blank?
 
     instances = Instance.where(name_id: @match.name_id)
-                        .where(cites_id: @match.instance_id)
-                        .where(cited_by_id: @loader_name.parent.loader_name_matches.first.try("standalone_instance_id"))
-    !instances.blank?
+      .where(cites_id: @match.instance_id)
+      .where(cited_by_id: @loader_name.parent.loader_name_matches.first.try("standalone_instance_id"))
+    instances.present?
   end
 
   def record_misapp_already_there
     instances = Instance.where(name_id: @match.name_id)
-                        .where(cites_id: @match.instance_id)
-                        .where(cited_by_id: @loader_name.parent.loader_name_matches.first.try("standalone_instance_id"))
+      .where(cites_id: @match.instance_id)
+      .where(cited_by_id: @loader_name.parent.loader_name_matches.first.try("standalone_instance_id"))
     @match.relationship_instance_found = true
     @match.relationship_instance_id = instances.first.id
     @match.created_by = @match.updated_by = "bulk for #{@user}"
@@ -94,17 +94,17 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     new_instance.draft = false
     new_instance.cited_by_id = @loader_name.parent.loader_name_matches.first.standalone_instance_id
     new_instance.reference_id = @loader_name.parent.loader_name_matches.first.standalone_instance.reference_id
-    new_instance.cites_id = @match.instance_id unless @loader_name.synonym_type.match(/unsourced/)
+    new_instance.cites_id = @match.instance_id unless /unsourced/.match?(@loader_name.synonym_type)
     new_instance.name_id = @match.instance.name_id
     new_instance.instance_type_id = @match.relationship_instance_type_id
     new_instance.created_by = new_instance.updated_by = "bulk for #{@user}"
     new_instance.save!
     note_misapp_created(new_instance)
-    {creates: 1}
+    { creates: 1 }
   rescue StandardError => e
     Rails.logger.error("MakeOneMisappInstance#create_misapp_instance: #{e}")
     failed(e)
-    {errors: 1, errors_reasons: {"#{e.to_s}": 1}}
+    { errors: 1, errors_reasons: { "#{e}": 1 } }
   end
 
   def note_misapp_created(instance)

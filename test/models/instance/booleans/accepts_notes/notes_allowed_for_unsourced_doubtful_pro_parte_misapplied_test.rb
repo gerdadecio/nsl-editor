@@ -23,6 +23,6 @@ class NotesAllowedForUnsourcedDoubtfulPPMisappliedTest < ActiveSupport::TestCase
   test "Notes allowed for unsourced doubtful pro parte misapplied" do
     instance = instances(:unsourced_doubtful_pro_parte_misapplied_example)
     assert instance.accepts_notes?,
-           "Unsourced doubtful pro parte misapplied should accept notes."
+      "Unsourced doubtful pro parte misapplied should accept notes."
   end
 end

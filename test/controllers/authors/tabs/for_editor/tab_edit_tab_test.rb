@@ -28,14 +28,18 @@ class AuthorEditorTabEditTest < ActionController::TestCase
   # Test for alias of show
   test "tab should give editor author edit tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:tab,
-        params: { id: @author.id, tab: "tab_edit" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :tab,
+      params: { id: @author.id, tab: "tab_edit" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_select "li.active a#author-edit-tab",
-                  "Edit",
-                  "Should show 'Edit' tab."
+      "Edit",
+      "Should show 'Edit' tab."
     assert_select "form", true
     assert_select "input#author_name", true
     assert_select "input#author_abbrev", true

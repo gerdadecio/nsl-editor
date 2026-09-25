@@ -22,9 +22,11 @@ require "test_helper"
 class NameAsEdNoParIdWPartValStrMatchingOneRecord < ActiveSupport::TestCase
   test "no id with partial valid string matching one record" do
     name = names(:the_regnum)
-    result = Name::AsResolvedTypeahead::ForParent.new("",
-                                                      name.full_name.chop,
-                                                      "parent")
+    result = Name::AsResolvedTypeahead::ForParent.new(
+      "",
+      name.full_name.chop,
+      "parent",
+    )
     assert_equal name.id, result.value, "Should get a matching id for the name"
   end
 end

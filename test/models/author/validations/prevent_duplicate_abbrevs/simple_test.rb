@@ -21,7 +21,7 @@ require "test_helper"
 # Single author model test.
 class AuthorPreventDuplicateAbbrevSimpleTest < ActiveSupport::TestCase
   test "author prevent duplicate abbrev" do
-    author = Author.where("abbrev is not null").first
+    author = Author.where.not(abbrev: nil).first
     dupe = Author.where("abbrev is null").first
     assert dupe.valid?, "Potential dupe with no abbrev should be valid."
     dupe.abbrev = author.abbrev

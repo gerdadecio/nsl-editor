@@ -27,15 +27,21 @@ class SearchRefsDQRefSharedNamesListOnly1RefIDTest < ActionController::TestCase
 
   test "reference shared names with only 1 ref id" do
     ref_1 = -1
-    get(:search,
-        params: { query_target: "references shared names",
-                  query_string: ref_1.to_s },
-        session: { username: @known_user.user_name,
-                   user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "references shared names",
+        query_string: ref_1.to_s,
+      },
+      session: {
+        username: @known_user.user_name,
+        user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /Exactly 2 reference IDs are expected./,
-                  "Should report Reference does not exist"
+      /Exactly 2 reference IDs are expected./,
+      "Should report Reference does not exist"
   end
 end

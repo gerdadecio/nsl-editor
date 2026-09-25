@@ -22,9 +22,12 @@ require "test_helper"
 class RefARTA4ParentNoIdWithValidString < ActiveSupport::TestCase
   test "no id with valid string" do
     reference = references(:origin_of_species)
-    result = Reference::AsResolvedTypeahead::ForParent.new("",
-                                                           reference.citation)
-    assert_equal reference.id, result.value,
-                 "Should get a matching id for the reference"
+    result = Reference::AsResolvedTypeahead::ForParent.new(
+      "",
+      reference.citation,
+    )
+    assert_equal reference.id,
+      result.value,
+      "Should get a matching id for the reference"
   end
 end

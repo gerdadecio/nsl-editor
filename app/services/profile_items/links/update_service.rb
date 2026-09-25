@@ -1,5 +1,6 @@
-class ProfileItems::Links::UpdateService < BaseService
+# frozen_string_literal: true
 
+class ProfileItems::Links::UpdateService < BaseService
   validate :draft_profile_item
 
   attr_reader :profile_item, :profile_text
@@ -29,6 +30,7 @@ class ProfileItems::Links::UpdateService < BaseService
 
   def draft_profile_item
     return if profile_item.is_draft
+
     errors.add(:base, "Cannot update a published profile item")
   end
 
@@ -46,7 +48,7 @@ class ProfileItems::Links::UpdateService < BaseService
       new_profile_item_reference = Profile::ProfileItemReference.new(
         profile_item_reference
           .attributes
-          .except("profile_item_id", "created_by", "updated_by", "created_at", "updated_at")
+          .except("profile_item_id", "created_by", "updated_by", "created_at", "updated_at"),
       )
       new_profile_item_reference.profile_item_id = profile_item.id
       new_profile_item_reference.current_user = user
@@ -63,7 +65,7 @@ class ProfileItems::Links::UpdateService < BaseService
     profile_item.assign_attributes(
       source_profile_item_id: nil,
       statement_type: Profile::ProfileItem::STATEMENT_TYPES[:fact],
-      profile_text_id: profile_text.id
+      profile_text_id: profile_text.id,
     )
     profile_item.save
     errors.merge!(profile_item.errors) if profile_item.errors.any?

@@ -27,15 +27,21 @@ class SrchRefsDefinedQuerRefIdWithInstCountHasInst < ActionController::TestCase
     # is now replaced by show-instances:, but there isn't a count
     # option for show instances.  If demand for one I can add it.
     ref = references(:bucket_reference_for_default_instances)
-    get(:search,
-        params: { query_target: "instances for ref id",
-                  query_string: "count #{ref.id}" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "instances for ref id",
+        query_string: "count #{ref.id}",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /29 records\b/,
-                  "Should show a correct count of records"
+      /29 records\b/,
+      "Should show a correct count of records"
   end
 end

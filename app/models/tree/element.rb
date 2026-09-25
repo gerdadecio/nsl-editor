@@ -63,6 +63,7 @@ class Tree::Element < ApplicationRecord
   include Tree::Element::Profile::Distribution::LowLevelOps
   include Tree::Element::Profile::Distribution::Tedes
   include Tree::Element::Profile::Comment
+
   self.table_name = "tree_element"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -72,12 +73,12 @@ class Tree::Element < ApplicationRecord
   belongs_to :name, class_name: "Name"
 
   has_many :tree_version_elements,
-           foreign_key: "tree_element_id"
+    foreign_key: "tree_element_id"
 
   has_and_belongs_to_many :tede_dist_entries,
-                          class_name: "DistEntry",
-                          join_table: "tree_element_distribution_entries",
-                          foreign_key: "tree_element_id"
+    class_name: "DistEntry",
+    join_table: "tree_element_distribution_entries",
+    foreign_key: "tree_element_id"
 
   def deprecated_utc_offset_s
     seconds_offset = Time.now.in_time_zone("Australia/Canberra").utc_offset
@@ -85,6 +86,6 @@ class Tree::Element < ApplicationRecord
     mins_offset = seconds_offset % 3600
     hours_offset_s = hours_offset.to_s.rjust(2, "0")
     mins_offset_s = mins_offset.to_s.rjust(2, "0")
-    utc_offset = "#{hours_offset_s}:#{mins_offset_s}"
+    "#{hours_offset_s}:#{mins_offset_s}"
   end
 end

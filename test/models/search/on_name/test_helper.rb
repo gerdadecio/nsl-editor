@@ -18,7 +18,9 @@
 #
 
 def confirm_results_class(results)
-  assert_equal Array,
-               results.class,
-               "Results should be an Array"
+  assert_equal(
+    Array,
+    results.class,
+    "Results should be an Array",
+  )
 end

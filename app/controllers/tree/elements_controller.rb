@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Tree::ElementsController < ApplicationController
-  before_action :find_tree_element, only: %i[show tab update_profile]
+  before_action :find_tree_element, only: [:show, :tab, :update_profile]
 
   # GET /tree_vesions/1
   # GET /tree_vesions/1/tab/:tab
@@ -28,10 +28,10 @@ class Tree::ElementsController < ApplicationController
     @tab_index = choose_index
     @take_focus = params[:take_focus] == "true"
     @tree_version = TreeVersion.find(params["tree-version-id"])
-    render "show", layout: false
+    render("show", layout: false)
   end
 
-  alias tab show
+  alias_method :tab, :show
 
   # Update a mini schema of data with optional fields in a jsonb structure.
   # This process is messy - jsonb not a good choice for data that changes imo.
@@ -50,14 +50,14 @@ class Tree::ElementsController < ApplicationController
     # comment part of the schema
     find_tree_element # Pick up refreshed data from database to avoid overwrite
     @comment_message, comment_refresh = @tree_element.update_comment(
-      tree_element_params[:comment_value].gsub("\n", " ").strip,
-      @current_user.username
+      tree_element_params[:comment_value].tr("\n", " ").strip,
+      @current_user.username,
     )
     @refresh = dist_refresh || comment_refresh
   rescue StandardError => e
     logger.error("Tree::ElementsController:update_profile:rescuing #{scope} exception #{e}")
     @message = "#{scope} update error: #{e}"
-    render :update_profile_error, status: :unprocessable_content
+    render(:update_profile_error, status: :unprocessable_content)
   end
 
   private
@@ -66,12 +66,15 @@ class Tree::ElementsController < ApplicationController
     @tree_element = Tree::Element.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the tree element."
-    redirect_to tree_elements_path
+    redirect_to(tree_elements_path)
   end
 
   def tree_element_params
-    params.require(:tree_element).permit(:draft_name, :distribution_value,
-                                         :comment_value)
+    params.require(:tree_element).permit(
+      :draft_name,
+      :distribution_value,
+      :comment_value,
+    )
   end
 
   def choose_tab

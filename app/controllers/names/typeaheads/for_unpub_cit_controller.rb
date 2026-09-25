@@ -20,7 +20,7 @@
 class Names::Typeaheads::ForUnpubCitController < ApplicationController
   def index
     typeahead = Name::AsTypeahead::ForUnpubCit.new(params)
-    render json: typeahead.suggestions
+    render(json: typeahead.suggestions)
   end
 
   private

@@ -22,7 +22,7 @@ require "test_helper"
 class InstanceTypeSecondaryReferenceType < ActiveSupport::TestCase
   test "instance type secondary reference" do
     assert_equal InstanceType.secondary_reference,
-                 instance_types(:secondary_reference),
-                 "There should be an instance type of secondary reference."
+      instance_types(:secondary_reference),
+      "There should be an instance type of secondary reference."
   end
 end

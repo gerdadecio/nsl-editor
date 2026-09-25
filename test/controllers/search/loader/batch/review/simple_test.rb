@@ -23,16 +23,20 @@ class SearchLoaderBatchReviewSimpleTest < ActionController::TestCase
   tests SearchController
 
   test "can search for batch reviews" do
-    get(:search,
-        params: { query_target: "batch reviews", query_string: "*" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [:login, :"batch-loader"] })
+    get(
+      :search,
+      params: { query_target: "batch reviews", query_string: "*" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [:login, :"batch-loader"],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /\b[0-9] records\b/,
-                  "Should find records for an author wildcard search"
-    assert_select "a.show-details-link", /WG Review for Batch One/,"Should find WG Review for Batch One"
-    assert_select "a.show-details-link", /WG Review for Batch Two/,"Should find WG Review for Batch Two"
+      /\b[0-9] records\b/,
+      "Should find records for an author wildcard search"
+    assert_select "a.show-details-link", /WG Review for Batch One/, "Should find WG Review for Batch One"
+    assert_select "a.show-details-link", /WG Review for Batch Two/, "Should find WG Review for Batch Two"
   end
 end

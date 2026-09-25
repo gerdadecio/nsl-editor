@@ -21,7 +21,7 @@ require "test_helper"
 module Profile
   class ProfileObjectTypeTest < ActiveSupport::TestCase
     def setup
-      @profile_object_type = profile_object_type(:profile_text_pot)  # Assuming fixtures are set up
+      @profile_object_type = profile_object_type(:profile_text_pot) # Assuming fixtures are set up
     end
 
     # Test associations

@@ -31,17 +31,22 @@ class Tree::Workspace::Placement < ActiveType::Object
 
   def place
     url = build_url
-    payload = { instanceUri: instance_url,
-                parentElementUri: parent_element_link,
-                excluded: excluded,
-                profile: profile,
-                versionId: version_id }
+    payload = {
+      instanceUri: instance_url,
+      parentElementUri: parent_element_link,
+      excluded: excluded,
+      profile: profile,
+      versionId: version_id,
+    }
     raise errors.full_messages.first unless valid?
 
-    logger.info "PLACEMENT calling #{url} WITH PAYLOAD: #{payload}"
+    logger.info("PLACEMENT calling #{url} WITH PAYLOAD: #{payload}")
 
-    RestClient.put(url, payload.to_json,
-                   { content_type: :json, accept: :json })
+    RestClient.put(
+      url,
+      payload.to_json,
+      { content_type: :json, accept: :json },
+    )
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::Workspace::Placement RestClient::ExceptionWithResponse error: #{e.message}")
     raise

@@ -30,38 +30,45 @@ require "test_helper"
 class TaxFormsTreeBuilderAPCUserCannotReplacePlacementOnFOADraftTest < ActionController::TestCase
   tests TreesController
 
-# r6editor Started PATCH "/nsl/editor/trees/612279/replace_placement" for ::1 at 2025-07-17 15:34:26 +1000 (pid:642)
-# r6editor Processing by TreesController#replace_placement as JS (pid:642)
-# Parameters: {"authenticity_token"=>"[FILTERED]",
- #             "move_placement"=>{"element_link"=>"/tree/52410589/52410631",
- #                                "instance_id"=>"612279",
- #                                "comment"=>"Subspecies are recognised in this species in Euclid... ",
- #                                "parent_name_typeahead_string"=>"Angophora Cav.",
- #                                "parent_element_link"=>"/tree/52410589/51230780",
- #                                "update"=>""},
- #            "id"=>"612279"}
+  # r6editor Started PATCH "/nsl/editor/trees/612279/replace_placement" for ::1 at 2025-07-17 15:34:26 +1000 (pid:642)
+  # r6editor Processing by TreesController#replace_placement as JS (pid:642)
+  # Parameters: {"authenticity_token"=>"[FILTERED]",
+  #             "move_placement"=>{"element_link"=>"/tree/52410589/52410631",
+  #                                "instance_id"=>"612279",
+  #                                "comment"=>"Subspecies are recognised in this species in Euclid... ",
+  #                                "parent_name_typeahead_string"=>"Angophora Cav.",
+  #                                "parent_element_link"=>"/tree/52410589/51230780",
+  #                                "update"=>""},
+  #            "id"=>"612279"}
   test "APC tree builder user cannot replace placement for taxon on FoA tree draft" do
     user = users(:apc_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    patch(:replace_placement,
-         params: {"move_placement"=>{"element_link"=>tve.element_link,
-                                     "instance_id"=>"12345",
-                                     "comment"=>"xyz comment",
-                                     "parent_name_typeahead_string"=>"Angophora Cav.",
-                                     "parent_element_link"=> tve.element_link,
-                                     "update"=>""},
-                   "id"=>"612279"},
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: foa_draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree builder should be not able to replace_placement on FOA draft entry'
-    assert_match 'You are not authorized to replace', response.body,
+    patch(
+      :replace_placement,
+      params: {
+        "move_placement" => {
+          "element_link" => tve.element_link,
+          "instance_id" => "12345",
+          "comment" => "xyz comment",
+          "parent_name_typeahead_string" => "Angophora Cav.",
+          "parent_element_link" => tve.element_link,
+          "update" => "",
+        },
+        "id" => "612279",
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: foa_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree builder should be not able to replace_placement on FOA draft entry"
+    assert_match "You are not authorized to replace",
+      response.body,
       "Expecting Not authorized message"
-
   end
 end
-

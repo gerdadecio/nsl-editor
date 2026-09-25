@@ -1,15 +1,17 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'spec_helper'
-require 'capybara/rspec'
+# frozen_string_literal: true
 
-ENV['RAILS_ENV'] = 'test'
-require_relative '../config/environment'
+# This file is copied to spec/ when you run 'rails generate rspec:install'
+require "spec_helper"
+require "capybara/rspec"
+
+ENV["RAILS_ENV"] = "test"
+require_relative "../config/environment"
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 # Uncomment the line below in case you have `--require rails_helper` in the `.rspec` file
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
-require 'rspec/rails'
+require "rspec/rails"
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -25,29 +27,29 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
+Rails.root.glob("spec/support/**/*.rb").sort_by(&:to_s).each { |f| require f }
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
-  abort e.to_s.strip
+  abort(e.to_s.strip)
 end
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
+    with.test_framework(:rspec)
+    with.library(:rails)
   end
 end
 
 RSpec.configure do |config|
   # Include ActiveSupport time helpers (freeze_time, travel_to, etc.)
-  config.include ActiveSupport::Testing::TimeHelpers
+  config.include(ActiveSupport::Testing::TimeHelpers)
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
-    Rails.root.join('spec/fixtures')
+    Rails.root.join("spec/fixtures")
   ]
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

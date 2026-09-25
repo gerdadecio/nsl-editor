@@ -19,7 +19,6 @@
 require "test_helper"
 
 class ProfileItemsControllerTest < ActionController::TestCase
-
   def setup
     @profile_item = profile_item(:ecology_pi)
     @user_product_role = user_product_roles(:user_one_foa_draft_profile_editor)
@@ -32,7 +31,7 @@ class ProfileItemsControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_equal "Deleted profile item.", assigns(:message)
-end
+  end
 
   test "should set instance variables" do
     delete :destroy, params: { id: @profile_item.id }, session: @session, xhr: true

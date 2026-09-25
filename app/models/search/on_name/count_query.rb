@@ -47,8 +47,10 @@ class Search::OnName::CountQuery
     Rails.logger.debug("Search::OnName::CountQuery#prepare_query")
     # prepared_query = Name.includes(:ref_type)
     prepared_query = Name.all
-    where_clauses = Search::OnName::WhereClauses.new(@parsed_request,
-                                                     prepared_query)
+    where_clauses = Search::OnName::WhereClauses.new(
+      @parsed_request,
+      prepared_query,
+    )
     prepared_query = where_clauses.sql
     @sql = prepared_query
   end

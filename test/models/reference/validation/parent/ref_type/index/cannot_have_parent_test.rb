@@ -22,7 +22,7 @@ require "test_helper"
 class IndexCannotHaveParentTest < ActiveSupport::TestCase
   test "index cannot have parent" do
     assert references(:index_with_parent).valid? == false,
-           "Index with parent should be invalid."
+      "Index with parent should be invalid."
     ref = references(:index_with_parent)
     assert ref.parent_id.present?, "Expecting a parent."
     assert_not ref.valid?, "Index with parent should be invalid."

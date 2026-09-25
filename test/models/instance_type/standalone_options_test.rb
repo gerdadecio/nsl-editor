@@ -25,18 +25,29 @@ class InstanceTypeStandaloneOptionsTest < ActiveSupport::TestCase
     assert options.instance_of?(Array), "Should be an array."
     assert_equal 10, options.size, "Should be 10 of them."
     @names = options.collect(&:first)
-    @expected = ["autonym", "comb. et stat. nov.", "comb. nov.", "explicit autonym", "explicit autonym",
-                 "implicit autonym", "nom. et stat. nov.", "nom. nov.", "primary reference", "secondary reference", "tax. nov."]
+    @expected = [
+      "autonym",
+      "comb. et stat. nov.",
+      "comb. nov.",
+      "explicit autonym",
+      "explicit autonym",
+      "implicit autonym",
+      "nom. et stat. nov.",
+      "nom. nov.",
+      "primary reference",
+      "secondary reference",
+      "tax. nov."
+    ]
   end
 
   test "instance type standalone options" do
     @expected.each do |expected|
       assert @names.include?(expected),
-             "Synonym type options should include #{expected}"
+        "Synonym type options should include #{expected}"
     end
     @names.each do |name|
       assert @expected.include?(name),
-             "#{name} is unexpected as a synonym type option"
+        "#{name} is unexpected as a synonym type option"
     end
   end
 end

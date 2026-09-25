@@ -19,11 +19,12 @@
 # Work out the typeahead params for the duplicate-of field.
 class Author::AsResolvedTypeahead::ForDuplicateOf
   include Resolvable
+
   attr_reader :value
 
   def initialize(id_string, param_text, author)
     @text = extract_delimited_string(param_text)
-    @text.rstrip! unless @text.blank?
+    @text.presence&.rstrip!
     @id_string = id_string
     @field_name = "duplicate of"
     @author = author
@@ -87,8 +88,8 @@ class Author::AsResolvedTypeahead::ForDuplicateOf
 
   def two_or_more_possibles_for_id_and_text
     possibles_with_id = Author
-                        .where(id: @id_string.to_i)
-                        .lower_name_like(@text)
+      .where(id: @id_string.to_i)
+      .lower_name_like(@text)
     raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
 
     @value = possibles_with_id.first.id

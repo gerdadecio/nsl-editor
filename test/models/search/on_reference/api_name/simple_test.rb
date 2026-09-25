@@ -37,7 +37,7 @@ class SearchOnReferenceApiNameSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "reference",
       query_string: query_string,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     search.executed_query.results.collect(&:id)
@@ -45,75 +45,79 @@ class SearchOnReferenceApiNameSimpleTest < ActiveSupport::TestCase
 
   test "api-name: matches the reference changed by that api" do
     assert_includes search_ids("api-name: jira-sync"),
-                    references(:paper_by_brassard).id,
-                    "Expected the reference changed by jira-sync in the results"
+      references(:paper_by_brassard).id,
+      "Expected the reference changed by jira-sync in the results"
   end
 
   test "api-name: excludes a reference changed by another api" do
-    refute_includes search_ids("api-name: jira-sync"),
-                    references(:book_by_brassard).id,
-                    "Expected the reference changed by batch-loader to be excluded"
+    assert_not_includes search_ids("api-name: jira-sync"),
+      references(:book_by_brassard).id,
+      "Expected the reference changed by batch-loader to be excluded"
   end
 
   test "api-name: ignores case" do
     assert_includes search_ids("api-name: JIRA-SYNC"),
-                    references(:paper_by_brassard).id,
-                    "Expected the search to be case insensitive"
+      references(:paper_by_brassard).id,
+      "Expected the search to be case insensitive"
   end
 
   test "api-name: adds wildcards at both ends" do
     assert_includes search_ids("api-name: sync"),
-                    references(:paper_by_brassard).id,
-                    "Expected a partial search term to match"
+      references(:paper_by_brassard).id,
+      "Expected a partial search term to match"
     assert_includes search_ids("api-name: loader"),
-                    references(:book_by_brassard).id,
-                    "Expected a partial search term to match"
+      references(:book_by_brassard).id,
+      "Expected a partial search term to match"
   end
 
   test "api-name: excludes a reference never changed by an api" do
-    refute_includes search_ids("api-name: sync"),
-                    references(:journal_with_papers).id,
-                    "Expected a reference with no api_name to be excluded"
+    assert_not_includes search_ids("api-name: sync"),
+      references(:journal_with_papers).id,
+      "Expected a reference with no api_name to be excluded"
   end
 
   test "has-api-name: includes a reference changed by an api" do
     ids = search_ids("has-api-name: #{ALL}")
-    assert_includes ids, references(:paper_by_brassard).id,
-                    "Expected the reference changed by jira-sync in the results"
-    assert_includes ids, references(:book_by_brassard).id,
-                    "Expected the reference changed by batch-loader in the results"
+    assert_includes ids,
+      references(:paper_by_brassard).id,
+      "Expected the reference changed by jira-sync in the results"
+    assert_includes ids,
+      references(:book_by_brassard).id,
+      "Expected the reference changed by batch-loader in the results"
   end
 
   test "has-api-name: excludes a reference never changed by an api" do
-    refute_includes search_ids("has-api-name: #{ALL}"),
-                    references(:journal_with_papers).id,
-                    "Expected a reference with no api_name to be excluded"
+    assert_not_includes search_ids("has-api-name: #{ALL}"),
+      references(:journal_with_papers).id,
+      "Expected a reference with no api_name to be excluded"
   end
 
   test "has-no-api-name: includes a reference never changed by an api" do
     assert_includes search_ids("has-no-api-name: #{ALL}"),
-                    references(:journal_with_papers).id,
-                    "Expected a reference with no api_name in the results"
+      references(:journal_with_papers).id,
+      "Expected a reference with no api_name in the results"
   end
 
   test "has-no-api-name: excludes a reference changed by an api" do
-    refute_includes search_ids("has-no-api-name: #{ALL}"),
-                    references(:paper_by_brassard).id,
-                    "Expected the reference changed by jira-sync to be excluded"
+    assert_not_includes search_ids("has-no-api-name: #{ALL}"),
+      references(:paper_by_brassard).id,
+      "Expected the reference changed by jira-sync to be excluded"
   end
 
   test "the two directives return disjoint result sets" do
     with_api_name = search_ids("has-api-name: #{ALL}")
     without_api_name = search_ids("has-no-api-name: #{ALL}")
     assert_empty with_api_name & without_api_name,
-                 "A reference cannot both have and not have an api name"
+      "A reference cannot both have and not have an api name"
   end
 
   test "api-name: combines with a leading citation search term" do
     ids = search_ids("brassard api-name: jira-sync")
-    assert_includes ids, references(:paper_by_brassard).id,
-                    "Expected the citation term and the api name to combine"
-    refute_includes ids, references(:book_by_brassard).id,
-                    "Expected a brassard reference changed by another api to be excluded"
+    assert_includes ids,
+      references(:paper_by_brassard).id,
+      "Expected the citation term and the api name to combine"
+    assert_not_includes ids,
+      references(:book_by_brassard).id,
+      "Expected a brassard reference changed by another api to be excluded"
   end
 end

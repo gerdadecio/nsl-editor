@@ -24,10 +24,14 @@ above_family/above_family_helper"
 class TypeaheadForSynonymyOrdoTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new("a*", names(:an_ordo).id)
-    @tb = Instance::AsTypeahead::ForSynonymy.new("plantae",
-                                                 names(:an_ordo).id)
-    @tc = Instance::AsTypeahead::ForSynonymy.new("magnolio",
-                                                 names(:an_ordo).id)
+    @tb = Instance::AsTypeahead::ForSynonymy.new(
+      "plantae",
+      names(:an_ordo).id,
+    )
+    @tc = Instance::AsTypeahead::ForSynonymy.new(
+      "magnolio",
+      names(:an_ordo).id,
+    )
   end
 
   test "instance typeahead for synonymy rank restriction for an ordo" do
@@ -56,6 +60,6 @@ class TypeaheadForSynonymyOrdoTest < ActiveSupport::TestCase
     @rank_names = @tc.results.collect do |result|
       Instance.find(result[:id]).name.name_rank.name
     end
-    check_rank_names_inclusions(%w[Division Classis])
+    check_rank_names_inclusions(["Division", "Classis"])
   end
 end

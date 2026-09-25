@@ -31,10 +31,15 @@ class Loader::Batch::BulkController::CreatePreferredMatchesJob
 
   def run
     log_start
-    @job_h = {Job: 'Create Preferred Matches',
-              Job_batch: @batch.name,
-              Job_search: @search_string,
-              attempts: 0, creates: 0, declines: 0, errors: 0}
+    @job_h = {
+      Job: "Create Preferred Matches",
+      Job_batch: @batch.name,
+      Job_search: @search_string,
+      attempts: 0,
+      creates: 0,
+      declines: 0,
+      errors: 0,
+    }
     @search.order(:seq).each do |loader_name|
       do_one_loader_name(loader_name)
     end
@@ -54,17 +59,19 @@ class Loader::Batch::BulkController::CreatePreferredMatchesJob
   def do_one_loader_name(loader_name)
     @job_h[:attempts] += 1
 
-    matcher = ::Loader::Name::MakeOneMatchTask.new(loader_name,
-                                                   @authorising_user,
-                                                   @job_number)
+    matcher = ::Loader::Name::MakeOneMatchTask.new(
+      loader_name,
+      @authorising_user,
+      @job_number,
+    )
     result = matcher.create
-    @job_h.deep_merge!(result) { |key, old, new| old + new}
+    @job_h.deep_merge!(result) { |_key, old, new| old + new }
   rescue StandardError => e
     Rails.logger.error(e.to_s)
     entry = "<span class='red'>Error: failed to make preferred match </span>"
     entry += "##{loader_name.id} #{loader_name.simple_name} - error in do_one_loader_name: #{e}"
     log(entry)
-    @job_h.deep_merge({errors: 1}) { | key, old, new | old + new }
+    @job_h.deep_merge({ errors: 1 }) { |_key, old, new| old + new }
   end
 
   def log(payload)
@@ -86,6 +93,6 @@ class Loader::Batch::BulkController::CreatePreferredMatchesJob
 
   def debug(s)
     tag = "Loader::Name::AsCreatePreferredMatchesJob"
-    Rails.logger.debug("#{tag}: #{s}")
+    Rails.logger.debug { "#{tag}: #{s}" }
   end
 end

@@ -26,13 +26,13 @@ class RefTypeaheadOnCit4DupDiacriticFindsBothTest < ActiveSupport::TestCase
     curr_ref = references(:ref_type_is_paper)
     typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "Hultén",
-      curr_ref.id
+      curr_ref.id,
     )
     assert_equal 2, typeahead.results.length, "Expect 2 records for 'Hultén'."
     ids = typeahead.results.collect { |reference| reference[:id] }
     assert ids.include?(references(:hulten_with_diacritic).id.to_s),
-           "Expecting hulten_with_diacritic"
+      "Expecting hulten_with_diacritic"
     assert ids.include?(references(:hulten_without_diacritic).id.to_s),
-           "Expecting hulten_without_diacritic"
+      "Expecting hulten_without_diacritic"
   end
 end

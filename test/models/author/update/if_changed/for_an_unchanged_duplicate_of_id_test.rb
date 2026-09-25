@@ -24,19 +24,21 @@ class ForAnUnchangedDuplicateOfIdTest < ActiveSupport::TestCase
     @author = Author::AsEdited.find(authors(:is_a_duplicate_of_that_is_all).id)
     @author.update_if_changed(
       {},
-      { duplicate_of_id: authors(:has_one_duplicate_that_is_all).id,
-        duplicate_of_typeahead: authors(:has_one_duplicate_that_is_all).name },
-      "a user"
+      {
+        duplicate_of_id: authors(:has_one_duplicate_that_is_all).id,
+        duplicate_of_typeahead: authors(:has_one_duplicate_that_is_all).name,
+      },
+      "a user",
     )
   end
 
   test "unchanged duplicate of id" do
     changed_author = Author.find_by(id: @author.id)
     assert_equal @author.duplicate_of_id,
-                 changed_author.duplicate_of_id,
-                 "Duplicate of id should not have changed"
+      changed_author.duplicate_of_id,
+      "Duplicate of id should not have changed"
     assert_equal @author.created_at,
-                 changed_author.updated_at,
-                 "Author should not have been updated."
+      changed_author.updated_at,
+      "Author should not have been updated."
   end
 end

@@ -47,13 +47,13 @@ class Loader::Name::DraftTaxonomyRemover
 
   def record_failure(msg)
     msg.sub!("uncaught throw ", "")
-    msg.gsub!('"', "")
+    msg.delete!('"')
     msg.sub!(/^Failing/, "")
     Rails.logger.error("Loader::Name::AsInstanceCreator failure: #{msg}")
     log_to_table("Remove #{@tree_join_record.element_link}, #{@tree_join_record.simple_name}, instance: #{@tree_join_record.instance_id} error: #{msg}")
   end
 
   def debug(msg)
-    Rails.logger.debug("Loader::Name::AsInstanceCreator #{msg} #{@tag}")
+    Rails.logger.debug { "Loader::Name::AsInstanceCreator #{msg} #{@tag}" }
   end
 end

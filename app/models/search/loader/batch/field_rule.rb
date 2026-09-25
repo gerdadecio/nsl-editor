@@ -18,16 +18,22 @@
 #
 class Search::Loader::Batch::FieldRule
   RULES = {
-    "name:" => { where_clause: "lower(name) like ? ",
-                 trailing_wildcard: true,
-                 order: "id" },
-    "id:" => { multiple_values: true,
-               where_clause: "id = ? ",
-               multiple_values_where_clause: " id in (?)",
-               order: "id" },
-    "ids:" => { multiple_values: true,
-                where_clause: " id = ?",
-                multiple_values_where_clause: " id in (?)",
-                order: "id" },
+    "name:" => {
+      where_clause: "lower(name) like ? ",
+      trailing_wildcard: true,
+      order: "id",
+    },
+    "id:" => {
+      multiple_values: true,
+      where_clause: "id = ? ",
+      multiple_values_where_clause: " id in (?)",
+      order: "id",
+    },
+    "ids:" => {
+      multiple_values: true,
+      where_clause: " id = ?",
+      multiple_values_where_clause: " id in (?)",
+      order: "id",
+    },
   }.freeze
 end

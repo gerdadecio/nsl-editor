@@ -23,12 +23,14 @@ class NameAsEdAuthIdWPartStrMatchMoreThan1OtherAuthor < ActiveSupport::TestCase
   test "id with partial string matching more than one other author" do
     author_1 = authors(:dummy_author_1)
     author_2 = authors(:dummy_author_2)
-    assert_raise(RuntimeError,
-                 "Should fail part string does not identify just 1 author") do
+    assert_raise(
+      RuntimeError,
+      "Should fail part string does not identify just 1 author",
+    ) do
       Name::AsResolvedTypeahead::ForAuthor.new(
         author_1.id.to_s,
         author_2.name.chop,
-        "Some Author Field"
+        "Some Author Field",
       )
     end
   end

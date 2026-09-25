@@ -21,8 +21,10 @@ require "test_helper"
 # Single name model test.
 class NameARTA4DuplicateOfNoIdWithInvalidString < ActiveSupport::TestCase
   test "no duplicate of no id with invalid string" do
-    assert_raise(RuntimeError,
-                 "Should fail with invalid full name string and no id.") do
+    assert_raise(
+      RuntimeError,
+      "Should fail with invalid full name string and no id.",
+    ) do
       Name::AsResolvedTypeahead::ForDuplicateOf.new("", "asdfasfdasd")
     end
   end

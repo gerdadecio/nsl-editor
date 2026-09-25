@@ -17,11 +17,20 @@
 #   limitations under the License.
 #
 class ProfileItemsController < ApplicationController
-
   skip_before_action :authorise
 
-  before_action :set_profile_item, only: %i[show tab destroy details]
-  before_action :authorise_user!, except: %i[tab index details]
+  before_action :set_profile_item, only: [:show, :tab, :destroy, :details]
+  before_action :authorise_user!, except: [:tab, :index, :details]
+
+  def index
+    @instance = Instance.find(permitted_profile_item_params[:instance_id])
+    @product_configs_and_profile_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
+      .new(
+        @current_user,
+        @instance,
+        permitted_profile_item_params,
+      ).run_query
+  end
 
   # GET /profile_items/1/tab/:tab
   # Sets up RHS details panel on the search results page.
@@ -30,7 +39,7 @@ class ProfileItemsController < ApplicationController
     pick_a_tab
     pick_a_tab_index
     @take_focus = params[:take_focus] == "true"
-    render "show", layout: false
+    render("show", layout: false)
   end
 
   def details
@@ -40,7 +49,7 @@ class ProfileItemsController < ApplicationController
     end
   end
 
-  alias tab show
+  alias_method :tab, :show
 
   def destroy
     @profile_item_id = @profile_item.id
@@ -53,23 +62,13 @@ class ProfileItemsController < ApplicationController
     end
   rescue StandardError => e
     @message = "Error deleting profile item: #{e.message}"
-    render "destroy_failed", status: :unprocessable_content
-  end
-
-  def index
-    @instance = Instance.find_by!(id: permitted_profile_item_params[:instance_id])
-    @product_configs_and_profile_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
-      .new(
-        @current_user,
-        @instance,
-        permitted_profile_item_params
-      ).run_query
+    render("destroy_failed", status: :unprocessable_content)
   end
 
   private
 
   def authorise_user!
-    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item) unless can? :manage, @profile_item
+    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item) unless can?(:manage, @profile_item)
   end
 
   def set_profile_item
@@ -79,5 +78,4 @@ class ProfileItemsController < ApplicationController
   def permitted_profile_item_params
     params.permit(:instance_id, :product_item_config_id)
   end
-
 end

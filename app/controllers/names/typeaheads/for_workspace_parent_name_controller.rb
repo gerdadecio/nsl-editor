@@ -19,11 +19,14 @@
 #   Names are central to the NSL.
 class Names::Typeaheads::ForWorkspaceParentNameController < ApplicationController
   def index
-    authorize! :names_typeahead_for_workspace_parent, @working_draft,
-      :message => "Not authorized to open #{@working_draft.tree.name} typeahead"
+    authorize!(
+      :names_typeahead_for_workspace_parent,
+      @working_draft,
+      message: "Not authorized to open #{@working_draft.tree.name} typeahead",
+    )
     typeahead = Name::AsTypeahead::ForWorkspaceParentName
-                .new(params, @working_draft)
-    render json: typeahead.suggestions
+      .new(params, @working_draft)
+    render(json: typeahead.suggestions)
   end
 
   private

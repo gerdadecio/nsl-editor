@@ -19,7 +19,7 @@
 #  Tree services
 class Tree::AsServices
   # Services
-  API_KEY = "apiKey=#{Rails.configuration.try('api_key')}"
+  API_KEY = "apiKey=#{Rails.configuration.try("api_key")}"
 
   SERVICES_ADDRESS = Rails.configuration.try("services")
   CLIENT_SIDE_SERVICES = Rails.configuration.try("services_clientside_root_url")
@@ -138,8 +138,11 @@ class Tree::AsServices
   def self.add_instance_link_v2(instance_id)
     jwt = mapper_auth
     url = add_instance_identifier_url_v2(instance_id)
-    response = RestClient.put(url, {}.to_json,
-                              { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" })
+    response = RestClient.put(
+      url,
+      {}.to_json,
+      { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" },
+    )
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.uri
   rescue RestClient::ExceptionWithResponse => e
@@ -149,8 +152,11 @@ class Tree::AsServices
 
     Rails.logger.warn("#{tag} rescuing a 401 error, will log into mapper")
     jwt = force_mapper_auth
-    response = RestClient.put(url, {}.to_json,
-                              { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" })
+    response = RestClient.put(
+      url,
+      {}.to_json,
+      { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" },
+    )
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.uri
   rescue StandardError => e
@@ -198,7 +204,7 @@ class Tree::AsServices
 
   def self.update_synonymy(events, username)
     url = syn_update_link(username)
-    Rails.logger.info "calling #{url}"
+    Rails.logger.info("calling #{url}")
     RestClient.post(url, events, { accept: :json })
   end
 
@@ -208,7 +214,7 @@ class Tree::AsServices
 
   def self.update_synonymy_by_instance(instances, username)
     url = syn_update_inst_link(username)
-    Rails.logger.info "calling #{url}"
+    Rails.logger.info("calling #{url}")
     RestClient.post(url, instances, { accept: :json })
   end
 

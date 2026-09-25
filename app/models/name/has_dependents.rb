@@ -44,9 +44,7 @@ class Name::HasDependents
     @tree_elements.size > 0
   end
 
-  def tree_elements
-    @name.tree_elements
-  end
+  delegate :tree_elements, to: :@name
 
   def tree_version_elements
     @name.tree_elements.first.tree_version_elements

@@ -19,18 +19,22 @@
 # Loader Batch Review Period entity
 class Loader::Batch::Review::Period < ApplicationRecord
   include DigestEndDate
+
   strip_attributes
   self.table_name = "batch_review_period"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  validates :name, presence: true,
-                   uniqueness: { scope: :batch_review_id, message: "has been used for another period in the same batch review" }
+  validates :name,
+    presence: true,
+    uniqueness: { scope: :batch_review_id, message: "has been used for another period in the same batch review" }
   validates :start_date, presence: true
   validate :start_date_cannot_be_in_the_past
   validates :start_date,
-            uniqueness: { scope: :batch_review_id,
-                          message: "has been used for another period in the same batch review" }
+    uniqueness: {
+      scope: :batch_review_id,
+      message: "has been used for another period in the same batch review",
+    }
   # validate :start_date_cannot_be_changed_once_past, on: :update
 
   validate :end_date_cannot_be_in_the_past
@@ -38,8 +42,8 @@ class Loader::Batch::Review::Period < ApplicationRecord
   before_destroy :abort_if_comments
 
   belongs_to :batch_review,
-             class_name: "Loader::Batch::Review",
-             foreign_key: "batch_review_id"
+    class_name: "Loader::Batch::Review",
+    foreign_key: "batch_review_id"
   alias_method :review, :batch_review
 
   has_many :name_review_comments, class_name: "Loader::Name::Review::Comment", foreign_key: "batch_review_period_id"
@@ -52,7 +56,7 @@ class Loader::Batch::Review::Period < ApplicationRecord
 
   scope :active, -> {
     where("start_date <= ?", Time.zone.today)
-    .where("end_date IS NULL OR end_date >= ?", Time.zone.today)
+      .where("end_date IS NULL OR end_date >= ?", Time.zone.today)
   }
 
   def loader_name_comments(loader_name_id, scope = "unrestricted")
@@ -88,7 +92,7 @@ class Loader::Batch::Review::Period < ApplicationRecord
     BatchReviewPeriod.all.count
 
     true
-  rescue StandardError => e
+  rescue StandardError
     false
   end
 
@@ -225,6 +229,6 @@ class Loader::Batch::Review::Period < ApplicationRecord
   def abort_if_comments
     return unless name_comments.exists?
 
-    throw "Cannot delete period because it has comments"
+    throw("Cannot delete period because it has comments")
   end
 end

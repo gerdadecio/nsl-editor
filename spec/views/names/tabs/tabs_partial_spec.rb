@@ -191,41 +191,41 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
         permit: proc {
           allow(view).to(receive(:can?).with("names", "update").and_return(true))
           allow(view).to(receive(:can?).with(:manage, Name).and_return(true))
-        }
+        },
       },
       {
         label: "New instance (product reference)",
         selector: "a#name-instances-profile-v2-tab",
         permit: proc {
           allow(view).to(receive(:can?).with(:create_with_product_reference, Instance).and_return(true))
-        }
+        },
       },
       {
         label: "New instance",
         selector: "a#name-instances-tab",
         # Loses to the product reference tab when both are permitted.
         superseded_by_product_tab: true,
-        permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) },
       },
       {
         label: "Copy",
         selector: "a#name-copy-tab",
-        permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) },
       },
       {
         label: "Delete",
         selector: "a#name-delete-tab",
-        permit: proc { allow(view).to(receive(:can?).with("names", "delete").and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with("names", "delete").and_return(true)) },
       },
       {
         label: "Resource",
         selector: "a#name-resource-tab",
-        permit: proc { allow(Rails.configuration).to(receive(:resource_tab_enabled).and_return(true)) }
+        permit: proc { allow(Rails.configuration).to(receive(:resource_tab_enabled).and_return(true)) },
       },
       {
         label: "More",
         selector: "a#name-more-tab",
-        permit: proc { allow(view).to(receive(:can?).with(:manage, Name).and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with(:manage, Name).and_return(true)) },
       }
     ]
 
@@ -258,7 +258,7 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
           it "renders every editing tab" do
             subject
             editing_tabs.reject { |editing_tab| editing_tab[:superseded_by_product_tab] }
-                        .each do |editing_tab|
+              .each do |editing_tab|
               expect(rendered).to(have_selector(editing_tab[:selector]))
             end
           end

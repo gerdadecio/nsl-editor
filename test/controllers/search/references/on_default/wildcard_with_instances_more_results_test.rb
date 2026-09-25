@@ -44,12 +44,18 @@ class SearchRefsOnDefaultWildcardWithInstancesMoreResultsTest < ActionController
   tests SearchController
 
   test "'*' with show-instances: reports references only, not instances, even unlimited" do
-    get(:search,
-        params: { query_target: "reference",
-                  query_string: "* show-instances: limit:500" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "reference",
+        query_string: "* show-instances: limit:500",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
 
     summary_text = nil
@@ -62,15 +68,19 @@ class SearchRefsOnDefaultWildcardWithInstancesMoreResultsTest < ActionController
 
     # Sanity check this is actually matching many references, not
     # accidentally falling back to some narrower/empty match.
-    assert_operator count, :>, 50,
-                     "Expected '*' to match most of the reference " \
-                     "fixtures - got: #{summary_text.strip}"
+    assert_operator count,
+      :>,
+      50,
+      "Expected '*' to match most of the reference " \
+        "fixtures - got: #{summary_text.strip}"
 
     # Real instance rows are rendered (proves instances are genuinely
     # present in this result set, not just theoretically)...
     assert_select "tr.instance-within-reference-record" do |elements|
-      assert_operator elements.size, :>, 0,
-                       "Expected at least one attached instance row to be rendered"
+      assert_operator elements.size,
+        :>,
+        0,
+        "Expected at least one attached instance row to be rendered"
     end
 
     # ...but the reported count is references only, not references+
@@ -80,9 +90,11 @@ class SearchRefsOnDefaultWildcardWithInstancesMoreResultsTest < ActionController
     # returned. tr.search-result covers every result row, reference or
     # instance, so it should comfortably exceed the reported count.
     total_row_count = css_select("tr.search-result").size
-    assert_operator total_row_count, :>, count,
-                     "Expected more rendered rows (references+instances) " \
-                     "than the reported record count (#{count}) - got " \
-                     "#{total_row_count} rows"
+    assert_operator total_row_count,
+      :>,
+      count,
+      "Expected more rendered rows (references+instances) " \
+        "than the reported record count (#{count}) - got " \
+        "#{total_row_count} rows"
   end
 end

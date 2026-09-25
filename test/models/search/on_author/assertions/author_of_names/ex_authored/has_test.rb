@@ -27,10 +27,10 @@ class SearchOnAuthorAssertionExAuthOfNameHasTest < ActiveSupport::TestCase
         query_string: "has-ex-authored-name:",
         query_target: "Author",
         current_user:
-        build_edit_user
-      )
+        build_edit_user,
+      ),
     )
     assert_not search.executed_query.results.empty?,
-               "Should find at least one ex-author of a name."
+      "Should find at least one ex-author of a name."
   end
 end

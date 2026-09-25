@@ -19,7 +19,7 @@
 #  We need to place Loader Names on a draft tree.
 class Loader::Batch::Stats::Reporter
   def initialize(name_string, batch_id)
-    @name_string = name_string.downcase.gsub("*", "%")
+    @name_string = name_string.downcase.tr("*", "%")
     @batch_id = batch_id
     report
   end

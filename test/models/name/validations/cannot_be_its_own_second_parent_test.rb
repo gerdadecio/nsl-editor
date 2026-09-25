@@ -23,11 +23,11 @@ class NameCannotBeItsOwnSecondParentTest < ActiveSupport::TestCase
   test "name with itself as second parent is invalid" do
     name = names(:hybrid_formula)
     assert name.valid?,
-           "Name should be valid. Errs: #{name.errors.full_messages.join('; ')}"
+      "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
     name.second_parent_id = name.id
     assert_not name.valid?,
-               "Name should not be valid when it is its own second parent."
+      "Name should not be valid when it is its own second parent."
     assert_equal "Second parent cannot be the same record",
-                 name.errors.full_messages.join("; ")
+      name.errors.full_messages.join("; ")
   end
 end

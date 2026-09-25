@@ -24,6 +24,6 @@ class UnknownShouldHaveUnknownParentTest < ActiveSupport::TestCase
     ref_type = ref_types(:unknown)
     # Must have a parent_id to even be in the race with this data structure.
     assert ref_type.parent.name == ref_types(:unknown).name,
-           "unknown should have unknown as parent."
+      "unknown should have unknown as parent."
   end
 end

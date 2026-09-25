@@ -27,12 +27,16 @@ class NamesNewCultivarHybridNameSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new,
-        params: { category: "cultivar hybrid",
-                  random_id: "123445",
-                  tabIndex: "107" },
-        session: {},
-        xhr: true)
+    get(
+      :new,
+      params: {
+        category: "cultivar hybrid",
+        random_id: "123445",
+        tabIndex: "107",
+      },
+      session: {},
+      xhr: true,
+    )
     assert_response :success, "Cannot edit a new cultivar hybrid name"
     assert_select("h4", /New Cultivar Hybrid Name/)
   end
@@ -46,29 +50,37 @@ class NamesNewCultivarHybridNameSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new,
-        params: { category: "cultivar hybrid",
-                  random_id: "123445",
-                  tabIndex: "107" },
-        xhr: true)
+    get(
+      :new,
+      params: {
+        category: "cultivar hybrid",
+        random_id: "123445",
+        tabIndex: "107",
+      },
+      xhr: true,
+    )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
-                  "[data-autocomplete-url-value=" \
-                  "'/suggestions/name/cultivar_parent.html']" \
-                  " input#name-second-parent-typeahead" \
-                  "[data-autocomplete-target='input']",
-                  true
+      "[data-autocomplete-url-value=" \
+      "'/suggestions/name/cultivar_parent.html'] " \
+      "input#name-second-parent-typeahead" \
+      "[data-autocomplete-target='input']",
+      true
     assert_select "div.autocomplete input#name_second_parent_id" \
-                  "[data-autocomplete-target='hidden']",
-                  true
+      "[data-autocomplete-target='hidden']",
+      true
     assert_select "div.autocomplete label[for='name-second-parent-typeahead']",
-                  /Second parent/
-    assert_no_match(/setUpNameCultivarSecondParentTypeahead\(\)/,
-                    @response.body)
+      /Second parent/
+    assert_no_match(
+      /setUpNameCultivarSecondParentTypeahead\(\)/,
+      @response.body,
+    )
     field = css_select("div.autocomplete").find do |div|
       div.css("input#name-second-parent-typeahead").any?
     end
-    assert_equal({ "name_id" => nil },
-                 JSON.parse(field["data-autocomplete-extra-params-value"]))
+    assert_equal(
+      { "name_id" => nil },
+      JSON.parse(field["data-autocomplete-extra-params-value"]),
+    )
   end
 end

@@ -24,7 +24,7 @@ class TypeaheadsOnCitationForParWordCountOneWalshTest < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "journal_one_word",
       references(:simple).id,
-      ref_types(:paper).id
+      ref_types(:paper).id,
     )
     assert_equal 2, typeahead.results.size, "Should be exactly two results"
   end

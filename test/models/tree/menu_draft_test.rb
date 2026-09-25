@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single model test.
 class TreeMenuDraftsTest < ActiveSupport::TestCase
-
   test "tree menu drafts list is correct" do
     confirm_ron_read_only
     with_ron_read_only
@@ -30,34 +29,34 @@ class TreeMenuDraftsTest < ActiveSupport::TestCase
   end
 
   def confirm_ron_read_only
-    ron = Tree.find_by(name: 'RON')
-    assert ron.read_only?, "RON should start read only..."
+    ron = Tree.find_by(name: "RON")
+    assert(ron.read_only?, "RON should start read only...")
   end
 
   def with_ron_read_only
-    assert Tree.find_by(name: 'RON').is_read_only?, "RON should be read only"
+    assert(Tree.find_by(name: "RON").is_read_only?, "RON should be read only")
     menu_drafts = Tree.menu_drafts
-    assert_equal 2, menu_drafts.size, "Expecting two menu drafts not #{menu_drafts.size}"
-    assert menu_drafts.pluck(:name).include?('APC'), "APC should be in menu drafts"
-    assert menu_drafts.pluck(:name).include?('FOA'), "FOA should be in menu drafts"
+    assert_equal(2, menu_drafts.size, "Expecting two menu drafts not #{menu_drafts.size}")
+    assert(menu_drafts.pluck(:name).include?("APC"), "APC should be in menu drafts")
+    assert(menu_drafts.pluck(:name).include?("FOA"), "FOA should be in menu drafts")
   end
 
   def make_ron_not_read_only
-    ron = Tree.find_by(name: 'RON')
+    ron = Tree.find_by(name: "RON")
     ron.is_read_only = false
     ron.save!
   end
 
   def with_ron_not_read_only
     menu_drafts = Tree.menu_drafts
-    assert_equal 3, menu_drafts.size, "Expecting three menu drafts not #{menu_drafts.size}"
-    assert menu_drafts.pluck(:name).sort == ['APC','FOA','RON'], "Menu drafts should now be 'APC','FOA', and 'RON'"
+    assert_equal(3, menu_drafts.size, "Expecting three menu drafts not #{menu_drafts.size}")
+    assert(menu_drafts.pluck(:name).sort == ["APC", "FOA", "RON"], "Menu drafts should now be 'APC','FOA', and 'RON'")
   end
 
   def make_ron_read_only
-    ron = Tree.find_by(name: 'RON')
+    ron = Tree.find_by(name: "RON")
     ron.is_read_only = true
     ron.save!
-    assert ron.read_only?, "RON should be read only..."
+    assert(ron.read_only?, "RON should be read only...")
   end
 end

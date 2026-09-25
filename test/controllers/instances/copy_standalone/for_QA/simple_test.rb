@@ -28,14 +28,22 @@ class InstancesCopyStandaloneForQAUserTest < ActionController::TestCase
     reference = references(:a_book)
     @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Instance.count") do
-      post(:copy_standalone,
-           params: { id: instance.id,
-                     instance: { "reference_id" => reference.id,
-                                 "name_id" => name.id,
-                                 "instance_type_id" => instance_types(:basionym) } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["QA"] })
+      post(
+        :copy_standalone,
+        params: {
+          id: instance.id,
+          instance: {
+            "reference_id" => reference.id,
+            "name_id" => name.id,
+            "instance_type_id" => instance_types(:basionym),
+          },
+        },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["QA"],
+        },
+      )
     end
     assert_response :forbidden
   end

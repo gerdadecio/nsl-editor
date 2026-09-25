@@ -22,16 +22,22 @@ require "test_helper"
 class SearchRefsDefinedQRefsNamesFullSynonymyTest < ActionController::TestCase
   tests SearchController
   test "search references names full synonymy" do
-    get(:search,
-        params: { query_target: "References, names, full synonymy",
-                  query_string: "G*",
-                  query_submit: "Search" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "References, names, full synonymy",
+        query_string: "G*",
+        query_submit: "Search",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /[0-9] records\b/,
-                  "Should find some records"
+      /[0-9] records\b/,
+      "Should find some records"
   end
 end

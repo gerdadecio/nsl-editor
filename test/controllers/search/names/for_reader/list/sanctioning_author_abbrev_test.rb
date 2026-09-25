@@ -23,14 +23,18 @@ class ReaderSearchContNamesSanctAuthAbbrevListTest < ActionController::TestCase
   tests SearchController
 
   test "reader can search for a name by sanctioning author abbrev" do
-    get(:search,
-        params: { query_target: "name", query_string: "sanctioning-author: *" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "name", query_string: "sanctioning-author: *" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /[2-9] names\b/,
-                  "Should find at least a couple of names"
+      /[2-9] names\b/,
+      "Should find at least a couple of names"
   end
 end

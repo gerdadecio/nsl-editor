@@ -25,13 +25,13 @@ class THOnCit4ParentRefTypeRestrictUnknowns4Unknown < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "%",
       current_reference.id,
-      ref_types(:unknown).id
+      ref_types(:unknown).id,
     )
     assert_not typeahead.results.empty?, "Should be at least one result"
     unknowns = 0
     others = 0
     typeahead.results.each do |result|
-      if result[:value] =~ /\[unknown\]/
+      if /\[unknown\]/.match?(result[:value])
         unknowns += 1
       else
         others += 1

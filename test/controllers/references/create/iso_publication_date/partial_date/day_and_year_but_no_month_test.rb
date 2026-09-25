@@ -25,22 +25,32 @@ class ReferencesesCreateDayAndYearButNoMonthTest < ActionController::TestCase
   test "create reference day and year but no month" do
     @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Reference.count") do
-      post(:create,
-           params: { reference: { "ref_type_id" => ref_types(:book),
-                                  "title" => "Some book",
-                                  "author_id" => authors(:dash),
-                                  "author_typeahead" => "-",
-                                  "published" => true,
-                                  "parent_typeahead" => @parent_typeahead,
-                                  "ref_author_role_id" => ref_author_roles(:author),
-                                  "day" => "23",
-                                  "year" => "2010" } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
-      assert_match(/Error: Day entered but no month/,
-                   response.body.to_s,
-                   "Missing or incorrect error message")
+      post(
+        :create,
+        params: {
+          reference: {
+            "ref_type_id" => ref_types(:book),
+            "title" => "Some book",
+            "author_id" => authors(:dash),
+            "author_typeahead" => "-",
+            "published" => true,
+            "parent_typeahead" => @parent_typeahead,
+            "ref_author_role_id" => ref_author_roles(:author),
+            "day" => "23",
+            "year" => "2010",
+          },
+        },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["edit"],
+        },
+      )
+      assert_match(
+        /Error: Day entered but no month/,
+        response.body.to_s,
+        "Missing or incorrect error message",
+      )
     end
   end
 end

@@ -1,17 +1,20 @@
+# frozen_string_literal: true
+
 #
 # Tree Element Profile
 module Tree::Element::Profile::Distribution
   extend ActiveSupport::Concern
+
   def distribution
-    return nil if profile.blank?
+    return if profile.blank?
 
     profile[distribution_key]
   end
 
   def distribution_value
-    return nil if profile.blank?
+    return if profile.blank?
 
-    return nil if profile[distribution_key_for_insert].blank?
+    return if profile[distribution_key_for_insert].blank?
 
     profile[distribution_key]["value"]
   end

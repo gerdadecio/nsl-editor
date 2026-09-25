@@ -3,6 +3,7 @@
 # Reference Ref Type Validations
 module Reference::RefTypeValidations
   extend ActiveSupport::Concern
+
   included do
   end
   def ref_type_permits_parent?

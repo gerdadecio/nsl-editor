@@ -12,7 +12,7 @@ module Author::AuthorResolvable
     send("#{key_field}=", Author::AsResolvedTypeahead::ForDuplicateOf.new(
       params[key_field],
       params[ta_field],
-      author
+      author,
     ).value)
   end
 end

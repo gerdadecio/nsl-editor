@@ -25,15 +25,17 @@ class NamesDelete < ActiveType::Object
   validates :name_id, presence: true
   validates :reason, presence: true
   validates :extra_info,
-            if: :reason_is_other?,
-            presence: { message: "can't be blank when you choose 'Other'." }
+    if: :reason_is_other?,
+    presence: { message: "can't be blank when you choose 'Other'." }
 
   def possible_reasons
-    ["Name does not exist",
-     "Name is represented elsewhere in NSL",
-     "Name has not been applied to Australian taxa",
-     "Name is an autonym that has not yet been established",
-     "Other"]
+    [
+      "Name does not exist",
+      "Name is represented elsewhere in NSL",
+      "Name has not been applied to Australian taxa",
+      "Name is an autonym that has not yet been established",
+      "Other"
+    ]
   end
 
   def assembled_reason

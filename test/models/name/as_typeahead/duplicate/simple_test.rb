@@ -24,13 +24,19 @@ class NameDuplicateSuggestionsSimpleTest < ActiveSupport::TestCase
     name = names(:angophora_costata)
     suggestions = Name::AsTypeahead.duplicate_suggestions(
       "angophora costata",
-      name.id + 1
+      name.id + 1,
     )
-    assert(suggestions.is_a?(Array),
-           "suggestions should be an array")
-    assert(suggestions.size == 1,
-           'suggestions for "angophora costata" should have exactly 1 element')
-    assert(suggestions.first[:value].match(/Angophora costata/),
-           "Suggestions should include 'Angophora costata'.")
+    assert(
+      suggestions.is_a?(Array),
+      "suggestions should be an array",
+    )
+    assert(
+      suggestions.size == 1,
+      'suggestions for "angophora costata" should have exactly 1 element',
+    )
+    assert(
+      suggestions.first[:value].match(/Angophora costata/),
+      "Suggestions should include 'Angophora costata'.",
+    )
   end
 end

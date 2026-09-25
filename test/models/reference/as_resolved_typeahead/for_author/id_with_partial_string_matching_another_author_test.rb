@@ -25,11 +25,11 @@ class RefARTA4AuthorWPartStrMatchingAnotherAuthorTest < ActiveSupport::TestCase
     author_2 = authors(:moe)
     result = Reference::AsResolvedTypeahead::ForAuthor.new(
       author_1.id.to_s,
-      author_2.name.chop
+      author_2.name.chop,
     )
     assert_equal author_2.id,
-                 result.value,
-                 "Should get matching ID 4 name despite mismatched ID and \
+      result.value,
+      "Should get matching ID 4 name despite mismatched ID and \
                  partial name"
   end
 end

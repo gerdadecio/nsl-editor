@@ -24,20 +24,22 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
     @session = {
       username: "uone",
       user_full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: ["edit", "foa"],
     }
   end
 
   test "should create a profile item annotation" do
-    assert_difference('Profile::ProfileItemAnnotation.count', 1) do
+    assert_difference("Profile::ProfileItemAnnotation.count", 1) do
       profile_item = profile_item(:notes_pi)
       post :create,
-          params: {
-            profile_item_annotation: {
-              profile_item_id: profile_item.id,
-              value: "New Annotation"
-            }
-          }, session: @session, xhr: true
+        params: {
+          profile_item_annotation: {
+            profile_item_id: profile_item.id,
+            value: "New Annotation",
+          },
+        },
+        session: @session,
+        xhr: true
     end
 
     assert_equal assigns(:profile_item_annotation).value, "New Annotation"
@@ -48,12 +50,15 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
   test "should update profile item annotation" do
     profile_item = profile_item(:ecology_pi)
     profile_item_annotation = profile_item.profile_item_annotation
-    put :update, params: {
-      id: profile_item_annotation.id,
-      profile_item_annotation: {
-        value: "Updated Annotation"
-      }
-    }, session: @session, xhr: true
+    put :update,
+      params: {
+        id: profile_item_annotation.id,
+        profile_item_annotation: {
+          value: "Updated Annotation",
+        },
+      },
+      session: @session,
+      xhr: true
 
     assert_response :success
     assert_equal profile_item_annotation.id, assigns(:profile_item_annotation).id
@@ -65,12 +70,15 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
   test "should not update if value has not changed" do
     profile_item = profile_item(:ecology_pi)
     profile_item_annotation = profile_item.profile_item_annotation
-    put :update, params: {
-      id: profile_item_annotation.id,
-      profile_item_annotation: {
-        value: profile_item_annotation.value
-      }
-    }, session: @session, xhr: true
+    put :update,
+      params: {
+        id: profile_item_annotation.id,
+        profile_item_annotation: {
+          value: profile_item_annotation.value,
+        },
+      },
+      session: @session,
+      xhr: true
 
     assert_response :success
     assert_equal profile_item_annotation.id, assigns(:profile_item_annotation).id
@@ -83,12 +91,15 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
     profile_item_annotation = profile_item.profile_item_annotation
 
     Profile::ProfileItemAnnotation.stub_any_instance(:update, false) do
-      put :update, params: {
-        id: profile_item_annotation.id,
-        profile_item_annotation: {
-          value: "New Value"
-        }
-      }, session: @session, xhr: true
+      put :update,
+        params: {
+          id: profile_item_annotation.id,
+          profile_item_annotation: {
+            value: "New Value",
+          },
+        },
+        session: @session,
+        xhr: true
 
       assert_response :unprocessable_content
       assert_equal profile_item_annotation.id, assigns(:profile_item_annotation).id
@@ -100,12 +111,15 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
     profile_item = profile_item(:ecology_pi)
     profile_item_annotation = profile_item.profile_item_annotation
 
-    put :update, params: {
-      id: profile_item_annotation.id,
-      profile_item_annotation: {
-        value: ""
-      }
-    }, session: @session, xhr: true
+    put :update,
+      params: {
+        id: profile_item_annotation.id,
+        profile_item_annotation: {
+          value: "",
+        },
+      },
+      session: @session,
+      xhr: true
 
     assert_response :unprocessable_content
     assert_match "can't be blank", assigns(:message)
@@ -118,8 +132,10 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
     profile_item_annotation = profile_item.profile_item_annotation
 
     assert_difference("Profile::ProfileItemAnnotation.count", -1) do
-      delete :destroy, params: { id: profile_item_annotation.id },
-             session: @session, xhr: true
+      delete :destroy,
+        params: { id: profile_item_annotation.id },
+        session: @session,
+        xhr: true
     end
 
     assert_response :success

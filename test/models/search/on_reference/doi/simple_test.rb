@@ -24,12 +24,12 @@ class SearchOnReferenceDOISimpleTest < ActiveSupport::TestCase
   test "search on reference DOI simple" do
     reference = references(:stanley_and_ross_1986_flora_of_se_qld)
     params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "doi: #{reference.doi}",
-                   current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "doi: #{reference.doi}",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

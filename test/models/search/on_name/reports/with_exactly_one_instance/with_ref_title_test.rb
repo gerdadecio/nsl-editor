@@ -27,11 +27,11 @@ class SearchOnNameReportsWithExactly1InstRefTitleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "with-exactly-one-instance: ref-title: *default* ",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
-    assert !search.executed_query.results.empty?,
-           "Expected > 0 search result for exactly one instance + ref-title:"
+    assert_not search.executed_query.results.empty?,
+      "Expected > 0 search result for exactly one instance + ref-title:"
   end
 end

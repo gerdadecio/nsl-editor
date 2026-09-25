@@ -19,11 +19,12 @@
 # Work out the typeahead params for the duplicate-of field.
 class Name::AsResolvedTypeahead::ForDuplicateOf
   include Resolvable
+
   attr_reader :value
 
   def initialize(id_string, param_text, avoid_id = nil)
     @text = extract_delimited_string(param_text)
-    @text.rstrip! unless @text.blank?
+    @text.presence&.rstrip!
     @id_string = id_string
     @avoid_id = avoid_id.to_i
     @field_name = "duplicate of"

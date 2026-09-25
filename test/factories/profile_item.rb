@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: profile_item(The use of a statement/content for a taxon concept by a product. The specific statement/content is recorded based on its explicit data type (text, reference, distribution etc).)
@@ -43,7 +45,7 @@
 #
 FactoryBot.define do
   factory :profile_item, class: "Profile::ProfileItem" do
-    sequence(:profile_object_rdf_id) {|n| "Sample Profile object rdf #{n}" }
+    sequence(:profile_object_rdf_id) { |n| "Sample Profile object rdf #{n}" }
     is_draft { true }
     published_date { Time.current }
     end_date { Time.current }

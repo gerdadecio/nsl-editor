@@ -34,14 +34,18 @@ class TaxFormsTreeBuilderAPCUserCannotUpdateAPCDraftTest < ActionController::Tes
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
 
-    post(:update_draft,
-         params: {"version_id"=> apc_draft.id, "draft_name"=>'zyz', "draft_log"=>'xyz'},
-        format: :js,
-        xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"],
-                   draft: apc_draft})
+    post(
+      :update_draft,
+      params: { "version_id" => apc_draft.id, "draft_name" => "zyz", "draft_log" => "xyz" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: apc_draft,
+      },
+    )
     assert_response :forbidden
   end
 end

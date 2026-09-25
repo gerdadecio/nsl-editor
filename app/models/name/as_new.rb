@@ -139,8 +139,8 @@ class Name::AsNew < Name
   def self.scientific_hybrid
     name = Name.new
     name.name_type_id = NameType
-                        .find_by(name: "hybrid formula parents known")
-                        .id
+      .find_by(name: "hybrid formula parents known")
+      .id
     name.name_rank_id = NameRank.find_by(name: "Species").id
     name.name_status_id = NameStatus.find_by(name: "[n/a]").id
     name
@@ -149,8 +149,8 @@ class Name::AsNew < Name
   def self.scientific_hybrid_unknown_2nd_parent
     name = Name.new
     name.name_type_id = NameType
-                        .find_by(name: "hybrid formula unknown 2nd parent")
-                        .id
+      .find_by(name: "hybrid formula unknown 2nd parent")
+      .id
     name.name_rank_id = NameRank.find_by(name: "[n/a]").id
     name.name_status_id = NameStatus.find_by(name: "[n/a]").id
     name

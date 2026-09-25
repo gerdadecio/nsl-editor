@@ -20,17 +20,17 @@ module Instance::Treeable
     # definition.
     def published_trees_map_for(instances_or_ids)
       ids = Array.wrap(instances_or_ids)
-                 .map { |i| i.respond_to?(:id) ? i.id : i }
-                 .compact.uniq
+        .map { |i| i.respond_to?(:id) ? i.id : i }
+        .compact.uniq
       return {} if ids.empty?
 
       Instance
-        .joins('INNER JOIN tree_element ON instance.id = tree_element.instance_id')
-        .joins('JOIN tree_version_element tve ON tree_element.id = tve.tree_element_id')
-        .joins('JOIN tree t ON tve.tree_version_id = t.current_tree_version_id')
+        .joins("INNER JOIN tree_element ON instance.id = tree_element.instance_id")
+        .joins("JOIN tree_version_element tve ON tree_element.id = tve.tree_element_id")
+        .joins("JOIN tree t ON tve.tree_version_id = t.current_tree_version_id")
         .where(id: ids)
-        .where('t.is_read_only = false')
-        .select('instance.id, t.name AS tree_name, tree_element.excluded AS excluded')
+        .where("t.is_read_only = false")
+        .select("instance.id, t.name AS tree_name, tree_element.excluded AS excluded")
         .group_by(&:id)
     end
   end
@@ -49,7 +49,7 @@ module Instance::Treeable
   end
 
   def excluded_concept?
-    return nil unless accepted_concept?
+    return unless accepted_concept?
 
     accepted_tree_version_element.tree_element.excluded
   end
@@ -75,19 +75,22 @@ module Instance::Treeable
   end
 
   def in_local_trees
-    Tree.find_by_sql(["select t.* from tree_version_element tve join tree t on t.current_tree_version_id = tve.tree_version_id
+    Tree.find_by_sql([
+      "select t.* from tree_version_element tve join tree t on t.current_tree_version_id = tve.tree_version_id
   join tree_element te on tve.tree_element_id = te.id
-where te.instance_id = ?", id])
+where te.instance_id = ?",
+      id
+    ])
   end
 
   def in_any_local_tree_ids?(tree_ids)
     return false if tree_ids.blank?
 
     Tree.joins("JOIN tree_version_element tve ON tree.current_tree_version_id = tve.tree_version_id")
-        .joins("JOIN tree_element te ON tve.tree_element_id = te.id")
-        .where(id: tree_ids)
-        .where("te.instance_id = ?", id)
-        .exists?
+      .joins("JOIN tree_element te ON tve.tree_element_id = te.id")
+      .where(id: tree_ids)
+      .where("te.instance_id = ?", id)
+      .exists?
   end
 
   def in_local_tree_names

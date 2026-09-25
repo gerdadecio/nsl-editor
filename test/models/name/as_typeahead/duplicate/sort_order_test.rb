@@ -25,19 +25,28 @@ class NameDuplicateSuggestionsSortOrderTest < ActiveSupport::TestCase
   test "name duplicate suggestions are sorted by rank then full name" do
     suggestions = Name::AsTypeahead.duplicate_suggestions("sortcheck", 0)
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert_equal(["Sortcheck zeta", "Sortcheck mu",
-                  "Sortcheck alpha", "Sortcheck delta"],
-                 full_names_from(suggestions),
-                 "Suggestions should be ordered familia, genus, then species " \
-                 "with the two species in full name order")
+    assert_equal(
+      [
+        "Sortcheck zeta",
+        "Sortcheck mu",
+        "Sortcheck alpha",
+        "Sortcheck delta"
+      ],
+      full_names_from(suggestions),
+      "Suggestions should be ordered familia, genus, then species " \
+        "with the two species in full name order",
+    )
   end
 
   test "name duplicate suggestions are not sorted by full name alone" do
     suggestions = Name::AsTypeahead.duplicate_suggestions("sortcheck", 0)
     full_names = full_names_from(suggestions)
-    refute_equal(full_names.sort, full_names,
-                 "Suggestions should be ordered by rank first, not purely " \
-                 "alphabetically")
+    assert_not_equal(
+      full_names.sort,
+      full_names,
+      "Suggestions should be ordered by rank first, not purely " \
+        "alphabetically",
+    )
   end
 
   private

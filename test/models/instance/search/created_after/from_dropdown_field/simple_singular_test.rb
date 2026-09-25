@@ -28,13 +28,13 @@ class InstSrchCreAfterFromDropdownSimpleSingularTest < ActiveSupport::TestCase
     Instance.update_all("updated_at = current_timestamp")
 
     search = Search::Base
-             .new(ActiveSupport::HashWithIndifferentAccess
+      .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_string: "1",
-                       query_target: "Activity",
-                       current_user: build_edit_user))
+                    query_target: "Activity",
+                    current_user: build_edit_user))
     assert_equal Array,
-                 search.executed_query.results.class,
-                 "Results should be an Array"
+      search.executed_query.results.class,
+      "Results should be an Array"
     assert search.executed_query.results.size > 20, "Many records expected."
   end
 end

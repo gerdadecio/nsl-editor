@@ -22,6 +22,6 @@ require "test_helper"
 class BookValidWithoutParentTest < ActiveSupport::TestCase
   test "book valid without parent" do
     assert references(:book_without_parent).valid? == true,
-           "Book without parent should be valid."
+      "Book without parent should be valid."
   end
 end

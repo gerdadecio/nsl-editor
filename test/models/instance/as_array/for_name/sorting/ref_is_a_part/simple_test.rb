@@ -35,7 +35,7 @@ class InstanceAsArrayForNameSortingRefIsAPartTest < ActiveSupport::TestCase
     object = Instance::AsArray::ForName.new(name)
     # debug(object)
     assert object.results.instance_of?(Array),
-           "InstanceAsArray::ForName should produce an array."
+      "InstanceAsArray::ForName should produce an array."
     # assert object.results[4].id == part_instance.id,
     # "Instance for the ref of type part should be fifth entry in order."
   end
@@ -43,8 +43,8 @@ class InstanceAsArrayForNameSortingRefIsAPartTest < ActiveSupport::TestCase
   def debug(object)
     object.results.each_with_index do |i, ndx|
       s = "#{ndx}: #{i.instance_type.name}: #{i.name.simple_name}"
-      s += " - #{i.instance_type.relationship ? 'relationship' : 'standalone'}"
-      s += " - #{i.instance_type.taxonomic ? 'taxonomic' : 'not taxonomic'}"
+      s += " - #{i.instance_type.relationship ? "relationship" : "standalone"}"
+      s += " - #{i.instance_type.taxonomic ? "taxonomic" : "not taxonomic"}"
       puts s
     end
   end

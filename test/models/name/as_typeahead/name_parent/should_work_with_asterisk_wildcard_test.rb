@@ -24,15 +24,23 @@ class ShouldWorkWithAsteriskWildcardTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "*",
       avoid_id: 1,
-      rank_id: NameRank.species.id
+      rank_id: NameRank.species.id,
     )
-    assert(typeahead.suggestions.is_a?(Array),
-           "asterisk wildcard search should be an array")
-    assert(!typeahead.suggestions.empty?,
-           "asterisk wildcard search should not be empty")
-    assert(typeahead.suggestions.first[:value].present?,
-           "asterisk wildcard search first element should have a value")
-    assert(typeahead.suggestions.first[:id].present?,
-           "asterisk wildcard search first element should have an id")
+    assert(
+      typeahead.suggestions.is_a?(Array),
+      "asterisk wildcard search should be an array",
+    )
+    assert(
+      !typeahead.suggestions.empty?,
+      "asterisk wildcard search should not be empty",
+          )
+    assert(
+      typeahead.suggestions.first[:value].present?,
+      "asterisk wildcard search first element should have a value",
+    )
+    assert(
+      typeahead.suggestions.first[:id].present?,
+      "asterisk wildcard search first element should have an id",
+    )
   end
 end

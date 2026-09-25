@@ -27,11 +27,15 @@ class InstancesDeleteForReaderTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     # This calls a service (but only if authorized), so in Test,
     # no record is actually deleted, even if authorized!
-    delete(:destroy,
-           params: { id: instance.id },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: [] })
+    delete(
+      :destroy,
+      params: { id: instance.id },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :forbidden
   end
 end

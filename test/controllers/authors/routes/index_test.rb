@@ -23,8 +23,8 @@ class AuthorsRouteIndexTest < ActionController::TestCase
   tests AuthorsController
   test "authors index should route to the catch all" do
     assert_routing "/authors",
-                   controller: "search",
-                   action: "search",
-                   random: "authors"
+      controller: "search",
+      action: "search",
+      random: "authors"
   end
 end

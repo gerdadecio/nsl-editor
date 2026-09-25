@@ -23,8 +23,8 @@ class NameEditRouteTest < ActionController::TestCase
   tests NamesController
   test "names edit should route to the catch-all" do
     assert_routing "/names/edit/1",
-                   controller: "search",
-                   action: "search",
-                   random: "names/edit/1"
+      controller: "search",
+      action: "search",
+      random: "names/edit/1"
   end
 end

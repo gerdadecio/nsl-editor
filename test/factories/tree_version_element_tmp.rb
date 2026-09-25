@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :tree_version_element_tmp do
     updated_by { "Sample Updated by" }

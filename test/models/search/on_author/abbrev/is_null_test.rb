@@ -22,14 +22,14 @@ load "test/models/search/users.rb"
 # Single Search model test for Author target.
 class SearchOnAuthorAbbrevIsNullTest < ActiveSupport::TestCase
   test "search on abbrev is null" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "author",
-                   query_string: "abbrev: ",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "author",
+        query_string: "abbrev: ",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|
       assert r.abbrev.blank?, "Abbrev should be blank"
     end

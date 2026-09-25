@@ -28,8 +28,10 @@ require "test_helper"
 class NameAsResolvedTANoDuplicateOfIdWithValidStringAlsoMatchingCurrentRecord < ActiveSupport::TestCase
   test "no id with valid string also matching current record" do
     name = names(:the_regnum)
-    assert_raise(RuntimeError,
-                 "Should raise a RuntimeError - cannot be a duplicate of itself.") do
+    assert_raise(
+      RuntimeError,
+      "Should raise a RuntimeError - cannot be a duplicate of itself.",
+    ) do
       Name::AsResolvedTypeahead::ForDuplicateOf.new("", name.full_name, name.id)
     end
   end

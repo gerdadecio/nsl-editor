@@ -28,16 +28,18 @@ class TAOnCitationForDuplicateOrdersByPublicationDateTest < ActiveSupport::TestC
   test "ref typeahead on citation for duplicate orders by publication date desc nulls first then citation" do
     typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "flibbertigibbet",
-      references(:simple).id
+      references(:simple).id,
     )
 
     ids = typeahead.results.collect { |result| result[:id] }
 
-    assert_equal [references(:flibbertigibbet_no_date).id.to_s,
-                  references(:flibbertigibbet_late).id.to_s,
-                  references(:flibbertigibbet_early).id.to_s],
-                 ids,
-                 "Expected no-date reference first (nulls first), then " \
-                 "most recently published, then the earliest."
+    assert_equal [
+      references(:flibbertigibbet_no_date).id.to_s,
+      references(:flibbertigibbet_late).id.to_s,
+      references(:flibbertigibbet_early).id.to_s
+    ],
+      ids,
+      "Expected no-date reference first (nulls first), then " \
+        "most recently published, then the earliest."
   end
 end

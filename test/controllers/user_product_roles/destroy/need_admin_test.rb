@@ -29,14 +29,19 @@ class UserProductRoleNeedAdminToDestroyTest < ActionController::TestCase
 
   test "need admin to destroy user product role" do
     assert_no_difference("User::ProductRole.count") do
-      post(:destroy,
-           params: { "user_id" => @user_product_role.user_id,
-                     "product_role_id" => @user_product_role.product_role_id
-                   },
-           format: :turbo_stream,
-           session: { username: @admin.user_name,
-                      user_full_name: "#{@admin.given_name} #{@admin.family_name}",
-                      groups: [] })
+      post(
+        :destroy,
+        params: {
+          "user_id" => @user_product_role.user_id,
+          "product_role_id" => @user_product_role.product_role_id,
+        },
+        format: :turbo_stream,
+        session: {
+          username: @admin.user_name,
+          user_full_name: "#{@admin.given_name} #{@admin.family_name}",
+          groups: [],
+        },
+      )
       assert_response :forbidden
     end
   end

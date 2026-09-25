@@ -24,12 +24,13 @@ class InstSrchUpdAfterFromDropdownSimplePluralTest < ActiveSupport::TestCase
   # New search for "42993" on instance up to 100 with field: upd-b
   test "instance search on updated after from dropdown field simple plural" do
     search = Search::Base
-             .new(ActiveSupport::HashWithIndifferentAccess
+      .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_string: "2 instances-only:",
-                       query_target: "Activity",
-                       current_user: build_edit_user))
-    assert_equal Array, search.executed_query.results.class,
-                 "Results should be an Array"
+                    query_target: "Activity",
+                    current_user: build_edit_user))
+    assert_equal Array,
+      search.executed_query.results.class,
+      "Results should be an Array"
     assert search.executed_query.results.size > 20, "Expect many records."
   end
 end

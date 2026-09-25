@@ -24,7 +24,7 @@ class TypeaheadsOnCitationForParWordCount1ChaplinTest < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "chaplin",
       references(:a_paper).id,
-      ref_types(:paper).id
+      ref_types(:paper).id,
     )
     assert_equal 3, typeahead.results.size, "Should be exactly three results"
   end

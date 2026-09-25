@@ -23,10 +23,10 @@ load "test/models/search/users.rb"
 class SearchOnReferenceTypeTwoValuesTest < ActiveSupport::TestCase
   test "search on reference type two values" do
     params = ActiveSupport::HashWithIndifferentAccess
-             .new(query_target: "reference",
-                  query_string: "type: book,journal",
-                  current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "type: book,journal",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?, "Results expected."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

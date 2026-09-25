@@ -23,16 +23,18 @@ class Audit::DefinedQuery::WhereClause::Authorise
     debug("Start user.username: #{user.username};")
 
     @sql = if user.qa?
-             sql
-           else
-             sql.where("created_by = ? or updated_by = ?",
-                       user.username,
-                       user.username)
-           end
+      sql
+    else
+      sql.where(
+        "created_by = ? or updated_by = ?",
+        user.username,
+        user.username,
+      )
+    end
     debug(@sql.to_sql)
   end
 
   def debug(s)
-    Rails.logger.debug("Audit::DefinedQuery::WhereClause::Authorise #{s}")
+    Rails.logger.debug { "Audit::DefinedQuery::WhereClause::Authorise #{s}" }
   end
 end

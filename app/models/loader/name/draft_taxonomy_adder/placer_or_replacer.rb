@@ -43,43 +43,39 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
   def place_or_replace
     @loader_name.preferred_matches.each do |preferred_match|
       if preferred_match.standalone_instance_id.blank?
-        debug "No instance, therefore cannot place this on the Taxonomy."
+        debug("No instance, therefore cannot place this on the Taxonomy.")
       elsif preferred_match.drafted?
-        debug "Stopping because already drafted."
+        debug("Stopping because already drafted.")
       elsif @draft.name_in_version(parent_name(preferred_match)).blank?
         raise "No parent on tree, cannot proceed"
       else
         @tree_version_element = @draft.name_in_version(preferred_match.name)
         if @tree_version_element.present?
-          debug "name is on the draft: replace it"
+          debug("name is on the draft: replace it")
           return replace_name(preferred_match)
         else
-          debug "name is not on the draft: just place it"
+          debug("name is not on the draft: just place it")
           place_name(preferred_match)
         end
       end
     end
   rescue RestClient::ExceptionWithResponse => e
     e_to_s = json_error(e)
-    @result_h = {errors: 1, errors_reasons: {"#{e_to_s}": 1}}
+    @result_h = { errors: 1, errors_reasons: { "#{e_to_s}": 1 } }
     log_to_table("<span class='red'>Error from Services placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{e_to_s}")
   rescue StandardError => e
-    @result_h = {errors: 1, errors_reasons: {"#{e.to_s}": 1}}
+    @result_h = { errors: 1, errors_reasons: { "#{e}": 1 } }
     log_to_table("<span class='red'>Error placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{e.message}")
   end
 
   private
 
   def debug(msg)
-    Rails.logger.debug("Loader::Name::DraftTaxonomyAdder::PlaceOrReplace: #{msg}")
+    Rails.logger.debug { "Loader::Name::DraftTaxonomyAdder::PlaceOrReplace: #{msg}" }
   end
 
   def parent_name(preferred_match)
-    if preferred_match.intended_tree_parent_name.blank?
-      preferred_match.name.parent
-    else
-      preferred_match.intended_tree_parent_name
-    end
+    preferred_match.intended_tree_parent_name.presence || preferred_match.name.parent
   end
 
   def place_name(preferred_match)
@@ -106,10 +102,10 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
   end
 
   def xinferred_rank
-    (@loader_name.rank_nsl ||
-     @loader_name.rank ||
-     @loader_name&.preferred_matches&.first&.name&.name_rank&.name ||
-     "cannot infer rank")
+    @loader_name.rank_nsl ||
+      @loader_name.rank ||
+      @loader_name&.preferred_matches&.first&.name&.name_rank&.name ||
+      "cannot infer rank"
   end
 
   def log_to_table(payload)

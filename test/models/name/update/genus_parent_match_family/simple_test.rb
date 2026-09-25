@@ -33,4 +33,3 @@ class NameUpdateGenusParentFamilySimpleTest < ActiveSupport::TestCase
     end
   end
 end
-

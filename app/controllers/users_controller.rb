@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class UsersController < ApplicationController
-  before_action :find_user, only: %i[show tab update destroy]
+  before_action :find_user, only: [:show, :tab, :update, :destroy]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
@@ -26,23 +26,27 @@ class UsersController < ApplicationController
     set_tab_index
     @user = User.new if params[:tab] == "tab_periods"
     @take_focus = params[:take_focus] == "true"
-    render "show", layout: false
+    render("show", layout: false)
   end
 
-  alias tab show
+  alias_method :tab, :show
 
   # GET /user/new_row
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    render :new_row,
-       locals: {partial: 'new_row',
-                locals_for_partial:
-                  {tab_path: "#{new_user_with_random_id_path(@random_id)}",
+    render(
+      :new_row,
+      locals: {
+        partial: "new_row",
+        locals_for_partial:
+                 {
+                   tab_path: "#{new_user_with_random_id_path(@random_id)}",
                    link_id: "link-new-user-#{@random_id}",
                    link_title: "New User",
-                   link_text: "New User"
-                  }
-               }
+                   link_text: "New User",
+                 },
+      },
+    )
   end
 
   # GET /users/new
@@ -50,27 +54,27 @@ class UsersController < ApplicationController
     @user = User.new
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
-    render :new
+    render(:new)
   end
 
   # POST /users
   def create
     @user = User.create(user_params, current_user.username)
-    render "create"
+    render("create")
   rescue StandardError => e
     logger.error("UserController.create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_content
+    render("create_error", status: :unprocessable_content)
   end
 
   # POST /users
   def update
     @message = @user.update_if_changed(user_params, current_user.username)
-    render "update"
+    render("update")
   rescue => e
     logger.error("Review.update:rescuing exception #{e}")
     @error = e.to_s
-    render "update_error", status: :unprocessable_content
+    render("update_error", status: :unprocessable_content)
   end
 
   def destroy
@@ -83,7 +87,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the user record."
-    redirect_to user_path
+    redirect_to(user_path)
   end
 
   def user_params
@@ -92,10 +96,10 @@ class UsersController < ApplicationController
 
   def set_tab
     @tab = if params[:tab].present? && params[:tab] != "undefined"
-             params[:tab]
-           else
-             "tab_details"
-           end
+      params[:tab]
+    else
+      "tab_details"
+    end
   end
 
   def set_tab_index

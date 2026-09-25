@@ -128,11 +128,11 @@ class NameStatus < ApplicationRecord
   end
 
   def self.scientific_options
-    self.not_cultivar
-        .not_deprecated
-        .ordered_by_name.collect do |n|
-          [n.name, n.id]
-        end
+    not_cultivar
+      .not_deprecated
+      .ordered_by_name.collect do |n|
+      [n.name, n.id]
+    end
   end
 
   def self.na_option
@@ -149,10 +149,10 @@ class NameStatus < ApplicationRecord
   end
 
   def self.loader_options
-    self.not_cultivar
-        .not_deprecated
-        .ordered_by_name.collect do |n|
-          [n.name]
+    not_cultivar
+      .not_deprecated
+      .ordered_by_name.collect do |n|
+      [n.name]
     end
   end
 end

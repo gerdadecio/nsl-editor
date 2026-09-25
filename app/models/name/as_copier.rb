@@ -113,8 +113,10 @@
 class Name::AsCopier < Name
   NAC = "Name::AsCopier"
   def copy_with_username(new_name_element, as_username, parent_id: nil, second_parent_id: nil)
-    Rails.logger.debug("#{NAC}#copy with username
-                       new_name_element: #{new_name_element}")
+    Rails.logger.debug do
+      "#{NAC}#copy with username
+                       new_name_element: #{new_name_element}"
+    end
     raise "Copied record would have the same name." if new_name_element.eql?(name_element)
 
     validate_new_hybrid_parents!(parent_id, second_parent_id) if hybrid?
@@ -137,38 +139,58 @@ class Name::AsCopier < Name
   end
 
   def copy_with_all_instances(new_name_element, as_username)
-    Rails.logger.debug("#{NAC} copy_with_all_instances: start.")
-    Rails.logger.debug("#{NAC} copy_with_all_instances:
-                       instances: #{instances.size}.")
-    Rails.logger.debug("#{NAC} copy_with_all_instances:
-                       self.instances: #{instances.size}.")
+    Rails.logger.debug { "#{NAC} copy_with_all_instances: start." }
+    Rails.logger.debug do
+      "#{NAC} copy_with_all_instances:
+                       instances: #{instances.size}."
+    end
+    Rails.logger.debug do
+      "#{NAC} copy_with_all_instances:
+                       self.instances: #{instances.size}."
+    end
     ok = false
     copied_name = nil
     Name.transaction do
       Rails.logger.debug("copy_with_all_instances: start transaction.")
       copied_name = copy_with_username(new_name_element, as_username)
-      Rails.logger.debug("copy_with_all_instances:
-                         name copied, id: #{copied_name.id}.")
+      Rails.logger.debug do
+        "copy_with_all_instances:
+                         name copied, id: #{copied_name.id}."
+      end
       Rails.logger.debug("copy_with_all_instances: now, instances....")
       instances.each do |i|
-        Rails.logger.debug("copy_with_all_instances: instance: #{i.id}")
+        Rails.logger.debug { "copy_with_all_instances: instance: #{i.id}" }
         instance = Instance::AsCopier.find(i.id)
-        Rails.logger.debug("copy_with_all_instances: instance
-                           as copier: #{instance.id}")
-        Rails.logger.debug("copy_with_all_instances: instance
-                           as copier: #{instance.inspect}")
-        Rails.logger.debug("copy_with_all_instances: instance
-                           as copier: id:     #{instance.id}")
-        Rails.logger.debug("copy_with_all_instances: instance
-                           as copier: name id:#{instance.name_id}")
-        Rails.logger.debug("copy_with_all_instances: instance
-                           as copier: ref id: #{instance.reference_id}")
+        Rails.logger.debug do
+          "copy_with_all_instances: instance
+                           as copier: #{instance.id}"
+        end
+        Rails.logger.debug do
+          "copy_with_all_instances: instance
+                           as copier: #{instance.inspect}"
+        end
+        Rails.logger.debug do
+          "copy_with_all_instances: instance
+                           as copier: id:     #{instance.id}"
+        end
+        Rails.logger.debug do
+          "copy_with_all_instances: instance
+                           as copier: name id:#{instance.name_id}"
+        end
+        Rails.logger.debug do
+          "copy_with_all_instances: instance
+                           as copier: ref id: #{instance.reference_id}"
+        end
         instance.copy_with_new_name_id(copied_name.id, as_username)
-        Rails.logger.debug("copy_with_all_instances: after
-                           copying the instance.")
+        Rails.logger.debug do
+          "copy_with_all_instances: after
+                           copying the instance."
+        end
       end
-      Rails.logger.debug("copy_with_all_instances:
-                         after working on the instances.")
+      Rails.logger.debug do
+        "copy_with_all_instances:
+                         after working on the instances."
+      end
       ok = true
     end
     if ok
@@ -189,7 +211,7 @@ class Name::AsCopier < Name
     if parent_id.to_i == self.parent_id &&
         second_parent_id.to_i == self.second_parent_id
       raise "Please change at least one parent - the copy would be " \
-            "the same name."
+        "the same name."
     end
 
     if !cultivar_hybrid? && parent_id.to_i == second_parent_id.to_i

@@ -34,20 +34,27 @@ class InstancesCreateCitedByTextMatchNotExcludedTest < ActionController::TestCas
   end
 
   test "exact text match for a different name still succeeds with context_name_id set" do
-    assert_not_equal @name.id, @cited_by.name.id,
-                      "Fixture sanity check: target name and context name must differ"
+    assert_not_equal @name.id,
+      @cited_by.name.id,
+      "Fixture sanity check: target name and context name must differ"
 
     assert_difference("Instance.count") do
-      post(:create_cited_by,
-           params: { instance: { "name_typeahead" => @name.full_name,
-                                 "name_id" => "",
-                                 "context_name_id" => @cited_by.name.id,
-                                 "page" => "",
-                                 "reference_id" => @cited_by.reference.id,
-                                 "cited_by_id" => @cited_by.id,
-                                 "cites_id" => "",
-                                 "instance_type_id" => instance_types(:common_name) } },
-           session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] })
+      post(
+        :create_cited_by,
+        params: {
+          instance: {
+            "name_typeahead" => @name.full_name,
+            "name_id" => "",
+            "context_name_id" => @cited_by.name.id,
+            "page" => "",
+            "reference_id" => @cited_by.reference.id,
+            "cited_by_id" => @cited_by.id,
+            "cites_id" => "",
+            "instance_type_id" => instance_types(:common_name),
+          },
+        },
+        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] },
+      )
     end
 
     assert_equal @name.id, assigns(:instance).name_id

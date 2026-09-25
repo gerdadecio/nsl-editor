@@ -26,10 +26,10 @@ class NameAsEdAuthIdWStrMatchingAnotherAuthor < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForAuthor.new(
       author_1.id.to_s,
       author_2.name,
-      "Some Author Field"
+      "Some Author Field",
     )
     assert_equal author_2.id,
-                 result.value,
-                 "Should get matching ID for author name despite mismatched ID"
+      result.value,
+      "Should get matching ID for author name despite mismatched ID"
   end
 end

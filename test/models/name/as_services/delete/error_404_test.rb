@@ -36,17 +36,21 @@ class NameAsServicesDeleteError404Test < ActiveSupport::TestCase
   end
 
   def headers
-    { "Accept" => "application/json",
+    {
+      "Accept" => "application/json",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
       "Host" => "localhost:9090",
-      "User-Agent" => /ruby/ }
+      "User-Agent" => /ruby/,
+    }
   end
 
   test "url" do
     name_id = names(:name_to_delete).id
     name = Name::AsServices.find(name_id)
-    assert_raise(RestClient::ResourceNotFound,
-                 "Should raise exception for resource not found") do
+    assert_raise(
+      RestClient::ResourceNotFound,
+      "Should raise exception for resource not found",
+    ) do
       name.delete_with_reason("404 this is the reason.....")
     end
   end

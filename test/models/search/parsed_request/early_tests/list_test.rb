@@ -22,24 +22,28 @@ require "test_helper"
 class SearchParsedRequestListTest < ActiveSupport::TestCase
   test "search parse query list" do
     query_string = "list"
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target: "name",
-                                                          canonical_query_target: "name",
-                                                          query_string:
-                                                          query_string)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target: "name",
+      canonical_query_target: "name",
+      query_string:
+            query_string,
+    )
     parsed_request = Search::ParsedRequest.new(params)
     assert parsed_request.list, "This should be parsed as a list query."
-    assert !parsed_request.count, "This should not be parsed as a count query."
-    assert_match(/\Aname\z/,
-                 parsed_request.target_table,
-                 "This should be parsed as a query on the name table.")
+    assert_not parsed_request.count, "This should not be parsed as a count query."
+    assert_match(
+      /\Aname\z/,
+      parsed_request.target_table,
+      "This should be parsed as a query on the name table.",
+    )
     assert parsed_request.limited,
-           "This should be parsed as a query with a limit."
+      "This should be parsed as a query with a limit."
     assert_equal parsed_request.limit,
-                 100,
-                 "This should be parsed as a query with a limit of 100."
-    assert !parsed_request.common_and_cultivar,
-           "This should be parsed as a query excluding common and cultivars."
+      100,
+      "This should be parsed as a query with a limit of 100."
+    assert_not parsed_request.common_and_cultivar,
+      "This should be parsed as a query excluding common and cultivars."
     assert parsed_request.where_arguments.blank?,
-           "This should be parsed as a query with no where arguments."
+      "This should be parsed as a query with no where arguments."
   end
 end

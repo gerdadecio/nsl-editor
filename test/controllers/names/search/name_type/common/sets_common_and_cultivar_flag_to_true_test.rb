@@ -26,21 +26,27 @@ class NameSrch4NameTypeCommSetCommCultFlagTrueTest < ActionController::TestCase
     skip # Expect this to be no longer needed under revised search.
     common = names(:argyle_apple)
     # Set the common-and-cultivar flag to false.
-    get(:index,
-        params: { "query_on" => "name",
-                  "query" => "nt:common",
-                  "query_common_and_cultivar" => "f",
-                  "query_limit" => "100" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :index,
+      params: {
+        "query_on" => "name",
+        "query" => "nt:common",
+        "query_common_and_cultivar" => "f",
+        "query_limit" => "100",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_select "input.checkbox[type=checkbox]
                   [id=query_common_and_cultivar][value=t]",
-                  true,
-                  "The query-common-and-cultivar checkbox should be true"
+      true,
+      "The query-common-and-cultivar checkbox should be true"
     assert_select "tr[id=search-result-#{common.id}]",
-                  true,
-                  "Should find one common at least"
+      true,
+      "Should find one common at least"
   end
 end
