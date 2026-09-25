@@ -23,7 +23,7 @@
 # Only accepted names
 class Loader::Name::AsTypeahead::ForParent
   attr_reader :suggestions,
-              :params
+    :params
 
   SEARCH_LIMIT = 50
 
@@ -43,19 +43,21 @@ class Loader::Name::AsTypeahead::ForParent
 
   def core_query
     Loader::Name.where(record_type: ["accepted", "excluded"])
-                .where(["lower(simple_name) like ?", prepared_search_term])
-                .where(["loader_batch_id = ?", @params[:loader_batch_id]])
-                .avoids_id(@params[:avoid_id].try("to_i") || -1)
-                .order("simple_name")
-                .limit(SEARCH_LIMIT)
+      .where("lower(simple_name) like ?", prepared_search_term)
+      .where("loader_batch_id = ?", @params[:loader_batch_id])
+      .avoids_id(@params[:avoid_id].try("to_i") || -1)
+      .order("simple_name")
+      .limit(SEARCH_LIMIT)
   end
 
   def query
     @qry = core_query
     @qry = @qry.select("id, simple_name")
-               .collect do |n|
-      { value: "#{n.simple_name} (#{n.id}) ",
-        id: n.id }
+      .collect do |n|
+      {
+        value: "#{n.simple_name} (#{n.id}) ",
+        id: n.id,
+      }
     end
   end
 end

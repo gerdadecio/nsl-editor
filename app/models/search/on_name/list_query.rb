@@ -22,9 +22,9 @@
 # Handle queries that need a list of the records. (Most queries.)
 class Search::OnName::ListQuery
   attr_reader :sql,
-              :limited,
-              :info_for_display,
-              :common_and_cultivar_included
+    :limited,
+    :info_for_display,
+    :common_and_cultivar_included
 
   def initialize(parsed_request)
     @parsed_request = parsed_request
@@ -35,8 +35,10 @@ class Search::OnName::ListQuery
 
   def prepare_query
     seed_query = Name.includes(:name_status).includes(:name_tags)
-    where_clauses = Search::OnName::WhereClauses.new(@parsed_request,
-                                                     seed_query)
+    where_clauses = Search::OnName::WhereClauses.new(
+      @parsed_request,
+      seed_query,
+    )
     prepared_query = where_clauses.sql
     prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
     prepared_query = prepared_query.offset(@parsed_request.offset) if @parsed_request.offsetted

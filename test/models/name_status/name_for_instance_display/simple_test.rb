@@ -24,11 +24,11 @@ class NameStatusNameForInstanceDisplaySimpleTest < ActiveSupport::TestCase
     NameStatus.all.each do |ns|
       case ns.name
       when "legitimate"
-        assert ns.name_for_instance_display.blank?
+        assert(ns.name_for_instance_display.blank?)
       when "[n/a]"
-        assert ns.name_for_instance_display.blank?
+        assert(ns.name_for_instance_display.blank?)
       else
-        assert_match ns.name, ns.name_for_instance_display
+        assert_match(ns.name, ns.name_for_instance_display)
       end
     end
   end

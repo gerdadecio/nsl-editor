@@ -24,11 +24,15 @@ class ReaderSearchControllerNamesNameRankListTest < ActionController::TestCase
 
   test "reader can search for a name by rank" do
     tribus = names(:a_tribus)
-    get(:search,
-        params: { query_target: "name", query_string: "name-rank: tribus" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "name", query_string: "name-rank: tribus" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "a#name-#{tribus.id}", /a_tribus/, "Should see tribus."
   end

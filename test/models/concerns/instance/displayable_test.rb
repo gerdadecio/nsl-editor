@@ -32,7 +32,7 @@ class Instance::DisplayableTest < ActiveSupport::TestCase
     instance = instances(:has_no_page_bhl_url_verbatim_name_string)
     assert instance.page.blank?, "fixture should have no page"
     assert instance.name.name_status.name_for_instance_display.present?,
-           "fixture status should render display text"
+      "fixture status should render display text"
     assert instance.needs_a_comma?
   end
 

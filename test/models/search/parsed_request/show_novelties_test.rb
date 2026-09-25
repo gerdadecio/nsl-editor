@@ -27,7 +27,7 @@ class SearchParsedRequestShowNoveltiesTest < ActiveSupport::TestCase
       canonical_query_target: "references",
       query_string: query_string,
       include_common_and_cultivar_session: true,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
   end
 
@@ -76,7 +76,7 @@ class SearchParsedRequestShowNoveltiesTest < ActiveSupport::TestCase
       canonical_query_target: "names",
       query_string: "show-novelties:",
       include_common_and_cultivar_session: true,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     assert_raises(RuntimeError) { Search::ParsedRequest.new(params) }
   end

@@ -30,14 +30,15 @@ class SearchOnInstanceCountSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "count angophora",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     assert search.executed_query.count.is_a?(Integer),
-           "Count should be a whole number"
+      "Count should be a whole number"
     assert search.executed_query.count.positive?,
-           "Expected at least one matching instance"
-    assert_equal [], search.executed_query.results,
-                 "A count query should not also return a list of results"
+      "Expected at least one matching instance"
+    assert_equal [],
+      search.executed_query.results,
+      "A count query should not also return a list of results"
   end
 end

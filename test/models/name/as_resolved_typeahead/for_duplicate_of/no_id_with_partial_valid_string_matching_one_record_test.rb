@@ -22,8 +22,10 @@ require "test_helper"
 class NameARTA4DupeOfIdWPartValStrMatchingOneRecord < ActiveSupport::TestCase
   test "no id with partial valid string matching one record" do
     name = names(:the_regnum)
-    result = Name::AsResolvedTypeahead::ForDuplicateOf.new("",
-                                                           name.full_name.chop)
+    result = Name::AsResolvedTypeahead::ForDuplicateOf.new(
+      "",
+      name.full_name.chop,
+    )
     assert_equal name.id, result.value, "Should get a matching id for the name"
   end
 end

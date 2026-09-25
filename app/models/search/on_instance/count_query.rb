@@ -28,8 +28,10 @@ class Search::OnInstance::CountQuery
   def prepare_query
     Rails.logger.debug("Search::OnInstance::CountQuery#prepare_query")
     prepared_query = Instance.where("1=1")
-    where_clauses = Search::OnInstance::WhereClauses.new(@parsed_request,
-                                                         prepared_query)
+    where_clauses = Search::OnInstance::WhereClauses.new(
+      @parsed_request,
+      prepared_query,
+    )
     prepared_query = where_clauses.sql
     @sql = prepared_query
   end

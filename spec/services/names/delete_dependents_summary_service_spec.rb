@@ -12,9 +12,7 @@ describe Names::DeleteDependentsSummaryService do
     service.groups.find { |group| group.label == label }
   end
 
-  def connection
-    ActiveRecord::Base.connection
-  end
+  delegate :connection, to: :"ActiveRecord::Base"
 
   def site_id
     @site_id ||= connection.select_value(
@@ -22,17 +20,21 @@ describe Names::DeleteDependentsSummaryService do
                          updated_at, updated_by, url)
        VALUES (now(), 'test', 'test site', 'test site', now(), 'test',
                'http://example.com')
-       RETURNING id"
+       RETURNING id",
     )
   end
 
   def resource_type_id_for(description)
     resource_type_ids[description] ||= connection.select_value(
       ActiveRecord::Base.sanitize_sql(
-        ["INSERT INTO resource_type (description, name)
+        [
+          "INSERT INTO resource_type (description, name)
           VALUES (?, ?)
-          RETURNING id", description, "#{description} #{resource_type_ids.size}"]
-      )
+          RETURNING id",
+          description,
+          "#{description} #{resource_type_ids.size}"
+        ],
+      ),
     )
   end
 
@@ -43,24 +45,33 @@ describe Names::DeleteDependentsSummaryService do
   def link_resource_to(a_name, type_description:)
     resource_id = connection.select_value(
       ActiveRecord::Base.sanitize_sql(
-        ["INSERT INTO resource (created_at, created_by, path, site_id,
+        [
+          "INSERT INTO resource (created_at, created_by, path, site_id,
                                 updated_at, updated_by, resource_type_id)
           VALUES (now(), 'test', 'test-path', ?, now(), 'test', ?)
-          RETURNING id", site_id, resource_type_id_for(type_description)]
-      )
+          RETURNING id",
+          site_id,
+          resource_type_id_for(type_description)
+        ],
+      ),
     )
     connection.execute(
       ActiveRecord::Base.sanitize_sql(
-        ["INSERT INTO name_resources (name_id, resource_id) VALUES (?, ?)",
-          a_name.id, resource_id]
-      )
+        [
+          "INSERT INTO name_resources (name_id, resource_id) VALUES (?, ?)",
+          a_name.id,
+          resource_id
+        ],
+      ),
     )
   end
 
   def add_name_resource_to(a_name, host_name:)
-    create(:name_resource,
+    create(
+      :name_resource,
       name: a_name,
-      resource_host: create(:resource_host, name: host_name))
+      resource_host: create(:resource_host, name: host_name),
+    )
   end
 
   def create_name_tag(tag_name)
@@ -70,19 +81,21 @@ describe Names::DeleteDependentsSummaryService do
   end
 
   def tag(a_name, tag_name:)
-    create(:name_tag_name,
+    create(
+      :name_tag_name,
       name_id: a_name.id,
-      tag_id: create_name_tag(tag_name).id)
+      tag_id: create_name_tag(tag_name).id,
+    )
   end
 
   describe "#execute" do
     context "when the name has no dependents" do
       it "produces no groups" do
-        expect(service.groups).to be_empty
+        expect(service.groups).to(be_empty)
       end
 
       it "is not any?" do
-        expect(service).not_to be_any
+        expect(service).not_to(be_any)
       end
     end
 
@@ -94,19 +107,19 @@ describe Names::DeleteDependentsSummaryService do
 
       it "counts them by resource host name, ordered by host name" do
         expect(group_for("Name resources").entries)
-          .to eq([["BHL", 1], ["IPNI", 1]])
+          .to(eq([["BHL", 1], ["IPNI", 1]]))
       end
 
       it "totals the entries" do
-        expect(group_for("Name resources").total).to eq(2)
+        expect(group_for("Name resources").total).to(eq(2))
       end
 
       it "is any?" do
-        expect(service).to be_any
+        expect(service).to(be_any)
       end
 
       it "does not report the other groups" do
-        expect(service.groups.map(&:label)).to eq(["Name resources"])
+        expect(service.groups.map(&:label)).to(eq(["Name resources"]))
       end
     end
 
@@ -118,7 +131,7 @@ describe Names::DeleteDependentsSummaryService do
 
       it "labels the entry as unnamed and counts them together" do
         expect(group_for("Name resources").entries)
-          .to eq([[described_class::UNLABELLED, 2]])
+          .to(eq([[described_class::UNLABELLED, 2]]))
       end
     end
 
@@ -131,11 +144,11 @@ describe Names::DeleteDependentsSummaryService do
 
       it "counts them by resource type, ordered by description" do
         expect(group_for("Resources").entries)
-          .to eq([["Biodiversity Heritage Library", 1], ["Protologue", 2]])
+          .to(eq([["Biodiversity Heritage Library", 1], ["Protologue", 2]]))
       end
 
       it "totals the entries" do
-        expect(group_for("Resources").total).to eq(3)
+        expect(group_for("Resources").total).to(eq(3))
       end
     end
 
@@ -147,11 +160,11 @@ describe Names::DeleteDependentsSummaryService do
 
       it "counts them by tag, ordered by tag name" do
         expect(group_for("Name tags").entries)
-          .to eq([["ambiguous", 1], ["vetted", 1]])
+          .to(eq([["ambiguous", 1], ["vetted", 1]]))
       end
 
       it "totals the entries" do
-        expect(group_for("Name tags").total).to eq(2)
+        expect(group_for("Name tags").total).to(eq(2))
       end
     end
 
@@ -167,7 +180,7 @@ describe Names::DeleteDependentsSummaryService do
 
       it "leaves the resources group out instead of raising" do
         expect(service.groups.map(&:label))
-          .to eq(["Name resources", "Name tags"])
+          .to(eq(["Name resources", "Name tags"]))
       end
     end
 
@@ -175,7 +188,7 @@ describe Names::DeleteDependentsSummaryService do
       before { connection.execute("DROP TABLE resource CASCADE") }
 
       it "leaves the resources group out instead of raising" do
-        expect(service.groups).to be_empty
+        expect(service.groups).to(be_empty)
       end
     end
 
@@ -187,7 +200,7 @@ describe Names::DeleteDependentsSummaryService do
       end
 
       it "produces no groups for this name" do
-        expect(service.groups).to be_empty
+        expect(service.groups).to(be_empty)
       end
     end
 
@@ -200,11 +213,11 @@ describe Names::DeleteDependentsSummaryService do
 
       it "reports the groups in a fixed order" do
         expect(service.groups.map(&:label))
-          .to eq(["Name resources", "Resources", "Name tags"])
+          .to(eq(["Name resources", "Resources", "Name tags"]))
       end
 
       it "counts each group separately" do
-        expect(service.groups.map(&:total)).to eq([1, 1, 1])
+        expect(service.groups.map(&:total)).to(eq([1, 1, 1]))
       end
     end
   end

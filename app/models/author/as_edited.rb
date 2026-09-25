@@ -59,6 +59,7 @@
 #
 class Author::AsEdited < Author::AsTypeahead
   include Author::AuthorResolvable
+
   AED = "Author::AsEdited:"
   def self.create(params, typeahead_params, username)
     author = Author::AsEdited.new(params)

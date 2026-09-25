@@ -28,31 +28,31 @@ class RelationshipCannotHaveBhlUrlTest < ActiveSupport::TestCase
     relationship_instance =
       instances(:rusty_gum_is_a_common_name_of_angophora_costata)
     assert relationship_instance.instance_type.relationship?,
-           "Precondition: instance type must be a relationship type."
+      "Precondition: instance type must be a relationship type."
     assert relationship_instance.bhl_url.blank?,
-           "Precondition: bhl_url must start blank."
+      "Precondition: bhl_url must start blank."
     assert relationship_instance.valid?,
-           "Starting relationship instance must be valid for this test; errors:
-           #{relationship_instance.errors.full_messages.join(';')}"
+      "Starting relationship instance must be valid for this test; errors:
+           #{relationship_instance.errors.full_messages.join(";")}"
 
     relationship_instance.bhl_url = "https://www.biodiversitylibrary.org/item/1"
 
     assert_not relationship_instance.valid?,
-               "Should not be valid with a bhl_url set."
+      "Should not be valid with a bhl_url set."
     assert_includes relationship_instance.errors.full_messages,
-                     "A relationship instance cannot have a bhl url value"
+      "A relationship instance cannot have a bhl url value"
   end
 
   test "standalone instance can have a bhl_url value" do
     standalone_instance = instances(:britten_created_angophora_costata)
     assert_not standalone_instance.instance_type.relationship?,
-               "Precondition: instance type must not be a relationship type."
+      "Precondition: instance type must not be a relationship type."
 
     standalone_instance.bhl_url = "https://www.biodiversitylibrary.org/item/2"
 
     assert standalone_instance.valid?,
-           "Standalone instance with a bhl_url should be valid; errors:
-           #{standalone_instance.errors.full_messages.join(';')}"
+      "Standalone instance with a bhl_url should be valid; errors:
+           #{standalone_instance.errors.full_messages.join(";")}"
   end
 
   test "relationship instance with a blank bhl_url remains valid" do
@@ -61,7 +61,7 @@ class RelationshipCannotHaveBhlUrlTest < ActiveSupport::TestCase
     relationship_instance.bhl_url = ""
 
     assert relationship_instance.valid?,
-           "Relationship instance with a blank bhl_url should be valid; errors:
-           #{relationship_instance.errors.full_messages.join(';')}"
+      "Relationship instance with a blank bhl_url should be valid; errors:
+           #{relationship_instance.errors.full_messages.join(";")}"
   end
 end

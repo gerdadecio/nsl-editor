@@ -27,13 +27,19 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
   end
 
   test "should show detail and copy tab links if qa user gets details tab" do
-    get(:show,
-        params: { id: @instance.id,
-                  tab: "tab_show_1",
-                  "row-type" => "instance_as_part_of_concept_record" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["QA"] })
+    get(
+      :show,
+      params: {
+        id: @instance.id,
+        tab: "tab_show_1",
+        "row-type" => "instance_as_part_of_concept_record",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["QA"],
+      },
+    )
     assert_response :success
     asserts
   end
@@ -42,13 +48,19 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
     Rails.configuration.profile_v2_aware = false
     Instance.stub_any_instance(:profile_items, -> { raise PG::UndefinedTable, "relation \"profile_item\" does not exist" }) do
       @request.headers["Accept"] = "application/javascript"
-      get(:show,
-        params: { id: @instance.id,
-                  tab: "tab_show_1",
-                  "row-type" => "instance_as_part_of_concept_record" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["QA"] })
+      get(
+        :show,
+        params: {
+          id: @instance.id,
+          tab: "tab_show_1",
+          "row-type" => "instance_as_part_of_concept_record",
+        },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["QA"],
+        },
+      )
       assert_response :success
     end
   end
@@ -61,41 +73,59 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
   end
 
   def asserts1
-    assert_select "li.active a#instance-show-tab",
-                  /Details/,
-                  "Should show 'Details' tab link."
-    assert_select "a#instance-edit-tab",
-                  false,
-                  "Should not show 'Edit' tab link."
-    assert_select "a#instance-edit-notes-tab",
-                  false,
-                  "Should not show 'Notes' tab link."
+    assert_select(
+      "li.active a#instance-show-tab",
+      /Details/,
+      "Should show 'Details' tab link.",
+    )
+    assert_select(
+      "a#instance-edit-tab",
+      false,
+      "Should not show 'Edit' tab link.",
+    )
+    assert_select(
+      "a#instance-edit-notes-tab",
+      false,
+      "Should not show 'Notes' tab link.",
+    )
   end
 
   def asserts2
-    assert_select "a#instance-cite-this-instance-tab",
-                  false,
-                  "Should not show 'Syn' tab link."
-    assert_select "a#unpublished-citation-tab",
-                  false,
-                  "Should not show 'Unpub' tab link."
-    assert_select "a#instance-apc-placement-tab",
-                  false,
-                  "Should not show 'APC' tab link."
+    assert_select(
+      "a#instance-cite-this-instance-tab",
+      false,
+      "Should not show 'Syn' tab link.",
+    )
+    assert_select(
+      "a#unpublished-citation-tab",
+      false,
+      "Should not show 'Unpub' tab link.",
+    )
+    assert_select(
+      "a#instance-apc-placement-tab",
+      false,
+      "Should not show 'APC' tab link.",
+    )
   end
 
   def asserts3
-    assert_select "a#instance-comments-tab",
-                  false,
-                  "Should not show 'Adnot' tab link."
-    assert_select "a#instance-copy-to-new-reference-tab",
-                  false,
-                  "Should not show 'Copy' tab link."
+    assert_select(
+      "a#instance-comments-tab",
+      false,
+      "Should not show 'Adnot' tab link.",
+    )
+    assert_select(
+      "a#instance-copy-to-new-reference-tab",
+      false,
+      "Should not show 'Copy' tab link.",
+    )
   end
 
   def asserts4
-    assert_select "a#instance-profile-v2-tab",
-                  false
-                  "Should not show 'FOA Profile' tab link"
+    assert_select(
+      "a#instance-profile-v2-tab",
+      false,
+    )
+    "Should not show 'FOA Profile' tab link"
   end
 end

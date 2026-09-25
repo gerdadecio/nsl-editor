@@ -24,6 +24,6 @@ class PaperShouldHaveJournalParentTest < ActiveSupport::TestCase
     ref_type = ref_types(:paper)
     # Must have a parent_id to even be in the race with this data structure.
     assert ref_type.parent.name == ref_types(:journal).name,
-           "Paper should have journal as parent."
+      "Paper should have journal as parent."
   end
 end

@@ -27,14 +27,18 @@ class NameShowDeleteTabForEditorTest < ActionController::TestCase
 
   test "should show delete tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @name.id, tab: "tab_delete" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @name.id, tab: "tab_delete" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_select "li.active a#name-delete-tab",
-                  "Delete",
-                  "Should show 'Delete' tab."
+      "Delete",
+      "Should show 'Delete' tab."
   end
 end

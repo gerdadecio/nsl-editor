@@ -27,13 +27,13 @@ class SearchOnRefCitTextPrefixFragmentAnomaliesDupTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "reference",
       query_string: "citation-text: duplica",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 2,
-                 search.executed_query.results.size,
-                 "Two results expected"
+      search.executed_query.results.size,
+      "Two results expected"
   end
 end

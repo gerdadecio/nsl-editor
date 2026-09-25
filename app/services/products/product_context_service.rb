@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Products
   class ProductContextService < BaseService
-
     attr_reader :products
 
     def initialize(products:, params: nil)
@@ -21,7 +22,7 @@ module Products
     end
 
     def product_with_context(context_id)
-      return nil if context_id.nil? || products.blank?
+      return if context_id.nil? || products.blank?
 
       products.find { |product| product.context_id == context_id }
     end
@@ -36,16 +37,16 @@ module Products
     def query_product_context
       products
         .group_by(&:context_id)
-        .transform_values { |p| p.map(&:name).join('/') }
+        .transform_values { |p| p.map(&:name).join("/") }
         .to_h
         .map do |context_id, context_list|
         {
           context_id: context_id,
           name: context_list,
           description: context_list,
-          products: products_for_context(context_id)
+          products: products_for_context(context_id),
         }
-      end.uniq{|ctx| ctx[:context_id]}
+      end.uniq { |ctx| ctx[:context_id] }
     end
 
     def products_for_context(context_id)

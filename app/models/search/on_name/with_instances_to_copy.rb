@@ -31,12 +31,12 @@ class Search::OnName::WithInstancesToCopy
       name.display_as_part_of_concept
       results << name
       Instance::AsArray::ForName.new(name)
-      .results
-      .reject { |i| i.instance_type.relationship && i.instance_type.unsourced }
-      .reject { |i| i.instance_type.name == 'trade name' }
-      .each do |usage_rec|
-        results << usage_rec
-      end
+        .results
+        .reject { |i| i.instance_type.relationship && i.instance_type.unsourced }
+        .reject { |i| i.instance_type.name == "trade name" }
+        .each do |usage_rec|
+          results << usage_rec
+        end
     end
     @names_with_instances = results
   end

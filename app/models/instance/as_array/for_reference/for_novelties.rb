@@ -60,17 +60,17 @@ class Instance::AsArray::ForReference::ForNovelties < Array
 
     def base_query(sort_by)
       query = Instance
-              .joins(:name)
-              .includes(name: :name_status)
-              .joins(:instance_type)
-              .where(instance_type: { primary_instance: true })
-              .includes(this_is_cited_by: %i[name instance_type])
+        .joins(:name)
+        .includes(name: :name_status)
+        .joins(:instance_type)
+        .where(instance_type: { primary_instance: true })
+        .includes(this_is_cited_by: [:name, :instance_type])
       sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
     end
   end
 
   def initialize(reference, sort_by = "name", limit = nil, offset = 0,
-                 preloaded_instances: nil)
+    preloaded_instances: nil)
     debug("init #{reference.citation}")
     @results = []
     @already_shown = []
@@ -85,11 +85,11 @@ class Instance::AsArray::ForReference::ForNovelties < Array
   end
 
   def debug(s)
-    Rails.logger.debug("Instance::AsArray::ForReference: #{s}")
+    Rails.logger.debug { "Instance::AsArray::ForReference: #{s}" }
   end
 
   def find_instances
-    debug "find_instances"
+    debug("find_instances")
     @reference.display_as_part_of_concept
     @count = 1
     find_instances_for_ref
@@ -121,12 +121,12 @@ class Instance::AsArray::ForReference::ForNovelties < Array
   def include_standalone_instance_and_synonymy(instance)
     instance.display_within_reference
     @results.push(instance)
-    #instance.is_cited_by
+    # instance.is_cited_by
     #        .each do |cited_by|
     #  @count += 1
     #  cited_by.expanded_instance_type = cited_by.instance_type.name
     #  @results.push(cited_by)
-    #end
+    # end
   end
 
   def include_synonym(instance)

@@ -57,7 +57,7 @@ module AuditHelper
     %(Last updated
     <span class="purple">#{time_ago_in_words(record.updated_at)}&nbsp;ago
     </span> by #{record.updated_by} #{formatted_timestamp(
-      record.updated_at
+      record.updated_at,
     )})
   end
 
@@ -65,7 +65,7 @@ module AuditHelper
     %(Created or last updated
     <span class="purple">#{time_ago_in_words(record.updated_at)}&nbsp;ago
     </span> by #{record.updated_by} #{formatted_timestamp(
-      record.updated_at
+      record.updated_at,
     )})
   end
 

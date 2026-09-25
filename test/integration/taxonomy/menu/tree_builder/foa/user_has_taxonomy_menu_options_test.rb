@@ -24,16 +24,20 @@ class TreeBuilderFoaUserHasTaxonomyMenuOptionsTest < ActionController::TestCase
 
   test "foa tree builder has taxonomy menu options" do
     user = users(:foa_tax_builder)
-    get(:search,
-        params: {},
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"] })
+    get(
+      :search,
+      params: {},
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+      },
+    )
     assert_response :success
     assert_select "a",
-                  /FOA draft version/,
-                  "Should show FOA draft version menu link."
-    assert_select "a", {count: 0, text: "APC draft version"}, "Should not show APC draft version"
-    assert_select "a", {count: 0, text: "Create draft taxonomy"}, "Should not show Create Draft Taxonomy menu link"
+      /FOA draft version/,
+      "Should show FOA draft version menu link."
+    assert_select "a", { count: 0, text: "APC draft version" }, "Should not show APC draft version"
+    assert_select "a", { count: 0, text: "Create draft taxonomy" }, "Should not show Create Draft Taxonomy menu link"
   end
 end

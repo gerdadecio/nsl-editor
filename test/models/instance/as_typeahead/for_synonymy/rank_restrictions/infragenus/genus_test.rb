@@ -21,8 +21,10 @@ require "test_helper"
 # Single instance typeahead search.
 class TypeaheadForSynonymyGenusTest < ActiveSupport::TestCase
   def setup
-    @ta = Instance::AsTypeahead::ForSynonymy.new("a",
-                                                 names(:a_genus).id)
+    @ta = Instance::AsTypeahead::ForSynonymy.new(
+      "a",
+      names(:a_genus).id,
+    )
   end
 
   test "instance typeahead for synonymy rank restriction for a genus" do
@@ -35,23 +37,55 @@ class TypeaheadForSynonymyGenusTest < ActiveSupport::TestCase
   end
 
   def check_infrageneric_exclusions
-    %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Familia
-       Subfamilia Tribus Subtribus Species Subspecies Nothovarietas Varietas
-       Subvarietas Forma Subforma].each do |rank_string|
+    [
+      "Regio",
+      "Regnum",
+      "Division",
+      "Classis",
+      "Subclassis",
+      "Superordo",
+      "Ordo",
+      "Subordo",
+      "Familia",
+      "Subfamilia",
+      "Tribus",
+      "Subtribus",
+      "Species",
+      "Subspecies",
+      "Nothovarietas",
+      "Varietas",
+      "Subvarietas",
+      "Forma",
+      "Subforma"
+    ].each do |rank_string|
       escaped_s = Regexp.escape(rank_string)
-      assert @rank_names.none? { |e| e.match(/\A#{escaped_s}\z/) },
-             "Expect no #{rank_string} to be suggested"
+      assert(
+        @rank_names.none? { |e| e.match(/\A#{escaped_s}\z/) },
+        "Expect no #{rank_string} to be suggested",
+      )
     end
   end
 
   def check_infrageneric_inclusions
-    assert @rank_names.select { |e| e == "Genus" }.size >= 4,
-           "Expect correct number of genera to be suggested"
-    %w(Subgenus Sectio Subsectio Series
-       Subseries Superspecies [infragenus] [unranked]).each do |rank_string|
+    assert(
+      @rank_names.select { |e| e == "Genus" }.size >= 4,
+      "Expect correct number of genera to be suggested",
+    )
+    [
+      "Subgenus",
+      "Sectio",
+      "Subsectio",
+      "Series",
+      "Subseries",
+      "Superspecies",
+      "[infragenus]",
+      "[unranked]"
+    ].each do |rank_string|
       escaped_s = Regexp.escape(rank_string)
-      assert @rank_names.select { |e| e.match(/\A#{escaped_s}\z/) }.size >= 1,
-             "Expect at least one #{rank_string} to be suggested"
+      assert(
+        @rank_names.select { |e| e.match(/\A#{escaped_s}\z/) }.size >= 1,
+        "Expect at least one #{rank_string} to be suggested",
+      )
     end
   end
 end

@@ -26,8 +26,8 @@ class SearchOnReferenceShowNoveltiesSimpleTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "references",
         query_string: "id: #{reference.id} #{query_suffix}",
-        current_user: build_edit_user
-      )
+        current_user: build_edit_user,
+      ),
     )
   end
 
@@ -35,7 +35,7 @@ class SearchOnReferenceShowNoveltiesSimpleTest < ActiveSupport::TestCase
     ref = references(:de_fructibus_et_seminibus_plantarum)
     search = search_for(ref)
     assert search.executed_query.results.instance_of?(Array),
-           "show-novelties: should produce an Array of results"
+      "show-novelties: should produce an Array of results"
   end
 
   test "show-novelties: interleaves primary instances after the reference" do
@@ -43,25 +43,28 @@ class SearchOnReferenceShowNoveltiesSimpleTest < ActiveSupport::TestCase
     search = search_for(ref)
     results = search.executed_query.results
     assert results.size > 1,
-           "Results should include the reference plus at least one primary instance"
-    assert_equal Reference, results.first.class,
-                 "First result should be the reference"
-    assert_equal Instance, results[1].class,
-                 "Second result should be an instance"
+      "Results should include the reference plus at least one primary instance"
+    assert_equal Reference,
+      results.first.class,
+      "First result should be the reference"
+    assert_equal Instance,
+      results[1].class,
+      "Second result should be an instance"
   end
 
   test "show-novelties-by-page: returns results sorted by page" do
     ref = references(:de_fructibus_et_seminibus_plantarum)
     search = search_for(ref, "show-novelties-by-page:")
     assert search.executed_query.results.instance_of?(Array),
-           "show-novelties-by-page: should produce an Array of results"
+      "show-novelties-by-page: should produce an Array of results"
   end
 
   test "show-novelties: on reference with no primary instances returns only the reference" do
     ref = references(:simple)
     search = search_for(ref)
     results = search.executed_query.results
-    assert_equal 1, results.size,
-                 "Should return only the reference when it has no primary instances"
+    assert_equal 1,
+      results.size,
+      "Should return only the reference when it has no primary instances"
   end
 end

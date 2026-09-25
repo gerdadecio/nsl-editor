@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: reference
@@ -77,7 +79,7 @@ FactoryBot.define do
     citation_html { "Sample Citation html" }
     created_by { "Sample Created by" }
     display_title { "Sample Display title" }
-    sequence(:doi) {|n| "Sample Doi #{n}" }
+    sequence(:doi) { |n| "Sample Doi #{n}" }
     edition { "Sample Edition" }
     isbn { "Sample Isbn" }
     issn { "Sample Issn" }
@@ -96,13 +98,12 @@ FactoryBot.define do
     verbatim_citation { "Sample Verbatim citation" }
     verbatim_reference { "Sample Verbatim reference" }
     volume { "Sample Volume" }
-    sequence(:uri) {|n| "Sample uri #{n}" }
+    sequence(:uri) { |n| "Sample uri #{n}" }
 
     association :ref_type
     association :ref_author_role
     association :language
     association :author
     association :namespace
-
   end
 end

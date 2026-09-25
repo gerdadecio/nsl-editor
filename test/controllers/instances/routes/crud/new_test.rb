@@ -23,7 +23,7 @@ class InstanceNewRouteTest < ActionController::TestCase
   tests InstancesController
   test "should route to a new instance" do
     assert_routing "/instances/new",
-                   controller: "instances",
-                   action: "new"
+      controller: "instances",
+      action: "new"
   end
 end

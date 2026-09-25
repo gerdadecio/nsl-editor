@@ -24,10 +24,10 @@ class InstNoteKeyAPCOptionsForInstanceWithAPCDistTest < ActiveSupport::TestCase
     instance = instances(:has_apc_dist_note)
     options = InstanceNoteKey.apc_options_for_instance(instance)
     assert_equal 1,
-                 options.size,
-                 "Expected 1 APC option"
+      options.size,
+      "Expected 1 APC option"
     assert_match instance_note_keys(:apc_comment).name,
-                 options.first.first,
-                 "First APC option should be 'APC Comment'"
+      options.first.first,
+      "First APC option should be 'APC Comment'"
   end
 end

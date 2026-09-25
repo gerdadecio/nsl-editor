@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-require 'test_helper'
+require "test_helper"
 
 class ProductAndProductItemConfigsTest < ActiveSupport::TestCase
   def setup
@@ -56,7 +56,7 @@ class ProductAndProductItemConfigsTest < ActiveSupport::TestCase
   end
 
   test "#run_query with feature flag on and with product_item_config_id param" do
-    param = {product_item_config_id: @product_item_config.id}
+    param = { product_item_config_id: @product_item_config.id }
     SessionUser.stub_any_instance(:groups, ["foa"]) do
       product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@session_user, @instance, param).run_query
       assert_equal 1, product_configs_and_profile_items.size
@@ -97,9 +97,9 @@ class ProductAndProductItemConfigsTest < ActiveSupport::TestCase
   end
 
   test "#run_query with rdf_id=reference params" do
-    profile_item = profile_item(:ecology_pi_ref)
+    profile_item(:ecology_pi_ref)
     SessionUser.stub_any_instance(:groups, ["foa"]) do
-      product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@session_user, @instance, {rdf_id: "reference"}).run_query
+      product_configs_and_profile_items, _ = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@session_user, @instance, { rdf_id: "reference" }).run_query
       assert_equal 1, product_configs_and_profile_items.size
       profile_item_type = product_configs_and_profile_items.first[:product_item_config].profile_item_type
       assert_equal profile_item_type.rdf_id, "ecology.reference"

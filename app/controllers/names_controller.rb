@@ -25,15 +25,27 @@ class NamesController < ApplicationController
   include Name::CopyInstances
 
   # All text/html requests should go to the search page, except for rules.
-  before_action :javascript_only, except: %i[rules refresh_children]
+  before_action :javascript_only, except: [:rules, :refresh_children]
   before_action :find_name,
-                only: %i[show tab edit_as_category
-                         refresh refresh_children
-                         transfer_dependents
-                         copy_instances]
+    only: [
+      :show,
+      :tab,
+      :edit_as_category,
+      :refresh,
+      :refresh_children,
+      :transfer_dependents,
+      :copy_instances
+    ]
   before_action :authorise_name_change,
-                only: %i[update edit_as_category copy copy_instances
-                         refresh refresh_children refresh_name_path_field]
+    only: [
+      :update,
+      :edit_as_category,
+      :copy,
+      :copy_instances,
+      :refresh,
+      :refresh_children,
+      :refresh_name_path_field
+    ]
 
   # GET /names/1
   # GET /names/1.json
@@ -49,10 +61,10 @@ class NamesController < ApplicationController
       @instance.name = @name
     end
     @take_focus = params[:take_focus] == "true"
-    render "show", layout: false
+    render("show", layout: false)
   end
 
-  alias tab show
+  alias_method :tab, :show
 
   def edit_as_category
     @tab = "tab_edit"
@@ -60,9 +72,9 @@ class NamesController < ApplicationController
     if params[:new_category].present?
       @name.change_category_name_to = params[:new_category]
     else
-      throw "No new category param"
+      throw("No new category param")
     end
-    render "show", layout: false
+    render("show", layout: false)
   end
 
   # GET /names/new_row
@@ -70,38 +82,44 @@ class NamesController < ApplicationController
     @random_id = (Random.new.rand * 10_000_000_000).to_i
     @category = params[:type].tr(" ", "-")
     @category_display = params[:type].tr("-", " ")
-    render :new_row,
-      locals: {partial: 'new_row',
-               locals_for_partial:
-          {tab_path: "#{new_name_with_category_and_random_id_path(@category, @random_id)}",
-           link_id: "link-new-name-#{@category}-#{@random_id}",
-           link_title: new_row_link_title,
-           link_text: new_row_link_text,
-           name_category: @category
-          }
-              }
+    render(
+      :new_row,
+      locals: {
+        partial: "new_row",
+        locals_for_partial:
+          {
+            tab_path: "#{new_name_with_category_and_random_id_path(@category, @random_id)}",
+            link_id: "link-new-name-#{@category}-#{@random_id}",
+            link_title: new_row_link_title,
+            link_text: new_row_link_text,
+            name_category: @category,
+          },
+      },
+    )
   end
 
   # GET /names/new
   def new
     @tab_index = (params[:tabIndex] || "40").to_i
     @category = params[:category]
-    @category_display = @category.gsub(/[_-]/,' ')
+    @category_display = @category.gsub(/[_-]/, " ")
     @name = new_name_for_category
     @no_search_result_details = true
-    render :new
+    render(:new)
   end
 
   # POST /names
   def create
-    @name = Name::AsEdited.create(name_params,
-                                  typeahead_params,
-                                  current_user.username)
-    render "create"
+    @name = Name::AsEdited.create(
+      name_params,
+      typeahead_params,
+      current_user.username,
+    )
+    render("create")
   rescue StandardError => e
     logger.error("Controller:Names:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: 422
+    render("create_error", status: :unprocessable_content)
   end
 
   # PUT /names/1.json
@@ -109,14 +127,16 @@ class NamesController < ApplicationController
   def update
     @name = Name::AsEdited.find(params[:id])
     name_before_change = @name.dup
-    @message = @name.update_if_changed(name_params,
-                                       typeahead_params,
-                                       current_user.username)
-    check_children(name_before_change) unless @message.downcase == 'no change'
-    render "update"
+    @message = @name.update_if_changed(
+      name_params,
+      typeahead_params,
+      current_user.username,
+    )
+    check_children(name_before_change) unless @message.downcase == "no change"
+    render("update")
   rescue StandardError => e
     @message = e.to_s
-    render "update_error", status: :unprocessable_content
+    render("update_error", status: :unprocessable_content)
   end
 
   def rules
@@ -127,23 +147,25 @@ class NamesController < ApplicationController
   def copy
     logger.debug("copy")
     current_name = Name::AsCopier.find(params[:id])
-    @name = current_name.copy_with_username(name_params[:name_element],
-                                            current_user.username,
-                                            parent_id: name_params[:parent_id],
-                                            second_parent_id: name_params[:second_parent_id])
-    render "names/copy/success"
+    @name = current_name.copy_with_username(
+      name_params[:name_element],
+      current_user.username,
+      parent_id: name_params[:parent_id],
+      second_parent_id: name_params[:second_parent_id],
+    )
+    render("names/copy/success")
   rescue StandardError => e
     @message = e.to_s
     logger.error("Error in Name#copy: #{@message}")
-    render "names/copy/error"
+    render("names/copy/error")
   end
 
   def refresh
     @name.set_names!
-    render "names/refresh/ok"
+    render("names/refresh/ok")
   rescue StandardError => e
     @message = e.to_s
-    render "names/refresh/error"
+    render("names/refresh/error")
   end
 
   def refresh_name_path_field
@@ -151,36 +173,36 @@ class NamesController < ApplicationController
     @name.build_name_path
     if @name.changed?
       @name.save!(touch: false)
-      render "names/refresh_name_path/ok"
+      render("names/refresh_name_path/ok")
     else
-      render "names/refresh_name_path/no_change"
+      render("names/refresh_name_path/no_change")
     end
   rescue StandardError => e
     @message = e.to_s
-    render "names/refresh_name_path/error"
+    render("names/refresh_name_path/error")
   end
 
   def refresh_children
     if @name.combined_children.size > 50
       NameChildrenRefresherJob.new.perform(@name.id)
-      render "names/refresh_children/job_started"
+      render("names/refresh_children/job_started")
     else
       @total = NameChildrenRefresherJob.new.perform(@name.id)
-      render "names/refresh_children/ok"
+      render("names/refresh_children/ok")
     end
   rescue StandardError => e
     @message = e.to_s
-    render "names/refresh_children/error"
+    render("names/refresh_children/error")
   end
 
   def transfer_dependents
     @dependent_type = dependent_params[:dependent_type]
     count = @name.transfer_dependents(@dependent_type)
     @message = "#{count} transferred"
-    render "names/de_duplication/transfer_dependents/success"
+    render("names/de_duplication/transfer_dependents/success")
   rescue StandardError => e
     @message = e.to_s.sub("uncaught throw", "").sub(/\A *"/, "").sub(/" *\z/, "")
-    render "names/de_duplication/transfer_dependents/error"
+    render("names/de_duplication/transfer_dependents/error")
   end
 
   private
@@ -191,32 +213,36 @@ class NamesController < ApplicationController
   end
 
   def find_name
-    @name = Name.includes(:name_type,
-                          :name_status,
-                          :name_rank,
-                          :author,
-                          :ex_author,
-                          :base_author,
-                          :ex_base_author,
-                          :name_tags).find(params[:id])
+    @name = Name.includes(
+      :name_type,
+      :name_status,
+      :name_rank,
+      :author,
+      :ex_author,
+      :base_author,
+      :ex_base_author,
+      :name_tags,
+    ).find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Could not find the name."
-    redirect_to names_path
+    redirect_to(names_path)
   end
 
   def find_name_as_services
     @name = Name::AsServices.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Could not find the name."
-    redirect_to names_path
+    redirect_to(names_path)
   end
 
   def duplicate_suggestions_typeahead
     return [] if params[:term].blank?
     return [] if params[:name_id].blank?
 
-    Name::AsTypeahead.duplicate_suggestions(params[:term],
-                                            params[:name_id])
+    Name::AsTypeahead.duplicate_suggestions(
+      params[:term],
+      params[:name_id],
+    )
   end
 
   def new_name_for_category
@@ -244,34 +270,37 @@ class NamesController < ApplicationController
 
   def check_children(name_before_change)
     if @name.simple_name != name_before_change.simple_name ||
-         @name.full_name != name_before_change.full_name ||
-         @name.name_path != name_before_change.name_path
+        @name.full_name != name_before_change.full_name ||
+        @name.name_path != name_before_change.name_path
       refresh_names
     end
   end
 
   def refresh_names
-    refreshed_names_tally = 0
     refreshed_names_tally = NameChildrenRefresherJob.new.perform(@name.id)
     if refreshed_names_tally > 0
       @message += "; also updated \
-      #{ActionController::Base.helpers.pluralize(refreshed_names_tally,\
-      'child')}."
+      #{ActionController::Base.helpers.pluralize(
+        refreshed_names_tally,
+        "child",
+      )}."
     end
   end
 
   def name_params
-    params.require(:name).permit(:name_status_id,
-                                 :name_rank_id,
-                                 :name_type_id,
-                                 :name_element,
-                                 :verbatim_rank,
-                                 :published_year,
-                                 :changed_combination,
-                                 :target_name_id,
-                                 :parent_id,
-                                 :second_parent_id,
-                                 instance_ids_to_copy: [])
+    params.require(:name).permit(
+      :name_status_id,
+      :name_rank_id,
+      :name_type_id,
+      :name_element,
+      :verbatim_rank,
+      :published_year,
+      :changed_combination,
+      :target_name_id,
+      :parent_id,
+      :second_parent_id,
+      instance_ids_to_copy: [],
+    )
   end
 
   def dependent_params
@@ -279,13 +308,13 @@ class NamesController < ApplicationController
   end
 
   def new_row_link_title
-    return "New #{@category_display} Name" unless @category.match(/family-or/)
+    return "New #{@category_display} Name" unless /family-or/.match?(@category)
 
     "New Scientific Name - Family or Above"
   end
 
   def new_row_link_text
-    return "New #{@category_display} Name".titleize unless @category.match(/family-or/)
+    return "New #{@category_display} Name".titleize unless /family-or/.match?(@category)
 
     "New Scientific Name - Family or Above"
   end

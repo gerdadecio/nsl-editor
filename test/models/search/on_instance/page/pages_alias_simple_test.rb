@@ -25,10 +25,10 @@ class SearchOnInstancePagesAliasSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "pages: zzzz99901",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instances with matching pages expected."
+    assert_not search.executed_query.results.empty?,
+      "Instances with matching pages expected."
   end
 end

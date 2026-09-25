@@ -46,12 +46,16 @@ class UsersTabsForAdminDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionCo
 
   def show_details_tab
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @user.id, tab: "tab_details" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["admin"] })
-    assert_response :success
+    get(
+      :show,
+      params: { id: @user.id, tab: "tab_details" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["admin"],
+      },
+    )
+    assert_response(:success)
     assert_match(/User ##{@user.id}/, response.body)
   end
 end

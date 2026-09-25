@@ -33,14 +33,18 @@ class TaxFormsTreeBuilderAPCUserCannotOpenEditFormToEdFoADraftTest < ActionContr
   test "APC tree builder user cannot open edit draft form for foa draft" do
     user = users(:apc_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
-    get(:edit_draft,
-        params: {},
-        format: :js,
-        xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"],
-                   draft: foa_draft})
+    get(
+      :edit_draft,
+      params: {},
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: foa_draft,
+      },
+    )
     assert_response :forbidden, "APC tree builder should not be able to open form to edit FOA draft"
   end
 end

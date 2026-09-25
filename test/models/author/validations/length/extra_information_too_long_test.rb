@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single author model test.
 class AuthorExtraInformationTooLongTest < ActiveSupport::TestCase
-
   def setup
     @max = 255
   end

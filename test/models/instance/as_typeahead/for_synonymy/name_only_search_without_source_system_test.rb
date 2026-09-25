@@ -23,13 +23,15 @@ require "models/instance/as_typeahead/for_synonymy/test_helper"
 class ForNameAndReferenceYearTest < ActiveSupport::TestCase
   test "name only search make sure works without source system" do
     assert_nil instances(:no_source_system).source_system
-    ta = Instance::AsTypeahead::ForSynonymy.new("angophora costata",
-                                                names(:a_species).id)
+    ta = Instance::AsTypeahead::ForSynonymy.new(
+      "angophora costata",
+      names(:a_species).id,
+    )
     assert ta.results.instance_of?(Array), "Results should be an array."
     assert ta.results.size >= 1, "Results should include at least one record."
     assert ta.results
-             .collect { |r| r[:value] }
-             .include?(ANGOPHORA_COSTATA_DE_FRUCT_1788_STRING),
-           ANGOPHORA_COSTATA_DE_FRUCT_1788_ERROR
+      .collect { |r| r[:value] }
+      .include?(ANGOPHORA_COSTATA_DE_FRUCT_1788_STRING),
+      ANGOPHORA_COSTATA_DE_FRUCT_1788_ERROR
   end
 end

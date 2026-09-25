@@ -31,14 +31,18 @@ end
 
 def stub_it
   stub_request(:delete, /#{a}#{b}/)
-    .with(headers: { "Accept" => "application/json",
-                     "Accept-Encoding" => "gzip, deflate",
-                     "Host" => "localhost:9090",
-                     "User-Agent" => agent })
+    .with(headers: {
+      "Accept" => "application/json",
+      "Accept-Encoding" => "gzip, deflate",
+      "Host" => "localhost:9090",
+      "User-Agent" => agent,
+    })
     .to_return(status: 404, body: body, headers: {})
 end
 
 def body
-  { "action" => "delete",
-    "errors" => ["The Instance was not found."] }.to_json
+  {
+    "action" => "delete",
+    "errors" => ["The Instance was not found."],
+  }.to_json
 end

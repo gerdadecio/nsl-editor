@@ -34,8 +34,10 @@ require "test_helper"
 # results returned within Instance::AsTypeahead::ForSynonymy::SEARCH_LIMIT.
 class ForSynonymyReferenceParentDateFallbackTest < ActiveSupport::TestCase
   def search
-    Instance::AsTypeahead::ForSynonymy.new("Fallbackia parentdatensis",
-                                           names(:a_classis).id)
+    Instance::AsTypeahead::ForSynonymy.new(
+      "Fallbackia parentdatensis",
+      names(:a_classis).id,
+    )
   end
 
   def value_index(values, marker)
@@ -46,17 +48,17 @@ class ForSynonymyReferenceParentDateFallbackTest < ActiveSupport::TestCase
     values = search.results.collect { |r| r[:value] }
 
     assert value_index(values, "Fallback Ungated Child Reference With No Own Date"),
-           "Should include the ungated no-date instance."
+      "Should include the ungated no-date instance."
     assert value_index(values, "Fallback Earlier Reference"),
-           "Should include the 1700 instance."
+      "Should include the 1700 instance."
     assert value_index(values, "Fallback Child Reference With No Own Date"),
-           "Should include the instance whose reference has no own date."
+      "Should include the instance whose reference has no own date."
     assert value_index(values, "Fallback Later Reference"),
-           "Should include the 1980 instance."
+      "Should include the 1980 instance."
   end
 
   test "a reference with no own date sorts by its parent reference's date " \
-       "when its ref_type uses parent details" do
+    "when its ref_type uses parent details" do
     values = search.results.collect { |r| r[:value] }
 
     earlier_index = value_index(values, "Fallback Earlier Reference")
@@ -64,36 +66,38 @@ class ForSynonymyReferenceParentDateFallbackTest < ActiveSupport::TestCase
     later_index = value_index(values, "Fallback Later Reference")
 
     assert earlier_index < fallback_index,
-           "The 1700 instance should sort before the instance falling " \
-           "back to its parent's 1850 date."
+      "The 1700 instance should sort before the instance falling " \
+        "back to its parent's 1850 date."
     assert fallback_index < later_index,
-           "The instance falling back to its parent's 1850 date should " \
-           "sort before the 1980 instance."
+      "The instance falling back to its parent's 1850 date should " \
+        "sort before the 1980 instance."
   end
 
   test "a reference with no own date does NOT borrow its parent's date " \
-       "when its ref_type does not use parent details" do
+    "when its ref_type does not use parent details" do
     values = search.results.collect { |r| r[:value] }
 
     ungated_index = value_index(values, "Fallback Ungated Child Reference With No Own Date")
     earlier_index = value_index(values, "Fallback Earlier Reference")
 
     assert ungated_index < earlier_index,
-           "A reference with no date, and a ref_type that does not use " \
-           "parent details, should sort as if it had no date at all - " \
-           "i.e. before the 1700 instance, not alongside the 1850 parent."
+      "A reference with no date, and a ref_type that does not use " \
+        "parent details, should sort as if it had no date at all - " \
+        "i.e. before the 1700 instance, not alongside the 1850 parent."
   end
 
   test "the instance's own citation, not the parent's, is displayed" do
     value = search.results
-                  .collect { |r| r[:value] }
-                  .find { |v| v.include?("Fallback Child Reference With No Own Date") }
+      .collect { |r| r[:value] }
+      .find { |v| v.include?("Fallback Child Reference With No Own Date") }
 
     assert value.present?, "Should include the fallback child instance."
-    assert_includes value, "Fallback Child Reference With No Own Date",
-                     "Should display the reference's own citation."
-    refute_includes value, "Fallback Parent Reference",
-                     "Should not display the parent reference's citation " \
-                     "- the fallback only affects sort order."
+    assert_includes value,
+      "Fallback Child Reference With No Own Date",
+      "Should display the reference's own citation."
+    assert_not_includes value,
+      "Fallback Parent Reference",
+      "Should not display the parent reference's citation " \
+        "- the fallback only affects sort order."
   end
 end

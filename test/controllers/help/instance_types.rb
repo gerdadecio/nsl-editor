@@ -23,12 +23,16 @@ class HelpControllerInstanceTypesForReaderTest < ActionController::TestCase
   tests HelpController
 
   test "reader should get instance types" do
-    get(:instance_types,
-        params: {},
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] },
-        xhr: true)
+    get(
+      :instance_types,
+      params: {},
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+      xhr: true,
+    )
     assert_response :success
   end
 end

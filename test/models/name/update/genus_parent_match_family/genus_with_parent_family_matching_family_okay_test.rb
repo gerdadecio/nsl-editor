@@ -29,4 +29,3 @@ class NameUpdateGenusParentFamilyBothMatchTest < ActiveSupport::TestCase
     assert(@name.save!)
   end
 end
-

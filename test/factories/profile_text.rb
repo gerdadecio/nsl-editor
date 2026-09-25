@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: profile_text(Text based content for a taxon concept about a profile item type. It has one original source (fact) and can be quoted (or linked to) many times.)
@@ -29,7 +31,7 @@ FactoryBot.define do
     created_by { "Sample Created by" }
     updated_by { "Sample Updated by" }
     api_name { "Sample Api name" }
-    value_md { "Sample Value Md"}
+    value_md { "Sample Value Md" }
     api_at { Time.current }
   end
 end

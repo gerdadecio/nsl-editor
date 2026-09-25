@@ -26,13 +26,13 @@ class SearchOnAuthorNameTokensReverseOrderTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "name: tak ron",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result expected."
+      search.executed_query.results.size,
+      "Exactly 1 result expected."
   end
 end

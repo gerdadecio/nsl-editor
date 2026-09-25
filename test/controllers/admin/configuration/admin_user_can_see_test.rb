@@ -23,14 +23,21 @@ class AdminControllerAdminUserCanSeeDBConnsTest < ActionController::TestCase
   tests AdminController
 
   test "admin user should get configuration page" do
-    get(:index,
-        params: {},
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["admin"] },
-        xhr: true)
+    get(
+      :index,
+      params: {},
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["admin"],
+      },
+      xhr: true,
+    )
     assert_response :success
-    assert_match(/Bundler.*#{Regexp.escape(Bundler::VERSION)}/m, response.body,
-                 "expected the admin page to show the Bundler version")
+    assert_match(
+      /Bundler.*#{Regexp.escape(Bundler::VERSION)}/mo,
+      response.body,
+      "expected the admin page to show the Bundler version",
+    )
   end
 end

@@ -23,12 +23,16 @@ class AdminControllerReadUserCanSeeConfigTest < ActionController::TestCase
   tests AdminController
 
   test "read user should get configuration" do
-    get(:index,
-        params: {},
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] },
-        xhr: true)
+    get(
+      :index,
+      params: {},
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+      xhr: true,
+    )
     assert_response :success, "Read user should get configuration"
   end
 end

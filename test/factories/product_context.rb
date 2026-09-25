@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: product_context(The sets of products that a user can validly set a context for in the editor)

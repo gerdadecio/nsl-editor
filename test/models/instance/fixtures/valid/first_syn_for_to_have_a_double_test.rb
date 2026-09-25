@@ -25,13 +25,13 @@ class InstanceFixturesValidFirstSynForToHaveDoubleTest < ActiveSupport::TestCase
     assert instance.relationship?, "Should be a relationship instance."
     assert_not_nil instance.reference.id, "Should have a reference."
     assert_equal instance.this_is_cited_by.class,
-                 Instance,
-                 "Should cite an instance."
+      Instance,
+      "Should cite an instance."
     assert_not_nil instance.this_is_cited_by.standalone?,
-                   "Should point to standalone instance."
+      "Should point to standalone instance."
     assert instance.reference_id == instance.this_is_cited_by.reference_id,
-           "Refs should match."
+      "Refs should match."
     assert instance.valid?,
-           "should be valid; errors: #{instance.errors.full_messages.join(';')}"
+      "should be valid; errors: #{instance.errors.full_messages.join(";")}"
   end
 end

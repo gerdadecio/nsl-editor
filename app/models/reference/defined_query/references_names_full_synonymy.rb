@@ -20,14 +20,14 @@
 #   instantiate.
 class Reference::DefinedQuery::ReferencesNamesFullSynonymy
   attr_reader :results,
-              :limited,
-              :common_and_cultivar_included,
-              :has_relation,
-              :relation,
-              :count,
-              :show_csv,
-              :total,
-              :do_count_totals
+    :limited,
+    :common_and_cultivar_included,
+    :has_relation,
+    :relation,
+    :count,
+    :show_csv,
+    :total,
+    :do_count_totals
 
   TAG = "Reference::DefinedQuery::ReferencesNamesFullSynonymy"
   def initialize(parsed_request)
@@ -37,7 +37,7 @@ class Reference::DefinedQuery::ReferencesNamesFullSynonymy
   end
 
   def debug(s)
-    Rails.logger.debug("#{TAG}: #{s}")
+    Rails.logger.debug { "#{TAG}: #{s}" }
   end
 
   def run_query

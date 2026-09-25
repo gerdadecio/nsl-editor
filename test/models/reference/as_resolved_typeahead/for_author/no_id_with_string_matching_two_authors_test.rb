@@ -23,8 +23,8 @@ class RefARTA4AuthNoIdWStringMatchingTwoReferencesTest < ActiveSupport::TestCase
   test "no id with string matching two authors" do
     reference_1 = references(:has_a_matching_citation_1)
     assert_equal 2,
-                 Reference.where(citation: reference_1.citation).size,
-                 "Should be two References with the same citation string."
+      Reference.where(citation: reference_1.citation).size,
+      "Should be two References with the same citation string."
     assert_raise(RuntimeError, "Should fail with invalid ref string.") do
       Reference::AsResolvedTypeahead::ForAuthor.new("", reference_1.citation)
     end

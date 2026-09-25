@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 # app/models/concerns/track_user.rb
 module UserTrackable
   extend ActiveSupport::Concern
 
   included do
     attr_accessor :current_user # Define an instance-level accessor for current_user
+
     before_create :set_created_by, if: :current_user
     before_save :set_updated_by, if: :current_user
   end

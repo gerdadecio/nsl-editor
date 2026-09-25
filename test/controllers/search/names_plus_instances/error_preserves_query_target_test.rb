@@ -32,12 +32,18 @@ class NamesSearchControllerNamesAndInstancesErrorPreservesQueryTargetTest < Acti
   tests SearchController
 
   test "error during Names plus instances search preserves original query target in rendered form" do
-    get(:search,
-        params: { query_target: "Names plus instances",
-                  query_string: "angophora show-novelties:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "Names plus instances",
+        query_string: "angophora show-novelties:",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "input#query-target[value=?]", "Names plus instances"
   end

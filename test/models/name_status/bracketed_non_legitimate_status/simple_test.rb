@@ -24,11 +24,11 @@ class NameStatusBracketedNonLegitimateStatusSimpleTest < ActiveSupport::TestCase
     NameStatus.all.each do |ns|
       case ns.name
       when "legitimate"
-        assert ns.bracketed_non_legitimate_status.blank?
+        assert(ns.bracketed_non_legitimate_status.blank?)
       when /]/
-        assert_match ns.name, ns.bracketed_non_legitimate_status
+        assert_match(ns.name, ns.bracketed_non_legitimate_status)
       else
-        assert_match "[#{ns.name}]", ns.bracketed_non_legitimate_status
+        assert_match("[#{ns.name}]", ns.bracketed_non_legitimate_status)
       end
     end
   end

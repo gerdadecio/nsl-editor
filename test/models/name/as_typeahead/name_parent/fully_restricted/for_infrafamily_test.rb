@@ -29,12 +29,12 @@ class ForInfrafamilyFullyRestrictedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "[infrafamily]").id
+      rank_id: NameRank.find_by(name: "[infrafamily]").id,
     )
     suggestions_should_only_include(
       typeahead.suggestions,
       "[infrafamily]",
-      %w[Familia Subfamilia Tribus Subtribus]
+      ["Familia", "Subfamilia", "Tribus", "Subtribus"],
     )
   end
 end

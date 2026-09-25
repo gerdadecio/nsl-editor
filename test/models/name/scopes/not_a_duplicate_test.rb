@@ -13,6 +13,6 @@ class NameScopeNotADuplicateTest < ActiveSupport::TestCase
   end
 
   test "not_a_duplicate scope excludes names with duplicate_of_id set" do
-    refute_includes Name.not_a_duplicate, @duplicate
+    assert_not_includes Name.not_a_duplicate, @duplicate
   end
 end

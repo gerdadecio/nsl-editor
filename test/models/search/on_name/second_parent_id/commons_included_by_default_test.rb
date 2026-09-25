@@ -28,12 +28,12 @@ class SearchOnName2ndParIdCommonsIncludedByDefaultTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "second-parent-id: #{name.id}",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Expected common name to be included for 2nd parent id query"
+      search.executed_query.results.size,
+      "Expected common name to be included for 2nd parent id query"
   end
 end

@@ -21,24 +21,32 @@ require "test_helper"
 # Single Reference model test.
 class ParentNotSelectedFromTypeahead < ActiveSupport::TestCase
   test "create reference with parent not selected from typeahead" do
-    assert_raise(RuntimeError,
-                 "Should raise exception because parent typeahead will not \
-                 match any acceptable reference.") do
-      Reference::AsEdited.create({ "ref_type_id" => "17266",
-                                   "title" => "ss",
-                                   "published" => "1",
-                                   "ref_author_role_id" => "17281",
-                                   "edition" => "",
-                                   "volume" => "",
-                                   "pages" => "",
-                                   "year" => "",
-                                   "publication_date" => "",
-                                   "notes" => "" },
-                                 { "parent_typeahead" => "asdfsa",
-                                   "parent_id" => "",
-                                   "author_typeahead" => "",
-                                   "author_id" => "" },
-                                 "fred")
+    assert_raise(
+      RuntimeError,
+      "Should raise exception because parent typeahead will not \
+                 match any acceptable reference.",
+    ) do
+      Reference::AsEdited.create(
+        {
+          "ref_type_id" => "17266",
+          "title" => "ss",
+          "published" => "1",
+          "ref_author_role_id" => "17281",
+          "edition" => "",
+          "volume" => "",
+          "pages" => "",
+          "year" => "",
+          "publication_date" => "",
+          "notes" => "",
+        },
+        {
+          "parent_typeahead" => "asdfsa",
+          "parent_id" => "",
+          "author_typeahead" => "",
+          "author_id" => "",
+        },
+        "fred",
+      )
     end
   end
 end

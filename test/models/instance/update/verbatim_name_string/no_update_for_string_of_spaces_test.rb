@@ -23,18 +23,20 @@ class InstUpdVerbatimNameStringNoUpdate4StrOfSpacesT < ActiveSupport::TestCase
   test "instance verbatim name string no update for string of spaces" do
     unchanged = instances(:has_no_page_bhl_url_verbatim_name_string)
     assert unchanged.verbatim_name_string.blank?,
-           "Verbatim name string should be blank for this test."
+      "Verbatim name string should be blank for this test."
     instance = Instance::AsEdited.find(unchanged.id)
     spaces = "  "
-    message = instance.update_if_changed({ "verbatim_name_string" => spaces },
-                                         "fred")
+    message = instance.update_if_changed(
+      { "verbatim_name_string" => spaces },
+      "fred",
+    )
     assert message.start_with?("No change"),
-           "Message should be 'No change' not '#{message}'"
+      "Message should be 'No change' not '#{message}'"
     assert instance.verbatim_name_string.blank?,
-           "Verbatim name string should still be blank."
+      "Verbatim name string should still be blank."
     assert instance.updated_at == unchanged.updated_at,
-           "Updated date-time should be untouched."
+      "Updated date-time should be untouched."
     assert instance.updated_by != "fred",
-           "Updated by should be untouched."
+      "Updated by should be untouched."
   end
 end

@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_debug,
-                :start_timer,
-                :check_system_broadcast,
-                :authenticate,
-                :authorise,
-                :set_view_mode,
-                :set_session_default_loader_batch_name
+    :start_timer,
+    :check_system_broadcast,
+    :authenticate,
+    :authorise,
+    :set_view_mode,
+    :set_session_default_loader_batch_name
   # around_action :user_tagged_logging
   # This is just an added comment to force-trigger the github workflow
 
@@ -53,7 +55,8 @@ class ApplicationController < ActionController::Base
   end
 
   def current_product_from_context
-    return nil if current_context_id.nil?
+    return if current_context_id.nil?
+
     product_context_service.product_with_context(current_context_id)
   end
 
@@ -75,15 +78,15 @@ class ApplicationController < ActionController::Base
     if request.format == "text/javascript"
       logger.error('JavaScript request with invalid authenticity token\
                   - expired session?')
-      render js: "alert('Your session may have expired. Please reload the whole page before continuing.');"
+      render(js: "alert('Your session may have expired. Please reload the whole page before continuing.');")
     else
-      redirect_to start_sign_in_path, notice: "Please try again."
+      redirect_to(start_sign_in_path, notice: "Please try again.")
     end
   end
 
   def authorise
     controller = params[:controller]
-    action = params[:tab].present? ? params[:tab] : params[:action]
+    action = params[:tab].presence || params[:action]
     authorize!(controller, action)
   rescue CanCan::AccessDenied
     details = "is unauthorized for: #{controller} #{action}"
@@ -99,21 +102,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  private
-
-   # Add nested directories for partials
-   def _prefixes
-     @_prefixes_with_partials ||= super | %w(application/search_results
-                  application/search_results/link_texts
-                  )
-   end
+  # Add nested directories for partials
+  def _prefixes
+    @_prefixes_with_partials ||= super | [
+      "application/search_results",
+      "application/search_results/link_texts"
+    ]
+  end
 
   # Edge case of deep linking to sign_in can happen after a login that failed due to no login group.
   def ask_user_to_sign_in
-    session[:url_after_sign_in] = request.url unless request.url.to_s.match(/sign_in/)
+    session[:url_after_sign_in] = request.url unless /sign_in/.match?(request.url.to_s)
     respond_to do |format|
-      format.html { redirect_to start_sign_in_url, notice: "Please sign in." }
-      format.json { render partial: "layouts/no_session.js" }
+      format.html { redirect_to(start_sign_in_url, notice: "Please sign in.") }
+      format.json { render(partial: "layouts/no_session.js") }
       format.js { js_render }
     end
   end
@@ -121,21 +123,25 @@ class ApplicationController < ActionController::Base
   def js_render
     if params[:help_id] =~ /search-examples/ || params[:help_id] =~ /search-help/
       logger.error("Handling unauth request for search-helpd or search-examples")
-      render html: "<div class='embedded-notice'><b>Your session may have expired.  Please reload the whole page before continuing.</b></div><script>alert('login...';) </script>".html_safe
+      render(html: "<div class='embedded-notice'><b>Your session may have expired.  Please reload the whole page before continuing.</b></div><script>alert('login...';) </script>".html_safe)
     elsif params[:tab].blank?
       logger.error("Handling unauth request for a non-tab")
-      render js: "alert('Your session may have expired. Please reload the whole page before continuing.');",
-             layout: true
+      render(
+        js: "alert('Your session may have expired. Please reload the whole page before continuing.');",
+        layout: true,
+      )
     else
       logger.error("Handling unauth request for the rest, including tabs")
-      render html: "<div class='embedded-notice'><b>Your session may have expired.  Please reload the whole page before continuing.</b></div><script>alert('login...';) </script>".html_safe
+      render(html: "<div class='embedded-notice'><b>Your session may have expired.  Please reload the whole page before continuing.</b></div><script>alert('login...';) </script>".html_safe)
     end
   end
 
   def continue_user_session
-    @current_user = SessionUser.new(username: session[:username],
-                             full_name: session[:user_full_name],
-                             groups: session[:groups])
+    @current_user = SessionUser.new(
+      username: session[:username],
+      full_name: session[:user_full_name],
+      groups: session[:groups],
+    )
     @current_registered_user = @current_user.registered_user
 
     if current_product_from_context
@@ -172,7 +178,7 @@ class ApplicationController < ActionController::Base
 
     unless current_registered_user.save
       logger.error("Could not save default product context for user #{current_registered_user.user_name}")
-      logger.error("Error: #{current_registered_user.errors.full_messages.join(', ')}")
+      logger.error("Error: #{current_registered_user.errors.full_messages.join(", ")}")
       return
     end
 
@@ -206,10 +212,10 @@ class ApplicationController < ActionController::Base
 
   def pick_a_tab(default_tab = "tab_show_1")
     @tab = if params[:tab].present? && params[:tab] != "undefined"
-             params[:tab]
-           else
-             default_tab
-           end
+      params[:tab]
+    else
+      default_tab
+    end
   end
 
   def pick_a_tab_index
@@ -287,9 +293,8 @@ end
 
 class Hash
   def to_html_list
-    s = '<ul>'
-    self.sort.to_h.each do |key, value|
-
+    s = "<ul>"
+    sort.to_h.each do |key, value|
       if value.nil?
       #  s += "<li>#{key}</li>"
       elsif value.is_a?(Hash)
@@ -300,7 +305,7 @@ class Hash
         s += "<li>#{key}: #{value}</li>"
       end
     end
-    s += '</ul>'
+    s += "</ul>"
     s
   end
 end

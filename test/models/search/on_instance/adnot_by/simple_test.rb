@@ -25,10 +25,10 @@ class SearchOnInstanceAdnotBySimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "adnot-by: greg",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Instances with adnot by greg expected."
+    assert_not search.executed_query.results.empty?,
+      "Instances with adnot by greg expected."
   end
 end

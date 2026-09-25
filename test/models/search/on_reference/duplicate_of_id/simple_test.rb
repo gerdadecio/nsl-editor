@@ -24,12 +24,12 @@ class SearchOnReferenceDuplicateOfIdSimpleTest < ActiveSupport::TestCase
   test "search on duplicate of id simple" do
     reference = references(:master)
     params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "duplicate-of-id: #{reference.id}",
-                   current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "duplicate-of-id: #{reference.id}",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

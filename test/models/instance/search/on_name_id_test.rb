@@ -29,15 +29,19 @@ class OnNameIdTest < ActiveSupport::TestCase
     Search::Base
       .new(ActiveSupport::HashWithIndifferentAccess
       .new(query_string: "id: #{names(:angophora_costata).id} show-instances:",
-           query_target: "name",
-           current_user: build_edit_user))
+        query_target: "name",
+        current_user: build_edit_user))
   end
 
   def evaluate(search)
-    assert_equal Array,
-                 search.executed_query.results.class,
-                 "Results should be in an array."
-    assert search.executed_query.results.size >= 2,
-           "At least two instances expected."
+    assert_equal(
+      Array,
+      search.executed_query.results.class,
+      "Results should be in an array.",
+    )
+    assert(
+      search.executed_query.results.size >= 2,
+      "At least two instances expected.",
+    )
   end
 end

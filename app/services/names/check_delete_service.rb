@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Names
   class CheckDeleteService < BaseService
     Result = Struct.new(:action_code, :delete_action, :explanation) do
@@ -21,12 +23,18 @@ module Names
     def execute
       row = ActiveRecord::Base.connection.select_one(
         ActiveRecord::Base.sanitize_sql(
-          ["SELECT action_code, delete_action, explanation
-            FROM check_delete_name(?)", @name.id]
-        )
+          [
+            "SELECT action_code, delete_action, explanation
+            FROM check_delete_name(?)",
+            @name.id
+          ],
+        ),
       )
-      @result = Result.new(row["action_code"], row["delete_action"],
-        row["explanation"])
+      @result = Result.new(
+        row["action_code"],
+        row["delete_action"],
+        row["explanation"],
+      )
     end
   end
 end

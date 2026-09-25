@@ -26,17 +26,22 @@ class TaxoInstanceTreeBuilderFoaCanSeeFoaTreeTab < ActionController::TestCase
     user = users(:foa_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
     instance = instances(:triodia_in_brassard)
-    get('tab',
-        params: {id: "#{instance.id}", tab: 'tab_classification', "row-type": 'instance_record'},
-        format: :js,
-        xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"],
-                   draft: foa_draft})
+    get(
+      "tab",
+      params: { id: "#{instance.id}", tab: "tab_classification", "row-type": "instance_record" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: foa_draft,
+      },
+    )
     assert_response :success, "Tree builder should see Tree tab for Instance with FoA Tree Active"
     assert_match 'data-tab-name="tab_classification" href="#">Tree</a>',
-                  response.body, "Tab Classification should be in the response"
-    assert_match '<form', response.body, 'Tab should contain a form'
+      response.body,
+      "Tab Classification should be in the response"
+    assert_match "<form", response.body, "Tab should contain a form"
   end
 end

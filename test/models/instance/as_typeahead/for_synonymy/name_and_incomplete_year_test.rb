@@ -22,8 +22,10 @@ require "models/instance/as_typeahead/for_synonymy/test_helper"
 # Single instance typeahead search.
 class ForNameAndReferenceYearTest < ActiveSupport::TestCase
   def setup
-    @typeahead = Instance::AsTypeahead::ForSynonymy.new("angophora costata 178",
-                                                        names(:a_species).id)
+    @typeahead = Instance::AsTypeahead::ForSynonymy.new(
+      "angophora costata 178",
+      names(:a_species).id,
+    )
   end
 
   test "name and incomplete year search" do

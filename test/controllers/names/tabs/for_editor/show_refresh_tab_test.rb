@@ -27,14 +27,18 @@ class NameShowRefreshTabForEditorTest < ActionController::TestCase
 
   test "should show refresh tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @name.id, tab: "tab_more" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @name.id, tab: "tab_more" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_select "li a#name-refresh-tab",
-                  "Refresh",
-                  "Should show 'Refresh' tab."
+      "Refresh",
+      "Should show 'Refresh' tab."
   end
 end

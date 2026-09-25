@@ -33,13 +33,13 @@ class Loader::Name::MakeOneMatchTask
 
   def no_further_processing
     log("Declined - no further processing")
-    {declines: 1, declines_reasons: {no_further_processing: 1} }
+    { declines: 1, declines_reasons: { no_further_processing: 1 } }
   end
 
   attr_reader :created, :errors
 
   def log_create_action(count)
-    entry = "Create preferred match counted #{count} #{'record'.pluralize(count)}"
+    entry = "Create preferred match counted #{count} #{"record".pluralize(count)}"
     log(entry)
   end
 
@@ -47,19 +47,17 @@ class Loader::Name::MakeOneMatchTask
     Loader::Batch::Bulk::JobLog.new(@job_number, payload, @user).write
   end
 
-  def scientific_name
-    @loader_name.scientific_name
-  end
+  delegate :scientific_name, to: :@loader_name
 
   def record_failure(msg)
     msg.sub!("uncaught throw ", "")
-    msg.gsub!('"', "")
+    msg.delete!('"')
     msg.sub!(/^Failing/, "")
     Rails.logger.error("Loader::Name::AsPreferredMatcher failure: #{msg}")
     log("Loader::Name::AsPreferredMatcher failure: #{msg}")
   end
 
   def debug(msg)
-    Rails.logger.debug("Loader::Name::AsPreferredMatcher #{msg} #{@tag}")
+    Rails.logger.debug { "Loader::Name::AsPreferredMatcher #{msg} #{@tag}" }
   end
 end

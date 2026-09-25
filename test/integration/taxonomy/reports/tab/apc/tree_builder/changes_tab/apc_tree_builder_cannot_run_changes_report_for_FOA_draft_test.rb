@@ -29,15 +29,18 @@ class APCTreeBuilderCannotRunChangesReportForFOADraftTest < ActionController::Te
   test "APC tree builder cannot run changes report for FOA draft" do
     user = users(:apc_tax_builder)
     draft = tree_versions(:foa_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:run_diff,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree builder should not be able to run changes report for FOA draft'
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :run_diff,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree builder should not be able to run changes report for FOA draft"
   end
 end
-

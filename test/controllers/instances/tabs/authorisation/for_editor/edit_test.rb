@@ -27,14 +27,18 @@ class InstanceEditTabForEditorTest < ActionController::TestCase
   end
   test "should show instance edit tab to editor" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @triodia_in_brassard.id, tab: "tab_edit" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   draft: @draft_tree_version,
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @triodia_in_brassard.id, tab: "tab_edit" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        draft: @draft_tree_version,
+        groups: ["edit"],
+      },
+    )
     assert_response :success
-    assert_match 'on page', response.body, "Should show: 'on page'"
-    assert_no_match 'as a draft', response.body, "Should not be authorised to show: 'as a draft'"
+    assert_match "on page", response.body, "Should show: 'on page'"
+    assert_no_match "as a draft", response.body, "Should not be authorised to show: 'as a draft'"
   end
 end

@@ -34,21 +34,30 @@ class TaxFormsTreePublisherAPCUserCannotRemoveNamePlacementForTaxonOnFOADraftTes
     user = users(:apc_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    delete(:remove_name_placement,
-         params: {"remove_placement"=>{"taxon_uri"=>tve.element_link,
-                                       "delete"=>"",
-                                       "cancel_remove_placement"=>{"delete"=>""}
-                                      },
-                  "id" => tve.id
-                 },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: foa_draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree publisher should not be able to remove placement from FOA draft'
-    assert_match /access denied/i, response.body,
-      "Expecting Not authorized message"
+    delete(
+      :remove_name_placement,
+      params: {
+        "remove_placement" => {
+          "taxon_uri" => tve.element_link,
+          "delete" => "",
+          "cancel_remove_placement" => { "delete" => "" },
+        },
+        "id" => tve.id,
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: foa_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree publisher should not be able to remove placement from FOA draft"
+    assert_match(
+      /access denied/i,
+      response.body,
+      "Expecting Not authorized message",
+    )
   end
 end

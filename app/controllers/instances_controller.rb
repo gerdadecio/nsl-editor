@@ -23,8 +23,13 @@ class InstancesController < ApplicationController
   before_action :find_instance, only: [:show, :tab, :destroy]
   before_action :find_instance_for_copy, only: [:copy_standalone, :copy_for_profile_v2]
   before_action :authorise_instance_change,
-                only: %i[update change_reference destroy
-                         copy_standalone copy_for_profile_v2]
+    only: [
+      :update,
+      :change_reference,
+      :destroy,
+      :copy_standalone,
+      :copy_for_profile_v2
+    ]
   # TODO: refactor validation error checks to not rely on a copied string comparison as this is very fragile
   CONCEPT_WARNING = "Validation failed: You are trying to change an accepted concept's synonymy."
 
@@ -56,7 +61,7 @@ class InstancesController < ApplicationController
     resolve_unpub_citation_name_id(
       instance_params[:name_id],
       instance_name_params[:name_typeahead],
-      context_params[:context_name_id]
+      context_params[:context_name_id],
     )
     if instance_params[:name_id].blank?
       render_create_error("You must choose a name.", "instance-name-typeahead")
@@ -274,7 +279,7 @@ class InstancesController < ApplicationController
 
   def context_params
     params.require(:instance).permit(
-      :context_name_id
+      :context_name_id,
     )
   end
 

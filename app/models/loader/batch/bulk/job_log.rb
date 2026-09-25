@@ -18,8 +18,8 @@
 #
 class Loader::Batch::Bulk::JobLog
   def initialize(job_number,
-                 log_payload,
-                 logged_by)
+    log_payload,
+    logged_by)
     @job_number = job_number
     @log_payload = log_payload
     @logged_by = logged_by

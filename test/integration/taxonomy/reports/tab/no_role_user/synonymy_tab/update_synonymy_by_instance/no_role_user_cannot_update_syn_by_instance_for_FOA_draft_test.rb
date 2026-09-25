@@ -27,16 +27,18 @@ class NoRoleUserUpdateSynByInstanceForFOADraftTest < ActionController::TestCase
   test "user with no role cannot update synonymy by instance for FOA draft" do
     user = users(:no_role)
     draft = tree_versions(:foa_draft_version)
-    post(:update_synonymy_by_instance,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'User with no role should not be able to update synonymy by instance for FOA draft'
-    assert_match /Access Denied/i, response.body, "Expecting error message"
+    post(
+      :update_synonymy_by_instance,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "User with no role should not be able to update synonymy by instance for FOA draft"
+    assert_match(/Access Denied/i, response.body, "Expecting error message")
   end
 end
-
-

@@ -25,9 +25,9 @@ class TAOnCitn4ParRefTypeRestrictNil4PersCommun < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "%",
       current_reference.id,
-      ref_types(:personal_communication).id
+      ref_types(:personal_communication).id,
     )
     assert typeahead.results.empty?,
-           "Should be no results because personal comm. takes no parent."
+      "Should be no results because personal comm. takes no parent."
   end
 end

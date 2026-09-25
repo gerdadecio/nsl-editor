@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 #
 # Tree Element Profile
 module Tree::Element::Profile::Distribution::LowLevelOps
   extend ActiveSupport::Concern
+
   def add_profile_and_distribution(new_dist, username)
-    throw "Profile already exists" unless profile.blank?
+    throw("Profile already exists") if profile.present?
 
     dist = Tree::Element::Profile::DistributionObject.new(
       new_dist, username
@@ -16,9 +19,9 @@ module Tree::Element::Profile::Distribution::LowLevelOps
   end
 
   def add_validated_dist_to_profile(new_dist, username)
-    throw "Profile expected." if profile.blank?
+    throw("Profile expected.") if profile.blank?
 
-    throw "Profile distribution not expected." unless profile[distribution_key_for_insert].blank?
+    throw("Profile distribution not expected.") if profile[distribution_key_for_insert].present?
 
     dist_object = Tree::Element::Profile::DistributionObject.new(
       new_dist, username
@@ -29,9 +32,9 @@ module Tree::Element::Profile::Distribution::LowLevelOps
   end
 
   def change_existing_distribution_in_profile(new_dist, username)
-    throw "Profile expected." if profile.blank?
+    throw("Profile expected.") if profile.blank?
 
-    throw "Profile distribution expected" if profile[distribution_key_for_insert].blank?
+    throw("Profile distribution expected") if profile[distribution_key_for_insert].blank?
 
     dist_object = distribution
     dist_object["value"] = new_dist

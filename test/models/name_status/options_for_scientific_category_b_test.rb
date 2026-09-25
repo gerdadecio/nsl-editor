@@ -25,7 +25,7 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. cult., nom. alt."),
-               'Scientific name status shld not include "nom. cult., nom. alt."'
+      'Scientific name status shld not include "nom. cult., nom. alt."'
   end
 
   test "should include  nom. et orth. cons." do
@@ -33,7 +33,7 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. et orth. cons."),
-           'Scientific name status options should include "nom. et orth. cons."'
+      'Scientific name status options should include "nom. et orth. cons."'
   end
 
   test "should include  nom. et typ. cons." do
@@ -41,7 +41,7 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. et typ. cons."),
-           'Scientific name status options should include "nom. et typ. cons."'
+      'Scientific name status options should include "nom. et typ. cons."'
   end
 
   test "should include  nom. illeg." do
@@ -49,7 +49,7 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. illeg."),
-           'Scientific name status options should include "nom. illeg."'
+      'Scientific name status options should include "nom. illeg."'
   end
 
   test "should include  nom. illeg., nom. rej." do
@@ -57,7 +57,7 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. illeg., nom. rej."),
-           'Scientific name status should include "nom. illeg., nom. rej."'
+      'Scientific name status should include "nom. illeg., nom. rej."'
   end
 
   test "should include  nom. illeg., nom. superfl." do
@@ -65,7 +65,7 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. illeg., nom. superfl."),
-           'Scientific name status should include "nom. illeg., nom. superfl."'
+      'Scientific name status should include "nom. illeg., nom. superfl."'
   end
 
   test "should include  nom. inval." do
@@ -73,7 +73,7 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval."),
-           'Scientific name status options should include "nom. inval."'
+      'Scientific name status options should include "nom. inval."'
   end
 
   test "should include  nom. inval., nom. alt." do
@@ -81,7 +81,7 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., nom. alt."),
-           'Scientific name status should include "nom. inval., nom. alt."'
+      'Scientific name status should include "nom. inval., nom. alt."'
   end
 
   test "should include  nom. inval., nom. ambig." do
@@ -89,7 +89,7 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., nom. ambig."),
-           'Scientific name status should include "nom. inval., nom. ambig."'
+      'Scientific name status should include "nom. inval., nom. ambig."'
   end
 
   test "should include  nom. inval., nom. confus." do
@@ -97,15 +97,15 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., nom. confus."),
-           'Scientific name status should include "nom. inval., nom. confus."'
+      'Scientific name status should include "nom. inval., nom. confus."'
   end
 
   test "should not include nom. inval., nom. dub." do
-    assert !NameStatus
+    assert_not NameStatus
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., nom. dub."),
-           'Scientific name status should not include "nom. inval., nom. dub."'
+      'Scientific name status should not include "nom. inval., nom. dub."'
   end
 
   test "should include  nom. inval., nom. nud." do
@@ -113,6 +113,6 @@ class OptionsForScientificCategoryBTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., nom. nud."),
-           'Scientific name status should include "nom. inval., nom. nud."'
+      'Scientific name status should include "nom. inval., nom. nud."'
   end
 end

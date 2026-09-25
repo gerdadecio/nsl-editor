@@ -25,10 +25,10 @@ class SearchOnAuthorCommentsByCaseInsensitiveTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "comments-by: GREG",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?,
-           "Authors with comments by GREG expected for case insensitive test."
+    assert_not search.executed_query.results.empty?,
+      "Authors with comments by GREG expected for case insensitive test."
   end
 end

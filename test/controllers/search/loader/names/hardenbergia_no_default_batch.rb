@@ -23,14 +23,18 @@ class SearchLoaderNameHardenbergiaNoDefaultBatchTest < ActionController::TestCas
   tests SearchController
 
   test "can search for loader names" do
-    get(:search,
-        params: { query_target: "loader names", query_string: "Hardenbergia violacea:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [:login, :"batch-loader"] })
+    get(
+      :search,
+      params: { query_target: "loader names", query_string: "Hardenbergia violacea:" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [:login, :"batch-loader"],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /Please set a default batch/,
-                  "Should be asked to set a default batch"
+      /Please set a default batch/,
+      "Should be asked to set a default batch"
   end
 end

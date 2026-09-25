@@ -54,7 +54,7 @@ class Loader::Batch::Review::Role < ApplicationRecord
     BatchReviewRole.all.count
 
     true
-  rescue StandardError => e
+  rescue StandardError
     false
   end
 

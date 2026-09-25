@@ -23,10 +23,12 @@ class NameAsResolvTA4DupeOfIdWStrMatchingTwoNamesTest < ActiveSupport::TestCase
   test "no dupe of id with string matching 2 names" do
     name_1 = names(:name_matches_another_1)
     assert_equal 2,
-                 Name.where(full_name: name_1.full_name).size,
-                 "Should be two Names with the same full name string."
-    assert_raise(RuntimeError,
-                 "Should raise a RuntimeError for invalid author string.") do
+      Name.where(full_name: name_1.full_name).size,
+      "Should be two Names with the same full name string."
+    assert_raise(
+      RuntimeError,
+      "Should raise a RuntimeError for invalid author string.",
+    ) do
       Name::AsResolvedTypeahead::ForDuplicateOf.new("", name_1.full_name)
     end
   end

@@ -24,9 +24,10 @@ class ReferenceARTA4AuthorIdWithMatchingString < ActiveSupport::TestCase
     author = authors(:chaplin)
     result = Reference::AsResolvedTypeahead::ForAuthor.new(
       author.id.to_s,
-      author.name
+      author.name,
     )
-    assert_equal author.id, result.value,
-                 "Should get a matching id for the author name"
+    assert_equal author.id,
+      result.value,
+      "Should get a matching id for the author name"
   end
 end

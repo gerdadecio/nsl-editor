@@ -2,15 +2,13 @@
 
 require "rails_helper"
 
-RSpec.describe Product::Role, type: :model do
+RSpec.describe(Product::Role, type: :model) do
   describe "associations" do
-    it { is_expected.to belong_to(:role) }
-    it { is_expected.to belong_to(:product) }
-    it { is_expected.to have_many(:user_product_roles).class_name("User::ProductRole").with_foreign_key(:product_role_id) }
-    it { is_expected.to have_many(:user_product_role_vs) }
+    it { is_expected.to(belong_to(:role)) }
+    it { is_expected.to(belong_to(:product)) }
+    it { is_expected.to(have_many(:user_product_roles).class_name("User::ProductRole").with_foreign_key(:product_role_id)) }
+    it { is_expected.to(have_many(:user_product_role_vs)) }
   end
-
-
 
   describe "scopes" do
     let!(:admin_role) { create(:role, name: "admin") }
@@ -25,44 +23,44 @@ RSpec.describe Product::Role, type: :model do
 
     describe ".admins" do
       it "returns only product roles with admin role" do
-        expect(described_class.admins).to contain_exactly(admin_product_role)
+        expect(described_class.admins).to(contain_exactly(admin_product_role))
       end
 
       it "does not return non-admin product roles" do
-        expect(described_class.admins).not_to include(editor_product_role, viewer_product_role)
+        expect(described_class.admins).not_to(include(editor_product_role, viewer_product_role))
       end
 
       it "returns empty collection when no admin product roles exist" do
         admin_product_role.destroy!
-        expect(described_class.admins).to be_empty
+        expect(described_class.admins).to(be_empty)
       end
 
       it "handles multiple admin product roles" do
         another_product = create(:product)
         another_admin_product_role = create(:product_role, role: admin_role, product: another_product)
 
-        expect(described_class.admins).to contain_exactly(admin_product_role, another_admin_product_role)
+        expect(described_class.admins).to(contain_exactly(admin_product_role, another_admin_product_role))
       end
     end
 
     describe ".non_admins" do
       it "returns product roles that are not admin roles" do
-        expect(described_class.non_admins).to contain_exactly(editor_product_role, viewer_product_role)
+        expect(described_class.non_admins).to(contain_exactly(editor_product_role, viewer_product_role))
       end
 
       it "does not return admin product roles" do
-        expect(described_class.non_admins).not_to include(admin_product_role)
+        expect(described_class.non_admins).not_to(include(admin_product_role))
       end
 
       it "returns all product roles when no admin roles exist" do
         admin_product_role.destroy!
-        expect(described_class.non_admins).to contain_exactly(editor_product_role, viewer_product_role)
+        expect(described_class.non_admins).to(contain_exactly(editor_product_role, viewer_product_role))
       end
 
       it "handles case when only admin product roles exist" do
         editor_product_role.destroy!
         viewer_product_role.destroy!
-        expect(described_class.non_admins).to be_empty
+        expect(described_class.non_admins).to(be_empty)
       end
     end
 
@@ -72,8 +70,8 @@ RSpec.describe Product::Role, type: :model do
         admins = described_class.admins.to_a
         non_admins = described_class.non_admins.to_a
 
-        expect(admins & non_admins).to be_empty
-        expect((admins + non_admins).sort_by(&:id)).to eq(all_product_roles.sort_by(&:id))
+        expect(admins & non_admins).to(be_empty)
+        expect((admins + non_admins).sort_by(&:id)).to(eq(all_product_roles.sort_by(&:id)))
       end
     end
   end
@@ -84,7 +82,7 @@ RSpec.describe Product::Role, type: :model do
     let(:product_role) { create(:product_role, product: product, role: role) }
 
     it "returns a formatted name combining product and role names" do
-      expect(product_role.name).to eq("Test Product editor product role")
+      expect(product_role.name).to(eq("Test Product editor product role"))
     end
   end
 
@@ -94,9 +92,9 @@ RSpec.describe Product::Role, type: :model do
       role = create(:role)
       create(:product_role, product: product, role: role)
 
-      expect {
+      expect do
         create(:product_role, product: product, role: role)
-      }.to raise_error(ActiveRecord::RecordNotUnique)
+      end.to(raise_error(ActiveRecord::RecordNotUnique))
     end
   end
 end

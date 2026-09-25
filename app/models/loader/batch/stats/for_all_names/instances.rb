@@ -24,41 +24,51 @@ class Loader::Batch::Stats::ForAllNames::Instances
   end
 
   def report
-    { accepted_with_standalone: accepted_with_standalone,
+    {
+      accepted_with_standalone: accepted_with_standalone,
       excluded_with_standalone: excluded_with_standalone,
       synonym_with_cross_ref: synonym_with_cross_ref,
-      misapplied_with_cross_ref: misapplied_with_cross_ref }
+      misapplied_with_cross_ref: misapplied_with_cross_ref,
+    }
   end
 
   def accepted_with_standalone
     @core_search.where("record_type = 'accepted'")
-                .joins(:loader_name_matches)
-                .where.not({ loader_name_matches:
-                            { standalone_instance_id: nil } })
-                .count
+      .joins(:loader_name_matches)
+      .where.not({
+        loader_name_matches:
+                            { standalone_instance_id: nil },
+      })
+      .count
   end
 
   def excluded_with_standalone
     @core_search.where("record_type = 'excluded'")
-                .joins(:loader_name_matches)
-                .where.not({ loader_name_matches:
-                             { standalone_instance_id: nil } })
-                .count
+      .joins(:loader_name_matches)
+      .where.not({
+        loader_name_matches:
+                             { standalone_instance_id: nil },
+      })
+      .count
   end
 
   def synonym_with_cross_ref
     @core_search.where("record_type = 'synonym'")
-                .joins(:loader_name_matches)
-                .where.not({ loader_name_matches:
-                         { relationship_instance_id: nil } })
-                .count
+      .joins(:loader_name_matches)
+      .where.not({
+        loader_name_matches:
+                         { relationship_instance_id: nil },
+      })
+      .count
   end
 
   def misapplied_with_cross_ref
     @core_search.where("record_type = 'misapplied'")
-                .joins(:loader_name_matches)
-                .where.not({ loader_name_matches:
-                         { relationship_instance_id: nil } })
-                .count
+      .joins(:loader_name_matches)
+      .where.not({
+        loader_name_matches:
+                         { relationship_instance_id: nil },
+      })
+      .count
   end
 end

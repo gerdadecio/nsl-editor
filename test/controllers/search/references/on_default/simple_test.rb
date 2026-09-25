@@ -23,14 +23,18 @@ class SearchRefsOnDefaultSimpleTest < ActionController::TestCase
   tests SearchController
 
   test "search on reference default" do
-    get(:search,
-        params: { query_target: "reference", query_string: "de fructibus" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "reference", query_string: "de fructibus" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /1 record\b/,
-                  "Should find 1 record"
+      /1 record\b/,
+      "Should find 1 record"
   end
 end

@@ -19,7 +19,7 @@
 #   A list of names.
 class Name::AsTypeahead::ForWorkspaceParentName
   attr_reader :suggestions,
-              :params
+    :params
 
   SEARCH_LIMIT = 50
 
@@ -27,10 +27,10 @@ class Name::AsTypeahead::ForWorkspaceParentName
     @params = params
     @workspace = working_draft
     @suggestions = if @params[:term].blank?
-                     []
-                   else
-                     query
-                   end
+      []
+    else
+      query
+    end
   end
 
   def prepared_search_term
@@ -53,8 +53,8 @@ class Name::AsTypeahead::ForWorkspaceParentName
     this_name = Name.find(@params[:name_id])
     rank_names = this_name.ranks_up_to_next_major.collect { |rank| rank.name }
     @workspace.query_name_version_ranks(prepared_search_term, rank_names)
-              .includes(:tree_element)
-              .collect do |n|
+      .includes(:tree_element)
+      .collect do |n|
       excl = n.tree_element.excluded ? '<i class="fa fa-ban red"></i> ' : ""
       { value: "#{excl}#{n.tree_element.name.full_name} - #{n.tree_element.rank}", id: n.element_link }
     end

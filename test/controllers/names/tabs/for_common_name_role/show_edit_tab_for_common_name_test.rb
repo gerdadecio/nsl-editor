@@ -28,17 +28,23 @@ class CommonNameRoleShowEditTabForCommonNameTest < ActionController::TestCase
   test "common-name role user sees edit tab and common-only name type options for a common name" do
     @request.headers["Accept"] = "application/javascript"
     SessionUser.stub_any_instance(:with_role_for_context?, true) do
-      get(:show,
-          params: { id: @name.id, tab: "tab_edit" },
-          session: { username: "fred",
-                     user_full_name: "Fred Jones",
-                     groups: [] })
+      get(
+        :show,
+        params: { id: @name.id, tab: "tab_edit" },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: [],
+        },
+      )
     end
     assert_response :success
     assert_select "a#name-edit-tab", true, "Should show 'Edit' tab link for common name."
-    assert_select "select#name-type-selector", true,
-                  "Should render name type select via the show_prompt branch."
-    assert_select "select#name-type-selector option", {count: 1},
-                  "Should show only the common name type option, not the full other-category list."
+    assert_select "select#name-type-selector",
+      true,
+      "Should render name type select via the show_prompt branch."
+    assert_select "select#name-type-selector option",
+      { count: 1 },
+      "Should show only the common name type option, not the full other-category list."
   end
 end

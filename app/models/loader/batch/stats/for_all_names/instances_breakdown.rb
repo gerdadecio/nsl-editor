@@ -24,77 +24,95 @@ class Loader::Batch::Stats::ForAllNames::InstancesBreakdown
   end
 
   def report
-    { accepted_with_standalone_created: accepted_with_standalone_created,
+    {
+      accepted_with_standalone_created: accepted_with_standalone_created,
       accepted_with_standalone_found: accepted_with_standalone_found,
       excluded_with_standalone_created: excluded_with_standalone_created,
       excluded_with_standalone_found: excluded_with_standalone_found,
       synonym_with_cross_ref_created: synonym_with_cross_ref_created,
       synonym_with_cross_ref_found: synonym_with_cross_ref_found,
       misapp_with_cross_ref_created: misapp_with_cross_ref_created,
-      misapp_with_cross_ref_found: misapp_with_cross_ref_found }
+      misapp_with_cross_ref_found: misapp_with_cross_ref_found,
+    }
   end
 
   def accepted_with_standalone_created
     @core_search.where("record_type = 'accepted'")
-                .joins(:loader_name_matches)
-                .where({ loader_name_match:
-                           { standalone_instance_created: true } })
-                .count
+      .joins(:loader_name_matches)
+      .where({
+        loader_name_match:
+                           { standalone_instance_created: true },
+      })
+      .count
   end
 
   def excluded_with_standalone_created
     @core_search.where("record_type = 'excluded'")
-                .joins(:loader_name_matches)
-                .where({ loader_name_match:
-                           { standalone_instance_created: true } })
-                .count
+      .joins(:loader_name_matches)
+      .where({
+        loader_name_match:
+                           { standalone_instance_created: true },
+      })
+      .count
   end
 
   def accepted_with_standalone_found
     @core_search.where("record_type = 'accepted'")
-                .joins(:loader_name_matches)
-                .where({ loader_name_matches:
-                         { standalone_instance_found: true } })
-                .count
+      .joins(:loader_name_matches)
+      .where({
+        loader_name_matches:
+                         { standalone_instance_found: true },
+      })
+      .count
   end
 
   def excluded_with_standalone_found
     @core_search.where("record_type = 'excluded'")
-                .joins(:loader_name_matches)
-                .where({ loader_name_match:
-                         { standalone_instance_found: true } })
-                .count
+      .joins(:loader_name_matches)
+      .where({
+        loader_name_match:
+                         { standalone_instance_found: true },
+      })
+      .count
   end
 
   def synonym_with_cross_ref_created
     @core_search.where("record_type = 'synonym'")
-                .joins(:loader_name_matches)
-                .where({ loader_name_matches:
-                         { relationship_instance_created: true } })
-                .count
+      .joins(:loader_name_matches)
+      .where({
+        loader_name_matches:
+                         { relationship_instance_created: true },
+      })
+      .count
   end
 
   def synonym_with_cross_ref_found
     @core_search.where("record_type = 'synonym'")
-                .joins(:loader_name_matches)
-                .where({ loader_name_matches:
-                         { relationship_instance_found: true } })
-                .count
+      .joins(:loader_name_matches)
+      .where({
+        loader_name_matches:
+                         { relationship_instance_found: true },
+      })
+      .count
   end
 
   def misapp_with_cross_ref_created
     @core_search.where("record_type = 'misapplied'")
-                .joins(:loader_name_matches)
-                .where({ loader_name_matches:
-                         { relationship_instance_created: true } })
-                .count
+      .joins(:loader_name_matches)
+      .where({
+        loader_name_matches:
+                         { relationship_instance_created: true },
+      })
+      .count
   end
 
   def misapp_with_cross_ref_found
     @core_search.where("record_type = 'misapplied'")
-                .joins(:loader_name_matches)
-                .where({ loader_name_matches:
-                         { relationship_instance_found: true } })
-                .count
+      .joins(:loader_name_matches)
+      .where({
+        loader_name_matches:
+                         { relationship_instance_found: true },
+      })
+      .count
   end
 end

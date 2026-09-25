@@ -28,7 +28,7 @@ class Search::Reference::DefinedQuery::WhereClauses
   end
 
   def debug(s)
-    Rails.logger.debug("Search::Reference::DefinedQuery::WhereClause - #{s}")
+    Rails.logger.debug { "Search::Reference::DefinedQuery::WhereClause - #{s}" }
   end
 
   def build_sql
@@ -57,9 +57,11 @@ class Search::Reference::DefinedQuery::WhereClauses
   end
 
   def add_field_clause(field, value)
-    field_or_default = field.blank? ? DEFAULT_FIELD : field
-    rule = Search::Reference::DefinedQuery::Predicate.new(field_or_default,
-                                                          value)
+    field_or_default = field.presence || DEFAULT_FIELD
+    rule = Search::Reference::DefinedQuery::Predicate.new(
+      field_or_default,
+      value,
+    )
     apply_rule(rule)
     apply_order(rule)
   end
@@ -88,16 +90,20 @@ class Search::Reference::DefinedQuery::WhereClauses
   end
 
   def supply_value_thrice(rule)
-    @sql = @sql.where(rule.predicate,
-                      rule.processed_value,
-                      rule.processed_value,
-                      rule.processed_value)
+    @sql = @sql.where(
+      rule.predicate,
+      rule.processed_value,
+      rule.processed_value,
+      rule.processed_value,
+    )
   end
 
   def supply_value_twice(rule)
-    @sql = @sql.where(rule.predicate,
-                      rule.processed_value,
-                      rule.processed_value)
+    @sql = @sql.where(
+      rule.predicate,
+      rule.processed_value,
+      rule.processed_value,
+    )
   end
 
   def apply_predicate_to_tokens(rule)
@@ -111,9 +117,9 @@ class Search::Reference::DefinedQuery::WhereClauses
 
   def apply_order(rule)
     @sql = if rule.order
-             @sql.order(Arel.sql(rule.order))
-           else
-             @sql.order("citation")
-           end
+      @sql.order(Arel.sql(rule.order))
+    else
+      @sql.order("citation")
+    end
   end
 end

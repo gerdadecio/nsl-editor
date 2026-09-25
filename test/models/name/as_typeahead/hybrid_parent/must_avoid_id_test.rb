@@ -23,19 +23,29 @@ class NameHybridParentSuggestionsMustAvoidIdTest < ActiveSupport::TestCase
   test "name hybrid parent suggestions must avoid id" do
     name = names(:angophora_costata)
     suggestions =
-      Name::AsTypeahead.hybrid_parent_suggestions("angophora costata",
-                                                  name.id + 1)
+      Name::AsTypeahead.hybrid_parent_suggestions(
+        "angophora costata",
+        name.id + 1,
+      )
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert(suggestions.size == 1,
-           'suggestions for "angophora costata" should have 1 element')
-    assert(suggestions.first[:value].match(/Angophora costata/),
-           "Suggestions should include 'Angophora costata'.")
+    assert(
+      suggestions.size == 1,
+      'suggestions for "angophora costata" should have 1 element',
+    )
+    assert(
+      suggestions.first[:value].match(/Angophora costata/),
+      "Suggestions should include 'Angophora costata'.",
+    )
     suggestions =
-      Name::AsTypeahead.hybrid_parent_suggestions("angophora costata",
-                                                  name.id)
+      Name::AsTypeahead.hybrid_parent_suggestions(
+        "angophora costata",
+        name.id,
+      )
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert(suggestions.empty?,
-           'suggestions for "angophora costata" should have no
-           elements to avoid the id')
+    assert(
+      suggestions.empty?,
+      'suggestions for "angophora costata" should have no
+           elements to avoid the id',
+    )
   end
 end

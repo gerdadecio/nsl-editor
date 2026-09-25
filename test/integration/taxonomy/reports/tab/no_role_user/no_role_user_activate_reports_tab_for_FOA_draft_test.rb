@@ -26,16 +26,19 @@ class NoRoleUserCannotActivateTreeReportsTabForFOADraft < ActionController::Test
   test "user with no role cannot activate tree reports tab for FOA draft" do
     user = users(:no_role)
     foa_draft = tree_versions(:foa_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:reports,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: foa_draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree builder should not be able to activate reports tab for FOA draft'
-    assert_match /Access Denied/i, response.body, "Expecting error message"
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :reports,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: foa_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree builder should not be able to activate reports tab for FOA draft"
+    assert_match(/Access Denied/i, response.body, "Expecting error message")
   end
 end
-

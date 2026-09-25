@@ -43,15 +43,22 @@ class SearchRefsOnIdMoreResultsLinkNotShownWhenLimitMatchesTest < ActionControll
 
   test "no more-results link when limit: exactly matches the (single) reference total" do
     ref = references(:bucket_reference_for_default_instances)
-    get(:search,
-        params: { query_target: "reference",
-                  query_string: "id: #{ref.id} show-instances: limit:1" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "reference",
+        query_string: "id: #{ref.id} show-instances: limit:1",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
-    assert_select "#search-results-summary", /1 record\b/,
-                  "Should find 1 record"
+    assert_select "#search-results-summary",
+      /1 record\b/,
+      "Should find 1 record"
     # NOTES (test fix): the wrapping span itself
     # (#search-results-limited-notice) always renders whenever
     # total >= limit - which, with Search::OnModel::ListQuery#limited
@@ -59,9 +66,10 @@ class SearchRefsOnIdMoreResultsLinkNotShownWhenLimitMatchesTest < ActionControll
     # the partial inside it actually produces a link. What this test
     # protects is the absence of the link itself, not the (harmless,
     # empty) wrapping span.
-    assert_select "#search-results-limited-notice a", false,
-                  "No 'List more'/'List all' link should appear when the " \
-                  "limit already covers every matching reference, however " \
-                  "many instances that reference has attached"
+    assert_select "#search-results-limited-notice a",
+      false,
+      "No 'List more'/'List all' link should appear when the " \
+        "limit already covers every matching reference, however " \
+        "many instances that reference has attached"
   end
 end

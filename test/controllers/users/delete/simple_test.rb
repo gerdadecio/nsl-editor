@@ -24,12 +24,16 @@ class UserDeleteSimpleTest < ActionController::TestCase
 
   test "delete user simple" do
     @request.headers["Accept"] = "application/javascript"
-    assert_difference("User.count", -1, 'Should have deleted 1 user') do
-      post(:destroy,
-           params: { id: users(:user_two)},
-           session: { username: "uone",
-                      user_full_name: "auser One",
-                      groups: ["admin"] })
+    assert_difference("User.count", -1, "Should have deleted 1 user") do
+      post(
+        :destroy,
+        params: { id: users(:user_two) },
+        session: {
+          username: "uone",
+          user_full_name: "auser One",
+          groups: ["admin"],
+        },
+      )
     end
   end
 end

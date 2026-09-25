@@ -28,12 +28,12 @@ class SearchOnNameNameDirectiveExcludesCommonsDespiteSessionTest < ActiveSupport
       query_target: "name",
       query_string: "name: argyle apple include-common-and-cultivar:false",
       include_common_and_cultivar_session: true,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 0,
-                 search.executed_query.results.size,
-                 "Expected common name to be excluded because the directive overrode the session setting"
+      search.executed_query.results.size,
+      "Expected common name to be excluded because the directive overrode the session setting"
   end
 end

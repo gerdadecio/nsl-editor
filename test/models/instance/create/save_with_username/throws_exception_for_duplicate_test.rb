@@ -23,14 +23,18 @@ require "test_helper"
 class InstCreateSaveWithUsernameThrowsExc4Duplicate < ActiveSupport::TestCase
   test "instance create save with username throws exception 4 dupe" do
     existing = instances(:metrosideros_costata_is_basionym_of_angophora_costata)
-    dup = Instance.new(name_id: existing.name_id,
-                       reference_id: existing.reference_id,
-                       instance_type_id: existing.instance_type_id,
-                       cited_by_id: existing.cited_by_id,
-                       cites_id: existing.cites_id,
-                       page: existing.page)
-    assert_raises(ActiveRecord::RecordInvalid,
-                  "Instance save_with_username should throw exception 4 dup") do
+    dup = Instance.new(
+      name_id: existing.name_id,
+      reference_id: existing.reference_id,
+      instance_type_id: existing.instance_type_id,
+      cited_by_id: existing.cited_by_id,
+      cites_id: existing.cites_id,
+      page: existing.page,
+    )
+    assert_raises(
+      ActiveRecord::RecordInvalid,
+      "Instance save_with_username should throw exception 4 dup",
+    ) do
       dup.save_with_username("fred")
     end
   end

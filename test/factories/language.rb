@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: language
@@ -19,18 +21,19 @@ FactoryBot.define do
     lock_version { 1 }
     sequence(:iso6391code) do |n|
       # Generate a 2-letter code based on the sequence number
-      letters = ('A'..'Z').to_a
-      first, second = letters[n / 26], letters[n % 26]
+      letters = ("A".."Z").to_a
+      first = letters[n / 26]
+      second = letters[n % 26]
       "#{first}#{second}"
     end
     sequence(:iso6393code) do |n|
       # Generate a 3-letter code based on the sequence number
-      letters = ('A'..'Z').to_a
+      letters = ("A".."Z").to_a
       a = letters[(n / (26 * 26)) % 26]
       b = letters[(n / 26) % 26]
       c = letters[n % 26]
       "#{a}#{b}#{c}"
     end
-    sequence(:name) {|n| "Language Name #{n}" }
+    sequence(:name) { |n| "Language Name #{n}" }
   end
 end

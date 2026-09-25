@@ -24,10 +24,10 @@ class ReferenceARTA4DuplicateOfIdWithNoString < ActiveSupport::TestCase
     reference = references(:journal_of_botany_british_and_foreign)
     result = Reference::AsResolvedTypeahead::ForDuplicateOf.new(
       reference.id.to_s,
-      ""
+      "",
     )
     assert_match "",
-                 result.value,
-                 "Should get nothing - treating as delete."
+      result.value,
+      "Should get nothing - treating as delete."
   end
 end

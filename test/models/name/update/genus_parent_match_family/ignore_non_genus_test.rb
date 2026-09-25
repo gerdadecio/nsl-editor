@@ -28,4 +28,3 @@ class NameUpdateGenusParentFamilyIgnoreNonGenusTest < ActiveSupport::TestCase
     assert(@name.save!)
   end
 end
-

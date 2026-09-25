@@ -25,7 +25,7 @@ class TypeaheadForSynonymyUnrankedGetMainGroupTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "a",
-      names(:an_unranked_with_an_instance).id
+      names(:an_unranked_with_an_instance).id,
     )
   end
 

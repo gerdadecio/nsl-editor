@@ -18,21 +18,21 @@
 #
 class Search::OnModel::Predicate
   attr_reader :canon_field,
-              :canon_value,
-              :trailing_wildcard,
-              :leading_wildcard,
-              :multiple_values,
-              :takes_no_arg,
-              :predicate,
-              :value_frequency,
-              :processed_value,
-              :tokenize,
-              :field,
-              :value,
-              :has_scope,
-              :scope_,
-              :order,
-              :do_count_totals
+    :canon_value,
+    :trailing_wildcard,
+    :leading_wildcard,
+    :multiple_values,
+    :takes_no_arg,
+    :predicate,
+    :value_frequency,
+    :processed_value,
+    :tokenize,
+    :field,
+    :value,
+    :has_scope,
+    :scope_,
+    :order,
+    :do_count_totals
 
   def initialize(parsed_request, field, value)
     @parsed_request = parsed_request
@@ -53,7 +53,7 @@ class Search::OnModel::Predicate
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnModel::Predicate - #{s}")
+    Rails.logger.debug { "Search::OnModel::Predicate - #{s}" }
   end
 
   def inspect
@@ -79,17 +79,17 @@ class Search::OnModel::Predicate
 
   # Allow for an explicit false value, otherwise default to true
   def check_do_count_totals(rule)
-    Rails.logger.debug("check_do_count_totals for rule: #{rule}")
+    Rails.logger.debug { "check_do_count_totals for rule: #{rule}" }
     @do_count_totals = !(rule[:do_count_totals] == false)
   end
 
   def apply_scope
     @has_scope = @scope_.present?
     @value_frequency = if @has_scope
-                         1
-                       else
-                         @predicate.count("?")
-                       end
+      1
+    else
+      @predicate.count("?")
+    end
   end
 
   def process_value
@@ -99,9 +99,10 @@ class Search::OnModel::Predicate
   end
 
   def build_predicate(rule)
-    if @takes_no_arg && !@value.blank?
+    if @takes_no_arg && @value.present?
       raise "Directive #{@field} takes no argument.  Please review your search"
     end
+
     if @multiple_values && @value.split(",").size > 1
       rule[:multiple_values_where_clause]
     else
@@ -120,13 +121,9 @@ class Search::OnModel::Predicate
   end
 
   def build_is_null_predicate(rule)
-    if rule[:not_exists_clause].present?
-      rule[:not_exists_clause]
-    else
-      rule[:where_clause].gsub("= ?", "is null")
-                         .gsub("like lower(?)", "is null")
-                         .gsub("like lower(f_unaccent(?))", "is null")
-    end
+    rule[:not_exists_clause].presence || rule[:where_clause].gsub("= ?", "is null")
+      .gsub("like lower(?)", "is null")
+      .gsub("like lower(f_unaccent(?))", "is null")
   end
 
   def build_canon_value(val)

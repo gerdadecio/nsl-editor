@@ -24,24 +24,30 @@ class SearchRefsOutputFormatWithInstancesTest < ActionController::TestCase
 
   test "output format of reference search with instances" do
     ref = references(:bucket_reference_for_default_instances)
-    get(:search,
-        params: { query_target: "reference",
-                  query_string: "citation: #{ref.citation} show-instances:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "reference",
+        query_string: "citation: #{ref.citation} show-instances:",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "a.show-details-link.indent-level-1",
-                  /Metrosideros costata Gaertn./,
-                  "Need Metrosideros costata Gaertn. for the orth. var. test"
+      /Metrosideros costata Gaertn./,
+      "Need Metrosideros costata Gaertn. for the orth. var. test"
     assert_select "a.show-details-link.indent-level-1" do
       assert_select "span.non-legit-name-status",
-                    /orth. var./,
-                    "Orth var. name formatted incorrectly"
+        /orth. var./,
+        "Orth var. name formatted incorrectly"
     end
     # NOTES (limit/total redesign, follow-up): see on_id/with_instances_test.rb.
     assert_select "#search-results-summary",
-                  /1 record\b/,
-                  "Should find 1 record"
+      /1 record\b/,
+      "Should find 1 record"
   end
 end

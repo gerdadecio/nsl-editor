@@ -29,8 +29,10 @@ class NameAsResolvedTANoDuplicateOfIdWithValidStringMatchingAnExistingDuplicate 
   test "no id with valid string matching an existing duplicate" do
     already_a_duplicate = names(:a_duplicate_species)
     other_name = names(:the_regnum)
-    assert_raise(RuntimeError,
-                 "Should raise a RuntimeError - cannot resolve to a record that is already a duplicate.") do
+    assert_raise(
+      RuntimeError,
+      "Should raise a RuntimeError - cannot resolve to a record that is already a duplicate.",
+    ) do
       Name::AsResolvedTypeahead::ForDuplicateOf.new(
         "", already_a_duplicate.full_name, other_name.id
       )

@@ -22,12 +22,14 @@ require "test_helper"
 class AuthorARTA4DupeOfNoIdWithInvalidString < ActiveSupport::TestCase
   test "no duplicate of id with invalid string" do
     author_to_avoid = authors(:bentham)
-    assert_raise(RuntimeError,
-                 "Should raise a RuntimeError for invalid author string.") do
+    assert_raise(
+      RuntimeError,
+      "Should raise a RuntimeError for invalid author string.",
+    ) do
       Author::AsResolvedTypeahead::ForDuplicateOf.new(
         "",
         "asdfasfdasd",
-        author_to_avoid
+        author_to_avoid,
       )
     end
   end

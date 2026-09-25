@@ -26,8 +26,8 @@ class ReferencesControllerTest < ActionController::TestCase
 
   test "should route to reference typeahead suggestions by citation" do
     assert_routing "/references/typeahead/on_citation",
-                   controller: "references",
-                   action: "typeahead_on_citation"
+      controller: "references",
+      action: "typeahead_on_citation"
   end
 
   # test "should route to show a reference" do
@@ -40,11 +40,15 @@ class ReferencesControllerTest < ActionController::TestCase
 
   test "should show reference" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @reference, tab: "tab_show_1" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [:edit] })
+    get(
+      :show,
+      params: { id: @reference, tab: "tab_show_1" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [:edit],
+      },
+    )
     assert_response :success
   end
 end

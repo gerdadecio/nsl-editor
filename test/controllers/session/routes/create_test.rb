@@ -22,8 +22,10 @@ require "test_helper"
 class SessionCreateRouteTest < ActionController::TestCase
   tests SessionsController
   test "should route to create a session" do
-    assert_routing({ method: "post", path: "/sign_in" },
-                   controller: "sessions",
-                   action: "create")
+    assert_routing(
+      { method: "post", path: "/sign_in" },
+      controller: "sessions",
+      action: "create",
+    )
   end
 end

@@ -19,7 +19,7 @@
 #   A list of names.
 class Name::AsTypeahead::ForUnpubCit
   attr_reader :suggestions,
-              :params
+    :params
 
   SEARCH_LIMIT = 50
 
@@ -34,13 +34,13 @@ class Name::AsTypeahead::ForUnpubCit
 
   def query
     Name.not_a_duplicate
-        .where(["lower(full_name) like lower(?)", prepared_search_term])
-        .where("name.id != ?", @params[:context_name_id].to_i)
-        .includes(:name_status)
-        .joins(:name_rank)
-        .order("name_rank.sort_order, lower(full_name)")
-        .limit(SEARCH_LIMIT)
-        .collect do |n|
+      .where(["lower(full_name) like lower(?)", prepared_search_term])
+      .where.not(name: { id: @params[:context_name_id].to_i })
+      .includes(:name_status)
+      .joins(:name_rank)
+      .order("name_rank.sort_order, lower(full_name)")
+      .limit(SEARCH_LIMIT)
+      .collect do |n|
       { value: "#{n.full_name} - #{n.name_status.name}", id: n.id }
     end
   end

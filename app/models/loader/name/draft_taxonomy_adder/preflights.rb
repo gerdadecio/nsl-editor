@@ -30,34 +30,33 @@ class Loader::Name::DraftTaxonomyAdder::Preflights
 
   def check
     cleared = true
-    case
-    when @draft.blank?
+    if @draft.blank?
       cleared = false
       preflight_error = "Please choose a draft version"
-    when @loader_name.no_further_processing?
+    elsif @loader_name.no_further_processing?
       cleared = false
       preflight_error = "no further processing"
-    when @loader_name.preferred_match.blank?
+    elsif @loader_name.preferred_match.blank?
       cleared = false
       preflight_error = "No preferred match"
-    when @loader_name.preferred_match.blank? ||
-         @loader_name.preferred_match.standalone_instance_id.blank?
+    elsif @loader_name.preferred_match.blank? ||
+        @loader_name.preferred_match.standalone_instance_id.blank?
       cleared = false
       preflight_error = "No instance identified"
-    when @loader_name.preferred_match.drafted?
+    elsif @loader_name.preferred_match.drafted?
       cleared = false
       preflight_error = "Already on draft tree"
-    when @loader_name.preferred_match.manually_drafted?
+    elsif @loader_name.preferred_match.manually_drafted?
       cleared = false
       preflight_error = "Flagged as manually drafted"
-    when @loader_name.parent.try("no_further_processing?")
+    elsif @loader_name.parent.try("no_further_processing?")
       cleared = false
       preflight_error = "Parent excluded from further processing"
     end
     if cleared
       @result_h = {}
     else
-      @result_h = {declines: 1, declines_reasons: {"#{preflight_error}": 1}}
+      @result_h = { declines: 1, declines_reasons: { "#{preflight_error}": 1 } }
       log_to_table("#{Constants::DECLINED} preflight check failed: " +
                    "for #{@loader_name.simple_name}, id: " +
                    "#{@loader_name.id}: " + "#{preflight_error}")

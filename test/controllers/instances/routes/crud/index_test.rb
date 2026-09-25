@@ -23,8 +23,8 @@ class InstanceIndexRouteTest < ActionController::TestCase
   tests InstancesController
   test "index should route to catch all" do
     assert_routing "/instances",
-                   controller: "search",
-                   action: "search",
-                   random: "instances"
+      controller: "search",
+      action: "search",
+      random: "instances"
   end
 end

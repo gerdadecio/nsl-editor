@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class NameTagsController < ApplicationController
-  before_action :set_name_tag, only: %i[show edit update destroy]
+  before_action :set_name_tag, only: [:show, :edit, :update, :destroy]
 
   # GET /name_tags/1
   # GET /name_tags/1.json
@@ -34,13 +34,15 @@ class NameTagsController < ApplicationController
     @name_tag = NameTag.new(name_tag_params)
     respond_to do |format|
       if @name_tag.save
-        format.html { redirect_to @name_tag, notice: "Created." }
-        format.json { render :show, status: :created, location: @name_tag }
+        format.html { redirect_to(@name_tag, notice: "Created.") }
+        format.json { render(:show, status: :created, location: @name_tag) }
       else
-        format.html { render :new }
+        format.html { render(:new) }
         format.json do
-          render json: @name_tag.errors,
-                 status: :unprocessable_content
+          render(
+            json: @name_tag.errors,
+            status: :unprocessable_content,
+          )
         end
       end
     end
@@ -51,8 +53,8 @@ class NameTagsController < ApplicationController
   def destroy
     @name_tag.destroy
     respond_to do |format|
-      format.html { redirect_to name_tags_url, notice: "Deleted." }
-      format.json { head :no_content }
+      format.html { redirect_to(name_tags_url, notice: "Deleted.") }
+      format.json { head(:no_content) }
     end
   end
 

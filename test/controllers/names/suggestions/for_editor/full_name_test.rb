@@ -29,16 +29,23 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
   end
 
   def get_suggestions(term, format: :html)
-    get(:typeahead_on_full_name,
-        params: { term: term, format: format },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :typeahead_on_full_name,
+      params: { term: term, format: format },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
   end
 
   def assert_select_in_body(*args, &block)
-    assert_select(Nokogiri::HTML::DocumentFragment.parse(@response.body),
-                  *args, &block)
+    assert_select(
+      Nokogiri::HTML::DocumentFragment.parse(@response.body),
+      *args,
+      &block
+    )
   end
 
   test "should get name full name suggestions as an html fragment" do
@@ -47,7 +54,7 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{@name.id}']",
-      true
+      true,
     )
   end
 
@@ -59,8 +66,8 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{@name.id}']" \
-      "[data-autocomplete-label='#{@name.full_name} - #{@name.name_status.name}']",
-      true
+        "[data-autocomplete-label='#{@name.full_name} - #{@name.name_status.name}']",
+      true,
     )
   end
 
@@ -69,7 +76,7 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-                          text: "No matches"
+      text: "No matches"
   end
 
   test "should still answer json" do

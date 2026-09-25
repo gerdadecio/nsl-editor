@@ -3,6 +3,7 @@
 # Reference Citations
 module Reference::Citations
   extend ActiveSupport::Concern
+
   included do
   end
 

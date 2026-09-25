@@ -21,8 +21,8 @@ require "test_helper"
 # Single author model test.
 class AuthorPreventDuplicateAbbrevCaseInsensitiveTest < ActiveSupport::TestCase
   test "author prevent duplicate abbrev case insensitive" do
-    author = Author.where("abbrev is not null")
-                   .where("abbrev != lower(abbrev)").first
+    author = Author.where.not(abbrev: nil)
+      .where("abbrev != lower(abbrev)").first
     dupe = Author.where("abbrev is null").first
     assert dupe.valid?, "Potential dupe with no abbrev should be valid."
     dupe.abbrev = author.abbrev.downcase

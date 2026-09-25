@@ -27,15 +27,19 @@ class AuthorEditorShowCommentsTabTest < ActionController::TestCase
 
   test "should show editor author comments tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @author.id, tab: "tab_comments" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @author.id, tab: "tab_comments" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_select "li.active a#author-comments-tab",
-                  "Comments",
-                  "Should show 'Comments' tab."
+      "Comments",
+      "Should show 'Comments' tab."
     assert_select "form", true
     assert_select "textarea#comment_text", true
   end

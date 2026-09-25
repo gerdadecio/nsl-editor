@@ -31,36 +31,48 @@ class LoaderNameMakeOneInstanceCreateMisappTest < ActiveSupport::TestCase
   JOB_NUMBER = 999_999
 
   def creator_for(loader_name_key)
-    Loader::Name::MakeOneInstance.new(loader_names(loader_name_key),
-                                       "tester",
-                                       JOB_NUMBER)
+    Loader::Name::MakeOneInstance.new(
+      loader_names(loader_name_key),
+      "tester",
+      JOB_NUMBER,
+    )
   end
 
   test "declines with no_parent when the misapp has no parent" do
     result = creator_for(:misapp_no_parent).create_misapp
-    assert_equal({declines: 1, declines_reasons: {no_parent: 1}}, result)
+    assert_equal({ declines: 1, declines_reasons: { no_parent: 1 } }, result)
   end
 
   test "declines with parent_no_preferred_match when the parent has " \
-       "no preferred match" do
+    "no preferred match" do
     result = creator_for(:misapp_parent_no_pref_match).create_misapp
-    assert_equal({declines: 1,
-                  declines_reasons: {parent_no_preferred_match: 1}},
-                 result)
+    assert_equal(
+      {
+        declines: 1,
+        declines_reasons: { parent_no_preferred_match: 1 },
+      },
+      result,
+    )
   end
 
   test "declines with parent_is_using_existing_instance when the " \
-       "parent's preferred match uses an existing instance" do
+    "parent's preferred match uses an existing instance" do
     result = creator_for(:misapp_parent_using_existing).create_misapp
-    assert_equal({declines: 1,
-                  declines_reasons: {parent_is_using_existing_instance: 1}},
-                 result)
+    assert_equal(
+      {
+        declines: 1,
+        declines_reasons: { parent_is_using_existing_instance: 1 },
+      },
+      result,
+    )
   end
 
   test "does not raise once all parent guards pass, and falls through " \
-       "to the next check" do
+    "to the next check" do
     result = creator_for(:misapp_guards_pass).create_misapp
-    assert_equal({declines: 1, declines_reasons: {no_preferred_match: 1}},
-                 result)
+    assert_equal(
+      { declines: 1, declines_reasons: { no_preferred_match: 1 } },
+      result,
+    )
   end
 end

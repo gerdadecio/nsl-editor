@@ -26,12 +26,16 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
     @grevillea = names(:grevillea_genus)
     @descendant = names(:grevillea_cultivar_hybrid)
     @request.headers["Accept"] = "application/javascript"
-    stub_request(:get,
-                 "#{resource}833026435/api/name-strings")
-      .with(headers: { "Accept" => "*/*",
-                       "Accept-Encoding" =>
+    stub_request(
+      :get,
+      "#{resource}833026435/api/name-strings",
+    )
+      .with(headers: {
+        "Accept" => "*/*",
+        "Accept-Encoding" =>
                        "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-                       "User-Agent" => "Ruby" })
+        "User-Agent" => "Ruby",
+      })
       .to_return(status: 200, body: body, headers: {})
   end
 
@@ -61,41 +65,59 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
   end
 
   def asserts1
-    assert @descendant.parent == @grevillea,
-           "Grevillea should be the parent for this test."
-    assert @descendant.second_parent == @grevillea,
-           "Grevillea should be the second parent for this test."
+    assert(
+      @descendant.parent == @grevillea,
+      "Grevillea should be the parent for this test.",
+    )
+    assert(
+      @descendant.second_parent == @grevillea,
+      "Grevillea should be the second parent for this test.",
+    )
   end
 
   def post_update
-    post(:update,
-         params: { "random_id" => "",
-                   "category" => "",
-                   "name" => name_hash,
-                   "commit" => "Save",
-                   "id" => @grevillea.id },
-         session: { username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: ["edit"] })
+    post(
+      :update,
+      params: {
+        "random_id" => "",
+        "category" => "",
+        "name" => name_hash,
+        "commit" => "Save",
+        "id" => @grevillea.id,
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
   end
 
   def asserts2
-    assert_response :success
+    assert_response(:success)
     # sleep(2) # to allow for the asynch job
     descendant_after = Name.find(@descendant.id)
-    assert @descendant.full_name != descendant_after.full_name,
-           "Grevillea's name change should affect the descendant's name."
+    assert(
+      @descendant.full_name != descendant_after.full_name,
+      "Grevillea's name change should affect the descendant's name.",
+    )
   end
 
   def name_hash
-    { "name_type_id" => @grevillea.name_type_id,
+    {
+      "name_type_id" => @grevillea.name_type_id,
       "name_rank_id" => @grevillea.name_rank_id,
       "name_status_id" => @grevillea.name_status_id,
       "parent_typeahead" => @grevillea.parent.full_name,
-      "parent_id" => @grevillea.parent_id, "name_element" => "XYZ",
+      "parent_id" => @grevillea.parent_id,
+      "name_element" => "XYZ",
       "author_typeahead" => @grevillea.author.abbrev,
-      "author_id" => @grevillea.author.id, "sanctioning_author_typeahead" => "",
-      "sanctioning_author_id" => "", "duplicate_of_typeahead" => "",
-      "duplicate_of_id" => "", "verbatim_rank" => "" }
+      "author_id" => @grevillea.author.id,
+      "sanctioning_author_typeahead" => "",
+      "sanctioning_author_id" => "",
+      "duplicate_of_typeahead" => "",
+      "duplicate_of_id" => "",
+      "verbatim_rank" => "",
+    }
   end
 end

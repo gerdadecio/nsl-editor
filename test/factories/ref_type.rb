@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: ref_type
@@ -23,7 +25,7 @@
 FactoryBot.define do
   factory :ref_type do
     lock_version { 1 }
-    sequence(:name) {|n| "Sample Name #{n}" }
+    sequence(:name) { |n| "Sample Name #{n}" }
     parent_optional { true }
     sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
     use_parent_details { true }

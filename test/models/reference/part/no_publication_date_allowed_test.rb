@@ -34,10 +34,10 @@ class ReferencePartNoPublicationDateAllowedTest < ActiveSupport::TestCase
       reference.save!
     end
     assert_equal :publication_date,
-                 reference.errors.first.attribute,
-                 "Error should be on 'publication date'"
+      reference.errors.first.attribute,
+      "Error should be on 'publication date'"
     assert_equal "is not allowed for a Part",
-                 reference.errors.first.message,
-                 "Incorrect error message"
+      reference.errors.first.message,
+      "Incorrect error message"
   end
 end

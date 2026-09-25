@@ -13,7 +13,7 @@ module Reference::DuplicateOfResolvable
     send("#{key_field}=", Reference::AsResolvedTypeahead::ForDuplicateOf.new(
       params[key_field],
       params[ta_field],
-      field_name.capitalize
+      field_name.capitalize,
     ).value)
   end
 end

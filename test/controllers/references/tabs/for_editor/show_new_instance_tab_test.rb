@@ -27,14 +27,18 @@ class ReferenceEditorShowNewInstanceTabTest < ActionController::TestCase
 
   test "should show editor reference new instance tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @reference.id, tab: "tab_new_instance" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @reference.id, tab: "tab_new_instance" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_select "li.active a#reference-new-instance-tab",
-                  /New instance/,
-                  "Should show 'New instance' tab."
+      /New instance/,
+      "Should show 'New instance' tab."
     assert_select "form", true
   end
 
@@ -43,21 +47,25 @@ class ReferenceEditorShowNewInstanceTabTest < ActionController::TestCase
   # error handling key off unchanged.
   test "should render the name field as a stimulus autocomplete" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @reference.id, tab: "tab_new_instance" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @reference.id, tab: "tab_new_instance" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
-                  "[data-autocomplete-url-value='/names/typeahead_on_full_name.html']" \
-                  " input#instance-name-typeahead" \
-                  "[data-autocomplete-target='input']",
-                  true
-    assert_select "div.autocomplete" \
-                  " input#instance_name_id" \
-                  "[data-autocomplete-target='hidden']",
-                  true
+      "[data-autocomplete-url-value='/names/typeahead_on_full_name.html'] " \
+      "input#instance-name-typeahead" \
+      "[data-autocomplete-target='input']",
+      true
+    assert_select "div.autocomplete " \
+      "input#instance_name_id" \
+      "[data-autocomplete-target='hidden']",
+      true
     # The hidden name_id is rendered once, by the partial, not also by the
     # form as it used to be.
     assert_select "input#instance_name_id", count: 1

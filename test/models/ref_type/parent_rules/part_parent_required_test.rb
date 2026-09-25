@@ -22,6 +22,6 @@ require "test_helper"
 class PartParentRequiredTest < ActiveSupport::TestCase
   test "part ref type parent is required" do
     assert ref_types(:part).parent_optional == false,
-           "Part ref type parent should be required."
+      "Part ref type parent should be required."
   end
 end

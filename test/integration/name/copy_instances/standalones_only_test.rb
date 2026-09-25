@@ -26,19 +26,24 @@ class NamesCopyInstancesStandalonesOnlyTest < ActionController::TestCase
     source_name = names(:angophora_costata)
     target_name = names(:angophora_fred)
     assert source_name.instances.size > source_name.standalone_instances.size, "Need some non-standalone instances for this test"
-    assert_difference('Instance.count', source_name.standalone_instances.size) do
-    post(:copy_instances,
-         params: { name: { "target_name_id" => target_name.id.to_s,
-                           "instance_ids_to_copy" => source_name.instances.map(&:id) },
-                   "commit" => "Confirm",
-                   format: :js,
-                   "id" => source_name.id.to_s
-                 },
-         session: { username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: ["edit"] }
-        )
+    assert_difference("Instance.count", source_name.standalone_instances.size) do
+      post(
+        :copy_instances,
+        params: {
+          name: {
+            "target_name_id" => target_name.id.to_s,
+            "instance_ids_to_copy" => source_name.instances.map(&:id),
+          },
+          "commit" => "Confirm",
+          format: :js,
+          "id" => source_name.id.to_s,
+        },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["edit"],
+        },
+      )
     end
   end
 end
-

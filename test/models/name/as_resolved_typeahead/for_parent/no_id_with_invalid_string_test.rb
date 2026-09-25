@@ -21,8 +21,10 @@ require "test_helper"
 # Single name model test.
 class NameARTA4ParentNoIdWithInvalidString < ActiveSupport::TestCase
   test "no parent id with invalid string" do
-    assert_raise(RuntimeError,
-                 "Should raise a RuntimeError for invalid author string.") do
+    assert_raise(
+      RuntimeError,
+      "Should raise a RuntimeError for invalid author string.",
+    ) do
       Name::AsResolvedTypeahead::ForParent.new("", "asdfasfdasd", "parent")
     end
   end

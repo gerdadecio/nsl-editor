@@ -29,10 +29,10 @@ class Typeahead::IdTextResolver
     @id_string = id_string
     @text = text
     @result = if id_string.blank?
-                no_id
-              else
-                id_present # assume intention is to remove the field value
-              end
+      no_id
+    else
+      id_present # assume intention is to remove the field value
+    end
   end
 
   def no_id

@@ -10,9 +10,11 @@ class AuthorCreateTest < ActionController::TestCase
   test "creates an author and increments Author count" do
     @request.headers["Accept"] = "application/javascript"
     assert_difference "Author.count", 1 do
-      post(:create,
-           params: { author: { name: "Integration Test Author", abbrev: "I.T.Auth" } },
-           session: EDIT_SESSION)
+      post(
+        :create,
+        params: { author: { name: "Integration Test Author", abbrev: "I.T.Auth" } },
+        session: EDIT_SESSION,
+      )
     end
     assert_response :success
   end
@@ -20,9 +22,11 @@ class AuthorCreateTest < ActionController::TestCase
   test "does not create an author when name and abbrev are both blank" do
     @request.headers["Accept"] = "application/javascript"
     assert_no_difference "Author.count" do
-      post(:create,
-           params: { author: { name: "", abbrev: "" } },
-           session: EDIT_SESSION)
+      post(
+        :create,
+        params: { author: { name: "", abbrev: "" } },
+        session: EDIT_SESSION,
+      )
     end
     assert_response :unprocessable_content
   end

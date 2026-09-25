@@ -23,11 +23,10 @@ class Loader::Batch::Review::Comment < ApplicationRecord
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  belongs_to :batch_review, class_name: "Loader::Batch::Review",
-                            foreign_key: "batch_review_id"
+  belongs_to :batch_review,
+    class_name: "Loader::Batch::Review",
+    foreign_key: "batch_review_id"
   alias_attribute :review, :batch_review
-  belongs_to :batch_review, class_name: "Loader::Batch::Review",
-                            foreign_key: "batch_review_id"
   validates :comment, presence: true
 
   attr_accessor :give_me_focus, :message
@@ -49,7 +48,7 @@ class Loader::Batch::Review::Comment < ApplicationRecord
     BatchReviewPeriod.all.count
 
     true
-  rescue StandardError => e
+  rescue StandardError
     false
   end
 

@@ -34,9 +34,11 @@ class InstValDoubleSynPreventMisappIfNonMisAlreadyTest < ActiveSupport::TestCase
 
   test "instance double synonym prevent misapplications if non misapp" do
     assert @syn.name_id == @syn.this_cites.name_id,
-           "Name IDs must match for this test."
-    assert_raises(ActiveRecord::RecordInvalid,
-                  "Double synonym should be invalid and not saved") do
+      "Name IDs must match for this test."
+    assert_raises(
+      ActiveRecord::RecordInvalid,
+      "Double synonym should be invalid and not saved",
+    ) do
       @syn.save!
     end
   end

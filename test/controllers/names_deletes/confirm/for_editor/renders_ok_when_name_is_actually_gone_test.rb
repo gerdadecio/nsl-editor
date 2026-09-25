@@ -45,9 +45,11 @@ class NamesDeleteConfirmForEditorRendersOkWhenNameIsActuallyGoneTest < ActionCon
   def stub_it
     name_id = @name.id
     stub_request(:delete, "#{a}#{b}")
-      .with(headers: { "Accept" => "application/json",
-                       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-                       "Host" => "localhost:9090"})
+      .with(headers: {
+        "Accept" => "application/json",
+        "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+        "Host" => "localhost:9090",
+      })
       .to_return do |_request|
         Name.delete(name_id)
         { status: 200, body: '{"ok": true}', headers: { "Content-Type" => "application/json" } }
@@ -56,13 +58,21 @@ class NamesDeleteConfirmForEditorRendersOkWhenNameIsActuallyGoneTest < ActionCon
 
   test "renders ok and the name is gone when the service really deletes it" do
     @request.headers["Accept"] = "application/javascript"
-    delete(:confirm,
-           params: { names_delete: { name_id: @name.id,
-                                     reason: @reason,
-                                     extra_info: @extra_info } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
+    delete(
+      :confirm,
+      params: {
+        names_delete: {
+          name_id: @name.id,
+          reason: @reason,
+          extra_info: @extra_info,
+        },
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_includes @response.body, "Record deleted"
     assert_not Name.exists?(@name.id)

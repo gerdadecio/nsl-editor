@@ -24,10 +24,10 @@ class RefARTA4DupeOfNoIdWPartialValidStringMatchingOne < ActiveSupport::TestCase
     reference = references(:origin_of_species)
     result = Reference::AsResolvedTypeahead::ForDuplicateOf.new(
       "",
-      reference.citation.chop
+      reference.citation.chop,
     )
     assert_equal reference.id,
-                 result.value,
-                 "Should get a matching id for the citation"
+      result.value,
+      "Should get a matching id for the citation"
   end
 end

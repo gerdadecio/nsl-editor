@@ -26,20 +26,26 @@ class InstancesCreateByEditorTest < ActionController::TestCase
     name = names(:a_species)
     reference = references(:a_book)
     instance_type = instance_types(:secondary_reference)
-    instance_params = { "instance_type_id" => instance_type.id,
-                        "page" => "62",
-                        "verbatim_name_string" => "",
-                        "bhl_url" => "",
-                        "name_id" => name.id,
-                        "reference_id" => reference.id,
-                        "extra_primary_override" => "0" }
+    instance_params = {
+      "instance_type_id" => instance_type.id,
+      "page" => "62",
+      "verbatim_name_string" => "",
+      "bhl_url" => "",
+      "name_id" => name.id,
+      "reference_id" => reference.id,
+      "extra_primary_override" => "0",
+    }
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Instance.count") do
-      post(:create,
-           params: { instance: instance_params },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
+      post(
+        :create,
+        params: { instance: instance_params },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["edit"],
+        },
+      )
     end
     assert_response :success
   end

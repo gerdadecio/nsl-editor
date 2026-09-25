@@ -30,7 +30,6 @@ require "test_helper"
 class LoaderNameReviewCommentShowTab < ActionController::TestCase
   tests Loader::NamesController
 
-
   # Started GET
   # "/nsl/editor/loader_names/52428461/tab/tab_comment/accepted
   # ?format=js&tabIndex=undefined&take_focus=true"
@@ -39,18 +38,20 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
   #    reviewers.find_by(user_id: User.find_by_user_name(username)).id
   #  end
 
-
   test "show comment tab" do
     reviewer = users(:reviewer_one)
     loader_name = loader_names(:accepted_two)
-    get('tab',
-        params: {id: "#{loader_name.id}", tab: 'tab_comment'},
-        format: :js,
-        xhr: true,
-        session: { username: reviewer.user_name,
-                   user_full_name: reviewer.full_name,
-                   groups: ["login", "taxonomic-review"]}
-       )
-    assert_match 'create-one-comment-container', response.body, "Should be able to add comment"
+    get(
+      "tab",
+      params: { id: "#{loader_name.id}", tab: "tab_comment" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: reviewer.user_name,
+        user_full_name: reviewer.full_name,
+        groups: ["login", "taxonomic-review"],
+      },
+    )
+    assert_match "create-one-comment-container", response.body, "Should be able to add comment"
   end
 end

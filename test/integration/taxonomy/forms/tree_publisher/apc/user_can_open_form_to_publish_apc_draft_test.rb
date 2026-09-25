@@ -33,14 +33,18 @@ class TaxFormsTreePubAPCUserCanOpenFormToPublishAPCDraftTest < ActionController:
   test "APC tree publisher user can open form to publish APC draft" do
     user = users(:apc_tax_publisher)
     apc_draft = tree_versions(:apc_draft_version)
-    get(:form_to_publish,
-        params: {},
-        format: :js,
-        xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"],
-                   draft: apc_draft})
-    assert_response :success, 'APC tax publisher user should be able to open form to publish APC draft'
+    get(
+      :form_to_publish,
+      params: {},
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: apc_draft,
+      },
+    )
+    assert_response :success, "APC tax publisher user should be able to open form to publish APC draft"
   end
 end

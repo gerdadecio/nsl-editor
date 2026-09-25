@@ -22,9 +22,11 @@ require "test_helper"
 class NameDestroyRouteTest < ActionController::TestCase
   tests NamesController
   test "should route to destroy a name" do
-    assert_routing({ method: "delete", path: "/names/1" },
-                   controller: "names",
-                   action: "destroy",
-                   id: "1")
+    assert_routing(
+      { method: "delete", path: "/names/1" },
+      controller: "names",
+      action: "destroy",
+      id: "1",
+    )
   end
 end

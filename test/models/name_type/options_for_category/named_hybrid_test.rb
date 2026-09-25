@@ -30,12 +30,16 @@ class NamedHybridTest < ActiveSupport::TestCase
   end
 
   def part1
-    assert_equal 1,
-                 NameType.options_for_category(@current_category).size,
-                 "Should be 1 #{@current_category.name} name types."
-    assert NameType.options_for_category(@current_category)
-                   .collect(&:first)
-                   .include?("named hybrid"),
-           "Named hybrid should be a #{@current_category.name} name type."
+    assert_equal(
+      1,
+      NameType.options_for_category(@current_category).size,
+      "Should be 1 #{@current_category.name} name types.",
+    )
+    assert(
+      NameType.options_for_category(@current_category)
+            .collect(&:first)
+            .include?("named hybrid"),
+      "Named hybrid should be a #{@current_category.name} name type.",
+    )
   end
 end

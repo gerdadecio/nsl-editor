@@ -23,15 +23,21 @@ class SearchInstListSpeciesSynGenusTest < ActionController::TestCase
   tests SearchController
 
   test "search for instances which make a genus syn for a species" do
-    get(:search,
-        params: { query_target: "instance",
-                  query_string: "species-or-below-syn-with-genus-or-above:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "instance",
+        query_string: "species-or-below-syn-with-genus-or-above:",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /[0-9] record\b/,
-                  "Should find at least 1 record"
+      /[0-9] record\b/,
+      "Should find at least 1 record"
   end
 end

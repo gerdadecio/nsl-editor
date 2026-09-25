@@ -23,19 +23,25 @@ class SearchRefsOnDefaultWithInstancesTest < ActionController::TestCase
   tests SearchController
 
   test "search on reference default with instances" do
-    get(:search,
-        params: { query_target: "reference",
-                  query_string: "de fructibus show-instances:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "reference",
+        query_string: "de fructibus show-instances:",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     # NOTES (limit/total redesign, follow-up): "de fructibus" matches
     # exactly 1 reference fixture (de_fructibus_et_seminibus_plantarum,
     # with 6 attached instance fixtures) - see on_id/with_instances_test.rb
     # for why this is now "1 record" rather than the old combined "7".
     assert_select "#search-results-summary",
-                  /1 record\b/,
-                  "Should find 1 record"
+      /1 record\b/,
+      "Should find 1 record"
   end
 end

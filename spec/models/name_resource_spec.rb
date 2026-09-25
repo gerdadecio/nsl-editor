@@ -2,10 +2,10 @@
 
 require "rails_helper"
 
-RSpec.describe NameResource, type: :model do
+RSpec.describe(NameResource, type: :model) do
   describe "associations" do
-    it { is_expected.to belong_to(:name) }
-    it { is_expected.to belong_to(:resource_host) }
+    it { is_expected.to(belong_to(:name)) }
+    it { is_expected.to(belong_to(:resource_host)) }
   end
 
   describe "validations" do
@@ -16,14 +16,14 @@ RSpec.describe NameResource, type: :model do
     subject { build(:name_resource, name: name, resource_host: resource_host) }
 
     it {
-      is_expected.to validate_uniqueness_of(:resource_host_id)
+      is_expected.to(validate_uniqueness_of(:resource_host_id)
         .scoped_to(:name_id)
-        .with_message("Resource already linked to this name")
+        .with_message("Resource already linked to this name"))
     }
 
     it "does not allow duplicate resource_host_id for the same name" do
-      expect(subject.save).to be_falsey
-      expect(subject.errors[:resource_host_id]).to include("Resource already linked to this name")
+      expect(subject.save).to(be_falsey)
+      expect(subject.errors[:resource_host_id]).to(include("Resource already linked to this name"))
     end
   end
 
@@ -40,7 +40,7 @@ RSpec.describe NameResource, type: :model do
         name_resource.updated_by = nil
         name_resource.current_user = user
         name_resource.save
-        expect(name_resource.created_by).to eq("test_user")
+        expect(name_resource.created_by).to(eq("test_user"))
       end
 
       it "sets updated_by from current_user" do
@@ -48,7 +48,7 @@ RSpec.describe NameResource, type: :model do
         name_resource.updated_by = nil
         name_resource.current_user = user
         name_resource.save
-        expect(name_resource.updated_by).to eq("test_user")
+        expect(name_resource.updated_by).to(eq("test_user"))
       end
     end
 
@@ -63,11 +63,11 @@ RSpec.describe NameResource, type: :model do
       end
 
       it "does not overwrite created_by" do
-        expect(name_resource.created_by).to eq("original_user")
+        expect(name_resource.created_by).to(eq("original_user"))
       end
 
       it "updates updated_by with current_user" do
-        expect(name_resource.updated_by).to eq("new_user")
+        expect(name_resource.updated_by).to(eq("new_user"))
       end
     end
   end

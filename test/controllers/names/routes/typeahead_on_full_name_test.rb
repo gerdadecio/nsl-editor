@@ -23,7 +23,7 @@ class NameTypeaheadOnFullNameRouteTest < ActionController::TestCase
   tests NamesController
   test "should route to typeahead on full name" do
     assert_routing "/names/typeahead_on_full_name",
-                   controller: "names",
-                   action: "typeahead_on_full_name"
+      controller: "names",
+      action: "typeahead_on_full_name"
   end
 end

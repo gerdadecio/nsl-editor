@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 #
 # Tree Element Profile
 module Tree::Element::Profile::Distribution::Tedes
   extend ActiveSupport::Concern
+
   def apply_string_to_tedes
     add_missing_tedes
     remove_excess_tedes
@@ -36,20 +39,20 @@ module Tree::Element::Profile::Distribution::Tedes
 
   def remove_tede(value)
     tede = Tree::Element::DistributionEntry
-           .find_by(tree_element_id: id,
-                    dist_entry_id: DistEntry.id_for_display(value))
+      .find_by(tree_element_id: id,
+        dist_entry_id: DistEntry.id_for_display(value))
     tede.delete
   end
 
   # Sorted correctly
   def tede_entries_arr
-    tede_dist_entries.sort { |x, y| x.sort_order <=> y.sort_order }
-                     .collect { |x| x.display }
+    tede_dist_entries.sort_by(&:sort_order)
+      .collect { |x| x.display }
   end
 
   def delete_tedes
-    tede = Tree::Element::DistributionEntry
-           .where(tree_element_id: id).each do |tede|
+    Tree::Element::DistributionEntry
+      .where(tree_element_id: id).each do |tede|
       tede.delete
     end
   end

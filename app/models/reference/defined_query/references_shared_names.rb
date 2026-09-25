@@ -20,14 +20,14 @@
 #   instantiate.
 class Reference::DefinedQuery::ReferencesSharedNames
   attr_reader :results,
-              :limited,
-              :common_and_cultivar_included,
-              :has_relation,
-              :relation,
-              :count,
-              :show_csv,
-              :total,
-              :do_count_totals
+    :limited,
+    :common_and_cultivar_included,
+    :has_relation,
+    :relation,
+    :count,
+    :show_csv,
+    :total,
+    :do_count_totals
 
   def initialize(parsed_request)
     debug("start")
@@ -38,7 +38,7 @@ class Reference::DefinedQuery::ReferencesSharedNames
 
   def debug(s)
     tag = "Reference::DefinedQuery::ReferencesSharedNames"
-    Rails.logger.debug("#{tag}: #{s}")
+    Rails.logger.debug { "#{tag}: #{s}" }
   end
 
   def run_query
@@ -70,7 +70,7 @@ class Reference::DefinedQuery::ReferencesSharedNames
 
   def count_query
     instances = Instance.for_ref(@ref_id_1)
-                        .for_ref_and_correlated_on_name_id(@ref_id_2)
+      .for_ref_and_correlated_on_name_id(@ref_id_2)
     @count = instances.size
     @results = []
     @limited = false
@@ -81,9 +81,9 @@ class Reference::DefinedQuery::ReferencesSharedNames
 
   def list_query
     @results = Instance.for_ref(@ref_id_1)
-                       .for_ref_and_correlated_on_name_id(@ref_id_2)
-                       .order_by_name_full_name
-                       .limit(@parsed_request.limit)
+      .for_ref_and_correlated_on_name_id(@ref_id_2)
+      .order_by_name_full_name
+      .limit(@parsed_request.limit)
     @limited = true
     @common_and_cultivar_included = true
     @count = @results.size

@@ -15,7 +15,7 @@ module Names
 
     # NOTES: The tables behind the "Resources" group. They are legacy and are planned for
     # removal, so their presence is checked before they are queried.
-    LEGACY_RESOURCE_TABLES = %w[name_resources resource resource_type].freeze
+    LEGACY_RESOURCE_TABLES = ["name_resources", "resource", "resource_type"].freeze
 
     Group = Struct.new(:label, :entries) do
       # NOTES: Entries is an array of [label, count] pairs
@@ -54,7 +54,7 @@ module Names
           .joins(:resource_host)
           .group("resource_host.name")
           .order("resource_host.name")
-          .count(:all)
+          .count(:all),
       )
     end
 
@@ -65,7 +65,7 @@ module Names
           .joins(:name_tag)
           .group("name_tag.name")
           .order("name_tag.name")
-          .count(:all)
+          .count(:all),
       )
     end
 
@@ -80,7 +80,8 @@ module Names
       labelled(
         ActiveRecord::Base.connection.select_rows(
           ActiveRecord::Base.sanitize_sql(
-            ["SELECT resource_type.description, count(*)
+            [
+              "SELECT resource_type.description, count(*)
                 FROM name_resources
                 JOIN resource
                   ON resource.id = name_resources.resource_id
@@ -88,9 +89,11 @@ module Names
                   ON resource_type.id = resource.resource_type_id
                WHERE name_resources.name_id = ?
                GROUP BY resource_type.description
-               ORDER BY resource_type.description", @name.id]
-          )
-        )
+               ORDER BY resource_type.description",
+              @name.id
+            ],
+          ),
+        ),
       )
     end
 

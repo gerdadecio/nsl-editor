@@ -34,19 +34,19 @@
 # Show an instance count for each result.
 class Name::AsTypeahead::ForParent
   attr_reader :suggestions,
-              :params
+    :params
 
   SEARCH_LIMIT = 50
   GROUP_BY = "name.id,name.full_name,name_rank.name,name_status.name," \
-             "name_rank.sort_order, family_full_name"
+    "name_rank.sort_order, family_full_name"
 
   def initialize(params)
     @params = params
     @suggestions = if @params[:term].blank?
-                     []
-                   else
-                     query
-                   end
+      []
+    else
+      query
+    end
   end
 
   def prepared_search_term
@@ -55,13 +55,13 @@ class Name::AsTypeahead::ForParent
 
   def core_query
     Name.not_a_duplicate
-        .lower_full_name_like_for_parent_typeahead(prepared_search_term)
-        .avoids_id(@params[:avoid_id].try("to_i") || -1)
-        .joins("left outer join name families_name on name.family_id = families_name.id")
-        .joins(:name_status)
-        .joins("left outer join instance on instance.name_id = name.id")
-        .order_by_rank_and_full_name_for_parent_typeahead
-        .limit(SEARCH_LIMIT)
+      .lower_full_name_like_for_parent_typeahead(prepared_search_term)
+      .avoids_id(@params[:avoid_id].try("to_i") || -1)
+      .joins("left outer join name families_name on name.family_id = families_name.id")
+      .joins(:name_status)
+      .joins("left outer join instance on instance.name_id = name.id")
+      .order_by_rank_and_full_name_for_parent_typeahead
+      .limit(SEARCH_LIMIT)
   end
 
   def rank_query
@@ -115,10 +115,10 @@ class Name::AsTypeahead::ForParent
 
   def rank_must_be_higher(rank)
     @qry = if rank.infrafamily?
-             @qry.from_a_higher_rank(NameRank.find_by(name: "Genus"))
-           else
-             @qry.from_a_higher_rank(@params[:rank_id])
-           end
+      @qry.from_a_higher_rank(NameRank.find_by(name: "Genus"))
+    else
+      @qry.from_a_higher_rank(@params[:rank_id])
+    end
   end
 
   def instance_phrase(count)
@@ -129,14 +129,16 @@ class Name::AsTypeahead::ForParent
     @qry = core_query
     @qry = rank_query
     @qry = @qry.select_fields_for_parent_typeahead
-               .group(GROUP_BY)
-               .collect do |n|
-      { value: "#{n.full_name} | #{n.name_rank_name} | " \
-        "#{n.name_status_name}#{n.pipe_for_name_status}" \
-               "#{instance_phrase(n.instance_count)} ",
+      .group(GROUP_BY)
+      .collect do |n|
+      {
+        value: "#{n.full_name} | #{n.name_rank_name} | " \
+          "#{n.name_status_name}#{n.pipe_for_name_status}" \
+          "#{instance_phrase(n.instance_count)} ",
         id: n.id,
         family_id: n.family_id,
-        family_value: "#{n.family_full_name}" }
+        family_value: "#{n.family_full_name}",
+      }
     end
   end
 end

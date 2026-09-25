@@ -48,7 +48,7 @@ class Search::OnName::WithInstances
         name,
         preloaded_instances: instances_by_name[name.id] || [],
         preloaded_standalone_cited_by_map: standalone_cited_by_map,
-        preloaded_relationship_cited_by_map: relationship_cited_by_map
+        preloaded_relationship_cited_by_map: relationship_cited_by_map,
       ).results.each do |usage_rec|
         results << usage_rec
       end

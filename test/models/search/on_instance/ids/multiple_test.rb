@@ -27,11 +27,11 @@ class SearchOnInstanceIdsMultipleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "ids: #{instance.id},#{i2.id}",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     assert_equal 2,
-                 search.executed_query.results.size,
-                 "Exactly 2 results for multiple instance ids expected."
+      search.executed_query.results.size,
+      "Exactly 2 results for multiple instance ids expected."
   end
 end

@@ -22,9 +22,9 @@ class NamesCopyInstancesRoute < ActionController::TestCase
   tests NamesController
 
   test "name copy instances route" do
-    assert_routing({ path: "/names/44/copy/instances", method: :post },
-                   { controller: "names", action: "copy_instances", id: "44" }
-                  )
+    assert_routing(
+      { path: "/names/44/copy/instances", method: :post },
+      { controller: "names", action: "copy_instances", id: "44" },
+    )
   end
 end
-

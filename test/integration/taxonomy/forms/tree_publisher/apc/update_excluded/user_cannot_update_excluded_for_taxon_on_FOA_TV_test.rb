@@ -37,17 +37,24 @@ class TaxFormsTreePublisherFOAUserCanUpdateExcludedForTaxonOnFOADraftTest < Acti
     user = users(:foa_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(:update_excluded,
-         params: {"update_parent"=>{"taxonUri"=>tve.element_link,
-                                    "excluded"=>"false"}
-                 },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: foa_draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'Should be forbidden'
-    assert_match 'Access Denied', response.body, "Expecting an access denied message"
+    post(
+      :update_excluded,
+      params: {
+        "update_parent" => {
+          "taxonUri" => tve.element_link,
+          "excluded" => "false",
+        },
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: foa_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "Should be forbidden"
+    assert_match "Access Denied", response.body, "Expecting an access denied message"
   end
 end

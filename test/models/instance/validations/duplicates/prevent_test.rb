@@ -24,8 +24,10 @@ class InstanceValidationDuplicatesPreventTest < ActiveSupport::TestCase
     instance = instances(:triodia_in_brassard)
     assert instance.valid?, "Starting instance must be valid for this test."
     dup = instance.dup
-    assert_raises(ActiveRecord::RecordInvalid,
-                  "Duplicate instance shouldn't be saved") do
+    assert_raises(
+      ActiveRecord::RecordInvalid,
+      "Duplicate instance shouldn't be saved",
+    ) do
       dup.save!
     end
   end

@@ -23,82 +23,82 @@ class FixtureATest < ActiveSupport::TestCase
   test "fixture unknown species name should be valid" do
     name = names(:unknown_species)
     assert name.valid?, "Fixture unknown_species name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture another species name should be valid" do
     name = names(:another_species)
     assert name.valid?, "Fixture another_species name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture triodia_basedowii name should be valid" do
     name = names(:triodia_basedowii)
     assert name.valid?, "Fixture triodia_basedowii name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture crotalaria_distans name should be valid" do
     name = names(:crotalaria_distans)
     assert name.valid?, "Fixture crotalaria_distans name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture acacia name should be valid" do
     name = names(:acacia)
     assert name.valid?, "Fixture acacia name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture argyle_apple name should be valid" do
     name = names(:argyle_apple)
     assert name.valid?, "Fixture argyle_apple name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture var_tuberosus name should be valid" do
     name = names(:var_tuberosus)
     assert name.valid?, "Fixture var_tuberosus should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture nom inval andrewsianum name should be valid" do
     name = names(:nom_inval_andrewsianum)
     assert name.valid?, "Fixture nom_inval_andrewsianum name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture scientific name should be valid" do
     name = names(:scientific_name)
     assert name.valid?, "Fixture scientific name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture the_regnum name should be valid" do
     name = names(:the_regnum)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture the_regnum name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture a_division name should exist and should be valid" do
     name = names(:a_division)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture a_division name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture a_classis name should be valid" do
     name = names(:a_classis)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture a_classis name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture a_subclassis name should be valid" do
     name = names(:a_subclassis)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture a_subclassis name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 end

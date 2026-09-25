@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Name::Typeaheads
   extend ActiveSupport::Concern
 
@@ -19,12 +21,16 @@ module Name::Typeaheads
   def name_parent_suggestions
     typeahead = Name::AsTypeahead::ForParent.new(params)
     respond_to do |format|
-      format.json { render json: typeahead.suggestions }
+      format.json { render(json: typeahead.suggestions) }
       format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: typeahead.suggestions,
-                         term: params[:term],
-                         data_keys: %i[family_id family_value] }
+        render(
+          partial: "shared/autocomplete_suggestions",
+          locals: {
+            suggestions: typeahead.suggestions,
+            term: params[:term],
+            data_keys: [:family_id, :family_value],
+          },
+        )
       end
     end
   end
@@ -40,11 +46,15 @@ module Name::Typeaheads
   def name_family_suggestions
     typeahead = Name::AsTypeahead::ForFamily.new(params)
     respond_to do |format|
-      format.json { render json: typeahead.suggestions }
+      format.json { render(json: typeahead.suggestions) }
       format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: typeahead.suggestions,
-                         term: params[:term] }
+        render(
+          partial: "shared/autocomplete_suggestions",
+          locals: {
+            suggestions: typeahead.suggestions,
+            term: params[:term],
+          },
+        )
       end
     end
   end
@@ -57,10 +67,10 @@ module Name::Typeaheads
   # suggestion actions. No family is sent with a cultivar's suggestions, so
   # picking one leaves the Family field alone, as it always has.
   def cultivar_parent_suggestions
-    suggestions = Name::AsTypeahead \
+    suggestions = Name::AsTypeahead
       .cultivar_parent_suggestions(params[:term],
-                                   params[:name_id],
-                                   params[:rank_id])
+        params[:name_id],
+        params[:rank_id])
     render_parent_suggestions(suggestions)
   end
 
@@ -68,10 +78,10 @@ module Name::Typeaheads
   # fields of a hybrid are on stimulus-autocomplete and ask for html; json
   # is kept for parity with the other suggestion actions.
   def hybrid_parent_suggestions
-    suggestions = Name::AsTypeahead \
+    suggestions = Name::AsTypeahead
       .hybrid_parent_suggestions(params[:term],
-                                 params[:name_id],
-                                 params[:rank_id])
+        params[:name_id],
+        params[:rank_id])
     render_parent_suggestions(suggestions)
   end
 
@@ -91,10 +101,12 @@ module Name::Typeaheads
   def duplicate_suggestions
     suggestions = duplicate_suggestions_typeahead
     respond_to do |format|
-      format.json { render json: suggestions }
+      format.json { render(json: suggestions) }
       format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: suggestions, term: params[:term] }
+        render(
+          partial: "shared/autocomplete_suggestions",
+          locals: { suggestions: suggestions, term: params[:term] },
+        )
       end
     end
   end
@@ -112,11 +124,15 @@ module Name::Typeaheads
   def typeahead_on_full_name
     typeahead = Name::AsTypeahead::OnFullName.new(params)
     respond_to do |format|
-      format.json { render json: typeahead.suggestions }
+      format.json { render(json: typeahead.suggestions) }
       format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: typeahead.suggestions,
-                         term: params[:term] }
+        render(
+          partial: "shared/autocomplete_suggestions",
+          locals: {
+            suggestions: typeahead.suggestions,
+            term: params[:term],
+          },
+        )
       end
     end
   end
@@ -125,32 +141,36 @@ module Name::Typeaheads
 
   def render_parent_suggestions(suggestions)
     respond_to do |format|
-      format.json { render json: suggestions }
+      format.json { render(json: suggestions) }
       format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: suggestions, term: params[:term] }
+        render(
+          partial: "shared/autocomplete_suggestions",
+          locals: { suggestions: suggestions, term: params[:term] },
+        )
       end
     end
   end
 
   def typeahead_params
-    params.require(:name).permit(:author_id,
-                                 :ex_author_id,
-                                 :base_author_id,
-                                 :ex_base_author_id,
-                                 :sanctioning_author_id,
-                                 :author_typeahead,
-                                 :ex_author_typeahead,
-                                 :base_author_typeahead,
-                                 :ex_base_author_typeahead,
-                                 :sanctioning_author_typeahead,
-                                 :family_id,
-                                 :family_typeahead,
-                                 :parent_id,
-                                 :second_parent_id,
-                                 :parent_typeahead,
-                                 :second_parent_typeahead,
-                                 :duplicate_of_id,
-                                 :duplicate_of_typeahead)
+    params.require(:name).permit(
+      :author_id,
+      :ex_author_id,
+      :base_author_id,
+      :ex_base_author_id,
+      :sanctioning_author_id,
+      :author_typeahead,
+      :ex_author_typeahead,
+      :base_author_typeahead,
+      :ex_base_author_typeahead,
+      :sanctioning_author_typeahead,
+      :family_id,
+      :family_typeahead,
+      :parent_id,
+      :second_parent_id,
+      :parent_typeahead,
+      :second_parent_typeahead,
+      :duplicate_of_id,
+      :duplicate_of_typeahead,
+    )
   end
 end

@@ -39,7 +39,7 @@ class Instances::ChangeNameController < ApplicationController
       username: current_user.username,
       create_synonym: synonym_creation_requested?,
       cites_id: params[:instance][:cites_id],
-      synonym_instance_type_id: params[:instance][:synonym_instance_type_id]
+      synonym_instance_type_id: params[:instance][:synonym_instance_type_id],
     )
 
     if service.errors.any?
@@ -59,7 +59,7 @@ class Instances::ChangeNameController < ApplicationController
       term: params[:term],
       name_type_id: @instance.name.name_type_id,
       name_rank_id: @instance.name.name_rank_id,
-      exclude_name_id: @instance.name_id
+      exclude_name_id: @instance.name_id,
     )
     render(json: typeahead.suggestions)
   end

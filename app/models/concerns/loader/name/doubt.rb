@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::Doubt
   extend ActiveSupport::Concern
 
@@ -10,9 +12,9 @@ module Loader::Name::Doubt
   # This method may need to be adjusted to clarify rules in future.
   def doubtful?
     if synonym_type.present?
-      return true if self.synonym_type.match(/doubtful/)
-    else
-      return true if self.doubtful == true
+      return true if /doubtful/.match?(synonym_type)
+    elsif doubtful == true
+      return true
     end
 
     false
@@ -29,10 +31,9 @@ module Loader::Name::Doubt
   # it ignores doubt # because doubt was recorded in a separate doubtful field.
   #
   def riti_doubtful?
-    return true if self.synonym_type.match(/doubtful/)
-    return true if self.doubtful == true
+    return true if /doubtful/.match?(synonym_type)
+    return true if doubtful == true
 
     false
   end
 end
-

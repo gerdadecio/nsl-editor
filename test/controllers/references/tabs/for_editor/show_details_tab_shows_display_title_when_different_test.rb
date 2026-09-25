@@ -32,11 +32,15 @@ class ReferenceShowEditorDetailsTabShowsDisplayTitleWhenDifferentTest < ActionCo
 
   test "shows a Display Title line when title and display_title differ" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @reference.id, tab: "tab_show_1" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @reference.id, tab: "tab_show_1" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     assert_match(/Display Title/, response.body)
     assert_match(/#{Regexp.escape(@reference.display_title)}/, response.body)

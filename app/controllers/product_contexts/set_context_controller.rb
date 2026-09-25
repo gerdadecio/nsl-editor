@@ -2,18 +2,17 @@
 
 module ProductContexts
   class SetContextController < ApplicationController
-
     def create
       context_id = permitted_params[:context_id]
 
       if valid_context_for_user?(context_id)
         session[:current_context_id] != context_id.to_i ? set_context(context_id) : clear_context_session
-        Rails.logger.info "Context switched to: #{session[:current_context_name]}"
+        Rails.logger.info("Context switched to: #{session[:current_context_name]}")
       else
-        Rails.logger.warn "Attempted to switch to invalid context: #{context_id}"
+        Rails.logger.warn("Attempted to switch to invalid context: #{context_id}")
       end
 
-      redirect_back(fallback_location: search_path)
+      redirect_back_or_to(search_path)
     end
 
     private
@@ -57,5 +56,4 @@ module ProductContexts
         .sort_by { |ctx| ctx[:name] }
     end
   end
-
 end

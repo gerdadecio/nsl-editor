@@ -22,6 +22,6 @@ require "test_helper"
 class NameStatusNotApplicableSimpleTest < ActiveSupport::TestCase
   test "simple" do
     assert NameStatus.not_applicable.name == "[n/a]",
-           "The not_applicable name status should be '[n/a]'"
+      "The not_applicable name status should be '[n/a]'"
   end
 end

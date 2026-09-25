@@ -24,7 +24,7 @@ class TypeaheadsOnCitationWordCountTwoWalshesTest < ActiveSupport::TestCase
   test "reference typeahead on citation word count two walshes" do
     typeahead = Reference::AsTypeahead::OnCitation.new("walsh walsh")
     assert_equal 1,
-                 typeahead.results.length,
-                 "Should be one and only one result"
+      typeahead.results.length,
+      "Should be one and only one result"
   end
 end

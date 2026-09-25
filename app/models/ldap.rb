@@ -73,17 +73,21 @@ class Ldap < ActiveType::Object
 
   # Known groups
   def self.groups
-    Ldap.new.admin_search(GROUPS_PATH,
-                          "objectClass",
-                          "groupOfUniqueNames",
-                          "cn")
+    Ldap.new.admin_search(
+      GROUPS_PATH,
+      "objectClass",
+      "groupOfUniqueNames",
+      "cn",
+    )
   end
 
   # Return an array of search results
   def admin_search(base, attribute, value, print_attribute)
     filter = Net::LDAP::Filter.eq(attribute, value)
-    result = admin_connection.search(base: base,
-                                     filter: filter).try("collect") do |entry|
+    result = admin_connection.search(
+      base: base,
+      filter: filter,
+    ).try("collect") do |entry|
       entry.send(print_attribute)
     end.try("flatten") || []
     if admin_connection.get_operation_result.error_message.present?
@@ -96,10 +100,10 @@ class Ldap < ActiveType::Object
   # See https://github.com/ruby-ldap/ruby-net-ldap/issues/290
   def change_password(uid, new_password, _salt)
     conn = admin_connection
-    ops = [[:replace, :unicodePwd, unicode_password(new_password)]]
+    [[:replace, :unicodePwd, unicode_password(new_password)]]
     person = conn.search(base: USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD, uid))
     person = conn.search(base: GENERIC_USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD, uid)) if person.blank?
-    Rails.logger.debug("person.first.dn: #{person.first.dn}")
+    Rails.logger.debug { "person.first.dn: #{person.first.dn}" }
     if conn.replace_attribute(person.first.dn, "unicodePwd", unicode_password(new_password))
       Rails.logger.debug("password changed!")
     else
@@ -115,16 +119,20 @@ class Ldap < ActiveType::Object
 
   def admin_connection
     Rails.logger.info("Connecting to Active Directory")
-    ldap = Net::LDAP.new host: HOST,
-                         port: PORT,
-                         base: BASE,
-                         encryption: { method: :simple_tls,
-                                       tls_options: tls_options },
-                         auth: {
-                           method: :simple,
-                           username: ADMIN_USERNAME,
-                           password: ADMIN_PASSWORD
-                         }
+    ldap = Net::LDAP.new(
+      host: HOST,
+      port: PORT,
+      base: BASE,
+      encryption: {
+        method: :simple_tls,
+        tls_options: tls_options,
+      },
+      auth: {
+        method: :simple,
+        username: ADMIN_USERNAME,
+        password: ADMIN_PASSWORD,
+      },
+    )
     unless ldap.bind
       Rails.logger.error("LDAP: #{ldap.get_operation_result.error_message}")
       raise "Failed admin connection!"
@@ -152,7 +160,7 @@ class Ldap < ActiveType::Object
     bind_as = admin_connection.bind_as(
       base: USERS,
       filter: Net::LDAP::Filter.eq(USERID_FIELD, username),
-      password: password
+      password: password,
     )
     return validate_generic_user_in_active_directory unless bind_as
 
@@ -168,7 +176,7 @@ class Ldap < ActiveType::Object
   def set_bind_as_instance_variables(bind_as)
     @display_name = bind_as.first[:displayname].first
     @groups = bind_as.first[:memberof].select do |x|
-                x.match(/#{GROUP_FILTER_REGEX}/i)
+                x.match(/#{GROUP_FILTER_REGEX}/io)
               end.collect { |x| x.split(",").first.split("=").last }
     @user_cn = bind_as.first[:dn].first
   end
@@ -177,7 +185,7 @@ class Ldap < ActiveType::Object
     bind_as = admin_connection.bind_as(
       base: GENERIC_USERS,
       filter: Net::LDAP::Filter.eq(USERID_FIELD, username),
-      password: password
+      password: password,
     )
     if bind_as
       set_bind_as_instance_variables(bind_as)
@@ -196,7 +204,7 @@ class Ldap < ActiveType::Object
 
   def ldap_full_name(result)
     result.first[:dn].first.split(",")
-          .select { |x| x =~ /cn=/ }.first.split("=").second
+      .select { |x| x =~ /cn=/ }.first.split("=").second
   rescue StandardError => e
     Rails.logger.error("Error getting user full_name from LDAP")
     Rails.logger.error(e.to_s)
@@ -206,9 +214,12 @@ class Ldap < ActiveType::Object
   # Groups user is assigned to.
   def ldap_user_groups
     Rails.logger.info("ldap_user_groups start; GROUPS_PATH: #{GROUPS_PATH}")
-    Ldap.new.admin_search(GROUPS_PATH,
-                          "uniqueMember",
-                          "uid=#{username}", "cn")
+    Ldap.new.admin_search(
+      GROUPS_PATH,
+      "uniqueMember",
+      "uid=#{username}",
+      "cn",
+    )
   rescue StandardError => e
     Rails.logger.error("Error in Ldap#ldap_user_groups for username: #{username}")
     Rails.logger.error(e.to_s)

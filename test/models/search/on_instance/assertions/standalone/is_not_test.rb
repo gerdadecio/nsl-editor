@@ -28,10 +28,10 @@ class SearchOnInstanceIsNotStandaloneTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "instance",
         query_string: "is-not-standalone:",
-        current_user: build_edit_user
-      )
+        current_user: build_edit_user,
+      ),
     )
-    assert !search.executed_query.results.empty?,
-           "Expected results for is-not-standalone: — fixtures include basionym and nomenclatural_synonym instances"
+    assert_not search.executed_query.results.empty?,
+      "Expected results for is-not-standalone: — fixtures include basionym and nomenclatural_synonym instances"
   end
 end

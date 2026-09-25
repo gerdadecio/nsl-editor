@@ -22,17 +22,18 @@ class APCTreeBuilderRunChangesReportForAPCDraftTest < ActionController::TestCase
   tests TreesController
 
   def setup
-    #stub_request(:get, /http:..localhost:909..treeVersion.diff.embed=true.v1=184594742.v2.146236284/).
-    stub_request(:get, /http:..localhost:909..*treeVersion.diff.embed=true.v1=184594742.v2.146236284/).
-      with(
+    # stub_request(:get, /http:..localhost:909..treeVersion.diff.embed=true.v1=184594742.v2.146236284/).
+    stub_request(:get, /http:..localhost:909..*treeVersion.diff.embed=true.v1=184594742.v2.146236284/)
+      .with(
         headers: {
-	      'Accept'=>/text/,
-        'Accept-Encoding'=>/.*/,
-        'Content-Type'=>/text/,
-        'Host'=>/localhost:.*/,
-	      'User-Agent'=>/ruby/
-        }).
-      to_return(status: 200, body: "", headers: {})
+          "Accept" => /text/,
+          "Accept-Encoding" => /.*/,
+          "Content-Type" => /text/,
+          "Host" => /localhost:.*/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200, body: "", headers: {})
   end
 
   # r6editor Started GET "/nsl/editor/trees/run/diff"
@@ -40,15 +41,18 @@ class APCTreeBuilderRunChangesReportForAPCDraftTest < ActionController::TestCase
   test "APC tree builder can run changes report for APC draft" do
     user = users(:apc_tax_builder)
     draft = tree_versions(:apc_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:run_diff,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :success, 'APC tree builder should be able to run changes report for APC draft'
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :run_diff,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :success, "APC tree builder should be able to run changes report for APC draft"
   end
 end
-

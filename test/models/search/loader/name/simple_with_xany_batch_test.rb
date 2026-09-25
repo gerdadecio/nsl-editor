@@ -23,12 +23,14 @@ load "test/models/search/users.rb"
 # Single Search model test.
 class SearchLoaderNameWithXanyBatchTest < ActiveSupport::TestCase
   test "search loader name with xany-batch" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "loader_names",
-                                                          query_string:
-                                                          "* xany-batch:",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "loader_names",
+      query_string:
+            "* xany-batch:",
+      current_user:
+            build_edit_user,
+    )
 
     error = assert_raises(RuntimeError) do
       Search::Base.new(params)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: instance_type
@@ -39,7 +41,7 @@ FactoryBot.define do
     deprecated { true }
     doubtful { true }
     misapplied { true }
-    sequence(:name) {|n| "Instance Type Name #{n}" }
+    sequence(:name) { |n| "Instance Type Name #{n}" }
     nomenclatural { true }
     primary_instance { true }
     pro_parte { true }

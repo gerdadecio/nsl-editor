@@ -27,44 +27,62 @@ class ReferenceEditorShowAllTabsTest < ActionController::TestCase
   end
 
   test "should show all tab links if editor requests details tab" do
-    get(:show,
-        params: { id: @reference.id, tab: "tab_show_1" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @reference.id, tab: "tab_show_1" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     asserts1
     asserts2
     asserts3
   end
 
   def asserts1
-    assert_response :success
-    assert_select "li.active a#reference-edit-show-1-tab",
-                  /Details/,
-                  "Does not show 'Details' tab link."
-    assert_select "a#reference-edit-1-tab",
-                  /Edit\./,
-                  "Does not show 'Edit.' tab link."
-    assert_select "a#reference-edit-2-tab",
-                  /Edit\.\./,
-                  "Does not show 'Edit..' tab link."
+    assert_response(:success)
+    assert_select(
+      "li.active a#reference-edit-show-1-tab",
+      /Details/,
+      "Does not show 'Details' tab link.",
+    )
+    assert_select(
+      "a#reference-edit-1-tab",
+      /Edit\./,
+      "Does not show 'Edit.' tab link.",
+    )
+    assert_select(
+      "a#reference-edit-2-tab",
+      /Edit\.\./,
+      "Does not show 'Edit..' tab link.",
+    )
   end
 
   def asserts2
-    assert_select "a#reference-edit-3-tab",
-                  /Edit\.\.\./,
-                  "Does not show 'Edit...' tab link."
-    assert_select "a#reference-comments-tab",
-                  "Comments",
-                  "Should show 'Comments' tab link."
-    assert_select "a#reference-new-instance-tab",
-                  /New instance/,
-                  "Should show 'New instance' tab link."
+    assert_select(
+      "a#reference-edit-3-tab",
+      /Edit\.\.\./,
+      "Does not show 'Edit...' tab link.",
+    )
+    assert_select(
+      "a#reference-comments-tab",
+      "Comments",
+      "Should show 'Comments' tab link.",
+    )
+    assert_select(
+      "a#reference-new-instance-tab",
+      /New instance/,
+      "Should show 'New instance' tab link.",
+    )
   end
 
   def asserts3
-    assert_select "a#tab-heading",
-                  /A Book/,
-                  "Should have tab heading showing 'A Book'."
+    assert_select(
+      "a#tab-heading",
+      /A Book/,
+      "Should have tab heading showing 'A Book'.",
+    )
   end
 end

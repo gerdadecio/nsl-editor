@@ -82,11 +82,14 @@ class TreeJoinV < ApplicationRecord
 
   def self.name_in_synonymy_query(name_id)
     TreeJoinV.accepted.current
-             .where(['instance_id in
+      .where([
+        'instance_id in
                         (select cited_by_id
                            from instance
-                          where name_id = ?)', name_id])
-             .count
+                          where name_id = ?)',
+        name_id
+      ])
+      .count
   end
 
   def self.name_in_synonymy?(name_id)
@@ -95,11 +98,14 @@ class TreeJoinV < ApplicationRecord
 
   def self.synonym_in_names_query(name_id)
     TreeJoinV.accepted.current
-             .where(['instance_id in
+      .where([
+        'instance_id in
                        (select id
                           from instance
-                         where name_id = ?)', name_id])
-             .count
+                         where name_id = ?)',
+        name_id
+      ])
+      .count
   end
 
   def self.synonym_in_names?(name_id)
@@ -107,11 +113,11 @@ class TreeJoinV < ApplicationRecord
   end
 
   def sub_taxa_in_draft_accepted_tree
-    TreeJoinV.where(accepted_tree: true).where(published: false).where(parent_id: self.element_link)
+    TreeJoinV.where(accepted_tree: true).where(published: false).where(parent_id: element_link)
   end
 
   def parent_in_draft_accepted_tree
-    TreeJoinV.where(accepted_tree: true).where(published: false).find_by(element_link: self.parent_id)
+    TreeJoinV.where(accepted_tree: true).where(published: false).find_by(element_link: parent_id)
   end
 
   def has_sub_taxa_in_draft_accepted_tree?

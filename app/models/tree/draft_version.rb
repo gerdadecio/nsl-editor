@@ -55,24 +55,29 @@ class Tree::DraftVersion < ApplicationRecord
 
   def name_in_version(name)
     tree_version_elements.joins(:tree_element)
-                         .where(tree_element: { name: name }).first
+      .where(tree_element: { name: name }).first
   end
 
   def self.create_via_service(tree_id, from_version_id, draft_name, draft_log, default_draft, username)
     for_tree = Tree.find(tree_id)
     raise "#{for_tree.name} Tree is read only - cannot create a draft" if for_tree.read_only?
+
     url = Tree::AsServices.create_version_url(username)
-    payload = { treeId: tree_id,
-                fromVersionId: from_version_id,
-                draftName: draft_name,
-                log: draft_log,
-                defaultDraft: default_draft }
-    logger.info "Calling #{url} with #{payload}"
-    RestClient::Request.execute(method: :put,
-                                url: url,
-                                payload: payload.to_json,
-                                headers: { content_type: :json, accept: :json },
-                                timeout: 360)
+    payload = {
+      treeId: tree_id,
+      fromVersionId: from_version_id,
+      draftName: draft_name,
+      log: draft_log,
+      defaultDraft: default_draft,
+    }
+    logger.info("Calling #{url} with #{payload}")
+    RestClient::Request.execute(
+      method: :put,
+      url: url,
+      payload: payload.to_json,
+      headers: { content_type: :json, accept: :json },
+      timeout: 360,
+    )
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::DraftVersion RestClient::ExceptionWithResponse error: #{e}")
     raise
@@ -83,13 +88,19 @@ class Tree::DraftVersion < ApplicationRecord
 
   def publish(username, next_draft_name)
     raise "Publishing is not allowed - parent tree is read only" if tree.read_only?
+
     url = Tree::AsServices.publish_version_url(username)
-    payload = { versionId: id,
-                logEntry: log_entry,
-                nextDraftName: next_draft_name }
-    logger.info "Calling #{url} with #{payload}"
-    RestClient.put(url, payload.to_json,
-                   { content_type: :json, accept: :json })
+    payload = {
+      versionId: id,
+      logEntry: log_entry,
+      nextDraftName: next_draft_name,
+    }
+    logger.info("Calling #{url} with #{payload}")
+    RestClient.put(
+      url,
+      payload.to_json,
+      { content_type: :json, accept: :json },
+    )
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::DraftVerson RestClient::ExceptionWithResponse error: #{e}")
     raise
@@ -104,8 +115,8 @@ class Tree::DraftVersion < ApplicationRecord
 
   def stop_if_read_only
     if tree.read_only?
-      errors.add(:base, ' parent tree is read only')
-      throw :abort
+      errors.add(:base, " parent tree is read only")
+      throw(:abort)
     end
   end
 

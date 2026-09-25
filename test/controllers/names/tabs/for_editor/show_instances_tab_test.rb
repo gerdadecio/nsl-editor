@@ -27,15 +27,19 @@ class NameShowInstanceTabForEditorTest < ActionController::TestCase
 
   test "should show new instance tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @name.id, tab: "tab_instances" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] },
-        xhr: true)
+    get(
+      :show,
+      params: { id: @name.id, tab: "tab_instances" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+      xhr: true,
+    )
     assert_response :success
     assert_select "li.active a#name-instances-tab",
-                  "New instance",
-                  "Should show 'New instance' tab."
+      "New instance",
+      "Should show 'New instance' tab."
   end
 end

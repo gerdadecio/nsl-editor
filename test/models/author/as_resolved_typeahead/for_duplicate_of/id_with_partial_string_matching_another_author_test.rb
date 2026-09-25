@@ -27,11 +27,11 @@ class AuthARTA4DupeOfIdWPartStrMatchingAnotherAuthor < ActiveSupport::TestCase
     result = Author::AsResolvedTypeahead::ForDuplicateOf.new(
       author_1.id.to_s,
       "chap",
-      author_to_avoid
+      author_to_avoid,
     )
     assert_equal author_2.id,
-                 result.value,
-                 "Should get a matching id for the first author with " \
-                 "matching partial name despite mismatched ID"
+      result.value,
+      "Should get a matching id for the first author with " \
+        "matching partial name despite mismatched ID"
   end
 end

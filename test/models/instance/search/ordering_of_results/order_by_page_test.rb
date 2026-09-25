@@ -26,29 +26,29 @@ class OrderByPage < ActiveSupport::TestCase
     #   puts "#{ndx}: #{i.page} - #{i.name.full_name}" if ndx < 30
     # end
     assert results.first.page == "xx 1",
-           "Wrong order at 1st value: #{results[0].page}."
+      "Wrong order at 1st value: #{results[0].page}."
     assert results.second.page == "2",
-           "Wrong order at 2nd value: #{results[1].page}."
+      "Wrong order at 2nd value: #{results[1].page}."
     assert results.third.page == "3",
-           "Wrong order at 3rd value: #{results[2].page}."
+      "Wrong order at 3rd value: #{results[2].page}."
     assert results[3].page == "xx 15",
-           "Wrong order at 4th value: #{results[3].page}."
+      "Wrong order at 4th value: #{results[3].page}."
     assert results[4].page == "19-20",
-           "Wrong order at 5th value: #{results[4].page}."
+      "Wrong order at 5th value: #{results[4].page}."
     assert results[5].page.start_with?("xx,20,"),
-           "Wrong order at 6th value: #{results[5].page}."
+      "Wrong order at 6th value: #{results[5].page}."
     assert results[9].page == "40",
-           "Wrong order at 10th value: #{results[9].page}."
+      "Wrong order at 10th value: #{results[9].page}."
     assert results[10].page == "41",
-           "Wrong order at 11th value: #{results[10].page}."
+      "Wrong order at 11th value: #{results[10].page}."
     assert results[15].page == "75, t. 101",
-           "Wrong order at the 16th value: #{results[15].page}."
+      "Wrong order at the 16th value: #{results[15].page}."
     assert results[16].page == "75, t. 102",
-           "Wrong order at the 17th value: #{results[16].page}."
+      "Wrong order at the 17th value: #{results[16].page}."
     assert results[17].page == "76",
-           "Wrong order at the 18th value: #{results[17].page}."
+      "Wrong order at the 18th value: #{results[17].page}."
     assert results[19].page == "xx 200,300",
-           "Wrong order at the 19th value: #{results[19].page}."
+      "Wrong order at the 19th value: #{results[19].page}."
   end
 
   def run_query

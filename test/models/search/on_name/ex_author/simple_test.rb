@@ -24,15 +24,17 @@ load "test/models/search/on_name/test_helper.rb"
 # Single Search model test.
 class SearchOnNameExAuthorSimpleTest < ActiveSupport::TestCase
   test "search on name ex author simple" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "name",
-                                                          query_string:
-                                                          "ex-author: cronq*",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "name",
+      query_string:
+            "ex-author: cronq*",
+      current_user:
+            build_edit_user,
+    )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
-    assert !search.executed_query.results.empty?,
-           "Expected at least one search result"
+    assert_not search.executed_query.results.empty?,
+      "Expected at least one search result"
   end
 end

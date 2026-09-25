@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 #   Copyright 2015 Australian National Botanic Gardens
@@ -24,31 +23,33 @@ load "test/models/search/users.rb"
 # Single Search model test.
 class SearchLoaderNameAndPrintSimpleWithAnyBatchTest < ActiveSupport::TestCase
   test "search loader name with any-batch print" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "loader_names",
-                                                          query_string:
-                                                          "* any-batch: print:",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "loader_names",
+      query_string:
+            "* any-batch: print:",
+      current_user:
+            build_edit_user,
+    )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(Array),
       "Results should be an Array."
     assert_equal 26,
-                 search.executed_query.results.size,
-                 "Exactly 26 results expected (9 original + 2 extra from " \
-                 "accepted_one/accepted_two's formatted_text_above/" \
-                 "formatted_text_below, each of which " \
-                 "RewriteResultsShowingExtras expands into its own row " \
-                 "(see test/fixtures/loader_names.yml and the " \
-                 "formatted-note: directive tests) + 11 from " \
-                 "Loader::Name::MakeOneInstance guard-ordering tests - " \
-                 "none of the 11 set comment/distribution or " \
-                 "formatted_text_above/below, so " \
-                 "RewriteResultsShowingExtras adds exactly 1 entry per " \
-                 "record with no expansion, even for the 3 that are " \
-                 "record_type accepted - + 4 from the " \
-                 "name-match-no-primary: directive tests, which also " \
-                 "don't set comment/distribution or formatted_text_above/" \
-                 "below)."
+      search.executed_query.results.size,
+      "Exactly 26 results expected (9 original + 2 extra from " \
+        "accepted_one/accepted_two's formatted_text_above/" \
+        "formatted_text_below, each of which " \
+        "RewriteResultsShowingExtras expands into its own row " \
+        "(see test/fixtures/loader_names.yml and the " \
+        "formatted-note: directive tests) + 11 from " \
+        "Loader::Name::MakeOneInstance guard-ordering tests - " \
+        "none of the 11 set comment/distribution or " \
+        "formatted_text_above/below, so " \
+        "RewriteResultsShowingExtras adds exactly 1 entry per " \
+        "record with no expansion, even for the 3 that are " \
+        "record_type accepted - + 4 from the " \
+        "name-match-no-primary: directive tests, which also " \
+        "don't set comment/distribution or formatted_text_above/" \
+        "below)."
   end
 end

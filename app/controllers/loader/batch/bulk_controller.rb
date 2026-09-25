@@ -20,19 +20,23 @@
 # Bulk operations from the Loader tab.
 class Loader::Batch::BulkController < ApplicationController
   before_action :clean_params
-  before_action :set_up_job, only: %i[create_preferred_matches
-                                      create_draft_instances
-                                      add_to_draft_taxonomy]
+  before_action :set_up_job, only: [
+    :create_preferred_matches,
+    :create_draft_instances,
+    :add_to_draft_taxonomy
+  ]
 
-  before_action :add_name_string_to_session, only: %i[stats
-                                                      create_preferred_matches
-                                                      create_draft_instances
-                                                      add_to_draft_taxonomy]
+  before_action :add_name_string_to_session, only: [
+    :stats,
+    :create_preferred_matches,
+    :create_draft_instances,
+    :add_to_draft_taxonomy
+  ]
 
   rescue_from JobAlreadyLockedError, with: :handle_job_already_locked
 
   def index
-    throw "index"
+    throw("index")
   end
 
   def enable_add; end
@@ -43,56 +47,56 @@ class Loader::Batch::BulkController < ApplicationController
   def stats
     @stats = Loader::Batch::Stats::Reporter.new(
       params[:name_string],
-      (session[:default_loader_batch_id] || 0)
+      session[:default_loader_batch_id] || 0,
     )
   rescue StandardError => e
     prefix = "bulk-ops-stats-"
     @message = e.to_s
-    render :error, locals: { message_container_id_prefix: prefix }
+    render(:error, locals: { message_container_id_prefix: prefix })
   end
 
   def create_preferred_matches
     prefix = "create-preferred-matches-"
     run_create_preferred_matches
     Loader::Batch::Bulk::JobLock.unlock!
-    render "create_preferred_matches", locals: { message_container_id_prefix: prefix }
+    render("create_preferred_matches", locals: { message_container_id_prefix: prefix })
   rescue StandardError => e
     pull_down_job
-    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
-    render "error", locals: { message_container_id_prefix: prefix }
+    @message = e.to_s.sub("uncaught throw", "").delete('"')
+    render("error", locals: { message_container_id_prefix: prefix })
   end
 
   def remove_syn_conflicts
     prefix = "remove-syn-conflicts-"
     run_remove_syn_conflicts
     Loader::Batch::Bulk::JobLock.unlock!
-    render "remove_syn_conflicts", locals: { message_container_id_prefix: prefix }
+    render("remove_syn_conflicts", locals: { message_container_id_prefix: prefix })
   rescue StandardError => e
     pull_down_job
-    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
-    render "error", locals: { message_container_id_prefix: prefix }
+    @message = e.to_s.sub("uncaught throw", "").delete('"')
+    render("error", locals: { message_container_id_prefix: prefix })
   end
 
   def create_draft_instances
     prefix = "create-draft-instances-"
     run_create_draft_instances
     Loader::Batch::Bulk::JobLock.unlock!
-    render "create_draft_instances", locals: { message_container_id_prefix: prefix }
+    render("create_draft_instances", locals: { message_container_id_prefix: prefix })
   rescue StandardError => e
     pull_down_job
-    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
-    render "error", locals: { message_container_id_prefix: prefix }
+    @message = e.to_s.sub("uncaught throw", "").delete('"')
+    render("error", locals: { message_container_id_prefix: prefix })
   end
 
   def add_to_draft_taxonomy
     prefix = "add-to-draft-taxonomy-"
     run_add_to_draft_taxonomy
     Loader::Batch::Bulk::JobLock.unlock!
-    render "add_to_draft_taxonomy", locals: { message_container_id_prefix: prefix }
+    render("add_to_draft_taxonomy", locals: { message_container_id_prefix: prefix })
   rescue StandardError => e
     pull_down_job
-    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
-    render "error", locals: { message_container_id_prefix: prefix }
+    @message = e.to_s.sub("uncaught throw", "").delete('"')
+    render("error", locals: { message_container_id_prefix: prefix })
   end
 
   private
@@ -102,7 +106,7 @@ class Loader::Batch::BulkController < ApplicationController
       session[:default_loader_batch_id],
       params[:name_string],
       @current_user.username,
-      @job_number
+      @job_number,
     ).run
   end
 
@@ -111,23 +115,27 @@ class Loader::Batch::BulkController < ApplicationController
       session[:default_loader_batch_id],
       params[:name_string],
       @current_user.username,
-      @job_number
+      @job_number,
     ).run
   end
 
   def run_create_draft_instances
-    @message_h = CreateDraftInstanceJob.new(session[:default_loader_batch_id],
-                                            params[:name_string],
-                                            @current_user.username,
-                                            @job_number).run
+    @message_h = CreateDraftInstanceJob.new(
+      session[:default_loader_batch_id],
+      params[:name_string],
+      @current_user.username,
+      @job_number,
+    ).run
   end
 
   def run_add_to_draft_taxonomy
-    job = AddToDraftTaxonomyJob.new(session[:default_loader_batch_id],
-                                    params[:name_string],
-                                    @working_draft,
-                                    @current_user.username,
-                                    @job_number)
+    job = AddToDraftTaxonomyJob.new(
+      session[:default_loader_batch_id],
+      params[:name_string],
+      @working_draft,
+      @current_user.username,
+      @job_number,
+    )
     job.run
     @message_h = job.result
   end
@@ -156,6 +164,6 @@ class Loader::Batch::BulkController < ApplicationController
   def handle_job_already_locked
     logger.error("Job already locked error")
     @message = "Job Already Locked"
-    render :job_already_locked_error
+    render(:job_already_locked_error)
   end
 end

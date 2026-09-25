@@ -27,9 +27,11 @@ class AuthorUnauthenticatedDoNotShowCommentsTabTest < ActionController::TestCase
 
   test "should not show unauthenticated author comments tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @author.id, tab: "tab_comments" },
-        session: {})
+    get(
+      :show,
+      params: { id: @author.id, tab: "tab_comments" },
+      session: {},
+    )
     assert response.body.match(/Your session may have expired.  Please reload the whole page before continuing/)
   end
 end

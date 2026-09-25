@@ -27,17 +27,23 @@ class NamesNewRowScientificHybridFormulaSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new_row,
-        params: { type: "hybrid-formula" },
-        session: {},
-        xhr: true)
+    get(
+      :new_row,
+      params: { type: "hybrid-formula" },
+      session: {},
+      xhr: true,
+    )
     assert_response :success,
-                    "Cannot start new row for a scientific hybrid formula name"
-    assert_match(/search-results-table/,
-                 response.body.to_s,
-                 "Missing expected element 1")
-    assert_match(/New Hybrid Formula Name/,
-                 response.body.to_s,
-                 "Missing expected element 2")
+      "Cannot start new row for a scientific hybrid formula name"
+    assert_match(
+      /search-results-table/,
+      response.body.to_s,
+      "Missing expected element 1",
+    )
+    assert_match(
+      /New Hybrid Formula Name/,
+      response.body.to_s,
+      "Missing expected element 2",
+    )
   end
 end

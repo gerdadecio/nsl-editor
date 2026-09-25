@@ -25,12 +25,20 @@ class AuthorCreateSimpleTest < ActionController::TestCase
   test "name created with multiple embedded spaces to single space" do
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Author.count") do
-      post(:create,
-           params: { author: { "name" => "newauthor",
-                               "abbrev" => "na" } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
+      post(
+        :create,
+        params: {
+          author: {
+            "name" => "newauthor",
+            "abbrev" => "na",
+          },
+        },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["edit"],
+        },
+      )
     end
   end
 end

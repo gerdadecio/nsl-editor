@@ -36,7 +36,7 @@ class SearchOnNameApiNameSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: query_string,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
@@ -45,67 +45,69 @@ class SearchOnNameApiNameSimpleTest < ActiveSupport::TestCase
 
   test "api-name: matches the name changed by that api" do
     assert_includes search_ids("api-name: jira-sync"),
-                    names(:the_regnum).id,
-                    "Expected the name changed by jira-sync in the results"
+      names(:the_regnum).id,
+      "Expected the name changed by jira-sync in the results"
   end
 
   test "api-name: excludes a name changed by another api" do
-    refute_includes search_ids("api-name: jira-sync"),
-                    names(:a_family).id,
-                    "Expected the name changed by batch-loader to be excluded"
+    assert_not_includes search_ids("api-name: jira-sync"),
+      names(:a_family).id,
+      "Expected the name changed by batch-loader to be excluded"
   end
 
   test "api-name: ignores case" do
     assert_includes search_ids("api-name: JIRA-SYNC"),
-                    names(:the_regnum).id,
-                    "Expected the search to be case insensitive"
+      names(:the_regnum).id,
+      "Expected the search to be case insensitive"
   end
 
   test "api-name: adds wildcards at both ends" do
     assert_includes search_ids("api-name: sync"),
-                    names(:the_regnum).id,
-                    "Expected a partial search term to match"
+      names(:the_regnum).id,
+      "Expected a partial search term to match"
     assert_includes search_ids("api-name: loader"),
-                    names(:a_family).id,
-                    "Expected a partial search term to match"
+      names(:a_family).id,
+      "Expected a partial search term to match"
   end
 
   test "api-name: excludes a name never changed by an api" do
-    refute_includes search_ids("api-name: sync"),
-                    names(:a_species).id,
-                    "Expected a name with no api_name to be excluded"
+    assert_not_includes search_ids("api-name: sync"),
+      names(:a_species).id,
+      "Expected a name with no api_name to be excluded"
   end
 
   test "has-api-name: includes a name changed by an api" do
     ids = search_ids("has-api-name: #{ALL}")
-    assert_includes ids, names(:the_regnum).id,
-                    "Expected the name changed by jira-sync in the results"
-    assert_includes ids, names(:a_family).id,
-                    "Expected the name changed by batch-loader in the results"
+    assert_includes ids,
+      names(:the_regnum).id,
+      "Expected the name changed by jira-sync in the results"
+    assert_includes ids,
+      names(:a_family).id,
+      "Expected the name changed by batch-loader in the results"
   end
 
   test "has-api-name: excludes a name never changed by an api" do
-    refute_includes search_ids("has-api-name: #{ALL}"),
-                    names(:a_species).id,
-                    "Expected a name with no api_name to be excluded"
+    assert_not_includes search_ids("has-api-name: #{ALL}"),
+      names(:a_species).id,
+      "Expected a name with no api_name to be excluded"
   end
 
   test "has-no-api-name: includes a name never changed by an api" do
     assert_includes search_ids("has-no-api-name: #{ALL}"),
-                    names(:a_species).id,
-                    "Expected a name with no api_name in the results"
+      names(:a_species).id,
+      "Expected a name with no api_name in the results"
   end
 
   test "has-no-api-name: excludes a name changed by an api" do
-    refute_includes search_ids("has-no-api-name: #{ALL}"),
-                    names(:the_regnum).id,
-                    "Expected the name changed by jira-sync to be excluded"
+    assert_not_includes search_ids("has-no-api-name: #{ALL}"),
+      names(:the_regnum).id,
+      "Expected the name changed by jira-sync to be excluded"
   end
 
   test "the two directives return disjoint result sets" do
     with_api_name = search_ids("has-api-name: #{ALL}")
     without_api_name = search_ids("has-no-api-name: #{ALL}")
     assert_empty with_api_name & without_api_name,
-                 "A name cannot both have and not have an api name"
+      "A name cannot both have and not have an api name"
   end
 end

@@ -34,19 +34,26 @@ class TaxFormsTreeBuilderAPCUserCannotUpdateCommentOnFOADraftTest < ActionContro
     user = users(:apc_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(:update_comment,
-         params: {"update_comment"=>{"element_link"=>tve.element_link,
-                                     "comment"=>"xyz comment",
-                                     "delete"=>"",
-                                     "update"=>""}},
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: foa_draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree builder should not be able to update comment on FoA draft entry'
-    assert_match 'Not authorized to update or delete FOA draft taxon comment', response.body, "Expecting Access Denied message"
+    post(
+      :update_comment,
+      params: {
+        "update_comment" => {
+          "element_link" => tve.element_link,
+          "comment" => "xyz comment",
+          "delete" => "",
+          "update" => "",
+        },
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: foa_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree builder should not be able to update comment on FoA draft entry"
+    assert_match "Not authorized to update or delete FOA draft taxon comment", response.body, "Expecting Access Denied message"
   end
 end
-

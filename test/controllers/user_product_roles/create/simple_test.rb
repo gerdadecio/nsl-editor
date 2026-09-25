@@ -28,17 +28,23 @@ class UserProductRoleCreateSimpleTest < ActionController::TestCase
     @product_role = product_roles(:foa_tree_publisher)
   end
 
-
   test "create user product role simple" do
     assert_difference("User::ProductRole.count") do
-      post(:create,
-           params: { user_product_role: { "user_id" => @target.id,
-                                          "product_role_id" => @product_role.id}
-                   },
-           format: :turbo_stream,
-           session: { username: @admin.user_name,
-                      user_full_name: "#{@admin.given_name} #{@admin.family_name}",
-                      groups: ["admin"] })
+      post(
+        :create,
+        params: {
+          user_product_role: {
+            "user_id" => @target.id,
+            "product_role_id" => @product_role.id,
+          },
+        },
+        format: :turbo_stream,
+        session: {
+          username: @admin.user_name,
+          user_full_name: "#{@admin.given_name} #{@admin.family_name}",
+          groups: ["admin"],
+        },
+      )
       assert_response :success
     end
   end

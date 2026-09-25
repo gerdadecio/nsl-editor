@@ -22,7 +22,7 @@ require "test_helper"
 class TradeHybridIsDeprecatedTest < ActiveSupport::TestCase
   test "trade hybrid is a deprecated name type" do
     assert_equal true,
-                 NameType.find_by(name: "trade hybrid").deprecated,
-                 "Trade Hybrid should be a deprecated name type"
+      NameType.find_by(name: "trade hybrid").deprecated,
+      "Trade Hybrid should be a deprecated name type"
   end
 end

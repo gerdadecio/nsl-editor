@@ -30,7 +30,6 @@ require "test_helper"
 class LoaderNameReviewCommentShowTab < ActionController::TestCase
   tests Loader::NamesController
 
-
   # Started GET
   # "/nsl/editor/loader_names/52428461/tab/tab_comment/accepted
   # ?format=js&tabIndex=undefined&take_focus=true"
@@ -39,20 +38,23 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
   #    reviewers.find_by(user_id: User.find_by_user_name(username)).id
   #  end
 
-
   test "show overlapping periods message on comment tab" do
     reviewer = users(:reviewer_one)
     loader_name = loader_names(:accepted_three)
-    get('tab',
-        params: {id: "#{loader_name.id}", tab: 'tab_comment'},
-        format: :js,
-        xhr: true,
-        session: { username: reviewer.user_name,
-                   user_full_name: reviewer.full_name,
-                   groups: ["login", "taxonomic-review"]}
-       )
-    assert_match 'There is more than one active review period for the batch.',
-      response.body, "Overlapping review periods should be reported"
+    get(
+      "tab",
+      params: { id: "#{loader_name.id}", tab: "tab_comment" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: reviewer.user_name,
+        user_full_name: reviewer.full_name,
+        groups: ["login", "taxonomic-review"],
+      },
+    )
+    assert_match "There is more than one active review period for the batch.",
+      response.body,
+      "Overlapping review periods should be reported"
   end
 
   # Regression test: both overlapping periods here belong to the same
@@ -65,23 +67,27 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
   test "lists the clashing review once, and names each overlapping period" do
     reviewer = users(:reviewer_one)
     loader_name = loader_names(:accepted_three)
-    get('tab',
-        params: {id: "#{loader_name.id}", tab: 'tab_comment'},
-        format: :js,
-        xhr: true,
-        session: { username: reviewer.user_name,
-                   user_full_name: reviewer.full_name,
-                   groups: ["login", "taxonomic-review"]}
-       )
+    get(
+      "tab",
+      params: { id: "#{loader_name.id}", tab: "tab_comment" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: reviewer.user_name,
+        user_full_name: reviewer.full_name,
+        groups: ["login", "taxonomic-review"],
+      },
+    )
 
     # "WG Review" should appear exactly 3 times: once in the Active
     # reviews line, and once more within each of the two qualified period
     # names below it. Before the fix it appeared a 4th time, as a second,
     # redundant entry in the Active reviews line itself.
-    assert_equal 3, response.body.scan("WG Review").size,
+    assert_equal 3,
+      response.body.scan("WG Review").size,
       "Expected \"WG Review\" to appear exactly 3 times (once in Active " \
-      "reviews, once per period name) - got: " \
-      "#{response.body[/Active reviews:.*Active review periods:/m]}"
+        "reviews, once per period name) - got: " \
+        "#{response.body[/Active reviews:.*Active review periods:/m]}"
     assert_match "WG Review Review Period Overlapping One", response.body
     assert_match "WG Review Review Period Overlapping Two", response.body
   end

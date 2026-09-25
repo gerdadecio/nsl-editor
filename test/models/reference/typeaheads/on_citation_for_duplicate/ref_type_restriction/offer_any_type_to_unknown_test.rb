@@ -24,9 +24,9 @@ class TAOnCitnForDupeRefTypeRestrictionAnyType4Unknown < ActiveSupport::TestCase
     current_reference = references(:ref_type_is_unknown)
     typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "%",
-      current_reference.id
+      current_reference.id,
     )
-    assert !typeahead.results.empty?, "Should be at least one result"
+    assert_not typeahead.results.empty?, "Should be at least one result"
     journals = 0
     unknowns = 0
     papers = 0

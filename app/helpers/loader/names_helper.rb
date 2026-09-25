@@ -35,12 +35,12 @@ module Loader::NamesHelper
   end
 
   def flush_captured_and_capture_next(search_result, give_me_focus, wd)
-    if %w(accepted excluded in-batch-note).include?(search_result.record_type) then
-      concat(render partial: "#{wd}/loader_name_record/show_captured", locals: {search_result: search_result, give_me_focus: give_me_focus})
+    if ["accepted", "excluded", "in-batch-note"].include?(search_result.record_type)
+      concat(render(partial: "#{wd}/loader_name_record/show_captured", locals: { search_result: search_result, give_me_focus: give_me_focus }))
       capture_comment_distribution(search_result)
-      concat(render partial: "#{wd}/loader_name_record/white_space_row")
-    elsif search_result.record_type == 'heading'
-      concat(render partial: "#{wd}/loader_name_record/show_captured", locals: {search_result: search_result, give_me_focus: give_me_focus})
+      concat(render(partial: "#{wd}/loader_name_record/white_space_row"))
+    elsif search_result.record_type == "heading"
+      concat(render(partial: "#{wd}/loader_name_record/show_captured", locals: { search_result: search_result, give_me_focus: give_me_focus }))
       clear_captured
     end
   end
@@ -67,6 +67,6 @@ module Loader::NamesHelper
   end
 
   def should_show_family_heading?(search_result)
-    %w(accepted excluded heading).include?(search_result.record_type)
+    ["accepted", "excluded", "heading"].include?(search_result.record_type)
   end
 end

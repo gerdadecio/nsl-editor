@@ -23,11 +23,11 @@ load "models/search/users.rb"
 class SearchOnRefAssertionDupAbbrevIsDuplicateTest < ActiveSupport::TestCase
   test "reference asertion is duplicate" do
     search = Search::Base
-             .new(ActiveSupport::HashWithIndifferentAccess
+      .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_target: "reference",
-                       query_string: "is-duplicate:",
-                       current_user: build_edit_user))
-    assert !search.executed_query.results.empty?,
-           "Should find duplicate reference."
+                    query_string: "is-duplicate:",
+                    current_user: build_edit_user))
+    assert_not search.executed_query.results.empty?,
+      "Should find duplicate reference."
   end
 end

@@ -25,19 +25,26 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
   tests AuthorsController
 
   def get_suggestions(term)
-    get(:typeahead_on_abbrev,
-        params: { term: term, format: :html },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :typeahead_on_abbrev,
+      params: { term: term, format: :html },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
   end
 
   # The response is a bare list of <li> elements with no enclosing <ul>, so
   # parse it as a fragment rather than letting assert_select treat it as a
   # whole document.
   def assert_select_in_body(*args, &block)
-    assert_select(Nokogiri::HTML::DocumentFragment.parse(@response.body),
-                  *args, &block)
+    assert_select(
+      Nokogiri::HTML::DocumentFragment.parse(@response.body),
+      *args,
+      &block
+    )
   end
 
   test "should get author suggestions as an html fragment" do
@@ -77,7 +84,7 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-                          text: "No matches"
+      text: "No matches"
   end
 
   test "should render a no matches option for a blank term" do
@@ -85,7 +92,7 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-                          text: "No matches"
+      text: "No matches"
   end
 
   # The four author fields still on typeahead.js/Bloodhound ask the same
@@ -93,11 +100,15 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
   test "should still answer json for the legacy typeahead fields" do
     author = authors(:maslin_with_abbrev)
 
-    get(:typeahead_on_abbrev,
-        params: { term: "masl", format: :json },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :typeahead_on_abbrev,
+      params: { term: "masl", format: :json },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
 
     assert_response :success
     suggestions = JSON.parse(@response.body)
@@ -112,12 +123,16 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
   test "should answer json when asked for by accept header on an xhr" do
     @request.headers["Accept"] = "application/json, text/javascript, */*; q=0.01"
 
-    get(:typeahead_on_abbrev,
-        params: { term: "masl" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] },
-        xhr: true)
+    get(
+      :typeahead_on_abbrev,
+      params: { term: "masl" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+      xhr: true,
+    )
 
     assert_response :success
     assert_equal "application/json", @response.media_type

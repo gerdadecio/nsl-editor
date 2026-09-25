@@ -48,11 +48,12 @@ class InstanceAsArrayForNamePreloadForTest < ActiveSupport::TestCase
         name,
         preloaded_instances: instances_by_name[name.id] || [],
         preloaded_standalone_cited_by_map: standalone_map,
-        preloaded_relationship_cited_by_map: relationship_map
+        preloaded_relationship_cited_by_map: relationship_map,
       ).results.map(&:id)
 
-      assert_equal separately_queried, from_preload,
-                   "Batched results for #{name.full_name} should match querying it alone"
+      assert_equal separately_queried,
+        from_preload,
+        "Batched results for #{name.full_name} should match querying it alone"
     end
   end
 
@@ -79,21 +80,23 @@ class InstanceAsArrayForNamePreloadForTest < ActiveSupport::TestCase
       names_to_check.each { |name| Instance::AsArray::ForName.new(name) }
     end
 
-    assert_operator batched_count, :<, per_name_count,
-                     "Expected preload_for (#{batched_count} queries) to cost less than " \
-                     "querying these #{names_to_check.size} names one at a time " \
-                     "(#{per_name_count} queries)"
+    assert_operator batched_count,
+      :<,
+      per_name_count,
+      "Expected preload_for (#{batched_count} queries) to cost less than " \
+        "querying these #{names_to_check.size} names one at a time " \
+        "(#{per_name_count} queries)"
   end
 
   private
 
-  def count_relevant_queries
+  def count_relevant_queries(&block)
     count = 0
     callback = lambda do |*args|
       payload = args.last
       count += 1 if payload[:name].to_s.match?(/\A(Instance|Name|Profile::ProfileItem)( Eager)? Load\z/)
     end
-    ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { yield }
+    ActiveSupport::Notifications.subscribed(callback, "sql.active_record", &block)
     count
   end
 end

@@ -35,10 +35,15 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
 
   def run
     log_start
-    @result = {Job: 'Add to Draft Taxonomy',
-               Job_batch: @batch.name,
-               Job_search: @search_string,
-               attempts: 0, adds: 0, declines: 0, errors: 0}
+    @result = {
+      Job: "Add to Draft Taxonomy",
+      Job_batch: @batch.name,
+      Job_search: @search_string,
+      attempts: 0,
+      adds: 0,
+      declines: 0,
+      errors: 0,
+    }
     @search.order(:seq).each do |loader_name|
       do_one_loader_name(loader_name)
     end
@@ -56,12 +61,14 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
 
   def do_one_loader_name(loader_name)
     @result[:attempts] += 1
-    taxo_adder = ::Loader::Name::DraftTaxonomyAdder.new(loader_name,
-                                                        @working_draft,
-                                                        @authorising_user,
-                                                        @job_number)
-    result = taxo_adder.add
-    @result.deep_merge!(taxo_adder.result_h) { |key, old, new| old + new}
+    taxo_adder = ::Loader::Name::DraftTaxonomyAdder.new(
+      loader_name,
+      @working_draft,
+      @authorising_user,
+      @job_number,
+    )
+    taxo_adder.add
+    @result.deep_merge!(taxo_adder.result_h) { |_key, old, new| old + new }
   end
 
   def log(payload)
@@ -83,6 +90,6 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
 
   def debug(s)
     tag = "Loader::Name::AddToDraftTaxonomy"
-    Rails.logger.debug("#{tag}: #{s}")
+    Rails.logger.debug { "#{tag}: #{s}" }
   end
 end

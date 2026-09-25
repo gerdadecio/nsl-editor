@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc "build prod"
 task :build_prod do
   sh "RAILS_ENV=production bundle exec rake assets:precompile RAILS_RELATIVE_URL_ROOT='/nsl/editor'"

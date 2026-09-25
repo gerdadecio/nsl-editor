@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::SortKeyBulkChanges
   extend ActiveSupport::Concern
 
@@ -22,7 +24,7 @@ module Loader::Name::SortKeyBulkChanges
 
     def set_short_sort_key_for_synonyms(batch)
       n = 0
-      batch.loader_names.where(record_type: 'synonym').each do |rec|
+      batch.loader_names.where(record_type: "synonym").each do |rec|
         puts "#{rec.simple_name} - #{rec.sort_key}"
         rec.sort_key = nil
         rec.set_short_sort_key

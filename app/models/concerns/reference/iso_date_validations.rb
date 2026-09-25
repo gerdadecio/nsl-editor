@@ -12,7 +12,7 @@ module Reference::IsoDateValidations
     return if iso_publication_date.blank?
 
     validate_iso_string_length
-    validate_iso_date_year unless iso_publication_date.blank?
+    validate_iso_date_year if iso_publication_date.present?
     validate_iso_date_month unless iso_publication_date.length < 7
     validate_iso_day_month_year if iso_publication_date.length == 10
   rescue StandardError => e
@@ -22,7 +22,7 @@ module Reference::IsoDateValidations
 
   def validate_iso_string_length
     return if iso_publication_date.blank?
-    return if [0, 4, 7, 10].include? iso_publication_date.length
+    return if [0, 4, 7, 10].include?(iso_publication_date.length)
 
     raise "Publication date must be year, or year, month or year, month, day"
   end

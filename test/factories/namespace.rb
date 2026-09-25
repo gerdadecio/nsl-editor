@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: namespace
@@ -15,7 +17,7 @@
 #
 FactoryBot.define do
   factory :namespace do
-    sequence(:name) {|n| "Sample Name #{n}" }
+    sequence(:name) { |n| "Sample Name #{n}" }
     sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
   end
 end

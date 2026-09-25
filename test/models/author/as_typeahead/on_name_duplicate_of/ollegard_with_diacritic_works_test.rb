@@ -27,8 +27,8 @@ class AuthATAHOnNameDupeOfOllegaardWDiacWorksTest < ActiveSupport::TestCase
     assert_equal 2, results.size, "Expecting 2 records for 'Ollegard'."
     ids = results.collect { |author| author[:id] }
     assert ids.include?(authors(:ollegaard_without_diacritic).id.to_s),
-           "Expecting ollegaard without diacritic"
+      "Expecting ollegaard without diacritic"
     assert ids.include?(authors(:ollegaard_with_leading_diacritic).id.to_s),
-           "Expecting ollegaard with leading diacritic"
+      "Expecting ollegaard with leading diacritic"
   end
 end

@@ -157,13 +157,13 @@ class Name::AsServices < Name
     else
       log_error(url, s_response, json)
       preface = "Delete Service error:"
-      raise "#{preface} #{json['errors'].try('join')} [#{s_response.code}]"
+      raise "#{preface} #{json["errors"].try("join")} [#{s_response.code}]"
     end
   end
 
   def log_error(url, s_response, json)
     logger.error("Name::AsServices.delete url: #{url}")
     logger.error("Name::AsServices.delete s_response: #{s_response}")
-    logger.error("Name::AsServices.delete errors: #{json['errors']}")
+    logger.error("Name::AsServices.delete errors: #{json["errors"]}")
   end
 end

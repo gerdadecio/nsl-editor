@@ -28,10 +28,10 @@ class SearchOnInstanceIsNotNoveltyTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "instance",
         query_string: "is-not-novelty:",
-        current_user: build_edit_user
-      )
+        current_user: build_edit_user,
+      ),
     )
-    assert !search.executed_query.results.empty?,
-           "Expected results for is-not-novelty: — fixtures include non-primary instance types"
+    assert_not search.executed_query.results.empty?,
+      "Expected results for is-not-novelty: — fixtures include non-primary instance types"
   end
 end

@@ -27,14 +27,19 @@ module IconHelper
   end
 
   def entity_icon(entity, height = 10, width = 10)
-    content_tag(:svg,
-                tag(:polygon,
-                    class: "svgpolygon",
-                    points: "2,3, #{2 + width},3,  #{2 + width},23  2,23",
-                    fill: color_for(entity)),
-                class: "icon name-icon", height: "#{height}px",
-                width: "#{width}px", xmlns: "http://www.w3.org/2000/svg",
-                title: entity.capitalize)
+    content_tag(
+      :svg,
+      tag.polygon(
+        class: "svgpolygon",
+        points: "2,3, #{2 + width},3,  #{2 + width},23  2,23",
+        fill: color_for(entity),
+      ),
+      class: "icon name-icon",
+      height: "#{height}px",
+      width: "#{width}px",
+      xmlns: "http://www.w3.org/2000/svg",
+      title: entity.capitalize,
+    )
   end
 
   def color_for(entity)
@@ -51,10 +56,10 @@ module IconHelper
   def editor_icon(icon, text = "", html_options = {})
     html_options[:class] = icon_content_class(icon, html_options)
     html = if text.blank?
-             content_tag(:i, nil, html_options)
-           else
-             "#{content_tag(:i, nil, html_options)} #{text}"
-           end
+      content_tag(:i, nil, html_options)
+    else
+      "#{content_tag(:i, nil, html_options)} #{text}"
+    end
     html.html_safe
   end
 

@@ -20,11 +20,10 @@ require "test_helper"
 
 # Test fixtures are intact
 class SessionUserAPCTaxPublisherHasTreePublisherRoleTest < ActiveSupport::TestCase
-
   test "apc tax publisher user has tax publisher role" do
     user = users(:apc_tax_publisher)
     role = roles(:tree_publisher)
-    session_user = SessionUser.new(username: user.user_name, full_name: "#{user.given_name} #{user.family_name}", groups: 'login')
+    session_user = SessionUser.new(username: user.user_name, full_name: "#{user.given_name} #{user.family_name}", groups: "login")
     assert(session_user.with_role?(role.name), "Expecting #{user.user_name} user to be a #{role.name}")
   end
 end

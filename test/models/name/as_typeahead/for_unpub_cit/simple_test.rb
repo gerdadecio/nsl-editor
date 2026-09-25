@@ -23,7 +23,7 @@ class NameAsTForUnpubCitSimpleTest < ActiveSupport::TestCase
   test "simple" do
     suggestions = Name::AsTypeahead::ForUnpubCit.new(term: "**").suggestions
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert !suggestions.empty?,
-           "should be plenty of suggestions"
+    assert_not suggestions.empty?,
+      "should be plenty of suggestions"
   end
 end

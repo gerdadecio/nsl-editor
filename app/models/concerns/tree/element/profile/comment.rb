@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 #
 # Tree Element Profile
 module Tree::Element::Profile::Comment
   extend ActiveSupport::Concern
+
   def comment
-    return nil if profile.blank?
+    return if profile.blank?
 
     profile[comment_key]
   end
@@ -17,15 +20,15 @@ module Tree::Element::Profile::Comment
   end
 
   def comment_value
-    return nil if profile.blank?
+    return if profile.blank?
 
-    return nil if profile[comment_key].blank?
+    return if profile[comment_key].blank?
 
     profile[comment_key]["value"]
   end
 
   def add_profile_and_comment(comment, username)
-    throw "Profile already exists" unless profile.blank?
+    throw("Profile already exists") if profile.present?
 
     comment = Tree::Element::Profile::CommentObject.new(username, comment)
     p = {}
@@ -36,15 +39,15 @@ module Tree::Element::Profile::Comment
   end
 
   def add_comment_to_profile(comment, username)
-    throw "No profile exists" if profile.blank?
-    throw "Profile comment already exists" unless profile[comment_key].blank?
+    throw("No profile exists") if profile.blank?
+    throw("Profile comment already exists") if profile[comment_key].present?
 
     set_comment_in_profile(comment, username)
   end
 
   def change_comment_in_profile(comment_value, username)
-    throw "No profile exists" if profile.blank?
-    throw "Profile has no comment" if profile[comment_key].blank?
+    throw("No profile exists") if profile.blank?
+    throw("Profile has no comment") if profile[comment_key].blank?
 
     changed_comment = comment
     changed_comment["value"] = comment_value

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe Reference, type: :model do
+RSpec.describe(Reference, type: :model) do
   describe "associations" do
-    it { is_expected.to have_many(:products).with_foreign_key('reference_id') }
+    it { is_expected.to(have_many(:products).with_foreign_key("reference_id")) }
   end
 
   describe "#not_used_by_any_related_table?" do
@@ -12,7 +12,7 @@ RSpec.describe Reference, type: :model do
 
     context "when reference has no instances and no profile_item_references" do
       it "returns true" do
-        expect(reference.not_used_by_any_related_table?).to eq true
+        expect(reference.not_used_by_any_related_table?).to(eq(true))
       end
     end
 
@@ -22,7 +22,7 @@ RSpec.describe Reference, type: :model do
       end
 
       it "returns false" do
-        expect(reference.not_used_by_any_related_table?).to eq false
+        expect(reference.not_used_by_any_related_table?).to(eq(false))
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe Reference, type: :model do
       end
 
       it "returns false" do
-        expect(reference.not_used_by_any_related_table?).to eq false
+        expect(reference.not_used_by_any_related_table?).to(eq(false))
       end
     end
 
@@ -45,7 +45,7 @@ RSpec.describe Reference, type: :model do
       end
 
       it "returns false" do
-        expect(reference.not_used_by_any_related_table?).to eq false
+        expect(reference.not_used_by_any_related_table?).to(eq(false))
       end
     end
   end

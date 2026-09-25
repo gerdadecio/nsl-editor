@@ -22,11 +22,11 @@ load "test/models/search/users.rb"
 # Single Search model test for Reference target.
 class SearchOnReferencePubDateMatchesTest < ActiveSupport::TestCase
   test "search on reference publication date regex simple" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "pub-date-matches: .",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "reference",
+        query_string: "pub-date-matches: .",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?, "Results expected."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

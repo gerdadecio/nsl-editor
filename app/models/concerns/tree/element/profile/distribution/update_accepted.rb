@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 #
 #
@@ -6,8 +8,9 @@
 # Tree Element Profile
 module Tree::Element::Profile::Distribution::UpdateAccepted
   extend ActiveSupport::Concern
+
   def update_dist_with_non_blank_param(dist_param, username)
-    throw "Expecting non-blank distribution" if dist_param.nil?
+    throw("Expecting non-blank distribution") if dist_param.nil?
 
     if profile.blank?
       add_dist_to_empty_profile(dist_param, username)
@@ -46,11 +49,11 @@ module Tree::Element::Profile::Distribution::UpdateAccepted
   end
 
   def add_dist_to_empty_profile(dist_param, username)
-    throw "dist_param must not be nil!" if dist_param.nil?
+    throw("dist_param must not be nil!") if dist_param.nil?
 
     new_cleaned = Tree::Element.cleanup_distribution_string(dist_param)
     Tree::Element.validate_distribution_string(new_cleaned)
-    throw "clean dist_param must not be nil!" if new_cleaned.nil?
+    throw("clean dist_param must not be nil!") if new_cleaned.nil?
 
     add_profile_and_distribution(new_cleaned, username)
     te = Tree::Element.find(id)
@@ -66,8 +69,10 @@ module Tree::Element::Profile::Distribution::UpdateAccepted
         "No change in standardardised format of accepted taxon distribution"
     else
       Tree::Element.validate_distribution_string(new_cleaned)
-      change_existing_distribution_in_profile(new_cleaned,
-                                              username)
+      change_existing_distribution_in_profile(
+        new_cleaned,
+        username,
+      )
       te = Tree::Element.find(id)
       te.apply_string_to_tedes
       refresh = true

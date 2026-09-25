@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::UseDefaultRef::Constants
   CREATED = [1, 0, 0]
   DECLINED = [0, 1, 0]

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Loader::Name::ReviewComments
   extend ActiveSupport::Concern
-
 
   # Narrow direct comments - i.e. for specific, real records
   # like accepted, excluded, and synonym records
@@ -25,15 +26,17 @@ module Loader::Name::ReviewComments
     name_review_comments
       .includes(batch_reviewer: [:batch_review_role])
       .select { |comment| comment.reviewer.role.name == role }
-      .select { |comment| comment.context == record_type || comment.context == 'main'}
+      .select { |comment| comment.context == record_type || comment.context == "main" }
   end
 
   # All comments - needed for totals
   def reviewer_comments
-    [narrow_direct_reviewer_comments,
-     concept_note_reviewer_comments,
-     distribution_reviewer_comments,
-     children_reviewer_comments].flatten
+    [
+      narrow_direct_reviewer_comments,
+      concept_note_reviewer_comments,
+      distribution_reviewer_comments,
+      children_reviewer_comments
+    ].flatten
   end
 
   def reviewer_comments?
@@ -41,17 +44,17 @@ module Loader::Name::ReviewComments
   end
 
   def compiler_comments
-    [narrow_direct_compiler_comments,
-     concept_note_compiler_comments,
-     distribution_compiler_comments,
-     children_compiler_comments].flatten
+    [
+      narrow_direct_compiler_comments,
+      concept_note_compiler_comments,
+      distribution_compiler_comments,
+      children_compiler_comments
+    ].flatten
   end
 
   def compiler_comments?
     compiler_comments.size > 0
   end
-
-
 
   # Special total for all comments
 
@@ -63,31 +66,28 @@ module Loader::Name::ReviewComments
     total_compiler_and_reviewer_comments.size > 0
   end
 
-
-
   # Comments on children
 
   def children_reviewer_comments
     children.map do |child|
       child.name_review_comments
-      .includes(batch_reviewer: [:batch_review_role])
-      .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::NAME_REVIEWER }
+        .includes(batch_reviewer: [:batch_review_role])
+        .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::NAME_REVIEWER }
     end.flatten
   end
 
   def children_compiler_comments
     children.map do |child|
       child.name_review_comments
-      .includes(batch_reviewer: [:batch_review_role])
-      .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::COMPILER }
+        .includes(batch_reviewer: [:batch_review_role])
+        .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::COMPILER }
     end.flatten
   end
-
 
   # Comments on pretend records
 
   def concept_note_reviewer_comments
-    pretend_record_comments(Loader::Batch::Review::Role::NAME_REVIEWER, 'concept-note')
+    pretend_record_comments(Loader::Batch::Review::Role::NAME_REVIEWER, "concept-note")
   end
 
   def concept_note_reviewer_comments?
@@ -95,7 +95,7 @@ module Loader::Name::ReviewComments
   end
 
   def distribution_reviewer_comments
-    pretend_record_comments(Loader::Batch::Review::Role::NAME_REVIEWER, 'distribution')
+    pretend_record_comments(Loader::Batch::Review::Role::NAME_REVIEWER, "distribution")
   end
 
   def distribution_reviewer_comments?
@@ -103,7 +103,7 @@ module Loader::Name::ReviewComments
   end
 
   def concept_note_compiler_comments
-    pretend_record_comments(Loader::Batch::Review::Role::COMPILER, 'concept-note')
+    pretend_record_comments(Loader::Batch::Review::Role::COMPILER, "concept-note")
   end
 
   def concept_note_compiler_comments?
@@ -111,7 +111,7 @@ module Loader::Name::ReviewComments
   end
 
   def distribution_compiler_comments
-    pretend_record_comments(Loader::Batch::Review::Role::COMPILER, 'distribution')
+    pretend_record_comments(Loader::Batch::Review::Role::COMPILER, "distribution")
   end
 
   def distribution_compiler_comments?

@@ -29,7 +29,7 @@ class RefValYearSectionMustHaveYearTest < ActiveSupport::TestCase
     assert @reference.valid?, "Should start out valid"
     @reference.iso_publication_date = ""
     assert_not @reference.valid?,
-               "Section should not be valid without iso publication date"
+      "Section should not be valid without iso publication date"
     assert @reference
       .errors.full_messages.include?("Iso publication date is required")
   end

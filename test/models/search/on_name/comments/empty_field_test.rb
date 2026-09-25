@@ -22,21 +22,21 @@ load "test/models/search/users.rb"
 # Single Search model test for Name target.
 class SearchOneNameCommentsEmptyFieldTest < ActiveSupport::TestCase
   def setup
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "name",
-                   query_string: "a_species",
-                   include_common_and_cultivar_session: true,
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "name",
+        query_string: "a_species",
+        include_common_and_cultivar_session: true,
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert search.executed_query.results.size == 2, "2 results expected."
+    assert(search.executed_query.results.size == 2, "2 results expected.")
   end
 
   test "search on name comments empty field" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "name",
-                   query_string: "a_species comments:",
-                   include_common_and_cultivar_session: true,
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "name",
+        query_string: "a_species comments:",
+        include_common_and_cultivar_session: true,
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.size == 1, "1 result expected."
   end

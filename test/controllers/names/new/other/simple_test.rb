@@ -27,12 +27,16 @@ class NamesNewOtherNameSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new,
-        params: { category: "other",
-                  random_id: "123445",
-                  tabIndex: "107" },
-        session: {},
-        xhr: true)
+    get(
+      :new,
+      params: {
+        category: "other",
+        random_id: "123445",
+        tabIndex: "107",
+      },
+      session: {},
+      xhr: true,
+    )
     assert_response :success, "Cannot start new for an 'other' name"
     assert_select("h4", /New Other Name/)
   end

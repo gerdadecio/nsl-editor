@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Loader::Batch::ReviewersController < ApplicationController
-  before_action :find_batch_reviewer, only: %i[show destroy tab]
+  before_action :find_batch_reviewer, only: [:show, :destroy, :tab]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
@@ -26,27 +26,29 @@ class Loader::Batch::ReviewersController < ApplicationController
     set_tab_index
     @batch_reviewer = Loader::Batch::Reviewer.new if params[:tab] == "tab_reviewers"
     @take_focus = params[:take_focus] == "true"
-    render "show", layout: false
+    render("show", layout: false)
   end
 
-  alias tab show
+  alias_method :tab, :show
 
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
     respond_to do |format|
-      format.html { redirect_to new_search_path }
+      format.html { redirect_to(new_search_path) }
       format.js {}
     end
   end
 
   def create
-    @batch_reviewer = ::Loader::Batch::Reviewer.create(batch_reviewer_params,
-                                                       current_user.username)
-    render "create"
+    @batch_reviewer = ::Loader::Batch::Reviewer.create(
+      batch_reviewer_params,
+      current_user.username,
+    )
+    render("create")
   rescue StandardError => e
     logger.error("Controller:Loader::Batch::ReviewersController#create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_content
+    render("create_error", status: :unprocessable_content)
   end
 
   def destroy
@@ -59,20 +61,26 @@ class Loader::Batch::ReviewersController < ApplicationController
     @batch_reviewer = Loader::Batch::Reviewer.find(params[:id] || batch_reviewer_params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the batch reviewer record."
-    redirect_to batch_reviewers_path
+    redirect_to(batch_reviewers_path)
   end
 
   def batch_reviewer_params
-    params.require(:loader_batch_reviewer).permit(:id, :name, :batch_review_id, :user_id, :org_id,
-                                                  :batch_review_role_id)
+    params.require(:loader_batch_reviewer).permit(
+      :id,
+      :name,
+      :batch_review_id,
+      :user_id,
+      :org_id,
+      :batch_review_role_id,
+    )
   end
 
   def set_tab
     @tab = if params[:tab].present? && params[:tab] != "undefined"
-             params[:tab]
-           else
-             "tab_details"
-           end
+      params[:tab]
+    else
+      "tab_details"
+    end
   end
 
   def set_tab_index

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/models/profile/profile_text.rb
 # == Schema Information
 #

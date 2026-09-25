@@ -40,20 +40,20 @@ class JiraTicket < ActiveType::Object
     @results[key.upcase]
   end
 
-  def self.keys
-    @keys
+  class << self
+    attr_reader :keys
   end
 
-  def self.keys=(array_of_keys)
-    @keys = array_of_keys
+  class << self
+    attr_writer :keys
   end
 
-  def self.keys_to_query=(list_of_keys_to_query)
-    @keys_to_query = list_of_keys_to_query
+  class << self
+    attr_writer :keys_to_query
   end
 
   def self.jql(keys_array)
-    "key in (#{keys_array.join(', ')})"
+    "key in (#{keys_array.join(", ")})"
   end
 
   # The API limits results to 100 - annoying
@@ -69,9 +69,11 @@ class JiraTicket < ActiveType::Object
     keys_subset = @keys.first(100)
     accumulated_results_array = []
     while keys_subset.present?
-      body = {jql: self.jql(keys_subset),
-              maxResults: 100,
-              fields: ["status"]}.to_json
+      body = {
+        jql: jql(keys_subset),
+        maxResults: 100,
+        fields: ["status"],
+      }.to_json
 
       request = Net::HTTP::Post.new(uri.request_uri)
       request["Authorization"] = "Basic " + Base64.strict_encode64("#{EMAIL}:#{API_TOKEN}")
@@ -79,9 +81,9 @@ class JiraTicket < ActiveType::Object
       request["Content-Type"]  = "application/json"
       request.body = body
       response = http.request(request)
-      latest_array =  ((JSON.parse(response.body))["issues"].collect {|issue| {"#{issue['key']}" =>  "#{issue['fields']['status']['name']}"}})
-      accumulated_results_array =  accumulated_results_array.concat(latest_array)
-      offset = offset + limit
+      latest_array = JSON.parse(response.body)["issues"].collect { |issue| { "#{issue["key"]}" => "#{issue["fields"]["status"]["name"]}" } }
+      accumulated_results_array = accumulated_results_array.concat(latest_array)
+      offset += limit
       keys_subset = @keys[offset, limit]
     end
     @results = accumulated_results_array.reduce({}, :merge)
@@ -101,8 +103,8 @@ class JiraTicket < ActiveType::Object
 
   def self.keys_for_year(year)
     yaml_for_year(year)
-      .collect {|year_entry| "#{year_entry[:jira_project]||'NSL'}-#{year_entry[:jira_id]}"}
-      .reject { |item| item.nil? || item.empty? || item.match(/NSL-\z/)}
+      .collect { |year_entry| "#{year_entry[:jira_project] || "NSL"}-#{year_entry[:jira_id]}" }
+      .reject { |item| item.nil? || item.empty? || item.match(/NSL-\z/) }
       .sort
       .uniq
   end

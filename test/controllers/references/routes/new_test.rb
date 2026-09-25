@@ -23,8 +23,8 @@ class ReferencesRouteNewTest < ActionController::TestCase
   tests ReferencesController
   test "references new should route to a new reference" do
     assert_routing "references/new/320923890423",
-                   controller: "references",
-                   action: "new",
-                   random_id: '320923890423'
+      controller: "references",
+      action: "new",
+      random_id: "320923890423"
   end
 end

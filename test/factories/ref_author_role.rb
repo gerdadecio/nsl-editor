@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: ref_author_role
@@ -16,7 +18,7 @@
 FactoryBot.define do
   factory :ref_author_role do
     lock_version { 1 }
-    sequence(:name) {|n| "Sample Name #{n}" }
+    sequence(:name) { |n| "Sample Name #{n}" }
     sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
   end
 end

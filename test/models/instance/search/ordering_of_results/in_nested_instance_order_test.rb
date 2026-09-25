@@ -20,23 +20,25 @@ require "test_helper"
 
 # Single instance model test.
 class InNestedInstanceOrderTest < ActiveSupport::TestCase
-  INSTANCE_TYPE_NAMES = ["basionym",
-                         "common name",
-                         "vernacular name",
-                         "doubtful nomenclatural synonym",
-                         "nomenclatural synonym",
-                         "doubtful taxonomic synonym",
-                         "taxonomic synonym",
-                         "doubtful pro parte nomenclatural synonym",
-                         "pro parte nomenclatural synonym",
-                         "pro parte taxonomic synonym",
-                         "doubtful pro parte taxonomic synonym"].freeze
+  INSTANCE_TYPE_NAMES = [
+    "basionym",
+    "common name",
+    "vernacular name",
+    "doubtful nomenclatural synonym",
+    "nomenclatural synonym",
+    "doubtful taxonomic synonym",
+    "taxonomic synonym",
+    "doubtful pro parte nomenclatural synonym",
+    "pro parte nomenclatural synonym",
+    "pro parte taxonomic synonym",
+    "doubtful pro parte taxonomic synonym"
+  ].freeze
 
   def assert_with_args(results, index, expected)
     assert(
       /\A#{Regexp.escape(expected)}\z/.match(results[index].instance_type.name),
       "Wrong at index #{index}; should be: #{expected}
-      NOT #{results[index].instance_type.name}"
+      NOT #{results[index].instance_type.name}",
     )
   end
 
@@ -50,16 +52,16 @@ class InNestedInstanceOrderTest < ActiveSupport::TestCase
   # This emulates synonymy ordering in the Editor, note especially the scope in_synonymy_order.
   def run_query
     @results = Instance.joins(:instance_type, :name, :reference)
-                       .joins("inner join name_status ns on name.name_status_id = ns.id")
-                       .joins("inner join instance cites on instance.cites_id = cites.id")
-                       .joins("inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
-                       .in_synonymy_order
+      .joins("inner join name_status ns on name.name_status_id = ns.id")
+      .joins("inner join instance cites on instance.cites_id = cites.id")
+      .joins("inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
+      .in_synonymy_order
     # extra order clause to make definitive and
     # repeatable ordering for these tests
     #
     # Debug
     # @results.each_with_index do |i,ndx|
-     # puts "#{ndx}: #{i.instance_type.name}: #{i.name.simple_name} - #{i.instance_type.taxonomic ? 'taxonomic' : 'not taxonomic'}" if ndx < 30
+    # puts "#{ndx}: #{i.instance_type.name}: #{i.name.simple_name} - #{i.instance_type.taxonomic ? 'taxonomic' : 'not taxonomic'}" if ndx < 30
     # end
   end
 

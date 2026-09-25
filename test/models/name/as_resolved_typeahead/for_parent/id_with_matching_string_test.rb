@@ -22,11 +22,13 @@ require "test_helper"
 class NameAsResolvedTypeahead4ParentIdWMatchingString < ActiveSupport::TestCase
   test "id with matching string" do
     name = names(:the_regnum)
-    result = Name::AsResolvedTypeahead::ForParent.new(name.id.to_s,
-                                                      name.full_name,
-                                                      "parent")
+    result = Name::AsResolvedTypeahead::ForParent.new(
+      name.id.to_s,
+      name.full_name,
+      "parent",
+    )
     assert_equal name.id,
-                 result.value,
-                 "Should get a matching id for the parent name"
+      result.value,
+      "Should get a matching id for the parent name"
   end
 end

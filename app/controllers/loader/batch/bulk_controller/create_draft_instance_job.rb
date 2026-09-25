@@ -31,10 +31,15 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
 
   def run
     log_start
-    @job_h = {Job: 'Create Draft Instances',
-              Job_batch: @batch.name,
-              Job_search: @search_string,
-              attempts: 0, creates: 0, declines: 0, errors: 0}
+    @job_h = {
+      Job: "Create Draft Instances",
+      Job_batch: @batch.name,
+      Job_search: @search_string,
+      attempts: 0,
+      creates: 0,
+      declines: 0,
+      errors: 0,
+    }
     @search.order(:seq).each do |loader_name|
       do_one_loader_name(loader_name)
     end
@@ -53,19 +58,20 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
 
   def do_one_loader_name(loader_name)
     @job_h[:attempts] += 1
-    creator = ::Loader::Name::MakeOneInstance.new(loader_name,
-                                                  @authorising_user,
-                                                  @job_number)
+    creator = ::Loader::Name::MakeOneInstance.new(
+      loader_name,
+      @authorising_user,
+      @job_number,
+    )
     result = creator.create
-    @job_h.deep_merge!(result) { |key, old, new| old + new}
+    @job_h.deep_merge!(result) { |_key, old, new| old + new }
   rescue StandardError => e
     entry = "<span class='red'>Error: failed to create instance</span> "
     entry += "##{loader_name.id} #{loader_name.simple_name} "
     entry += "- error in do_one_loader_name: #{e}"
     log(entry)
-    @job_h.deep_merge!({errors: 1, errors_reasons: {"#{e.to_s}": 1}}) { |key, old, new| old + new}
+    @job_h.deep_merge!({ errors: 1, errors_reasons: { "#{e}": 1 } }) { |_key, old, new| old + new }
   end
-
 
   def log(payload)
     Loader::Batch::Bulk::JobLog.new(@job_number, payload, @authorising_user).write
@@ -86,6 +92,6 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
 
   def debug(s)
     tag = "Loader::Name::CreateDraftInstanceJob"
-    Rails.logger.debug("#{tag}: #{s}")
+    Rails.logger.debug { "#{tag}: #{s}" }
   end
 end

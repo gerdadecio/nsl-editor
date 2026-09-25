@@ -3,12 +3,13 @@
 # Reference Iso Publication Date Components
 module Reference::IsoDateParts
   extend ActiveSupport::Concern
+
   included do
   end
 
   def day
-    return nil if iso_publication_date.nil?
-    return nil if iso_publication_date.length < 9
+    return if iso_publication_date.nil?
+    return if iso_publication_date.length < 9
 
     iso_publication_date.scan(/..\z/).first
   end
@@ -20,23 +21,23 @@ module Reference::IsoDateParts
 
     if dd.blank? # remove an existing day
       self.iso_publication_date = if year.nil?
-                                    nil
-                                  elsif month.nil?
-                                    year
-                                  else
-                                    "#{year}-#{month}"
-                                  end
+        nil
+      elsif month.nil?
+        year
+      else
+        "#{year}-#{month}"
+      end
     else # apply a non-blank day
       return if iso_publication_date.nil? # cannot add day because no year
       return if iso_publication_date.length < 7 # cannot add day because no month
 
-      self.iso_publication_date = "#{iso_publication_date.match(/^....-../)}-#{dd.to_s.rjust(2, '0')}"
+      self.iso_publication_date = "#{iso_publication_date.match(/^....-../)}-#{dd.to_s.rjust(2, "0")}"
     end
   end
 
   def month
-    return nil if iso_publication_date.nil?
-    return nil if iso_publication_date.length < 7
+    return if iso_publication_date.nil?
+    return if iso_publication_date.length < 7
     return iso_publication_date.scan(/..\z/).first if iso_publication_date.length == 7
 
     iso_publication_date.scan(/(?<=....-)..(?=-..)/).first
@@ -46,16 +47,16 @@ module Reference::IsoDateParts
     if mm.blank?
       self.iso_publication_date = year
     elsif iso_publication_date.length == 4 || iso_publication_date.length == 7 # yyyy or yyyy-mm
-      self.iso_publication_date = "#{year}-#{mm.to_s.rjust(2, '0')}"
+      self.iso_publication_date = "#{year}-#{mm.to_s.rjust(2, "0")}"
     elsif iso_publication_date.length == 10 # yyyy-mm-dd
-      self.iso_publication_date = "#{year}-#{mm.to_s.rjust(2, '0')}-#{day}"
+      self.iso_publication_date = "#{year}-#{mm.to_s.rjust(2, "0")}-#{day}"
     end
   end
 
   def year
-    return nil if iso_publication_date.blank?
-    return nil if iso_publication_date.nil?
-    return nil if iso_publication_date.length < 4
+    return if iso_publication_date.blank?
+    return if iso_publication_date.nil?
+    return if iso_publication_date.length < 4
 
     iso_publication_date.scan(/\A..../).first
   end

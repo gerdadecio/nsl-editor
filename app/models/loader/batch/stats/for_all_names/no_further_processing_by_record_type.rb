@@ -24,12 +24,14 @@ class Loader::Batch::Stats::ForAllNames::NoFurtherProcessingByRecordType
   end
 
   def report
-    { heading: no_further_processing_headings,
+    {
+      heading: no_further_processing_headings,
       accepted: no_further_processing_accepteds,
       excluded: no_further_processing_excludeds,
       synonym: no_further_processing_synonyms,
       misapplied: no_further_processing_misapplieds,
-      total: no_further_processing_total }
+      total: no_further_processing_total,
+    }
   end
 
   def no_further_processing_total

@@ -24,13 +24,13 @@ class RefAsRTA4DupeOfIdWithStringMatching2References < ActiveSupport::TestCase
     reference_1 = references(:has_a_matching_citation_1)
     reference_2 = references(:has_a_matching_citation_2)
     assert reference_1.citation.match(reference_2.citation),
-           "Should be two references with the same ciation."
+      "Should be two references with the same ciation."
     result = Reference::AsResolvedTypeahead::ForDuplicateOf.new(
       reference_2.id.to_s,
-      reference_2.citation
+      reference_2.citation,
     )
     assert_equal reference_2.id,
-                 result.value,
-                 "Should get a match for the correct id"
+      result.value,
+      "Should get a match for the correct id"
   end
 end

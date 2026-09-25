@@ -22,6 +22,6 @@ require "test_helper"
 class NameStatusDefaultSimpleTest < ActiveSupport::TestCase
   test "simple" do
     assert NameStatus.default.name == "legitimate",
-           "The default name status should be 'legitimate'"
+      "The default name status should be 'legitimate'"
   end
 end

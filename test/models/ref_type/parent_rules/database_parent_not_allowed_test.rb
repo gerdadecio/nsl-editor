@@ -22,6 +22,6 @@ require "test_helper"
 class DatabaseParentNotAllowedTest < ActiveSupport::TestCase
   test "database ref type parent is not allowed" do
     assert ref_types(:database).parent_id.blank? == true,
-           "Database ref type parent should not be allowed."
+      "Database ref type parent should not be allowed."
   end
 end

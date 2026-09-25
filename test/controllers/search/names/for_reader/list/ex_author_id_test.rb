@@ -24,14 +24,18 @@ class ReaderSearchControllerNamesExAuthorIdListTest < ActionController::TestCase
 
   test "reader can search for a name by ex-author id" do
     author = authors(:cronquist_et_al)
-    get(:search,
-        params: { query_target: "name", query_string: "ex-author-id: #{author.id}" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "name", query_string: "ex-author-id: #{author.id}" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /\b1 name\b/,
-                  "Should find 1 name for ex author ID using #{author.abbrev}"
+      /\b1 name\b/,
+      "Should find 1 name for ex author ID using #{author.abbrev}"
   end
 end

@@ -23,11 +23,11 @@ class NameCultivarHybParentSecondParCanBeTheSameTest < ActiveSupport::TestCase
   test "name cultivar hybrid parent and second parent can be the same" do
     name = names(:a_cultivar_hybrid)
     assert name.parent_id != name.second_parent_id,
-           "Name parent and second_parent must differ for this test."
+      "Name parent and second_parent must differ for this test."
     assert name.valid?,
-           "Name should be valid. Errs: #{name.errors.full_messages.join('; ')}"
+      "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
     name.second_parent_id = name.parent_id
     assert name.valid?,
-           "Cultivar Hybrid Name valid even if par is the same as 2nd parent."
+      "Cultivar Hybrid Name valid even if par is the same as 2nd parent."
   end
 end

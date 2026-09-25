@@ -19,18 +19,18 @@
 # Search a Model
 class Search::OnModel::Base
   attr_reader :results,
-              :limited,
-              :info_for_display,
-              :rejected_pairings,
-              :common_and_cultivar_included,
-              :has_relation,
-              :relation,
-              :id,
-              :count,
-              :show_csv,
-              :total,
-              :limit,
-              :do_count_totals
+    :limited,
+    :info_for_display,
+    :rejected_pairings,
+    :common_and_cultivar_included,
+    :has_relation,
+    :relation,
+    :id,
+    :count,
+    :show_csv,
+    :total,
+    :limit,
+    :do_count_totals
 
   def initialize(parsed_request)
     run_query(parsed_request)
@@ -126,12 +126,12 @@ class Search::OnModel::Base
     @results.each do |ref|
       results_with_instances << ref
       instances_query = Instance::AsArray::ForReference
-                        .new(ref,
-                             sort_key,
-                             nil,
-                             parsed_request.instance_offset,
-                             preloaded_instances: instances_by_reference[ref.id] || [],
-                             preloaded_cited_by_map: cited_by_map)
+        .new(ref,
+          sort_key,
+          nil,
+          parsed_request.instance_offset,
+          preloaded_instances: instances_by_reference[ref.id] || [],
+          preloaded_cited_by_map: cited_by_map)
       instances_query.results.each { |i| results_with_instances << i }
     end
     @results = results_with_instances
@@ -153,11 +153,11 @@ class Search::OnModel::Base
     @results.each do |ref|
       results_with_instances << ref
       instances_query = Instance::AsArray::ForReference::ForNovelties
-                        .new(ref,
-                             sort_key,
-                             nil,
-                             parsed_request.instance_offset,
-                             preloaded_instances: instances_by_reference[ref.id] || [])
+        .new(ref,
+          sort_key,
+          nil,
+          parsed_request.instance_offset,
+          preloaded_instances: instances_by_reference[ref.id] || [])
       instances_query.results.each { |i| results_with_instances << i }
     end
     @results = results_with_instances
@@ -173,11 +173,11 @@ class Search::OnModel::Base
 
     show_comments = parsed_request.show_loader_name_comments
     @results = Search::Loader::Name::RewriteResultsShowingExtras
-               .new(@results, show_comments).rewrite_results
+      .new(@results, show_comments).rewrite_results
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnModel::Base: #{s}")
+    Rails.logger.debug { "Search::OnModel::Base: #{s}" }
   end
 
   def csv?

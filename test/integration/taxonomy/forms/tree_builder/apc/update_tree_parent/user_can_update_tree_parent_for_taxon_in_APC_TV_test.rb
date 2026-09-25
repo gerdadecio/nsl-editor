@@ -31,37 +31,45 @@ class TaxFormsTreeBuilderAPCUserCanUpdateTreeParentForTaxonOnAPCDraftTest < Acti
   tests TreesController
 
   def setup
-  stub_request(:put, %r{http:..localhost:909..nsl.services.api.treeElement.changeParentElement.apiKey=test-api-key.as=apc-tax-builder}).
-  with(
-    body: "{\"currentElementUri\":\"tree/123/789\",\"newParentElementUri\":\"/tree/52410590/51363635\"}",
-    headers: {
-	  'Accept'=>/json/,
-    'Accept-Encoding'=>/.*/,
-    'Content-Length'=>/.*/,
-    'Content-Type'=>/json/,
-    'Host'=>/localhost:.*/,
-	  'User-Agent'=>/ruby/
-    }).
-    to_return(status: 200, body: {result: 'result...'}.to_json, headers: {})
+    stub_request(:put, /http:..localhost:909..nsl.services.api.treeElement.changeParentElement.apiKey=test-api-key.as=apc-tax-builder/)
+      .with(
+        body: "{\"currentElementUri\":\"tree/123/789\",\"newParentElementUri\":\"/tree/52410590/51363635\"}",
+        headers: {
+          "Accept" => /json/,
+          "Accept-Encoding" => /.*/,
+          "Content-Length" => /.*/,
+          "Content-Type" => /json/,
+          "Host" => /localhost:.*/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200, body: { result: "result..." }.to_json, headers: {})
   end
 
   test "APC tree builder user can update tree parent of taxon on APC draft" do
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(:update_tree_parent,
-         params: {"update_parent"=>{"element_link"=>tve.element_link,
-                                    "parent_name_typeahead_string"=>"Sersalisia R.Br. - Genus",
-                                    "parent_element_link"=>"/tree/52410590/51363635",
-                                    "version_id"=>apc_draft.id,
-                                    "update"=>""}
-                 },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: apc_draft,
-                    groups: ["login"]})
-    assert_response :success, 'APC tree builder should be able to update distribution on APC draft entry'
+    post(
+      :update_tree_parent,
+      params: {
+        "update_parent" => {
+          "element_link" => tve.element_link,
+          "parent_name_typeahead_string" => "Sersalisia R.Br. - Genus",
+          "parent_element_link" => "/tree/52410590/51363635",
+          "version_id" => apc_draft.id,
+          "update" => "",
+        },
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: apc_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :success, "APC tree builder should be able to update distribution on APC draft entry"
   end
 end

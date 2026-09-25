@@ -24,13 +24,13 @@ class NameAsEdResolveTypeaheadParamsSetDuplicateOfTest < ActiveSupport::TestCase
     dummy = names(:a_genus)
     name = Name::AsEdited.find(names(:has_no_duplicate_of).id)
     assert name.duplicate_of_id.blank?,
-           "Name should be have no duplicate of to start this test."
+      "Name should be have no duplicate of to start this test."
     name.resolve_typeahead_params(
       "duplicate_of_id" => dummy.id,
-      "duplicate_of_typeahead" => dummy.full_name
+      "duplicate_of_typeahead" => dummy.full_name,
     )
     assert_equal dummy.id,
-                 name.duplicate_of_id,
-                 "Should now have a duplicate of id"
+      name.duplicate_of_id,
+      "Should now have a duplicate of id"
   end
 end

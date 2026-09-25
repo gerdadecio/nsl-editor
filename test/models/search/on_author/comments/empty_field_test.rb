@@ -22,19 +22,19 @@ load "test/models/search/users.rb"
 # Single Search model test for Author target.
 class SearchOneAuthorCommentsEmptyFieldTest < ActiveSupport::TestCase
   def setup
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "author",
-                   query_string: "haeckel",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "author",
+        query_string: "haeckel",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert search.executed_query.results.size == 1, "1 result expected."
+    assert(search.executed_query.results.size == 1, "1 result expected.")
   end
 
   test "search on author comments empty field" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "author",
-                   query_string: "haeckel comments:",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "author",
+        query_string: "haeckel comments:",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?, "No results expected."
   end

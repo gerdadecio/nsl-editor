@@ -26,18 +26,27 @@ class ForSubfamiliaPartiallyRestrictedTest < ActiveSupport::TestCase
   end
 
   test "name parent suggestion for subfamilia" do
-    assert !ShardConfig.name_parent_rank_restriction?,
-           "Name parent rank restriction should be off for this test."
+    assert_not ShardConfig.name_parent_rank_restriction?,
+      "Name parent rank restriction should be off for this test."
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "Subfamilia").id
+      rank_id: NameRank.find_by(name: "Subfamilia").id,
     )
     suggestions_should_only_include(
       typeahead.suggestions,
       "Subfamilia",
-      %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo
-         Familia]
+      [
+        "Regio",
+        "Regnum",
+        "Division",
+        "Classis",
+        "Subclassis",
+        "Superordo",
+        "Ordo",
+        "Subordo",
+        "Familia"
+      ],
     )
   end
 end

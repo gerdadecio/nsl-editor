@@ -19,7 +19,7 @@
 #   A hash of named name searches and reports.
 class Search::OnName::FieldRule
   def self.rules
-    @rules.blank? ? load_rules : @rules
+    @rules.presence || load_rules
   end
 
   def self.load_rules

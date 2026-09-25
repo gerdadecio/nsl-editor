@@ -24,7 +24,7 @@ class NameStatusTest < ActiveSupport::TestCase
     options = NameStatus.na_option
     assert options.instance_of?(Array), "Options should be an array."
     assert options.size == 1,
-           "Options should have 1 entry, but it has #{options.size} entries."
+      "Options should have 1 entry, but it has #{options.size} entries."
     assert options.first.first == "[n/a]"
   end
 end

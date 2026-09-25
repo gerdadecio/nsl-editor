@@ -39,22 +39,22 @@ class Loader::Name::Review::Comment::AsArray::ForLoaderName < Array
 
   def debug(s)
     Rails.logger
-         .debug("Loader::Name::Review::Comment::AsArray::ForLoaderName: #{s}")
+      .debug { "Loader::Name::Review::Comment::AsArray::ForLoaderName: #{s}" }
   end
 
   def find_comments
-    debug "find_comments"
+    debug("find_comments")
     find_comments_for_loader_name
     @results
   end
 
   def built_query
-    query = @loader_name
-            .name_review_comments
-            .where(["lower(name_review_comment.context) like lower(?)", @context])
-            .includes(:batch_reviewer)
-            .includes(:name_review_comment_type)
-            .order("name_review_comment_type.name, name_review_comment.created_at")
+    @loader_name
+      .name_review_comments
+      .where(["lower(name_review_comment.context) like lower(?)", @context])
+      .includes(:batch_reviewer)
+      .includes(:name_review_comment_type)
+      .order("name_review_comment_type.name, name_review_comment.created_at")
   end
 
   def find_comments_for_loader_name

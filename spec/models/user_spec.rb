@@ -15,8 +15,13 @@ RSpec.describe(User, type: :model) do
   describe "callbacks" do
     describe "before_create :force_lower_case_user_name" do
       it "downcases the user name on create" do
-        user = User.new(user_name: "MiXeDcAsE", given_name: "Mixed", family_name: "Case",
-          created_by: "tester", updated_by: "tester")
+        user = User.new(
+          user_name: "MiXeDcAsE",
+          given_name: "Mixed",
+          family_name: "Case",
+          created_by: "tester",
+          updated_by: "tester",
+        )
         user.save!
 
         expect(user.user_name).to(eq("mixedcase"))
@@ -25,8 +30,13 @@ RSpec.describe(User, type: :model) do
 
     describe "audit fields" do
       it "keeps the created_by it was given on create" do
-        user = User.new(user_name: "auditcreate", given_name: "Audit", family_name: "Create",
-          created_by: "fred", updated_by: "fred")
+        user = User.new(
+          user_name: "auditcreate",
+          given_name: "Audit",
+          family_name: "Create",
+          created_by: "fred",
+          updated_by: "fred",
+        )
         user.save!
 
         expect(user.reload.created_by).to(eq("fred"))
@@ -55,7 +65,7 @@ RSpec.describe(User, type: :model) do
   end
 
   describe ".create" do
-    let(:params) { {user_name: "NewUser", given_name: "New", family_name: "User"} }
+    let(:params) { { user_name: "NewUser", given_name: "New", family_name: "User" } }
 
     it "sets created_by and updated_by to the given username" do
       user = User.create(params, "fred")
@@ -85,14 +95,14 @@ RSpec.describe(User, type: :model) do
 
     context "when an attribute has changed" do
       it "saves the record and returns Updated" do
-        result = user.update_if_changed({user_name: "before", given_name: "After", family_name: "Name"}, "wilma")
+        result = user.update_if_changed({ user_name: "before", given_name: "After", family_name: "Name" }, "wilma")
 
         expect(result).to(eq("Updated"))
         expect(user.reload.given_name).to(eq("After"))
       end
 
       it "sets updated_by to the given username and leaves created_by alone" do
-        user.update_if_changed({user_name: "before", given_name: "After", family_name: "Name"}, "wilma")
+        user.update_if_changed({ user_name: "before", given_name: "After", family_name: "Name" }, "wilma")
 
         expect(user.reload.updated_by).to(eq("wilma"))
         expect(user.created_by).to(eq("fred"))
@@ -101,7 +111,7 @@ RSpec.describe(User, type: :model) do
 
     context "when nothing has changed" do
       it "returns No change and leaves updated_by alone" do
-        result = user.update_if_changed({user_name: "before", given_name: "Before", family_name: "Name"}, "wilma")
+        result = user.update_if_changed({ user_name: "before", given_name: "Before", family_name: "Name" }, "wilma")
 
         expect(result).to(eq("No change"))
         expect(user.reload.updated_by).to(eq("fred"))
@@ -222,17 +232,17 @@ RSpec.describe(User, type: :model) do
     let!(:reviewer_product_role) { create(:product_role, product: product, role: reviewer_role) }
 
     before do
-      allow(Product::Role).to receive(:non_admins).and_return([editor_product_role, reviewer_product_role])
+      allow(Product::Role).to(receive(:non_admins).and_return([editor_product_role, reviewer_product_role]))
     end
 
     context "when user has no product roles" do
       it "returns all non-admin product roles formatted for select" do
         result = user.grantable_product_roles_for_select
 
-        expect(result).to match_array([
+        expect(result).to(match_array([
           ["#{product.name} editor product role", editor_product_role.id],
           ["#{product.name} reviewer product role", reviewer_product_role.id]
-        ])
+        ]))
       end
 
       it "sorts roles by name alphabetically" do
@@ -241,14 +251,14 @@ RSpec.describe(User, type: :model) do
         zebra_product_role = create(:product_role, product: product, role: zebra_role)
         alpha_product_role = create(:product_role, product: product, role: alpha_role)
 
-        allow(Product::Role).to receive(:non_admins).and_return([zebra_product_role, alpha_product_role])
+        allow(Product::Role).to(receive(:non_admins).and_return([zebra_product_role, alpha_product_role]))
 
         result = user.grantable_product_roles_for_select
 
-        expect(result).to eq([
+        expect(result).to(eq([
           ["#{product.name} alpha product role", alpha_product_role.id],
           ["#{product.name} zebra product role", zebra_product_role.id]
-        ])
+        ]))
       end
     end
 
@@ -260,8 +270,8 @@ RSpec.describe(User, type: :model) do
       it "excludes roles the user already has" do
         result = user.grantable_product_roles_for_select
 
-        expect(result).to eq([["#{product.name} reviewer product role", reviewer_product_role.id]])
-        expect(result.map(&:first)).not_to include("#{product.name} editor product role")
+        expect(result).to(eq([["#{product.name} reviewer product role", reviewer_product_role.id]]))
+        expect(result.map(&:first)).not_to(include("#{product.name} editor product role"))
       end
     end
 
@@ -274,7 +284,7 @@ RSpec.describe(User, type: :model) do
       it "returns empty array" do
         result = user.grantable_product_roles_for_select
 
-        expect(result).to eq([])
+        expect(result).to(eq([]))
       end
     end
 
@@ -284,22 +294,24 @@ RSpec.describe(User, type: :model) do
       let!(:reviewer_product_role2) { create(:product_role, product: product2, role: reviewer_role) }
 
       before do
-        allow(Product::Role).to receive(:non_admins).and_return([
-          editor_product_role, reviewer_product_role,
-          editor_product_role2, reviewer_product_role2
-        ])
+        allow(Product::Role).to(receive(:non_admins).and_return([
+          editor_product_role,
+          reviewer_product_role,
+          editor_product_role2,
+          reviewer_product_role2
+        ]))
       end
 
       it "includes product roles from all products" do
         result = user.grantable_product_roles_for_select
 
-        expect(result.size).to eq(4)
-        expect(result.map(&:first)).to match_array([
+        expect(result.size).to(eq(4))
+        expect(result.map(&:first)).to(match_array([
           "#{product.name} editor product role",
           "#{product.name} reviewer product role",
           "#{product2.name} editor product role",
           "#{product2.name} reviewer product role"
-        ])
+        ]))
       end
 
       it "excludes user's existing roles only for specific product role combinations" do
@@ -307,10 +319,10 @@ RSpec.describe(User, type: :model) do
 
         result = user.grantable_product_roles_for_select
 
-        expect(result.size).to eq(3)
+        expect(result.size).to(eq(3))
         role_ids = result.map(&:last)
-        expect(role_ids).not_to include(editor_product_role.id)
-        expect(role_ids).to include(editor_product_role2.id)
+        expect(role_ids).not_to(include(editor_product_role.id))
+        expect(role_ids).to(include(editor_product_role2.id))
       end
     end
 
@@ -330,29 +342,29 @@ RSpec.describe(User, type: :model) do
         # Set up product admin user with FOA admin role
         create(:user_product_role, user: product_admin_user, product_role: foa_admin_product_role)
 
-        allow(session_user).to receive(:with_role?).with('admin').and_return(true)
-        allow(session_user).to receive(:user).and_return(product_admin_user)
+        allow(session_user).to(receive(:with_role?).with("admin").and_return(true))
+        allow(session_user).to(receive(:user).and_return(product_admin_user))
 
         # Enable multi-product tabs feature
-        allow(Rails.configuration).to receive(:try).with(:multi_product_tabs_enabled).and_return(true)
+        allow(Rails.configuration).to(receive(:try).with(:multi_product_tabs_enabled).and_return(true))
 
-        allow(Product::Role).to receive(:non_admins).and_return([
+        allow(Product::Role).to(receive(:non_admins).and_return([
           foa_editor_product_role, apc_editor_product_role
-        ])
+        ]))
       end
 
       it "restricts available roles to products they have admin access to" do
         result = user.grantable_product_roles_for_select(session_user)
 
-        expect(result).to eq([["FOA editor product role", foa_editor_product_role.id]])
-        expect(result.map(&:first)).not_to include("APC editor product role")
+        expect(result).to(eq([["FOA editor product role", foa_editor_product_role.id]]))
+        expect(result.map(&:first)).not_to(include("APC editor product role"))
       end
 
       it "excludes roles from products they don't have admin access to" do
         result = user.grantable_product_roles_for_select(session_user)
 
         role_names = result.map(&:first)
-        expect(role_names).not_to include("APC editor product role")
+        expect(role_names).not_to(include("APC editor product role"))
       end
 
       context "when user already has some roles" do
@@ -363,20 +375,20 @@ RSpec.describe(User, type: :model) do
         it "excludes existing roles from the filtered list" do
           result = user.grantable_product_roles_for_select(session_user)
 
-          expect(result).to eq([])
+          expect(result).to(eq([]))
         end
       end
 
       context "when multi_product_tabs_enabled is false" do
         before do
-          allow(Rails.configuration).to receive(:try).with(:multi_product_tabs_enabled).and_return(false)
+          allow(Rails.configuration).to(receive(:try).with(:multi_product_tabs_enabled).and_return(false))
         end
 
         it "behaves like normal admin without restrictions" do
           result = user.grantable_product_roles_for_select(session_user)
 
-          expect(result.size).to eq(2)
-          expect(result.map(&:first)).to match_array(["FOA editor product role", "APC editor product role"])
+          expect(result.size).to(eq(2))
+          expect(result.map(&:first)).to(match_array(["FOA editor product role", "APC editor product role"]))
         end
       end
 
@@ -388,17 +400,17 @@ RSpec.describe(User, type: :model) do
         before do
           create(:user_product_role, user: product_admin_user, product_role: apni_admin_product_role)
 
-          allow(Product::Role).to receive(:non_admins).and_return([
+          allow(Product::Role).to(receive(:non_admins).and_return([
             foa_editor_product_role, apc_editor_product_role, apni_editor_product_role
-          ])
+          ]))
         end
 
         it "includes roles from all products they have admin access to" do
           result = user.grantable_product_roles_for_select(session_user)
 
-          expect(result.size).to eq(2)
-          expect(result.map(&:first)).to match_array(["FOA editor product role", "APNI editor product role"])
-          expect(result.map(&:first)).not_to include("APC editor product role")
+          expect(result.size).to(eq(2))
+          expect(result.map(&:first)).to(match_array(["FOA editor product role", "APNI editor product role"]))
+          expect(result.map(&:first)).not_to(include("APC editor product role"))
         end
       end
     end
@@ -408,17 +420,17 @@ RSpec.describe(User, type: :model) do
       let(:session_user) { create(:session_user) }
 
       before do
-        allow(session_user).to receive(:with_role?).with('admin').and_return(false)
-        allow(session_user).to receive(:user).and_return(regular_user)
+        allow(session_user).to(receive(:with_role?).with("admin").and_return(false))
+        allow(session_user).to(receive(:user).and_return(regular_user))
       end
 
       it "behaves normally without restrictions" do
         result = user.grantable_product_roles_for_select(session_user)
 
-        expect(result).to match_array([
+        expect(result).to(match_array([
           ["#{product.name} editor product role", editor_product_role.id],
           ["#{product.name} reviewer product role", reviewer_product_role.id]
-        ])
+        ]))
       end
     end
 
@@ -427,10 +439,10 @@ RSpec.describe(User, type: :model) do
         result = user.grantable_product_roles_for_select
 
         result.each do |item|
-          expect(item).to be_an(Array)
-          expect(item.size).to eq(2)
-          expect(item.first).to be_a(String)
-          expect(item.last).to be_an(Integer)
+          expect(item).to(be_an(Array))
+          expect(item.size).to(eq(2))
+          expect(item.first).to(be_a(String))
+          expect(item.last).to(be_an(Integer))
         end
       end
     end

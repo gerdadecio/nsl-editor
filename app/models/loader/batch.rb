@@ -19,6 +19,7 @@
 # Loader Batch entity
 class Loader::Batch < ApplicationRecord
   include SortKey
+
   strip_attributes
   self.table_name = "loader_batch"
   self.primary_key = "id"
@@ -56,7 +57,7 @@ class Loader::Batch < ApplicationRecord
   end
 
   def all_periods_of_all_reviews
-    reviews.collect { |r| r.periods }.flatten.sort { |x, y| x.start_date <=> y.start_date }
+    reviews.collect { |r| r.periods }.flatten.sort_by(&:start_date)
   end
 
   def all_active_periods_of_all_reviews
@@ -78,7 +79,7 @@ class Loader::Batch < ApplicationRecord
   end
 
   def self.id_of(canonical_query_target)
-    Loader::Batch.where(["lower(name) = ?", canonical_query_target]).first.id
+    Loader::Batch.where("lower(name) = ?", canonical_query_target).first.id
   end
 
   def update_if_changed(params, username)
@@ -95,11 +96,11 @@ class Loader::Batch < ApplicationRecord
   end
 
   def first_n_seq(n = 1)
-    self.loader_names.order(:seq).limit(n).pluck(:seq)
+    loader_names.order(:seq).limit(n).pluck(:seq)
   end
 
   def last_n_seq(n = 1)
-    self.loader_names.order(seq: :desc).limit(n).pluck(:seq)
+    loader_names.order(seq: :desc).limit(n).pluck(:seq)
   end
 
   def families
@@ -107,10 +108,10 @@ class Loader::Batch < ApplicationRecord
   end
 
   def review_periods_in_any_review
-    reviews.map { |br| br.periods}.flatten
+    reviews.map { |br| br.periods }.flatten
   end
 
   def active_review_periods
-    review_periods_in_any_review.select {|p| p.active?}
+    review_periods_in_any_review.select { |p| p.active? }
   end
 end

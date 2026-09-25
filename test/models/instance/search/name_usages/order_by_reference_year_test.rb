@@ -31,30 +31,31 @@ class NameUsagesOrderByReferenceYear < ActiveSupport::TestCase
     @params = ActiveSupport::HashWithIndifferentAccess.new(
       query_string: "id:#{@name.id} show-instances:",
       query_target: "Name",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
   end
 
   test "instance search name usages for casuarina inophloia order" do
     search = Search::Base.new(@params)
     assert_equal search.executed_query.results.class,
-                 Array, "Results should be an Array"
+      Array,
+      "Results should be an Array"
     results = search.executed_query.results
     # print_data(results)
     assert_equal 5, results.size, "5 records expected."
     assert_equal @name.id, results[1].name_id, "Expected a different name."
     assert_equal @first_ref.id,
-                 results[1].reference_id,
-                 "First reference (1881) wrong: got #{results[1].reference.iso_publication_date}"
+      results[1].reference_id,
+      "First reference (1881) wrong: got #{results[1].reference.iso_publication_date}"
     assert_equal @second_ref.id,
-                 results[2].reference_id,
-                 "Second reference (1882) wrong"
+      results[2].reference_id,
+      "Second reference (1882) wrong"
     assert_equal @third_ref.id,
-                 results[3].reference_id,
-                 "Third reference (1913) wrong"
+      results[3].reference_id,
+      "Third reference (1913) wrong"
     assert_equal @fourth_ref.id,
-                 results[4].reference_id,
-                 "Fourth reference (no year, should be last) wrong"
+      results[4].reference_id,
+      "Fourth reference (no year, should be last) wrong"
   end
 
   def print_data(results)

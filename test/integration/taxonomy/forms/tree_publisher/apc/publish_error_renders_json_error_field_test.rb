@@ -26,25 +26,31 @@ class TaxFormsTreePubAPCPublishErrorRendersJsonErrorFieldTest < ActionController
   tests TreeVersionsController
 
   def setup
-    stub_request(:put, /http:..localhost:90...nsl.services.api.treeVersion.publish.apiKey=test-api-key.as=apc-tax-publisher/).
-      to_return(status: 200,
-                body: '{"ok":false,"error":"Publishing service unavailable"}',
-                headers: { "Content-Type" => "application/json" })
+    stub_request(:put, /http:..localhost:90...nsl.services.api.treeVersion.publish.apiKey=test-api-key.as=apc-tax-publisher/)
+      .to_return(status: 200,
+        body: '{"ok":false,"error":"Publishing service unavailable"}',
+        headers: { "Content-Type" => "application/json" })
   end
 
   test "publish failure renders the error field from the JSON response" do
     user = users(:apc_tax_publisher)
     apc_draft = tree_versions(:apc_draft_version)
-    post(:publish,
-         params: { "version_id" => apc_draft.id,
-                   "next_draft_name" => "next draft",
-                   "draft_log" => "log entry" },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    groups: ["login"],
-                    draft: apc_draft })
+    post(
+      :publish,
+      params: {
+        "version_id" => apc_draft.id,
+        "next_draft_name" => "next draft",
+        "draft_log" => "log entry",
+      },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: apc_draft,
+      },
+    )
     assert_response :success
     assert_match "Publishing service unavailable", response.body
   end

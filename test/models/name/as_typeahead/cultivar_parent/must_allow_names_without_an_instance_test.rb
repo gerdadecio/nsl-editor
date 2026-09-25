@@ -23,16 +23,20 @@ class CultivarParMustAllowNamesWithoutAnInstanceTest < ActiveSupport::TestCase
   test "name cultivar parent suggestions allows names without an instance" do
     name = Name.find_by(full_name: "a species without an instance")
     assert name.present?,
-           'Target name "a species without an instance" should be found'
+      'Target name "a species without an instance" should be found'
     assert name.instances.empty?,
-           "The name 'a species without an instance' should have no instances."
+      "The name 'a species without an instance' should have no instances."
     suggestions = Name::AsTypeahead.cultivar_parent_suggestions(
       "a species without an instance", -1
     )
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert(suggestions.size == 1,
-           'Suggns for "a species without an instance" shld have 1 element')
-    assert(suggestions.first[:value].match(/a species without an instance/),
-           "Suggestions should include 'a species without an instance'.")
+    assert(
+      suggestions.size == 1,
+      'Suggns for "a species without an instance" shld have 1 element',
+    )
+    assert(
+      suggestions.first[:value].match(/a species without an instance/),
+      "Suggestions should include 'a species without an instance'.",
+    )
   end
 end

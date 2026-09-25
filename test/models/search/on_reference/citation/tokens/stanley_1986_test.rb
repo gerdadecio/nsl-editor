@@ -23,14 +23,14 @@ load "test/models/search/users.rb"
 class SearchOnReferenceCitationTokensStanley1986Test < ActiveSupport::TestCase
   test "search on reference citation token stanley 1986" do
     params = ActiveSupport::HashWithIndifferentAccess
-             .new(query_target: "reference",
-                  query_string: "citation-token: stanley 1986",
-                  current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "citation-token: stanley 1986",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result is expected."
+      search.executed_query.results.size,
+      "Exactly 1 result is expected."
   end
 end

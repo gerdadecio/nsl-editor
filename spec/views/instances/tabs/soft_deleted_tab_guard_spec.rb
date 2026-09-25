@@ -15,26 +15,26 @@ RSpec.describe("the soft delete guard on the instance tab partials", type: :view
   soft_delete_message = "This instance has been soft-deleted and cannot be modified"
 
   # Tabs that tell the user why the content is missing.
-  message_tabs = %w[
-    tab_batch_loader
-    tab_batch_loader_2
-    tab_classification
-    tab_comments
-    tab_copy_to_new_profile_v2
-    tab_copy_to_new_reference
-    tab_edit
-    tab_edit_notes
-    tab_edit_profile
-    tab_profile_details
-    tab_profile_v2
-    tab_synonymy
-    tab_synonymy_for_profile_v2
-    tab_unpublished_citation
-    tab_unpublished_citation_for_profile_v2
+  message_tabs = [
+    "tab_batch_loader",
+    "tab_batch_loader_2",
+    "tab_classification",
+    "tab_comments",
+    "tab_copy_to_new_profile_v2",
+    "tab_copy_to_new_reference",
+    "tab_edit",
+    "tab_edit_notes",
+    "tab_edit_profile",
+    "tab_profile_details",
+    "tab_profile_v2",
+    "tab_synonymy",
+    "tab_synonymy_for_profile_v2",
+    "tab_unpublished_citation",
+    "tab_unpublished_citation_for_profile_v2"
   ]
 
   # Tabs that already had an authorisation fallback and reuse it.
-  empty_tabs = %w[tab_edit_profile_v2]
+  empty_tabs = ["tab_edit_profile_v2"]
 
   before do
     assign(:instance, instance)

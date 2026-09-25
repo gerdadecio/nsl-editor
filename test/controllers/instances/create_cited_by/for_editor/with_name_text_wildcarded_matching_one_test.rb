@@ -28,15 +28,21 @@ class InstCreCitedByWNameWildcardedTextMatch1Test < ActionController::TestCase
 
   test "should be able to create unpub citation" do
     assert_no_difference("Instance.count") do
-      post(:create_cited_by,
-           params: { instance: { "name_typeahead" => "argyle app",
-                                 "name_id" => "",
-                                 "page" => "",
-                                 "reference_id" => @cited_by.reference.id,
-                                 "cited_by_id" => @cited_by.id,
-                                 "cites_id" => "",
-                                 "instance_type_id" => instance_types(:common_name) } },
-           session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] })
+      post(
+        :create_cited_by,
+        params: {
+          instance: {
+            "name_typeahead" => "argyle app",
+            "name_id" => "",
+            "page" => "",
+            "reference_id" => @cited_by.reference.id,
+            "cited_by_id" => @cited_by.id,
+            "cites_id" => "",
+            "instance_type_id" => instance_types(:common_name),
+          },
+        },
+        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] },
+      )
     end
   end
 end

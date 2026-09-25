@@ -23,16 +23,20 @@ class Loader::Name::Review::Comment < ApplicationRecord
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  belongs_to :loader_name, class_name: "Loader::Name",
-                           foreign_key: "loader_name_id"
-  belongs_to :batch_review_period, class_name: "Loader::Batch::Review::Period",
-                                   foreign_key: "batch_review_period_id"
-  belongs_to :batch_reviewer, class_name: "Loader::Batch::Reviewer",
-                              foreign_key: "batch_reviewer_id"
+  belongs_to :loader_name,
+    class_name: "Loader::Name",
+    foreign_key: "loader_name_id"
+  belongs_to :batch_review_period,
+    class_name: "Loader::Batch::Review::Period",
+    foreign_key: "batch_review_period_id"
+  belongs_to :batch_reviewer,
+    class_name: "Loader::Batch::Reviewer",
+    foreign_key: "batch_reviewer_id"
   alias_method :reviewer, :batch_reviewer
 
-  belongs_to :name_review_comment_type, class_name: "Loader::Name::Review::Comment::Type",
-                                        foreign_key: "name_review_comment_type_id"
+  belongs_to :name_review_comment_type,
+    class_name: "Loader::Name::Review::Comment::Type",
+    foreign_key: "name_review_comment_type_id"
   alias_method :type, :name_review_comment_type
 
   validates :comment, presence: true

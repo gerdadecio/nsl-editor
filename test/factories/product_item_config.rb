@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: product_item_config(The profile item type(s) available for a specific Product and the customisation for that product.)
@@ -41,7 +43,7 @@ FactoryBot.define do
     updated_by { "Sample Updated by" }
     api_name { "Sample Api name" }
     api_at { Time.current }
-    display_html { "Etymology"}
+    display_html { "Etymology" }
 
     association :profile_item_type
     association :product

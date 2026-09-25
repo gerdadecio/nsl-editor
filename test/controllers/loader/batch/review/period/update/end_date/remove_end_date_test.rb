@@ -26,24 +26,31 @@ class BatchReviewPeriodUpdateEndDateRemoveTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     batch_review_period = loader_batch_batch_review_batch_review_period(:review_period_one)
     assert batch_review_period.end_date.present?
-    patch(:update,
-          params: { id: batch_review_period.id,
-                    "loader_batch_review_period"=>{"id"=>batch_review_period.id,
-                                                   "batch_review_id"=>batch_review_period.batch_review.id,
-                                                   "name"=>"Review Period One",
-                                                   "start_date(3i)"=>Date.today.day.to_s,
-                                                   "start_date(2i)"=>Date.today.month.to_s,
-                                                   "start_date(1i)"=>Date.today.year.to_s,
-                                                   "end_date(3i)"=>'',
-                                                   "end_date(2i)"=>'',
-                                                   "end_date(1i)"=>''
-                    },
-                   "commit"=>"Save"},
-         session: { username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: ["batch-loader"] })
+    patch(
+      :update,
+      params: {
+        id: batch_review_period.id,
+        "loader_batch_review_period" => {
+          "id" => batch_review_period.id,
+          "batch_review_id" => batch_review_period.batch_review.id,
+          "name" => "Review Period One",
+          "start_date(3i)" => Date.today.day.to_s,
+          "start_date(2i)" => Date.today.month.to_s,
+          "start_date(1i)" => Date.today.year.to_s,
+          "end_date(3i)" => "",
+          "end_date(2i)" => "",
+          "end_date(1i)" => "",
+        },
+        "commit" => "Save",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["batch-loader"],
+      },
+    )
     assert_response :success
     updated = Loader::Batch::Review::Period.find(batch_review_period.id)
-    assert updated.end_date.blank?, 'Updated end date should be blank'
+    assert updated.end_date.blank?, "Updated end date should be blank"
   end
 end

@@ -23,6 +23,6 @@ class ChapterShouldHaveBookParentTest < ActiveSupport::TestCase
   test "chapter ref type parent is book" do
     ref_type = ref_types(:chapter)
     assert ref_type.parent.name == ref_types(:book).name,
-           "Chapter should have book as parent."
+      "Chapter should have book as parent."
   end
 end

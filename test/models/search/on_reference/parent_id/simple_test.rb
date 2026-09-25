@@ -24,14 +24,15 @@ class SearchOnReferenceParentIdSimpleTest < ActiveSupport::TestCase
   test "search on parent id simple" do
     reference = references(:paper_with_journal_parent)
     params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "parent-id: #{reference.parent.id}",
-                   current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "parent-id: #{reference.parent.id}",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
-    assert_equal search.executed_query.results.first[:id], reference.parent.id,
-                 "Parent should be sorted at the top of result list."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
+    assert_equal search.executed_query.results.first[:id],
+      reference.parent.id,
+      "Parent should be sorted at the top of result list."
   end
 end

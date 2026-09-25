@@ -28,12 +28,12 @@ class SearchOnNameParentOr2ndParentIdSimpleTest < ActiveSupport::TestCase
       query_target: "name",
       query_string: "parent-or-second-parent-id: #{name.id}",
       include_common_and_cultivar_session: true,
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result expected for parent-or-2nd-parent-id search."
+      search.executed_query.results.size,
+      "Exactly 1 result expected for parent-or-2nd-parent-id search."
   end
 end

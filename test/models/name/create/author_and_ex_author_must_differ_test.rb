@@ -28,7 +28,7 @@ class AuthorExAuthorMustDifferOnCreateTest < ActiveSupport::TestCase
     @name.name_rank = name_ranks(:species)
     @name.name_status = name_statuses(:legitimate)
     @name.parent = names(:a_genus)
-    @name.name_path = 'must_not_by_empty'
+    @name.name_path = "must_not_by_empty"
     @name.created_by = "fred"
     @name.updated_by = "fred"
   end
@@ -39,25 +39,35 @@ class AuthorExAuthorMustDifferOnCreateTest < ActiveSupport::TestCase
   end
 
   def part1
-    assert @name.valid?,
-           "New name should be valid without authors.
-           Errors: #{@name.errors.full_messages.join('; ')}"
+    assert(
+      @name.valid?,
+      "New name should be valid without authors.
+           Errors: #{@name.errors.full_messages.join("; ")}",
+    )
     @name.author = authors(:bentham)
-    assert @name.valid?,
-           "New name should be valid with an author.
-           Errors: #{@name.errors.full_messages.join('; ')}"
+    assert(
+      @name.valid?,
+      "New name should be valid with an author.
+           Errors: #{@name.errors.full_messages.join("; ")}",
+    )
     @name.ex_author = authors(:joe)
   end
 
   def part2
-    assert @name.valid?,
-           "New name should be valid with an ex-author.
-           Errors: #{@name.errors.full_messages.join('; ')}"
+    assert(
+      @name.valid?,
+      "New name should be valid with an ex-author.
+           Errors: #{@name.errors.full_messages.join("; ")}",
+    )
     @name.ex_author = authors(:bentham)
-    assert_not @name.valid?,
-               "New name should not be valid with the same author and ex-author"
-    assert_equal @name.errors.full_messages.first,
-                 "The ex-author cannot be the same as the author.",
-                 "Wrong error message."
+    assert_not(
+      @name.valid?,
+      "New name should not be valid with the same author and ex-author",
+    )
+    assert_equal(
+      @name.errors.full_messages.first,
+      "The ex-author cannot be the same as the author.",
+      "Wrong error message.",
+    )
   end
 end

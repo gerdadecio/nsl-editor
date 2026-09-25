@@ -23,14 +23,18 @@ class SearchInstListUsingRefTypeSingleValPaperTest < ActionController::TestCase
   tests SearchController
 
   test "search for instances with a specific ref type" do
-    get(:search,
-        params: { query_target: "instance", query_string: "ref-type: paper" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "instance", query_string: "ref-type: paper" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /[0-9][0-9] records\b/,
-                  "Should find some records"
+      /[0-9][0-9] records\b/,
+      "Should find some records"
   end
 end

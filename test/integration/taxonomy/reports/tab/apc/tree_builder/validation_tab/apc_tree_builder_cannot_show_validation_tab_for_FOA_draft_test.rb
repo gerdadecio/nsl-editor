@@ -26,16 +26,19 @@ class APCTreeBuilderCannotShowValidationTabForFOADraftTest < ActionController::T
   test "APC tree builder cannot show validation tab for FOA draft" do
     user = users(:apc_tax_builder)
     draft = tree_versions(:foa_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:show_valrep,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree builder should not be able to show Validation tab for FOA draft'
-    assert_match /Access Denied/i, response.body, "Expecting error message"
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :show_valrep,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree builder should not be able to show Validation tab for FOA draft"
+    assert_match(/Access Denied/i, response.body, "Expecting error message")
   end
 end
-

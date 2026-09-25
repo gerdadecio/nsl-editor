@@ -26,9 +26,9 @@ class TypeaheadsOnCit4ParWorks4NewRecWNoIdTest < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "*",
       "",
-      curr.ref_type_id
+      curr.ref_type_id,
     )
     assert_not typeahead.results.empty?,
-               "Should be at least one result for asterisk wildcard"
+      "Should be at least one result for asterisk wildcard"
   end
 end

@@ -36,7 +36,7 @@ class SearchLoaderNameDirectivesNoNominationTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "loader_names",
       query_string: "no-nomination: any-batch:",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     @ids = search.executed_query.results.map(&:id)

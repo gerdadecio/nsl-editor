@@ -23,13 +23,17 @@ class SearchControllerNoQueryTargetTest < ActionController::TestCase
   tests SearchController
 
   test "search with no query target provided" do
-    get(:search,
-        params: { query_string: "*" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_string: "*" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
-    assert_match 'Search needs a target. Do you have the right permissions?',
+    assert_match "Search needs a target. Do you have the right permissions?",
       @response.body,
       "Expected an error message referring to the missing search query target"
   end

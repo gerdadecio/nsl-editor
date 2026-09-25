@@ -24,13 +24,13 @@ class NameAsEdResolveTypeaheadParamsSetBaseAuthorTest < ActiveSupport::TestCase
     dummy = authors(:dummy_author_1)
     name = Name::AsEdited.find(names(:has_no_authors).id)
     assert name.base_author_id.blank?,
-           "Name should be have no base author to start this test."
+      "Name should be have no base author to start this test."
     name.resolve_typeahead_params(
       "base_author_id" => dummy.id,
-      "base_author_typeahead" => dummy.abbrev
+      "base_author_typeahead" => dummy.abbrev,
     )
     assert_equal dummy.id,
-                 name.base_author_id,
-                 "Should now have a base author id"
+      name.base_author_id,
+      "Should now have a base author id"
   end
 end

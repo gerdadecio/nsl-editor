@@ -24,47 +24,47 @@ class FixtureCTest < ActiveSupport::TestCase
     name = names(:a_subspecies)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture a_subspecies name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture a_nothovarietas name should be valid" do
     name = names(:a_nothovarietas)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture a_nothovarietas name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture a_varietas name should be valid" do
     name = names(:a_varietas)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture a_varietas name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture a_subvarietas name should be valid" do
     name = names(:a_subvarietas)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture a_subvarietas name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture a_forma name should be valid" do
     name = names(:a_forma)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture a_forma name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture a_subforma name should be valid" do
     name = names(:a_subforma)
     assert name.present?, "No such name"
     assert name.valid?, "Fixture a_subforma name should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 
   test "fixture scientific name without author should be valid" do
     name = names(:scientific_name_without_author)
     assert name.valid?, "Fixture scientific name without author should be valid.
-                         Errors: #{name.errors.full_messages.join('; ')}"
+                         Errors: #{name.errors.full_messages.join("; ")}"
   end
 end

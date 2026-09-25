@@ -24,13 +24,13 @@ class InstNoteKeyAPCOptionsForInstanceWAPCCommentTest < ActiveSupport::TestCase
     instance = instances(:has_apc_comment_note)
     options = InstanceNoteKey.apc_options_for_instance(instance)
     assert_equal 2,
-                 options.size,
-                 "Expected 2 APC options"
+      options.size,
+      "Expected 2 APC options"
     assert_match instance_note_keys(:apc_comment).name,
-                 options.first.first,
-                 "First APC option should be 'APC Comment'"
+      options.first.first,
+      "First APC option should be 'APC Comment'"
     assert_match instance_note_keys(:apc_dist).name,
-                 options.last.first,
-                 "Second (i.e. last) APC option should be 'APC Dist.'"
+      options.last.first,
+      "Second (i.e. last) APC option should be 'APC Dist.'"
   end
 end

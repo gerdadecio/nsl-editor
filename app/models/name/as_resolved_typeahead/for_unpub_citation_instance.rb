@@ -21,11 +21,12 @@
 # honouring case.
 class Name::AsResolvedTypeahead::ForUnpubCitationInstance
   include Resolvable
+
   attr_reader :value
 
   def initialize(id_string, param_text, context_name_id)
     @text = extract_delimited_string(param_text)
-    @text.rstrip! unless @text.blank?
+    @text.presence&.rstrip!
     @id_string = id_string
     @context_name_id = context_name_id
     @field_name = "name"
@@ -85,8 +86,8 @@ class Name::AsResolvedTypeahead::ForUnpubCitationInstance
 
   def two_or_more_possibles_for_id_and_text
     possibles_with_id = Name
-                        .where(id: @id_string.to_i)
-                        .lower_full_name_like(@text)
+      .where(id: @id_string.to_i)
+      .lower_full_name_like(@text)
     raise "More than one name match for '#{@text}' and ID" unless possibles_with_id.size == 1
 
     @value = possibles_with_id.first.id

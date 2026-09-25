@@ -42,15 +42,19 @@ class TaxFormsTreePubRONNewDraftUserCannotOpenFormTest < ActionController::TestC
 
   test "RON tree publisher user cannot open new draft form for read only tree" do
     user = users(:ron_tax_publisher)
-    error = assert_raises(RuntimeError) {
-      get(:new_draft,
-        params: {tree_id: trees(:RON)},
+    error = assert_raises(RuntimeError) do
+      get(
+        :new_draft,
+        params: { tree_id: trees(:RON) },
         format: :js,
         xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"]})
-    }
-    assert_equal 'RON tree is read only - cannot create any drafts', error.message
+        session: {
+          username: user.user_name,
+          user_full_name: user.full_name,
+          groups: ["login"],
+        },
+      )
+    end
+    assert_equal "RON tree is read only - cannot create any drafts", error.message
   end
 end

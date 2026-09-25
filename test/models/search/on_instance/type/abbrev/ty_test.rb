@@ -25,9 +25,9 @@ class SearchOnInstanceTyTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "ty: basionym",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?, "Results expected."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

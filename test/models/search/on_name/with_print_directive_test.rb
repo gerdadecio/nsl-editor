@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 #   Copyright 2015 Australian National Botanic Gardens
@@ -23,16 +22,18 @@ load "test/models/search/users.rb"
 load "test/models/search/on_name/test_helper.rb"
 
 # Single Search model test.
-class SearchOnNameNameWithPrintDirTest< ActiveSupport::TestCase
+class SearchOnNameNameWithPrintDirTest < ActiveSupport::TestCase
   test "search on name with print directive" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "name",
-                                                          query_string:
-                                                          "name: angophora print:",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "name",
+      query_string:
+            "name: angophora print:",
+      current_user:
+            build_edit_user,
+    )
     error = assert_raises(RuntimeError) do
-      search = Search::Base.new(params)
+      Search::Base.new(params)
     end
     assert_match(/Error: /i, error.message)
   end

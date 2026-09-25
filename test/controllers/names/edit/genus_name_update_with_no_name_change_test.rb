@@ -40,30 +40,42 @@ class GenusNameUpdateWithNoNameChangeTest < ActionController::TestCase
 
   def stub_it
     stub_request(:get, %r{#{a}.nsl/services.rest.name.apni.[0-9]*.api.#{b}})
-      .with(headers: { "Accept" => "text/json", "Accept-Encoding" => /.*/,
-                       "User-Agent" => /rest-client.*ruby.*/ })
+      .with(headers: {
+        "Accept" => "text/json",
+        "Accept-Encoding" => /.*/,
+        "User-Agent" => /rest-client.*ruby.*/,
+      })
       .to_return(status: 200,
-                 body: {result: {simpleName:"Acacia",
-                                 fullName:"Acacia"}}.to_json,
-                 headers: {})
+        body: {
+          result: {
+            simpleName: "Acacia",
+            fullName: "Acacia",
+          },
+        }.to_json,
+        headers: {})
   end
 
-
   test "genus name update with no name change" do
-    post(:update,
-         params: { name: { "name_element" => "Acacia", "verbatim_rank" => "sp" },
-                   id: @genus.id },
-         session: { username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: ["edit"] })
+    post(
+      :update,
+      params: {
+        name: { "name_element" => "Acacia", "verbatim_rank" => "sp" },
+        id: @genus.id,
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     sleep(2) # to allow for the asynch job
     species_afterwards = Name.find(@species.id)
-    genus_after = Name.find(@genus.id)
+    Name.find(@genus.id)
     assert @species.full_name == species_afterwards.full_name,
-           "Genus name not changed so species's name should not change"
+      "Genus name not changed so species's name should not change"
     subspecies_afterwards = Name.find(@subspecies.id)
     assert @subspecies.full_name == subspecies_afterwards.full_name,
-           "Genus name has not changed so subspecies's name. should not change"
+      "Genus name has not changed so subspecies's name. should not change"
   end
 end

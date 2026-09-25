@@ -24,21 +24,29 @@ class ShouldIncludeAOneInstanceCount < ActiveSupport::TestCase
     dummy_avoid_id = 1
     name = Name.find_by(full_name: "a genus with one instance")
     assert name.present?,
-           'The name "a genus with one instance" should be found.'
+      'The name "a genus with one instance" should be found.'
     assert name.instances.size == 1,
-           "The name 'a genus with one instance' should have one instance."
+      "The name 'a genus with one instance' should have one instance."
     typeahead =
-      Name::AsTypeahead::ForParent.new(term: "a genus with one instance",
-                                       avoid_id: dummy_avoid_id,
-                                       rank_id: NameRank.species.id)
-    assert(typeahead.suggestions.is_a?(Array),
-           "suggestions should be an array")
-    assert(typeahead.suggestions.size == 1,
-           'suggestions for "a genus with one instance" should have a record')
+      Name::AsTypeahead::ForParent.new(
+        term: "a genus with one instance",
+        avoid_id: dummy_avoid_id,
+        rank_id: NameRank.species.id,
+      )
+    assert(
+      typeahead.suggestions.is_a?(Array),
+      "suggestions should be an array",
+    )
+    assert(
+      typeahead.suggestions.size == 1,
+      'suggestions for "a genus with one instance" should have a record',
+    )
     instances_count_part = typeahead
-                           .suggestions.first[:value].split("|").last.strip
-    assert_match(/\A1 instance\z/,
-                 instances_count_part,
-                 "Name par thead needs right val with 1 instance")
+      .suggestions.first[:value].split("|").last.strip
+    assert_match(
+      /\A1 instance\z/,
+      instances_count_part,
+      "Name par thead needs right val with 1 instance",
+    )
   end
 end

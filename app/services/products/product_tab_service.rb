@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 
 module Products
   class ProductTabService < BaseService
-
     attr_reader :active_flags, :enabled_models, :context_id, :products
 
     def self.for_context(context_id, config = ProductTabConfig.new)
@@ -11,6 +11,7 @@ module Products
 
     def self.products_for_context(context_id)
       return Product.none unless Rails.configuration.try(:multi_product_tabs_enabled)
+
       Product.where(context_id: context_id).order(context_sort_order: :asc)
     end
 
@@ -52,7 +53,6 @@ module Products
       @product_tabs
     end
 
-
     private
 
     def determine_active_flags
@@ -62,11 +62,9 @@ module Products
 
       @products.each do |product|
         @config.flag_config.keys.each do |flag|
-          begin
-            all_flags << flag if product.respond_to?(flag) && product.public_send(flag)
-          rescue NoMethodError
-            Rails.logger.warn("NoMethodError: Product #{product.id} does not have flag #{flag}")
-          end
+          all_flags << flag if product.respond_to?(flag) && product.public_send(flag)
+        rescue NoMethodError
+          Rails.logger.warn("NoMethodError: Product #{product.id} does not have flag #{flag}")
         end
       end
 
@@ -88,7 +86,7 @@ module Products
           tabs.each do |tab|
             @result[model] << {
               tab: tab,
-              product: product
+              product: product,
             }
           end
         end
@@ -111,11 +109,9 @@ module Products
       flags = []
 
       @config.flag_config.keys.each do |flag|
-        begin
-          flags << flag if product.respond_to?(flag) && product.public_send(flag)
-        rescue NoMethodError
-          Rails.logger.warn("NoMethodError: Product #{product.id} does not have flag #{flag}")
-        end
+        flags << flag if product.respond_to?(flag) && product.public_send(flag)
+      rescue NoMethodError
+        Rails.logger.warn("NoMethodError: Product #{product.id} does not have flag #{flag}")
       end
 
       flags

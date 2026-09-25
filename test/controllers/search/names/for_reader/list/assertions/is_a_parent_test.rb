@@ -23,14 +23,18 @@ class SearchNamesAsReaderListAssertionsIsAParentTst < ActionController::TestCase
   tests SearchController
 
   test "reader can search for names that are parents" do
-    get(:search,
-        params: { query_target: "name", query_string: "is-a-parent:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "name", query_string: "is-a-parent:" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /[0-9][0-9] names\b/,
-                  "Should find some names"
+      /[0-9][0-9] names\b/,
+      "Should find some names"
   end
 end

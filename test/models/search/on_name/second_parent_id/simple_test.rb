@@ -24,15 +24,15 @@ load "test/models/search/on_name/test_helper.rb"
 class SearchOnNameSecondParentIdSimpleTest < ActiveSupport::TestCase
   test "search on name second parent id simple" do
     name = names(:hybrid_formula)
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "name",
-                   query_string: "second-parent-id: #{name.id}",
-                   include_common_and_cultivar_session: true,
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "name",
+        query_string: "second-parent-id: #{name.id}",
+        include_common_and_cultivar_session: true,
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result is expected for second-parent-id search."
+      search.executed_query.results.size,
+      "Exactly 1 result is expected for second-parent-id search."
   end
 end

@@ -28,7 +28,7 @@ class Search::OnName::WhereClauses
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnName::WhereClause - #{s}")
+    Rails.logger.debug { "Search::OnName::WhereClause - #{s}" }
   end
 
   def build_sql
@@ -64,9 +64,11 @@ class Search::OnName::WhereClauses
     if field.blank? && value.blank?
       @sql
     else
-      field_or_default = field.blank? ? DEFAULT_FIELD : field
-      rule = Search::OnName::Predicate.new(field_or_default,
-                                           value)
+      field_or_default = field.presence || DEFAULT_FIELD
+      rule = Search::OnName::Predicate.new(
+        field_or_default,
+        value,
+      )
       apply_rule(rule)
       apply_common_and_cultivar(rule)
       apply_order(rule)
@@ -98,24 +100,30 @@ class Search::OnName::WhereClauses
   end
 
   def supply_value_four_times(rule)
-    @sql = @sql.where(rule.predicate,
-                      rule.processed_value,
-                      rule.processed_value,
-                      rule.processed_value,
-                      rule.processed_value)
+    @sql = @sql.where(
+      rule.predicate,
+      rule.processed_value,
+      rule.processed_value,
+      rule.processed_value,
+      rule.processed_value,
+    )
   end
 
   def supply_value_thrice(rule)
-    @sql = @sql.where(rule.predicate,
-                      rule.processed_value,
-                      rule.processed_value,
-                      rule.processed_value)
+    @sql = @sql.where(
+      rule.predicate,
+      rule.processed_value,
+      rule.processed_value,
+      rule.processed_value,
+    )
   end
 
   def supply_value_twice(rule)
-    @sql = @sql.where(rule.predicate,
-                      rule.processed_value,
-                      rule.processed_value)
+    @sql = @sql.where(
+      rule.predicate,
+      rule.processed_value,
+      rule.processed_value,
+    )
   end
 
   def apply_predicate_to_tokens(rule)
@@ -128,7 +136,7 @@ class Search::OnName::WhereClauses
   end
 
   def apply_common_and_cultivar(rule)
-    debug("apply_common_and_cultivar: #{rule.try('where_clause')}")
+    debug("apply_common_and_cultivar: #{rule.try("where_clause")}")
     # An explicit include-common-and-cultivar: directive is deterministic,
     # so it must not be overridden by a rule's allow_common_and_cultivar:
     # true auto-inclusion, in either direction.
@@ -145,9 +153,9 @@ class Search::OnName::WhereClauses
 
   def apply_order(rule)
     @sql = if rule.order
-             @sql.order(Arel.sql(rule.order))
-           else
-             @sql.order("full_name")
-           end
+      @sql.order(Arel.sql(rule.order))
+    else
+      @sql.order("full_name")
+    end
   end
 end

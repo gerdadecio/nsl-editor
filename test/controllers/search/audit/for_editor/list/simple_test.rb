@@ -23,14 +23,18 @@ class SearchAuditListSimpleTest < ActionController::TestCase
   tests SearchController
 
   test "search for records created in the last 50 days" do
-    get(:search,
-        params: { query_target: "activity", query_string: "50" },
-        session: { username: "greg",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "activity", query_string: "50" },
+      session: {
+        username: "greg",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /[0-9][0-9] records\b/,
-                  "Should find some records created or updated by greg"
+      /[0-9][0-9] records\b/,
+      "Should find some records created or updated by greg"
   end
 end

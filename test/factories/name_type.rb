@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: name_type
@@ -47,7 +49,7 @@ FactoryBot.define do
     association :name_category
 
     # Use after(:build) to set appropriate values based on category or explicit name
-    after(:build) do |name_type, evaluator|
+    after(:build) do |name_type, _evaluator|
       # Get the category name
       category_name = name_type.name_category&.name
 
@@ -105,11 +107,10 @@ FactoryBot.define do
 
       # Set rdf_id if not already set
       if name_type.rdf_id.blank?
-        group_id_part = name_type.name_group_id.present? ? name_type.name_group_id : "unknown"
+        group_id_part = name_type.name_group_id.presence || "unknown"
         name_type.rdf_id = "#{name_type.name.parameterize}-#{group_id_part}"
       end
     end
-
 
     # Trait for cultivar types
     trait :cultivar_type do

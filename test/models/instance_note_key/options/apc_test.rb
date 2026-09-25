@@ -22,13 +22,13 @@ require "test_helper"
 class InstanceNoteKeyAPCOptionsTest < ActiveSupport::TestCase
   test "instance note key apc options" do
     assert_equal 2,
-                 InstanceNoteKey.apc_options.size,
-                 "Expected 2 APC options"
+      InstanceNoteKey.apc_options.size,
+      "Expected 2 APC options"
     assert_match instance_note_keys(:apc_comment).name,
-                 InstanceNoteKey.apc_options.first.first,
-                 "First APC option should be 'APC Comment'"
+      InstanceNoteKey.apc_options.first.first,
+      "First APC option should be 'APC Comment'"
     assert_match instance_note_keys(:apc_dist).name,
-                 InstanceNoteKey.apc_options.last.first,
-                 "Last APC option should be 'APC Dist.'"
+      InstanceNoteKey.apc_options.last.first,
+      "Last APC option should be 'APC Dist.'"
   end
 end

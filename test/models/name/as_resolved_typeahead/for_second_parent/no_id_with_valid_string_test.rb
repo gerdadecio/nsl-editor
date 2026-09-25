@@ -22,9 +22,11 @@ require "test_helper"
 class NameAsResolvedTypeahead4Parent2NoIdWValidString < ActiveSupport::TestCase
   test "no id with valid string" do
     name = names(:the_regnum)
-    result = Name::AsResolvedTypeahead::ForParent.new("",
-                                                      name.full_name,
-                                                      "second parent")
+    result = Name::AsResolvedTypeahead::ForParent.new(
+      "",
+      name.full_name,
+      "second parent",
+    )
     assert_equal name.id, result.value, "Should get a matching id for the name"
   end
 end

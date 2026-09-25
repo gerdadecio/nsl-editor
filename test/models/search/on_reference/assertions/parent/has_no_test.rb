@@ -24,9 +24,9 @@ class SearchOnReferenceAssertionHasNoParentTest < ActiveSupport::TestCase
   test "reference asertion has no parent" do
     search = Search::Base.new(ActiveSupport::HashWithIndifferentAccess
              .new(query_target: "reference",
-                  query_string: "has-no-parent:",
-                  current_user: build_edit_user))
-    assert !search.executed_query.results.empty?,
-           "Should find reference that has no parent."
+               query_string: "has-no-parent:",
+               current_user: build_edit_user))
+    assert_not search.executed_query.results.empty?,
+      "Should find reference that has no parent."
   end
 end

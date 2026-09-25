@@ -28,19 +28,26 @@ class NameDuplicateSuggestionsForEditorTest < ActionController::TestCase
   tests NamesController
 
   def get_suggestions(term, name_id, format: :html)
-    get(:duplicate_suggestions,
-        params: { term: term, name_id: name_id, format: format },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :duplicate_suggestions,
+      params: { term: term, name_id: name_id, format: format },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
   end
 
   # The response is a bare list of <li> elements with no enclosing <ul>, so
   # parse it as a fragment rather than letting assert_select treat it as a
   # whole document.
   def assert_select_in_body(*args, &block)
-    assert_select(Nokogiri::HTML::DocumentFragment.parse(@response.body),
-                  *args, &block)
+    assert_select(
+      Nokogiri::HTML::DocumentFragment.parse(@response.body),
+      *args,
+      &block
+    )
   end
 
   test "should get name duplicate suggestions as an html fragment" do
@@ -85,7 +92,7 @@ class NameDuplicateSuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-                          text: "No matches"
+      text: "No matches"
   end
 
   test "should render a no matches option for a blank term" do
@@ -93,7 +100,7 @@ class NameDuplicateSuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-                          text: "No matches"
+      text: "No matches"
   end
 
   test "should still answer json" do

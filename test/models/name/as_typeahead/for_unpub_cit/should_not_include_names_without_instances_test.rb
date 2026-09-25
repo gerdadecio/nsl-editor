@@ -22,10 +22,12 @@ require "test_helper"
 class NameTAForUCSuggsShldNotInclNamesWOInstancesTest < ActiveSupport::TestCase
   test "name for unpub cit sugg should include names without instances" do
     suggestions = Name::AsTypeahead::ForUnpubCit
-                  .new(term: "a name without instances")
-                  .suggestions
+      .new(term: "a name without instances")
+      .suggestions
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert(!suggestions.empty?,
-           'suggestions for "a name without instances" should not be empty')
+    assert(
+      !suggestions.empty?,
+      'suggestions for "a name without instances" should not be empty',
+          )
   end
 end

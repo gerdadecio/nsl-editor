@@ -26,18 +26,27 @@ class NameHybridParentSuggestionsForEditorTest < ActionController::TestCase
   tests NamesController
 
   def get_suggestions(term, format: :html)
-    get(:hybrid_parent_suggestions,
-        params: { rank_id: name_ranks(:unranked).id,
-                  term: term,
-                  format: format },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :hybrid_parent_suggestions,
+      params: {
+        rank_id: name_ranks(:unranked).id,
+        term: term,
+        format: format,
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
   end
 
   def assert_select_in_body(*args, &block)
-    assert_select(Nokogiri::HTML::DocumentFragment.parse(@response.body),
-                  *args, &block)
+    assert_select(
+      Nokogiri::HTML::DocumentFragment.parse(@response.body),
+      *args,
+      &block
+    )
   end
 
   test "should get name hybrid parent suggestions as an html fragment" do
@@ -46,7 +55,7 @@ class NameHybridParentSuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{names(:a_species).id}']",
-      true
+      true,
     )
   end
 
@@ -64,7 +73,7 @@ class NameHybridParentSuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-                          text: "No matches"
+      text: "No matches"
   end
 
   test "should still answer json" do

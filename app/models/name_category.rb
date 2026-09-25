@@ -110,7 +110,7 @@ class NameCategory < ApplicationRecord
 
   def takes_rank?
     takes_rank
-  rescue StandardError => e
+  rescue StandardError
     # transitional code
     Rails.logger.error("Falling back to static takes_rank criteria because name_category.takes_rank was not found")
     scientific? ||

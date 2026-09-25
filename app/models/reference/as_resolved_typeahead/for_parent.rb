@@ -19,11 +19,12 @@
 #   Identify a parent entered into or selected into a reference typeahead.
 class Reference::AsResolvedTypeahead::ForParent
   include Resolvable
+
   attr_reader :value
 
   def initialize(id_string, param_text, field_name = "Parent")
     @text = extract_delimited_string(param_text)
-    @text.rstrip! unless @text.blank?
+    @text.presence&.rstrip!
     @id_string = id_string
     @field_name = field_name
     run
@@ -86,8 +87,8 @@ class Reference::AsResolvedTypeahead::ForParent
 
   def two_or_more_possibles_for_id_and_text
     possibles_with_id = ::Reference
-                        .where(id: @id_string.to_i)
-                        .lower_citation_equals(@text)
+      .where(id: @id_string.to_i)
+      .lower_citation_equals(@text)
     raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
 
     @value = possibles_with_id.first.id

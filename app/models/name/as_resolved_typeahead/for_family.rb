@@ -19,11 +19,12 @@
 #   Identify a parent name entered into or selected into a typeahead.
 class Name::AsResolvedTypeahead::ForFamily
   include Resolvable
+
   attr_reader :value
 
   def initialize(id_string, param_text, field_name)
     @text = extract_delimited_string(param_text)
-    @text.rstrip! unless @text.blank?
+    @text.presence&.rstrip!
     @id_string = id_string
     @field_name = field_name
     run
@@ -44,7 +45,7 @@ class Name::AsResolvedTypeahead::ForFamily
 
   def text_only
     possibles = Name.lower_full_name_like(@text).not_common_or_cultivar
-                    .not_a_duplicate
+      .not_a_duplicate
     case possibles.size
     when 0
       zero_possibles_for_text
@@ -61,7 +62,7 @@ class Name::AsResolvedTypeahead::ForFamily
 
   def zero_possibles
     possibles = Name.lower_full_name_like(@text + "%").not_common_or_cultivar
-                    .not_a_duplicate
+      .not_a_duplicate
     case possibles.size
     when 1
       @value = possibles.first.id
@@ -72,7 +73,7 @@ class Name::AsResolvedTypeahead::ForFamily
 
   def id_and_text
     possibles = Name.lower_full_name_like(@text).not_common_or_cultivar
-                    .not_a_duplicate
+      .not_a_duplicate
     case possibles.size
     when 0
       zero_possibles_for_id_and_text
@@ -89,9 +90,9 @@ class Name::AsResolvedTypeahead::ForFamily
 
   def two_or_more_possibles_for_id_and_text
     possibles_with_id = Name
-                        .where(id: @id_string.to_i)
-                        .lower_full_name_like(@text)
-                        .not_a_duplicate
+      .where(id: @id_string.to_i)
+      .lower_full_name_like(@text)
+      .not_a_duplicate
     raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
 
     @value = possibles_with_id.first.id

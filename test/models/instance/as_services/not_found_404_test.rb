@@ -21,12 +21,16 @@ require "test_helper"
 # Single instance model test.
 class InstanceDeleteServiceNotFound404Test < ActiveSupport::TestCase
   setup do
-    raw = { action: "delete",
-            instance: {},
-            ok: false,
-            errors: ["Not found."] }
-    stub_request(:delete,
-                 "#{action}?apiKey=test-api-key&reason=Edit")
+    raw = {
+      action: "delete",
+      instance: {},
+      ok: false,
+      errors: ["Not found."],
+    }
+    stub_request(
+      :delete,
+      "#{action}?apiKey=test-api-key&reason=Edit",
+    )
       .with(headers: headers)
       .to_return(status: 404, body: raw.to_json, headers: {})
   end
@@ -36,10 +40,12 @@ class InstanceDeleteServiceNotFound404Test < ActiveSupport::TestCase
   end
 
   def headers
-    { "Accept" => "application/json",
+    {
+      "Accept" => "application/json",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
       "Host" => "localhost:9090",
-      "User-Agent" => /ruby/ }
+      "User-Agent" => /ruby/,
+    }
   end
 
   # 404 should be handled - code will try to delete the instance

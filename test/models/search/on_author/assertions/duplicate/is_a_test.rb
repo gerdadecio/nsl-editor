@@ -23,13 +23,15 @@ load "models/search/users.rb"
 class SearchOnAuthorAssertionDuplicateIsATest < ActiveSupport::TestCase
   test "is a duplicate" do
     search = Search::Base.new(
-      ActiveSupport::HashWithIndifferentAccess.new(query_string:
-                                                   "is-a-duplicate:",
-                                                   query_target: "Author",
-                                                   current_user:
-                                                   build_edit_user)
+      ActiveSupport::HashWithIndifferentAccess.new(
+        query_string:
+                                                           "is-a-duplicate:",
+        query_target: "Author",
+        current_user:
+                build_edit_user,
+      ),
     )
-    assert !search.executed_query.results.empty?,
-           "Should find duplicate authors."
+    assert_not search.executed_query.results.empty?,
+      "Should find duplicate authors."
   end
 end

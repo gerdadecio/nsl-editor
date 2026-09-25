@@ -23,9 +23,11 @@ class ReferenceTest < ActiveSupport::TestCase
   def try_citation(ref, expected, msg = "unexplained error", debug = false)
     ref.save!
     debug(ref) if debug
-    assert ref.citation.match(Regexp.new(Regexp.escape(expected))),
-           "#{msg}; \nexpected: #{expected}; \ngot:
-           \"#{ref.citation}\""
+    assert(
+      ref.citation.match(Regexp.new(Regexp.escape(expected))),
+      "#{msg}; \nexpected: #{expected}; \ngot:
+           \"#{ref.citation}\"",
+    )
   end
 
   def debug(ref)
@@ -47,11 +49,11 @@ class ReferenceTest < ActiveSupport::TestCase
 
   test "test for has children" do
     assert references(:journal_with_children).children?,
-           "Children not detected."
+      "Children not detected."
   end
 
   test "test for has no children" do
     assert_not references(:ref_without_children).children?,
-               "Children found where none exist."
+      "Children found where none exist."
   end
 end

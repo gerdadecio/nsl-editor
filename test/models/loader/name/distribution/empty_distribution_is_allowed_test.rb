@@ -1,10 +1,9 @@
-
+# frozen_string_literal: true
 
 require "test_helper"
 
 # Single model test.
 class EmptyDistributionIsAllowedTest < ActiveSupport::TestCase
-
   def setup
     @dist_s = nil
     @allowed_regions = DistRegion.all.order(:sort_order).collect(&:name)

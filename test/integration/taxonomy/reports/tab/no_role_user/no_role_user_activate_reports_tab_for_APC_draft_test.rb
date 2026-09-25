@@ -26,15 +26,18 @@ class NoRoleUserCannotActivateTreeReportsTabForAPCDraft < ActionController::Test
   test "user with no role cannot activate tree reports tab for APC draft" do
     user = users(:no_role)
     apc_draft = tree_versions(:apc_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:reports,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: apc_draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'User with no role should not be able to activate reports tab for APC draft'
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :reports,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: apc_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "User with no role should not be able to activate reports tab for APC draft"
   end
 end
-

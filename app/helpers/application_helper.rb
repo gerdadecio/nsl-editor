@@ -35,28 +35,33 @@ module ApplicationHelper
   end
 
   def divider
-    tag(:hr, class: "divider")
+    tag.hr(class: "divider")
   end
 
   def lov_select_field(entity,
-                       attribute,
-                       cache,
-                       options,
-                       html_attributes,
-                       label = "",
-                       label_is = :description)
-    content_tag(:section,
-                select(entity,
-                       attribute,
-                       cache,
-                       options,
-                       html_attributes) +
-                content_tag(:label,
-                            treated_label(label, label_is),
-                            class: "inline pull-right"),
-                class: "editable-text-field block") +
-      tag(:span,
-          class: "field-error-message width-90-percent")
+    attribute,
+    cache,
+    options,
+    html_attributes,
+    label = "",
+    label_is = :description)
+    content_tag(
+      :section,
+      select(
+        entity,
+        attribute,
+        cache,
+        options,
+        html_attributes,
+      ) +
+      content_tag(
+        :label,
+        treated_label(label, label_is),
+        class: "inline pull-right",
+      ),
+      class: "editable-text-field block",
+    ) +
+      tag.span(class: "field-error-message width-90-percent")
   end
 
   def formatted_timestamp(timestamp_with_timezone)
@@ -91,7 +96,7 @@ module ApplicationHelper
   end
 
   def badge
-    return "#{Rails.configuration.try('tag')}" unless Rails.configuration.try("tag").blank?
+    return "#{Rails.configuration.try("tag")}" if Rails.configuration.try("tag").present?
 
     case Rails.configuration.try("environment")
     when /\Adev/i
@@ -124,6 +129,7 @@ module ApplicationHelper
 
   def safe_uncapitalize(string)
     return string if string.blank? || string.length < 1
+
     string[0].downcase + (string.length > 1 ? string[1..-1] : "")
   end
 

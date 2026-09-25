@@ -29,25 +29,25 @@ class SearchOnNameNameDirectiveBareFlagDefaultsToTrueTest < ActiveSupport::TestC
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "name: argyle apple include-common-and-cultivar:",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Expected common name because the bare directive defaults to true"
+      search.executed_query.results.size,
+      "Expected common name because the bare directive defaults to true"
   end
 
   test "search on name name bare icc abbreviation defaults to true" do
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "name: argyle apple icc:",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Expected common name because the bare icc: abbreviation defaults to true"
+      search.executed_query.results.size,
+      "Expected common name because the bare icc: abbreviation defaults to true"
   end
 end

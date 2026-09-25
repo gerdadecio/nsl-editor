@@ -25,10 +25,10 @@ class OnParentIdTest < ActiveSupport::TestCase
   test "on parent ID" do
     query_string = "parent-id: #{names(:a_genus).id}"
     params = ActiveSupport::HashWithIndifferentAccess
-             .new(query_target: "name",
-                  query_string: query_string,
-                  include_common_and_cultivar_session: true,
-                  current_user: build_edit_user)
+      .new(query_target: "name",
+        query_string: query_string,
+        include_common_and_cultivar_session: true,
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 10, search.executed_query.results.size, "Expected 10 names."

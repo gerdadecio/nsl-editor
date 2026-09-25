@@ -3,7 +3,7 @@
 # Help for tree display
 module TreesHelper
   # NOTES: The order the messages are shown in.
-  TREE_USAGES = %i[current draft historical].freeze
+  TREE_USAGES = [:current, :draft, :historical].freeze
 
   # NOTES: The trees a record (an instance or a name) is used in, worded for
   # the delete tabs, which have to tell three kinds of usage apart:

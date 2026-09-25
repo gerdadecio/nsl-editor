@@ -25,11 +25,11 @@ class RefARTA4ParentIdWPartStrMatchingAnotherRefTest < ActiveSupport::TestCase
     reference_2 = references(:origin_of_species)
     result = Reference::AsResolvedTypeahead::ForParent.new(
       reference_1.id.to_s,
-      reference_2.citation.chop
+      reference_2.citation.chop,
     )
     assert_equal reference_2.id,
-                 result.value,
-                 "Should get matching ID for citation string despite \
+      result.value,
+      "Should get matching ID for citation string despite \
                  mismatched ID and partial string"
   end
 end

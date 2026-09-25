@@ -17,16 +17,16 @@
 #   limitations under the License.
 #
 class Loader::Name::Review::VotesController < ApplicationController
-  before_action :find_vote, only: %i[destroy]
+  before_action :find_vote, only: [:destroy]
 
   def create
     @review_vote = Loader::Name::Review::Vote.new(review_vote_params)
     @review_vote.save_with_username(current_user.username)
-    render "create"
-    rescue => e
-      logger.error("Loader::Name::Review::Vote.create:rescuing exception #{e}")
-      @error = e.to_s
-      render "create_error", status: :unprocessable_content
+    render("create")
+  rescue => e
+    logger.error("Loader::Name::Review::Vote.create:rescuing exception #{e}")
+    @error = e.to_s
+    render("create_error", status: :unprocessable_content)
   end
 
   def destroy
@@ -34,27 +34,28 @@ class Loader::Name::Review::VotesController < ApplicationController
     if @vote.update_attribute(:updated_by, username) && @vote.destroy
       render
     else
-      render js: "alert('Could not delete .');"
+      render(js: "alert('Could not delete .');")
     end
   end
 
   private
 
   def review_vote_params
-    params.require(:loader_name_review_vote).permit(:id,
-                                                    :loader_name_id,
-                                                    :batch_review_id,
-                                                    :org_id,
-                                                    :vote
-                                                    )
+    params.require(:loader_name_review_vote).permit(
+      :id,
+      :loader_name_id,
+      :batch_review_id,
+      :org_id,
+      :vote,
+    )
   end
 
   def set_tab
     @tab = if params[:tab].present? && params[:tab] != "undefined"
-             params[:tab]
-           else
-             "tab_details"
-           end
+      params[:tab]
+    else
+      "tab_details"
+    end
   end
 
   def set_tab_index

@@ -33,14 +33,18 @@ class TaxFormsTreeBuilderAPCUserCannotOpenEditFormToEdAPCDraftTest < ActionContr
   test "APC tree builder user cannot open edit draft form" do
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
-    get(:edit_draft,
-        params: {},
-        format: :js,
-        xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"],
-                   draft: apc_draft})
+    get(
+      :edit_draft,
+      params: {},
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: apc_draft,
+      },
+    )
     assert_response :forbidden, "APC tree builder should not be able to open form to edit APC draft"
   end
 end

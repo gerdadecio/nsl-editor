@@ -23,29 +23,39 @@ class UpdateStandaloneToDuplicateInstance < ActionController::TestCase
   tests InstancesController
   def setup
     @instance = instances(:casuarina_inophloia_by_mueller)
-    assert @instance.instance_type == instance_types(:secondary_reference)
+    assert(@instance.instance_type == instance_types(:secondary_reference))
     @target = instances(:casuarina_inophloia_by_mueller_and_bailey)
     @request.headers["Accept"] = "application/javascript"
   end
 
   test "editor cannot update standalone instance to a duplicate" do
-    put(:update,
-        params: { id: @instance.id,
-                  instance: { "reference_id" => @target.reference_id,
-                              "instance_type_id" => @target.instance_type_id,
-                              "page" => @target.page } },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    put(
+      :update,
+      params: {
+        id: @instance.id,
+        instance: {
+          "reference_id" => @target.reference_id,
+          "instance_type_id" => @target.instance_type_id,
+          "page" => @target.page,
+        },
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert Instance.find(@instance.id).name_id == @target.name_id
     check_assertions
   end
 
   def check_assertions
-    assert_response 422, "Response should be 422, unprocessable entity."
+    assert_response(:unprocessable_content, "Response should be 422, unprocessable entity.")
     es = "already exists with the same reference, type and page."
-    assert_match(/#{es}/,
-                 response.body,
-                 "Expected error message did not appear")
+    assert_match(
+      /#{es}/,
+      response.body,
+      "Expected error message did not appear",
+    )
   end
 end

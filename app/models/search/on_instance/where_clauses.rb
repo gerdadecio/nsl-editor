@@ -28,7 +28,7 @@ class Search::OnInstance::WhereClauses
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnInstance::WhereClause - #{s}")
+    Rails.logger.debug { "Search::OnInstance::WhereClause - #{s}" }
   end
 
   def build_sql
@@ -52,7 +52,7 @@ class Search::OnInstance::WhereClauses
     if field.blank? && value.blank?
       @sql
     else
-      field_or_default = field.blank? ? DEFAULT_FIELD : field
+      field_or_default = field.presence || DEFAULT_FIELD
       rule = Search::OnInstance::Predicate.new(field_or_default, value)
       apply_rule(rule)
       apply_order(rule)
@@ -84,16 +84,20 @@ class Search::OnInstance::WhereClauses
   end
 
   def supply_value_twice(rule)
-    @sql = @sql.where(rule.predicate,
-                      rule.processed_value,
-                      rule.processed_value)
+    @sql = @sql.where(
+      rule.predicate,
+      rule.processed_value,
+      rule.processed_value,
+    )
   end
 
   def supply_value_thrice(rule)
-    @sql = @sql.where(rule.predicate,
-                      rule.processed_value,
-                      rule.processed_value,
-                      rule.processed_value)
+    @sql = @sql.where(
+      rule.predicate,
+      rule.processed_value,
+      rule.processed_value,
+      rule.processed_value,
+    )
   end
 
   def apply_predicate_to_tokens(rule)

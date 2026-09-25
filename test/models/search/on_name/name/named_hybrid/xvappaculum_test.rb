@@ -27,13 +27,13 @@ class SearchOnNameNameNamedHybridXVappaculumTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "name: xVappaculum",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Expected 1 result"
+      search.executed_query.results.size,
+      "Expected 1 result"
   end
 
   # The character that looks like x is a multiplication symbol.
@@ -41,12 +41,12 @@ class SearchOnNameNameNamedHybridXVappaculumTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "name: ×Vappaculum",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Expected 1 result"
+      search.executed_query.results.size,
+      "Expected 1 result"
   end
 end

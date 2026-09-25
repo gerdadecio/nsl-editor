@@ -1,5 +1,6 @@
-class ProfileItems::Links::CreateService < BaseService
+# frozen_string_literal: true
 
+class ProfileItems::Links::CreateService < BaseService
   validate :published_profile_item
 
   attr_reader :profile_item
@@ -36,6 +37,7 @@ class ProfileItems::Links::CreateService < BaseService
 
   def published_profile_item
     return unless source_profile_item.is_draft
+
     errors.add(:base, "Profile item must be published before linking")
   end
 end

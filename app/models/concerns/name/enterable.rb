@@ -3,6 +3,7 @@
 # Name fields that are offered for the various types and categories of names.
 module Name::Enterable
   extend ActiveSupport::Concern
+
   included do
   end
 
@@ -19,36 +20,20 @@ module Name::Enterable
     options.first.last if options.one?
   end
 
-  def takes_name_element?
-    category_for_edit.takes_name_element?
-  end
+  delegate :takes_name_element?, to: :category_for_edit
 
-  def takes_rank?
-    category_for_edit.takes_rank?
-  end
+  delegate :takes_rank?, to: :category_for_edit
 
-  def takes_verbatim_rank?
-    category_for_edit.takes_verbatim_rank?
-  end
+  delegate :takes_verbatim_rank?, to: :category_for_edit
 
-  def requires_name_element?
-    category_for_edit.requires_name_element?
-  end
+  delegate :requires_name_element?, to: :category_for_edit
 
-  def needs_top_buttons?
-    category_for_edit.needs_top_buttons?
-  end
+  delegate :needs_top_buttons?, to: :category_for_edit
 
-  def requires_higher_ranked_parent?
-    category_for_edit.requires_higher_ranked_parent?
-  end
+  delegate :requires_higher_ranked_parent?, to: :category_for_edit
 
   def category_name_for_edit
-    if change_category_name_to.present?
-      change_category_name_to
-    else
-      name_type.name_category.name
-    end
+    change_category_name_to.presence || name_type.name_category.name
   end
 
   def category_for_edit

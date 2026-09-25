@@ -22,12 +22,14 @@ require "test_helper"
 class NameAsEdNoAuthIdWPartValidStrMatchMoreThan1Rec < ActiveSupport::TestCase
   test "no id with partial valid string matching more than one record" do
     author = authors(:dummy_author_1)
-    assert_raise(RuntimeError,
-                 "Should raise exception because multiple matches.") do
+    assert_raise(
+      RuntimeError,
+      "Should raise exception because multiple matches.",
+    ) do
       Name::AsResolvedTypeahead::ForAuthor.new(
         "",
         author.abbrev.chop,
-        "SOME FIELD"
+        "SOME FIELD",
       )
     end
   end

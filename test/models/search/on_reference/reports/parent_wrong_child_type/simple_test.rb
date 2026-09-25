@@ -26,10 +26,11 @@ class SrchOnRefRepParRefWrongChildTypeSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "reference",
       query_string: "parent-ref-wrong-child-type:",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
-    assert_equal 7, search.executed_query.results.size,
-                 "Expected 7 results for parent-ref-wrong-child-type:"
+    assert_equal 7,
+      search.executed_query.results.size,
+      "Expected 7 results for parent-ref-wrong-child-type:"
   end
 end

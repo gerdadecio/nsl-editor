@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # this is the command I used to test these scripts
 #
@@ -17,10 +19,17 @@ module ActiveRecord
         # Done here (not via a rake hook) so it fires on every code path —
         # including when Rails auto-maintains the test database on a single
         # test run, which uses the Ruby API rather than rake tasks.
-        Kernel.system(psql_env, "psql", "--quiet", "--no-psqlrc",
-                      "--output", File::NULL,
-                      "-c", "CREATE EXTENSION IF NOT EXISTS pg_trgm; CREATE EXTENSION IF NOT EXISTS unaccent;",
-                      db_config.database)
+        Kernel.system(
+          psql_env,
+          "psql",
+          "--quiet",
+          "--no-psqlrc",
+          "--output",
+          File::NULL,
+          "-c",
+          "CREATE EXTENSION IF NOT EXISTS pg_trgm; CREATE EXTENSION IF NOT EXISTS unaccent;",
+          db_config.database,
+        )
 
         # Identical to Rails 8.1 default but without --set ON_ERROR_STOP=1,
         # so psql continues past errors instead of aborting on the first one.
@@ -45,7 +54,7 @@ namespace :db do
     # b — remove get_hstore_tree function
     sql.gsub!(
       /^CREATE FUNCTION public\.get_hstore_tree.tve_id text. RETURNS public\.hstore.*?RETURN result_hstore;\n[^\n]*\n[^\n]*\n/m,
-      ""
+      "",
     )
 
     # c — remove taxon_mv materialized view definition
@@ -63,14 +72,14 @@ namespace :db do
     # e — remove gettnu function (depends on tnu_index_v)
     sql.gsub!(
       /^CREATE FUNCTION public\.gettnu.tnu_name text. RETURNS SETOF public\.tnu_index_v.*?name_published_in_year;\n[^\n]*\n[^\n]*\n/m,
-      ""
+      "",
     )
 
     # f — remove trees_mv materialized view definition
     sql.gsub!(/^CREATE MATERIALIZED VIEW public\.trees_mv AS.*?WITH NO DATA;\n/m, "")
 
     # g, h, i, j, k, l — remove views (delete to next blank line)
-    %w[taxon_v nsl_tree_mv cited_usage_v taxon_name_usage_v taxonomic_status_v tree_closure_v].each do |view|
+    ["taxon_v", "nsl_tree_mv", "cited_usage_v", "taxon_name_usage_v", "taxonomic_status_v", "tree_closure_v"].each do |view|
       sql.gsub!(/^CREATE VIEW public\.#{view} AS.*?\n[ \t]*\n/m, "")
     end
 
@@ -81,8 +90,17 @@ namespace :db do
     sql.gsub!(/^COMMENT ON VIEW public\.taxon_view IS [^\n]*;\n/, "")
 
     # n, o, p, q, r, s, t, v, w — remove more views (delete to next blank line)
-    %w[bdr_alt_labels_v bdr_concept_v bdr_top_concept_v bdr_unplaced_v
-       current_scheme_v dist_granular_booleans_v dwc_taxon_v nsl_taxon_cv nsl_tree_closure_cv].each do |view|
+    [
+      "bdr_alt_labels_v",
+      "bdr_concept_v",
+      "bdr_top_concept_v",
+      "bdr_unplaced_v",
+      "current_scheme_v",
+      "dist_granular_booleans_v",
+      "dwc_taxon_v",
+      "nsl_taxon_cv",
+      "nsl_tree_closure_cv"
+    ].each do |view|
       sql.gsub!(/^CREATE VIEW public\.#{view} AS.*?\n[ \t]*\n/m, "")
     end
 
@@ -144,6 +162,3 @@ namespace :db do
     ActiveRecord::Base.connection.execute("CREATE EXTENSION IF NOT EXISTS unaccent")
   end
 end
-
-
-

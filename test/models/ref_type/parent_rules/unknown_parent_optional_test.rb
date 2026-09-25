@@ -22,6 +22,6 @@ require "test_helper"
 class UnknownParentOptionalTest < ActiveSupport::TestCase
   test "unknown ref type parent is optional" do
     assert ref_types(:unknown).parent_optional == true,
-           "Unknown ref type parent should be optional."
+      "Unknown ref type parent should be optional."
   end
 end

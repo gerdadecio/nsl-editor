@@ -23,14 +23,18 @@ class SearchLoaderNameNoDefaultBatchTest < ActionController::TestCase
   tests SearchController
 
   test "search for loader names needs a default batch" do
-    get(:search,
-        params: { query_target: "loader names", query_string: "*"},
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [:login, :"batch-loader"] })
+    get(
+      :search,
+      params: { query_target: "loader names", query_string: "*" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [:login, :"batch-loader"],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /Please set a default batch/,
-                  "Should be asked to set a default batch"
+      /Please set a default batch/,
+      "Should be asked to set a default batch"
   end
 end

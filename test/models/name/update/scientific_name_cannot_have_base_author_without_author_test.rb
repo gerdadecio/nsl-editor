@@ -26,8 +26,8 @@ class ScientificNameCannotHaveBaseAuthorWithoutAuthor < ActiveSupport::TestCase
     assert_nil name.author_id, "should be no author id"
     name.base_author = authors(:bentham)
     assert_not_nil name.base_author_id,
-                   "name base author id should have a value"
+      "name base author id should have a value"
     assert_not name.valid?,
-               "name should not be valid with a base-author and no author"
+      "name should not be valid with a base-author and no author"
   end
 end

@@ -31,31 +31,41 @@ end
 
 def stub_it
   stub_request(:delete, "#{a}#{b}")
-    .with(headers: { "Accept" => "application/json",
-                     "Accept-Encoding" => "gzip, deflate",
-                     "Host" => "localhost:9090",
-                     "User-Agent" => agent })
+    .with(headers: {
+      "Accept" => "application/json",
+      "Accept-Encoding" => "gzip, deflate",
+      "Host" => "localhost:9090",
+      "User-Agent" => agent,
+    })
     .to_return(status: 200, body: body, headers: {})
 end
 
 def body
-  { "instance" =>
-     { "class" => "au.org.biodiversity.nsl.Instance",
+  {
+    "instance" =>
+     {
+       "class" => "au.org.biodiversity.nsl.Instance",
        "_links" => body_links,
        "instanceType" => "taxonomic synonym",
        "protologue" => false,
        "citation" => leach,
-       "citationHtml" => leach_html },
+       "citationHtml" => leach_html,
+     },
     "action" => "delete",
-    "ok" => true }.to_json
+    "ok" => true,
+  }.to_json
 end
 
 def body_links
-  { "permalink" =>
-    { "link" =>
+  {
+    "permalink" =>
+    {
+      "link" =>
         "http://localhost:8080/nsl/mapper/boa/instance/apni/819227",
       "preferred" => true,
-      "resources" => 1 } }
+      "resources" => 1,
+    },
+  }
 end
 
 def leach

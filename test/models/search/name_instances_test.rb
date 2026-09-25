@@ -42,16 +42,20 @@ class SearchNameInstancesTest < ActiveSupport::TestCase
   def run_search(directive)
     name = names(:the_regnum)
     search = Search::Base.new(ActiveSupport::HashWithIndifferentAccess.new(
-                                query_string: "id: #{name.id} #{directive}",
-                                query_target: "name",
-                                current_user: build_edit_user
-                              ))
-    assert_equal search.class,
-                 Search::Base,
-                 "The search should be a Search."
-    assert_equal 2,
-                 search.executed_query.results.size,
-                 "Expect 2 recs for name search on Plantae Haeckel " \
-                 "showing instances."
+      query_string: "id: #{name.id} #{directive}",
+      query_target: "name",
+      current_user: build_edit_user,
+    ))
+    assert_equal(
+      search.class,
+      Search::Base,
+      "The search should be a Search.",
+    )
+    assert_equal(
+      2,
+      search.executed_query.results.size,
+      "Expect 2 recs for name search on Plantae Haeckel " \
+        "showing instances.",
+    )
   end
 end

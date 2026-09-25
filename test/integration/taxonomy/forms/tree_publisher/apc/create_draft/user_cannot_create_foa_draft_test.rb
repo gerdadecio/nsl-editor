@@ -33,13 +33,17 @@ class TaxFormsTreePubAPCUserCannotCreateFoADraftTest < ActionController::TestCas
   test "APC tree publisher user cannot create FoA draft" do
     user = users(:apc_tax_publisher)
     foa_tree = trees(:FOA)
-    post(:create_draft,
-         params: {"tree_id"=>foa_tree.id, "draft_name"=>"abcde name", "draft_log"=>"abcde log"},
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    groups: ["login"]})
-    assert_response 400, "APC tree publisher should not be able to create FOA draft"
+    post(
+      :create_draft,
+      params: { "tree_id" => foa_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+      },
+    )
+    assert_response :bad_request, "APC tree publisher should not be able to create FOA draft"
   end
 end

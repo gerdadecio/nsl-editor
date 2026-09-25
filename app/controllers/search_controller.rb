@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 class SearchController < ApplicationController
   include Search::QueryDefaults
+
   before_action :hide_details
 
   def search
@@ -37,16 +40,16 @@ class SearchController < ApplicationController
   end
 
   def set_include_common_and_cultivar
-    session[:include_common_and_cultivar] = \
+    session[:include_common_and_cultivar] =
       !session[:include_common_and_cultivar]
     @empty_search = true
   end
 
   def help
     logger.debug("help params: #{params.inspect}")
-    if params[:help_id].match(/-for-dynamic-target-/)
+    if /-for-dynamic-target-/.match?(params[:help_id])
       @dynamic_target = params[:help_id].sub(/.{0,500}-for-dynamic-target-/, "")
-                                        .gsub("-", " ")
+        .tr("-", " ")
       params[:help_id].sub!(/-for-dynamic-target-.*/, "")
       logger.debug("@dynamic_target: #{@dynamic_target}")
     else
@@ -56,7 +59,7 @@ class SearchController < ApplicationController
     raise "no help content path" if help_content_path.partial.blank?
 
     logger.debug("help_content_path: #{help_content_path}")
-    render partial: help_content_path.partial
+    render(partial: help_content_path.partial)
   rescue StandardError => e
     logger.error("SearchController#help error displaying #{help_content_path}")
     logger.error(e.to_s)
@@ -73,13 +76,13 @@ class SearchController < ApplicationController
 
   def run_local_search
     return false unless params[:query_string].present?
-    raise 'Search needs a target. Do you have the right permissions?' unless params[:query_target].present?
+    raise "Search needs a target. Do you have the right permissions?" unless params[:query_target].present?
 
     logger.debug("focus_id: #{params[:focus_id]}")
     @focus_id = params[:focus_id]
     params[:current_user] = current_user
     check_query_defaults
-    params[:include_common_and_cultivar_session] = \
+    params[:include_common_and_cultivar_session] =
       session[:include_common_and_cultivar]
     apply_view_mode
     params[:view_mode] = session[:view_mode]
@@ -103,10 +106,10 @@ class SearchController < ApplicationController
 
   def run_empty_search
     params["target"] = if @view_mode == ViewMode::REVIEW
-                         Loader::Batch.user_reviewable(@current_user.username)&.first&.name
-                       else
-                         "Names"
-                       end
+      Loader::Batch.user_reviewable(@current_user.username)&.first&.name
+    else
+      "Names"
+    end
     @empty_search = true
     @search = Search::Empty.new(params)
   end
@@ -140,20 +143,22 @@ class SearchController < ApplicationController
 
   def handle_names_plus_instances_target
     return unless params[:query_target].present?
-    return unless params[:query_target] =~ /Names plus instances/i
+    return unless /Names plus instances/i.match?(params[:query_target])
 
     params[:original_query_target] = params[:query_target]
     params[:query_target] = "name"
-    return if params[:query_string] =~ /show-instances:/
+    return if /show-instances:/.match?(params[:query_string])
 
     params[:query_string] = params[:query_string].sub(/\z/, " show-instances:")
   end
 
   def apply_view_mode
     return unless
-      ["loader names",
-       "bulk processing logs",
-       "bulk_processing_logs"].include?(params["query_target"].downcase)
+      [
+        "loader names",
+        "bulk processing logs",
+        "bulk_processing_logs"
+      ].include?(params["query_target"].downcase)
 
     Rails.logger.info("apply_view_mode:    @view_mode: #{@view_mode}")
     if params[:query_target] == "Bulk processing logs"
@@ -169,9 +174,9 @@ class SearchController < ApplicationController
 
   def render_html
     if @search.parsed_request&.print
-      render :printable, layout: "layouts/print"
+      render(:printable, layout: "layouts/print")
     else
-      render :search
+      render(:search)
     end
   end
 

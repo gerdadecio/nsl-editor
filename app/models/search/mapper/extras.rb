@@ -27,7 +27,7 @@ class Search::Mapper::Extras
   end
 
   def debug(s)
-    Rails.logger.debug("Search::Extras::Mapper #{s}")
+    Rails.logger.debug { "Search::Extras::Mapper #{s}" }
   end
 
   MAP = {

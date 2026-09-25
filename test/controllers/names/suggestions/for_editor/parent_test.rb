@@ -30,22 +30,31 @@ class NameParentSuggestionsForEditorTest < ActionController::TestCase
   end
 
   def get_suggestions(term, rank_id: name_ranks(:species).id, format: :html)
-    get(:name_parent_suggestions,
-        params: { term: term,
-                  rank_id: rank_id,
-                  name_id: @name.id,
-                  format: format },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :name_parent_suggestions,
+      params: {
+        term: term,
+        rank_id: rank_id,
+        name_id: @name.id,
+        format: format,
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
   end
 
   # The response is a bare list of <li> elements with no enclosing <ul>, so
   # parse it as a fragment rather than letting assert_select treat it as a
   # whole document.
   def assert_select_in_body(*args, &block)
-    assert_select(Nokogiri::HTML::DocumentFragment.parse(@response.body),
-                  *args, &block)
+    assert_select(
+      Nokogiri::HTML::DocumentFragment.parse(@response.body),
+      *args,
+      &block
+    )
   end
 
   test "should get name parent suggestions as an html fragment" do
@@ -54,7 +63,7 @@ class NameParentSuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{names(:a_genus).id}']",
-      true
+      true,
     )
   end
 
@@ -73,8 +82,8 @@ class NameParentSuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-family-id='#{names(:a_family).id}']" \
-      "[data-family-value='#{names(:a_family).full_name}']",
-      true
+        "[data-family-value='#{names(:a_family).full_name}']",
+      true,
     )
   end
 
@@ -83,7 +92,7 @@ class NameParentSuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-                          text: "No matches"
+      text: "No matches"
   end
 
   test "should render a no matches option for a blank term" do
@@ -91,7 +100,7 @@ class NameParentSuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-                          text: "No matches"
+      text: "No matches"
   end
 
   test "should still answer json" do

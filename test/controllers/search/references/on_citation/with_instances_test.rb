@@ -24,16 +24,22 @@ class SearchRefsOnCitationWithInstancesTest < ActionController::TestCase
 
   test "search on reference citation with instances" do
     ref = references(:bucket_reference_for_default_instances)
-    get(:search,
-        params: { query_target: "reference",
-                  query_string: "citation: #{ref.citation} show-instances:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "reference",
+        query_string: "citation: #{ref.citation} show-instances:",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     # NOTES (limit/total redesign, follow-up): see on_id/with_instances_test.rb.
     assert_select "#search-results-summary",
-                  /1 record\b/,
-                  "Should find 1 record"
+      /1 record\b/,
+      "Should find 1 record"
   end
 end

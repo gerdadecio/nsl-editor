@@ -31,11 +31,15 @@ class SearchControllerInvalidQueryTargetResetsButtonTest < ActionController::Tes
   tests SearchController
 
   test "an unknown query target shows the error but resets the target button to the default" do
-    get(:search,
-        params: { query_target: "fred", query_string: "ang" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "fred", query_string: "ang" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
 
     assert_response :success
     assert_select "#search-target-button-text", /Names/
@@ -48,13 +52,17 @@ class SearchControllerInvalidQueryTargetResetsButtonTest < ActionController::Tes
   test "an error unrelated to the target still preserves the actual query target" do
     SearchController.stub_any_instance(
       :run_local_search,
-      -> { raise StandardError, "boom" }
+      -> { raise StandardError, "boom" },
     ) do
-      get(:search,
-          params: { query_target: "References", query_string: "linnaeus" },
-          session: { username: "fred",
-                     user_full_name: "Fred Jones",
-                     groups: [] })
+      get(
+        :search,
+        params: { query_target: "References", query_string: "linnaeus" },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: [],
+        },
+      )
     end
 
     assert_response :success

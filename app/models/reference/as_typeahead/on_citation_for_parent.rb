@@ -31,8 +31,10 @@ class Reference::AsTypeahead::OnCitationForParent
   SEARCH_LIMIT = 50
   def initialize(terms, current_id, param_ref_type_id)
     @results = query(terms, current_id, param_ref_type_id).collect do |ref|
-      { value: ref.typeahead_display_value,
-        id: ref.id.to_s }
+      {
+        value: ref.typeahead_display_value,
+        id: ref.id.to_s,
+      }
     end
   end
 
@@ -45,7 +47,7 @@ class Reference::AsTypeahead::OnCitationForParent
     terms_as_frequency_hash(terms).each do |hash|
       where += " lower(f_unaccent(citation)) like lower(f_unaccent(?)) and "
       search_term = "#{hash[:value]}%" * hash[:freq]
-      binds.push "%#{search_term}"
+      binds.push("%#{search_term}")
     end
     where += " 1=1 "
     binds.unshift(where)
@@ -69,11 +71,11 @@ class Reference::AsTypeahead::OnCitationForParent
 
     end
     Reference.joins(:ref_type).includes(:ref_type)
-             .where.not(reference: { id: current_id.blank? ? 0 : current_id })
-             .not_duplicate
-             .where(bound_terms_array(terms))
-             .where(ref_type_id: RefType.find(best_ref_type_id).parent_id)
-             .order(Arel.sql('iso_publication_date DESC NULLS FIRST'), 'citation')
-             .limit(SEARCH_LIMIT)
+      .where.not(reference: { id: current_id.presence || 0 })
+      .not_duplicate
+      .where(bound_terms_array(terms))
+      .where(ref_type_id: RefType.find(best_ref_type_id).parent_id)
+      .order(Arel.sql("iso_publication_date DESC NULLS FIRST"), "citation")
+      .limit(SEARCH_LIMIT)
   end
 end

@@ -23,9 +23,9 @@ class InstanceRouteToUnpubTabTest < ActionController::TestCase
   tests InstancesController
   test "should route to instance unpub tab" do
     assert_routing "/instances/1/tab/show",
-                   controller: "instances",
-                   action: "tab",
-                   id: "1",
-                   tab: "show"
+      controller: "instances",
+      action: "tab",
+      id: "1",
+      tab: "show"
   end
 end

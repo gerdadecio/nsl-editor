@@ -23,19 +23,25 @@ class SearchLoaderNameInvalidDefaultBatchAndLimitTest < ActionController::TestCa
   tests SearchController
 
   test "search loader names with invalid default batch and limit gets right message" do
-    get(:search,
-        params: { query_target: "loader names", query_string: "Hardenbergia violacea default-batch: abc limit: 10" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [:login, :"batch-loader"] })
+    get(
+      :search,
+      params: { query_target: "loader names", query_string: "Hardenbergia violacea default-batch: abc limit: 10" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [:login, :"batch-loader"],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /Please set a default batch/,
-                  "Should be asked to set a default batch"
+      /Please set a default batch/,
+      "Should be asked to set a default batch"
 
     qs_field_value = css_select("#query-string-field[value]")
-    assert_match /Hardenbergia violacea *limit: 10/, qs_field_value.to_s,
-                'Query string with limit should be retained'
-
+    assert_match(
+      /Hardenbergia violacea *limit: 10/,
+      qs_field_value.to_s,
+      "Query string with limit should be retained",
+    )
   end
 end

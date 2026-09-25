@@ -22,24 +22,32 @@ require "test_helper"
 class RefARTA4DuplicateOfNotSelectedFromTypeahead < ActiveSupport::TestCase
   test "update reference with duplicate of not selected from typeahead" do
     reference = Reference::AsEdited.first
-    assert_raise(RuntimeError,
-                 "Expect error - duplicate of typeahead has value but there is \
-                 no duplicate of id.") do
-      reference.update_if_changed({ "ref_type_id" => ref_types(:section),
-                                    "title" => "ss",
-                                    "published" => "1",
-                                    "ref_author_role_id" => "17281",
-                                    "edition" => "",
-                                    "volume" => "",
-                                    "pages" => "",
-                                    "year" => "",
-                                    "publication_date" => "",
-                                    "notes" => "" },
-                                  { "duplicate_of_typeahead" => "asdfsa",
-                                    "duplicate_of_id" => "",
-                                    "author_typeahead" => "",
-                                    "author_id" => "" },
-                                  "fred")
+    assert_raise(
+      RuntimeError,
+      "Expect error - duplicate of typeahead has value but there is \
+                 no duplicate of id.",
+    ) do
+      reference.update_if_changed(
+        {
+          "ref_type_id" => ref_types(:section),
+          "title" => "ss",
+          "published" => "1",
+          "ref_author_role_id" => "17281",
+          "edition" => "",
+          "volume" => "",
+          "pages" => "",
+          "year" => "",
+          "publication_date" => "",
+          "notes" => "",
+        },
+        {
+          "duplicate_of_typeahead" => "asdfsa",
+          "duplicate_of_id" => "",
+          "author_typeahead" => "",
+          "author_id" => "",
+        },
+        "fred",
+      )
     end
   end
 end

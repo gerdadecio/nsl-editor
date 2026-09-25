@@ -24,13 +24,17 @@ class UserCreateUnauthorisedTest < ActionController::TestCase
 
   test "delete user simple" do
     @request.headers["Accept"] = "application/javascript"
-    assert_difference("User.count", 0, 'User should not be deleted') do
-      post(:destroy,
-           params: { id: users(:user_two)},
-           session: { username: "uone",
-                      user_full_name: "auser One",
-                      groups: ["edit"] })
+    assert_difference("User.count", 0, "User should not be deleted") do
+      post(
+        :destroy,
+        params: { id: users(:user_two) },
+        session: {
+          username: "uone",
+          user_full_name: "auser One",
+          groups: ["edit"],
+        },
+      )
     end
-    assert_response(:forbidden, 'Non-admin users should not delete a user')
+    assert_response(:forbidden, "Non-admin users should not delete a user")
   end
 end

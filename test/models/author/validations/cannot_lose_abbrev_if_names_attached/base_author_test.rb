@@ -23,11 +23,11 @@ class AuthorCannotLoseAbbrevIfNamesBaseAuthorTest < ActiveSupport::TestCase
   test "author cannot lose abbrev if names attached to base author" do
     author = authors(:has_base_authored_one_name_that_is_all)
     assert author.valid?, "Author should start out valid"
-    assert !author.base_names.empty?,
-           "Author should have at least one base attached"
+    assert_not author.base_names.empty?,
+      "Author should have at least one base attached"
     assert author.abbrev.present?, "Author should start with an abbreviation."
     author.abbrev = ""
     assert_not author.valid?,
-               "Author with base names should not be valid without an abbrev"
+      "Author with base names should not be valid without an abbrev"
   end
 end

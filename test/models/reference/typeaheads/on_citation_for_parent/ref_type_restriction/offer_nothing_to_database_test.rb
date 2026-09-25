@@ -25,9 +25,9 @@ class TAOnCitn4ParRefTypeRestrictionNothingForDatabase < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "%",
       current_reference.id,
-      ref_types(:database).id
+      ref_types(:database).id,
     )
     assert typeahead.results.empty?,
-           "Should be no results because database takes no parent."
+      "Should be no results because database takes no parent."
   end
 end

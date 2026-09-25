@@ -18,16 +18,16 @@
 #
 class Search::Reference::DefinedQuery
   attr_reader :results,
-              :limited,
-              :info_for_display,
-              :rejected_pairings,
-              :common_and_cultivar_included,
-              :has_relation,
-              :relation,
-              :id,
-              :count,
-              :show_csv,
-              :total
+    :limited,
+    :info_for_display,
+    :rejected_pairings,
+    :common_and_cultivar_included,
+    :has_relation,
+    :relation,
+    :id,
+    :count,
+    :show_csv,
+    :total
 
   def initialize(parsed_request, force_list_query = false)
     @parsed_request = parsed_request
@@ -110,18 +110,18 @@ class Search::Reference::DefinedQuery
     @references.each do |ref|
       @results << ref
       instances_query = Instance::AsArray::ForReference
-                        .new(ref,
-                             sort_key,
-                             nil,
-                             @parsed_request.instance_offset,
-                             preloaded_instances: instances_by_reference[ref.id] || [],
-                             preloaded_cited_by_map: cited_by_map)
+        .new(ref,
+          sort_key,
+          nil,
+          @parsed_request.instance_offset,
+          preloaded_instances: instances_by_reference[ref.id] || [],
+          preloaded_cited_by_map: cited_by_map)
       instances_query.results.each { |i| @results << i }
     end
   end
 
   def debug(s)
-    Rails.logger.debug("Search::Reference::DefinedQuery: #{s}")
+    Rails.logger.debug { "Search::Reference::DefinedQuery: #{s}" }
   end
 
   def csv?

@@ -46,10 +46,12 @@ class InstanceNoteKey < ApplicationRecord
 
   def self.edit_options
     all.order(:sort_order)
-       .collect do |key|
-      [decorated_dep(key),
-       key.id,
-       { disabled: key.deprecated? }]
+      .collect do |key|
+      [
+        decorated_dep(key),
+        key.id,
+        { disabled: key.deprecated? }
+      ]
     end
   end
 
@@ -63,17 +65,17 @@ class InstanceNoteKey < ApplicationRecord
 
   def self.apc_options
     all.where(deprecated: false)
-       .apc
-       .order(:sort_order)
-       .collect { |n| [n.name, n.id] }
+      .apc
+      .order(:sort_order)
+      .collect { |n| [n.name, n.id] }
   end
 
   def self.apc_options_for_instance(instance)
     if instance.apc_dist_note?
       all.where(deprecated: false)
-         .apc_comment
-         .order(:sort_order)
-         .collect { |n| [n.name, n.id] }
+        .apc_comment
+        .order(:sort_order)
+        .collect { |n| [n.name, n.id] }
     else
       apc_options
     end
@@ -81,14 +83,14 @@ class InstanceNoteKey < ApplicationRecord
 
   def self.non_apc_options
     all.where(deprecated: false)
-       .non_apc.order(:sort_order)
-       .collect { |n| [n.name, n.id] }
+      .non_apc.order(:sort_order)
+      .collect { |n| [n.name, n.id] }
   end
 
   def self.query_form_options
     all.where(deprecated: false)
-       .sort_by(&:name)
-       .collect { |n| [n.name, n.name.downcase, { class: "" }] }
+      .sort_by(&:name)
+      .collect { |n| [n.name, n.name.downcase, { class: "" }] }
   end
 
   def apc_dist?
@@ -96,8 +98,8 @@ class InstanceNoteKey < ApplicationRecord
   end
 
   def self.string_has_embedded_note_key?(str)
-    if str.match(/#{NOTE_MATCHES}\z/i)
-      possible_key = str.sub(/#{NOTE_MATCHES}\z/i, "").gsub("-", " ")
+    if /#{NOTE_MATCHES}\z/io.match?(str)
+      possible_key = str.sub(/#{NOTE_MATCHES}\z/io, "").tr("-", " ")
       where(["lower(name) = lower(?)", possible_key]).size == 1
     else
       false

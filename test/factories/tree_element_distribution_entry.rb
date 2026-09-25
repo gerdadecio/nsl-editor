@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :tree_element_distribution_entry do
     lock_version { 1 }

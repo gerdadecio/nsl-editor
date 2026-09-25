@@ -25,7 +25,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., nom. prov."),
-           'Scientific name status should include "nom. inval., nom. prov."'
+      'Scientific name status should include "nom. inval., nom. prov."'
   end
 
   test "should include  nom. inval., nom. subnud." do
@@ -33,7 +33,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., nom. subnud."),
-           'Scientific name status should include "nom. inval., nom. subnud."'
+      'Scientific name status should include "nom. inval., nom. subnud."'
   end
 
   test "should include  nom. inval., opera utique oppressa" do
@@ -41,7 +41,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., opera utique oppressa"),
-           'Scientific name stat shld incl "nom. inval., opera utique oppressa"'
+      'Scientific name stat shld incl "nom. inval., opera utique oppressa"'
   end
 
   test "should include  nom. inval., pro syn." do
@@ -49,7 +49,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., pro syn."),
-           'Scientific name status should include "nom. inval., pro syn."'
+      'Scientific name status should include "nom. inval., pro syn."'
   end
 
   test "should include  nom. inval., tautonym" do
@@ -57,7 +57,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. inval., tautonym"),
-           'Scientific name status should include "nom. inval., tautonym"'
+      'Scientific name status should include "nom. inval., tautonym"'
   end
 
   test "should include  nom. rej." do
@@ -65,7 +65,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. rej."),
-           'Scientific name status options should include "nom. rej."'
+      'Scientific name status options should include "nom. rej."'
   end
 
   test "should include  nom. superfl." do
@@ -73,7 +73,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nom. superfl."),
-           'Scientific name status options should include "nom. superfl."'
+      'Scientific name status options should include "nom. superfl."'
   end
 
   test "should include  nomina utique rejicienda" do
@@ -81,7 +81,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("nomina utique rejicienda"),
-           'Scientific name status should include "nomina utique rejicienda"'
+      'Scientific name status should include "nomina utique rejicienda"'
   end
 
   test "should include  orth. cons." do
@@ -89,7 +89,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("orth. cons."),
-           'Scientific name status options should include "orth. cons."'
+      'Scientific name status options should include "orth. cons."'
   end
 
   test "should include  orth. var." do
@@ -97,7 +97,7 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("orth. var."),
-           'Scientific name status options should include "orth. var."'
+      'Scientific name status options should include "orth. var."'
   end
 
   test "should include  typ. cons." do
@@ -105,6 +105,6 @@ class OptionsForScientificCategoryCTest < ActiveSupport::TestCase
       .options_for_category(name_categories(:scientific))
       .collect(&:first)
       .include?("typ. cons."),
-           'Scientific name status options should include "typ. cons."'
+      'Scientific name status options should include "typ. cons."'
   end
 end

@@ -29,19 +29,19 @@ class SearchParsedRequestCountDirectiveKeepsSimilarTokenTest < ActiveSupport::Te
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       canonical_query_target: "name",
-      query_string: "count: comment-count: 3"
+      query_string: "count: comment-count: 3",
     )
     parsed_request = Search::ParsedRequest.new(params)
 
     assert parsed_request.count, "This should be parsed as a count query."
     assert_not parsed_request.list,
-               "This should not be parsed as a list query."
+      "This should not be parsed as a list query."
     assert_includes parsed_request.where_arguments,
-                    "comment-count:",
-                    "A directive ending in count: should survive parsing of \
+      "comment-count:",
+      "A directive ending in count: should survive parsing of \
 the count: directive."
     assert_not_includes parsed_request.where_arguments.split(/ /),
-                        "count:",
-                        "The count: directive itself should be consumed."
+      "count:",
+      "The count: directive itself should be consumed."
   end
 end

@@ -23,14 +23,18 @@ class SearchLoaderNameAnyBatchTest < ActionController::TestCase
   tests SearchController
 
   test "can search for loader names" do
-    get(:search,
-        params: { query_target: "loader names", query_string: "* aNy-batch:" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [:login, :"batch-loader"] })
+    get(
+      :search,
+      params: { query_target: "loader names", query_string: "* aNy-batch:" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [:login, :"batch-loader"],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /\b[1-9]\d* records*\b/,
-                  "Should find at least one loader name record with any-batch wildcard search"
+      /\b[1-9]\d* records*\b/,
+      "Should find at least one loader name record with any-batch wildcard search"
   end
 end

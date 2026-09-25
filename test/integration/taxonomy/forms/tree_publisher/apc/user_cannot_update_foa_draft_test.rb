@@ -33,16 +33,23 @@ class TaxFormsTreePubAPCUserCannotUpdateFOADraftTest < ActionController::TestCas
   test "APC tree publisher user cannot update FOA draft" do
     user = users(:apc_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
-    post(:update_draft,
-         params: {"version_id"=> foa_draft.id, "draft_name"=>'zyz', "draft_log"=>'xyz'},
-        format: :js,
-        xhr: true,
-        session: { username: user.user_name,
-                   user_full_name: user.full_name,
-                   groups: ["login"],
-                   draft: foa_draft})
-    assert_response :forbidden, 'Should not be allowed'
-    assert_match /You are not authorized to access this page/i,
-      response.body, "Expecting Access Denied message"
+    post(
+      :update_draft,
+      params: { "version_id" => foa_draft.id, "draft_name" => "zyz", "draft_log" => "xyz" },
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+        draft: foa_draft,
+      },
+    )
+    assert_response :forbidden, "Should not be allowed"
+    assert_match(
+      /You are not authorized to access this page/i,
+      response.body,
+      "Expecting Access Denied message",
+    )
   end
 end

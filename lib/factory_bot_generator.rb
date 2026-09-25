@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # lib/factory_bot_generator.rb
 class FactoryBotGenerator
   def initialize(structure_file:, output_dir:)
@@ -35,7 +37,7 @@ class FactoryBotGenerator
     factory_name = table_name.singularize
     factory_file = File.join(@output_dir, "#{factory_name}.rb")
 
-    File.open(factory_file, 'w') do |file|
+    File.open(factory_file, "w") do |file|
       file.puts "FactoryBot.define do"
       file.puts "  factory :#{factory_name} do"
 
@@ -53,24 +55,24 @@ class FactoryBotGenerator
   end
 
   def skip_column?(column_name)
-    column_name == 'id' || column_name.end_with?('_at') # Skip primary keys and timestamps
+    column_name == "id" || column_name.end_with?("_at") # Skip primary keys and timestamps
   end
 
   def generate_attribute(column)
     attr_name = column[:name]
-    default_value = column[:default]&.gsub(/'|::\w+/, '')
+    default_value = column[:default]&.gsub(/'|::\w+/, "")
     attr_type = column[:type].downcase
 
     value = case attr_type
-            when /int|serial/ then default_value || 1
-            when /char|text/ then default_value || "\"Sample #{attr_name.humanize}\""
-            when /bool/ then default_value || true
-            when /timestamp|date|time/ then "Time.current"
-            when /uuid/ then "SecureRandom.uuid"
-            when /jsonb|json/ then "{}"
-            when /array/ then "[]"
-            else default_value || "\"Default #{attr_name}\""
-            end
+    when /int|serial/ then default_value || 1
+    when /char|text/ then default_value || "\"Sample #{attr_name.humanize}\""
+    when /bool/ then default_value || true
+    when /timestamp|date|time/ then "Time.current"
+    when /uuid/ then "SecureRandom.uuid"
+    when /jsonb|json/ then "{}"
+    when /array/ then "[]"
+    else default_value || "\"Default #{attr_name}\""
+    end
 
     "    #{attr_name} { #{value} }"
   end

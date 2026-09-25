@@ -27,12 +27,12 @@ class SearchOnNameNameNoLeadingWildcardTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "name: ngophora",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 0,
-                 search.executed_query.results.size,
-                 "Expected no results"
+      search.executed_query.results.size,
+      "Expected no results"
   end
 end

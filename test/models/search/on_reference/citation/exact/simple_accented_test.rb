@@ -24,11 +24,11 @@ class SearchOnReferenceCitationExactSimpleAccentedTest < ActiveSupport::TestCase
   test "search on reference citation exact simple accented" do
     references(:hulten_with_diacritic)
     citation_wo_accent = "citation includes hulten with diacritic"
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: %(citation-exact: #{citation_wo_accent}),
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "reference",
+        query_string: %(citation-exact: #{citation_wo_accent}),
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?, "Results expected."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

@@ -23,8 +23,8 @@ class AuthorCannotLoseAbbrevIfNamesAuthorTest < ActiveSupport::TestCase
   test "author cannot lose abbrev if authored name attached" do
     author = authors(:bentham)
     assert author.valid?, "Bentham should be valid"
-    assert !author.names.empty?,
-           "Bentham should have at least one name attached"
+    assert_not author.names.empty?,
+      "Bentham should have at least one name attached"
     assert author.abbrev.present?, "Benthm should start with an abbreviation."
     author.abbrev = ""
     assert_not author.valid?, "Bentham should not be valid without an abbrev"

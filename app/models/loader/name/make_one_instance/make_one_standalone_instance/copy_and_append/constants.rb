@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend::Constants
   phrase = " standalone instance using default ref (copy-and-append)"
   DECLINED_INSTANCE = "<span class='firebrick'>Declined to make#{phrase}</span>"

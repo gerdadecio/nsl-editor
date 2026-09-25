@@ -25,10 +25,10 @@ class NameAsResolvedTAForDupeOfIdWStrMatchAnotherName < ActiveSupport::TestCase
     name_2 = names(:a_division)
     result = Name::AsResolvedTypeahead::ForDuplicateOf.new(
       name_1.id.to_s,
-      name_2.full_name
+      name_2.full_name,
     )
     assert_equal name_2.id,
-                 result.value,
-                 "Should get matching ID for matching full name"
+      result.value,
+      "Should get matching ID for matching full name"
   end
 end

@@ -18,27 +18,29 @@
 #
 
 def hybrid_parent_suggestions_should_include(suggestions,
-                                             given_rank_name,
-                                             expected_rank_name)
+  given_rank_name,
+  expected_rank_name)
   re = Regexp.quote(expected_rank_name)
   assert(
     suggestions.collect do |h|
-      h[:value].split(/ *\| */).second =~ /#{re}/ ? 1 : 0
+      /#{re}/.match?(h[:value].split(/ *\| */).second) ? 1 : 0
     end.sum.positive?,
     "suggestions for #{given_rank_name} should
-    include #{expected_rank_name} [caller: #{caller[1]}]"
+    include #{expected_rank_name} [caller: #{caller(2..2).first}]",
   )
 end
 
 def hybrid_parent_suggestions_should_not_include(suggestions,
-                                                 given_rank_name,
-                                                 unexpected_rank_name)
+  given_rank_name,
+  unexpected_rank_name)
   re = Regexp.quote(unexpected_rank_name)
-  assert_not(suggestions.collect do |h|
-    h[:value].split(/ *\| */).second =~ /\s#{re}/ ? 1 : 0
-  end.sum.positive?,
-             "suggestions for #{given_rank_name} should not
-             include #{unexpected_rank_name}[caller: #{caller[1]}]")
+  assert_not(
+    suggestions.collect do |h|
+      /\s#{re}/.match?(h[:value].split(/ *\| */).second) ? 1 : 0
+    end.sum.positive?,
+    "suggestions for #{given_rank_name} should not
+             include #{unexpected_rank_name}[caller: #{caller(2..2).first}]",
+  )
 end
 
 def hybrid_parent_suggestions_should_only_include(
@@ -52,7 +54,6 @@ def hybrid_parent_suggestions_should_only_include(
     end
   end
 end
-
 
 def show(suggestions)
   suggestions.each { |s| print("#{s[:value]}\n") }

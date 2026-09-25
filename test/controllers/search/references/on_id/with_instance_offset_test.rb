@@ -24,12 +24,18 @@ class SearchRefsOnIdWithInstanceOffsetTest < ActionController::TestCase
 
   test "search on reference id with instance and instance offset" do
     ref = references(:bucket_reference_for_default_instances)
-    get(:search,
-        params: { query_target: "reference",
-                  query_string: "id: #{ref.id} show-instances: instance-offset: 10" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: {
+        query_target: "reference",
+        query_string: "id: #{ref.id} show-instances: instance-offset: 10",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     # NOTES (limit/total redesign, follow-up): instance-offset: only
     # changes which instances are shown/skipped within the one matching
@@ -37,7 +43,7 @@ class SearchRefsOnIdWithInstanceOffsetTest < ActionController::TestCase
     # on_id/with_instances_test.rb for why this is "1 record" rather than
     # the old combined "28".
     assert_select "#search-results-summary",
-                  /1 record\b/,
-                  "Should find 1 record"
+      /1 record\b/,
+      "Should find 1 record"
   end
 end

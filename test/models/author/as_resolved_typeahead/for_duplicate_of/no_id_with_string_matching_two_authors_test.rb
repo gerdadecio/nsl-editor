@@ -22,8 +22,10 @@ require "test_helper"
 class AuthARTA4DupeOfNoIdWStrMatching2NamesTest < ActiveSupport::TestCase
   test "no id with string matdhing more than 1 name" do
     author_to_avoid = authors(:bentham)
-    assert_raise(RuntimeError,
-                 "Should raise a RuntimeError for invalid author string.") do
+    assert_raise(
+      RuntimeError,
+      "Should raise a RuntimeError for invalid author string.",
+    ) do
       Author::AsResolvedTypeahead::ForDuplicateOf.new(
         "", "br", author_to_avoid
       )

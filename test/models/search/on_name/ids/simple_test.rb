@@ -24,15 +24,15 @@ load "test/models/search/on_name/test_helper.rb"
 class SearchOnNameIdsSimpleTest < ActiveSupport::TestCase
   test "search on name ids simple" do
     name = names(:angophora_costata)
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "name",
-                   query_string: "ids: #{name.id}",
-                   include_common_and_cultivar_session: true,
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "name",
+        query_string: "ids: #{name.id}",
+        include_common_and_cultivar_session: true,
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result is expected."
+      search.executed_query.results.size,
+      "Exactly 1 result is expected."
   end
 end

@@ -22,10 +22,12 @@ require "test_helper"
 class NameTAFUCSuggestsShldNotInclDupesTest < ActiveSupport::TestCase
   test "name typeahead for unpub cit suggs should not include duplicates" do
     suggestions = Name::AsTypeahead::ForUnpubCit
-                  .new(term: "a duplicate species")
-                  .suggestions
+      .new(term: "a duplicate species")
+      .suggestions
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert(suggestions.empty?,
-           'suggestions for "a duplicate species" should be empty')
+    assert(
+      suggestions.empty?,
+      'suggestions for "a duplicate species" should be empty',
+    )
   end
 end

@@ -20,24 +20,28 @@ class ServicesController < ApplicationController
   skip_before_action :authenticate
 
   def ping
-    render plain: "✓", status: :ok, layout: false
+    render(plain: "✓", status: :ok, layout: false)
   end
 
   def version
-    render plain: "#{Rails.configuration.try('version')}",
-           status: :ok,
-           layout: false
+    render(
+      plain: "#{Rails.configuration.try("version")}",
+      status: :ok,
+      layout: false,
+    )
   end
 
   def build
-    render partial: "build",
-           format: :text,
-           status: :ok,
-           layout: false
+    render(
+      partial: "build",
+      format: :text,
+      status: :ok,
+      layout: false,
+    )
   end
 
   def clear_connections
     ActiveRecord::Base.clear_active_connections!
-    render plain: "Cleared.", status: :ok, layout: false
+    render(plain: "Cleared.", status: :ok, layout: false)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Users::ProductRoles::DestroyService < BaseService
   attr_reader :user_product_role
 
@@ -30,10 +32,10 @@ class Users::ProductRoles::DestroyService < BaseService
       .map(&:product)
       .compact
 
-    if remaining_products.any?
-      user.default_product_context_id = remaining_products.first.context_id
+    user.default_product_context_id = if remaining_products.any?
+      remaining_products.first.context_id
     else
-      user.default_product_context_id = MAIN_CONTEXT_ID
+      MAIN_CONTEXT_ID
     end
     user.save
 

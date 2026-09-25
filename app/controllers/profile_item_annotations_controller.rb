@@ -19,7 +19,7 @@
 class ProfileItemAnnotationsController < ApplicationController
   skip_before_action :authorise
 
-  before_action :set_profile_item_annotation, only: %i[update destroy]
+  before_action :set_profile_item_annotation, only: [:update, :destroy]
 
   before_action :authorise_user!, except: [:create]
 
@@ -28,19 +28,19 @@ class ProfileItemAnnotationsController < ApplicationController
     @profile_item_annotation = Profile::ProfileItemAnnotation.new(
       permitted_params.merge(
         created_by: current_user.username,
-        updated_by: current_user.username
-      )
+        updated_by: current_user.username,
+      ),
     )
 
     authorise_user!
 
     if @profile_item_annotation.save!
       @message = "Saved"
-      render :create
+      render(:create)
     end
   rescue StandardError => e
     @message = e.to_s
-    render "create_failed", status: :unprocessable_content
+    render("create_failed", status: :unprocessable_content)
   end
 
   def update
@@ -53,16 +53,16 @@ class ProfileItemAnnotationsController < ApplicationController
     @profile_item = @profile_item_annotation.profile_item
     @profile_item_annotation.destroy!
     @message = "Deleted"
-    render :delete
+    render(:delete)
   rescue StandardError => e
     @message = e.to_s
-    render :update_failed, status: :unprocessable_content
+    render(:update_failed, status: :unprocessable_content)
   end
 
   private
 
   def authorise_user!
-    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item_annotation) unless can? :manage, @profile_item_annotation
+    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item_annotation) unless can?(:manage, @profile_item_annotation)
   end
 
   def set_profile_item_annotation
@@ -76,14 +76,14 @@ class ProfileItemAnnotationsController < ApplicationController
   def really_update
     if @profile_item_annotation.update(permitted_params.merge(updated_by: current_user.username))
       @message = "Updated"
-      render :update
+      render(:update)
     else
       @message = @profile_item_annotation.errors.full_messages.join(", ")
-      render :update_failed, status: :unprocessable_content
+      render(:update_failed, status: :unprocessable_content)
     end
   rescue StandardError => e
     @message = e.to_s
-    render :update_failed, status: :unprocessable_content
+    render(:update_failed, status: :unprocessable_content)
   end
 
   def permitted_params

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: profile_item_type(The superset of terms for Products arranged hierarchically and the object type associated with this term.)
@@ -38,7 +40,7 @@ FactoryBot.define do
     updated_by { "Sample Updated by" }
     api_name { "Sample Api name" }
     api_at { Time.current }
-    sequence(:sort_order) {|n| n}
+    sequence(:sort_order) { |n| n }
 
     association :profile_object_type
   end

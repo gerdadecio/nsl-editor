@@ -44,32 +44,42 @@ class NamesCreateByEditorTest < ActionController::TestCase
 
   def stub_it
     stub_request(:get, %r{#{a}.nsl/services.rest.name.apni.[0-9][0-9]*.api.#{b}})
-      .with(headers: { "Accept" => "text/json", "Accept-Encoding" => /.*/})
-      .to_return(status: 200, body: %({ "class": "silly name class",
+      .with(headers: { "Accept" => "text/json", "Accept-Encoding" => /.*/ })
+      .to_return(status: 200,
+        body: %({ "class": "silly name class",
       "_links": { "permalink": [ ] }, "name_element":
       "redundant name element for id 91755", "action": "unnecessary action",
       "result": { "fullMarkedUpName": "full marked up name for id 91755",
         "simpleMarkedUpName": "simple marked up name for id 91755",
         "fullName": "full name for id 91755",
-        "simpleName": "simple name for id 91755" } }).to_json, headers: {})
+        "simpleName": "simple name for id 91755" } }).to_json,
+        headers: {})
   end
 
   test "editor should be able to create name" do
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Name.count") do
-      post(:create,
-           params: { name: { "name_status_id" => @name_status.id,
-                             "name_rank_id" => @name_rank.id,
-                             "name_type_id" => @name_type.id,
-                             "parent_id" => @parent.id,
-                             "parent_typeahead" => @parent_typeahead,
-                             "family_id" => @parent.id,
-                             "family_typeahead" => @family_typeahead,
-                             "name_element" => @name_element } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] },
-           xhr: true)
+      post(
+        :create,
+        params: {
+          name: {
+            "name_status_id" => @name_status.id,
+            "name_rank_id" => @name_rank.id,
+            "name_type_id" => @name_type.id,
+            "parent_id" => @parent.id,
+            "parent_typeahead" => @parent_typeahead,
+            "family_id" => @parent.id,
+            "family_typeahead" => @family_typeahead,
+            "name_element" => @name_element,
+          },
+        },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: ["edit"],
+        },
+        xhr: true,
+      )
     end
   end
 end

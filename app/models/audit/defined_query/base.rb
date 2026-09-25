@@ -18,14 +18,14 @@
 #
 class Audit::DefinedQuery::Base
   attr_reader :count,
-              :common_and_cultivar_included,
-              :has_relation,
-              :limited,
-              :relation,
-              :results,
-              :show_csv,
-              :total,
-              :do_count_totals
+    :common_and_cultivar_included,
+    :has_relation,
+    :limited,
+    :relation,
+    :results,
+    :show_csv,
+    :total,
+    :do_count_totals
 
   def initialize(parsed_request)
     run_query(parsed_request)
@@ -71,6 +71,6 @@ class Audit::DefinedQuery::Base
 
   def debug(s)
     tag = "Audit::DefinedQuery::Base #{s}"
-    Rails.logger.debug("#{tag}: #{s}")
+    Rails.logger.debug { "#{tag}: #{s}" }
   end
 end

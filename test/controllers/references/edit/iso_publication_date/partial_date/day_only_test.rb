@@ -24,22 +24,32 @@ class ReferencesesUpdateIsoPartialDayOnlyTest < ActionController::TestCase
 
   test "update reference iso partial day only test" do
     @request.headers["Accept"] = "application/javascript"
-    patch(:update,
-          params: { id: references(:simple).id,
-                    reference: { "ref_type_id" => ref_types(:book),
-                                 "title" => "Some book",
-                                 "author_id" => authors(:dash),
-                                 "author_typeahead" => "-",
-                                 "published" => true,
-                                 "parent_typeahead" => @parent_typeahead,
-                                 "ref_author_role_id" => ref_author_roles(:author),
-                                 "day" => "2" } },
-          session: { username: "fred",
-                     user_full_name: "Fred Jones",
-                     groups: ["edit"] })
+    patch(
+      :update,
+      params: {
+        id: references(:simple).id,
+        reference: {
+          "ref_type_id" => ref_types(:book),
+          "title" => "Some book",
+          "author_id" => authors(:dash),
+          "author_typeahead" => "-",
+          "published" => true,
+          "parent_typeahead" => @parent_typeahead,
+          "ref_author_role_id" => ref_author_roles(:author),
+          "day" => "2",
+        },
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :unprocessable_content
-    assert_match(/Day entered but no month/,
-                 response.body.to_s,
-                 "Missing or incorrect error message")
+    assert_match(
+      /Day entered but no month/,
+      response.body.to_s,
+      "Missing or incorrect error message",
+    )
   end
 end

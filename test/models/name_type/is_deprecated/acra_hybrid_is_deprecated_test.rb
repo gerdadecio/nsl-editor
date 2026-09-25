@@ -22,7 +22,7 @@ require "test_helper"
 class AcraHybridIsDeprecatedTest < ActiveSupport::TestCase
   test "acra hybrid is a deprecated name type" do
     assert_equal true,
-                 NameType.find_by(name: "acra hybrid").deprecated,
-                 "ACRA Hybrid should be a deprecated name type"
+      NameType.find_by(name: "acra hybrid").deprecated,
+      "ACRA Hybrid should be a deprecated name type"
   end
 end

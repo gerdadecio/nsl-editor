@@ -18,10 +18,14 @@
 #
 class Search::BulkProcessingLog::FieldRule
   RULES = {
-    "latest:" => { where_clause: "1=1",
-                   takes_no_arg: true, },
-    "log-entry:" => { leading_wildcard: true,
-                      trailing_wildcard: true,
-                      where_clause: "lower(log_entry) like ?", },
+    "latest:" => {
+      where_clause: "1=1",
+      takes_no_arg: true,
+    },
+    "log-entry:" => {
+      leading_wildcard: true,
+      trailing_wildcard: true,
+      where_clause: "lower(log_entry) like ?",
+    },
   }.freeze
 end

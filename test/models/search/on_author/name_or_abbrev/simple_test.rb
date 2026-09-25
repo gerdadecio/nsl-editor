@@ -23,18 +23,20 @@ load "test/models/search/users.rb"
 # Single Search model test.
 class SearchOnAuthorNameOrAbbrevSimpleTest < ActiveSupport::TestCase
   test "search on author name or abbrev simple" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "author",
-                                                          query_string:
-                                                          "name-or-abbrev:
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "author",
+      query_string:
+            "name-or-abbrev:
                                                           xyz_name_or_abbrev",
-                                                          current_user:
-                                                          build_edit_user)
+      current_user:
+            build_edit_user,
+    )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 2,
-                 search.executed_query.results.size,
-                 "Exactly 2 results are expected."
+      search.executed_query.results.size,
+      "Exactly 2 results are expected."
   end
 end

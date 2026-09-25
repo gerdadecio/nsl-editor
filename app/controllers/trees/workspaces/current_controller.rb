@@ -21,7 +21,7 @@ class Trees::Workspaces::CurrentController < ApplicationController
   def toggle
     @tree_version = TreeVersion.find(params[:id])
     if session[:draft] &&
-       session[:draft]["id"] == params[:id].to_i
+        session[:draft]["id"] == params[:id].to_i
       unset_workspace
     else
       set_workspace
@@ -35,12 +35,12 @@ class Trees::Workspaces::CurrentController < ApplicationController
   # Need both because session variable loses ActiveRecord features
   # but activerecord variable dies after the request.
   def set_workspace
-    authorize! :set_workspace, @tree_version
+    authorize!(:set_workspace, @tree_version)
     session[:draft] = @working_draft = @tree_version
   end
 
   def unset_workspace
-    authorize! :set_workspace, @tree_version
+    authorize!(:set_workspace, @tree_version)
     remove_instance_variable(:@working_draft)
     session[:draft] = nil
   end

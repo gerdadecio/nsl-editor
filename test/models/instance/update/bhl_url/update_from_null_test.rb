@@ -31,9 +31,9 @@ class InstanceUpdateBHLURLFromNullTest < ActiveSupport::TestCase
     message = @instance.update_if_changed({ "bhl_url" => @new_value }, "fred")
     assert message.start_with?("Updated"), "Message should be 'Updated'"
     assert @instance.bhl_url.match(/#{@new_value}/),
-           "New bhl_url should be: #{@new_value}"
+      "New bhl_url should be: #{@new_value}"
     assert @instance.updated_at > @unchanged.updated_at,
-           "Updated date-time should be changed."
+      "Updated date-time should be changed."
     assert @instance.updated_by == "fred", "Updated by should be 'fred'."
   end
 end

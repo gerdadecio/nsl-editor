@@ -23,8 +23,10 @@ class AuthAsEdNoDupeOfIdWValStrAlsoMatchingCurrRec < ActiveSupport::TestCase
   test "no id with valid string also matching current record" do
     author = authors(:chaplin)
     author_to_avoid = author
-    assert_raise(RuntimeError,
-                 "Should raise a RuntimeError cannot be dupe of itself.") do
+    assert_raise(
+      RuntimeError,
+      "Should raise a RuntimeError cannot be dupe of itself.",
+    ) do
       Author::AsResolvedTypeahead::ForDuplicateOf.new(
         "", author.name, author_to_avoid
       )

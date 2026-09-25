@@ -25,15 +25,18 @@ load "test/models/search/on_name/test_helper.rb"
 class SearchOnNameIdsCommonsIncludedByDefaultTest < ActiveSupport::TestCase
   test "search on name ids commons included by default" do
     name = names(:argyle_apple)
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "name",
-                                                          query_string:
-                                                          "ids: #{name.id}",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "name",
+      query_string:
+            "ids: #{name.id}",
+      current_user:
+            build_edit_user,
+    )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
-    assert_equal 1, search.executed_query.results.size,
-                 "Expected common name to be included by default for ids query"
+    assert_equal 1,
+      search.executed_query.results.size,
+      "Expected common name to be included by default for ids query"
   end
 end

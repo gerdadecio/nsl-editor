@@ -29,13 +29,15 @@ class NameAsEdNoAuthIdWithStringMatchingTwoAbbrevsTest < ActiveSupport::TestCase
     # possibly different type of testing.
     author_1 = authors(:has_matching_abbrev_1)
     assert Author.where(abbrev: author_1.abbrev).size == 2,
-           "Should be two Authors with the same abbrev."
-    assert_raise(RuntimeError,
-                 "Should raise a RuntimeError for invalid author string.") do
+      "Should be two Authors with the same abbrev."
+    assert_raise(
+      RuntimeError,
+      "Should raise a RuntimeError for invalid author string.",
+    ) do
       Name::AsResolvedTypeahead::ForAuthor.new(
         "",
         author_1.abbrev,
-        "Some Author Name"
+        "Some Author Name",
       )
     end
   end

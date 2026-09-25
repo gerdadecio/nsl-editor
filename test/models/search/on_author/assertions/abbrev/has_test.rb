@@ -23,12 +23,14 @@ load "models/search/users.rb"
 class SearchOnAuthorAssertionAbbrevHasTest < ActiveSupport::TestCase
   test "has abbrev" do
     search = Search::Base.new(
-      ActiveSupport::HashWithIndifferentAccess.new(query_string: "has-abbrev:",
-                                                   query_target: "Author",
-                                                   current_user:
-                                                   build_edit_user)
+      ActiveSupport::HashWithIndifferentAccess.new(
+        query_string: "has-abbrev:",
+        query_target: "Author",
+        current_user:
+                build_edit_user,
+      ),
     )
-    assert !search.executed_query.results.empty?,
-           "Should find authors with abbrev."
+    assert_not search.executed_query.results.empty?,
+      "Should find authors with abbrev."
   end
 end

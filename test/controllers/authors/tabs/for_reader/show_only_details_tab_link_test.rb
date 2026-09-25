@@ -27,11 +27,15 @@ class AuthorReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
 
   test "should show only details tab link if reader requests details tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @author.id, tab: "tab_edit" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :show,
+      params: { id: @author.id, tab: "tab_edit" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :forbidden
   end
 end

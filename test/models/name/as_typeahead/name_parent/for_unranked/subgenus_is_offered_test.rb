@@ -25,9 +25,9 @@ class NameParentSubgenusIsOfferedForUnrankedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "a_subgenus",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "[unranked]").id
+      rank_id: NameRank.find_by(name: "[unranked]").id,
     )
-    expected_ranks = %w[Subgenus]
+    expected_ranks = ["Subgenus"]
     suggestions_should_only_include(
       typeahead.suggestions, "[unranked]", expected_ranks
     )

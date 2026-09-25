@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :nsl_simple_name_export do
     apc_comment { "Sample Apc comment" }

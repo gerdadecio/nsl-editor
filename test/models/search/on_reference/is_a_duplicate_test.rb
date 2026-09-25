@@ -23,13 +23,13 @@ load "test/models/search/users.rb"
 class IsADuplicateSearchTest < ActiveSupport::TestCase
   test "is a duplicate" do
     params = ActiveSupport::HashWithIndifferentAccess
-             .new(query_target: "reference",
-                  query_string: "is-duplicate:",
-                  current_user: build_edit_user)
+      .new(query_target: "reference",
+        query_string: "is-duplicate:",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert search.executed_query.results.size > 1,
-           "At least 1 result is expected."
+      "At least 1 result is expected."
   end
 end

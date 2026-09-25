@@ -35,14 +35,14 @@ class DetachedTreeElementDoesNotBlockDeleteTest < ActiveSupport::TestCase
     tree_element = tree_elements(:tree_element_not_attached_to_a_tree_version)
 
     assert tree_element.tree_version_elements.empty?,
-           "fixture should not be attached to any tree_version"
+      "fixture should not be attached to any tree_version"
   end
 
   test "instance is not visible via tree_join_v" do
     instance = instances(:no_source_system)
 
     assert instance.tree_join_v.empty?,
-           "tree_join_v should not see a tree_element with no tree_version_element"
+      "tree_join_v should not see a tree_element with no tree_version_element"
   end
 
   test "instance is still found via the tree_elements association" do
@@ -55,7 +55,7 @@ class DetachedTreeElementDoesNotBlockDeleteTest < ActiveSupport::TestCase
     instance = instances(:no_source_system)
 
     assert_not instance.in_any_tree?,
-               "in_any_tree? should not count a tree_element that is not in tree_join_v"
+      "in_any_tree? should not count a tree_element that is not in tree_join_v"
   end
 
   test "in_any_tree? is true for a tree_element that is attached to a tree version" do
@@ -68,6 +68,6 @@ class DetachedTreeElementDoesNotBlockDeleteTest < ActiveSupport::TestCase
     instance = instances(:no_source_system)
 
     assert instance.allow_delete?,
-           "a detached tree_element alone should not stop a delete being offered"
+      "a detached tree_element alone should not stop a delete being offered"
   end
 end

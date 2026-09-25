@@ -18,20 +18,20 @@
 #
 class Search::OnInstance::Predicate
   attr_reader :canon_field,
-              :canon_value,
-              :trailing_wildcard,
-              :leading_wildcard,
-              :multiple_values,
-              :predicate,
-              :value_frequency,
-              :processed_value,
-              :tokenize,
-              :field,
-              :value,
-              :has_scope,
-              :scope_,
-              :order,
-              :join_name
+    :canon_value,
+    :trailing_wildcard,
+    :leading_wildcard,
+    :multiple_values,
+    :predicate,
+    :value_frequency,
+    :processed_value,
+    :tokenize,
+    :field,
+    :value,
+    :has_scope,
+    :scope_,
+    :order,
+    :join_name
 
   def initialize(field, value)
     debug("Start")
@@ -48,7 +48,7 @@ class Search::OnInstance::Predicate
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnInstance::Predicate - #{s}")
+    Rails.logger.debug { "Search::OnInstance::Predicate - #{s}" }
   end
 
   def inspect
@@ -75,10 +75,10 @@ class Search::OnInstance::Predicate
   def apply_scope
     @has_scope = @scope_.present?
     @value_frequency = if @has_scope
-                         1
-                       else
-                         @predicate.count("?")
-                       end
+      1
+    else
+      @predicate.count("?")
+    end
   end
 
   def process_value
@@ -104,13 +104,9 @@ class Search::OnInstance::Predicate
   end
 
   def build_is_null_predicate
-    if @rule[:not_exists_clause].present?
-      @rule[:not_exists_clause]
-    else
-      @rule[:where_clause].gsub("= ?", "is null")
-                          .gsub("like lower(?)", "is null")
-                          .gsub("like lower(f_unaccent(?))", "is null")
-    end
+    @rule[:not_exists_clause].presence || @rule[:where_clause].gsub("= ?", "is null")
+      .gsub("like lower(?)", "is null")
+      .gsub("like lower(f_unaccent(?))", "is null")
   end
 
   def build_canon_value
@@ -137,7 +133,7 @@ class Search::OnInstance::Predicate
       field
     elsif Search::OnInstance::FieldRule::RULES.key?(
       # redundant?
-      Search::OnInstance::FieldAbbrev::ABBREVS[field]
+      Search::OnInstance::FieldAbbrev::ABBREVS[field],
     )
       Search::OnInstance::FieldAbbrev::ABBREVS[field]
     elsif field_matches_a_note_key?(field)

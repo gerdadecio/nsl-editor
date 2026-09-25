@@ -24,18 +24,25 @@ class InstanceTypeUnpublishedCitationOptionsTest < ActiveSupport::TestCase
     options = InstanceType.unpublished_citation_options
     assert_equal 7, options.size, "Should be 7 of them."
     @names = options.collect(&:first)
-    @expected = ["common name", "orthographic variant", "unsourced doubtful misapplied",
-                 "unsourced doubtful pro parte misapplied", "unsourced misapplied", "unsourced pro parte misapplied", "vernacular name"]
+    @expected = [
+      "common name",
+      "orthographic variant",
+      "unsourced doubtful misapplied",
+      "unsourced doubtful pro parte misapplied",
+      "unsourced misapplied",
+      "unsourced pro parte misapplied",
+      "vernacular name"
+    ]
   end
 
   test "instance type unpublished citation options" do
     @expected.each do |expected|
       assert @names.include?(expected),
-             "Upub citation instance type options should include #{expected}"
+        "Upub citation instance type options should include #{expected}"
     end
     @names.each do |name|
       assert @expected.include?(name),
-             "#{name} is unexpected as an unpub citation type option"
+        "#{name} is unexpected as an unpub citation type option"
     end
   end
 end

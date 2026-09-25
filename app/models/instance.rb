@@ -86,14 +86,17 @@ class Instance < ApplicationRecord
   self.table_name = "instance"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-  attr_accessor :expanded_instance_type, :display_as, :relationship_flag,
-                :give_me_focus,
-                :show_primary_instance_type, :data_fix_in_process,
-                :consider_taxo,
-                :concept_warning_bypassed,
-                :multiple_primary_override,
-                :duplicate_instance_override,
-                :name_change_permitted
+  attr_accessor :expanded_instance_type,
+    :display_as,
+    :relationship_flag,
+    :give_me_focus,
+    :show_primary_instance_type,
+    :data_fix_in_process,
+    :consider_taxo,
+    :concept_warning_bypassed,
+    :multiple_primary_override,
+    :duplicate_instance_override,
+    :name_change_permitted
 
   SEARCH_LIMIT = 50
   MULTIPLE_PRIMARY_WARNING = "Saving this instance would result in multiple primary instances for the same name."
@@ -103,15 +106,15 @@ class Instance < ApplicationRecord
   has_many :profile_items, class_name: "Profile::ProfileItem", foreign_key: "instance_id"
   has_many :product_item_configs, class_name: "Profile::ProductItemConfig", through: :profile_items
   has_many :children,
-           class_name: "Instance",
-           foreign_key: "parent_id",
-           dependent: :restrict_with_exception
+    class_name: "Instance",
+    foreign_key: "parent_id",
+    dependent: :restrict_with_exception
 
   has_many :tree_join_v
 
-  scope :product_item_config_id, -> (product_item_config_id) {
+  scope :product_item_config_id, ->(product_item_config_id) {
     joins(:product_item_configs)
-      .where(product_item_configs: {id: product_item_config_id})
+      .where(product_item_configs: { id: product_item_config_id })
       .distinct
   }
 
@@ -120,19 +123,27 @@ class Instance < ApplicationRecord
   attr_accessor :copy_profile_items
 
   def self.to_csv
-    attributes = %w[id]
-    headings = ["Instance ID", "Name ID", "Full Name", "Reference ID",
-                "Reference Citation", "Number of Notes", "Instance notes"]
+    headings = [
+      "Instance ID",
+      "Name ID",
+      "Full Name",
+      "Reference ID",
+      "Reference Citation",
+      "Number of Notes",
+      "Instance notes"
+    ]
     CSV.generate(headers: true) do |csv|
       csv << headings
       all.each do |instance|
-        csv << [instance.id,
-                instance.name.id,
-                instance.name.full_name,
-                instance.reference_id,
-                instance.reference.citation,
-                instance.instance_notes.size,
-                instance.collected_notes]
+        csv << [
+          instance.id,
+          instance.name.id,
+          instance.name.full_name,
+          instance.reference_id,
+          instance.reference.citation,
+          instance.instance_notes.size,
+          instance.collected_notes
+        ]
       end
     end
   rescue StandardError => e
@@ -268,25 +279,27 @@ class Instance < ApplicationRecord
   }
 
   scope :created_n_days_ago,
-        ->(n) { where("current_date - created_at::date = ?", n) }
+    ->(n) { where("current_date - created_at::date = ?", n) }
   scope :updated_n_days_ago,
-        ->(n) { where("current_date - updated_at::date = ?", n) }
+    ->(n) { where("current_date - updated_at::date = ?", n) }
   query = "current_date - created_at::date = ? " \
-          "or current_date - updated_at::date = ?"
+    "or current_date - updated_at::date = ?"
   scope :changed_n_days_ago,
-        ->(n) { where(query, n, n) }
+    ->(n) { where(query, n, n) }
 
   scope :created_in_the_last_n_days,
-        ->(n) { where("current_date - created_at::date < ?", n) }
+    ->(n) { where("current_date - created_at::date < ?", n) }
   scope :updated_in_the_last_n_days,
-        ->(n) { where("current_date - updated_at::date < ?", n) }
+    ->(n) { where("current_date - updated_at::date < ?", n) }
 
   scope :for_ref, ->(ref_id) { where(reference_id: ref_id) }
   scope :for_ref_and_correlated_on_name_id, lambda \
     { |ref_id|
-                                              where(["exists (select null from instance i2
+                                              where([
+                                                "exists (select null from instance i2
              where i2.reference_id = ? and instance.name_id = i2.name_id)",
-                                                     ref_id])
+                                                ref_id
+                                              ])
                                             }
   # scope :order_by_name_full_name, -> { joins(:name).order(name: [:full_name])}
   scope :order_by_name_full_name, -> { joins(:name).order(Arel.sql(" name.full_name ")) }
@@ -304,39 +317,41 @@ class Instance < ApplicationRecord
   belongs_to :instance_type, optional: true
   belongs_to :this_cites, class_name: "Instance", foreign_key: "cites_id", optional: true
   has_many :reverse_of_this_cites,
-           class_name: "Instance",
-           inverse_of: :this_cites,
-           foreign_key: "cites_id"
-  has_many :citeds, class_name:
-      "Instance",
-                    inverse_of: :this_cites,
-                    foreign_key: "cites_id"
+    class_name: "Instance",
+    inverse_of: :this_cites,
+    foreign_key: "cites_id"
+  has_many :citeds,
+    class_name:
+          "Instance",
+    inverse_of: :this_cites,
+    foreign_key: "cites_id"
 
   belongs_to :this_is_cited_by,
-             class_name: "Instance",
-             foreign_key: "cited_by_id", optional: true
+    class_name: "Instance",
+    foreign_key: "cited_by_id",
+    optional: true
 
   has_many :reverse_of_this_is_cited_by,
-           class_name: "Instance",
-           inverse_of: :this_is_cited_by,
-           foreign_key: "cited_by_id"
+    class_name: "Instance",
+    inverse_of: :this_is_cited_by,
+    foreign_key: "cited_by_id"
 
   has_many :citations,
-           class_name: "Instance",
-           inverse_of: :this_is_cited_by,
-           foreign_key: "cited_by_id"
+    class_name: "Instance",
+    inverse_of: :this_is_cited_by,
+    foreign_key: "cited_by_id"
 
   has_many :synonyms,
-           class_name: "Instance",
-           inverse_of: :this_is_cited_by,
-           foreign_key: "cited_by_id"
+    class_name: "Instance",
+    inverse_of: :this_is_cited_by,
+    foreign_key: "cited_by_id"
 
   has_many :instance_notes,
-           dependent: :restrict_with_error
+    dependent: :restrict_with_error
 
   has_many :loader_names,
-           class_name: "Loader::Name",
-           foreign_key: "loaded_from_instance_id"
+    class_name: "Loader::Name",
+    foreign_key: "loaded_from_instance_id"
 
   # has_many :apc_instance_notes,
   #         class_name: "InstanceNote",
@@ -350,28 +365,32 @@ class Instance < ApplicationRecord
   has_many :nodes, class_name: "TreeNode"
   has_many :tree_elements, class_name: "Tree::Element"
 
-  validates_presence_of :name_id,
-                        :reference_id,
-                        :instance_type_id,
-                        message: "cannot be empty."
+  validates :name_id,
+    :reference_id,
+    :instance_type_id,
+    presence: { message: "cannot be empty." }
 
   validates :name_id,
-            unless: :duplicate_instance_override?,
-            uniqueness:
-                { scope: %i[reference_id
-                            instance_type_id
-                            cites_id
-                            cited_by_id
-                            page],
-                  message: lambda do |_object, data|
-                             " - instance for Name #{data[:value]} already exists with the same reference, type and page."
-                           end }
+    unless: :duplicate_instance_override?,
+    uniqueness:
+        {
+          scope: [
+            :reference_id,
+            :instance_type_id,
+            :cites_id,
+            :cited_by_id,
+            :page
+          ],
+          message: lambda do |_object, data|
+            " - instance for Name #{data[:value]} already exists with the same reference, type and page."
+          end,
+        }
 
   validate :relationship_ref_must_match_cited_by_instance_ref,
-           :synonymy_name_must_match_cites_instance_name,
-           :cites_id_with_no_cited_by_id_is_invalid,
-           :cannot_cite_itself,
-           :cannot_be_cited_by_itself
+    :synonymy_name_must_match_cites_instance_name,
+    :cites_id_with_no_cited_by_id_is_invalid,
+    :cannot_cite_itself,
+    :cannot_be_cited_by_itself
   validate :synonymy_must_keep_cites_id, on: :update
   validate :name_id_must_not_change, on: :update
   validate :standalone_reference_id_can_change_if_no_dependents, on: :update
@@ -490,23 +509,27 @@ class Instance < ApplicationRecord
   end
 
   def double_synonym_case_a?
-    !Instance.where(["instance.id != ? and instance.cited_by_id = ?",
-                     id || 0,
-                     this_is_cited_by.id])
-             .joins(:this_cites)
-             .where(this_cites_instance: { name_id: name.id })
-             .joins(:instance_type)
-             .where(instance_type: { misapplied: false })
-             .empty?
+    !Instance.where([
+      "instance.id != ? and instance.cited_by_id = ?",
+      id || 0,
+      this_is_cited_by.id
+    ])
+      .joins(:this_cites)
+      .where(this_cites_instance: { name_id: name.id })
+      .joins(:instance_type)
+      .where(instance_type: { misapplied: false })
+      .empty?
   end
 
   def double_synonym_case_b?
-    !Instance.where(["instance.id != ? and instance.cited_by_id = ?",
-                     id || 0,
-                     this_is_cited_by.id])
-             .joins(:this_cites)
-             .where(this_cites_instance: { name_id: name.id })
-             .empty?
+    !Instance.where([
+      "instance.id != ? and instance.cited_by_id = ?",
+      id || 0,
+      this_is_cited_by.id
+    ])
+      .joins(:this_cites)
+      .where(this_cites_instance: { name_id: name.id })
+      .empty?
   end
 
   def name_cannot_be_synonym_of_itself
@@ -540,22 +563,25 @@ class Instance < ApplicationRecord
   end
 
   def self.changed_in_the_last_n_days(n)
-    Instance.where("current_date - created_at::date < ? " \
-                   "or current_date - updated_at::date < ?",
-                   n, n)
+    Instance.where(
+      "current_date - created_at::date < ? " \
+        "or current_date - updated_at::date < ?",
+      n,
+      n,
+    )
   end
 
   def name_id_must_not_change
     return if name_change_permitted
+
     errors.add(:base, "You cannot use a different name.") if name_id_changed?
   end
-
 
   # A standalone instance with no dependents can change reference.
   def standalone_reference_id_can_change_if_no_dependents
     return unless reference_id_changed? &&
-                  standalone? &&
-                  reverse_of_this_is_cited_by.present?
+      standalone? &&
+      reverse_of_this_is_cited_by.present?
 
     errors(:base, "this instance has relationships, ")
     errors(:base, "so you cannot alter the reference.")
@@ -577,17 +603,19 @@ class Instance < ApplicationRecord
 
   def relationship_ref_must_match_cited_by_instance_ref
     return unless relationship? &&
-                  !(reference.id == this_is_cited_by.reference.id)
+      !(reference.id == this_is_cited_by.reference.id)
 
-    errors.add(:reference_id,
-               "must match cited by instance reference")
+    errors.add(
+      :reference_id,
+      "must match cited by instance reference",
+    )
   end
 
   def to_s
-    "#{id}; \n#{type_of_instance} instance; \nname: #{name.try('full_name')}:
-    \nref: #{reference.try('citation')}; \ncited_by: #{cited_by_id}
-    \ncited by ref: #{this_is_cited_by.try('reference').try('citation')}
-    \ncites name: #{this_cites.try('name').try('full_name')}"
+    "#{id}; \n#{type_of_instance} instance; \nname: #{name.try("full_name")}:
+    \nref: #{reference.try("citation")}; \ncited_by: #{cited_by_id}
+    \ncited by ref: #{this_is_cited_by.try("reference").try("citation")}
+    \ncites name: #{this_cites.try("name").try("full_name")}"
   rescue StandardError => e
     "Error in to_s: #{e}"
   end
@@ -669,12 +697,12 @@ class Instance < ApplicationRecord
 
   def is_cited_by
     Instance.where(cited_by_id: id)
-            .joins(:instance_type, :name)
-            .joins("inner join name_status ns on name.name_status_id = ns.id")
-            .joins("left outer join instance cites on instance.cites_id = cites.id")
-            .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
-            .in_synonymy_order
-            .collect do |instance|
+      .joins(:instance_type, :name)
+      .joins("inner join name_status ns on name.name_status_id = ns.id")
+      .joins("left outer join instance cites on instance.cites_id = cites.id")
+      .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
+      .in_synonymy_order
+      .collect do |instance|
       instance.display_as = "cited-by-instance"
       instance
     end
@@ -762,13 +790,9 @@ class Instance < ApplicationRecord
     standalone? ? "standalone" : "relationship"
   end
 
-  def misapplied?
-    instance_type.misapplied?
-  end
+  delegate :misapplied?, to: :instance_type
 
-  def unsourced?
-    instance_type.unsourced?
-  end
+  delegate :unsourced?, to: :instance_type
 
   def accepts_notes?
     !relationship? || (misapplied? && unsourced?)
@@ -799,8 +823,10 @@ class Instance < ApplicationRecord
 
   def self.consume_token(search_string, requested_token)
     found_token = search_string.match(/#{requested_token.downcase}:[^ ]*/)
-    [!found_token.blank?,
-     search_string.gsub(/#{requested_token.downcase}:/, "")]
+    [
+      found_token.present?,
+      search_string.gsub(/#{requested_token.downcase}:/, "")
+    ]
   end
 
   def self.get_id_for(search_string, query_token)
@@ -872,9 +898,7 @@ class Instance < ApplicationRecord
     instance_notes.to_a.keep_if { |n| n.instance_note_key.apc_dist? }.size.zero?
   end
 
-  def year
-    reference.year
-  end
+  delegate :year, to: :reference
 
   def listing_citation
     (reference.present? ? reference.citation_html : "") +

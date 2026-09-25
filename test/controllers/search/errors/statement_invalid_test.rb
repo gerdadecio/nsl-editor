@@ -32,13 +32,17 @@ class SearchControllerStatementInvalidTest < ActionController::TestCase
   test "a StatementInvalid error during search renders the search page instead of crashing" do
     SearchController.stub_any_instance(
       :run_local_search,
-      -> { raise ActiveRecord::StatementInvalid, "malformed SQL" }
+      -> { raise ActiveRecord::StatementInvalid, "malformed SQL" },
     ) do
-      get(:search,
-          params: { query_target: "Names", query_string: "angophora" },
-          session: { username: "fred",
-                     user_full_name: "Fred Jones",
-                     groups: [] })
+      get(
+        :search,
+        params: { query_target: "Names", query_string: "angophora" },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: [],
+        },
+      )
     end
 
     assert_response :success

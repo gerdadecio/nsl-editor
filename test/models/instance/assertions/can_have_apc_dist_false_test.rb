@@ -23,6 +23,6 @@ class InstanceAssertionsCanHaveApcDistFalseTest < ActiveSupport::TestCase
   test "instance can have apc dist false" do
     instance = instances(:has_apc_dist_note)
     assert_not instance.can_have_apc_dist?,
-               "Not allowed to have an APC Dist. Note"
+      "Not allowed to have an APC Dist. Note"
   end
 end

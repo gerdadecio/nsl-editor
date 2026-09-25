@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 #
 #
@@ -6,6 +8,7 @@
 # Tree Element Profile
 module Tree::Element::Profile
   extend ActiveSupport::Concern
+
   def profile_value(key_string)
     key = profile_key(key_string)
     if key
@@ -16,11 +19,11 @@ module Tree::Element::Profile
   end
 
   def profile_key(pkey)
-    return nil unless profile.present?
+    return unless profile.present?
 
-    if pkey.is_a? String
+    if pkey.is_a?(String)
       profile.keys.find { |key| key == pkey }
-    elsif pkey.is_a? Regexp
+    elsif pkey.is_a?(Regexp)
       profile.keys.find { |key| key =~ pkey }
     else
       raise "Not a string or a regexp...."

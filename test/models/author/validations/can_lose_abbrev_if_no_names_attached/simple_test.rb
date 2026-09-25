@@ -23,8 +23,9 @@ class AuthorCanLoseAbbrevIfNoNamesSimpleTest < ActiveSupport::TestCase
   test "author can lose abbrev if no names attached" do
     author = authors(:joe)
     assert author.valid?, "Joe should be valid"
-    assert_equal 0, author.names.size,
-                 "Joe should have no names attached"
+    assert_equal 0,
+      author.names.size,
+      "Joe should have no names attached"
     assert author.abbrev.present?, "Joe should start with an abbreviation."
     author.abbrev = ""
     assert author.valid?, "Joe should be valid without an abbrev"

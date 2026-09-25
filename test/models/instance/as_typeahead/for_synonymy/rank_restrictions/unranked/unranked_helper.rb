@@ -18,6 +18,8 @@
 #
 def check_unranked_inclusion(rank_string)
   escaped_s = Regexp.escape(rank_string)
-  assert @rank_names.select { |e| e.match(/\A#{escaped_s}\z/) }.size >= 1,
-         "Expect at least one #{rank_string} to be suggested"
+  assert(
+    @rank_names.select { |e| e.match(/\A#{escaped_s}\z/) }.size >= 1,
+    "Expect at least one #{rank_string} to be suggested",
+  )
 end

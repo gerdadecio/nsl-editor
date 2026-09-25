@@ -23,13 +23,13 @@ load "models/search/users.rb"
 class ForInstanceTypeUnknown < ActiveSupport::TestCase
   test "instance type search for unknown" do
     search = Search::Base
-             .new(ActiveSupport::HashWithIndifferentAccess
+      .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_string: "type: [unknown]",
-                       query_target: "Instance",
-                       current_user: build_edit_user))
+                    query_target: "Instance",
+                    current_user: build_edit_user))
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert search.executed_query.results.size.positive?,
-           "At least one record expected."
+      "At least one record expected."
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 #
 # Names can be in a loader batch
@@ -6,12 +7,12 @@ module Loader::Name::ReviewCommentContext
 
   def contexts
     case record_type
-    when 'accepted'
-      ['accepted','concept-note','distribution']
-    when 'excluded'
-      ['excluded','concept-note']
+    when "accepted"
+      ["accepted", "concept-note", "distribution"]
+    when "excluded"
+      ["excluded", "concept-note"]
     else
-      [self.record_type]
+      [record_type]
     end
   end
 end

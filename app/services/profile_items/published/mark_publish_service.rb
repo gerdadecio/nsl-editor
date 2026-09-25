@@ -1,5 +1,6 @@
-class ProfileItems::Published::MarkPublishService < BaseService
+# frozen_string_literal: true
 
+class ProfileItems::Published::MarkPublishService < BaseService
   validate :draft_version_profile_item
   validate :already_published_profile_item
 
@@ -27,11 +28,13 @@ class ProfileItems::Published::MarkPublishService < BaseService
 
   def draft_version_profile_item
     return if profile_item.draft_version?
+
     errors.add(:base, "Profile item must be a draft version of a published item")
   end
 
   def already_published_profile_item
     return unless profile_item.published?
+
     errors.add(:base, "Profile item is already published")
   end
 
@@ -51,14 +54,13 @@ class ProfileItems::Published::MarkPublishService < BaseService
       item.current_user = user
     end
     profile_item.save
-    return errors.merge!(profile_item.errors) if profile_item.errors.any?
+    errors.merge!(profile_item.errors) if profile_item.errors.any?
   end
 
   def update_previous_profile_item
     return unless previous_profile_item
 
     previous_profile_item.update(end_date: profile_item.published_date)
-    return errors.merge!(previous_profile_item.errors) if previous_profile_item.errors.any?
+    errors.merge!(previous_profile_item.errors) if previous_profile_item.errors.any?
   end
-
 end

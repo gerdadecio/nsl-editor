@@ -27,11 +27,15 @@ class NameForbidCommentsTabForReaderTest < ActionController::TestCase
 
   test "reader requests forbidden comments tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @name.id, tab: "tab_comments" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :show,
+      params: { id: @name.id, tab: "tab_comments" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :forbidden
   end
 end

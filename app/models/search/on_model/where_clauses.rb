@@ -28,7 +28,7 @@ class Search::OnModel::WhereClauses
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnModel::WhereClause - #{s}")
+    Rails.logger.debug { "Search::OnModel::WhereClause - #{s}" }
   end
 
   def build_sql
@@ -55,11 +55,13 @@ class Search::OnModel::WhereClauses
     if field.blank? && value.blank?
       @sql
     else
-      field_or_default = field.blank? ? @parsed_request.default_query_directive : field
+      field_or_default = field.presence || @parsed_request.default_query_directive
       debug("field_or_default: #{field_or_default}")
-      rule = Search::OnModel::Predicate.new(@parsed_request,
-                                            field_or_default,
-                                            value)
+      rule = Search::OnModel::Predicate.new(
+        @parsed_request,
+        field_or_default,
+        value,
+      )
       @do_count_totals = false if rule.do_count_totals == false
       apply_rule(rule)
       apply_order(rule)
@@ -75,7 +77,7 @@ class Search::OnModel::WhereClauses
       #
       # Remove wildcards because users add them by habit and it gives bad results in text search
       # Trialling this May 2025
-      @sql = @sql.send(rule.scope_, rule.value.gsub(/[*%]/,' ')).reorder(@parsed_request.default_order_column)
+      @sql = @sql.send(rule.scope_, rule.value.gsub(/[*%]/, " ")).reorder(@parsed_request.default_order_column)
     else
       apply_predicate(rule, rule.value_frequency)
     end
@@ -98,33 +100,66 @@ class Search::OnModel::WhereClauses
   end
 
   def supply_token_twice(rule, token)
-    @sql = @sql.where(rule.predicate,
-                      token, token)
+    @sql = @sql.where(
+      rule.predicate,
+      token,
+      token,
+    )
   end
 
   def supply_token_thrice(rule, token)
-    @sql = @sql.where(rule.predicate,
-                      token, token, token)
+    @sql = @sql.where(
+      rule.predicate,
+      token,
+      token,
+      token,
+    )
   end
 
   def supply_token_4_times(rule, token)
-    @sql = @sql.where(rule.predicate,
-                      token, token, token, token)
+    @sql = @sql.where(
+      rule.predicate,
+      token,
+      token,
+      token,
+      token,
+    )
   end
 
   def supply_token_5_times(rule, token)
-    @sql = @sql.where(rule.predicate,
-                      token, token, token, token, token)
+    @sql = @sql.where(
+      rule.predicate,
+      token,
+      token,
+      token,
+      token,
+      token,
+    )
   end
 
   def supply_token_6_times(rule, token)
-    @sql = @sql.where(rule.predicate,
-                      token, token, token, token, token, token)
+    @sql = @sql.where(
+      rule.predicate,
+      token,
+      token,
+      token,
+      token,
+      token,
+      token,
+    )
   end
 
   def supply_token_7_times(rule, token)
-    @sql = @sql.where(rule.predicate,
-                      token, token, token, token, token, token, token)
+    @sql = @sql.where(
+      rule.predicate,
+      token,
+      token,
+      token,
+      token,
+      token,
+      token,
+      token,
+    )
   end
 
   def apply_predicate_for_token(rule, token)
@@ -153,9 +188,9 @@ class Search::OnModel::WhereClauses
 
   def apply_order(rule)
     @sql = if rule.order
-             @sql.order(Arel.sql(rule.order))
-           else
-             @sql.order(@parsed_request.default_order_column)
-           end
+      @sql.order(Arel.sql(rule.order))
+    else
+      @sql.order(@parsed_request.default_order_column)
+    end
   end
 end

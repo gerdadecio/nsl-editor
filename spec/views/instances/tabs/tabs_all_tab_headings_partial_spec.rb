@@ -421,7 +421,7 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         label: "tab_edit",
         tab: "tab_edit",
         selector: "a#instance-edit-tab",
-        permit: proc { allow(view).to(receive(:can?).with(:edit, instance).and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with(:edit, instance).and_return(true)) },
       },
       {
         label: "tab_edit_profile_v2",
@@ -429,19 +429,19 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         selector: "a#instance-edit-tab-profile-v2-tab",
         permit: proc {
           allow(view).to(receive(:can?).with(:manage_draft_secondary_reference, instance).and_return(true))
-        }
+        },
       },
       {
         label: "tab_edit_notes",
         tab: "tab_edit_notes",
         selector: "a#instance-edit-notes-tab",
-        permit: proc { allow(view).to(receive(:can?).with("instance_notes", "edit").and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with("instance_notes", "edit").and_return(true)) },
       },
       {
         label: "tab_synonymy",
         tab: "tab_synonymy",
         selector: "a#instance-cite-this-instance-tab",
-        permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with(:create, Instance).and_return(true)) },
       },
       {
         label: "tab_synonymy_for_profile_v2",
@@ -449,13 +449,13 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         selector: "a#instance-cite-this-instance-for-profile-v2-tab",
         permit: proc {
           allow(view).to(receive(:can?).with(:synonymy_as_draft_secondary_reference, instance).and_return(true))
-        }
+        },
       },
       {
         label: "tab_unpublished_citation",
         tab: "tab_unpublished_citation",
         selector: "a#unpublished-citation-tab",
-        permit: proc { allow(view).to(receive(:can?).with(:create, instance).and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with(:create, instance).and_return(true)) },
       },
       {
         label: "tab_unpublished_citation_for_profile_v2",
@@ -464,7 +464,7 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         permit: proc {
           allow(view).to(receive(:can?)
             .with(:unpublished_citation_as_draft_secondary_reference, instance).and_return(true))
-        }
+        },
       },
       {
         label: "tab_classification",
@@ -475,19 +475,19 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
           assign(:working_draft, working_draft)
           allow(view).to(receive(:can?).with("instances", "tab_classification").and_return(true))
           allow(view).to(receive(:can?).with(:place_name, working_draft).and_return(true))
-        }
+        },
       },
       {
         label: "tab_comments",
         tab: "tab_comments",
         selector: "a#instance-comments-tab",
-        permit: proc { allow(view).to(receive(:can?).with("comments", "create").and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with("comments", "create").and_return(true)) },
       },
       {
         label: "tab_copy_to_new_reference",
         tab: "tab_copy_to_new_reference",
         selector: "a#instance-copy-to-new-reference-tab",
-        permit: proc { allow(view).to(receive(:can?).with("instances", "copy_standalone").and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with("instances", "copy_standalone").and_return(true)) },
       },
       {
         label: "tab_copy_to_new_profile_v2",
@@ -495,13 +495,13 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         selector: "a#instance-copy-to-new-profile-v2-tab",
         permit: proc {
           allow(view).to(receive(:can?).with(:copy_as_draft_secondary_reference, Instance).and_return(true))
-        }
+        },
       },
       {
         label: "tab_profile_details",
         tab: "tab_profile_details",
         selector: "a#instance-profile-tab",
-        permit: proc { allow(view).to(receive(:can?).with("classification", "place").and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with("classification", "place").and_return(true)) },
       },
       {
         label: "tab_edit_profile",
@@ -510,13 +510,13 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         permit: proc {
           allow(Rails.configuration).to(receive(:profile_edit_aware).and_return(true))
           allow(view).to(receive(:can?).with("tree/elements", "update_profile").and_return(true))
-        }
+        },
       },
       {
         label: "tab_batch_loader",
         tab: "tab_batch_loader",
         selector: "a#instance-batch-loader-tab",
-        permit: proc { allow(view).to(receive(:can?).with("loader/batches", "process").and_return(true)) }
+        permit: proc { allow(view).to(receive(:can?).with("loader/batches", "process").and_return(true)) },
       },
       {
         label: "tab_batch_loader_2",
@@ -525,7 +525,7 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         permit: proc {
           allow(view).to(receive(:can?).with("loader/batches", "process").and_return(true))
           allow(view).to(receive(:can?).with("loader/instances-loader-2", "use").and_return(true))
-        }
+        },
       },
       {
         label: "tab_profile_v2",
@@ -534,7 +534,7 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
         permit: proc {
           allow(view).to(receive(:can?).with(:manage_profile, instance).and_return(true))
           allow(Rails.configuration).to(receive(:profile_v2_aware).and_return(true))
-        }
+        },
       }
     ]
 

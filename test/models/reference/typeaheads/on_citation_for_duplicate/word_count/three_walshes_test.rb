@@ -24,7 +24,7 @@ class TAOnCitationForDupeWordCountThreeWalshesTest < ActiveSupport::TestCase
   test "reference typeahead on citation word count three walshes" do
     typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "walsh walsh walsh",
-      references(:book_by_brassard).id
+      references(:book_by_brassard).id,
     )
     assert_equal 0, typeahead.results.size, "Should be no records returned."
   end

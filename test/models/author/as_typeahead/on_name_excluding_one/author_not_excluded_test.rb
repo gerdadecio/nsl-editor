@@ -24,7 +24,7 @@ class AuthorAsTypeaheadOnNameExcludingOneSimpleTest < ActiveSupport::TestCase
   test "haeckel not excluded" do
     result = Author::AsTypeahead.on_name_duplicate_of(
       "haeck",
-      authors(:haeckel).id + 1
+      authors(:haeckel).id + 1,
     )
     assert_equal 1, result.size, "Expecting 1 record for 'haeck'."
     ids = result.collect { |author| author[:id] }

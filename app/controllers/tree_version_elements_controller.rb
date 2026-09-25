@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class TreeVersionElementsController < ApplicationController
-  before_action :find_tree_version_element, only: %i[show tab]
+  before_action :find_tree_version_element, only: [:show, :tab]
 
   # GET /tree_vesions/1
   # GET /tree_vesions/1/tab/:tab
@@ -27,10 +27,10 @@ class TreeVersionElementsController < ApplicationController
     set_tab
     set_tab_index
     @take_focus = params[:take_focus] == "true"
-    render "show", layout: false
+    render("show", layout: false)
   end
 
-  alias tab show
+  alias_method :tab, :show
 
   private
 
@@ -38,7 +38,7 @@ class TreeVersionElementsController < ApplicationController
     @tree_version_element = TreeVersionElement.find(params[:element_link])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the tree version element."
-    redirect_to tree_version_elements_path
+    redirect_to(tree_version_elements_path)
   end
 
   def tree_version_element_params
@@ -47,10 +47,10 @@ class TreeVersionElementsController < ApplicationController
 
   def set_tab
     @tab = if params[:tab].present? && params[:tab] != "undefined"
-             params[:tab]
-           else
-             "tab_details"
-           end
+      params[:tab]
+    else
+      "tab_details"
+    end
   end
 
   def set_tab_index

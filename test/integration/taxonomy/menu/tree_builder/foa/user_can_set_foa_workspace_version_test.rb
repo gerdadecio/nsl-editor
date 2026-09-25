@@ -25,13 +25,17 @@ class TreeBuilderFoaUserSetWorkspaceVersionTest < ActionController::TestCase
   test "foa tree builder can set workspace version" do
     user = users(:foa_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
-    post(:toggle,
-         params: {id: foa_draft.id},
-         format: :js,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    groups: ["login"] })
-    assert_response :success, 'Should be able to set draft as current workspace'
-    assert_equal foa_draft.id, session[:draft].id, 'Should have set the session draft'
+    post(
+      :toggle,
+      params: { id: foa_draft.id },
+      format: :js,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        groups: ["login"],
+      },
+    )
+    assert_response :success, "Should be able to set draft as current workspace"
+    assert_equal foa_draft.id, session[:draft].id, "Should have set the session draft"
   end
 end

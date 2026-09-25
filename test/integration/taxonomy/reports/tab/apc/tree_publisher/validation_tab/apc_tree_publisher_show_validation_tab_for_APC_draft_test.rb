@@ -26,15 +26,18 @@ class APCTreePublisherShowValidationTabForAPCDraftTest < ActionController::TestC
   test "APC tree publisher can show validation tab for APC draft" do
     user = users(:apc_tax_publisher)
     apc_draft = tree_versions(:apc_draft_version)
-    tve = tree_version_elements(:tve_for_red_gum)
-    get(:show_valrep,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: apc_draft,
-                    groups: ["login"]})
-    assert_response :success, 'APC tree publisher should be able to show validation tab for APC draft'
+    tree_version_elements(:tve_for_red_gum)
+    get(
+      :show_valrep,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: apc_draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :success, "APC tree publisher should be able to show validation tab for APC draft"
   end
 end
-

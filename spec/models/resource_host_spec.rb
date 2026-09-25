@@ -2,9 +2,9 @@
 
 require "rails_helper"
 
-RSpec.describe ResourceHost, type: :model do
+RSpec.describe(ResourceHost, type: :model) do
   describe "associations" do
-    it { is_expected.to have_many(:name_resources) }
+    it { is_expected.to(have_many(:name_resources)) }
   end
 
   describe "validations" do
@@ -12,7 +12,7 @@ RSpec.describe ResourceHost, type: :model do
       let(:resource_host) { create(:resource_host) }
 
       it "is valid" do
-        expect(resource_host).to be_valid
+        expect(resource_host).to(be_valid)
       end
     end
 
@@ -20,8 +20,8 @@ RSpec.describe ResourceHost, type: :model do
       let(:resource_host) { build(:resource_host, resolving_url: nil) }
 
       it "is not valid" do
-        expect(resource_host).not_to be_valid
-        expect(resource_host.errors[:resolving_url]).to include("can't be blank")
+        expect(resource_host).not_to(be_valid)
+        expect(resource_host.errors[:resolving_url]).to(include("can't be blank"))
       end
     end
 
@@ -29,8 +29,8 @@ RSpec.describe ResourceHost, type: :model do
       let(:resource_host) { build(:resource_host, rdf_id: nil) }
 
       it "is not valid" do
-        expect(resource_host).not_to be_valid
-        expect(resource_host.errors[:rdf_id]).to include("can't be blank")
+        expect(resource_host).not_to(be_valid)
+        expect(resource_host.errors[:rdf_id]).to(include("can't be blank"))
       end
     end
   end
@@ -42,8 +42,8 @@ RSpec.describe ResourceHost, type: :model do
 
       it "returns only resource hosts with for_name set to true" do
         result = ResourceHost.for_names
-        expect(result).to include(name_resource_host)
-        expect(result).not_to include(reference_resource_host)
+        expect(result).to(include(name_resource_host))
+        expect(result).not_to(include(reference_resource_host))
       end
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe ResourceHost, type: :model do
         resource_host.updated_by = nil
         resource_host.current_user = user
         resource_host.save
-        expect(resource_host.created_by).to eq("test_user")
+        expect(resource_host.created_by).to(eq("test_user"))
       end
 
       it "sets updated_by from current_user" do
@@ -67,7 +67,7 @@ RSpec.describe ResourceHost, type: :model do
         resource_host.updated_by = nil
         resource_host.current_user = user
         resource_host.save
-        expect(resource_host.updated_by).to eq("test_user")
+        expect(resource_host.updated_by).to(eq("test_user"))
       end
     end
 
@@ -82,11 +82,11 @@ RSpec.describe ResourceHost, type: :model do
       end
 
       it "does not overwrite created_by" do
-        expect(resource_host.created_by).to eq("original_user")
+        expect(resource_host.created_by).to(eq("original_user"))
       end
 
       it "updates updated_by with current_user" do
-        expect(resource_host.updated_by).to eq("new_user")
+        expect(resource_host.updated_by).to(eq("new_user"))
       end
     end
   end

@@ -46,25 +46,24 @@ class TreeVersion < ApplicationRecord
   belongs_to :tree, class_name: "Tree"
 
   has_many :tree_version_elements,
-           foreign_key: "tree_version_id",
-           class_name: "TreeVersionElement"
+    foreign_key: "tree_version_id",
+    class_name: "TreeVersionElement"
 
   has_many :user_product_role_vs,
-           through: :tree
-
+    through: :tree
 
   before_save :stop_if_read_only
 
   # Returns a TreeVersionElement for this TreeVersion which contains the name
   def name_in_version(name)
     tree_version_elements.joins(:tree_element)
-                         .where(tree_element: { name: name }).first
+      .where(tree_element: { name: name }).first
   end
 
   # Returns a TreeVersionElement for this TreeVersion which contains the name
   def instance_in_version(instance)
     tree_version_elements.joins(:tree_element)
-                         .where(tree_element: { instance: instance }).first
+      .where(tree_element: { instance: instance }).first
   end
 
   def query_name_in_version(term)
@@ -95,13 +94,13 @@ class TreeVersion < ApplicationRecord
   end
 
   def comment_key
-    return nil if tree.config.blank?
+    return if tree.config.blank?
 
     tree.config["comment_key"]
   end
 
   def distribution_key
-    return nil if tree.config.blank?
+    return if tree.config.blank?
 
     tree.config["distribution_key"]
   end
@@ -116,8 +115,8 @@ class TreeVersion < ApplicationRecord
 
   def stop_if_read_only
     if tree.read_only?
-      errors.add(:base, ' parent tree is read only')
-      throw :abort
+      errors.add(:base, " parent tree is read only")
+      throw(:abort)
     end
   end
 end

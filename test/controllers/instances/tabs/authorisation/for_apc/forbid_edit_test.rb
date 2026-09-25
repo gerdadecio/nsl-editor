@@ -26,11 +26,15 @@ class InstanceEditTabForAPCTest < ActionController::TestCase
   end
   test "should not show instance edit tab to APC" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @triodia_in_brassard.id, tab: "tab_edit" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["APC"] })
+    get(
+      :show,
+      params: { id: @triodia_in_brassard.id, tab: "tab_edit" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["APC"],
+      },
+    )
     assert_response :forbidden
   end
 end

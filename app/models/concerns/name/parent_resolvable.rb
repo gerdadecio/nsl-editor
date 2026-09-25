@@ -12,7 +12,7 @@ module Name::ParentResolvable
     send("#{key_field}=", Name::AsResolvedTypeahead::ForParent.new(
       params[key_field],
       params[ta_field],
-      field_name_stub.capitalize
+      field_name_stub.capitalize,
     ).value)
   end
 end

@@ -29,11 +29,15 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
   end
 
   def show_edit_tab
-    get(:show,
-        params: { id: @instance.id, tab: "tab_edit" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @instance.id, tab: "tab_edit" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
   end
 
   test "shows delete widgets when hard delete is allowed" do
@@ -41,10 +45,12 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
       show_edit_tab
     end
     assert_response :success
-    assert_select "a#instance-delete-link", "Delete Instance",
-                  "Should show the hard delete link."
-    assert_select "a#instance-soft-delete-link", false,
-                  "Should not show the soft delete link."
+    assert_select "a#instance-delete-link",
+      "Delete Instance",
+      "Should show the hard delete link."
+    assert_select "a#instance-soft-delete-link",
+      false,
+      "Should not show the soft delete link."
   end
 
   test "shows soft delete widgets when only soft delete is allowed" do
@@ -54,14 +60,18 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
       end
     end
     assert_response :success
-    assert_select "a#instance-soft-delete-link", "Soft Delete Instance",
-                  "Should show the soft delete link."
-    assert_select "a#confirm-soft-delete-link", "Confirm soft delete",
-                  "Should show the confirm soft delete link."
-    assert_select "a#cancel-soft-delete-link", "Cancel soft delete",
-                  "Should show the cancel soft delete link."
-    assert_select "a#instance-delete-link", false,
-                  "Should not show the hard delete link."
+    assert_select "a#instance-soft-delete-link",
+      "Soft Delete Instance",
+      "Should show the soft delete link."
+    assert_select "a#confirm-soft-delete-link",
+      "Confirm soft delete",
+      "Should show the confirm soft delete link."
+    assert_select "a#cancel-soft-delete-link",
+      "Cancel soft delete",
+      "Should show the cancel soft delete link."
+    assert_select "a#instance-delete-link",
+      false,
+      "Should not show the hard delete link."
   end
 
   # A soft deleted instance is read only - see
@@ -78,22 +88,31 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
       end
     end
     assert_response :success
-    assert_select "a#instance-show-tab", "Details",
-                  "Should offer the details tab."
-    assert_select "a#instance-edit-tab", "Edit",
-                  "Should still offer the edit tab heading."
-    assert_match(/This instance has been soft-deleted and cannot be modified/,
-                 response.body,
-                 "Should say why the edit form is missing.")
-    assert_no_match(/The selected tab does not apply to the current instance/,
-                    response.body,
-                    "Should not fall back to the empty tab.")
-    assert_select "form", false,
-                  "Should not render any editing form."
-    assert_select "a#instance-soft-delete-link", false,
-                  "Should not show the soft delete link."
-    assert_select "a#instance-delete-link", false,
-                  "Should not show the hard delete link."
+    assert_select "a#instance-show-tab",
+      "Details",
+      "Should offer the details tab."
+    assert_select "a#instance-edit-tab",
+      "Edit",
+      "Should still offer the edit tab heading."
+    assert_match(
+      /This instance has been soft-deleted and cannot be modified/,
+      response.body,
+      "Should say why the edit form is missing.",
+    )
+    assert_no_match(
+      /The selected tab does not apply to the current instance/,
+      response.body,
+      "Should not fall back to the empty tab.",
+    )
+    assert_select "form",
+      false,
+      "Should not render any editing form."
+    assert_select "a#instance-soft-delete-link",
+      false,
+      "Should not show the soft delete link."
+    assert_select "a#instance-delete-link",
+      false,
+      "Should not show the hard delete link."
   end
 
   test "shows no-delete reasons when no delete is allowed" do
@@ -104,9 +123,11 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
     end
     assert_response :success
     assert_match(/You cannot delete this instance/, response.body)
-    assert_select "a#instance-delete-link", false,
-                  "Should not show the hard delete link."
-    assert_select "a#instance-soft-delete-link", false,
-                  "Should not show the soft delete link."
+    assert_select "a#instance-delete-link",
+      false,
+      "Should not show the hard delete link."
+    assert_select "a#instance-soft-delete-link",
+      false,
+      "Should not show the soft delete link."
   end
 end

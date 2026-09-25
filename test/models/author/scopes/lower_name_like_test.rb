@@ -19,6 +19,6 @@ class AuthorScopeLowerNameLikeTest < ActiveSupport::TestCase
 
   test "lower_name_like excludes authors whose name does not match" do
     results = Author.lower_name_like("haeckel*")
-    refute_includes results, authors(:bentham)
+    assert_not_includes results, authors(:bentham)
   end
 end

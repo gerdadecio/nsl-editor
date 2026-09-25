@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Result is true if the supplied name_id is "in synonymy" in the
 # current accepted tree. Result is false otherwise.
 #

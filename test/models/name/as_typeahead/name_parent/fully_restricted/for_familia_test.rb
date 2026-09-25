@@ -29,12 +29,12 @@ class ForFamiliaFullyRestrictedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "Familia").id
+      rank_id: NameRank.find_by(name: "Familia").id,
     )
     suggestions_should_only_include(
       typeahead.suggestions,
       "Familia",
-      %w[Ordo Subordo]
+      ["Ordo", "Subordo"],
     )
   end
 end

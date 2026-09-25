@@ -18,8 +18,8 @@ module Instance::CopyableToNewName
 
   def citation_for_standalone
     "#{reference.citation_html}".html_safe +
-    (page.present? ? ": #{page}" : "") +
-    (instance_type.try('primary_instance') ? "[#{instance_type.name}]" : "")
+      (page.present? ? ": #{page}" : "") +
+      (instance_type.try("primary_instance") ? "[#{instance_type.name}]" : "")
   end
 
   def instance_id_to_copy

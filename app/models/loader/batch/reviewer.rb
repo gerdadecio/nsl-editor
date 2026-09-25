@@ -32,16 +32,19 @@ class Loader::Batch::Reviewer < ApplicationRecord
     def by_review_period(batch_review_period_id)
       where(batch_review_period_id: batch_review_period_id)
     end
+
     def by_review(batch_review_id)
-      where(['batch_review_period_id in (select id from batch_review_period brp where brp.batch_review_id = ?)', batch_review_id])
+      where(["batch_review_period_id in (select id from batch_review_period brp where brp.batch_review_id = ?)", batch_review_id])
     end
   end
 
   validates :user_id, presence: true
   validates :batch_review_role_id, presence: true
   validates :batch_review_id, presence: true
-  validates :user_id, uniqueness: { scope: :batch_review_id,
-                                    message: "should only be added once per review" }
+  validates :user_id, uniqueness: {
+    scope: :batch_review_id,
+    message: "should only be added once per review",
+  }
   attr_accessor :give_me_focus, :message
 
   def fresh?
@@ -60,9 +63,7 @@ class Loader::Batch::Reviewer < ApplicationRecord
     user.user_name
   end
 
-  def full_name
-    user.full_name
-  end
+  delegate :full_name, to: :user
 
   def self.create(params, username)
     batch_reviewer = new(params)
@@ -88,18 +89,17 @@ class Loader::Batch::Reviewer < ApplicationRecord
   end
 
   def self.batch_reviewers_for_org_username_batch_review(org, username, batch_review)
-    self.where(org_id: org.id)
-        .joins(:user)
-        .where(["users.user_name = ?", username])
-        .joins(batch_review_period: :batch_review)
-        .where(["batch_review.loader_batch_id = ?", batch_review.loader_batch_id])
-        .distinct
+    where(org_id: org.id)
+      .joins(:user)
+      .where(["users.user_name = ?", username])
+      .joins(batch_review_period: :batch_review)
+      .where(["batch_review.loader_batch_id = ?", batch_review.loader_batch_id])
+      .distinct
   end
 
   def self.username_to_reviewers_for_review(username, review)
     Loader::Batch::Reviewer.joins([:user, :batch_review])
-                           .where('users.user_name': username)
-                           .where('batch_review.id': review.id)
+      .where("users.user_name": username)
+      .where("batch_review.id": review.id)
   end
-
 end

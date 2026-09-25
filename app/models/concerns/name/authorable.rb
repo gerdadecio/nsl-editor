@@ -4,6 +4,7 @@
 # covering the various types of authors a name may have
 module Name::Authorable
   extend ActiveSupport::Concern
+
   included do
     BASE = "base"
     EX = "ex"
@@ -16,9 +17,7 @@ module Name::Authorable
     belongs_to :sanctioning_author, class_name: "Author", optional: true
   end
 
-  def takes_authors?
-    category_for_edit.takes_authors?
-  end
+  delegate :takes_authors?, to: :category_for_edit
 
   def takes_ex_base_author?
     takes_this_type_of_author?(EX_BASE)
@@ -40,7 +39,7 @@ module Name::Authorable
   # and name category configuration
   # for a set of author types.
   def takes_this_type_of_author?(type_of_author)
-    throw "Unknown type of author" unless [EX, BASE, EX_BASE, SANCTIONING].include?(type_of_author)
+    throw("Unknown type of author") unless [EX, BASE, EX_BASE, SANCTIONING].include?(type_of_author)
     return false unless category_for_edit.takes_authors?
     return false unless author_type_allowed_in_config(type_of_author)
 
@@ -75,8 +74,8 @@ module Name::Authorable
 
   def base_author_and_ex_base_author_must_differ
     return unless base_author_id.present? &&
-                  ex_base_author_id.present? &&
-                  base_author_id == ex_base_author_id
+      ex_base_author_id.present? &&
+      base_author_id == ex_base_author_id
 
     errors.add(:base, "The ex-base author cannot be the same as the base author.")
   end
@@ -84,6 +83,6 @@ module Name::Authorable
   # I wish authorship was a column in the name table, but it isn't
   def authorship_extracted
     doc = Nokogiri::HTML(full_name_html)
-    doc.search('authors').text
+    doc.search("authors").text
   end
 end

@@ -24,6 +24,6 @@ class HybridFormulaUnknown2ndParentIsScientificTest < ActiveSupport::TestCase
     assert NameType
       .find_by(name: "hybrid formula unknown 2nd parent")
       .scientific?,
-           'Hybrid formula unknown 2nd parent is a "scientific" name type'
+      'Hybrid formula unknown 2nd parent is a "scientific" name type'
   end
 end

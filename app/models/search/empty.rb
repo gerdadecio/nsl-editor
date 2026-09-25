@@ -18,11 +18,11 @@
 #
 class Search::Empty
   attr_reader :empty,
-              :error,
-              :error_message,
-              :executed_query,
-              :more_allowed,
-              :parsed_request
+    :error,
+    :error_message,
+    :executed_query,
+    :more_allowed,
+    :parsed_request
 
   def initialize(params)
     Rails.logger.debug("Search::Empty start (setting up an empty search)")
@@ -31,7 +31,7 @@ class Search::Empty
     @common_and_cultivar_included = true
     @count = false
     @empty = true
-    @error = !params[:error_message].blank?
+    @error = params[:error_message].present?
     @error_message = params[:error_message]
     @tree = false
     @limited = false

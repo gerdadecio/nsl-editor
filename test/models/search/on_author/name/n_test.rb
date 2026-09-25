@@ -23,20 +23,22 @@ load "test/models/search/users.rb"
 # Single Search model test.
 class SearchOnAuthorNameNTest < ActiveSupport::TestCase
   test "search on author name n" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
-                                                          "author",
-                                                          query_string:
-                                                          "n: Reveal",
-                                                          current_user:
-                                                          build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target:
+                                                                "author",
+      query_string:
+            "n: Reveal",
+      current_user:
+            build_edit_user,
+    )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
+      "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Exactly 1 result is expected."
+      search.executed_query.results.size,
+      "Exactly 1 result is expected."
     assert_equal authors(:reveal).name,
-                 search.executed_query.results.first[:name],
-                 "Author expected."
+      search.executed_query.results.first[:name],
+      "Author expected."
   end
 end

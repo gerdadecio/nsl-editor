@@ -22,9 +22,11 @@ require "test_helper"
 class TAOnCitnWildcardsTranslatesAsteriskToPercent < ActiveSupport::TestCase
   test "ref typeahead on citation wildcards translates asterisk to percent" do
     current_reference = references(:ref_type_is_book)
-    typeahead = Reference::AsTypeahead::OnCitation.new("*",
-                                                       current_reference.id)
-    assert !typeahead.results.empty?,
-           "Should be at least one result for asterisk wildcard"
+    typeahead = Reference::AsTypeahead::OnCitation.new(
+      "*",
+      current_reference.id,
+    )
+    assert_not typeahead.results.empty?,
+      "Should be at least one result for asterisk wildcard"
   end
 end

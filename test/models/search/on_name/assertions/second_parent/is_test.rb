@@ -23,11 +23,11 @@ load "models/search/users.rb"
 class SearchOnNameAssertionSecondParentIsTest < ActiveSupport::TestCase
   test "name asertion is a second parent" do
     search = Search::Base.new(ActiveSupport::HashWithIndifferentAccess.new(
-                                query_target: "name",
-                                query_string: "is-a-second-parent:",
-                                current_user: build_edit_user
-                              ))
-    assert !search.executed_query.results.empty?,
-           "Should find name that is a parent."
+      query_target: "name",
+      query_string: "is-a-second-parent:",
+      current_user: build_edit_user,
+    ))
+    assert_not search.executed_query.results.empty?,
+      "Should find name that is a parent."
   end
 end

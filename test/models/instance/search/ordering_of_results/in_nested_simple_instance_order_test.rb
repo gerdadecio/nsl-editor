@@ -23,19 +23,21 @@ require "models/instance/search/ordering_of_results/nested_simple_helper"
 class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
   def assert_with_args(results, index, expected)
     actual = "#{results[index].page} - #{results[index].name.full_name}"
-    assert(/\A#{Regexp.escape(actual)}\z/.match(expected),
-           "Wrong at index #{index}; should be: #{expected} NOT #{actual}")
+    assert(
+      /\A#{Regexp.escape(actual)}\z/.match(expected),
+      "Wrong at index #{index}; should be: #{expected} NOT #{actual}",
+    )
   end
 
   setup do
     @results = Instance.joins(:instance_type, :reference, :name)
-                       .joins("inner join name_status ns on name.name_status_id = ns.id")
-                       .joins("inner join instance cites on instance.cites_id = cites.id")
-                       .joins("inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
-                       .where.not(page: "exclude-from-ordering-test")
-                       .in_synonymy_order
-                       .order(Arel.sql('reference.iso_publication_date,lower(name.full_name) collate "C"'))
-                       .order(Arel.sql("instance_type.name")) # make test order definitive
+      .joins("inner join name_status ns on name.name_status_id = ns.id")
+      .joins("inner join instance cites on instance.cites_id = cites.id")
+      .joins("inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
+      .where.not(page: "exclude-from-ordering-test")
+      .in_synonymy_order
+      .order(Arel.sql('reference.iso_publication_date,lower(name.full_name) collate "C"'))
+      .order(Arel.sql("instance_type.name")) # make test order definitive
     # how does having .order statements here help to test the app?
   end
 

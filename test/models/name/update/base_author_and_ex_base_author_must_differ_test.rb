@@ -24,21 +24,21 @@ class BaseAuthorExBaseAuthorMustDifferOnUpdateTest < ActiveSupport::TestCase
     name = names(:triodia_basedowii)
     assert name.author.present?, "Existing name should have an author."
     assert name.valid?,
-           "Existing name should be valid.
-           Errors: #{name.errors.full_messages.join('; ')}"
+      "Existing name should be valid.
+           Errors: #{name.errors.full_messages.join("; ")}"
     name.base_author = authors(:joe)
     assert name.valid?,
-           "Existing name should be valid with a base author.
-           Errors: #{name.errors.full_messages.join('; ')}"
+      "Existing name should be valid with a base author.
+           Errors: #{name.errors.full_messages.join("; ")}"
     name.ex_base_author = authors(:fred)
     assert name.valid?,
-           "Existing name should be valid with an ex-base author.
-           Errors: #{name.errors.full_messages.join('; ')}"
+      "Existing name should be valid with an ex-base author.
+           Errors: #{name.errors.full_messages.join("; ")}"
     name.ex_base_author = name.base_author
     assert_not name.valid?,
-               "Name should NOT be valid with matching base auth/ex-base auth."
+      "Name should NOT be valid with matching base auth/ex-base auth."
     assert_equal name.errors.full_messages.first,
-                 "The ex-base author cannot be the same as the base author.",
-                 "Wrong error message."
+      "The ex-base author cannot be the same as the base author.",
+      "Wrong error message."
   end
 end

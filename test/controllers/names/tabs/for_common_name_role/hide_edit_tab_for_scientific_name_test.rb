@@ -28,11 +28,15 @@ class CommonNameRoleHideEditTabForScientificNameTest < ActionController::TestCas
   test "common-name role user does not see edit tab for a scientific name" do
     @request.headers["Accept"] = "application/javascript"
     SessionUser.stub_any_instance(:with_role_for_context?, true) do
-      get(:show,
-          params: { id: @name.id, tab: "tab_details" },
-          session: { username: "fred",
-                     user_full_name: "Fred Jones",
-                     groups: [] })
+      get(
+        :show,
+        params: { id: @name.id, tab: "tab_details" },
+        session: {
+          username: "fred",
+          user_full_name: "Fred Jones",
+          groups: [],
+        },
+      )
     end
     assert_response :success
     assert_select "a#name-edit-tab", false, "Should not show 'Edit' tab link for scientific name."

@@ -27,12 +27,12 @@ class SearchOnNameNameNamedHybridDendrobiumaemulumTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "name: Dendrobium aemulum x Dendrobium kingianum",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-                 search.executed_query.results.size,
-                 "Expected 1 result"
+      search.executed_query.results.size,
+      "Expected 1 result"
   end
 end

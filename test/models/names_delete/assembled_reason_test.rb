@@ -32,55 +32,65 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
   end
 
   test "assembled reason is just the reason when extra_info is blank" do
-    names_delete = NamesDelete.new(name_id: name_id,
-                                    reason: "Name does not exist",
-                                    extra_info: "")
+    names_delete = NamesDelete.new(
+      name_id: name_id,
+      reason: "Name does not exist",
+      extra_info: "",
+    )
     assert_equal "Name does not exist", names_delete.assembled_reason
   end
 
   test "assembled reason joins reason and extra_info with a semicolon" do
-    names_delete = NamesDelete.new(name_id: name_id,
-                                    reason: "Other",
-                                    extra_info: "Duplicate of another name")
+    names_delete = NamesDelete.new(
+      name_id: name_id,
+      reason: "Other",
+      extra_info: "Duplicate of another name",
+    )
     assert_equal "Other; Duplicate of another name",
-                 names_delete.assembled_reason
+      names_delete.assembled_reason
   end
 
   test "assembled reason is untouched at exactly 247 characters" do
     reason = "Other"
     extra_info = "X" * (247 - "#{reason}; ".length)
-    names_delete = NamesDelete.new(name_id: name_id,
-                                    reason: reason,
-                                    extra_info: extra_info)
+    names_delete = NamesDelete.new(
+      name_id: name_id,
+      reason: reason,
+      extra_info: extra_info,
+    )
     result = names_delete.assembled_reason
     assert_equal 247, result.length
     assert_not result.end_with?("..."),
-               "Should not be truncated at exactly 247 characters"
+      "Should not be truncated at exactly 247 characters"
     assert_equal "#{reason}; #{extra_info}", result
   end
 
   test "assembled reason is truncated to 247 characters when over the limit" do
     reason = "Other"
     extra_info = "X" * 300
-    names_delete = NamesDelete.new(name_id: name_id,
-                                    reason: reason,
-                                    extra_info: extra_info)
+    names_delete = NamesDelete.new(
+      name_id: name_id,
+      reason: reason,
+      extra_info: extra_info,
+    )
     result = names_delete.assembled_reason
     assert_equal 247, result.length
     assert result.end_with?("..."), "Should be truncated with an ellipsis"
     assert result.start_with?("#{reason}; "),
-           "Truncation should preserve the reason at the start"
+      "Truncation should preserve the reason at the start"
   end
 
   test "assembled reason stays within 247 chars even with the longest " \
-       "preset reason and a full-length extra_info" do
+    "preset reason and a full-length extra_info" do
     extra_info = "X" * 190
-    names_delete = NamesDelete.new(name_id: name_id,
-                                    reason: LONGEST_PRESET_REASON,
-                                    extra_info: extra_info)
+    names_delete = NamesDelete.new(
+      name_id: name_id,
+      reason: LONGEST_PRESET_REASON,
+      extra_info: extra_info,
+    )
     result = names_delete.assembled_reason
     assert result.length <= 247,
-           "Combined reason + extra_info must never exceed 247 characters, " \
-           "was #{result.length}"
+      "Combined reason + extra_info must never exceed 247 characters, " \
+        "was #{result.length}"
   end
 end

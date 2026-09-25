@@ -34,11 +34,11 @@ class NameAsCopierWithAllInstancesSimpleTest < ActiveSupport::TestCase
     {
       class: "silly name class",
       _links: {
-        permalink: []
+        permalink: [],
       },
       name_element: "redundant name element for id 960477440",
       action: "unnecessary action",
-      result: return_body_result
+      result: return_body_result,
     }
   end
 
@@ -47,7 +47,7 @@ class NameAsCopierWithAllInstancesSimpleTest < ActiveSupport::TestCase
       fullMarkedUpName: "full marked up name for id 960477440",
       simpleMarkedUpName: "simple marked up name for id 960477440",
       fullName: "full name for id 960477440",
-      simpleName: "simple name for id 960477440"
+      simpleName: "simple name for id 960477440",
     }
   end
 
@@ -56,9 +56,11 @@ class NameAsCopierWithAllInstancesSimpleTest < ActiveSupport::TestCase
   end
 
   def headers
-    { "Accept" => "text/json",
+    {
+      "Accept" => "text/json",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-      "User-Agent" => /rest-client.*ruby.*/ }
+      "User-Agent" => /rest-client.*ruby.*/,
+    }
   end
 
   test "copy name with all instances" do
@@ -80,7 +82,7 @@ class NameAsCopierWithAllInstancesSimpleTest < ActiveSupport::TestCase
     @master_instances_before = @master_name.instances.size
     @copied_name = @master_name.copy_with_all_instances(
       @dummy_name_element,
-      @dummy_username
+      @dummy_username,
     )
   end
 
@@ -90,15 +92,17 @@ class NameAsCopierWithAllInstancesSimpleTest < ActiveSupport::TestCase
   end
 
   def test4
-    assert_equal @before + 1, @after, "There should be one extra name."
-    assert_equal @master_instances_before,
-                 @copied_instances_after,
-                 "New name should have instances."
+    assert_equal(@before + 1, @after, "There should be one extra name.")
+    assert_equal(
+      @master_instances_before,
+      @copied_instances_after,
+      "New name should have instances.",
+    )
   end
 
   def test5
-    assert_match @dummy_name_element, @copied_name.name_element
-    assert_equal @dummy_username, @copied_name.created_by
-    assert_equal @dummy_username, @copied_name.updated_by
+    assert_match(@dummy_name_element, @copied_name.name_element)
+    assert_equal(@dummy_username, @copied_name.created_by)
+    assert_equal(@dummy_username, @copied_name.updated_by)
   end
 end

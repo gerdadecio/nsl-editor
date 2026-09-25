@@ -22,13 +22,13 @@ load "test/models/search/users.rb"
 # Single Search model test for Reference target.
 class SearchOnReferenceLanguageSimpleNotTest < ActiveSupport::TestCase
   test "search on not language simple" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "not-language: undetermined",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "reference",
+        query_string: "not-language: undetermined",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert !search.executed_query.results.empty?, "Results expected."
+      "Results should be an ActiveRecord::Relation."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

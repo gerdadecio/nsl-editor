@@ -27,10 +27,13 @@ class Tree::Workspace::Profile < ActiveType::Object
 
     raise errors.full_messages.first unless valid?
 
-    logger.info "PROFILE UPDATE calling #{url} WITH PAYLOAD: #{payload}"
+    logger.info("PROFILE UPDATE calling #{url} WITH PAYLOAD: #{payload}")
 
-    RestClient.post(url, payload.to_json,
-                    { content_type: "application/json; charset=utf-8", accept: "application/json; charset=utf-8" })
+    RestClient.post(
+      url,
+      payload.to_json,
+      { content_type: "application/json; charset=utf-8", accept: "application/json; charset=utf-8" },
+    )
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::Workspace::Profile rest client exception with response error: #{e}")
     raise

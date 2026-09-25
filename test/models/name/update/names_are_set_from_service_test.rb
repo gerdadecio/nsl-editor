@@ -22,11 +22,14 @@ require "test_helper"
 class NamesAreSetFromServiceTest < ActiveSupport::TestCase
   setup do
     stub_request(:get, %r{#{address}[0-9]{8,}/api/name-strings})
-      .with(headers: { "Accept" => "text/json",
-                       "Accept-Encoding" =>
+      .with(headers: {
+        "Accept" => "text/json",
+        "Accept-Encoding" =>
                        "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-                       "User-Agent" => /rest-client.*ruby.*/ })
-      .to_return(status: 200, body: '{ "class": "silly name class",
+        "User-Agent" => /rest-client.*ruby.*/,
+      })
+      .to_return(status: 200,
+        body: '{ "class": "silly name class",
     "_links": {
         "permalink": [ ]
     },
@@ -37,7 +40,8 @@ class NamesAreSetFromServiceTest < ActiveSupport::TestCase
         "simpleMarkedUpName": "simple marked up name for id 91755",
         "fullName": "full name for id 91755",
         "simpleName": "simple name for id 91755"
-    } }', headers: {})
+    } }',
+        headers: {})
   end
 
   def address
@@ -47,20 +51,20 @@ class NamesAreSetFromServiceTest < ActiveSupport::TestCase
   test "names are set from service" do
     name = names(:without_names_from_service)
     assert name.full_name.blank?,
-           "This test needs to start with a blank full_name."
+      "This test needs to start with a blank full_name."
     assert name.full_name_html.blank?,
-           "This test needs to start with a blank full_name_html."
+      "This test needs to start with a blank full_name_html."
     assert name.simple_name.blank?,
-           "This test needs to start with a blank simple_name."
+      "This test needs to start with a blank simple_name."
     assert name.simple_name_html.blank?,
-           "This test needs to start with a blank simple_name_html."
+      "This test needs to start with a blank simple_name_html."
 
     name.set_names!
     assert name.full_name.present?, "Full_name should now be populated."
     assert name.full_name_html.present?,
-           "Full_name_html should now be populated."
+      "Full_name_html should now be populated."
     assert name.simple_name.present?, "Simple_name should now be populated."
     assert name.simple_name_html.present?,
-           "Simple_name_html should now be populated."
+      "Simple_name_html should now be populated."
   end
 end

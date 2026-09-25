@@ -31,18 +31,18 @@ class TaxFormsTreeBuilderAPCUserCanPlaceNameOnAPCDraftTest < ActionController::T
   tests TreesController
 
   def setup
-    stub_request(:get, %r{http:..localhost:90...*broker.preferredLink.idNumber=12345.nameSpace=anamespace.objectType=instance}).
-                 with(
-                 headers: {
-                 'Accept'=>/json/,
-                 'Accept-Encoding'=>/.*/,
-                 'Content-Type'=>/json/,
-                 'Host'=>/localhost/,
-                 'User-Agent'=>/ruby/
-                 }).
-                 to_return(status: 200, body: "{replace: 'result...'}".to_json, headers: {})
+    stub_request(:get, /http:..localhost:90...*broker.preferredLink.idNumber=12345.nameSpace=anamespace.objectType=instance/)
+      .with(
+        headers: {
+          "Accept" => /json/,
+          "Accept-Encoding" => /.*/,
+          "Content-Type" => /json/,
+          "Host" => /localhost/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200, body: "{replace: 'result...'}".to_json, headers: {})
   end
-
 
   # r6editor Started POST "/nsl/editor/trees/513991/place_name" for ::1 at 2025-07-18 15:38:05 +1000 (pid:96312)
   # r6editor Processing by TreesController#place_name as JS (pid:96312)
@@ -62,24 +62,30 @@ class TaxFormsTreeBuilderAPCUserCanPlaceNameOnAPCDraftTest < ActionController::T
     # Raising this exception means it got as far as calling the API
     # The processing after calling the API, based on what the API returns
     # (in our case, that's from a stub) is complex.  No need to simulate all that.
-    assert_raises(NoMethodError, 'Place name should get this far') {
-    post(:place_name,
-         params: {"place_name"=>{"instance_id"=>12345,
-                                       "comment"=>"blah",
-                                       "distribution"=>["NSW"],
-                                       "parent_name_typeahead_string"=>"Angophora bakeri E.C.Hall",
-                                       "parent_element_link"=>"/tree/52410589/52410645",
-                                       "version_id"=>apc_draft.id,
-                                       "place"=>""},
-                  "id" => tve.id
-                 },
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: apc_draft,
-                    groups: ["login"]})
-  }
+    assert_raises(NoMethodError, "Place name should get this far") do
+      post(
+        :place_name,
+        params: {
+          "place_name" => {
+            "instance_id" => 12345,
+            "comment" => "blah",
+            "distribution" => ["NSW"],
+            "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
+            "parent_element_link" => "/tree/52410589/52410645",
+            "version_id" => apc_draft.id,
+            "place" => "",
+          },
+          "id" => tve.id,
+        },
+        format: :js,
+        xhr: true,
+        session: {
+          username: user.user_name,
+          user_full_name: user.full_name,
+          draft: apc_draft,
+          groups: ["login"],
+        },
+      )
+    end
   end
 end
-

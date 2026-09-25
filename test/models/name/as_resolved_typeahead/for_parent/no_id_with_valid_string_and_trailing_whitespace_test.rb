@@ -22,9 +22,11 @@ require "test_helper"
 class NameAsResolvedTypeaheadWValStrWithTrailWhitespce < ActiveSupport::TestCase
   test "no id with valid string with trailing whitespace" do
     name = names(:the_regnum)
-    result = Name::AsResolvedTypeahead::ForParent.new("",
-                                                      "#{name.full_name}  ",
-                                                      "parent")
+    result = Name::AsResolvedTypeahead::ForParent.new(
+      "",
+      "#{name.full_name}  ",
+      "parent",
+    )
     assert_equal name.id, result.value, "Should get a matching id for the name"
   end
 end

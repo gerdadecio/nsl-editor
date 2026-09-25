@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :ala_draft_attributes_term_map do
     uuid { "Sample Uuid" }

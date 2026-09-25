@@ -49,9 +49,7 @@ class Name::DeDuper
     @tree_elements.size > 0
   end
 
-  def tree_elements
-    @duplicate.tree_elements
-  end
+  delegate :tree_elements, to: :@duplicate
 
   def tree_version_elements
     @duplicate.tree_elements.first.tree_version_elements
@@ -92,7 +90,7 @@ class Name::DeDuper
     when "instances"
       transfer_instances
     else
-      throw "Editor doesn't transfer dependent #{type}"
+      throw("Editor doesn't transfer dependent #{type}")
     end
   end
 
@@ -146,6 +144,7 @@ class Name::DeDuper
   end
 
   private
+
   def identify_dependencies
     @children = @duplicate.children
     debug("children: #{@children.size}")
@@ -166,6 +165,6 @@ class Name::DeDuper
   end
 
   def debug(msg)
-    Rails.logger.debug("Name::DeDuper: #{msg}")
+    Rails.logger.debug { "Name::DeDuper: #{msg}" }
   end
 end

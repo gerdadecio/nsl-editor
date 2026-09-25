@@ -12,7 +12,7 @@ module Name::AuthorResolvable
     send("#{key_field}=", Name::AsResolvedTypeahead::ForAuthor.new(
       params[key_field],
       params[ta_field],
-      which_author.capitalize
+      which_author.capitalize,
     ).value)
   end
 end

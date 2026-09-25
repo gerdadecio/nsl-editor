@@ -27,13 +27,17 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new,
-        params: { category: "hybrid formula",
-                  random_id: "123445",
-                  tabIndex: "107" },
-        xhr: true)
+    get(
+      :new,
+      params: {
+        category: "hybrid formula",
+        random_id: "123445",
+        tabIndex: "107",
+      },
+      xhr: true,
+    )
     assert_response :success,
-                    "Cannot get form for a new hybrid formula name"
+      "Cannot get form for a new hybrid formula name"
     assert_select("h4", /New Scientific Hybrid Formula Name/)
   end
 
@@ -46,26 +50,32 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new,
-        params: { category: "hybrid formula",
-                  random_id: "123445",
-                  tabIndex: "107" },
-        xhr: true)
+    get(
+      :new,
+      params: {
+        category: "hybrid formula",
+        random_id: "123445",
+        tabIndex: "107",
+      },
+      xhr: true,
+    )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
-                  "[data-autocomplete-url-value=" \
-                  "'/suggestions/name/hybrid_parent.html']" \
-                  " input#name-parent-typeahead" \
-                  "[data-autocomplete-target='input'][required]",
-                  true
+      "[data-autocomplete-url-value=" \
+      "'/suggestions/name/hybrid_parent.html'] " \
+      "input#name-parent-typeahead" \
+      "[data-autocomplete-target='input'][required]",
+      true
     assert_select "div.autocomplete label[for='name-parent-typeahead']",
-                  "First Parent*"
+      "First Parent*"
     assert_no_match(/setUpNameHybridParentTypeahead\(\)/, @response.body)
     field = css_select("div.autocomplete").find do |div|
       div.css("input#name-parent-typeahead").any?
     end
-    assert_equal({ "name_id" => nil },
-                 JSON.parse(field["data-autocomplete-extra-params-value"]))
+    assert_equal(
+      { "name_id" => nil },
+      JSON.parse(field["data-autocomplete-extra-params-value"]),
+    )
   end
 
   test "new scientific hybrid formula's second parent is a stimulus autocomplete" do
@@ -73,23 +83,27 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
     @request.session["username"] = "fred"
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
-    get(:new,
-        params: { category: "hybrid formula",
-                  random_id: "123445",
-                  tabIndex: "107" },
-        xhr: true)
+    get(
+      :new,
+      params: {
+        category: "hybrid formula",
+        random_id: "123445",
+        tabIndex: "107",
+      },
+      xhr: true,
+    )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
-                  "[data-autocomplete-url-value=" \
-                  "'/suggestions/name/hybrid_parent.html']" \
-                  " input#name-second-parent-typeahead" \
-                  "[data-autocomplete-target='input'][required]",
-                  true
+      "[data-autocomplete-url-value=" \
+      "'/suggestions/name/hybrid_parent.html'] " \
+      "input#name-second-parent-typeahead" \
+      "[data-autocomplete-target='input'][required]",
+      true
     assert_select "div.autocomplete input#name_second_parent_id" \
-                  "[data-autocomplete-target='hidden']",
-                  true
+      "[data-autocomplete-target='hidden']",
+      true
     assert_select "div.autocomplete label[for='name-second-parent-typeahead']",
-                  "Second parent*"
+      "Second parent*"
     assert_no_match(/setUpNameSecondParentTypeahead\(\)/, @response.body)
   end
 end

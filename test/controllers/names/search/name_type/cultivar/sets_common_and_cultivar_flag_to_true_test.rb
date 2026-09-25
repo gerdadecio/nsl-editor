@@ -26,19 +26,25 @@ class NameSearch4NameTypeCultSetsCommCultFlagTrueT < ActionController::TestCase
     skip # Expect this to be no longer needed under revised search.
     cultivar = names(:a_cultivar)
     # Set the common-and-cultivar flag to false.
-    get(:search,
-        params: { "query" => "nt:cultivar",
-                  "query_limit" => "100" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :search,
+      params: {
+        "query" => "nt:cultivar",
+        "query_limit" => "100",
+      },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_response :success
     # assert_select "input.checkbox[type=checkbox]
     # [id=query_common_and_cultivar][value=t]",
     # true,
     # "The query-common-and-cultivar checkbox should be true"
     assert_select "tr[id=search-result-#{cultivar.id}]",
-                  true,
-                  "Should find one cultivar at least"
+      true,
+      "Should find one cultivar at least"
   end
 end

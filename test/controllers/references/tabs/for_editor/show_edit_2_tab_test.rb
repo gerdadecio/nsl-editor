@@ -27,14 +27,18 @@ class ReferenceEditorShowEdit2Test < ActionController::TestCase
 
   test "should show editor reference edit 2 tab" do
     @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @reference.id, tab: "tab_edit_2" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    get(
+      :show,
+      params: { id: @reference.id, tab: "tab_edit_2" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: ["edit"],
+      },
+    )
     assert_select "li.active a#reference-edit-2-tab",
-                  /Edit\.\./,
-                  "Should show 'Edit...' tab."
+      /Edit\.\./,
+      "Should show 'Edit...' tab."
     assert_select "form", true
     assert_select "input#reference_publisher", true
     assert_select "input#reference_published_location", true

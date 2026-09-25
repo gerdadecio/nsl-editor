@@ -22,13 +22,13 @@ load "test/models/search/users.rb"
 # Single Search model test for Name target.
 class SearchOnNameAuthorIsNullTest < ActiveSupport::TestCase
   test "search on name author is null" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "name",
-                   query_string: "author-id: ",
-                   include_common_and_cultivar_session: true,
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "name",
+        query_string: "author-id: ",
+        include_common_and_cultivar_session: true,
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?, "Results expected."
+    assert_not search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|
       assert r.author_id.blank?, "author_id should be blank"
     end

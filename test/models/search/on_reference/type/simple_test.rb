@@ -22,11 +22,11 @@ load "test/models/search/users.rb"
 # Single Search model test for Reference target.
 class SearchOnReferenceTypeSimpleTest < ActiveSupport::TestCase
   test "search on reference type simple" do
-    params =  ActiveSupport::HashWithIndifferentAccess
-              .new(query_target: "reference",
-                   query_string: "type: book",
-                   current_user: build_edit_user)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "reference",
+        query_string: "type: book",
+        current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert !search.executed_query.results.empty?, "Results expected."
+    assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

@@ -24,13 +24,13 @@ class InstSrchCreB4FromDropdownSimpleSingularTest < ActiveSupport::TestCase
   # New search for "42993" on instance up to 100 with field: cr-b
   test "inst srch on created before from dropdown field simple singular" do
     search = Search::Base
-             .new(ActiveSupport::HashWithIndifferentAccess
+      .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_string: "1 instances-only:",
-                       query_target: "Activity",
-                       current_user: build_edit_user))
+                    query_target: "Activity",
+                    current_user: build_edit_user))
     assert_equal Array,
-                 search.executed_query.results.class,
-                 "Results should be an Array"
-    assert !search.executed_query.results.empty?, "Expect at least 1 record."
+      search.executed_query.results.class,
+      "Results should be an Array"
+    assert_not search.executed_query.results.empty?, "Expect at least 1 record."
   end
 end

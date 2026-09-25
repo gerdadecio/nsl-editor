@@ -22,24 +22,36 @@ def test1
   assert_with_args(@results, 1, "3 - Angophora costata (Gaertn.) Britten")
   assert_with_args(@results, 2, "xx 1 - Metrosideros costata Gaertn.")
   assert_with_args(@results, 3, "2 - Metrosideros costata Gaertn.")
-  assert_with_args(@results, 4,
-                   "zzzz99902 - Casuarina inophloia F.Muell. & F.M.Bailey")
+  assert_with_args(
+    @results,
+    4,
+    "zzzz99902 - Casuarina inophloia F.Muell. & F.M.Bailey",
+  )
 end
 
 def test2
-  assert_with_args(@results, 5,
-                   "zzzz99901 - Casuarina inophloia F.Muell. & F.M.Bailey")
+  assert_with_args(
+    @results,
+    5,
+    "zzzz99901 - Casuarina inophloia F.Muell. & F.M.Bailey",
+  )
   assert_with_args(@results, 6, "zzzz99904 - a genus with one instance")
   assert_with_args(@results, 7, "zzzz99905 - a genus with two instances")
-  assert_with_args(@results, 8,
-                   "zzzz99903 - Casuarina inophloia F.Muell. & F.M.Bailey")
+  assert_with_args(
+    @results,
+    8,
+    "zzzz99903 - Casuarina inophloia F.Muell. & F.M.Bailey",
+  )
 end
 
 def test3
   assert_with_args(@results, 9, "zzzz99907 - has two instances the same")
   assert_with_args(@results, 10, "zzzz99907 - has two instances the same")
-  assert_with_args(@results, 11,
-                   "xx 15 - Angophora costata (Gaertn.) Britten")
+  assert_with_args(
+    @results,
+    11,
+    "xx 15 - Angophora costata (Gaertn.) Britten",
+  )
   assert_with_args(@results, 12, "xx,20,1000 - Metrosideros costata Gaertn.")
   assert_with_args(@results, 13, "146 - Angophora costata (Gaertn.) Britten")
 end
@@ -57,12 +69,21 @@ def test5
   assert_with_args(@results, 21, "zzzz99913e - name one for eflora")
   assert_with_args(@results, 22, "xx 200,300 - Triodia basedowii E.Pritz")
   assert_with_args(@results, 23, "zzzz99906 - a genus with two instances")
-  assert_with_args(@results, 24,
-                   "zzzz99901 - a an infrafamily with an instance")
-  assert_with_args(@results, 25,
-                   "zzzz99901 - a an infragenus with an instance")
-  assert_with_args(@results, 26,
-                   "zzzz99901 - a an infraspecies with an instance")
+  assert_with_args(
+    @results,
+    24,
+    "zzzz99901 - a an infrafamily with an instance",
+  )
+  assert_with_args(
+    @results,
+    25,
+    "zzzz99901 - a an infragenus with an instance",
+  )
+  assert_with_args(
+    @results,
+    26,
+    "zzzz99901 - a an infraspecies with an instance",
+  )
   assert_with_args(@results, 27, "zzzz99901 - a an na with an instance")
 end
 
@@ -106,18 +127,26 @@ def test9
 end
 
 def test10
-  assert_with_args(@results,
-                   55,
-                   "57-58 - dummy_name_2")
-  assert_with_args(@results,
-                   56,
-                   "57 - dummy_name_3")
-  assert_with_args(@results,
-                   57,
-                   "75, t. 101 - Magnoliophyta Cronquist, Takht. & W.Zimm. ex Reveal a_division")
-  assert_with_args(@results,
-                   58,
-                   "75, t. 102 - Magnoliopsida Brongn. a_classis")
+  assert_with_args(
+    @results,
+    55,
+    "57-58 - dummy_name_2",
+  )
+  assert_with_args(
+    @results,
+    56,
+    "57 - dummy_name_3",
+  )
+  assert_with_args(
+    @results,
+    57,
+    "75, t. 101 - Magnoliophyta Cronquist, Takht. & W.Zimm. ex Reveal a_division",
+  )
+  assert_with_args(
+    @results,
+    58,
+    "75, t. 102 - Magnoliopsida Brongn. a_classis",
+  )
   assert_with_args(@results, 59, "76 - Metrosideros costata Gaertn.")
   assert_with_args(@results, 60, "9999999999 - orth var for tax nov")
   assert_with_args(@results, 61, "19-20 - Plantae Haeckel")

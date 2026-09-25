@@ -19,6 +19,7 @@
 # Work out the typeahead params for the name field of an instance.
 class Name::AsResolvedTypeahead::ForInstance
   include Resolvable
+
   attr_reader :value
 
   def initialize(id_string, param_text)
@@ -86,8 +87,8 @@ class Name::AsResolvedTypeahead::ForInstance
 
   def two_or_more_possibles_for_id_and_text
     possibles_with_id = Name
-                        .where(id: @id_string.to_i)
-                        .lower_full_name_like(@text)
+      .where(id: @id_string.to_i)
+      .lower_full_name_like(@text)
     raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
 
     @value = possibles_with_id.first.id

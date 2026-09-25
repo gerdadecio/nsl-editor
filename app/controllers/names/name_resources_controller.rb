@@ -18,7 +18,7 @@
 #
 class Names::NameResourcesController < ApplicationController
   before_action :find_name
-  before_action :authorise_name_change, only: %i[create update destroy]
+  before_action :authorise_name_change, only: [:create, :update, :destroy]
 
   def create
     @name_resource = @name.name_resources.new(permitted_params)
@@ -26,11 +26,11 @@ class Names::NameResourcesController < ApplicationController
 
     if @name_resource.save
       @message = "Saved"
-      render :create
+      render(:create)
     else
       @message = @name_resource.errors.full_messages.join(",")
-      Rails.logger.error "Failed to create NameResource: #{@message}"
-      render "create_failed", status: :unprocessable_content
+      Rails.logger.error("Failed to create NameResource: #{@message}")
+      render("create_failed", status: :unprocessable_content)
     end
   end
 
@@ -40,17 +40,17 @@ class Names::NameResourcesController < ApplicationController
     @name_resource = @name.name_resources.find(params[:id])
     @name_resource.assign_attributes(permitted_params)
 
-    render :update and return unless @name_resource.changed?
+    render(:update) and return unless @name_resource.changed?
 
     @name_resource.current_user = current_user
 
     if @name_resource.save
       @message = "Updated"
-      render :update
+      render(:update)
     else
       @message = @name_resource.errors.full_messages.join(",")
-      Rails.logger.error "Failed to update NameResource: #{@message}"
-      render "update_failed", status: :unprocessable_content
+      Rails.logger.error("Failed to update NameResource: #{@message}")
+      render("update_failed", status: :unprocessable_content)
     end
   end
 
@@ -58,11 +58,11 @@ class Names::NameResourcesController < ApplicationController
     @name_resource = @name.name_resources.find(params[:id])
     if @name_resource.destroy
       @message = "Deleted"
-      render :destroy
+      render(:destroy)
     else
       @message = @name_resource.errors.full_messages.join(",")
-      Rails.logger.error "Failed to delete NameResource: #{@message}"
-      render "destroy_failed", status: :unprocessable_content
+      Rails.logger.error("Failed to delete NameResource: #{@message}")
+      render("destroy_failed", status: :unprocessable_content)
     end
   end
 
@@ -71,7 +71,7 @@ class Names::NameResourcesController < ApplicationController
   def find_name
     @name = Name.find(params[:name_id])
     if @name.nil?
-      render plain: "Name not found", status: :not_found
+      render(plain: "Name not found", status: :not_found)
     end
   end
 
@@ -86,7 +86,7 @@ class Names::NameResourcesController < ApplicationController
       .permit(
         :resource_host_id,
         :value,
-        :note
+        :note,
       )
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Loader::Batch::BulkController::JobAlreadyLockedError < StandardError
   def initialize(tag = "unknown", exception_type = "custom")
     @exception_type = exception_type

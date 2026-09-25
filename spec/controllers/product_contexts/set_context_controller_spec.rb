@@ -1,15 +1,17 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe ProductContexts::SetContextController, type: :controller do
-  let!(:session_user) { FactoryBot.create(:session_user, groups: ['login']) }
+require "rails_helper"
+
+RSpec.describe(ProductContexts::SetContextController, type: :controller) do
+  let!(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
   let!(:current_user) { FactoryBot.create(:user) }
   let!(:product) { FactoryBot.create(:product) }
   let!(:context_id) { 1 }
-  let!(:context_name) { 'Test Context' }
+  let!(:context_name) { "Test Context" }
   let!(:available_contexts) do
     [
-      { context_id: 1, name: 'Test Context', description: 'A test context' },
-      { context_id: 2, name: 'Another Context', description: 'Another test context' }
+      { context_id: 1, name: "Test Context", description: "A test context" },
+      { context_id: 2, name: "Another Context", description: "Another test context" }
     ]
   end
   let(:product_context_service) { instance_double(Products::ProductContextService) }
@@ -17,11 +19,11 @@ RSpec.describe ProductContexts::SetContextController, type: :controller do
   before do
     emulate_user_login(session_user, current_user)
 
-    allow(controller).to receive(:available_contexts_for_current_user).and_return(available_contexts)
-    allow(product_context_service).to receive(:available_contexts).and_return(available_contexts)
-    allow(product_context_service).to receive(:product_with_context).with(context_id).and_return(product)
-    allow(controller).to receive(:product_context_service).and_return(product_context_service)
-    allow(controller).to receive(:current_user).and_return(session_user)
+    allow(controller).to(receive(:available_contexts_for_current_user).and_return(available_contexts))
+    allow(product_context_service).to(receive(:available_contexts).and_return(available_contexts))
+    allow(product_context_service).to(receive(:product_with_context).with(context_id).and_return(product))
+    allow(controller).to(receive(:product_context_service).and_return(product_context_service))
+    allow(controller).to(receive(:current_user).and_return(session_user))
   end
 
   describe "POST #create" do
@@ -29,34 +31,34 @@ RSpec.describe ProductContexts::SetContextController, type: :controller do
 
     it "sets the current context in the session" do
       post_create
-      expect(session[:current_context_id]).to eq(context_id)
+      expect(session[:current_context_id]).to(eq(context_id))
     end
 
     it "sets the current context name in the session" do
       post_create
-      expect(session[:current_context_name]).to eq("Test Context")
+      expect(session[:current_context_name]).to(eq("Test Context"))
     end
 
     it "clears any existing draft in the session" do
       session[:draft] = { id: 123 }
       post_create
-      expect(session[:draft]).to be_nil
+      expect(session[:draft]).to(be_nil)
     end
 
     it "calls set_current_product_from_context with the product" do
-      expect(session_user).to receive(:set_current_product_from_context).with(product)
+      expect(session_user).to(receive(:set_current_product_from_context).with(product))
       post_create
     end
 
     it "redirects to the previous page when HTTP_REFERER is set" do
       request.env["HTTP_REFERER"] = "/previous_page"
       post_create
-      expect(response).to redirect_to("/previous_page")
+      expect(response).to(redirect_to("/previous_page"))
     end
 
     it "falls back to search page" do
       post_create
-      expect(response).to redirect_to(search_path)
+      expect(response).to(redirect_to(search_path))
     end
 
     context "with the same context id" do
@@ -69,13 +71,13 @@ RSpec.describe ProductContexts::SetContextController, type: :controller do
 
       it "clears the current context from the session" do
         post_create
-        expect(session[:current_context_id]).to be_nil
-        expect(session[:current_context_name]).to be_nil
-        expect(session[:draft]).to be_nil
+        expect(session[:current_context_id]).to(be_nil)
+        expect(session[:current_context_name]).to(be_nil)
+        expect(session[:draft]).to(be_nil)
       end
 
       it "does not call set_current_product_from_context" do
-        expect(session_user).not_to receive(:set_current_product_from_context)
+        expect(session_user).not_to(receive(:set_current_product_from_context))
         post_create
       end
     end
@@ -85,20 +87,19 @@ RSpec.describe ProductContexts::SetContextController, type: :controller do
 
       it "does not change the current context in the session" do
         post_create
-        expect(session[:current_context_id]).to be_nil
+        expect(session[:current_context_id]).to(be_nil)
       end
 
       it "does not call set_current_product_from_context" do
-        expect(session_user).not_to receive(:set_current_product_from_context)
+        expect(session_user).not_to(receive(:set_current_product_from_context))
         post_create
       end
 
       it "redirects to the previous page when HTTP_REFERER is set" do
         request.env["HTTP_REFERER"] = "/previous_page"
         post_create
-        expect(response).to redirect_to("/previous_page")
+        expect(response).to(redirect_to("/previous_page"))
       end
     end
   end
-
 end

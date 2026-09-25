@@ -20,7 +20,7 @@
 class Loader::Name::Match::Suggestions::ForIntendedTreeParentController < ApplicationController
   def index
     typeahead = Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance.new(params)
-    render json: typeahead.suggestions
+    render(json: typeahead.suggestions)
   end
 
   private

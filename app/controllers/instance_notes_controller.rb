@@ -17,8 +17,8 @@
 #   limitations under the License.
 #
 class InstanceNotesController < ApplicationController
-  before_action :set_instance_note, only: %i[show edit update destroy]
-  before_action :authorise_instance_change, only: %i[create update destroy]
+  before_action :set_instance_note, only: [:show, :edit, :update, :destroy]
+  before_action :authorise_instance_change, only: [:create, :update, :destroy]
 
   # GET /instance_notes/1
   # GET /instance_notes/1.json
@@ -31,22 +31,22 @@ class InstanceNotesController < ApplicationController
 
   # GET /instance_notes/1/edit
   def edit
-    render "edit"
+    render("edit")
   end
 
   # POST /instance_notes
   # POST /instance_notes.json
   def create
     if InstanceNote.new(instance_note_params)
-                   .save_with_username(current_user.username)
+        .save_with_username(current_user.username)
       @message = "Saved"
-      render :create
+      render(:create)
     else
       raise("Not saved")
     end
   rescue StandardError => e
     @message = e.to_s
-    render "create_failed", status: :unprocessable_content
+    render("create_failed", status: :unprocessable_content)
   end
 
   # PATCH/PUT /instance_notes/1
@@ -61,10 +61,10 @@ class InstanceNotesController < ApplicationController
   def destroy
     @instance_note.updated_by = current_user.username
     if @instance_note.save(validate: false) && @instance_note.destroy
-      render :destroy
+      render(:destroy)
     else
       @message = "Could not delete that record."
-      render "update_failed", status: :unprocessable_content
+      render("update_failed", status: :unprocessable_content)
     end
   end
 
@@ -86,28 +86,32 @@ class InstanceNotesController < ApplicationController
   # Never trust parameters from the scary internet,
   # only allow the white list through.
   def instance_note_params
-    params.require(:instance_note).permit(:instance_id,
-                                          :instance_note_key_id,
-                                          :value,
-                                          :sort_order)
+    params.require(:instance_note).permit(
+      :instance_id,
+      :instance_note_key_id,
+      :value,
+      :sort_order,
+    )
   end
 
   def changed?
-    @instance_note.instance_note_key_id.to_s != \
+    @instance_note.instance_note_key_id.to_s !=
       instance_note_params[:instance_note_key_id] ||
       @instance_note.value != instance_note_params[:value]
   end
 
   def really_update
-    if @instance_note.update_attributes_with_username!(instance_note_params,
-                                                       current_user.username)
+    if @instance_note.update_attributes_with_username!(
+      instance_note_params,
+      current_user.username,
+    )
       @message = "Updated"
-      render :update
+      render(:update)
     else
       raise("Not updated")
     end
   rescue StandardError => e
     @message = e.to_s
-    render :update_failed, status: :unprocessable_content
+    render(:update_failed, status: :unprocessable_content)
   end
 end

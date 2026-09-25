@@ -23,14 +23,18 @@ class ReaderSearchControllerNamesWildcardListTest < ActionController::TestCase
   tests SearchController
 
   test "reader can do wildcard search for authors" do
-    get(:search,
-        params: { query_target: "author", query_string: "*" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
+    get(
+      :search,
+      params: { query_target: "author", query_string: "*" },
+      session: {
+        username: "fred",
+        user_full_name: "Fred Jones",
+        groups: [],
+      },
+    )
     assert_response :success
     assert_select "#search-results-summary",
-                  /\b[0-9][0-9] records\b/,
-                  "Should find several records for an author wildcard search"
+      /\b[0-9][0-9] records\b/,
+      "Should find several records for an author wildcard search"
   end
 end

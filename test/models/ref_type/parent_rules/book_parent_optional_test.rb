@@ -24,6 +24,6 @@ class BookParentOptionalTest < ActiveSupport::TestCase
     ref_type = ref_types(:book)
     # Must have a parent_id to even be in the race with this data structure.
     assert ref_type.parent_id.present? && ref_type.parent_optional,
-           "Book ref type parent should be optional."
+      "Book ref type parent should be optional."
   end
 end

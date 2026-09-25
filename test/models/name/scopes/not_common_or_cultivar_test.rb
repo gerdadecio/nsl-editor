@@ -14,10 +14,10 @@ class NameScopeNotCommonOrCultivarTest < ActiveSupport::TestCase
   end
 
   test "not_common_or_cultivar excludes common names" do
-    refute_includes Name.not_common_or_cultivar, @common
+    assert_not_includes Name.not_common_or_cultivar, @common
   end
 
   test "not_common_or_cultivar excludes cultivar names" do
-    refute_includes Name.not_common_or_cultivar, @cultivar
+    assert_not_includes Name.not_common_or_cultivar, @cultivar
   end
 end

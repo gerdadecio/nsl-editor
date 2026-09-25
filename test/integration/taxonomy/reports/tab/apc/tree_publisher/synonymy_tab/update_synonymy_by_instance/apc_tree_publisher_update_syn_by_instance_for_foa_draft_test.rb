@@ -22,16 +22,17 @@ class APCTreePublisherUpdateSynByInstanceForFOADraftTest < ActionController::Tes
   tests TreesController
 
   def setup
-    stub_request(:post, /http:..localhost:90...tree-element.update-synonymy-by-instance.apiKey=test-api-key.as=apc-tax-publisher/).
-    with(
-      headers: {
-	    'Accept'=>'application/json',
-	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-	    'Content-Length'=>'0',
-	    'Host'=>/localhost/,
-	    'User-Agent'=>/ruby/
-      }).
-    to_return(status: 200, body: "", headers: {})
+    stub_request(:post, /http:..localhost:90...tree-element.update-synonymy-by-instance.apiKey=test-api-key.as=apc-tax-publisher/)
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+          "Content-Length" => "0",
+          "Host" => /localhost/,
+          "User-Agent" => /ruby/,
+        },
+      )
+      .to_return(status: 200, body: "", headers: {})
   end
 
   # r6editor Started POST "/nsl/editor/trees/update_synonymy_by_instance"
@@ -40,15 +41,17 @@ class APCTreePublisherUpdateSynByInstanceForFOADraftTest < ActionController::Tes
   test "APC tree publisher can update synonymy by instance for FOA draft" do
     user = users(:apc_tax_publisher)
     draft = tree_versions(:foa_draft_version)
-    post(:update_synonymy_by_instance,
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    draft: draft,
-                    groups: ["login"]})
-    assert_response :forbidden, 'APC tree publisher should not be able to update synonymy by instance for FOA draft'
+    post(
+      :update_synonymy_by_instance,
+      format: :js,
+      xhr: true,
+      session: {
+        username: user.user_name,
+        user_full_name: user.full_name,
+        draft: draft,
+        groups: ["login"],
+      },
+    )
+    assert_response :forbidden, "APC tree publisher should not be able to update synonymy by instance for FOA draft"
   end
 end
-
-

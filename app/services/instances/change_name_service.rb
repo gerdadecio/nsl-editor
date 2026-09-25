@@ -62,7 +62,7 @@ module Instances
         cites_id: cites.id,
         cited_by_id: @instance.id,
         reference_id: @instance.reference_id,
-        instance_type_id: @synonym_instance_type_id
+        instance_type_id: @synonym_instance_type_id,
       )
       synonym.save_with_username(@username)
     rescue ActiveRecord::RecordInvalid => e

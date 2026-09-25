@@ -22,6 +22,6 @@ require "test_helper"
 class ScientificIsScientificTest < ActiveSupport::TestCase
   test "scientific is a scientific name type" do
     assert NameType.find_by(name: "scientific").scientific?,
-           'Scientific should be categorised as a "scientific" name type'
+      'Scientific should be categorised as a "scientific" name type'
   end
 end

@@ -24,9 +24,9 @@ class SearchOnReferenceAssertionDuplicateIsNotTest < ActiveSupport::TestCase
   test "reference asertion is not a duplicate" do
     search = Search::Base.new(ActiveSupport::HashWithIndifferentAccess
              .new(query_target: "reference",
-                  query_string: "is-not-a-duplicate:",
-                  current_user: build_edit_user))
-    assert !search.executed_query.results.empty?,
-           "Should find non-duplicate reference."
+               query_string: "is-not-a-duplicate:",
+               current_user: build_edit_user))
+    assert_not search.executed_query.results.empty?,
+      "Should find non-duplicate reference."
   end
 end

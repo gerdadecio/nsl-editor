@@ -13,7 +13,7 @@ module Reference::ParentResolvable
     send("#{key_field}=", Reference::AsResolvedTypeahead::ForParent.new(
       params[key_field],
       params[ta_field],
-      field_name.capitalize
+      field_name.capitalize,
     ).value)
   end
 end

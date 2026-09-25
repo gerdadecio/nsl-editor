@@ -25,10 +25,10 @@ class SearchOnInstanceTypeTwoValuesTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "type: basionym, comb. nov.",
-      current_user: build_edit_user
+      current_user: build_edit_user,
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.size > 30,
-           "Plenty of results expected."
+      "Plenty of results expected."
   end
 end

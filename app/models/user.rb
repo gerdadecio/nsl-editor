@@ -147,12 +147,12 @@ class User < ApplicationRecord
     available_roles = Product::Role.non_admins - product_roles
 
     # NOTES: If current_user is a product admin, restrict to only products they have admin access to
-    if current_user&.with_role?('admin') && Rails.configuration.try(:multi_product_tabs_enabled)
+    if current_user&.with_role?("admin") && Rails.configuration.try(:multi_product_tabs_enabled)
       admin_product_ids = current_user
         .user
         .product_roles
         .joins(:role)
-        .where(roles: { name: 'admin' })
+        .where(roles: { name: "admin" })
         .pluck(:product_id)
       available_roles = available_roles.select { |pr| admin_product_ids.include?(pr.product_id) }
     end
@@ -161,11 +161,12 @@ class User < ApplicationRecord
   end
 
   def inspect
-    {id: id,
-     user_name: user_name,
-     given_name: given_name,
-     family_name: family_name,
-     default_product_context_id: default_product_context_id
+    {
+      id: id,
+      user_name: user_name,
+      given_name: given_name,
+      family_name: family_name,
+      default_product_context_id: default_product_context_id,
     }
   end
 end

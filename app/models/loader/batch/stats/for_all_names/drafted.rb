@@ -31,9 +31,11 @@ class Loader::Batch::Stats::ForAllNames::Drafted
 
   def accepted_or_excluded_drafted
     @core_search.where("record_type in ('accepted','excluded')")
-                .joins(:loader_name_matches)
-                .where({ loader_name_match:
-                           { drafted: true } })
-                .count
+      .joins(:loader_name_matches)
+      .where({
+        loader_name_match:
+                           { drafted: true },
+      })
+      .count
   end
 end

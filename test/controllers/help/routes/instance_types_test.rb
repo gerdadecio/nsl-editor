@@ -23,7 +23,7 @@ class HelpRoutesInstanceTypesTest < ActionController::TestCase
   tests InstanceTypesController
   test "index should route ok" do
     assert_routing "/help/instance_types",
-                   controller: "help",
-                   action: "instance_types"
+      controller: "help",
+      action: "instance_types"
   end
 end
