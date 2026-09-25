@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# # frozen_string_literal: true
 
 #   Copyright 2017 Australian National Botanic Gardens
 #
@@ -53,13 +53,12 @@ class Instance::AsTypeahead::ForSynonymy
 
   def initialize(terms, name_id)
     @results = []
-    @name_binds = []
-    terms_without_year = terms.gsub(/[12][0-9]{3}/, "").strip.gsub("  ", " ")
+    @name_bind_value = nil
+    terms_without_year = terms.gsub(/[1,2][0-9]{3}/, "").strip.gsub("  ", " ")
     Rails.logger.debug { "terms_without_year: #{terms_without_year}" }
     return if terms_without_year.blank?
 
-    @name_binds.push(" lower(f_unaccent(full_name)) like lower(f_unaccent(?)) ")
-    @name_binds.push(terms_without_year.tr("*", "%") + "%")
+    @name_bind_value = "#{terms_without_year.tr('*', '%')}%"
     @results = run_query(terms, name_id)
   end
 
@@ -69,12 +68,23 @@ class Instance::AsTypeahead::ForSynonymy
     end
   end
 
+  # CodeQL flags the where clauses below as SQL built from user-controlled
+  # sources. Both the name-search and reference-year-search values are only
+  # ever passed as bound "?" parameters (never interpolated into the SQL
+  # text), which is Rails' documented safe pattern for parameterizing raw
+  # SQL fragments. The SQL template strings are written as literals directly
+  # in each where(...) call, and only the plain bound value (never an array)
+  # is carried through a variable, matching the shape CodeQL's static
+  # analysis is able to confirm as safe elsewhere in this app.
   def build_query(terms, name_id)
     query = Instance.select(COLUMNS)
-      .joins(name: :name_rank).where(*@name_binds)
+      .joins(name: :name_rank)
+      .where(" lower(f_unaccent(full_name)) like lower(f_unaccent(?)) ", @name_bind_value)
       .joins(:reference)
-    ref_binds = reference_binds(terms)
-    query = query.where(*ref_binds) if ref_binds.present?
+
+    year_bind = reference_year_bind(terms)
+    query = query.where(" reference.iso_publication_date like ? ||'%' ", year_bind) if year_bind
+
     query = query
       .joins(:instance_type)
       .where("cited_by_id is null")
@@ -82,6 +92,7 @@ class Instance::AsTypeahead::ForSynonymy
       .order(Arel.sql("name_rank.sort_order,lower(f_unaccent(full_name)), " \
         "#{ISO_PUBLICATION_DATE_ORDER}"))
       .limit(SEARCH_LIMIT)
+
     restrict_ranks(query, name_id)
   end
 
@@ -118,17 +129,16 @@ class Instance::AsTypeahead::ForSynonymy
     value
   end
 
-  def reference_binds(terms)
-    reference_binds = []
+  # Returns the bound value for the reference.iso_publication_date search
+  # (a plain 4-digit year string), or nil if terms contains no year, or the
+  # matched digits don't fall in a sane year range.
+  def reference_year_bind(terms)
     match = terms.match(/[1,2][0-9]{3}/)
-    return reference_binds if match.blank?
+    return nil if match.blank?
 
     reference_year = match.to_s
-    if reference_year.present? &&
-        reference_year.to_i > 1000 && reference_year.to_i < 3000
-      reference_binds.push(" reference.iso_publication_date like ? ||'%' ")
-      reference_binds.push(reference_year)
-    end
-    reference_binds
+    return nil unless reference_year.to_i > 1000 && reference_year.to_i < 3000
+
+    reference_year
   end
 end
