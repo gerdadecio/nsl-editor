@@ -79,6 +79,7 @@ class Instance < ApplicationRecord
   include Instance::InTaxonomy
   include UserTrackable
   include SoftDeletable
+  include RejectsSoftDeletedLinks
   include Instance::ForCopyToLoaderName
   include Instance::CopyableToNewName
   include Instance::Displayable
@@ -400,6 +401,9 @@ class Instance < ApplicationRecord
   validate :only_one_primary_instance_per_name
   validate :relationship_cannot_be_standalone_type
   validate :relationship_cannot_have_bhl_url
+  rejects_soft_deleted_links this_cites: "cited instance",
+                             this_is_cited_by: "citing instance",
+                             parent: "parent instance"
 
   before_validation :set_defaults
   before_create :set_defaults

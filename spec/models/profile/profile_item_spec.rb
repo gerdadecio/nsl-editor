@@ -267,4 +267,19 @@ RSpec.describe(Profile::ProfileItem, type: :model) do
       end
     end
   end
+
+  describe "linking to a soft deleted instance" do
+    it "cannot be created for a soft deleted instance" do
+      item = build(:profile_item, instance: create(:instance, deleted_at: Time.current))
+      expect(item).not_to be_valid
+      expect(item.errors[:base])
+        .to include("The instance has been soft deleted and cannot be used")
+    end
+
+    it "can be created for a live instance" do
+      item = build(:profile_item, instance: create(:instance))
+      item.valid?
+      expect(item.errors[:base]).not_to include(a_string_matching(/soft deleted/))
+    end
+  end
 end

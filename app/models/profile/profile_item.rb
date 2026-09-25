@@ -47,6 +47,7 @@
 module Profile
   class ProfileItem < ApplicationRecord
     include UserTrackable
+    include RejectsSoftDeletedLinks
 
     self.table_name = "profile_item"
     self.primary_key = "id"
@@ -71,6 +72,7 @@ module Profile
     has_many :sourced_in_profile_items, class_name: "Profile::ProfileItem", foreign_key: "source_profile_item_id"
 
     validates :statement_type, presence: true
+    rejects_soft_deleted_links instance: "instance"
 
     default_scope { includes(:product_item_config).order("product_item_config.sort_order ASC") }
 
