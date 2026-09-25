@@ -43,8 +43,8 @@ class Loader::Name::AsTypeahead::ForParent
 
   def core_query
     Loader::Name.where(record_type: ["accepted", "excluded"])
-      .where(["lower(simple_name) like ?", prepared_search_term])
-      .where(["loader_batch_id = ?", @params[:loader_batch_id]])
+      .where("lower(simple_name) like ?", prepared_search_term)
+      .where("loader_batch_id = ?", @params[:loader_batch_id])
       .avoids_id(@params[:avoid_id].try("to_i") || -1)
       .order("simple_name")
       .limit(SEARCH_LIMIT)
