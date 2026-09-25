@@ -112,7 +112,7 @@ abbrev, count(reference.id) as ref_count")
     if term.blank?
       []
     else
-      Author.lower_name_like(term + "%")
+      Author.lower_name_like(term)
         .not_duplicate
         .where([" author.id <> ?", excluded_id])
         .joins("left outer join reference on " \

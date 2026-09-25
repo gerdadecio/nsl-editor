@@ -8,13 +8,15 @@ module Author::Scopes
     # Only used for typeahead confirmation, so DO NOT use f_unaccent.
     scope :lower_name_equals,
       ->(string) { where("lower(name) = lower(?) ", string) }
+
     scope :lower_name_like,
       (lambda do |string|
         where(
-          "lower(f_unaccent(name)) like lower(f_unaccent(?)) ",
+          "lower(f_unaccent(name)) like lower(f_unaccent(?)) || '%'",
           string.tr("*", "%"),
         )
       end)
+
     scope :lower_abbrev_like,
       (lambda do |string|
         where(
