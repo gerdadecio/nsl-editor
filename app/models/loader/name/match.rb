@@ -18,6 +18,7 @@
 #
 # Loader Name entity
 class Loader::Name::Match < ApplicationRecord
+  include RejectsSoftDeletedLinks
   strip_attributes
   self.table_name = "loader_name_match"
   self.primary_key = "id"
@@ -58,6 +59,10 @@ class Loader::Name::Match < ApplicationRecord
     uniqueness: true,
     unless: proc { |a| a.loader_name.record_type == "misapplied" }
   validate :misapp_pref_matches_from_only_one_name
+  rejects_soft_deleted_links instance: "instance",
+                             standalone_instance: "standalone instance",
+                             relationship_instance: "relationship instance",
+                             source_for_copy: "source instance for copy"
 
   before_destroy :can_destroy?
 
