@@ -62,7 +62,7 @@ class Loader::Name::BulkSynConflictsSearch
   end
 
   def loader_name_restriction
-    if /\Afamily:.*\z/.match?(@search_s)
+    if /\Afamily:.*\z/i.match?(@search_s)
       family_search
     else
       @search = @search.where(
@@ -89,13 +89,13 @@ class Loader::Name::BulkSynConflictsSearch
   #     family in ('one-family-name', 'another-family-name', 'yet-another')
   #
   def family_search
-    @family_s = @search_s.downcase.sub(/ *family: */, "")
-    if @family_s.split(/ *, */).size < 2
-      one_family_search
-    else
-      families_search
-    end
+  @family_s = @search_s.downcase.sub(/\A *family: */, "")
+  if @family_s.split(",").size < 2
+    one_family_search
+  else
+    families_search
   end
+end
 
   def one_family_search
     @search = @search.where(
