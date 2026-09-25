@@ -71,8 +71,11 @@ class Instance::AsTypeahead::ForSynonymy
 
   def build_query(terms, name_id)
     query = Instance.select(COLUMNS)
-      .joins(name: :name_rank).where(@name_binds)
-      .joins(:reference).where(reference_binds(terms))
+      .joins(name: :name_rank).where(*@name_binds)
+      .joins(:reference)
+    ref_binds = reference_binds(terms)
+    query = query.where(*ref_binds) if ref_binds.present?
+    query = query
       .joins(:instance_type)
       .where("cited_by_id is null")
       .where.not(name_id: name_id.to_i)
