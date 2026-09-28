@@ -49,7 +49,8 @@ class Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance
   # a placeholder in a way that specifically counters SQL Injection.
   # I will dismiss the alert.
   def core_query
-    Name.joins(:name_rank)
+    Name.not_soft_deleted
+      .joins(:name_rank)
       .joins(:name_status)
       .joins(:name_type)
       .where([

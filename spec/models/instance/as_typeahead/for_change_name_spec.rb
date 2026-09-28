@@ -56,6 +56,20 @@ RSpec.describe(Instance::AsTypeahead::ForChangeName, type: :model) do
       end
     end
 
+    context "when the matching name has been soft deleted" do
+      before { name.update_column(:deleted_at, Time.current) }
+
+      it "does not offer it" do
+        result = described_class.new(
+          term: "Acacia",
+          name_type_id: name_type.id,
+          name_rank_id: name_rank.id,
+          exclude_name_id: 0,
+        )
+        expect(result.suggestions.pluck(:id)).not_to(include(name.id))
+      end
+    end
+
     context "when term does not match" do
       before { name }
 

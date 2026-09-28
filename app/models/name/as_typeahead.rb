@@ -119,6 +119,7 @@ class Name::AsTypeahead < Name
       results = []
     else
       query = Name.not_a_duplicate
+        .not_soft_deleted
         .full_name_like(term)
         .avoids_id(avoid_id.try("to_i") || -1)
         .joins(:name_rank)
@@ -154,6 +155,7 @@ class Name::AsTypeahead < Name
       results = []
     else
       query = Name.not_a_duplicate
+        .not_soft_deleted
         .full_name_like(term_for_query)
         .avoids_id(avoid_id.try("to_i") || -1)
         .joins(:name_rank)
@@ -192,6 +194,7 @@ class Name::AsTypeahead < Name
       results = []
     else
       query = Name.not_a_duplicate
+        .not_soft_deleted
         .full_name_like(term)
         .avoids_id(avoid_id.to_i)
         .joins(:name_rank)

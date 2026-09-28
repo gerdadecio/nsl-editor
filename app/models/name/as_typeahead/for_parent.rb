@@ -55,6 +55,7 @@ class Name::AsTypeahead::ForParent
 
   def core_query
     Name.not_a_duplicate
+      .not_soft_deleted
       .lower_full_name_like_for_parent_typeahead(prepared_search_term)
       .avoids_id(@params[:avoid_id].try("to_i") || -1)
       .joins("left outer join name families_name on name.family_id = families_name.id")
