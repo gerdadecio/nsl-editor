@@ -7,6 +7,4 @@ Name #<%= @name.id %>
 <% if @name.source_system %>
   <br>Migrated from <%= "#{@name.source_system.downcase} ##{@name.source_id}" %>
 <% end %>
-<% if Rails.configuration.try(:soft_delete_enabled) && @name.deleted_at %>
-  <br>Record soft deleted on: <%= formatted_timestamp(@name.deleted_at) %>
-<% end %>
+<%= soft_deleted_by_whom_and_when(@name).html_safe %>
