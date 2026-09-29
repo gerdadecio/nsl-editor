@@ -53,6 +53,14 @@ module AuditHelper
     by #{h(record.api_name.presence || "unknown")} #{formatted_timestamp(record.api_at)})
   end
 
+  def soft_deleted_by_whom_and_when(record)
+    return "" unless Rails.configuration.try(:soft_delete_enabled) && record.deleted_at.present?
+
+    %(<br>Record soft deleted <span class="purple"
+    >#{time_ago_in_words(record.deleted_at)}&nbsp;ago</span>
+    by #{record.updated_by} #{formatted_timestamp(record.deleted_at)})
+  end
+
   def meaningful_update(record)
     %(Last updated
     <span class="purple">#{time_ago_in_words(record.updated_at)}&nbsp;ago
