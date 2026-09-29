@@ -41,7 +41,7 @@ class InstanceAsArrayForReferencePreloadForTest < ActiveSupport::TestCase
         1000,
         0,
         preloaded_instances: instances_by_reference[ref.id] || [],
-        preloaded_cited_by_map: cited_by_map,
+        preloaded_cited_by_map: cited_by_map
       ).results.map(&:id)
 
       assert_equal separately_queried,

@@ -37,7 +37,7 @@ class NameTypeSrchScientificSetsCommCultFlagTrueT < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "input.checkbox[type=checkbox]

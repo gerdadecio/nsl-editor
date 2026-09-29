@@ -29,12 +29,12 @@ class ForNorhovarietasFullyRestrictedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "Nothovarietas").id,
+      rank_id: NameRank.find_by(name: "Nothovarietas").id
     )
     typeahead.suggestions.each do |suggestion|
       suggestion_rank_should_be_at_or_below(
         suggestion,
-        NameRank.find_by(name: "Species"),
+        NameRank.find_by(name: "Species")
       )
     end
   end

@@ -29,7 +29,7 @@ class SearchParsedRequestListDirectiveKeepsSimilarTokenTest < ActiveSupport::Tes
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       canonical_query_target: "name",
-      query_string: "list: family-list: Fabaceae",
+      query_string: "list: family-list: Fabaceae"
     )
     parsed_request = Search::ParsedRequest.new(params)
 

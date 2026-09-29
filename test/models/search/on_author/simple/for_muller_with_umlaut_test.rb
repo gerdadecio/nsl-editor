@@ -26,7 +26,7 @@ class ForMullerWithUmlautTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "fr.müLl",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
@@ -42,7 +42,7 @@ class ForMullerWithUmlautTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "fr.muLl",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),

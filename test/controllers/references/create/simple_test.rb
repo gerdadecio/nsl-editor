@@ -57,7 +57,7 @@ class ReferencesesCreateSimpleTest < ActionController::TestCase
         headers: {
           "Accept" => "text/json",
           "Accept-Encoding" => encoding,
-        },
+        }
       )
       .to_return(status: 200, body: body, headers: {})
   end
@@ -82,7 +82,7 @@ class ReferencesesCreateSimpleTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
     end
   end

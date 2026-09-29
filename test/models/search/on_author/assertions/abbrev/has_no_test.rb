@@ -28,8 +28,8 @@ class SearchOnAuthorAssertionAbbrevHasNoTest < ActiveSupport::TestCase
                                                            "has-no-abbrev:",
         query_target: "Author",
         current_user:
-                build_edit_user,
-      ),
+                build_edit_user
+      )
     )
     assert_not search.executed_query.results.empty?,
       "Should find authors with no abbrev."

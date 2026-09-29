@@ -34,17 +34,17 @@ class FromOtherToScientficTest < ActiveSupport::TestCase
 
     assert_not(
       name.valid?,
-      "other-informal name should not be valid now as scientific name",
+      "other-informal name should not be valid now as scientific name"
     )
 
     assert(name.errors.size == 2, "There should be two errors.")
     assert(
       name.errors.collect { |k, _v| k.to_s }.include?("name_type_id"),
-      "There should be an error for name_type_id.",
+      "There should be an error for name_type_id."
     )
     assert(
       name.errors.collect { |k, _v| k.to_s }.include?("parent_id"),
-      "There should be an error for parent_id.",
+      "There should be an error for parent_id."
     )
 
     name.name_type_id = NameType.find_by(name: "autonym").id
@@ -52,12 +52,12 @@ class FromOtherToScientficTest < ActiveSupport::TestCase
     name.name_path = names(:a_genus).name_path + "/#{name.name_element}"
     assert(
       name.valid?,
-      "other-informal name shd be valid now as scientific name with parent",
+      "other-informal name shd be valid now as scientific name with parent"
     )
     name.save!
     assert(
       name.raw_category == Name::SCIENTIFIC_CATEGORY,
-      "previously other-informal name should now be a scientific name",
+      "previously other-informal name should now be a scientific name"
     )
   end
 end

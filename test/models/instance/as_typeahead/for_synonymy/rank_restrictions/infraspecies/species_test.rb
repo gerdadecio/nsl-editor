@@ -23,7 +23,7 @@ class TypeaheadForSynonymySpeciesTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "a",
-      names(:a_species).id,
+      names(:a_species).id
     )
   end
 
@@ -60,7 +60,7 @@ class TypeaheadForSynonymySpeciesTest < ActiveSupport::TestCase
     ].each do |rank_string|
       assert(
         @rank_names.none? { |e| e.match(/\A#{rank_string}\z/) },
-        "Expect no #{Regexp.escape(rank_string)} to be suggested",
+        "Expect no #{Regexp.escape(rank_string)} to be suggested"
       )
     end
   end
@@ -73,7 +73,7 @@ class TypeaheadForSynonymySpeciesTest < ActiveSupport::TestCase
   def check_species
     assert(
       @rank_names.select { |e| e == "Species" }.size >= 4,
-      "Expect correct number of species to be suggested",
+      "Expect correct number of species to be suggested"
     )
   end
 
@@ -98,7 +98,7 @@ class TypeaheadForSynonymySpeciesTest < ActiveSupport::TestCase
       end
       assert(
         matches.size >= 1,
-        "Expect at least one #{rank_string} to be suggested",
+        "Expect at least one #{rank_string} to be suggested"
       )
     end
   end

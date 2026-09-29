@@ -27,7 +27,7 @@ class RefAsRTA4DupeOfIdWithStringMatching2References < ActiveSupport::TestCase
       "Should be two references with the same ciation."
     result = Reference::AsResolvedTypeahead::ForDuplicateOf.new(
       reference_2.id.to_s,
-      reference_2.citation,
+      reference_2.citation
     )
     assert_equal reference_2.id,
       result.value,

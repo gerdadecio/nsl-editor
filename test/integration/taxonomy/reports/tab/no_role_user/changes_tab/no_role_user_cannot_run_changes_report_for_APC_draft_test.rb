@@ -36,7 +36,7 @@ class NoRoleUserCanRunChangesReportForAPCDraftTest < ActionController::TestCase
         user_full_name: user.full_name,
         draft: draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "User with no role should not be able to run changes report for APC draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")

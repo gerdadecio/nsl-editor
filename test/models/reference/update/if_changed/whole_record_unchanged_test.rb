@@ -22,7 +22,7 @@ require "test_helper"
 class WholeRecordUnchangedTest < ActiveSupport::TestCase
   test "realistic form submission with no change" do
     reference = Reference::AsEdited.find(
-      references(:for_whole_record_change_detection).id,
+      references(:for_whole_record_change_detection).id
     )
 
     params = {

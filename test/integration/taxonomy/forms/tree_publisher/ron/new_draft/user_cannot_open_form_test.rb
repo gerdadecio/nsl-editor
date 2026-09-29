@@ -52,7 +52,7 @@ class TaxFormsTreePubRONNewDraftUserCannotOpenFormTest < ActionController::TestC
           username: user.user_name,
           user_full_name: user.full_name,
           groups: ["login"],
-        },
+        }
       )
     end
     assert_equal "RON tree is read only - cannot create any drafts", error.message

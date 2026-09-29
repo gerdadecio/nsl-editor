@@ -24,7 +24,7 @@ class AuthorAsTypeaheadOnNameDuplicateOfAuthorTest < ActiveSupport::TestCase
   test "haeckel duplicate of" do
     result = Author::AsTypeahead.on_name_duplicate_of(
       "haeck",
-      authors(:haeckel).id,
+      authors(:haeckel).id
     )
     assert_equal 0,
       result.size,

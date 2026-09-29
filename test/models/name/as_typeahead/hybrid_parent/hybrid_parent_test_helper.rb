@@ -26,7 +26,7 @@ def hybrid_parent_suggestions_should_include(suggestions,
       /#{re}/.match?(h[:value].split(/ *\| */).second) ? 1 : 0
     end.sum.positive?,
     "suggestions for #{given_rank_name} should
-    include #{expected_rank_name} [caller: #{caller(2..2).first}]",
+    include #{expected_rank_name} [caller: #{caller(2..2).first}]"
   )
 end
 
@@ -39,7 +39,7 @@ def hybrid_parent_suggestions_should_not_include(suggestions,
       /\s#{re}/.match?(h[:value].split(/ *\| */).second) ? 1 : 0
     end.sum.positive?,
     "suggestions for #{given_rank_name} should not
-             include #{unexpected_rank_name}[caller: #{caller(2..2).first}]",
+             include #{unexpected_rank_name}[caller: #{caller(2..2).first}]"
   )
 end
 

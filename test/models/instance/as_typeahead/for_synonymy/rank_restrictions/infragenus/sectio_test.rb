@@ -23,7 +23,7 @@ class TypeaheadForSynonymySectioTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "a",
-      names(:a_sectio).id,
+      names(:a_sectio).id
     )
   end
 
@@ -62,7 +62,7 @@ class TypeaheadForSynonymySectioTest < ActiveSupport::TestCase
       escaped_s = Regexp.escape(rank_string)
       assert(
         @rank_names.none? { |e| e.match(/\A#{escaped_s}\z/) },
-        "Expect no #{rank_string} to be suggested",
+        "Expect no #{rank_string} to be suggested"
       )
     end
   end
@@ -70,7 +70,7 @@ class TypeaheadForSynonymySectioTest < ActiveSupport::TestCase
   def check_infrageneric_inclusions
     assert(
       @rank_names.select { |e| e == "Genus" }.size >= 4,
-      "Expect correct number of genera to be suggested",
+      "Expect correct number of genera to be suggested"
     )
     [
       "Subgenus",
@@ -84,7 +84,7 @@ class TypeaheadForSynonymySectioTest < ActiveSupport::TestCase
       escaped_s = Regexp.escape(rank_string)
       assert(
         @rank_names.select { |e| e.match(/\A#{escaped_s}\z/) }.size >= 1,
-        "Expect at least one #{rank_string} to be suggested",
+        "Expect at least one #{rank_string} to be suggested"
       )
     end
   end

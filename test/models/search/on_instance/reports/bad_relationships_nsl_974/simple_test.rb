@@ -27,7 +27,7 @@ class SearchOnInstanceReportsBadRelshipsNsl974Test < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "bad-relationships-974:",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,

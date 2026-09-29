@@ -36,7 +36,7 @@ class TaxoInstanceTreeBuilderFoaCannotSeeAPCTreeTab < ActionController::TestCase
         user_full_name: user.full_name,
         groups: ["login"],
         draft: apc_draft,
-      },
+      }
     )
     assert_response :success, "Tab request should be successful"
     assert_no_match 'data-tab-name="tab_classification"', response.body, "Tree tab should not appear in nav for unauthorized user"

@@ -24,7 +24,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
   def render_suggestions(suggestions, term, **locals)
     render(
       partial: "shared/autocomplete_suggestions",
-      locals: { suggestions: suggestions, term: term }.merge(locals),
+      locals: { suggestions: suggestions, term: term }.merge(locals)
     )
     rendered
   end
@@ -82,7 +82,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
     output = render_suggestions(
       suggestions,
       "a_gen",
-      data_keys: [:family_id, :family_value],
+      data_keys: [:family_id, :family_value]
     )
 
     assert_select_in output,

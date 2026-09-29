@@ -27,17 +27,17 @@ class AuthorTest < ActiveSupport::TestCase
     assert_includes(
       typeahead_ids,
       authors(:for_typeahead_on_name_null_abbrev).id,
-      "Author should be in typeahead list",
+      "Author should be in typeahead list"
     )
     assert_includes(
       typeahead_ids,
       authors(:for_typeahead_on_name_has_abbrev).id,
-      "Author should be in typeahead list",
+      "Author should be in typeahead list"
     )
     assert_includes(
       typeahead_ids,
       authors(:for_typeahead_on_name_empty_string_abbrev).id,
-      "Author with empty string abbrev shld be in typeahead",
+      "Author with empty string abbrev shld be in typeahead"
     )
   end
 end

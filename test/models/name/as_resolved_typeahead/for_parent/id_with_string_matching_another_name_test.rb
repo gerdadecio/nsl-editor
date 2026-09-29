@@ -26,7 +26,7 @@ class NameAsEdParIdWithStringMatchingAnotherNameTest < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForParent.new(
       name_1.id.to_s,
       name_2.full_name,
-      "parent",
+      "parent"
     )
     assert_equal name_2.id,
       result.value,

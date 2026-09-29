@@ -24,7 +24,7 @@ class InstanceAsServicesTrueSuccess200Test < ActiveSupport::TestCase
   setup do
     stub_request(
       :delete,
-      "#{action}?apiKey=test-api-key&reason=Edit",
+      "#{action}?apiKey=test-api-key&reason=Edit"
     )
       .with(headers: {
         "Accept" => "application/json",

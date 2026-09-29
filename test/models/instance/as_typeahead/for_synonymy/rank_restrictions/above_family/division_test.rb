@@ -24,15 +24,15 @@ class TypeaheadForSynonymyDivisionTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "a*",
-      names(:a_division).id,
+      names(:a_division).id
     )
     @tb = Instance::AsTypeahead::ForSynonymy.new(
       "plantae",
-      names(:a_division).id,
+      names(:a_division).id
     )
     @tc = Instance::AsTypeahead::ForSynonymy.new(
       "magnolio",
-      names(:a_division).id,
+      names(:a_division).id
     )
   end
 

@@ -12,7 +12,7 @@ class NoCreateWhenReadOnlyTest < ActiveSupport::TestCase
         "draft name",
         "draft log entry",
         false,
-        "fred",
+        "fred"
       )
     end
   end

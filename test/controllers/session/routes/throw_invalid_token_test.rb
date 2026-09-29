@@ -25,7 +25,7 @@ class SessionCreateRouteTest < ActionController::TestCase
     assert_routing(
       { method: "get", path: "/throw_invalid_authenticity_token" },
       controller: "sessions",
-      action: "throw_invalid_authenticity_token",
+      action: "throw_invalid_authenticity_token"
     )
   end
 end

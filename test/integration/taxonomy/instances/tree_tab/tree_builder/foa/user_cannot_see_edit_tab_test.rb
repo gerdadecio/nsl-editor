@@ -41,7 +41,7 @@ class TaxoInstanceTreeBuilderFoaCannotSeeEditTab < ActionController::TestCase
         user_full_name: user.full_name,
         groups: ["login", "xedit"],
         draft: foa_draft,
-      },
+      }
     )
     assert_response :forbidden, "Tree builder should not see Edit tab"
   end

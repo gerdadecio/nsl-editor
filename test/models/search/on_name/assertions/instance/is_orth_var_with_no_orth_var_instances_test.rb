@@ -26,8 +26,8 @@ class SearchOnNameAssertIsOrthVarWithNoOrthVarInstTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "name",
         query_string: "is-orth-var-with-no-orth-var-instances:",
-        current_user: build_edit_user,
-      ),
+        current_user: build_edit_user
+      )
     )
     assert_not search.executed_query.results.empty?,
       "Should find name that has an instance."

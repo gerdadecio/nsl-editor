@@ -46,7 +46,7 @@ class CannotUpdateStandaloneToDupPrimEvenWOverrides < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert Instance.find(@instance.id).name_id == @target.name_id
     check_assertions
@@ -58,20 +58,20 @@ class CannotUpdateStandaloneToDupPrimEvenWOverrides < ActionController::TestCase
     assert_match(
       /#{es}/,
       response.body,
-      "Expected multiple errors message did not appear",
+      "Expected multiple errors message did not appear"
     )
     es = "already exists with the same reference, type and page."
     assert_match(
       /#{es}/,
       response.body,
-      "Expected error message did not appear",
+      "Expected error message did not appear"
     )
     es = "Saving this instance would result in multiple primary instances"
     es += " for the same name."
     assert_match(
       /#{es}/,
       response.body,
-      "Expected error message did not appear",
+      "Expected error message did not appear"
     )
   end
 end

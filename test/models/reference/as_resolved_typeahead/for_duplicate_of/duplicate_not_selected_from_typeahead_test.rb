@@ -25,7 +25,7 @@ class RefARTA4DuplicateOfNotSelectedFromTypeahead < ActiveSupport::TestCase
     assert_raise(
       RuntimeError,
       "Expect error - duplicate of typeahead has value but there is \
-                 no duplicate of id.",
+                 no duplicate of id."
     ) do
       reference.update_if_changed(
         {
@@ -46,7 +46,7 @@ class RefARTA4DuplicateOfNotSelectedFromTypeahead < ActiveSupport::TestCase
           "author_typeahead" => "",
           "author_id" => "",
         },
-        "fred",
+        "fred"
       )
     end
   end

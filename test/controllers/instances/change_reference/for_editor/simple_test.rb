@@ -34,7 +34,7 @@ class InstancesChangeReferenceForEditorSimpleTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert Instance.find(instance.id).reference_id == reference.id

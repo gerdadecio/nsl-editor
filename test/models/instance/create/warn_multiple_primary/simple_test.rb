@@ -32,7 +32,7 @@ class InstCreateWarnMultiplePrimarySimpleTest < ActiveSupport::TestCase
     i2.updated_by = "test"
     assert_raises(
       ActiveRecord::RecordInvalid,
-      "Second primary instance should be rejected",
+      "Second primary instance should be rejected"
     ) do
       i2.save!
     end

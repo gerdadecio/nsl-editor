@@ -34,7 +34,7 @@ class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
   end
 
@@ -86,7 +86,7 @@ class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
     assert_response :success
     assert_match(
       /This name has been soft-deleted and cannot be modified/,
-      response.body,
+      response.body
     )
     assert_select "a#name-soft-delete-link",
       false,

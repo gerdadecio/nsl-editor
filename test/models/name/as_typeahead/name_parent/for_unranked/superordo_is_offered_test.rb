@@ -25,7 +25,7 @@ class NameParentSuperordoIsOfferedForUnrankedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "a_superordo",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "[unranked]").id,
+      rank_id: NameRank.find_by(name: "[unranked]").id
     )
     expected_ranks = ["Superordo"]
     suggestions_should_only_include(

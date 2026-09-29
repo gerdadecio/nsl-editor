@@ -24,7 +24,7 @@ class AuthARTA4DupeOfNoIdWStrMatching2NamesTest < ActiveSupport::TestCase
     author_to_avoid = authors(:bentham)
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError for invalid author string.",
+      "Should raise a RuntimeError for invalid author string."
     ) do
       Author::AsResolvedTypeahead::ForDuplicateOf.new(
         "", "br", author_to_avoid

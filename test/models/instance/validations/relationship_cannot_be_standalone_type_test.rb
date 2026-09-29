@@ -35,7 +35,7 @@ class RelationshipCannotBeStandaloneTypeTest < ActiveSupport::TestCase
       name: cites_target.name,
       page: "synonymy instance cannot have a standalone instance type",
       created_by: "tester",
-      updated_by: "tester",
+      updated_by: "tester"
     )
     # Bypasses the unrelated "changing an accepted concept's synonymy"
     # warning, which isn't what this test is about.

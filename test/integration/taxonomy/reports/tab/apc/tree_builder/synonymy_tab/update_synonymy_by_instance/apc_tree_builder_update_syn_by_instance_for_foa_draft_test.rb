@@ -30,7 +30,7 @@ class APCTreeBuilderUpdateSynByInstanceForFOADraftTest < ActionController::TestC
           "Content-Length" => "0",
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -50,7 +50,7 @@ class APCTreeBuilderUpdateSynByInstanceForFOADraftTest < ActionController::TestC
         user_full_name: user.full_name,
         draft: draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree builder should not be able to update synonymy by instance for FOA draft"
   end

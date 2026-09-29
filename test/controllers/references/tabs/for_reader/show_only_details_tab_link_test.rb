@@ -34,7 +34,7 @@ class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_select "li.active a#reference-edit-show-1-tab",
@@ -53,17 +53,17 @@ class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
     assert_select(
       "a#reference-edit-tab",
       false,
-      "Should not show 'Edit' tab.",
+      "Should not show 'Edit' tab."
     )
     assert_select(
       "a#reference-edit-1-tab",
       false,
-      "Shows 'Edit.' tab link.",
+      "Shows 'Edit.' tab link."
     )
     assert_select(
       "a#reference-edit-2-tab",
       false,
-      "Shows 'Edit..' tab link.",
+      "Shows 'Edit..' tab link."
     )
   end
 
@@ -71,17 +71,17 @@ class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
     assert_select(
       "a#reference-edit-3-tab",
       false,
-      "Shows 'Edit...' tab link.",
+      "Shows 'Edit...' tab link."
     )
     assert_select(
       "a#reference-comments-tab",
       false,
-      "Shows 'Comments' tab link.",
+      "Shows 'Comments' tab link."
     )
     assert_select(
       "a#reference-new-instance-tab",
       false,
-      "Shows 'New instance' tab link.",
+      "Shows 'New instance' tab link."
     )
   end
 
@@ -89,7 +89,7 @@ class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
     assert_select(
       "a#tab-heading",
       /A Book/,
-      "Should have tab heading showing 'A Book'.",
+      "Should have tab heading showing 'A Book'."
     )
   end
 end

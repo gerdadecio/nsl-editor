@@ -41,7 +41,7 @@ class InstTAhead4NameShowRefToUpdSynonymy4EditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert response.body.length > 2, "Search should have results."
     assert_match FIN, response.body, "Missing: #{FIN}"

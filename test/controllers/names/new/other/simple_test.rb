@@ -35,7 +35,7 @@ class NamesNewOtherNameSimpleTest < ActionController::TestCase
         tabIndex: "107",
       },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Cannot start new for an 'other' name"
     assert_select("h4", /New Other Name/)

@@ -26,7 +26,7 @@ class NameCopyRouteTest < ActionController::TestCase
       { method: "post", path: "/names/1/copy" },
       controller: "names",
       action: "copy",
-      id: "1",
+      id: "1"
     )
   end
 end

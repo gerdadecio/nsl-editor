@@ -78,7 +78,7 @@ class NamesCreateByEditorTest < ActionController::TestCase
           user_full_name: "Fred Jones",
           groups: ["edit"],
         },
-        xhr: true,
+        xhr: true
       )
     end
   end

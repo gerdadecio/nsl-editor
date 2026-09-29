@@ -62,7 +62,7 @@ class NamesDeleteConfirmForEditorSimpleTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success, "Reader should be able to delete"
   end

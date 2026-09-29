@@ -26,7 +26,7 @@ class SearchOnAuthorIdsSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "ids: #{author.id}",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert_equal 1,

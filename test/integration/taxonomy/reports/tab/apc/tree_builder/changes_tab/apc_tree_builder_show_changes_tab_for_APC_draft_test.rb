@@ -36,7 +36,7 @@ class APCTreeBuilderCanShowChangesTabForAPCDraftTest < ActionController::TestCas
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree builder should be able to show changes tab for APC draft"
   end

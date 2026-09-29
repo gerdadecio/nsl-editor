@@ -28,7 +28,7 @@ class ForAChangedDuplicateOfIdTest < ActiveSupport::TestCase
     @author.update_if_changed(
       {},
       form_params,
-      "a user",
+      "a user"
     )
   end
 

@@ -27,7 +27,7 @@ class NameAsEdResolveTypeaheadParamsSetDuplicateOfTest < ActiveSupport::TestCase
       "Name should be have no duplicate of to start this test."
     name.resolve_typeahead_params(
       "duplicate_of_id" => dummy.id,
-      "duplicate_of_typeahead" => dummy.full_name,
+      "duplicate_of_typeahead" => dummy.full_name
     )
     assert_equal dummy.id,
       name.duplicate_of_id,

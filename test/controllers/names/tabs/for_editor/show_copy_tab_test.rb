@@ -34,7 +34,7 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "li.active a#name-copy-tab",
@@ -54,7 +54,7 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
@@ -81,7 +81,7 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
@@ -111,7 +111,7 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
@@ -127,7 +127,7 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
       true
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
-      @response.body,
+      @response.body
     )
   end
 end

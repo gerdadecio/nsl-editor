@@ -27,7 +27,7 @@ def cult_parent_suggs_shd_include(suggestions,
       /\s#{re}/.match?(h[:value]) ? 1 : 0
     end.sum.positive?,
     "suggestions for #{given_rank_name} should
-         include #{expected_rank_name} [caller: #{caller_test}]",
+         include #{expected_rank_name} [caller: #{caller_test}]"
   )
 end
 
@@ -41,7 +41,7 @@ def cult_parent_suggs_shd_not_incl(suggestions,
       /\s#{re}/.match?(h[:value]) ? 1 : 0
     end.sum.positive?,
     "suggestions for #{given_rank_name} should not
-             include #{unexpected_rank_name} [caller: #{caller_test}]",
+             include #{unexpected_rank_name} [caller: #{caller_test}]"
   )
 end
 

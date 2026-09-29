@@ -25,7 +25,7 @@ class TAOnCitn4ParRefTypeRestrictionJournalsForPaper < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "%",
       current_reference.id,
-      ref_types(:paper).id,
+      ref_types(:paper).id
     )
     assert_not typeahead.results.empty?,
       "Should be at least one result"

@@ -46,14 +46,14 @@ class BatchReviewPeriodUpdatePartialEndDate2Test < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["batch-loader"],
-      },
+      }
     )
     assert_response :unprocessable_content
     Loader::Batch::Review::Period.find(target.id)
     assert_match(
       /Error: End date is incomplete/,
       response.body.to_s,
-      "Expected success - no change - message not found",
+      "Expected success - no change - message not found"
     )
   end
 end

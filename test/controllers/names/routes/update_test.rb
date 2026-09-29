@@ -26,7 +26,7 @@ class NameUpdateRouteTest < ActionController::TestCase
       { method: "patch", path: "/names/1" },
       controller: "names",
       action: "update",
-      id: "1",
+      id: "1"
     )
   end
 end

@@ -57,7 +57,7 @@ class ReferencesesUpdateIsoPartialMonthAndYearTest < ActionController::TestCase
         headers: {
           "Accept" => "text/json",
           "Accept-Encoding" => encoding,
-        },
+        }
       )
       .to_return(status: 200, body: body, headers: {})
   end
@@ -84,7 +84,7 @@ class ReferencesesUpdateIsoPartialMonthAndYearTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
   end

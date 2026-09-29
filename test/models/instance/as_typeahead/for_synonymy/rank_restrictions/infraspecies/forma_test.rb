@@ -58,7 +58,7 @@ class TypeaheadForSynonymyFormaTest < ActiveSupport::TestCase
     ].each do |rank_string|
       assert(
         @rank_names.none? { |e| e.match(/\A#{rank_string}\z/) },
-        "Expect no #{Regexp.escape(rank_string)} to be suggested",
+        "Expect no #{Regexp.escape(rank_string)} to be suggested"
       )
     end
   end
@@ -71,7 +71,7 @@ class TypeaheadForSynonymyFormaTest < ActiveSupport::TestCase
   def check_species
     assert(
       @rank_names.select { |e| e == "Species" }.size >= 5,
-      "Expect correct number of species to be suggested",
+      "Expect correct number of species to be suggested"
     )
   end
 
@@ -95,7 +95,7 @@ class TypeaheadForSynonymyFormaTest < ActiveSupport::TestCase
       end
       assert(
         matches.size >= 1,
-        "Expect at least one #{rank_string} to be suggested",
+        "Expect at least one #{rank_string} to be suggested"
       )
     end
   end

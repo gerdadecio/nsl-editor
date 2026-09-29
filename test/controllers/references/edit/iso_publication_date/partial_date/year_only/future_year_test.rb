@@ -49,13 +49,13 @@ class ReferencesesUpdateIsoPartiaFutureYearTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :unprocessable_content
     assert_match(
       /#{@msg_part1}#{@msg_part2}/,
       response.body.to_s,
-      "Missing or incorrect error message",
+      "Missing or incorrect error message"
     )
   end
 end

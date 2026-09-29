@@ -27,7 +27,7 @@ class NameAsEdResolveTypeaheadParamsSetBaseAuthorTest < ActiveSupport::TestCase
       "Name should be have no base author to start this test."
     name.resolve_typeahead_params(
       "base_author_id" => dummy.id,
-      "base_author_typeahead" => dummy.abbrev,
+      "base_author_typeahead" => dummy.abbrev
     )
     assert_equal dummy.id,
       name.base_author_id,

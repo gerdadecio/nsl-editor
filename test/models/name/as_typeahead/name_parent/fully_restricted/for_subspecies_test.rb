@@ -29,7 +29,7 @@ class ForSubspeciesFullyRestrictedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "Subspecies").id,
+      rank_id: NameRank.find_by(name: "Subspecies").id
     )
     suggestions_should_only_include(
       typeahead.suggestions, "Subspecies", ["Species"]

@@ -42,7 +42,7 @@ class TaxFormsTreePubAPCUserCannotCreateFoADraftTest < ActionController::TestCas
         username: user.user_name,
         user_full_name: user.full_name,
         groups: ["login"],
-      },
+      }
     )
     assert_response :bad_request, "APC tree publisher should not be able to create FOA draft"
   end

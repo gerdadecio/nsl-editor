@@ -27,7 +27,7 @@ class RefAsEdNoParIdWthStringMatchingTwoReferencesTest < ActiveSupport::TestCase
       "Should be two References with the same citation string."
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError for invalid reference string.",
+      "Should raise a RuntimeError for invalid reference string."
     ) do
       Reference::AsResolvedTypeahead::ForParent.new("", reference_1.citation)
     end

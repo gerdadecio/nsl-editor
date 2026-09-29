@@ -33,7 +33,7 @@ class SearchParsedRequest20Test < ActiveSupport::TestCase
     assert_match(
       /\Aname\z/,
       parsed_request.target_table,
-      "This should be parsed as a query on the name table.",
+      "This should be parsed as a query on the name table."
     )
     assert_equal 20,
       parsed_request.limit,

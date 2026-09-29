@@ -26,8 +26,8 @@ class SearchOnReferenceShowNoveltiesSimpleTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "references",
         query_string: "id: #{reference.id} #{query_suffix}",
-        current_user: build_edit_user,
-      ),
+        current_user: build_edit_user
+      )
     )
   end
 

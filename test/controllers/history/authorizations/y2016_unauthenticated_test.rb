@@ -28,7 +28,7 @@ class HistoryAuthorizationsY2016UnauthenticatedTest < ActionController::TestCase
     assert_match(/alert.'Your session may have expired./, response.body)
     assert_match(
       /expired. Please reload the whole page before continuing.'.;/,
-      response.body,
+      response.body
     )
   end
 end

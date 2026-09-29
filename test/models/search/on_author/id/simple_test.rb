@@ -26,7 +26,7 @@ class SearchOnAuthorIdSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "id: #{author.id}",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,

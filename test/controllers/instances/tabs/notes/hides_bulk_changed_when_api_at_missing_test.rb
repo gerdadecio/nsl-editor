@@ -54,13 +54,13 @@ class InstanceTabsNotesHidesBulkChangedWhenApiAtMissingTest < ActionController::
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response(:success)
     assert_select(
       "form#edit_instance_note_#{@instance_note.id}",
       1,
-      "Needs the edit form for the existing note.",
+      "Needs the edit form for the existing note."
     )
   end
 end

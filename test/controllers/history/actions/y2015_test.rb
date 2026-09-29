@@ -32,7 +32,7 @@ class HistoryActionsY2015Test < ActionController::TestCase
         user_full_name: "Fred Jones",
         groups: [],
       },
-      xhr: true,
+      xhr: true
     )
     assert_response :success
     assert_select "h3",

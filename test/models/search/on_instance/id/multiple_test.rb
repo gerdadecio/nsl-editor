@@ -27,7 +27,7 @@ class SearchOnInstanceIdMultipleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "id: #{instance.id},#{i2.id}",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert_equal 2,

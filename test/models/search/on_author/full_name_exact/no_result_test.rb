@@ -30,7 +30,7 @@ class SearchOnAuthorFullNameExactNoResultTest < ActiveSupport::TestCase
             "full-name-exact:
                                                           tanley",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),

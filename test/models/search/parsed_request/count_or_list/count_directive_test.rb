@@ -35,7 +35,7 @@ class SearchParsedRequestCountDirectiveTest < ActiveSupport::TestCase
     assert_match(
       /\Aname\z/,
       parsed_request.target_table,
-      "This should be parsed as a query on the name table.",
+      "This should be parsed as a query on the name table."
     )
     assert_not parsed_request.limited,
       "This should be parsed as a query with no limit."

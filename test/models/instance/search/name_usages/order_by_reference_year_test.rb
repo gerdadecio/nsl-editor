@@ -31,7 +31,7 @@ class NameUsagesOrderByReferenceYear < ActiveSupport::TestCase
     @params = ActiveSupport::HashWithIndifferentAccess.new(
       query_string: "id:#{@name.id} show-instances:",
       query_target: "Name",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
   end
 

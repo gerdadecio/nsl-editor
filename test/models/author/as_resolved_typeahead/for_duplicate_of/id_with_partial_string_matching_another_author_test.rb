@@ -27,7 +27,7 @@ class AuthARTA4DupeOfIdWPartStrMatchingAnotherAuthor < ActiveSupport::TestCase
     result = Author::AsResolvedTypeahead::ForDuplicateOf.new(
       author_1.id.to_s,
       "chap",
-      author_to_avoid,
+      author_to_avoid
     )
     assert_equal author_2.id,
       result.value,

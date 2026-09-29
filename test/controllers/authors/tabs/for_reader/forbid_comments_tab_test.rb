@@ -34,7 +34,7 @@ class AuthorReaderNotShowCommentsTabTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :forbidden
   end

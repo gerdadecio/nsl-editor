@@ -25,7 +25,7 @@ class NameParentVarietasIsOfferedForUnrankedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "unranked",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "[unranked]").id,
+      rank_id: NameRank.find_by(name: "[unranked]").id
     )
     expected_ranks = ["[unranked]"]
     suggestions_should_only_include(

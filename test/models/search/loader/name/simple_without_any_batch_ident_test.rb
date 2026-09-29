@@ -29,7 +29,7 @@ class SearchLoaderNameWithoutAnyBatchIdentTest < ActiveSupport::TestCase
       query_string:
             "*",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     # TODO: rails 7.1 has a better way
     # https://blog.saeloun.com/2023/07/17/

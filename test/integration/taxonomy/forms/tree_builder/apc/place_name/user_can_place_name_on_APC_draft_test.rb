@@ -39,7 +39,7 @@ class TaxFormsTreeBuilderAPCUserCanPlaceNameOnAPCDraftTest < ActionController::T
           "Content-Type" => /json/,
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "{replace: 'result...'}".to_json, headers: {})
   end
@@ -84,7 +84,7 @@ class TaxFormsTreeBuilderAPCUserCanPlaceNameOnAPCDraftTest < ActionController::T
           user_full_name: user.full_name,
           draft: apc_draft,
           groups: ["login"],
-        },
+        }
       )
     end
   end

@@ -23,7 +23,7 @@ class NameARTA4Parent2NoIdWithInvalidString < ActiveSupport::TestCase
   test "no second parent id with invalid string" do
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError for invalid author string.",
+      "Should raise a RuntimeError for invalid author string."
     ) do
       Name::AsResolvedTypeahead::ForParent.new("", "asdfasfad", "second_parent")
     end

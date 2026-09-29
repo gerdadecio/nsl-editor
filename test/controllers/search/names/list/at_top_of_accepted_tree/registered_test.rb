@@ -33,7 +33,7 @@ class NamesSearchAtTopOfAcceptedTreeRegTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_select "#search-results-summary",
@@ -43,7 +43,7 @@ class NamesSearchAtTopOfAcceptedTreeRegTest < ActionController::TestCase
       summary.each do |s|
         assert_no_match(
           /Cannot search name for: at-top-of-accepted-tree:/,
-          s.to_s,
+          s.to_s
         )
       end
     end

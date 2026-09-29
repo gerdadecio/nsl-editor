@@ -24,7 +24,7 @@ class RefARTA4ParentNorIdWPartValidStringMatchingOne < ActiveSupport::TestCase
     reference = references(:origin_of_species)
     result = Reference::AsResolvedTypeahead::ForParent.new(
       "",
-      reference.citation.chop,
+      reference.citation.chop
     )
     assert_equal reference.id,
       result.value,

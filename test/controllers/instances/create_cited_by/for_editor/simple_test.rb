@@ -36,7 +36,7 @@ class InstancesCreateByEditorTest < ActionController::TestCase
             "instance_type_id" => instance_types(:basionym),
           },
         },
-        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] },
+        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] }
       )
     end
   end

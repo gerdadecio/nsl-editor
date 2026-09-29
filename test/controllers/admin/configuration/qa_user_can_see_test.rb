@@ -31,7 +31,7 @@ class AdminControllerQAUserCanSeeConfigTest < ActionController::TestCase
         user_full_name: "Fred Jones",
         groups: ["QA"],
       },
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "QA user should see configuration"
   end

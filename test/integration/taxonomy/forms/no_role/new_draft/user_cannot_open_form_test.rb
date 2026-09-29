@@ -41,7 +41,7 @@ class TaxFormsTreePubNoRoleUserCannotOpenNewDraftFormTest < ActionController::Te
         username: user.user_name,
         user_full_name: user.full_name,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "User without roles should not be able to open new draft taxonomy form"
   end

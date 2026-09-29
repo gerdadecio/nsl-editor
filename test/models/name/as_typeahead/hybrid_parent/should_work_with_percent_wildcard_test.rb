@@ -24,19 +24,19 @@ class HybridParentSuggestShldWorkWPercentWildcardTest < ActiveSupport::TestCase
     suggestions = Name::AsTypeahead.hybrid_parent_suggestions("%", -1)
     assert(
       suggestions.is_a?(Array),
-      "percent wildcard search should be an array",
+      "percent wildcard search should be an array"
     )
     assert(
       !suggestions.empty?,
-      "percent wildcard search should not be empty",
+      "percent wildcard search should not be empty"
           )
     assert(
       suggestions.first[:value].present?,
-      "percent wildcard search first element should have a value",
+      "percent wildcard search first element should have a value"
     )
     assert(
       suggestions.first[:id].present?,
-      "percent wildcard search first element should have an id",
+      "percent wildcard search first element should have an id"
     )
   end
 end

@@ -27,7 +27,7 @@ class RefTypeaheadOnCit4ParentDiacriticFindsBothTest < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "Hiltén",
       curr_ref.id,
-      ref_types(:chapter).id,
+      ref_types(:chapter).id
     )
     assert_equal 2, typeahead.results.length, "Expect 2 records for 'Hiltén'."
     ids = typeahead.results.collect { |reference| reference[:id] }

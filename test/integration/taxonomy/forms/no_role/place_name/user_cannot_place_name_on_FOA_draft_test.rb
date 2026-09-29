@@ -69,13 +69,13 @@ class TaxFormsNoRoleUserCannotPlaceNameOnFOADraftTest < ActionController::TestCa
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "Should be forbidden"
     assert_match(
       /access denied/i,
       response.body,
-      "Expecting Not authorized message",
+      "Expecting Not authorized message"
     )
   end
 end

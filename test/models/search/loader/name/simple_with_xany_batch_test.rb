@@ -29,7 +29,7 @@ class SearchLoaderNameWithXanyBatchTest < ActiveSupport::TestCase
       query_string:
             "* xany-batch:",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
 
     error = assert_raises(RuntimeError) do

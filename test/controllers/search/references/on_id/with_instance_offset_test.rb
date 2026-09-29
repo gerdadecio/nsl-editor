@@ -34,7 +34,7 @@ class SearchRefsOnIdWithInstanceOffsetTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     # NOTES (limit/total redesign, follow-up): instance-offset: only

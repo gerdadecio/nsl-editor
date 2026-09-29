@@ -52,7 +52,7 @@ class ReferenceShowEditorDetailsTabHidesBulkChangedWhenApiAtMissingTest < Action
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response(:success)
   end

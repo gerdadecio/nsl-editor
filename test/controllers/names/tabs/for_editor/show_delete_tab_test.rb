@@ -34,7 +34,7 @@ class NameShowDeleteTabForEditorTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "li.active a#name-delete-tab",

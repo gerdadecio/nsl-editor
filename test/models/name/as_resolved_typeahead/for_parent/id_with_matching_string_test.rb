@@ -25,7 +25,7 @@ class NameAsResolvedTypeahead4ParentIdWMatchingString < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForParent.new(
       name.id.to_s,
       name.full_name,
-      "parent",
+      "parent"
     )
     assert_equal name.id,
       result.value,

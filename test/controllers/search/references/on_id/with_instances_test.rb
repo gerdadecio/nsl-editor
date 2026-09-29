@@ -50,7 +50,7 @@ class SearchRefsOnIdWithInstancesTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response(:success)
     # NOTES (limit/total redesign, follow-up): a single matching reference
@@ -62,7 +62,7 @@ class SearchRefsOnIdWithInstancesTest < ActionController::TestCase
     assert_select(
       "#search-results-summary",
       /1 record\b/,
-      "Should find 1 record",
+      "Should find 1 record"
     )
   end
 end

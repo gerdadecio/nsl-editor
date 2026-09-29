@@ -41,7 +41,7 @@ class TaxFormsTreeBuilderAPCUserCanUpdateExcludedForTaxonOnAPCDraftTest < Action
           "Content-Type" => /json/,
           "Host" => /localhost:.*/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -68,7 +68,7 @@ class TaxFormsTreeBuilderAPCUserCanUpdateExcludedForTaxonOnAPCDraftTest < Action
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree builder should be able to update excluded on APC draft entry"
     assert_no_match "Error", response.body, "Not expecting an error message"

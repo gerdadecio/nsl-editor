@@ -27,7 +27,7 @@ class SearchOnNameSanctioningAuthorSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "sanctioning-author: has*",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)

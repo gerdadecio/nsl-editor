@@ -39,7 +39,7 @@ class ReferenceShowEditorDetailsTabHidesDisplayTitleWhenSameTest < ActionControl
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_no_match(/Display Title/, response.body)

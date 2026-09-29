@@ -24,7 +24,7 @@ class ForNameAndReferenceYearTest < ActiveSupport::TestCase
   test "year and name search" do
     ta = Instance::AsTypeahead::ForSynonymy.new(
       "1916 angophora costata",
-      names(:a_species).id,
+      names(:a_species).id
     )
     assert ta.results.instance_of?(Array), "Results should be an array."
     assert ta.results.size == 1, "Results should include just one record."

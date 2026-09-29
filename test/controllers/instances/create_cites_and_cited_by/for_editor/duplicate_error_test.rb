@@ -46,7 +46,7 @@ class InstancesCreateCitesAndCitedByByEdDupErrTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
     end
     check_assertions
@@ -61,7 +61,7 @@ class InstancesCreateCitesAndCitedByByEdDupErrTest < ActionController::TestCase
     assert_match(
       /A name cannot be placed in synonymy twice/,
       response.body,
-      "Unexpected error message part 2",
+      "Unexpected error message part 2"
     )
   end
 end

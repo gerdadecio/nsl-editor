@@ -38,7 +38,7 @@ class InstanceForEditorShowMostTabsTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     asserts
   end
@@ -55,17 +55,17 @@ class InstanceForEditorShowMostTabsTest < ActionController::TestCase
     assert_select(
       "li.active a#instance-show-tab",
       /Details/,
-      "Does not show 'Details' tab link.",
+      "Does not show 'Details' tab link."
     )
     assert_select(
       "a#instance-edit-tab",
       /Edit/,
-      "Does not show 'Edit' tab link.",
+      "Does not show 'Edit' tab link."
     )
     assert_select(
       "a#instance-edit-notes-tab",
       /Notes/,
-      "Does not show 'Notes' tab link.",
+      "Does not show 'Notes' tab link."
     )
   end
 
@@ -73,17 +73,17 @@ class InstanceForEditorShowMostTabsTest < ActionController::TestCase
     assert_select(
       "a#instance-cite-this-instance-tab",
       /Syn/,
-      "Does not show 'Syn' tab link.",
+      "Does not show 'Syn' tab link."
     )
     assert_select(
       "a#unpublished-citation-tab",
       /Unpub/,
-      "Does not show 'Unpub' tab link.",
+      "Does not show 'Unpub' tab link."
     )
     assert_select(
       "a#instance-apc-placement-tab",
       false,
-      "Should not show 'APC' tab link.",
+      "Should not show 'APC' tab link."
     )
   end
 
@@ -91,19 +91,19 @@ class InstanceForEditorShowMostTabsTest < ActionController::TestCase
     assert_select(
       "a#instance-comments-tab",
       /Adnot/,
-      "Does not show 'Adnot' tab link.",
+      "Does not show 'Adnot' tab link."
     )
     assert_select(
       "a#instance-copy-to-new-reference-tab",
       /Copy/,
-      "Should show 'Copy' tab link.",
+      "Should show 'Copy' tab link."
     )
   end
 
   def asserts4
     assert_select(
       "a#instance-profile-v2-tab",
-      false,
+      false
     )
     "Should not show 'FOA Profile' tab link"
   end

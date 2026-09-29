@@ -47,7 +47,7 @@ class BatchReviewPeriodUpdateUnauthorisedTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :forbidden
   end

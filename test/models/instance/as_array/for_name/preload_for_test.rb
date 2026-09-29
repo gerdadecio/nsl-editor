@@ -48,7 +48,7 @@ class InstanceAsArrayForNamePreloadForTest < ActiveSupport::TestCase
         name,
         preloaded_instances: instances_by_name[name.id] || [],
         preloaded_standalone_cited_by_map: standalone_map,
-        preloaded_relationship_cited_by_map: relationship_map,
+        preloaded_relationship_cited_by_map: relationship_map
       ).results.map(&:id)
 
       assert_equal separately_queried,

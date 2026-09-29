@@ -34,7 +34,7 @@ class ReferenceEditorShowEdit1TabTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_select "li.active a#reference-edit-1-tab",
       /Edit\./,

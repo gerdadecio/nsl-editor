@@ -40,7 +40,7 @@ class UserProductRoleNeedAdminToDestroyTest < ActionController::TestCase
           username: @admin.user_name,
           user_full_name: "#{@admin.given_name} #{@admin.family_name}",
           groups: [],
-        },
+        }
       )
       assert_response :forbidden
     end

@@ -36,7 +36,7 @@ class NamesNewPhraseNameSimpleTest < ActionController::TestCase
         tabIndex: "107",
       },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Cannot edit new phrase name in details tab"
     check_status

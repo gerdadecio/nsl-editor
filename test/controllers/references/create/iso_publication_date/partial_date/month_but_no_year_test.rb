@@ -43,12 +43,12 @@ class ReferencesesCreateMonthButNoYearTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
       assert_match(
         /Error: Month entered but no year/,
         response.body.to_s,
-        "Missing or incorrect error message",
+        "Missing or incorrect error message"
       )
     end
   end

@@ -33,7 +33,7 @@ class TreeBuilderFoaUserCannotSetAPCWorkspaceTest < ActionController::TestCase
         username: user.user_name,
         user_full_name: user.full_name,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "Should not be able to set draft as current workspace"
     assert_nil session[:draft], "Should be no session draft value set"

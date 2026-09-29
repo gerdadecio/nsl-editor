@@ -35,7 +35,7 @@ class NamesNewNamedHybridSimpleTest < ActionController::TestCase
         tabIndex: "107",
       },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Cannot start entry for a new named hybrid name"
     assert_select("h4", /New Named Hybrid Name/)

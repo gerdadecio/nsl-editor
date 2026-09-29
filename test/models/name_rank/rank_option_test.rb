@@ -23,7 +23,7 @@ class RankOptionTest < ActiveSupport::TestCase
   test "scientific ranks below family" do
     options = NameRank.options_for_category(
       name_categories(:scientific),
-      NameRank.species,
+      NameRank.species
     )
     assert options.instance_of?(Array)
     ranks = options.collect(&:first)
@@ -37,7 +37,7 @@ class RankOptionTest < ActiveSupport::TestCase
   test "scientific ranks above family" do
     options = NameRank.options_for_category(
       name_categories(:scientific),
-      NameRank.family,
+      NameRank.family
     )
     assert options.instance_of?(Array)
     ranks = options.collect(&:first)
@@ -70,7 +70,7 @@ class RankOptionTest < ActiveSupport::TestCase
     assert(ranks.include?("Subseries"), "Ranks should include 'Subseries'")
     assert(
       ranks.include?("Superspecies"),
-      "Ranks should include 'Superspecies'",
+      "Ranks should include 'Superspecies'"
     )
   end
 
@@ -79,7 +79,7 @@ class RankOptionTest < ActiveSupport::TestCase
     assert(ranks.include?("Subspecies"), "Ranks should include 'Subspecies'")
     assert(
       ranks.include?("Nothovarietas"),
-      "Ranks should include 'Nothovarietas'",
+      "Ranks should include 'Nothovarietas'"
     )
   end
 
@@ -94,12 +94,12 @@ class RankOptionTest < ActiveSupport::TestCase
     assert(ranks.include?("[unranked]"), "Ranks should include '[unranked]'")
     assert(
       ranks.include?("[infrafamily]"),
-      "Ranks should include '[infrafamily]'",
+      "Ranks should include '[infrafamily]'"
     )
     assert(ranks.include?("[infragenus]"), "Ranks should include '[infragenus]'")
     assert(
       ranks.include?("[infraspecies]"),
-      "Ranks should include '[infraspecies]'",
+      "Ranks should include '[infraspecies]'"
     )
     assert(ranks.include?("[n/a]"), "Ranks should include '[n/a]'")
   end

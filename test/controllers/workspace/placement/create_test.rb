@@ -80,7 +80,7 @@ class TreePlacementCreateTest < ActionController::TestCase
         user_full_name: "Fred Jones",
         groups: ["edit", "treebuilder"],
         draft: @workspace,
-      },
+      }
     )
     assert_response :success
     assert_equal "place_name",

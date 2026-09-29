@@ -28,7 +28,7 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     stub_request(
       :get,
-      "#{resource}833026435/api/name-strings",
+      "#{resource}833026435/api/name-strings"
     )
       .with(headers: {
         "Accept" => "*/*",
@@ -67,11 +67,11 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
   def asserts1
     assert(
       @descendant.parent == @grevillea,
-      "Grevillea should be the parent for this test.",
+      "Grevillea should be the parent for this test."
     )
     assert(
       @descendant.second_parent == @grevillea,
-      "Grevillea should be the second parent for this test.",
+      "Grevillea should be the second parent for this test."
     )
   end
 
@@ -89,7 +89,7 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
   end
 
@@ -99,7 +99,7 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
     descendant_after = Name.find(@descendant.id)
     assert(
       @descendant.full_name != descendant_after.full_name,
-      "Grevillea's name change should affect the descendant's name.",
+      "Grevillea's name change should affect the descendant's name."
     )
   end
 

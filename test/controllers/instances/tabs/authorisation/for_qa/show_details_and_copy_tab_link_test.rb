@@ -38,7 +38,7 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["QA"],
-      },
+      }
     )
     assert_response :success
     asserts
@@ -59,7 +59,7 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["QA"],
-        },
+        }
       )
       assert_response :success
     end
@@ -76,17 +76,17 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
     assert_select(
       "li.active a#instance-show-tab",
       /Details/,
-      "Should show 'Details' tab link.",
+      "Should show 'Details' tab link."
     )
     assert_select(
       "a#instance-edit-tab",
       false,
-      "Should not show 'Edit' tab link.",
+      "Should not show 'Edit' tab link."
     )
     assert_select(
       "a#instance-edit-notes-tab",
       false,
-      "Should not show 'Notes' tab link.",
+      "Should not show 'Notes' tab link."
     )
   end
 
@@ -94,17 +94,17 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
     assert_select(
       "a#instance-cite-this-instance-tab",
       false,
-      "Should not show 'Syn' tab link.",
+      "Should not show 'Syn' tab link."
     )
     assert_select(
       "a#unpublished-citation-tab",
       false,
-      "Should not show 'Unpub' tab link.",
+      "Should not show 'Unpub' tab link."
     )
     assert_select(
       "a#instance-apc-placement-tab",
       false,
-      "Should not show 'APC' tab link.",
+      "Should not show 'APC' tab link."
     )
   end
 
@@ -112,19 +112,19 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
     assert_select(
       "a#instance-comments-tab",
       false,
-      "Should not show 'Adnot' tab link.",
+      "Should not show 'Adnot' tab link."
     )
     assert_select(
       "a#instance-copy-to-new-reference-tab",
       false,
-      "Should not show 'Copy' tab link.",
+      "Should not show 'Copy' tab link."
     )
   end
 
   def asserts4
     assert_select(
       "a#instance-profile-v2-tab",
-      false,
+      false
     )
     "Should not show 'FOA Profile' tab link"
   end

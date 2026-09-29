@@ -69,13 +69,13 @@ class TaxFormsTreePublisherAPCUserCannotPlaceNameOnAPCDraftTest < ActionControll
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "Should be forbidden"
     assert_match(
       /access denied/i,
       response.body,
-      "Expecting Not authorized message",
+      "Expecting Not authorized message"
     )
   end
 end

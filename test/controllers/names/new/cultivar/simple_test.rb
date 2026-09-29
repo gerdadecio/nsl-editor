@@ -35,7 +35,7 @@ class NamesNewCultivarNameSimpleTest < ActionController::TestCase
         tabIndex: "107",
       },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Cannot start new for a cultivar name"
     assert_select("h4", /New Cultivar Name/)

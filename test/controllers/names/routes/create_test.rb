@@ -25,7 +25,7 @@ class NameCreateRouteTest < ActionController::TestCase
     assert_routing(
       { method: "post", path: "/names" },
       controller: "names",
-      action: "create",
+      action: "create"
     )
   end
 end

@@ -37,7 +37,7 @@ class SearchLoaderNameAnyBatchTargetTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [:login, :"batch-loader"],
-      },
+      }
     )
     assert_response :success
     assert_not_select "#search-results-summary",
@@ -53,7 +53,7 @@ class SearchLoaderNameAnyBatchTargetTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [:login, :"batch-loader"],
-      },
+      }
     )
     assert_response :success
     assert_select "#search-results-summary",

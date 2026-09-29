@@ -34,7 +34,7 @@ class SearchRefsOnCitationWithInstancesTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     # NOTES (limit/total redesign, follow-up): see on_id/with_instances_test.rb.

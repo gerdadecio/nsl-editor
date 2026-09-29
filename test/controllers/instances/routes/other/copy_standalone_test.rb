@@ -27,7 +27,7 @@ class ShouldRouteToCopyStandaloneInstanceTest < ActionController::TestCase
       { method: "post", path: "/instances/54/standalone/copy" },
       controller: "instances",
       action: "copy_standalone",
-      id: "54",
+      id: "54"
     )
   end
 end

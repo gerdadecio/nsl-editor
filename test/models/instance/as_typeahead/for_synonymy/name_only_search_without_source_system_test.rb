@@ -25,7 +25,7 @@ class ForNameAndReferenceYearTest < ActiveSupport::TestCase
     assert_nil instances(:no_source_system).source_system
     ta = Instance::AsTypeahead::ForSynonymy.new(
       "angophora costata",
-      names(:a_species).id,
+      names(:a_species).id
     )
     assert ta.results.instance_of?(Array), "Results should be an array."
     assert ta.results.size >= 1, "Results should include at least one record."

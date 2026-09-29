@@ -56,7 +56,7 @@ class TaxFormsTreePubAPCNewDraftUserOferedAPCTreeOnlyTest < ActionController::Te
         username: user.user_name,
         user_full_name: user.full_name,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "This test assumes the new draft form will open for apc_tax_publisher"
     assert_dom "form", true, "Should be a form element"

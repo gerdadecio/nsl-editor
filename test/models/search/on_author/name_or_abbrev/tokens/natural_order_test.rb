@@ -26,7 +26,7 @@ class SearchOnAuthorNameOrAbbrevTokensNaturalOrderTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "name-or-abbrev: ron tak",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),

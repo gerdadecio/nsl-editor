@@ -46,14 +46,14 @@ class BatchReviewPeriodUpdateEndDateSimpleTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["batch-loader"],
-      },
+      }
     )
     assert_response :success
     Loader::Batch::Review::Period.find(target.id)
     assert_match(
       /Updated/,
       response.body.to_s,
-      "Expected updated message not found",
+      "Expected updated message not found"
     )
   end
 end

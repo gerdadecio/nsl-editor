@@ -37,7 +37,7 @@ class InstanceTabsNotesTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     asserts
@@ -53,7 +53,7 @@ class InstanceTabsNotesTest < ActionController::TestCase
     assert_select(
       "h5",
       "Add Note for #{@triodia_in_brassard.name.simple_name}",
-      "Needs correct heading.",
+      "Needs correct heading."
     )
     assert_select("form#new_instance_note", true, "Needs insert form.")
     assert_select("form#new_instance_note") do

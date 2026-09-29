@@ -23,7 +23,7 @@ class RefARTA4DuplicateOfNoIdWithInvalidString < ActiveSupport::TestCase
   test "duplicate of no id with invalid string" do
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError for invalid author string.",
+      "Should raise a RuntimeError for invalid author string."
     ) do
       Reference::AsResolvedTypeahead::ForDuplicateOf.new("", "asdfasfdasd")
     end

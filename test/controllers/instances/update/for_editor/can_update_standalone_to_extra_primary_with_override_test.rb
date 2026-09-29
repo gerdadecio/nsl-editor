@@ -45,7 +45,7 @@ class CanUpdateStandaloneToExtraPrimaryWithOverride < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert Instance.find(@instance.id).name_id == @target.name_id
     check_assertions
@@ -58,7 +58,7 @@ class CanUpdateStandaloneToExtraPrimaryWithOverride < ActionController::TestCase
     assert_no_match(
       /#{es}/,
       response.body,
-      "Expected error message did not appear",
+      "Expected error message did not appear"
     )
   end
 end

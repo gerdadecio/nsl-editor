@@ -28,7 +28,7 @@ class SearchOnNameNameCommonsIncluded4TypeCommonTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "name",
         query_string: "name: argyle apple type: common",
-        current_user: build_edit_user,
+        current_user: build_edit_user
       )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)

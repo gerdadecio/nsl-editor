@@ -40,7 +40,7 @@ class UserDeleteUnauthorisedTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response(:forbidden)
     unchanged = User.find(user.id)

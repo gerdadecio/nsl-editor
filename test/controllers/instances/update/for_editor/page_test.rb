@@ -37,7 +37,7 @@ class InstancesUpdateForEditorPageTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert Instance.find(instance.id).page == new_page_value

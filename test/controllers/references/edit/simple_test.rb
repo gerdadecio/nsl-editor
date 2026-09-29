@@ -58,7 +58,7 @@ class ReferencesesUpdateSimpleTest < ActionController::TestCase
           "Accept" => "text/json",
           "Accept-Encoding" => encoding,
           "User-Agent" => /rest-client.*ruby.*/,
-        },
+        }
       )
       .to_return(status: 200, body: body, headers: {})
   end
@@ -83,7 +83,7 @@ class ReferencesesUpdateSimpleTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
   end

@@ -23,14 +23,14 @@ class InstanceAsCopierCopyStandaloneWithNewNameIdTest < ActiveSupport::TestCase
   test "copy one standalone instance with a new name id" do
     before = Instance.count
     master_instance = Instance::AsCopier.find(
-      instances(:triodia_in_brassard).id,
+      instances(:triodia_in_brassard).id
     )
     target_name = names(:no_instances)
     before_for_name = target_name.instances.count
     dummy_username = "fred"
     copied_instance = master_instance.copy_with_new_name_id(
       target_name.id,
-      dummy_username,
+      dummy_username
     )
     after = Instance.count
     after_for_name = target_name.instances.count

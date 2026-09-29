@@ -35,7 +35,7 @@ class OptionsForSciHybFormUnk2ndParCatTest < ActiveSupport::TestCase
       NameStatus.options_for_category(cat).size,
       1,
       "Wrong number of name status options for scientific
-                 hybrid formula unknown 2nd parent  category",
+                 hybrid formula unknown 2nd parent  category"
     )
   end
 end

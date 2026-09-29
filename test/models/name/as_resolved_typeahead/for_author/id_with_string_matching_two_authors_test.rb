@@ -34,7 +34,7 @@ class NameAsEditedAuthorIdWithStringMatching2Names < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForAuthor.new(
       author_2.id.to_s,
       author_1.abbrev,
-      "Some Author Field",
+      "Some Author Field"
     )
     assert_equal author_2.id,
       result.value,

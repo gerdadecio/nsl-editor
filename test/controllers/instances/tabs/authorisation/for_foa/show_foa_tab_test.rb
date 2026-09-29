@@ -38,7 +38,7 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["foa"],
-      },
+      }
     )
   end
 
@@ -57,12 +57,12 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     assert_response(:success)
     assert_select(
       "a#instance-profile-v2-tab",
-      /FOA/,
+      /FOA/
     )
     assert_select(
       "h4",
       @product_item_config.display_html,
-      "Should show the product item config display_html",
+      "Should show the product item config display_html"
     )
   end
 
@@ -70,7 +70,7 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     assert_select(
       "li.active a#instance-show-tab",
       /Details/,
-      "Shows 'Details' tab link.",
+      "Shows 'Details' tab link."
     )
   end
 
@@ -78,12 +78,12 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     assert_select(
       "a#instance-edit-tab",
       false,
-      "Does not show 'Edit' tab link.",
+      "Does not show 'Edit' tab link."
     )
     assert_select(
       "a#instance-edit-notes-tab",
       false,
-      "Does not show 'Notes' tab link.",
+      "Does not show 'Notes' tab link."
     )
   end
 
@@ -91,17 +91,17 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     assert_select(
       "a#instance-cite-this-instance-tab",
       false,
-      "Does not show 'Syn' tab link.",
+      "Does not show 'Syn' tab link."
     )
     assert_select(
       "a#unpublished-citation-tab",
       false,
-      "Does not show 'Unpub' tab link.",
+      "Does not show 'Unpub' tab link."
     )
     assert_select(
       "a#instance-apc-placement-tab",
       false,
-      "Should not show 'APC' tab link.",
+      "Should not show 'APC' tab link."
     )
   end
 
@@ -109,12 +109,12 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     assert_select(
       "a#instance-comments-tab",
       false,
-      "Does not show 'Adnot' tab link.",
+      "Does not show 'Adnot' tab link."
     )
     assert_select(
       "a#instance-copy-to-new-reference-tab",
       false,
-      "Should not show 'Copy' tab link.",
+      "Should not show 'Copy' tab link."
     )
   end
 
@@ -124,12 +124,12 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     assert_response(:success)
     assert_select(
       "a#instance-profile-v2-tab",
-      /FOA/,
+      /FOA/
     )
     assert_select(
       "#message_no_product_configs",
       "There are no product or product configs setup yet.",
-      "Should show a message",
+      "Should show a message"
     )
   end
 
@@ -138,12 +138,12 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     assert_response(:success)
     assert_select(
       "a#instance-profile-v2-tab",
-      /FOA/,
+      /FOA/
     )
     assert_select(
       "#message_no_product_configs",
       "There are no product or product configs setup yet.",
-      "Should show a message",
+      "Should show a message"
     )
   end
 
@@ -151,25 +151,25 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     Rails.configuration.profile_v2_dropdown_ui = true
     assert_select(
       "select#item_type",
-      true,
+      true
     )
 
     assert_select(
       "h4",
       false,
-      "Should not display profile items immediately",
+      "Should not display profile items immediately"
     )
 
     Rails.configuration.profile_v2_dropdown_ui = false
     assert_select(
       "select#item_type",
-      false,
+      false
     )
 
     assert_select(
       "h4",
       @product_item_config.display_html,
-      "Should show the product item config display_html",
+      "Should show the product item config display_html"
     )
   end
 end

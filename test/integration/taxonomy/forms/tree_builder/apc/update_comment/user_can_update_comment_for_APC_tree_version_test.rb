@@ -41,7 +41,7 @@ class TaxFormsTreeBuilderAPCUserCanUpdateCommentOnAPCDraftTest < ActionControlle
           "Content-Type" => /json/,
           "Host" => /localhost:.*/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -68,7 +68,7 @@ class TaxFormsTreeBuilderAPCUserCanUpdateCommentOnAPCDraftTest < ActionControlle
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree builder should be able to update comment on APC draft entry"
   end

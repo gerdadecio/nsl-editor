@@ -29,16 +29,16 @@ class HybridParentMustAllowNamesWithoutAnInstanceTest < ActiveSupport::TestCase
     suggestions =
       Name::AsTypeahead.hybrid_parent_suggestions(
         "a species without an instance",
-        -1,
+        -1
       )
     assert(suggestions.is_a?(Array), "suggestions should be an array")
     assert(
       suggestions.size == 1,
-      'should be just 1 suggestion for "a species without an instance"',
+      'should be just 1 suggestion for "a species without an instance"'
     )
     assert(
       suggestions.first[:value].match(/a species without an instance/),
-      "Suggestions should include 'a species without an instance'.",
+      "Suggestions should include 'a species without an instance'."
     )
   end
 end

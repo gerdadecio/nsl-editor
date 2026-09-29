@@ -30,13 +30,13 @@ class NameTypeSrchCultHybFormSetsCommCultFlagAutoT < ActionController::TestCase
       :search,
       params: ActiveSupport::HashWithIndifferentAccess.new(
         query_string: "nt:cultivar hybrid formula",
-        query_target: "name",
+        query_target: "name"
       ),
       session: {
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     # assert_select "input.checkbox[type=checkbox]

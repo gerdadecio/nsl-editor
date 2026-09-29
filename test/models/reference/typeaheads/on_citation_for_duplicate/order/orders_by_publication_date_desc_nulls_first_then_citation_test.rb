@@ -28,7 +28,7 @@ class TAOnCitationForDuplicateOrdersByPublicationDateTest < ActiveSupport::TestC
   test "ref typeahead on citation for duplicate orders by publication date desc nulls first then citation" do
     typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "flibbertigibbet",
-      references(:simple).id,
+      references(:simple).id
     )
 
     ids = typeahead.results.collect { |result| result[:id] }

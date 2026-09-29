@@ -39,7 +39,7 @@ class APCTreeBuilderCannotRunValidationReportForFOADraftTest < ActionController:
         user_full_name: user.full_name,
         draft: draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree builder should not be able to run validation report for FOA draft"
   end

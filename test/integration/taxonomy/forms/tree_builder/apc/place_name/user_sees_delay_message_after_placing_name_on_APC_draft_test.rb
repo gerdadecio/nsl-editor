@@ -45,7 +45,7 @@ class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest <
           "Content-Type" => /json/,
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: { link: "http://localhost:9091/nsl/instance/apni/12345" }.to_json, headers: {})
 
@@ -58,7 +58,7 @@ class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest <
           "Content-Type" => /json/,
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200,
         body: { ok: true, payload: { message: "Placed on the draft" } }.to_json,
@@ -90,7 +90,7 @@ class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest <
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree builder should be able to place a name on APC draft"
     assert_template "place_name"

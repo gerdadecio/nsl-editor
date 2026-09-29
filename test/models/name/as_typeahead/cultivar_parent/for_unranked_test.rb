@@ -26,7 +26,7 @@ class CultivarParentForUnrankedTest < ActiveSupport::TestCase
     suggestions = Name::AsTypeahead.cultivar_parent_suggestions(
       "%",
       avoid_id,
-      NameRank.find_by(name: "[unranked]").id,
+      NameRank.find_by(name: "[unranked]").id
     )
     cultivar_parent_suggestions_should_only_include(
       suggestions,
@@ -49,7 +49,7 @@ class CultivarParentForUnrankedTest < ActiveSupport::TestCase
         "\n",
         "Forma",
         "Subforma"
-      ],
+      ]
     )
   end
 end

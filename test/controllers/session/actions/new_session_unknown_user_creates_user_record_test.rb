@@ -38,7 +38,7 @@ class NewSessionUnknownUserCreatesUserRecordTest < ActionController::TestCase
           username: @unknown_user_name,
           user_full_name: @unknown_user_full_name,
           groups: [:login],
-        },
+        }
       )
       assert_response :success
     end

@@ -31,18 +31,18 @@ class NamesNewRowScientificSimpleTest < ActionController::TestCase
       :new_row,
       params: { type: "scientific" },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Cannot start new row for a scientific name"
     assert_match(
       /search-results-table/,
       response.body.to_s,
-      "Missing expected element",
+      "Missing expected element"
     )
     assert_match(
       /New Scientific Name/,
       response.body.to_s,
-      "Missing expected element",
+      "Missing expected element"
     )
   end
 end

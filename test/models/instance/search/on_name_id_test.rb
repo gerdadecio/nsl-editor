@@ -37,11 +37,11 @@ class OnNameIdTest < ActiveSupport::TestCase
     assert_equal(
       Array,
       search.executed_query.results.class,
-      "Results should be in an array.",
+      "Results should be in an array."
     )
     assert(
       search.executed_query.results.size >= 2,
-      "At least two instances expected.",
+      "At least two instances expected."
     )
   end
 end

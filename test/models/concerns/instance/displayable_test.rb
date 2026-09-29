@@ -40,7 +40,7 @@ class Instance::DisplayableTest < ActiveSupport::TestCase
     instance = Instance.new(
       name: names(:a_species),
       reference: references(:dummy_reference_1),
-      instance_type: instance_types(:comb_nov),
+      instance_type: instance_types(:comb_nov)
     )
     assert instance.name.name_status.legitimate?, "fixture status should be legitimate"
     assert instance.page.blank?
@@ -51,7 +51,7 @@ class Instance::DisplayableTest < ActiveSupport::TestCase
     instance = Instance.new(
       name: names(:argyle_apple),
       reference: references(:dummy_reference_1),
-      instance_type: instance_types(:comb_nov),
+      instance_type: instance_types(:comb_nov)
     )
     assert instance.name.name_status.na?, "fixture status should be n/a"
     assert instance.page.blank?

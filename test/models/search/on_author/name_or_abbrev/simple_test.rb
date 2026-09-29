@@ -30,7 +30,7 @@ class SearchOnAuthorNameOrAbbrevSimpleTest < ActiveSupport::TestCase
             "name-or-abbrev:
                                                           xyz_name_or_abbrev",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),

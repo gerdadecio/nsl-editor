@@ -51,7 +51,7 @@ class TaxFormsTreeBuilderAPCUserCannotUpdateCommentOnFOADraftTest < ActionContro
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree builder should not be able to update comment on FoA draft entry"
     assert_match "Not authorized to update or delete FOA draft taxon comment", response.body, "Expecting Access Denied message"

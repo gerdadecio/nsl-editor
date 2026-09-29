@@ -27,7 +27,7 @@ class NameAsEditedResolveTypeaheadParamsSetParentTest < ActiveSupport::TestCase
       "Name should be have no parent to start this test."
     name.resolve_typeahead_params(
       "parent_id" => dummy.id,
-      "parent_typeahead" => dummy.full_name,
+      "parent_typeahead" => dummy.full_name
     )
     assert_equal dummy.id,
       name.parent_id,

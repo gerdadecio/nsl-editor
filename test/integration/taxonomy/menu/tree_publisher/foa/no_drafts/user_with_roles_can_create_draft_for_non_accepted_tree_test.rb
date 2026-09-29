@@ -48,7 +48,7 @@ class TreePublisherWithRolesCanCreateDraftForNonAcceptedTreeTest < ActionControl
         username: user.user_name,
         user_full_name: user.full_name,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success
     assert_select "a#create-draft-taxonomy-menu-link",

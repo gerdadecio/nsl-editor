@@ -61,7 +61,7 @@ class InstancesDeleteForEditorTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     # Editor has to call on services to delete an instance.
     # In test we just stub that call, so no delete happens.

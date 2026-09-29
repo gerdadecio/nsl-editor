@@ -31,7 +31,7 @@ class NamesNewRowScientHybridFormUnk2ParSimpleTest < ActionController::TestCase
       :new_row,
       params: { type: "hybrid-formula-unknown-2nd-parent" },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success,
       "Cannot start new row for a scientific hybrid formula
@@ -39,12 +39,12 @@ class NamesNewRowScientHybridFormUnk2ParSimpleTest < ActionController::TestCase
     assert_match(
       /search-results-table/,
       response.body.to_s,
-      "Missing expected element 1",
+      "Missing expected element 1"
     )
     assert_match(
       /New Hybrid Formula Unknown 2nd Parent Name/,
       response.body.to_s,
-      "Missing expected element 2",
+      "Missing expected element 2"
     )
   end
 end

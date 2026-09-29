@@ -25,7 +25,7 @@ class SearchAuditApiAtSimpleTest < ActiveSupport::TestCase
   setup do
     names(:a_family).update_columns(
       api_name: "JIRA-Sync",
-      api_at: Time.utc(2026, 7, 27, 12),
+      api_at: Time.utc(2026, 7, 27, 12)
     )
     references(:paper_by_brassard)
       .update_columns(api_name: "JIRA-Sync",
@@ -45,7 +45,7 @@ class SearchAuditApiAtSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "activity",
       query_string: query_string,
-      current_user: build_qa_user,
+      current_user: build_qa_user
     )
     search = Search::Base.new(params)
     search.executed_query.results.collect { |r| "#{r.class.base_class.name}##{r.id}" }

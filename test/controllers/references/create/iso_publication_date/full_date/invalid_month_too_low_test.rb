@@ -49,12 +49,12 @@ class ReferencesesCreateFullDateInvMonthTooLowTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
       assert_match(
         /Error: Month #{@month} is below the range 1-12/,
         response.body.to_s,
-        "Missing or incorrect error message",
+        "Missing or incorrect error message"
       )
     end
   end

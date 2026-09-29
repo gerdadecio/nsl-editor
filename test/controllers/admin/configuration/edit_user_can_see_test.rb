@@ -31,7 +31,7 @@ class AdminControllerEditUserCanSeeConfTest < ActionController::TestCase
         user_full_name: "Fred Jones",
         groups: ["edit"],
       },
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Edit user should see configuration"
   end

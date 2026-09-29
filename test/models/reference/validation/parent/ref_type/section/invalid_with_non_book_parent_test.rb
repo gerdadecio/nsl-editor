@@ -34,7 +34,7 @@ class SectionInvalidWithNonBookParentTest < ActiveSupport::TestCase
     assert(@ref.parent.blank?, "Section should start test without parent")
     assert(
       @ref.valid?,
-      "Section without parent should be valid - starting condition.",
+      "Section without parent should be valid - starting condition."
     )
     @ref.parent = references(:a_book)
     assert(@ref.valid?, "Section with book parent should be valid.")
@@ -48,12 +48,12 @@ class SectionInvalidWithNonBookParentTest < ActiveSupport::TestCase
     @ref.parent = references(:a_database_record)
     assert_not(
       @ref.valid?,
-      "Section with database record parent should be invalid.",
+      "Section with database record parent should be invalid."
     )
     @ref.parent = references(:an_herbarium_annotation)
     assert_not(
       @ref.valid?,
-      "Section with herbarium annotation parent should be invalid.",
+      "Section with herbarium annotation parent should be invalid."
     )
     @ref.parent = references(:an_index)
     assert_not(@ref.valid?, "Section with index parent should be invalid.")

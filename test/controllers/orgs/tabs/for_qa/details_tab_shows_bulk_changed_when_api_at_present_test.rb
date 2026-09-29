@@ -71,7 +71,7 @@ class OrgsTabsForQaDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionContro
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["QA"],
-      },
+      }
     )
     assert_response(:success)
     assert_match(/Organisation ##{@org.id}/, response.body)

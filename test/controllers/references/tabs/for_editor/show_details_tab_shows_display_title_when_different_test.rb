@@ -39,7 +39,7 @@ class ReferenceShowEditorDetailsTabShowsDisplayTitleWhenDifferentTest < ActionCo
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_match(/Display Title/, response.body)

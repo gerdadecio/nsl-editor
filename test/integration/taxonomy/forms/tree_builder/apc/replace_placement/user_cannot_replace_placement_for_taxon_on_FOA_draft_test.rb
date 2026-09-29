@@ -64,7 +64,7 @@ class TaxFormsTreeBuilderAPCUserCannotReplacePlacementOnFOADraftTest < ActionCon
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree builder should be not able to replace_placement on FOA draft entry"
     assert_match "You are not authorized to replace",

@@ -45,7 +45,7 @@ class InstancesCreateCitedByWWCNameTextMatch2Test < ActionController::TestCase
             "instance_type_id" => instance_types(:common_name),
           },
         },
-        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] },
+        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] }
       )
     end
   end

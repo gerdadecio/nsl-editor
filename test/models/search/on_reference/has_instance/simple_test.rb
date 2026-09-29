@@ -36,7 +36,7 @@ class SearchOnReferenceHasInstanceSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "reference",
       query_string: query_string,
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     search.executed_query.results.collect(&:id)

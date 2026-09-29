@@ -24,7 +24,7 @@ class RefTheadsDisplayValueCitationWithPageRangeTest < ActiveSupport::TestCase
     ref = references(:for_typeahead_display)
     assert_match(
       /\AFor Typeahead Display . \[2-3\] \[book\]\z/,
-      ref.typeahead_display_value,
+      ref.typeahead_display_value
     )
   end
 end

@@ -27,7 +27,7 @@ class InstanceValidationPreventSynonymOfItselfTest < ActiveSupport::TestCase
     synonym.reference_id = synonym.this_is_cited_by.reference.id
     assert_raises(
       ActiveRecord::RecordInvalid,
-      "Synonym of itself shouldn't be saved",
+      "Synonym of itself shouldn't be saved"
     ) do
       synonym.save!
     end

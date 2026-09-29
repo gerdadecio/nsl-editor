@@ -36,7 +36,7 @@ class NoRoleUserCanShowValidationTabForAPCDraftTest < ActionController::TestCase
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "User with no role should not be able to show validation tab for APC draft"
   end

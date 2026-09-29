@@ -32,7 +32,7 @@ class UserCreateUnauthorisedTest < ActionController::TestCase
           username: "uone",
           user_full_name: "auser One",
           groups: ["edit"],
-        },
+        }
       )
     end
     assert_response(:forbidden, "Non-admin users should not delete a user")

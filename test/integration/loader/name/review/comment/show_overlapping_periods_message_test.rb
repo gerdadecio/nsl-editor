@@ -50,7 +50,7 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
         username: reviewer.user_name,
         user_full_name: reviewer.full_name,
         groups: ["login", "taxonomic-review"],
-      },
+      }
     )
     assert_match "There is more than one active review period for the batch.",
       response.body,
@@ -76,7 +76,7 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
         username: reviewer.user_name,
         user_full_name: reviewer.full_name,
         groups: ["login", "taxonomic-review"],
-      },
+      }
     )
 
     # "WG Review" should appear exactly 3 times: once in the Active

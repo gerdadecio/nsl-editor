@@ -31,22 +31,22 @@ class ShouldIncludeAOneInstanceCount < ActiveSupport::TestCase
       Name::AsTypeahead::ForParent.new(
         term: "a genus with one instance",
         avoid_id: dummy_avoid_id,
-        rank_id: NameRank.species.id,
+        rank_id: NameRank.species.id
       )
     assert(
       typeahead.suggestions.is_a?(Array),
-      "suggestions should be an array",
+      "suggestions should be an array"
     )
     assert(
       typeahead.suggestions.size == 1,
-      'suggestions for "a genus with one instance" should have a record',
+      'suggestions for "a genus with one instance" should have a record'
     )
     instances_count_part = typeahead
       .suggestions.first[:value].split("|").last.strip
     assert_match(
       /\A1 instance\z/,
       instances_count_part,
-      "Name par thead needs right val with 1 instance",
+      "Name par thead needs right val with 1 instance"
     )
   end
 end

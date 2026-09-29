@@ -43,7 +43,7 @@ class CultivarParentForFormaRankTest < ActiveSupport::TestCase
         "Forma",
         "Subforma",
         "[infraspecies]"
-      ],
+      ]
     )
   end
 end

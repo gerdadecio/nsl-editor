@@ -49,7 +49,7 @@ class NameAsServicesDeleteError404Test < ActiveSupport::TestCase
     name = Name::AsServices.find(name_id)
     assert_raise(
       RestClient::ResourceNotFound,
-      "Should raise exception for resource not found",
+      "Should raise exception for resource not found"
     ) do
       name.delete_with_reason("404 this is the reason.....")
     end

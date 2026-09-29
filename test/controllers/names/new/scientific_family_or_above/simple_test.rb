@@ -35,7 +35,7 @@ class NamesNewScientificFamilyOrAboveSimpleTest < ActionController::TestCase
         tabIndex: "107",
       },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Cannot enter new scientific name family or above"
     assert_select("h4", /New Scientific Name/)

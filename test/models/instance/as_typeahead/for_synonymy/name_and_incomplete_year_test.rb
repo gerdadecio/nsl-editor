@@ -24,7 +24,7 @@ class ForNameAndReferenceYearTest < ActiveSupport::TestCase
   def setup
     @typeahead = Instance::AsTypeahead::ForSynonymy.new(
       "angophora costata 178",
-      names(:a_species).id,
+      names(:a_species).id
     )
   end
 

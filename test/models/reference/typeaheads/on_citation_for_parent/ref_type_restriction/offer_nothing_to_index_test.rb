@@ -25,7 +25,7 @@ class TAOnCitn4ParRefTypeRestrictionNothingForIndex < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "%",
       current_reference.id,
-      ref_types(:index).id,
+      ref_types(:index).id
     )
     assert typeahead.results.empty?,
       "Should be no results because index takes no parent."

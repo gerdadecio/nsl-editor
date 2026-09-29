@@ -31,17 +31,17 @@ class ShouldIncludeATwoInstancesCount < ActiveSupport::TestCase
       Name::AsTypeahead::ForParent.new(
         term: "a genus with two instances",
         avoid_id: dummy_avoid_id,
-        rank_id: NameRank.species.id,
+        rank_id: NameRank.species.id
       )
     assert(typeahead.suggestions.is_a?(Array), "suggestions should be an array")
     assert(
       typeahead.suggestions.size == 1,
-      'suggestions for "a genus with two instances" should have a record',
+      'suggestions for "a genus with two instances" should have a record'
     )
     assert_match(
       "a genus with two instances | Genus | 2 instances",
       typeahead.suggestions.first[:value],
-      "Name parent typeahead needs correct value with a 2 instances count",
+      "Name parent typeahead needs correct value with a 2 instances count"
     )
   end
 end

@@ -30,7 +30,7 @@ class APCTreePublisherRunChangesReportForAPCDraftTest < ActionController::TestCa
           "Content-Type" => "text/html",
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -50,7 +50,7 @@ class APCTreePublisherRunChangesReportForAPCDraftTest < ActionController::TestCa
         user_full_name: user.full_name,
         draft: draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree publisher should be able to run changes report for APC draft"
   end

@@ -25,7 +25,7 @@ class AuthAsEdNoDupeOfIdWValStrAlsoMatchingCurrRec < ActiveSupport::TestCase
     author_to_avoid = author
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError cannot be dupe of itself.",
+      "Should raise a RuntimeError cannot be dupe of itself."
     ) do
       Author::AsResolvedTypeahead::ForDuplicateOf.new(
         "", author.name, author_to_avoid

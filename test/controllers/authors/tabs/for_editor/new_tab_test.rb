@@ -41,7 +41,7 @@ class AuthorEditorNewTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     # puts response.body
     # assert_select "li.active a#author-edit-tab",

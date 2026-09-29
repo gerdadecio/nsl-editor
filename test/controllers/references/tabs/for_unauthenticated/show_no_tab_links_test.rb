@@ -30,7 +30,7 @@ class ReferenceUnauthenticatedShowNoTabLinkTest < ActionController::TestCase
     get(
       :show,
       params: { id: @reference.id, tab: "tab_edit" },
-      session: {},
+      session: {}
     )
     # assert_response :redirect, 'Should be redirected.'
     assert_select "a#reference-show-tab", false, "Should not show 'Detail' tab."

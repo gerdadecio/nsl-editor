@@ -36,7 +36,7 @@ class TaxoInstanceTreePublisherFoaCannotSeeFoaTreeTab < ActionController::TestCa
         user_full_name: user.full_name,
         groups: ["login"],
         draft: foa_draft,
-      },
+      }
     )
     assert_response :success, "Tree publisher tab request should be successful"
     assert_no_match 'data-tab-name="tab_classification"', response.body, "Tree tab should not appear in nav for tree publisher"

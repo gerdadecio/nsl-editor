@@ -31,7 +31,7 @@ class RefARTA4AuthorIdWithStringMatching2Authors < ActiveSupport::TestCase
     author_2 = authors(:has_matching_name_2)
     result = Reference::AsEdited.author_from_typeahead(
       author_2.id.to_s,
-      author_1.name,
+      author_1.name
     )
     assert_equal author_2.id,
       result,

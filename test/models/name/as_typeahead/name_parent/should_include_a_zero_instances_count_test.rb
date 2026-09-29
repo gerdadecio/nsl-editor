@@ -31,12 +31,12 @@ class ShouldIncludeAZeroInstancesCount < ActiveSupport::TestCase
       Name::AsTypeahead::ForParent.new(
         term: "a genus without an instance",
         avoid_id: dummy_avoid_id,
-        rank_id: NameRank.species.id,
+        rank_id: NameRank.species.id
       )
     assert(typeahead.suggestions.is_a?(Array), "suggestions should be an array")
     assert(
       typeahead.suggestions.size == 1,
-      'suggestions for "a genus without an instance" should have a record',
+      'suggestions for "a genus without an instance" should have a record'
     )
     assert_match "genus without an instance | Genus | 0 instances",
       typeahead.suggestions.first[:value],

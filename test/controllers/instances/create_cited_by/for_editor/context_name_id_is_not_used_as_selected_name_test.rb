@@ -63,7 +63,7 @@ class InstancesCreateCitedByContextNameIdIgnoredTest < ActionController::TestCas
             "instance_type_id" => instance_types(:common_name),
           },
         },
-        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] },
+        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] }
       )
     end
 

@@ -27,7 +27,7 @@ class NameAsResolvedTADupeOfIdWithStringMatching2Names < ActiveSupport::TestCase
       "Should be two names with the same full name."
     result = Name::AsResolvedTypeahead::ForDuplicateOf.new(
       name_2.id.to_s,
-      name_2.full_name,
+      name_2.full_name
     )
     assert_equal name_2.id,
       result.value,

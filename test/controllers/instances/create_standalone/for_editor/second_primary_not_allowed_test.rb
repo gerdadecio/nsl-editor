@@ -26,7 +26,7 @@ class SecondPrimaryNotAllowedTest < ActionController::TestCase
     assert_equal(
       @base.instance_type_id,
       instance_types(:comb_nov).id,
-      "Target instance should be a comb nov.",
+      "Target instance should be a comb nov."
     )
     @instance_params = {
       "instance_type_id" => instance_types(:comb_nov).id,
@@ -47,7 +47,7 @@ class SecondPrimaryNotAllowedTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
     end
     check_assertions
@@ -60,7 +60,7 @@ class SecondPrimaryNotAllowedTest < ActionController::TestCase
     assert_match(
       /#{error_s}/,
       response.body,
-      "Expected error message did not appear",
+      "Expected error message did not appear"
     )
   end
 end

@@ -27,7 +27,7 @@ class NameAsEdResolveTheadParamsSetSanctAuthorTest < ActiveSupport::TestCase
       "Name should be have no sanctioning author to start this test."
     name.resolve_typeahead_params(
       "sanctioning_author_id" => dummy.id,
-      "sanctioning_author_typeahead" => dummy.abbrev,
+      "sanctioning_author_typeahead" => dummy.abbrev
     )
     assert_equal dummy.id,
       name.sanctioning_author_id,

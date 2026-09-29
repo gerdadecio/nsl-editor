@@ -76,7 +76,7 @@ def standard_page_assertions_part_2
   assert(page.has_selector?("#search-button"), "Page has no #search-button")
   assert(
     page.has_selector?("input#search-field"),
-    "Page has no #search-field element",
+    "Page has no #search-field element"
   )
   assert(page.has_field?("query"), 'Page has no "query" field')
 end
@@ -205,7 +205,7 @@ def set_name_parent
     "name-parent-typeahead",
     "name_parent_id",
     "Agenus",
-    names(:a_genus).id,
+    names(:a_genus).id
   )
   find("#search-result-details h4").click
 end
@@ -215,7 +215,7 @@ def set_name_second_parent_to_a_species
     "name-second-parent-typeahead",
     "name_second_parent_id",
     "Aspecies",
-    names(:a_species).id,
+    names(:a_species).id
   )
   find("#search-result-details h4").click
 end
@@ -225,7 +225,7 @@ def set_name_parent_to_a_species
     "name-parent-typeahead",
     "name_parent_id",
     "Aspecies",
-    names(:a_species).id,
+    names(:a_species).id
   )
   find("#search-result-details h4").click
 end
@@ -235,7 +235,7 @@ def set_name_parent_to_a_genus
     "name-parent-typeahead",
     "name_parent_id",
     "Agenus",
-    names(:a_genus).id,
+    names(:a_genus).id
   )
   find("#search-result-details h4").click
 end
@@ -292,7 +292,7 @@ def load_new_hybrid_formula_form
   find_link("New hybrid formula name").click
   search_result_must_include_content("New hybrid formula name")
   search_result_details_must_include_content(
-    "New Scientific Hybrid Formula Name",
+    "New Scientific Hybrid Formula Name"
   )
 end
 
@@ -315,7 +315,7 @@ def load_new_hybrid_formula_unknown_2nd_parent_form
   select_from_menu(["New", "Hybrid formula unknown 2nd parent name"])
   search_result_must_include_link("New hybrid formula unknown 2nd parent name")
   search_result_details_must_include_content(
-    "New Scientific Hybrid Formula Unknown 2nd Parent Name",
+    "New Scientific Hybrid Formula Unknown 2nd Parent Name"
   )
 end
 
@@ -380,7 +380,7 @@ def assert_expected(expected_contents)
     assert(
       page.has_content?(expected_content),
       "assert_successful_create_for says:
-           Missing expected content: #{expected_content}",
+           Missing expected content: #{expected_content}"
     )
   end
 end
@@ -390,7 +390,7 @@ def assert_no_prohibited(prohibited_contents)
     assert(
       page.has_no_content?(prohibited_content),
       "assert_successful_create_for says:
-           Missing prohibited content: #{prohibited_content}",
+           Missing prohibited content: #{prohibited_content}"
     )
   end
 end

@@ -36,7 +36,7 @@ class NoRoleUserCannotShowChangesTabForFOADraftTest < ActionController::TestCase
         user_full_name: user.full_name,
         draft: draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree builder should not be able to show Changes tab for FOA draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")

@@ -47,7 +47,7 @@ class BatchReviewPeriodUpdateEndDateRemoveTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["batch-loader"],
-      },
+      }
     )
     assert_response :success
     updated = Loader::Batch::Review::Period.find(batch_review_period.id)

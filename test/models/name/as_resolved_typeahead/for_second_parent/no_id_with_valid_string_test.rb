@@ -25,7 +25,7 @@ class NameAsResolvedTypeahead4Parent2NoIdWValidString < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForParent.new(
       "",
       name.full_name,
-      "second parent",
+      "second parent"
     )
     assert_equal name.id, result.value, "Should get a matching id for the name"
   end

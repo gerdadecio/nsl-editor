@@ -29,7 +29,7 @@ class SearchParsedRequestCountDirectiveKeepsSimilarTokenTest < ActiveSupport::Te
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       canonical_query_target: "name",
-      query_string: "count: comment-count: 3",
+      query_string: "count: comment-count: 3"
     )
     parsed_request = Search::ParsedRequest.new(params)
 

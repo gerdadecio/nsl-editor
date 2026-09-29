@@ -38,7 +38,7 @@ class SearchControllerInvalidQueryTargetResetsButtonTest < ActionController::Tes
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
 
     assert_response :success
@@ -52,7 +52,7 @@ class SearchControllerInvalidQueryTargetResetsButtonTest < ActionController::Tes
   test "an error unrelated to the target still preserves the actual query target" do
     SearchController.stub_any_instance(
       :run_local_search,
-      -> { raise StandardError, "boom" },
+      -> { raise StandardError, "boom" }
     ) do
       get(
         :search,
@@ -61,7 +61,7 @@ class SearchControllerInvalidQueryTargetResetsButtonTest < ActionController::Tes
           username: "fred",
           user_full_name: "Fred Jones",
           groups: [],
-        },
+        }
       )
     end
 

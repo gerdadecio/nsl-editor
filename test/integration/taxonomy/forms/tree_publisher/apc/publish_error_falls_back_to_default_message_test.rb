@@ -48,7 +48,7 @@ class TaxFormsTreePubAPCPublishErrorFallsBackToDefaultMessageTest < ActionContro
         user_full_name: user.full_name,
         groups: ["login"],
         draft: apc_draft,
-      },
+      }
     )
     assert_response :success
     assert_match "Unknown error trying to publish tree", response.body

@@ -51,13 +51,13 @@ class TaxFormsTreePublisherAPCUserCannotRemoveNamePlacementForTaxonOnFOADraftTes
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree publisher should not be able to remove placement from FOA draft"
     assert_match(
       /access denied/i,
       response.body,
-      "Expecting Not authorized message",
+      "Expecting Not authorized message"
     )
   end
 end

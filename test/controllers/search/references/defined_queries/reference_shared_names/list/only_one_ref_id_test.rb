@@ -37,7 +37,7 @@ class SearchRefsDQRefSharedNamesListOnly1RefIDTest < ActionController::TestCase
         username: @known_user.user_name,
         user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_select "#search-results-summary",

@@ -22,7 +22,7 @@ require "test_helper"
 class InstAsCopierWNewRefSAloneRefMustBeSuppliedTest < ActiveSupport::TestCase
   test "copy a standalone instance with citations ref must be supplied" do
     master_instance = Instance::AsCopier.find(
-      instances(:gaertner_created_metrosideros_costata).id,
+      instances(:gaertner_created_metrosideros_costata).id
     )
     assert_not master_instance.citations.empty?,
       "Master instance should have at least 1 citation."
@@ -31,7 +31,7 @@ class InstAsCopierWNewRefSAloneRefMustBeSuppliedTest < ActiveSupport::TestCase
     assert_raises RuntimeError, "Must supply reference id." do
       master_instance.copy_with_citations_to_new_reference(
         params,
-        dummy_username,
+        dummy_username
       )
     end
   end

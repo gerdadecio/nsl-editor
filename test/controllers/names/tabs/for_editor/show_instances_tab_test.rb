@@ -35,7 +35,7 @@ class NameShowInstanceTabForEditorTest < ActionController::TestCase
         user_full_name: "Fred Jones",
         groups: ["edit"],
       },
-      xhr: true,
+      xhr: true
     )
     assert_response :success
     assert_select "li.active a#name-instances-tab",

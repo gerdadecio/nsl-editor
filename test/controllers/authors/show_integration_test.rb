@@ -14,7 +14,7 @@ class AuthorShowTest < ActionController::TestCase
     get(
       :show,
       params: { id: @author.id, tab: "tab_show_1" },
-      session: { username: "fred", user_full_name: "Fred Jones", groups: ["read"] },
+      session: { username: "fred", user_full_name: "Fred Jones", groups: ["read"] }
     )
     assert_response :success
   end
@@ -24,7 +24,7 @@ class AuthorShowTest < ActionController::TestCase
     get(
       :show,
       params: { id: @author.id, tab: "tab_show_1" },
-      session: { username: "fred", user_full_name: "Fred Jones", groups: ["read"] },
+      session: { username: "fred", user_full_name: "Fred Jones", groups: ["read"] }
     )
     assert_match @author.name.strip, response.body
   end

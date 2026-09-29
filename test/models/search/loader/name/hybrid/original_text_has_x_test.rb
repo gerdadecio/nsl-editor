@@ -29,7 +29,7 @@ class SearchLoaderNameIsOrigTextHasxTest < ActiveSupport::TestCase
       query_string:
             "original-text-has-x: any-batch:",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),

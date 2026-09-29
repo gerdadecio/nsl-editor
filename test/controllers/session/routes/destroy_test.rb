@@ -25,7 +25,7 @@ class SessionDestroyRouteTest < ActionController::TestCase
     assert_routing(
       { method: "delete", path: "/sign_out" },
       controller: "sessions",
-      action: "destroy",
+      action: "destroy"
     )
   end
 end

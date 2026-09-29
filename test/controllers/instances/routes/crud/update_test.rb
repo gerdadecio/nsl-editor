@@ -26,7 +26,7 @@ class InstanceUpdateRouteTest < ActionController::TestCase
       { method: "patch", path: "/instances/1" },
       controller: "instances",
       action: "update",
-      id: "1",
+      id: "1"
     )
   end
 end

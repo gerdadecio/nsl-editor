@@ -34,7 +34,7 @@ class InstEditTabForEditWithTreeBuilderNoDraftTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit", "treebuilder"],
-      },
+      }
     )
     assert_response :success
     assert_match "on page", @response.body, "Missing: 'on page'"

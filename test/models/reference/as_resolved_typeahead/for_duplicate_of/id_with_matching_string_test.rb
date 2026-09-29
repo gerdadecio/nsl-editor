@@ -24,7 +24,7 @@ class ReferenceARTA4DupeOfIdWithMatchingString < ActiveSupport::TestCase
     reference = references(:journal_of_botany_british_and_foreign)
     result = Reference::AsResolvedTypeahead::ForDuplicateOf.new(
       reference.id,
-      reference.citation,
+      reference.citation
     )
     assert_equal reference.id,
       result.value,

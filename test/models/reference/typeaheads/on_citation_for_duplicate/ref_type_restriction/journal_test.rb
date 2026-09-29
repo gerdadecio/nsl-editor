@@ -24,7 +24,7 @@ class TAOnCitnForDuplicateRefTypeRestrictionJournal < ActiveSupport::TestCase
     curr_ref = references(:journal_with_papers)
     typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "o",
-      curr_ref.id,
+      curr_ref.id
     )
     assert_not typeahead.results.empty?, "Should be at least one result"
     journals = 0

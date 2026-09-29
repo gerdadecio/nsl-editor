@@ -42,7 +42,7 @@ class InstancesCopyStandaloneForQAUserTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["QA"],
-        },
+        }
       )
     end
     assert_response :forbidden

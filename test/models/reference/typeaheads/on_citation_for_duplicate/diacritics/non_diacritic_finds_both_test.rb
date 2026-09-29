@@ -26,7 +26,7 @@ class RefTypeaheadOnCit4DupNonDiacriticFindsBothTest < ActiveSupport::TestCase
     curr_ref = references(:ref_type_is_paper)
     typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "Hulten",
-      curr_ref.id,
+      curr_ref.id
     )
     assert_equal 2, typeahead.results.length, "Expecting 2 record for 'Hulten'."
     ids = typeahead.results.collect { |reference| reference[:id] }

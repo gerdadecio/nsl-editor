@@ -43,7 +43,7 @@ class TaxFormsTreePubAPCUserCanPublishAPCDraftTest < ActionController::TestCase
           "Content-Type" => "application/json",
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: response, headers: {})
   end
@@ -66,7 +66,7 @@ class TaxFormsTreePubAPCUserCanPublishAPCDraftTest < ActionController::TestCase
         user_full_name: user.full_name,
         groups: ["login"],
         draft: apc_draft,
-      },
+      }
     )
     assert_response :success
   end

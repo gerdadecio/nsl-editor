@@ -41,7 +41,7 @@ class TaxFormsTreeBuilderAPCUserCanRemoveNamePlacementForTaxonOnAPCDraftTest < A
           "Content-Type" => /json/,
           "Host" => /localhost:.*/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -74,7 +74,7 @@ class TaxFormsTreeBuilderAPCUserCanRemoveNamePlacementForTaxonOnAPCDraftTest < A
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree builder should be able to remove placement from APC draft"
   end

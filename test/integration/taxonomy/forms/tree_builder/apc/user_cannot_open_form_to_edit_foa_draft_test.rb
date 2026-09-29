@@ -43,7 +43,7 @@ class TaxFormsTreeBuilderAPCUserCannotOpenEditFormToEdFoADraftTest < ActionContr
         user_full_name: user.full_name,
         groups: ["login"],
         draft: foa_draft,
-      },
+      }
     )
     assert_response :forbidden, "APC tree builder should not be able to open form to edit FOA draft"
   end

@@ -36,7 +36,7 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
   end
 
@@ -97,12 +97,12 @@ class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
     assert_match(
       /This instance has been soft-deleted and cannot be modified/,
       response.body,
-      "Should say why the edit form is missing.",
+      "Should say why the edit form is missing."
     )
     assert_no_match(
       /The selected tab does not apply to the current instance/,
       response.body,
-      "Should not fall back to the empty tab.",
+      "Should not fall back to the empty tab."
     )
     assert_select "form",
       false,

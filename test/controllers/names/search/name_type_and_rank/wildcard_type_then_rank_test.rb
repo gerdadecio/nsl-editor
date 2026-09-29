@@ -35,7 +35,7 @@ class Search4NameTypeNRankWildcardTypeThenRankTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "span#search-results-summary", true, "Should have summary "

@@ -42,7 +42,7 @@ class ReferencesEditDuplicateOfIdClearTest < ActionController::TestCase
         username: username,
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     changed = Reference.find(reference.id)

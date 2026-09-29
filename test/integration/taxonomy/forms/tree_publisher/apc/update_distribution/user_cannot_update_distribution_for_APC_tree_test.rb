@@ -51,13 +51,13 @@ class TaxFormsTreePublisherAPCUserCannotUpdateDistributionOnAPCDraftTest < Actio
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree publisher should not be able to update distribution on APC draft entry"
     assert_match(
       /Access Denied\! Please contact the admin for proper permissions/,
       response.body,
-      "Expecting Access Denied message",
+      "Expecting Access Denied message"
     )
   end
 end

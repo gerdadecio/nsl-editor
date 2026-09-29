@@ -40,7 +40,7 @@ class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionController::Test
         user_full_name: "Fred Jones",
         groups: [:login, :"batch-loader"],
         default_loader_batch_name: "Batch Two",
-      },
+      }
     )
     assert_response :success
     assert_select "#search-results-summary",
@@ -57,7 +57,7 @@ class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionController::Test
         user_full_name: "Fred Jones",
         groups: [:login, :"batch-loader"],
         default_loader_batch_name: "Batch Two",
-      },
+      }
     )
     assert_response :success
     # Search::Base#empty is set once to false in set_defaults and never

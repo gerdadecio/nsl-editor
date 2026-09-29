@@ -33,7 +33,7 @@ class TreePubFoaWDUserCanSeeMenuOptsEditDraftTest < ActionController::TestCase
         user_full_name: user.full_name,
         groups: ["login"],
         draft: foa_draft,
-      },
+      }
     )
     assert_response :success
     assert_select "a",

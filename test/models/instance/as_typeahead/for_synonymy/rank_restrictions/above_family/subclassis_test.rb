@@ -25,15 +25,15 @@ class TypeaheadForSynonymySubclassisTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "a*",
-      names(:a_subclassis).id,
+      names(:a_subclassis).id
     )
     @tb = Instance::AsTypeahead::ForSynonymy.new(
       "plantae",
-      names(:a_subclassis).id,
+      names(:a_subclassis).id
     )
     @tc = Instance::AsTypeahead::ForSynonymy.new(
       "magnolio",
-      names(:a_subclassis).id,
+      names(:a_subclassis).id
     )
   end
 

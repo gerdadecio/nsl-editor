@@ -25,7 +25,7 @@ class TAOnCitn4ParRefTypeRestrictDbase4DatabaseRecord < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "%",
       current_reference.id,
-      ref_types(:database_record).id,
+      ref_types(:database_record).id
     )
     assert_not typeahead.results.empty?,
       "Should be at least one result"

@@ -36,7 +36,7 @@ class APCTreePublisherShowValidationTabForAPCDraftTest < ActionController::TestC
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree publisher should be able to show validation tab for APC draft"
   end

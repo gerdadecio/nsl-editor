@@ -27,7 +27,7 @@ class RefTypeAhOnCit4ParentNonDiacriticFindsBothTest < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "Hilten",
       curr_ref.id,
-      ref_types(:chapter).id,
+      ref_types(:chapter).id
     )
     assert_equal 2,
       typeahead.results.length,

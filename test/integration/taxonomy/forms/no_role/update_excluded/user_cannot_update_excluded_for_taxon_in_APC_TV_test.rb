@@ -52,7 +52,7 @@ class TaxFormsNoRoleUserCannotUpdateExcludedForTaxonOnAPCDraftTest < ActionContr
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "Should be forbidden"
     assert_match "Access Denied", response.body, "Expecting an access denied message"

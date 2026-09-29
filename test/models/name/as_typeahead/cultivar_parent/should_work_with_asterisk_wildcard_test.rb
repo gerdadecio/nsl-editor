@@ -24,19 +24,19 @@ class ShouldWorkWithAsteriskWildcardTest < ActiveSupport::TestCase
     suggestions = Name::AsTypeahead.cultivar_parent_suggestions("*", -1)
     assert(
       suggestions.is_a?(Array),
-      "asterisk wildcard search should be an array",
+      "asterisk wildcard search should be an array"
     )
     assert(
       !suggestions.empty?,
-      "asterisk wildcard search should not be empty",
+      "asterisk wildcard search should not be empty"
           )
     assert(
       suggestions.first[:value].present?,
-      "asterisk wildcard search first element should have a value",
+      "asterisk wildcard search first element should have a value"
     )
     assert(
       suggestions.first[:id].present?,
-      "asterisk wildcard search first element should have an id",
+      "asterisk wildcard search first element should have an id"
     )
   end
 end

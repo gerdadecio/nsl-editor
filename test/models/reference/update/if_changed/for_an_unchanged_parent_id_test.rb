@@ -23,7 +23,7 @@ require "models/reference/update/if_changed/test_helper"
 class ForAnUnchangedRefParentIdTest < ActiveSupport::TestCase
   test "unchanged parent id" do
     reference = Reference::AsEdited.find(
-      references(:paper_in_bulletin_of_torrey_botanical_club).id,
+      references(:paper_in_bulletin_of_torrey_botanical_club).id
     )
     new_parent = reference.parent
     new_column_value = new_parent.id

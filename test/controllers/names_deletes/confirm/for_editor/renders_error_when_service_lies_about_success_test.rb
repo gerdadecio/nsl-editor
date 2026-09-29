@@ -70,7 +70,7 @@ class NamesDeleteConfirmForEditorRendersErrorWhenServiceLiesAboutSuccessTest < A
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_includes @response.body, "Name delete was requested but not confirmed"

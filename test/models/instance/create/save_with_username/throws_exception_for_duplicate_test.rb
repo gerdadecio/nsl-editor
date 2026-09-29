@@ -29,11 +29,11 @@ class InstCreateSaveWithUsernameThrowsExc4Duplicate < ActiveSupport::TestCase
       instance_type_id: existing.instance_type_id,
       cited_by_id: existing.cited_by_id,
       cites_id: existing.cites_id,
-      page: existing.page,
+      page: existing.page
     )
     assert_raises(
       ActiveRecord::RecordInvalid,
-      "Instance save_with_username should throw exception 4 dup",
+      "Instance save_with_username should throw exception 4 dup"
     ) do
       dup.save_with_username("fred")
     end

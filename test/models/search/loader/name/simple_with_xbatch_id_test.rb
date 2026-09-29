@@ -29,7 +29,7 @@ class SearchLoaderNameWithXBatchIdTest < ActiveSupport::TestCase
       query_string:
             "* xbatch-id:",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
 
     # TODO: rails 7.1 has a better way

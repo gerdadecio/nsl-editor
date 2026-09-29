@@ -43,7 +43,7 @@ class TaxFormsTreePubAPCUserCanUpdateAPCDraftTest < ActionController::TestCase
         user_full_name: user.full_name,
         groups: ["login"],
         draft: apc_draft,
-      },
+      }
     )
     assert_response :success
   end

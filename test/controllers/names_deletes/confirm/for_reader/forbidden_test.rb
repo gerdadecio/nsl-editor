@@ -38,7 +38,7 @@ class NamesDeleteConfirmForReaderSimpleTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :forbidden, "Reader should not be able to delete"
   end

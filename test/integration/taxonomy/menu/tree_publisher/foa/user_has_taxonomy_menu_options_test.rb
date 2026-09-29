@@ -31,7 +31,7 @@ class TreePublisherFoaUserCanSeeTaxonomyMenuTest < ActionController::TestCase
         username: user.user_name,
         user_full_name: user.full_name,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success
     assert_select "a",

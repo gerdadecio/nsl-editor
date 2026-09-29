@@ -41,7 +41,7 @@ class TaxoInstanceTreePublisherFoaCannotSeeSynTab < ActionController::TestCase
         user_full_name: user.full_name,
         groups: ["login", "xedit"],
         draft: foa_draft,
-      },
+      }
     )
     assert_response :forbidden, "Tree publisher should not see Synonmy tab"
   end

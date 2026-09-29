@@ -34,7 +34,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "li.active a#name-edit-tab", "Edit", "Should show 'Edit' tab."
@@ -60,7 +60,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
@@ -84,7 +84,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
@@ -109,7 +109,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
@@ -134,7 +134,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
@@ -160,7 +160,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
@@ -186,7 +186,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
@@ -217,7 +217,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     field = css_select("div.autocomplete").find do |div|
@@ -225,11 +225,11 @@ class ShowEditTest < ActionController::TestCase
     end
     assert_equal(
       { "rank_id" => "name_name_rank_id" },
-      JSON.parse(field["data-autocomplete-live-params-value"]),
+      JSON.parse(field["data-autocomplete-live-params-value"])
     )
     assert_equal(
       { "name_id" => @name.id },
-      JSON.parse(field["data-autocomplete-extra-params-value"]),
+      JSON.parse(field["data-autocomplete-extra-params-value"])
     )
     assert_equal "|", field["data-autocomplete-term-delimiter-value"]
   end
@@ -245,7 +245,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
@@ -273,7 +273,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     field = css_select("div.autocomplete").find do |div|
@@ -283,11 +283,11 @@ class ShowEditTest < ActionController::TestCase
       field["data-autocomplete-url-value"]
     assert_equal(
       { "rank_id" => "name_name_rank_id" },
-      JSON.parse(field["data-autocomplete-live-params-value"]),
+      JSON.parse(field["data-autocomplete-live-params-value"])
     )
     assert_equal(
       { "name_id" => @name.id },
-      JSON.parse(field["data-autocomplete-extra-params-value"]),
+      JSON.parse(field["data-autocomplete-extra-params-value"])
     )
     assert_equal "|", field["data-autocomplete-term-delimiter-value"]
   end
@@ -304,7 +304,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_no_match(/setUpAuthorByAbbrev\(\)/, @response.body)
@@ -328,7 +328,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
@@ -349,11 +349,11 @@ class ShowEditTest < ActionController::TestCase
     end
     assert_equal(
       { "rank_id" => "name_name_rank_id" },
-      JSON.parse(field["data-autocomplete-live-params-value"]),
+      JSON.parse(field["data-autocomplete-live-params-value"])
     )
     assert_equal(
       { "name_id" => hybrid.id },
-      JSON.parse(field["data-autocomplete-extra-params-value"]),
+      JSON.parse(field["data-autocomplete-extra-params-value"])
     )
     assert_equal "|", field["data-autocomplete-term-delimiter-value"]
   end
@@ -371,7 +371,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
@@ -390,18 +390,18 @@ class ShowEditTest < ActionController::TestCase
     assert_no_match(/setUpNameSecondParentTypeahead\(\)/, @response.body)
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
-      @response.body,
+      @response.body
     )
     field = css_select("div.autocomplete").find do |div|
       div.css("input#name-second-parent-typeahead").any?
     end
     assert_equal(
       { "rank_id" => "name_name_rank_id" },
-      JSON.parse(field["data-autocomplete-live-params-value"]),
+      JSON.parse(field["data-autocomplete-live-params-value"])
     )
     assert_equal(
       { "name_id" => hybrid.id },
-      JSON.parse(field["data-autocomplete-extra-params-value"]),
+      JSON.parse(field["data-autocomplete-extra-params-value"])
     )
     assert_equal "|", field["data-autocomplete-term-delimiter-value"]
   end
@@ -420,7 +420,7 @@ class ShowEditTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
@@ -443,18 +443,18 @@ class ShowEditTest < ActionController::TestCase
       /Second parent/
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
-      @response.body,
+      @response.body
     )
     field = css_select("div.autocomplete").find do |div|
       div.css("input#name-second-parent-typeahead").any?
     end
     assert_equal(
       { "rank_id" => "name_name_rank_id" },
-      JSON.parse(field["data-autocomplete-live-params-value"]),
+      JSON.parse(field["data-autocomplete-live-params-value"])
     )
     assert_equal(
       { "name_id" => cultivar_hybrid.id },
-      JSON.parse(field["data-autocomplete-extra-params-value"]),
+      JSON.parse(field["data-autocomplete-extra-params-value"])
     )
     assert_equal "|", field["data-autocomplete-term-delimiter-value"]
   end

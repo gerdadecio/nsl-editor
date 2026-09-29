@@ -26,7 +26,7 @@ class NameDestroyRouteTest < ActionController::TestCase
       { method: "delete", path: "/names/1" },
       controller: "names",
       action: "destroy",
-      id: "1",
+      id: "1"
     )
   end
 end

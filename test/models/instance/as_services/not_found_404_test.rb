@@ -29,7 +29,7 @@ class InstanceDeleteServiceNotFound404Test < ActiveSupport::TestCase
     }
     stub_request(
       :delete,
-      "#{action}?apiKey=test-api-key&reason=Edit",
+      "#{action}?apiKey=test-api-key&reason=Edit"
     )
       .with(headers: headers)
       .to_return(status: 404, body: raw.to_json, headers: {})

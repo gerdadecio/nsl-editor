@@ -29,7 +29,7 @@ class NameNewRouteTest < ActionController::TestCase
         action: "new",
         category: "scientific",
         random_id: "324133124124",
-      },
+      }
     )
   end
 end

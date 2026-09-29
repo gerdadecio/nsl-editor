@@ -25,7 +25,7 @@ class SessionCreateRouteTest < ActionController::TestCase
     assert_routing(
       { method: "post", path: "/sign_in" },
       controller: "sessions",
-      action: "create",
+      action: "create"
     )
   end
 end

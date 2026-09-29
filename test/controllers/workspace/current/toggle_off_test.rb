@@ -35,7 +35,7 @@ class WorkspaceCurrentToggleOffTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit", "treebuilder"],
-      },
+      }
     )
     assert_response :success
     assert_not @request.session["draft"].present?

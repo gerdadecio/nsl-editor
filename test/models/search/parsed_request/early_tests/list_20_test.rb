@@ -26,7 +26,7 @@ class SearchParsedRequestList20Test < ActiveSupport::TestCase
       query_target: "name",
       canonical_query_target: "name",
       query_string:
-            query_string,
+            query_string
     )
     parsed_request = Search::ParsedRequest.new(params)
     assert parsed_request.list, "This should be parsed as a list query."
@@ -34,7 +34,7 @@ class SearchParsedRequestList20Test < ActiveSupport::TestCase
     assert_match(
       /\Aname\z/,
       parsed_request.target_table,
-      "This should be parsed as a query on the name table.",
+      "This should be parsed as a query on the name table."
     )
     assert parsed_request.limited, "Should be parsed as a query with a limit."
     assert_equal parsed_request.limit, 20, "Should be parsed with limit of 20."

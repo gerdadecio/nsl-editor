@@ -13,12 +13,12 @@ class InvalidDistributionTest < ActiveSupport::TestCase
     trel = update_profile_to_invalid_dist(
       trel,
       "Vic,, NSW",
-      /empty distribution value, likely due to an unnecessary comma/i,
+      /empty distribution value, likely due to an unnecessary comma/i
     )
     update_profile_to_invalid_dist(
       trel,
       ",Vic",
-      /empty distribution value, likely due to an unnecessary comma/i,
+      /empty distribution value, likely due to an unnecessary comma/i
     )
   end
 
@@ -30,12 +30,12 @@ class InvalidDistributionTest < ActiveSupport::TestCase
     assert_match(
       expected_message_re,
       error.message,
-      "Unexpected message for #{tag} with dist: #{new_dist}",
+      "Unexpected message for #{tag} with dist: #{new_dist}"
     )
     te_changed = Tree::Element.find(trel.id)
     assert_nil(
       te_changed.distribution_value,
-      "Expected distribution to be unchanged for #{tag}",
+      "Expected distribution to be unchanged for #{tag}"
     )
     te_changed
   end

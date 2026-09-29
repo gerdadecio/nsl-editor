@@ -25,7 +25,7 @@ class THOnCitn4ParRefTypeRestrictionNothingForSeries < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "%",
       current_reference.id,
-      ref_types(:series).id,
+      ref_types(:series).id
     )
     assert typeahead.results.empty?,
       "Should be no results because series takes no parent."

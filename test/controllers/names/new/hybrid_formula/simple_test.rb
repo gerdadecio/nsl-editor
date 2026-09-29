@@ -34,7 +34,7 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
         random_id: "123445",
         tabIndex: "107",
       },
-      xhr: true,
+      xhr: true
     )
     assert_response :success,
       "Cannot get form for a new hybrid formula name"
@@ -57,7 +57,7 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
         random_id: "123445",
         tabIndex: "107",
       },
-      xhr: true,
+      xhr: true
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
@@ -74,7 +74,7 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
     end
     assert_equal(
       { "name_id" => nil },
-      JSON.parse(field["data-autocomplete-extra-params-value"]),
+      JSON.parse(field["data-autocomplete-extra-params-value"])
     )
   end
 
@@ -90,7 +90,7 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
         random_id: "123445",
         tabIndex: "107",
       },
-      xhr: true,
+      xhr: true
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \

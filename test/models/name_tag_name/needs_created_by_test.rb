@@ -26,7 +26,7 @@ class NeedsCreatedBy < ActiveSupport::TestCase
     name_tag_name = NameTagName.new(
       name_id: a_species.id,
       tag_id: acra.id,
-      updated_by: "tester",
+      updated_by: "tester"
     )
     assert_not name_tag_name.valid?,
       "Name Tag Name record should not be valid without created_by."

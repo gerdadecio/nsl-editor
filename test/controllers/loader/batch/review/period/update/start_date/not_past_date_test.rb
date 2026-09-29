@@ -46,14 +46,14 @@ class BatchReviewPeriodUpdateStartDatePastDateNotAllowedTest < ActionController:
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["batch-loader"],
-      },
+      }
     )
     assert_response :unprocessable_content
     Loader::Batch::Review::Period.find(target.id)
     assert_match(
       /Error: Validation failed: Start date cannot be in the past/,
       response.body.to_s,
-      "Expected error message not found",
+      "Expected error message not found"
     )
   end
 end

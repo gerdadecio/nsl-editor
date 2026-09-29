@@ -25,7 +25,7 @@ class SearchOnInstanceAdnotExactNoWildCardTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "adnot-exact: xY ",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?,

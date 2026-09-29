@@ -35,15 +35,15 @@ class MustNotExcludeNamesWithoutAnInstanceTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "a genus without an instance",
       avoid_id: 1,
-      rank_id: NameRank.species.id,
+      rank_id: NameRank.species.id
     )
     assert(
       typeahead.suggestions.is_a?(Array),
-      "suggestions should be an array",
+      "suggestions should be an array"
     )
     assert(
       typeahead.suggestions.size == 1,
-      'suggestions for "a genus without an instance" should have a record',
+      'suggestions for "a genus without an instance" should have a record'
     )
   end
 end

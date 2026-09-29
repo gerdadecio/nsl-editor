@@ -32,7 +32,7 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
   end
 
@@ -107,7 +107,7 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
 
     assert_response :success
@@ -131,7 +131,7 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
         user_full_name: "Fred Jones",
         groups: ["edit"],
       },
-      xhr: true,
+      xhr: true
     )
 
     assert_response :success

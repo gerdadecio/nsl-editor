@@ -30,7 +30,7 @@ class SearchInstListUsingRefTypeSingleValPaperTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_select "#search-results-summary",

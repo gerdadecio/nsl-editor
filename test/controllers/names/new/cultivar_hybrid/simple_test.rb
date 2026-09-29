@@ -35,7 +35,7 @@ class NamesNewCultivarHybridNameSimpleTest < ActionController::TestCase
         tabIndex: "107",
       },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Cannot edit a new cultivar hybrid name"
     assert_select("h4", /New Cultivar Hybrid Name/)
@@ -57,7 +57,7 @@ class NamesNewCultivarHybridNameSimpleTest < ActionController::TestCase
         random_id: "123445",
         tabIndex: "107",
       },
-      xhr: true,
+      xhr: true
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
@@ -73,14 +73,14 @@ class NamesNewCultivarHybridNameSimpleTest < ActionController::TestCase
       /Second parent/
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
-      @response.body,
+      @response.body
     )
     field = css_select("div.autocomplete").find do |div|
       div.css("input#name-second-parent-typeahead").any?
     end
     assert_equal(
       { "name_id" => nil },
-      JSON.parse(field["data-autocomplete-extra-params-value"]),
+      JSON.parse(field["data-autocomplete-extra-params-value"])
     )
   end
 end

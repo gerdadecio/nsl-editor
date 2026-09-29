@@ -36,7 +36,7 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
   end
 
@@ -54,7 +54,7 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{@name.id}']",
-      true,
+      true
     )
   end
 
@@ -67,7 +67,7 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{@name.id}']" \
         "[data-autocomplete-label='#{@name.full_name} - #{@name.name_status.name}']",
-      true,
+      true
     )
   end
 

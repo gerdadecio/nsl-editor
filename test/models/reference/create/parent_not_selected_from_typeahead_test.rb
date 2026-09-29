@@ -24,7 +24,7 @@ class ParentNotSelectedFromTypeahead < ActiveSupport::TestCase
     assert_raise(
       RuntimeError,
       "Should raise exception because parent typeahead will not \
-                 match any acceptable reference.",
+                 match any acceptable reference."
     ) do
       Reference::AsEdited.create(
         {
@@ -45,7 +45,7 @@ class ParentNotSelectedFromTypeahead < ActiveSupport::TestCase
           "author_typeahead" => "",
           "author_id" => "",
         },
-        "fred",
+        "fred"
       )
     end
   end

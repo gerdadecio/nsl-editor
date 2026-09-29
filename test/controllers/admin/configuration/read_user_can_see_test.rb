@@ -31,7 +31,7 @@ class AdminControllerReadUserCanSeeConfigTest < ActionController::TestCase
         user_full_name: "Fred Jones",
         groups: [],
       },
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Read user should get configuration"
   end

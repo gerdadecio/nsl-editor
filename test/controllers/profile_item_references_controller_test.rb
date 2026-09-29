@@ -48,7 +48,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
 
     post :create,
@@ -94,7 +94,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
 
     put :update,
@@ -120,7 +120,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
 
     put :update,
@@ -147,7 +147,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
     delete :destroy,
       params: {
@@ -169,7 +169,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
 
     Profile::ProfileItemReference.stub_any_instance(:destroy, false) do

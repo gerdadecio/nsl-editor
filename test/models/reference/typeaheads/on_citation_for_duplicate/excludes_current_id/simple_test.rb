@@ -25,7 +25,7 @@ class TypeaheadsOnCitForDuplicateExcludesCurrentIdTest < ActiveSupport::TestCase
     other_ref = references(:paper_by_brassard)
     typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "simple",
-      other_ref.id,
+      other_ref.id
     )
     assert typeahead.results.size == 1,
       "Should be at least one result for asterisk wildcard"

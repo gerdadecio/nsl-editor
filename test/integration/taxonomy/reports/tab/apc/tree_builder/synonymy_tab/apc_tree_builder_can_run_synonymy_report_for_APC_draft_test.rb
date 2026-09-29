@@ -30,7 +30,7 @@ class APCTreeBuilderCanRunSynonymyReportForAPCDraftTest < ActionController::Test
           "Content-Type" => "text/html",
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -50,7 +50,7 @@ class APCTreeBuilderCanRunSynonymyReportForAPCDraftTest < ActionController::Test
         user_full_name: user.full_name,
         draft: draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree builder should be able to run syn report for APC draft"
   end

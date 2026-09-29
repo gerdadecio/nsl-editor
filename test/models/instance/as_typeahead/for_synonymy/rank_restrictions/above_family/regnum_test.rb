@@ -25,15 +25,15 @@ class TypeaheadForSynonymyRegnumTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "a*",
-      names(:the_regnum).id,
+      names(:the_regnum).id
     )
     @tb = Instance::AsTypeahead::ForSynonymy.new(
       "plantae",
-      names(:the_regnum).id,
+      names(:the_regnum).id
     )
     @tc = Instance::AsTypeahead::ForSynonymy.new(
       "magnolio",
-      names(:the_regnum).id,
+      names(:the_regnum).id
     )
   end
 

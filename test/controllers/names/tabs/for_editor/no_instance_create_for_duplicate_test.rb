@@ -35,7 +35,7 @@ class NoInstanceCreateForDuplicateTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_template "names/tabs/_tab"

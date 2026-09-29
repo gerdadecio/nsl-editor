@@ -30,7 +30,7 @@ class SearchControllerBlankTargetTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_match "Search needs a target. Do you have the right permissions?",

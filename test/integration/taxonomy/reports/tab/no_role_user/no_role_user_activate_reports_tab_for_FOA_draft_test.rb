@@ -36,7 +36,7 @@ class NoRoleUserCannotActivateTreeReportsTabForFOADraft < ActionController::Test
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree builder should not be able to activate reports tab for FOA draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")

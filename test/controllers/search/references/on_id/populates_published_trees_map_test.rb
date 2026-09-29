@@ -39,7 +39,7 @@ class SearchRefsOnIdPopulatesPublishedTreesMapTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_kind_of Hash,
@@ -58,7 +58,7 @@ class SearchRefsOnIdPopulatesPublishedTreesMapTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_equal({}, assigns(:published_trees_map))

@@ -32,7 +32,7 @@ class ForAChangedPublishedTest < ActiveSupport::TestCase
     assert reference.update_if_changed(
       { "published" => new_column_value },
       {},
-      "a user",
+      "a user"
     ),
       "Reference should have been changed."
     changed_reference = Reference.find_by(id: reference.id)

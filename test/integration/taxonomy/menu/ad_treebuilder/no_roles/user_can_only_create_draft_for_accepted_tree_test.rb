@@ -45,7 +45,7 @@ class AdTreebuilderNoRolesCanOnlyCreateDraftForAcceptedTreeTest < ActionControll
         username: "ad-treebuilder-no-roles",
         user_full_name: "AD Treebuilder No Roles",
         groups: ["treebuilder"],
-      },
+      }
     )
     assert_response :success
     assert_select "a#create-draft-taxonomy-menu-link",
@@ -62,7 +62,7 @@ class AdTreebuilderNoRolesCanOnlyCreateDraftForAcceptedTreeTest < ActionControll
         username: "ad-treebuilder-no-roles",
         user_full_name: "AD Treebuilder No Roles",
         groups: ["treebuilder"],
-      },
+      }
     )
     assert_response :success
     assert_select "a",

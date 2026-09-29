@@ -32,12 +32,12 @@ class NameAsEdNoAuthIdWithStringMatchingTwoAbbrevsTest < ActiveSupport::TestCase
       "Should be two Authors with the same abbrev."
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError for invalid author string.",
+      "Should raise a RuntimeError for invalid author string."
     ) do
       Name::AsResolvedTypeahead::ForAuthor.new(
         "",
         author_1.abbrev,
-        "Some Author Name",
+        "Some Author Name"
       )
     end
   end

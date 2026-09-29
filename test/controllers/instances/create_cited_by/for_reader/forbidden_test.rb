@@ -40,7 +40,7 @@ class InstancesCreateCitedByForbiddenForReaderTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: [],
-        },
+        }
       )
     end
     assert_response :forbidden

@@ -35,7 +35,7 @@ class ScientificFamilyOrAboveTest < ActiveSupport::TestCase
     assert_equal(
       3,
       NameType.scientific_family_or_above.size,
-      "Should be 3 scientific-family-or-above name types.",
+      "Should be 3 scientific-family-or-above name types."
     )
   end
 
@@ -43,16 +43,16 @@ class ScientificFamilyOrAboveTest < ActiveSupport::TestCase
     names = NameType.scientific_family_or_above.collect(&:first)
     assert(
       names.include?("scientific"),
-      "'scientific' should be a scientific-family-or-above name type.",
+      "'scientific' should be a scientific-family-or-above name type."
     )
     assert(
       names.include?("sanctioned"),
-      "'sanctioned' should be a scientific-family-or-above name type.",
+      "'sanctioned' should be a scientific-family-or-above name type."
     )
     assert(
       names.include?("named hybrid autonym"),
       "'named hybrid autonym' should be a scientific-family-or-above " \
-        "name type.",
+        "name type."
     )
   end
 
@@ -61,23 +61,23 @@ class ScientificFamilyOrAboveTest < ActiveSupport::TestCase
     assert_not(
       names.include?("autonym"),
       "'autonym' should NOT be a scientific-family-or-above " \
-        "name type - it's invalid at family rank and above.",
+        "name type - it's invalid at family rank and above."
     )
     assert_not(
       names.include?("phrase name"),
       "'phrase name' should NOT be a scientific-family-or-above " \
-        "name type.",
+        "name type."
     )
     assert_not(
       names.include?("named hybrid"),
       "'named hybrid' should NOT be a scientific-family-or-above " \
         "name type (it's a hybrid, not the named-hybrid-autonym " \
-        "exception).",
+        "exception)."
     )
     assert_not(
       names.include?("hybrid formula parents known"),
       "'hybrid formula parents known' should NOT be a " \
-        "scientific-family-or-above name type.",
+        "scientific-family-or-above name type."
     )
   end
 end

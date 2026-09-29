@@ -13,7 +13,7 @@ class AuthorCreateTest < ActionController::TestCase
       post(
         :create,
         params: { author: { name: "Integration Test Author", abbrev: "I.T.Auth" } },
-        session: EDIT_SESSION,
+        session: EDIT_SESSION
       )
     end
     assert_response :success
@@ -25,7 +25,7 @@ class AuthorCreateTest < ActionController::TestCase
       post(
         :create,
         params: { author: { name: "", abbrev: "" } },
-        session: EDIT_SESSION,
+        session: EDIT_SESSION
       )
     end
     assert_response :unprocessable_content

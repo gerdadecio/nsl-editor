@@ -53,7 +53,7 @@ class UsersTabsForAdminDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionCo
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["admin"],
-      },
+      }
     )
     assert_response(:success)
     assert_match(/User ##{@user.id}/, response.body)

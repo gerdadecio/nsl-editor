@@ -26,8 +26,8 @@ class SearchOnNameAssertIsOrthVarWEarliestInst2ndRefT < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "name",
         query_string: "is-orth-var-and-sec-ref-first:",
-        current_user: build_edit_user,
-      ),
+        current_user: build_edit_user
+      )
     )
     assert_equal 1,
       search.executed_query.results.size,

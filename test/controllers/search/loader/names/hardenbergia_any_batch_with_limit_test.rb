@@ -30,7 +30,7 @@ class SearchLoaderNameHardenbergiaAnyBatchWithLimitTest < ActionController::Test
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [:ogin, :"atch-loader"],
-      },
+      }
     )
     assert_response :success
     assert_select "#search-results-summary",

@@ -30,7 +30,7 @@ class SearchLoaderNameInvalidDefaultBatchAndLimitTest < ActionController::TestCa
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [:login, :"batch-loader"],
-      },
+      }
     )
     assert_response :success
     assert_select "#search-results-summary",
@@ -41,7 +41,7 @@ class SearchLoaderNameInvalidDefaultBatchAndLimitTest < ActionController::TestCa
     assert_match(
       /Hardenbergia violacea *limit: 10/,
       qs_field_value.to_s,
-      "Query string with limit should be retained",
+      "Query string with limit should be retained"
     )
   end
 end

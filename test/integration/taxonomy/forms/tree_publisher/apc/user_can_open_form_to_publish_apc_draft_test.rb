@@ -43,7 +43,7 @@ class TaxFormsTreePubAPCUserCanOpenFormToPublishAPCDraftTest < ActionController:
         user_full_name: user.full_name,
         groups: ["login"],
         draft: apc_draft,
-      },
+      }
     )
     assert_response :success, "APC tax publisher user should be able to open form to publish APC draft"
   end

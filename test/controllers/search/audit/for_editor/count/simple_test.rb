@@ -30,7 +30,7 @@ class SearchAuditCountSimpleTest < ActionController::TestCase
         username: "greg",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_select "#search-results-summary",

@@ -29,7 +29,7 @@ class ForMullerWithUmlautAdvancedInlineTest < ActiveSupport::TestCase
       query_string:
             "a: fr.müLl",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
@@ -48,7 +48,7 @@ class ForMullerWithUmlautAdvancedInlineTest < ActiveSupport::TestCase
       query_string:
             "a: fr.muLl",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),

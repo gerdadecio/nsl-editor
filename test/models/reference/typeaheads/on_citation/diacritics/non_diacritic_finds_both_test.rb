@@ -26,7 +26,7 @@ class RefTypeaheadOnCitNonDiacriticFindsBothTest < ActiveSupport::TestCase
     curr_ref = references(:ref_type_is_paper)
     typeahead = Reference::AsTypeahead::OnCitation.new(
       "Hulten",
-      curr_ref.id,
+      curr_ref.id
     )
     assert_equal 2,
       typeahead.results.length,

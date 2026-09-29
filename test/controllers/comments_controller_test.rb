@@ -34,7 +34,7 @@ class CommentsControllerTest < ActionController::TestCase
           user_full_name: "Fred Jones",
           groups: ["edit"],
         },
-        xhr: true,
+        xhr: true
       )
     end
     # assert_redirected_to comment_path(assigns(:comment))
@@ -49,7 +49,7 @@ class CommentsControllerTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :service_unavailable
   end
@@ -63,7 +63,7 @@ class CommentsControllerTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :service_unavailable
   end
@@ -78,7 +78,7 @@ class CommentsControllerTest < ActionController::TestCase
           user_full_name: "Fred Jones",
           groups: ["edit"],
         },
-        xhr: true,
+        xhr: true
       )
     end
   end
@@ -94,7 +94,7 @@ class CommentsControllerTest < ActionController::TestCase
             user_full_name: "Fred Jones",
             groups: ["edit"],
           },
-          xhr: true,
+          xhr: true
         )
       end
     end
@@ -113,7 +113,7 @@ class CommentsControllerTest < ActionController::TestCase
             user_full_name: "Fred Jones",
             groups: ["edit"],
           },
-          xhr: true,
+          xhr: true
         )
       end
     end
@@ -132,7 +132,7 @@ class CommentsControllerTest < ActionController::TestCase
             user_full_name: "Fred Jones",
             groups: ["edit"],
           },
-          xhr: true,
+          xhr: true
         )
       end
       assert_response :forbidden
@@ -152,7 +152,7 @@ class CommentsControllerTest < ActionController::TestCase
             user_full_name: "Fred Jones",
             groups: ["edit"],
           },
-          xhr: true,
+          xhr: true
         )
       end
       assert_response :forbidden

@@ -35,7 +35,7 @@ class NamesNewScientificSimpleTest < ActionController::TestCase
         tabIndex: "107",
       },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success, "Cannot start enter new scientific name"
     assert_select("h4", /New Scientific Name/)

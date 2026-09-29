@@ -28,7 +28,7 @@ class ForAnUnchangedDuplicateOfIdTest < ActiveSupport::TestCase
         duplicate_of_id: authors(:has_one_duplicate_that_is_all).id,
         duplicate_of_typeahead: authors(:has_one_duplicate_that_is_all).name,
       },
-      "a user",
+      "a user"
     )
   end
 

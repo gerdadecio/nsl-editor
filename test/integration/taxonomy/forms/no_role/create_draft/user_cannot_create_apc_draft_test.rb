@@ -42,7 +42,7 @@ class TaxFormsNoRoleUserCannotCreateAPCDraftTest < ActionController::TestCase
         username: user.user_name,
         user_full_name: user.full_name,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree builder should not be able to create FOA draft"
   end

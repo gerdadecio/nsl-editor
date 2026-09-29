@@ -36,7 +36,7 @@ class NoRoleUserCanShowSynonymyTabForAPCDraftTest < ActionController::TestCase
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "User with no role should not be able to show syn tab for APC draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")

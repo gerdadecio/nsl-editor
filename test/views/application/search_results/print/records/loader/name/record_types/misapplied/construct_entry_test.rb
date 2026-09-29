@@ -39,13 +39,13 @@ class MisappliedConstructEntryPartialTest < ActionView::TestCase
   def build_match(citation:, page:, iso_publication_date:)
     reference = OpenStruct.new(
       citation: citation,
-      iso_publication_date: iso_publication_date,
+      iso_publication_date: iso_publication_date
     )
     instance = OpenStruct.new(reference: reference, page: page)
     OpenStruct.new(
       instance: instance,
       relationship_instance_type: OpenStruct.new(pro_parte?: false),
-      name: OpenStruct.new(authorship_extracted: "Extracted Author"),
+      name: OpenStruct.new(authorship_extracted: "Extracted Author")
     )
   end
 
@@ -56,7 +56,7 @@ class MisappliedConstructEntryPartialTest < ActionView::TestCase
       record_type: "misapplied",
       simple_name: "Testia testa",
       name_status: nil,
-      preferred_matches: matches,
+      preferred_matches: matches
     )
   end
 
@@ -64,7 +64,7 @@ class MisappliedConstructEntryPartialTest < ActionView::TestCase
     render(
       partial: "application/search_results/print/records/loader/name/" \
         "record_types/misapplied/construct_entry",
-      locals: { search_result: build_search_result(matches) },
+      locals: { search_result: build_search_result(matches) }
     )
     rendered
   end
@@ -73,12 +73,12 @@ class MisappliedConstructEntryPartialTest < ActionView::TestCase
     dated = build_match(
       citation: "Smith, Flora of Nowhere",
       page: "12",
-      iso_publication_date: "2005-01-01",
+      iso_publication_date: "2005-01-01"
     )
     undated = build_match(
       citation: "Jones, Undated Flora",
       page: "3",
-      iso_publication_date: nil,
+      iso_publication_date: nil
     )
 
     output = render_entry_for([dated, undated])
@@ -101,12 +101,12 @@ class MisappliedConstructEntryPartialTest < ActionView::TestCase
     dated = build_match(
       citation: "Later Reference",
       page: "5",
-      iso_publication_date: "2010-03-04",
+      iso_publication_date: "2010-03-04"
     )
     undated = build_match(
       citation: "Undated Reference",
       page: "9",
-      iso_publication_date: nil,
+      iso_publication_date: nil
     )
 
     # Deliberately passed in with the dated match first, so a correct result

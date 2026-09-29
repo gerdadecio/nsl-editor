@@ -34,7 +34,7 @@ class ReferenceEditorShowNewInstanceTabTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_select "li.active a#reference-new-instance-tab",
       /New instance/,
@@ -54,7 +54,7 @@ class ReferenceEditorShowNewInstanceTabTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \

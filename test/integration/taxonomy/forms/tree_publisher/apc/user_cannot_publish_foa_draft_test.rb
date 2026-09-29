@@ -43,13 +43,13 @@ class TaxFormsTreePubAPCUserCannotPublishFOADraftTest < ActionController::TestCa
         user_full_name: user.full_name,
         groups: ["login"],
         draft: foa_draft,
-      },
+      }
     )
     assert_response :forbidden, "Should not be allowed"
     assert_match(
       /Access Denied\! Please contact the admin for proper permissions/,
       response.body,
-      "Expecting Access Denied message",
+      "Expecting Access Denied message"
     )
   end
 end

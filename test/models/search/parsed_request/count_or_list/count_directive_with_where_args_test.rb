@@ -39,7 +39,7 @@ class SearchParsedRequestCountDirectiveWithWhereArgsTest < ActiveSupport::TestCa
       /\Aangophora costata\z/,
       parsed_request.where_arguments,
       "The where args '#{parsed_request.where_arguments}' should \
-match /\\Aangophora costata\\z/.",
+match /\\Aangophora costata\\z/."
     )
   end
 
@@ -55,7 +55,7 @@ match /\\Aangophora costata\\z/.",
       /\Aangophora costata\z/,
       parsed_request.where_arguments,
       "The where args '#{parsed_request.where_arguments}' should \
-match /\\Aangophora costata\\z/.",
+match /\\Aangophora costata\\z/."
     )
   end
 end

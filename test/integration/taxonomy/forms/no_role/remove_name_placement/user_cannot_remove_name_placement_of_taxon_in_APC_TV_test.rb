@@ -58,14 +58,14 @@ class TaxFormsNoRoleUserCannotRemoveNamePlacementOnAPCDraftTest < ActionControll
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden,
       "No Role User should not be allowed to remove name from APC draft"
     assert_match(
       /Access denied/i,
       response.body,
-      "Expecting Not authorized message",
+      "Expecting Not authorized message"
     )
   end
 end

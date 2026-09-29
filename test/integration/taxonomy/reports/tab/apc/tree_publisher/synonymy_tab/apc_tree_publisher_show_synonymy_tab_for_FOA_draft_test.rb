@@ -36,7 +36,7 @@ class APCTreePublisherShowSynonymyTabForFOADraftTest < ActionController::TestCas
         user_full_name: user.full_name,
         draft: draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree publisher should not be able to show syn tab for FOA draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")

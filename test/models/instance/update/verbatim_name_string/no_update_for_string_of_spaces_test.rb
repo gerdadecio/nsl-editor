@@ -28,7 +28,7 @@ class InstUpdVerbatimNameStringNoUpdate4StrOfSpacesT < ActiveSupport::TestCase
     spaces = "  "
     message = instance.update_if_changed(
       { "verbatim_name_string" => spaces },
-      "fred",
+      "fred"
     )
     assert message.start_with?("No change"),
       "Message should be 'No change' not '#{message}'"

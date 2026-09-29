@@ -35,7 +35,7 @@ class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["qa"],
-      },
+      }
     )
     asserts
   end
@@ -51,17 +51,17 @@ class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
     assert_select(
       "li.active a#instance-show-tab",
       /Details/,
-      "Should show 'Details' tab link.",
+      "Should show 'Details' tab link."
     )
     assert_select(
       "a#instance-edit-tab",
       false,
-      "Should not show 'Edit' tab link.",
+      "Should not show 'Edit' tab link."
     )
     assert_select(
       "a#instance-edit-notes-tab",
       false,
-      "Should not show 'Notes' tab link.",
+      "Should not show 'Notes' tab link."
     )
   end
 
@@ -69,17 +69,17 @@ class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
     assert_select(
       "a#instance-cite-this-instance-tab",
       false,
-      "Should not show 'Syn' tab link.",
+      "Should not show 'Syn' tab link."
     )
     assert_select(
       "a#unpublished-citation-tab",
       false,
-      "Should not show 'Unpub' tab link.",
+      "Should not show 'Unpub' tab link."
     )
     assert_select(
       "a#instance-apc-placement-tab",
       false,
-      "Should not show 'APC' tab link.",
+      "Should not show 'APC' tab link."
     )
   end
 
@@ -87,13 +87,13 @@ class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
     assert_select(
       "a#instance-comments-tab",
       false,
-      "Should not show 'Adnot' tab link.",
+      "Should not show 'Adnot' tab link."
     )
     assert_select(
       "a#instance-copy-to-new-reference-tab",
       false,
       "Should not show 'Copy' tab link because not part of
-                  concept record.",
+                  concept record."
     )
   end
 end

@@ -26,7 +26,7 @@ class InstanceDestroyRouteTest < ActionController::TestCase
       { method: "delete", path: "/instances/1" },
       controller: "instances",
       action: "destroy",
-      id: "1",
+      id: "1"
     )
   end
 end

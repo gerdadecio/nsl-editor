@@ -42,7 +42,7 @@ class InstancesCopyStandaloneForbidnForEditUserTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
     end
     assert_response :success

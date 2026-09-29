@@ -34,7 +34,7 @@ class TreeBuilderFoaUserUnsetWorkspaceTest < ActionController::TestCase
         user_full_name: user.full_name,
         groups: ["login"],
         draft: foa_draft,
-      },
+      }
     )
     assert_response :success, "Should be able to remove current workspace draft setting"
     assert_nil session[:draft], "Should have unset the session draft"

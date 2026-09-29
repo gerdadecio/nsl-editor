@@ -51,7 +51,7 @@ class TaxFormsNoRoleUserCannotUpdateDistributionOnFOADraftTest < ActionControlle
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "No role user should not be able to update distribution on FoA draft entry"
     assert_match "Access Denied", response.body, "Expecting Access Denied message"

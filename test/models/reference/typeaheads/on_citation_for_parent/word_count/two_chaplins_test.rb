@@ -25,7 +25,7 @@ class TypeaheadsOnCitForParWordCountTwoChaplinsTest < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "chaplin chaplin",
       references(:a_paper).id,
-      ref_types(:paper).id,
+      ref_types(:paper).id
     )
     assert_equal 2,
       typeahead.results.size,

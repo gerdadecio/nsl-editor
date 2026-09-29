@@ -34,7 +34,7 @@ class NameDuplicateSuggestionsSortOrderTest < ActiveSupport::TestCase
       ],
       full_names_from(suggestions),
       "Suggestions should be ordered familia, genus, then species " \
-        "with the two species in full name order",
+        "with the two species in full name order"
     )
   end
 
@@ -45,7 +45,7 @@ class NameDuplicateSuggestionsSortOrderTest < ActiveSupport::TestCase
       full_names.sort,
       full_names,
       "Suggestions should be ordered by rank first, not purely " \
-        "alphabetically",
+        "alphabetically"
     )
   end
 

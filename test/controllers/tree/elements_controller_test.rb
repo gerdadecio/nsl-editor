@@ -46,7 +46,7 @@ class TreeElementsControllerTest < ActionController::TestCase
           comment_value: "should not be applied",
         },
       },
-      session: valid_session,
+      session: valid_session
     )
 
     assert_response :unprocessable_content
@@ -54,13 +54,13 @@ class TreeElementsControllerTest < ActionController::TestCase
     assert_match(/Distribution update error:.*excluded taxa/i, assigns(:message))
     assert_nil(
       assigns(:comment_message),
-      "Comment should never have been processed",
+      "Comment should never have been processed"
     )
 
     te_unchanged = Tree::Element.find(trel.id)
     assert_nil(
       te_unchanged.comment_value,
-      "Expected comment to be unchanged when the distribution update errors",
+      "Expected comment to be unchanged when the distribution update errors"
     )
   end
 
@@ -78,7 +78,7 @@ class TreeElementsControllerTest < ActionController::TestCase
           comment_value: "a new comment",
         },
       },
-      session: valid_session,
+      session: valid_session
     )
 
     assert_response :success

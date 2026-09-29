@@ -50,7 +50,7 @@ class InstanceValidationDoubleSynAllowMisappsTest < ActiveSupport::TestCase
     assert_difference(
       "Instance.count",
       1,
-      "Misapp should not be treated as double synonym",
+      "Misapp should not be treated as double synonym"
     ) do
       @syn.save!
     end

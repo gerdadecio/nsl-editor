@@ -52,7 +52,7 @@ class TaxFormsTreeBuilderAPCUserCannotUpdateExcludedForTaxonOnFOADraftTest < Act
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "Success should be returned even for an error - the code is non-standard"
     assert_match "Error", response.body, "Expecting an error message"

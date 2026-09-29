@@ -23,12 +23,12 @@ class NameAsEditedNoAuthorIdWithInvalidString < ActiveSupport::TestCase
   test "no id with invalid string" do
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError for invalid author string.",
+      "Should raise a RuntimeError for invalid author string."
     ) do
       Name::AsResolvedTypeahead::ForAuthor.new(
         "",
         "asdfasfdasd",
-        "some field",
+        "some field"
       )
     end
   end

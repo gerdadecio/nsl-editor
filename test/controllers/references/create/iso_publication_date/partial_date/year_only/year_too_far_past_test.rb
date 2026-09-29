@@ -43,12 +43,12 @@ class ReferencesesCreateYearOnlyYearTooFarPastTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
       assert_match(
         /Error: Year must be greater than or equal to 1000/,
         response.body.to_s,
-        "Missing or incorrect error message",
+        "Missing or incorrect error message"
       )
     end
   end

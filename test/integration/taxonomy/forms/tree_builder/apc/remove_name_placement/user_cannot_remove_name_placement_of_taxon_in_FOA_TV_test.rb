@@ -58,7 +58,7 @@ class TaxFormsTreeBuilderAPCUserCannotRemoveNamePlacementForTaxonOnFOADraftTest 
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree builder should not be able to remove placement from FOA draft"
     assert_match "You are not authorized to remove names from FOA draft",

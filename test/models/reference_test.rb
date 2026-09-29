@@ -26,7 +26,7 @@ class ReferenceTest < ActiveSupport::TestCase
     assert(
       ref.citation.match(Regexp.new(Regexp.escape(expected))),
       "#{msg}; \nexpected: #{expected}; \ngot:
-           \"#{ref.citation}\"",
+           \"#{ref.citation}\""
     )
   end
 

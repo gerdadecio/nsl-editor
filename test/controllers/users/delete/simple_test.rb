@@ -32,7 +32,7 @@ class UserDeleteSimpleTest < ActionController::TestCase
           username: "uone",
           user_full_name: "auser One",
           groups: ["admin"],
-        },
+        }
       )
     end
   end

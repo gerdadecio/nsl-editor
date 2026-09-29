@@ -28,7 +28,7 @@ class NameNotInAPCTest < ActiveSupport::TestCase
       "inAPC" => false,
       "excluded" => false,
       "taxonId" => expected_instance_id,
-      "type" => "ApcConcept",
+      "type" => "ApcConcept"
     )
     assert_equal false, name.accepted_concept?, "Name should not be in APC"
     assert_equal nil, name.accepted_instance_id, "APC instance id should be set"

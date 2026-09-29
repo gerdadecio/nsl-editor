@@ -26,12 +26,12 @@ class NameARTA4Par2IdWithStringMatchingTwoNamesTest < ActiveSupport::TestCase
       "Should be two Names with the same full name string."
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError for invalid author string.",
+      "Should raise a RuntimeError for invalid author string."
     ) do
       Name::AsResolvedTypeahead::ForParent.new(
         "",
         name_1.full_name,
-        "second_parent",
+        "second_parent"
       )
     end
   end

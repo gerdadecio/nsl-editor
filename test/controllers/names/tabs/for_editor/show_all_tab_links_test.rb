@@ -34,7 +34,7 @@ class NameEditorShowAllTabsTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "a#name-details-tab", true, "Should show 'Detail' tab."

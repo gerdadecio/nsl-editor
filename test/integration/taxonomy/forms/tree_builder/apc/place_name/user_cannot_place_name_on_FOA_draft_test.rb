@@ -69,7 +69,7 @@ class TaxFormsTreeBuilderAPCUserCannotPlaceNameOnFOADraftTest < ActionController
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "Should be forbidden"
     assert_match "You are not authorized to place names on any FOA draft",

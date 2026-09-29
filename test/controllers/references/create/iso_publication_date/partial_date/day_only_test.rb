@@ -43,13 +43,13 @@ class ReferencesesCreateDayOnlyTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
     end
     assert_match(
       /Error: Day entered but no month/,
       response.body.to_s,
-      "Missing or incorrect error message",
+      "Missing or incorrect error message"
     )
   end
 end

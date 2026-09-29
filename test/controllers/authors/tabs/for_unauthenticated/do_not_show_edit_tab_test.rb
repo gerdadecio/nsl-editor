@@ -30,7 +30,7 @@ class AuthorEditorNotShowEditTest < ActionController::TestCase
     get(
       :show,
       params: { id: @author.id, tab: "tab_edit" },
-      session: {},
+      session: {}
     )
     assert response.body.match(/Your session may have expired.  Please reload the whole page before continuing/)
   end

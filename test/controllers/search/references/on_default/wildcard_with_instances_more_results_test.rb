@@ -54,7 +54,7 @@ class SearchRefsOnDefaultWildcardWithInstancesMoreResultsTest < ActionController
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
 

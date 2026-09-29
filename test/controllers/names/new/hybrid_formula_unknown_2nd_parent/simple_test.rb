@@ -35,7 +35,7 @@ class NamesNewScientHybridFormulaUnk2ParSimpleTest < ActionController::TestCase
         tabIndex: "107",
       },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success,
       "Cannot open form for a new scientific hybrid formula

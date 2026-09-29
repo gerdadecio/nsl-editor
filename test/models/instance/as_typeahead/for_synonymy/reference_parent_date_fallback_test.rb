@@ -36,7 +36,7 @@ class ForSynonymyReferenceParentDateFallbackTest < ActiveSupport::TestCase
   def search
     Instance::AsTypeahead::ForSynonymy.new(
       "Fallbackia parentdatensis",
-      names(:a_classis).id,
+      names(:a_classis).id
     )
   end
 

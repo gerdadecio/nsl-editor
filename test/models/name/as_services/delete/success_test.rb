@@ -23,7 +23,7 @@ class NameAsServicesDeleteSuccessTest < ActiveSupport::TestCase
   setup do
     stub_request(
       :delete,
-      "#{action}?apiKey=test-api-key&reason=#{reason}",
+      "#{action}?apiKey=test-api-key&reason=#{reason}"
     )
       .with(headers: headers)
       .to_return(status: 200, body: { ok: true }.to_json, headers: {})

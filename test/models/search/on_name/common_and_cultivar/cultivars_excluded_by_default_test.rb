@@ -30,7 +30,7 @@ class SearchOnNameNameCultivarsExcludedByDefaultTest < ActiveSupport::TestCase
       query_string:
             "name: acultivar",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)

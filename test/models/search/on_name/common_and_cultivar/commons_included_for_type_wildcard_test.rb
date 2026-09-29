@@ -31,7 +31,7 @@ class SearchOnNameNameCommonsIncluded4TypeWildcardTest < ActiveSupport::TestCase
         query_string:
                 "name: argyle apple type: *",
         current_user:
-                build_edit_user,
+                build_edit_user
       )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)

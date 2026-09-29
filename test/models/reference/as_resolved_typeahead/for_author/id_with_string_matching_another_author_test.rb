@@ -25,7 +25,7 @@ class RefARTA4AutIdWStringMatchingAnotherReferenceTest < ActiveSupport::TestCase
     author_2 = authors(:moe)
     result = Reference::AsResolvedTypeahead::ForAuthor.new(
       author_1.id.to_s,
-      author_2.name,
+      author_2.name
     )
     assert_equal author_2.id,
       result.value,

@@ -36,7 +36,7 @@ class NoRoleUserCannotRunValidationReportForFOADraftTest < ActionController::Tes
         user_full_name: user.full_name,
         draft: draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "User with no role should not be able to run validation report for FOA draft"
   end

@@ -42,7 +42,7 @@ class NamesCopyInstancesStandalonesOnlyTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
     end
   end

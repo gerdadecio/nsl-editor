@@ -35,7 +35,7 @@ class NewSessionKnownUserUpperCaseNoNewUserRecordTest < ActionController::TestCa
           username: @known_user.user_name.upcase,
           user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
           groups: [:login],
-        },
+        }
       )
       assert_response :success
     end

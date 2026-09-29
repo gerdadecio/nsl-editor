@@ -41,7 +41,7 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
           "Content-Type" => /json/,
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: { link: "http://localhost:9091/nsl/instance/apni/12345" }.to_json, headers: {})
 
@@ -54,7 +54,7 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
           "Content-Type" => /json/,
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: { ok: true, payload: {} }.to_json, headers: {})
   end
@@ -95,7 +95,7 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
         user_full_name: user.full_name,
         draft: apc_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree builder should be able to replace_placement on APC draft entry"
     assert_template "moved_placement"

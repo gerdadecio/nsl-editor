@@ -29,7 +29,7 @@ class SearchLoaderNameSimpleWithBatchIdTest < ActiveSupport::TestCase
       query_string:
             "* batch-id: 3",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),

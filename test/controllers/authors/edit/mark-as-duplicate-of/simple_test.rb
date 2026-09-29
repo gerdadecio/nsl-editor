@@ -40,7 +40,7 @@ class AuthorEditMarkAsDuplicateOfSimpleTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     expected_dupe = Author.find(intended_dupe.id)

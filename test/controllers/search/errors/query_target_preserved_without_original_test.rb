@@ -34,7 +34,7 @@ class SearchControllerQueryTargetPreservedWithoutOriginalTest < ActionController
   test "an error during a non-'Names plus instances' search preserves the actual query target" do
     SearchController.stub_any_instance(
       :run_local_search,
-      -> { raise StandardError, "boom" },
+      -> { raise StandardError, "boom" }
     ) do
       get(
         :search,
@@ -43,7 +43,7 @@ class SearchControllerQueryTargetPreservedWithoutOriginalTest < ActionController
           username: "fred",
           user_full_name: "Fred Jones",
           groups: [],
-        },
+        }
       )
     end
 

@@ -42,7 +42,7 @@ class NamesSearchControllerNamesAndInstancesErrorPreservesQueryTargetTest < Acti
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_select "input#query-target[value=?]", "Names plus instances"

@@ -28,7 +28,7 @@ class FromHybridFormulaUnk2ndParentToHybridFormulaTest < ActiveSupport::TestCase
     name = names(:hybrid_name_with_unknown_2nd_parent)
     assert_equal(
       name.raw_category,
-      Name::SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY,
+      Name::SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY
     )
     assert(name.valid?, "hybrid name with unknown 2nd parent should be valid")
 
@@ -38,16 +38,16 @@ class FromHybridFormulaUnk2ndParentToHybridFormulaTest < ActiveSupport::TestCase
     assert_not(
       name.valid?,
       "hybrid name with unknown 2nd parent should not be valid
-               now as a hybrid with two parents",
+               now as a hybrid with two parents"
     )
     assert(name.errors.size == 2, "There should be two errors.")
     assert(
       name.errors.collect { |k, _v| k.to_s }.include?("name_type_id"),
-      "There should be an error for name_type_id.",
+      "There should be an error for name_type_id."
     )
     assert(
       name.errors.collect { |k, _v| k.to_s }.include?("second_parent_id"),
-      "There should be an error for second_parent_id.",
+      "There should be an error for second_parent_id."
     )
 
     name.name_type_id =
@@ -56,12 +56,12 @@ class FromHybridFormulaUnk2ndParentToHybridFormulaTest < ActiveSupport::TestCase
 
     assert(
       name.valid?,
-      "hybrid w/ unk 2nd par should be valid now as hybrid with 2 parents",
+      "hybrid w/ unk 2nd par should be valid now as hybrid with 2 parents"
     )
     name.save!
     assert(
       name.raw_category == Name::SCIENTIFIC_HYBRID_FORMULA_CATEGORY,
-      "name should now be a scientific hybrid with two parents",
+      "name should now be a scientific hybrid with two parents"
     )
   end
 end

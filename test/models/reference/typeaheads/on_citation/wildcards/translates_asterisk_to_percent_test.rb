@@ -24,7 +24,7 @@ class TAOnCitnWildcardsTranslatesAsteriskToPercent < ActiveSupport::TestCase
     current_reference = references(:ref_type_is_book)
     typeahead = Reference::AsTypeahead::OnCitation.new(
       "*",
-      current_reference.id,
+      current_reference.id
     )
     assert_not typeahead.results.empty?,
       "Should be at least one result for asterisk wildcard"

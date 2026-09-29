@@ -30,7 +30,7 @@ class SearchLoaderNameNoDefaultBatchTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [:login, :"batch-loader"],
-      },
+      }
     )
     assert_response :success
     assert_select "#search-results-summary",

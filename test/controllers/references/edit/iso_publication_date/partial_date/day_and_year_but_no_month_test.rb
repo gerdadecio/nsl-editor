@@ -44,13 +44,13 @@ class ReferencesesUpdateIsoPartialDayAndYearNoMonthTest < ActionController::Test
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :unprocessable_content
     assert_match(
       /Day entered but no month/,
       response.body.to_s,
-      "Missing or incorrect error message",
+      "Missing or incorrect error message"
     )
   end
 end

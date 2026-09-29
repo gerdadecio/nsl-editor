@@ -29,7 +29,7 @@ class SearchLoaderNameAndPrintSimpleWithAnyBatchTest < ActiveSupport::TestCase
       query_string:
             "* any-batch: print:",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(Array),

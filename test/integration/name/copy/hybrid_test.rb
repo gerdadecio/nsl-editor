@@ -52,7 +52,7 @@ class NamesCopyHybridTest < ActionController::TestCase
         format: :js,
         "id" => @source.id.to_s,
       },
-      session: @edit_session,
+      session: @edit_session
     )
   end
 
@@ -72,7 +72,7 @@ class NamesCopyHybridTest < ActionController::TestCase
         post_copy(
           name_element: element,
           parent_id: @new_first_parent.id,
-          second_parent_id: @new_second_parent.id,
+          second_parent_id: @new_second_parent.id
         )
       end
       new_name = Name.find_by(name_element: element)
@@ -91,7 +91,7 @@ class NamesCopyHybridTest < ActionController::TestCase
       post_copy(
         name_element: element,
         parent_id: @new_first_parent.id,
-        second_parent_id: @new_second_parent.id,
+        second_parent_id: @new_second_parent.id
       )
     end
 
@@ -108,7 +108,7 @@ class NamesCopyHybridTest < ActionController::TestCase
         post_copy(
           name_element: preview_for(@source.parent, @new_second_parent),
           parent_id: @source.parent_id,
-          second_parent_id: @new_second_parent.id,
+          second_parent_id: @new_second_parent.id
         )
       end
     end
@@ -120,7 +120,7 @@ class NamesCopyHybridTest < ActionController::TestCase
         post_copy(
           name_element: preview_for(@new_first_parent, @source.second_parent),
           parent_id: @new_first_parent.id,
-          second_parent_id: @source.second_parent_id,
+          second_parent_id: @source.second_parent_id
         )
       end
     end
@@ -131,7 +131,7 @@ class NamesCopyHybridTest < ActionController::TestCase
       post_copy(
         name_element: preview_for(@source.parent, @source.second_parent),
         parent_id: @source.parent_id,
-        second_parent_id: @source.second_parent_id,
+        second_parent_id: @source.second_parent_id
       )
     end
 
@@ -143,7 +143,7 @@ class NamesCopyHybridTest < ActionController::TestCase
       post_copy(
         name_element: preview_for(@new_first_parent, @new_second_parent),
         parent_id: @new_first_parent.id,
-        second_parent_id: "",
+        second_parent_id: ""
       )
     end
 

@@ -32,11 +32,11 @@ class CultivarParMustAllowNamesWithoutAnInstanceTest < ActiveSupport::TestCase
     assert(suggestions.is_a?(Array), "suggestions should be an array")
     assert(
       suggestions.size == 1,
-      'Suggns for "a species without an instance" shld have 1 element',
+      'Suggns for "a species without an instance" shld have 1 element'
     )
     assert(
       suggestions.first[:value].match(/a species without an instance/),
-      "Suggestions should include 'a species without an instance'.",
+      "Suggestions should include 'a species without an instance'."
     )
   end
 end

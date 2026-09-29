@@ -64,7 +64,7 @@ class TaxFormsUserWithNoRoleCannotReplacePlacementOnFOADraftTest < ActionControl
         user_full_name: user.full_name,
         draft: foa_draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :forbidden, "APC tree publisher should be not able to replace_placement on FOA draft entry"
     assert_match "Access Denied", response.body, "Expecting Access Denied message"

@@ -31,12 +31,12 @@ class ForSubclassisPartiallyRestrictedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "Subclassis").id,
+      rank_id: NameRank.find_by(name: "Subclassis").id
     )
     suggestions_should_only_include(
       typeahead.suggestions,
       "Subclassis",
-      ["Regnum", "Division", "Classis"],
+      ["Regnum", "Division", "Classis"]
     )
   end
 end

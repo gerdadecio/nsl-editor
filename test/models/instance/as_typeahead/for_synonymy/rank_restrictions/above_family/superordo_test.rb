@@ -25,15 +25,15 @@ class TypeaheadForSynonymySuperordoTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "a*",
-      names(:a_superordo).id,
+      names(:a_superordo).id
     )
     @tb = Instance::AsTypeahead::ForSynonymy.new(
       "plantae",
-      names(:a_superordo).id,
+      names(:a_superordo).id
     )
     @tc = Instance::AsTypeahead::ForSynonymy.new(
       "magnolio",
-      names(:a_superordo).id,
+      names(:a_superordo).id
     )
   end
 

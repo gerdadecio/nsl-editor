@@ -31,19 +31,19 @@ class NamesNewRowScientificHybridFormulaSimpleTest < ActionController::TestCase
       :new_row,
       params: { type: "hybrid-formula" },
       session: {},
-      xhr: true,
+      xhr: true
     )
     assert_response :success,
       "Cannot start new row for a scientific hybrid formula name"
     assert_match(
       /search-results-table/,
       response.body.to_s,
-      "Missing expected element 1",
+      "Missing expected element 1"
     )
     assert_match(
       /New Hybrid Formula Name/,
       response.body.to_s,
-      "Missing expected element 2",
+      "Missing expected element 2"
     )
   end
 end

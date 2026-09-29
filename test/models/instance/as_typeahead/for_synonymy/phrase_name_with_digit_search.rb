@@ -24,7 +24,7 @@ class For_phrase_name_with_digit_search < ActiveSupport::TestCase
   def setup
     @typeahead = Instance::AsTypeahead::ForSynonymy.new(
       "Darwinia sp. 7",
-      names(:a_species).id,
+      names(:a_species).id
     )
   end
 

@@ -50,7 +50,7 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
         username: reviewer.user_name,
         user_full_name: reviewer.full_name,
         groups: ["login", "taxonomic-review"],
-      },
+      }
     )
     assert_match "create-one-comment-container", response.body, "Should be able to add comment"
   end

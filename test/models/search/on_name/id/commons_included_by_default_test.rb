@@ -31,7 +31,7 @@ class SearchOnNameIdCommonsIncludedByDefaultTest < ActiveSupport::TestCase
       query_string:
             "id: #{name.id}",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)

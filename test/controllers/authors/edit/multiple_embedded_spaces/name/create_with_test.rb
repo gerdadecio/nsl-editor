@@ -39,7 +39,7 @@ class AuthorEditMESpacesNameCreateWithTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
       assert_not_nil assigns(:author), "Should assign author"
       new_author = Author.find_by(name: author_name.gsub(/  +/, " "))

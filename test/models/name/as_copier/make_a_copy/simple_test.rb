@@ -28,7 +28,7 @@ class NameAsCopierMakeACopySimpleTest < ActiveSupport::TestCase
     @dummy_username = "fred"
     @copied_name = @master_name.copy_with_username(
       @dummy_name_element,
-      @dummy_username,
+      @dummy_username
     )
     @after = Name.count
   end

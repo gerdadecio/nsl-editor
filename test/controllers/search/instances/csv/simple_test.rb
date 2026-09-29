@@ -35,7 +35,7 @@ class SearchInstanceCsvSimpleTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     s1 = "Instance ID,Name ID,Full Name,Reference ID,Reference Citation"
@@ -43,12 +43,12 @@ class SearchInstanceCsvSimpleTest < ActionController::TestCase
     assert_match(
       /#{s1}#{s2}/,
       response.body.to_s,
-      "Missing heading",
+      "Missing heading"
     )
     assert_match(
       /Angophora costata/,
       response.body.to_s,
-      "Missing data",
+      "Missing data"
     )
   end
 end

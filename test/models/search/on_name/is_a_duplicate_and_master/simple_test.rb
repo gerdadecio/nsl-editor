@@ -36,7 +36,7 @@ class SearchOnNameIsADuplicateAndMasterSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "is-a-duplicate-and-master:",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
@@ -48,7 +48,7 @@ class SearchOnNameIsADuplicateAndMasterSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "is-a-duplicate-and-master:",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     result_ids = search.executed_query.results.map(&:id)

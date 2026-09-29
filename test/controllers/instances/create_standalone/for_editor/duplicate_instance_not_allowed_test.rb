@@ -26,7 +26,7 @@ class DuplicateInstanceNotAllowedTest < ActionController::TestCase
     assert_equal(
       @base.instance_type_id,
       instance_types(:secondary_reference).id,
-      "Target instance should be a secondary reference.",
+      "Target instance should be a secondary reference."
     )
     @instance_params = {
       "instance_type_id" => @base.instance_type_id,
@@ -47,7 +47,7 @@ class DuplicateInstanceNotAllowedTest < ActionController::TestCase
           username: "fred",
           user_full_name: "Fred Jones",
           groups: ["edit"],
-        },
+        }
       )
     end
     check_assertions
@@ -59,7 +59,7 @@ class DuplicateInstanceNotAllowedTest < ActionController::TestCase
     assert_match(
       /#{es}/,
       response.body,
-      "Expected error message did not appear",
+      "Expected error message did not appear"
     )
   end
 end

@@ -18,13 +18,13 @@ class ExcludedTaxaTest < ActiveSupport::TestCase
     assert_match(
       /We don't allow changes to distribution for excluded taxa/i,
       error.message,
-      "Unexpected message for an excluded taxon distribution update",
+      "Unexpected message for an excluded taxon distribution update"
     )
 
     te_unchanged = Tree::Element.find(trel.id)
     assert_nil(
       te_unchanged.distribution_value,
-      "Expected distribution to be unchanged for an excluded taxon",
+      "Expected distribution to be unchanged for an excluded taxon"
     )
   end
 end

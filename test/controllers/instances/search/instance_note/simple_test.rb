@@ -28,13 +28,13 @@ class InstanceSearchOnInstanceNoteSimpleTest < ActionController::TestCase
       :search,
       params: ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "instance",
-        query_string: "note: *ystrin*",
+        query_string: "note: *ystrin*"
       ),
       session: {
         username: "fred",
         user_full_name: "Fred Jones",
         groups: [],
-      },
+      }
     )
     assert_response :success
     assert_select "span#search-results-summary", true, "Should find 1 record"

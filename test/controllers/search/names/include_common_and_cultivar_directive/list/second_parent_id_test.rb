@@ -30,7 +30,7 @@ class SearchNamesIncludeCommonAndCultivarDirectiveList2ndParentId < ActionContro
         query_target: "name",
         query_string: "second-parent-id: #{name.id} include-common-and-cultivar:true",
       },
-      session: { username: "fred", user_full_name: "Fred Jones", groups: [] },
+      session: { username: "fred", user_full_name: "Fred Jones", groups: [] }
     )
     assert_response :success
     assert_select "#search-results-summary",

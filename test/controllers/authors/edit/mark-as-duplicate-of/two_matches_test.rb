@@ -40,13 +40,13 @@ class AuthorEditMarkAsDuplicateOfTwoMatchesTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :unprocessable_entity
     assert_match(
       "Error: Validation failed: Name has already been used ",
       response.body,
-      "Should report Name has already been used",
+      "Should report Name has already been used"
     )
   end
 end

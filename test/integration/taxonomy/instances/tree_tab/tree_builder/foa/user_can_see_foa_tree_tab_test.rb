@@ -36,7 +36,7 @@ class TaxoInstanceTreeBuilderFoaCanSeeFoaTreeTab < ActionController::TestCase
         user_full_name: user.full_name,
         groups: ["login"],
         draft: foa_draft,
-      },
+      }
     )
     assert_response :success, "Tree builder should see Tree tab for Instance with FoA Tree Active"
     assert_match 'data-tab-name="tab_classification" href="#">Tree</a>',

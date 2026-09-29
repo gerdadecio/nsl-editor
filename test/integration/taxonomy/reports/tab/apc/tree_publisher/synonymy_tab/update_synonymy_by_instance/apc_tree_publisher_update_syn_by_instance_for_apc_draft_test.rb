@@ -30,7 +30,7 @@ class APCTreePublisherUpdateSynByInstanceForAPCDraftTest < ActionController::Tes
           "Content-Length" => "0",
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -50,7 +50,7 @@ class APCTreePublisherUpdateSynByInstanceForAPCDraftTest < ActionController::Tes
         user_full_name: user.full_name,
         draft: draft,
         groups: ["login"],
-      },
+      }
     )
     assert_response :success, "APC tree publisher should be able to update synonymy by instance for APC draft"
   end

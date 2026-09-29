@@ -35,7 +35,7 @@ class InstanceEditTabForEditorTest < ActionController::TestCase
         user_full_name: "Fred Jones",
         draft: @draft_tree_version,
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_match "on page", response.body, "Should show: 'on page'"

@@ -30,7 +30,7 @@ class TAOnCitnForParentOrdersByPublicationDateTest < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "flibbertigibbet",
       current_reference.id,
-      ref_types(:section).id,
+      ref_types(:section).id
     )
 
     ids = typeahead.results.collect { |result| result[:id] }

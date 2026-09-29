@@ -30,7 +30,7 @@ class SearchControllerForEditorPageTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
     assert_response :success
     assert_select "a#new-dropdown-menu-link.dropdown-toggle",

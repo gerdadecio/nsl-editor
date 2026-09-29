@@ -39,7 +39,7 @@ class InstUpdateWarnMultiplePrimarySimpleTest < ActiveSupport::TestCase
     i2.instance_type = instance_types(:nom_nov)
     assert_raises(
       ActiveRecord::RecordInvalid,
-      "Update as second primary instance should be rejected",
+      "Update as second primary instance should be rejected"
     ) do
       i2.save!
     end

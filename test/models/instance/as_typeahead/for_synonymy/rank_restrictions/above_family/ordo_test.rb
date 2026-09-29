@@ -26,11 +26,11 @@ class TypeaheadForSynonymyOrdoTest < ActiveSupport::TestCase
     @ta = Instance::AsTypeahead::ForSynonymy.new("a*", names(:an_ordo).id)
     @tb = Instance::AsTypeahead::ForSynonymy.new(
       "plantae",
-      names(:an_ordo).id,
+      names(:an_ordo).id
     )
     @tc = Instance::AsTypeahead::ForSynonymy.new(
       "magnolio",
-      names(:an_ordo).id,
+      names(:an_ordo).id
     )
   end
 

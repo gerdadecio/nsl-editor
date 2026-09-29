@@ -25,7 +25,7 @@ class NameAsEdNoAuthIdWPartValStrMatchingOneRecord < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForAuthor.new(
       "",
       author.abbrev.chop,
-      "SOME FIELD",
+      "SOME FIELD"
     )
     assert_equal author.id,
       result.value,

@@ -27,7 +27,7 @@ class InstanceShowRouteTest < ActionController::TestCase
       controller: "instances",
       action: "show",
       id: "1",
-      tab: "tab_show_1",
+      tab: "tab_show_1"
     )
   end
 end

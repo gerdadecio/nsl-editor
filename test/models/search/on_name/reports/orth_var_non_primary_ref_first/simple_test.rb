@@ -27,7 +27,7 @@ class SrchOnNamRepOrthVarNonPrimaryRefFirstSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "is-orth-var-and-non-primary-ref-first:",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)

@@ -40,7 +40,7 @@ class UserUpdateSimpleTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["admin"],
-      },
+      }
     )
     assert_response(:success)
     changed = User.find(user.id)
@@ -50,12 +50,12 @@ class UserUpdateSimpleTest < ActionController::TestCase
     assert_equal(
       "fred",
       changed.updated_by,
-      "updated_by should be the updating user's user name",
+      "updated_by should be the updating user's user name"
     )
     assert_equal(
       user.created_by,
       changed.created_by,
-      "created_by should not change on update",
+      "created_by should not change on update"
     )
   end
 end

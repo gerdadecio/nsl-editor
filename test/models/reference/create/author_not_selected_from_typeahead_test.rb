@@ -24,7 +24,7 @@ class AuthorNotSelectedFromTypeahead < ActiveSupport::TestCase
     assert_raise(
       RuntimeError,
       "Should raise exception because author typeahead has value \
-                 but author id does not match.",
+                 but author id does not match."
     ) do
       Reference::AsEdited.create(
         {
@@ -45,7 +45,7 @@ class AuthorNotSelectedFromTypeahead < ActiveSupport::TestCase
           "author_typeahead" => "sadf",
           "author_id" => "",
         },
-        "fred",
+        "fred"
       )
     end
   end

@@ -25,7 +25,7 @@ class NameARTA4ParentIdWithStringMatching2Names < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForParent.new(
       name_2.id.to_s,
       name_2.full_name,
-      "parent",
+      "parent"
     )
     assert_equal name_2.id,
       result.value,

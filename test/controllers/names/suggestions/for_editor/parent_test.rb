@@ -42,7 +42,7 @@ class NameParentSuggestionsForEditorTest < ActionController::TestCase
         username: "fred",
         user_full_name: "Fred Jones",
         groups: ["edit"],
-      },
+      }
     )
   end
 
@@ -63,7 +63,7 @@ class NameParentSuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{names(:a_genus).id}']",
-      true,
+      true
     )
   end
 
@@ -83,7 +83,7 @@ class NameParentSuggestionsForEditorTest < ActionController::TestCase
     assert_select_in_body(
       "li.autocomplete-result[data-family-id='#{names(:a_family).id}']" \
         "[data-family-value='#{names(:a_family).full_name}']",
-      true,
+      true
     )
   end
 

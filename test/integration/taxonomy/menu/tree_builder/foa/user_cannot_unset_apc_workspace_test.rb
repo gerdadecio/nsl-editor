@@ -39,7 +39,7 @@ class TreeBuilderFoaUserCannotUnsetWorkspaceTest < ActionController::TestCase
         user_full_name: user.full_name,
         groups: ["login"],
         draft: draft,
-      },
+      }
     )
     assert_response :forbidden, "Should not be able to remove current workspace draft setting"
     assert_not_nil session[:draft], "Should not have unset the session draft"
