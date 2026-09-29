@@ -44,6 +44,7 @@ class Instance::AsTypeahead::ForNameShowingReferences
     inner join instance_type t on i.instance_type_id = t.id
     where i.name_id = (select name_id from instance where id = ?)
       and i.id != ?
+      and i.deleted_at is null
       and lower(r.citation) like lower('%'||?||'%') order by r.iso_publication_date,a.name"
   end
 
