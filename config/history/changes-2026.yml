@@ -1,4 +1,8 @@
 - :date: 29-September-2026
+  :jira_id: '5944'
+  :description: |-
+    Soft delete audit display update to include the updated_by field and write a helper method to display the soft deleted information
+- :date: 29-September-2026
   :jira_id: '5945'
   :description: |-
     Limit use of soft-deleted name records to viewing only, prevent from offering them in typeaheads, and validate when linking these records
