@@ -19,7 +19,8 @@
 require "test_helper"
 
 # An instance must not be newly linked to a soft deleted instance through
-# cites_id, cited_by_id or parent_id. Existing links are left alone.
+# cites_id, cited_by_id or parent_id, nor to a soft deleted name through
+# name_id. Existing links are left alone.
 class InstanceValidationsSoftDeletedLinksTest < ActiveSupport::TestCase
   setup do
     @instance = instances(:xyz_costata_is_synonym_of_angophora_costata)
@@ -36,6 +37,15 @@ class InstanceValidationsSoftDeletedLinksTest < ActiveSupport::TestCase
       assert_includes @instance.errors[:base],
                       "The #{label} has been soft deleted and cannot be used"
     end
+  end
+
+  test "rejects a soft deleted name" do
+    soft_deleted_name = names(:has_no_instances)
+    soft_deleted_name.update_column(:deleted_at, Time.current)
+    @instance.name_id = soft_deleted_name.id
+    @instance.valid?
+    assert_includes @instance.errors[:base],
+                    "The name has been soft deleted and cannot be used"
   end
 
   test "keeps a citation made before the cited instance was soft deleted" do

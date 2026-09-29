@@ -55,6 +55,7 @@ class Name::AsTypeahead::ForFamily
 
   def core_query
     Name.not_a_duplicate
+      .not_soft_deleted
       .full_name_like(prepared_search_term)
       .avoids_id(@params[:avoid_id].try("to_i") || -1)
       .joins(:name_status)

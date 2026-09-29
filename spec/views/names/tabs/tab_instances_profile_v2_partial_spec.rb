@@ -83,7 +83,9 @@ RSpec.describe("names/tabs/_tab_instances_profile_v2.html.erb", type: :view) do
   # A soft deleted name is read only, so the tab is still offered but its form
   # is replaced - see Ability#soft_deleted_name_auth.
   context "for when the name has been soft deleted" do
-    let(:name) { FactoryBot.create(:name, deleted_at: Time.current) }
+    # Soft deleted after the instance exists - a new instance cannot be linked
+    # to a soft deleted name (RejectsSoftDeletedLinks).
+    before { name.update_column(:deleted_at, Time.current) }
 
     it "displays the read-only message instead of the form" do
       render partial: "names/tabs/tab_instances_profile_v2"

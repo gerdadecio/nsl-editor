@@ -59,7 +59,9 @@ class Loader::Name::Match < ApplicationRecord
     uniqueness: true,
     unless: proc { |a| a.loader_name.record_type == "misapplied" }
   validate :misapp_pref_matches_from_only_one_name
-  rejects_soft_deleted_links instance: "instance",
+  rejects_soft_deleted_links name: "name",
+                             intended_tree_parent_name: "intended tree parent name",
+                             instance: "instance",
                              standalone_instance: "standalone instance",
                              relationship_instance: "relationship instance",
                              source_for_copy: "source instance for copy"

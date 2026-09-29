@@ -97,6 +97,7 @@ class Name < ApplicationRecord
   include UserTrackable
   include Name::Validatable
   include SoftDeletable
+  include RejectsSoftDeletedLinks
   include Name::Parentable
   include Name::Familyable
   include Name::NamePathable
@@ -143,6 +144,11 @@ class Name < ApplicationRecord
     class_name: "Loader::Name::Match",
     foreign_key: "intended_tree_parent_name_id"
   has_many :name_resources, dependent: :destroy
+
+  rejects_soft_deleted_links parent: "parent name",
+                             second_parent: "second parent name",
+                             duplicate_of: "name it duplicates",
+                             family: "family name"
 
   SEARCH_LIMIT = 50
   DECLARED_BT = "DeclaredBt"

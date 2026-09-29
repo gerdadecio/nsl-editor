@@ -32,6 +32,7 @@ class Instance::AsTypeahead::ForChangeName
 
   def query(term, name_type_id, name_rank_id, exclude_name_id)
     Name.not_a_duplicate
+      .not_soft_deleted
       .where("lower(full_name) like lower(?)", term.tr("*", "%") + "%")
       .where(name_type_id: name_type_id, name_rank_id: name_rank_id)
       .where.not(id: exclude_name_id)

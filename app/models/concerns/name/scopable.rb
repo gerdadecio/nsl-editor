@@ -217,5 +217,7 @@ module Name::Scopable
             .where("name_rank.name = 'Familia'")
       end)
     scope :soft_deleted, -> { where.not(deleted_at: nil) }
+    # Table qualified - typeahead queries join instance, which also has deleted_at.
+    scope :not_soft_deleted, -> { where(name: { deleted_at: nil }) }
   end
 end

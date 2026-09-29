@@ -18,7 +18,7 @@
 #
 require "test_helper"
 
-# A loader name match must not be pointed at a soft deleted instance.
+# A loader name match must not be pointed at a soft deleted instance or name.
 class LoaderNameMatchSoftDeletedInstanceTest < ActiveSupport::TestCase
   setup do
     @match = loader_name_matches(:match_zzz_test_parent_with_match)
@@ -32,6 +32,18 @@ class LoaderNameMatchSoftDeletedInstanceTest < ActiveSupport::TestCase
     source_for_copy_instance_id: "source instance for copy" }.each do |foreign_key, label|
     test "rejects a soft deleted #{label}" do
       @match.public_send("#{foreign_key}=", @soft_deleted.id)
+      @match.valid?
+      assert_includes @match.errors[:base],
+                      "The #{label} has been soft deleted and cannot be used"
+    end
+  end
+
+  { name_id: "name",
+    intended_tree_parent_name_id: "intended tree parent name" }.each do |foreign_key, label|
+    test "rejects a soft deleted #{label}" do
+      soft_deleted_name = names(:has_no_instances)
+      soft_deleted_name.update_column(:deleted_at, Time.current)
+      @match.public_send("#{foreign_key}=", soft_deleted_name.id)
       @match.valid?
       assert_includes @match.errors[:base],
                       "The #{label} has been soft deleted and cannot be used"
