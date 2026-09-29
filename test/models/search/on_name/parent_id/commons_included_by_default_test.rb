@@ -33,7 +33,7 @@ class SearchOnNameParentIdCommonsIncludedByDefaultTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Expect common name included by default for parent id query"
+                 search.executed_query.results.size,
+                 "Expect common name included by default for parent id query"
   end
 end

@@ -42,7 +42,7 @@ class NameTypeSrchScientificSetsCommCultFlagTrueT < ActionController::TestCase
     assert_response :success
     assert_select "input.checkbox[type=checkbox]
                   [id=query_common_and_cultivar][value=t]",
-      true,
-      "The query-common-and-cultivar checkbox should be true"
+                  true,
+                  "The query-common-and-cultivar checkbox should be true"
   end
 end

@@ -32,6 +32,6 @@ class SearchOnInstanceIsStandaloneTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Expected results for is-standalone: — fixtures include comb_nov and secondary_reference instances"
+               "Expected results for is-standalone: — fixtures include comb_nov and secondary_reference instances"
   end
 end

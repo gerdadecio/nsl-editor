@@ -32,6 +32,6 @@ class SpeciesOrBelowSynWithGenusOrAboveTest < ActiveSupport::TestCase
     # puts search.executed_query.results.size
     # puts search.executed_query.results.first
     assert_not search.executed_query.results.empty?,
-      "Should find species or below synonymised with genus or above."
+               "Should find species or below synonymised with genus or above."
   end
 end

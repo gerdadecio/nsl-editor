@@ -39,7 +39,7 @@ class SearchRefDefQueriesRefSharedNamesCountTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /3 records\b/,
-      "Should show a count of 3 records"
+                  /3 records\b/,
+                  "Should show a count of 3 records"
   end
 end

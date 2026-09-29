@@ -29,6 +29,6 @@ class SearchOnAuthorCommentsBySimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Authors with comments by greg expected."
+               "Authors with comments by greg expected."
   end
 end

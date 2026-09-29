@@ -27,7 +27,7 @@ class AuthorARTA4DupeOfNoIdWithValidString < ActiveSupport::TestCase
       "", author.name, author_to_avoid
     )
     assert_equal author.id,
-      result.value,
-      "Should get a matching id for the author"
+                 result.value,
+                 "Should get a matching id for the author"
   end
 end

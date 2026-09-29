@@ -24,11 +24,11 @@ class SearchOnReferenceParentIdIsNullTest < ActiveSupport::TestCase
   test "search on parent id is null" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "parent-id: ",
-        current_user: build_edit_user)
+           query_string: "parent-id: ",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_not search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|
       assert r.parent_id.blank?, "Parent id should be blank"

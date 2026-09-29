@@ -38,7 +38,7 @@ class NameShowRefreshTabForEditorTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li a#name-refresh-tab",
-      "Refresh",
-      "Should show 'Refresh' tab."
+                  "Refresh",
+                  "Should show 'Refresh' tab."
   end
 end

@@ -33,6 +33,6 @@ class SearchOnNameAcceptedTreeInTest < ActiveSupport::TestCase
     confirm_results_class(search.executed_query.results)
     # Just make sure the search runs i.e. view exists, rule exists
     assert search.executed_query.results.size > -1,
-      "Expected > -1 search result for angophora"
+           "Expected > -1 search result for angophora"
   end
 end

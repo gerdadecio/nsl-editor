@@ -34,7 +34,7 @@ class SearchLoaderNameWithInvalidDefaultBatchTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /Please set a default batch/,
-      "Should be asked to set a default batch"
+                  /Please set a default batch/,
+                  "Should be asked to set a default batch"
   end
 end

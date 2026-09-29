@@ -84,7 +84,7 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-      text: "No matches"
+                          text: "No matches"
   end
 
   test "should render a no matches option for a blank term" do
@@ -92,7 +92,7 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-      text: "No matches"
+                          text: "No matches"
   end
 
   # The four author fields still on typeahead.js/Bloodhound ask the same

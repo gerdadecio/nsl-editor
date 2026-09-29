@@ -24,7 +24,7 @@ class NameAsEdResolveTypeaheadParamsSetExAuthorTest < ActiveSupport::TestCase
     dummy = authors(:dummy_author_1)
     name = Name::AsEdited.find(names(:has_no_authors).id)
     assert name.ex_author_id.blank?,
-      "Name should be have no ex author to start this test."
+           "Name should be have no ex author to start this test."
     name.resolve_typeahead_params(
       "ex_author_id" => dummy.id,
       "ex_author_typeahead" => dummy.abbrev

@@ -29,6 +29,6 @@ class SearchOnAuthorCommentsByCaseInsensitiveTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Authors with comments by GREG expected for case insensitive test."
+               "Authors with comments by GREG expected for case insensitive test."
   end
 end

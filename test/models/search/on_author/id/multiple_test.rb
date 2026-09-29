@@ -31,7 +31,7 @@ class SearchOnAuthorIdMultipleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_equal 2,
-      search.executed_query.results.size,
-      "Exactly 2 results expected for author id search for 2 ids."
+                 search.executed_query.results.size,
+                 "Exactly 2 results expected for author id search for 2 ids."
   end
 end

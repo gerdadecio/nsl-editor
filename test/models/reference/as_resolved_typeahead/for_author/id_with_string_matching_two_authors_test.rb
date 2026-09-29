@@ -34,7 +34,7 @@ class RefARTA4AuthorIdWithStringMatching2Authors < ActiveSupport::TestCase
       author_1.name
     )
     assert_equal author_2.id,
-      result,
-      "Should get a match for the correct id"
+                 result,
+                 "Should get a match for the correct id"
   end
 end

@@ -33,14 +33,14 @@ class ForOllegaardWUCDiacriticTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 2,
-      search.executed_query.results.size,
-      "Exactly 2 results expected"
+                 search.executed_query.results.size,
+                 "Exactly 2 results expected"
     ids = search.executed_query.results.map(&:id)
     assert ids.include?(authors(:ollegaard_without_diacritic).id),
-      "Expecting ollegaard without diacritic"
+           "Expecting ollegaard without diacritic"
     assert ids.include?(authors(:ollegaard_with_leading_diacritic).id),
-      "Expecting ollegaard with leading diacritic"
+           "Expecting ollegaard with leading diacritic"
   end
 end

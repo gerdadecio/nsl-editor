@@ -33,7 +33,7 @@ class SearchOnNameRankMultipleValuesTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 2,
-      search.executed_query.results.size,
-      "Exactly 2 results are expected."
+                 search.executed_query.results.size,
+                 "Exactly 2 results are expected."
   end
 end

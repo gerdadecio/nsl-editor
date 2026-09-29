@@ -34,16 +34,16 @@ class SearchControllerForEditorPageTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "a#new-dropdown-menu-link.dropdown-toggle",
-      /New/,
-      "Should show New menu link."
+                  /New/,
+                  "Should show New menu link."
     assert_select "a#help-dropdown-menu-link.dropdown-toggle",
-      /Help/,
-      "Should show Help menu link."
+                  /Help/,
+                  "Should show Help menu link."
     assert_select "a#user-dropdown-menu-link.dropdown-toggle",
-      true,
-      "Should show User menu link."
+                  true,
+                  "Should show User menu link."
     assert_select "a#admin-dropdown-menu-link.dropdown-toggle",
-      true,
-      "Should show Admin menu link."
+                  true,
+                  "Should show Admin menu link."
   end
 end

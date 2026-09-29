@@ -33,6 +33,6 @@ class SearchOnNameNomInvalWithOrthVarSimpleTest < ActiveSupport::TestCase
     confirm_results_class(search.executed_query.results)
     # We expect it to run but have not set up test data for it.
     assert search.executed_query.results.empty?,
-      "Expected no search results for nom-inval-with-orth-var"
+           "Expected no search results for nom-inval-with-orth-var"
   end
 end

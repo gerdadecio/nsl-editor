@@ -44,7 +44,7 @@ class NameTypeSrchCultHybFormSetsCommCultFlagAutoT < ActionController::TestCase
     #               true,
     #               "The query-common-and-cultivar checkbox should be true"
     assert_select "tr[id=search-result-#{cultivar_hybrid_formula.id}]",
-      true,
-      "Should find one cultivar hybrid formula at least"
+                  true,
+                  "Should find one cultivar hybrid formula at least"
   end
 end

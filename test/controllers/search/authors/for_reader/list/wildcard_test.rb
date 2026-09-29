@@ -34,7 +34,7 @@ class ReaderSearchControllerNamesWildcardListTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /\b[0-9][0-9] records\b/,
-      "Should find several records for an author wildcard search"
+                  /\b[0-9][0-9] records\b/,
+                  "Should find several records for an author wildcard search"
   end
 end

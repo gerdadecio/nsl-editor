@@ -36,11 +36,11 @@ class SearchParsedRequest20Test < ActiveSupport::TestCase
       "This should be parsed as a query on the name table."
     )
     assert_equal 20,
-      parsed_request.limit,
-      "This should be parsed as a query with a limit of 20."
+                 parsed_request.limit,
+                 "This should be parsed as a query with a limit of 20."
     assert parsed_request.include_common_and_cultivar_session,
-      "Parser should notice session switch to incl common and cultivars."
+           "Parser should notice session switch to incl common and cultivars."
     assert parsed_request.where_arguments.blank?,
-      "Should be parsed as a query with no where arguments."
+           "Should be parsed as a query with no where arguments."
   end
 end

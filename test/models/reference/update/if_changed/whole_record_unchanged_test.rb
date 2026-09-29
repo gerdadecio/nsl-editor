@@ -49,7 +49,7 @@ class WholeRecordUnchangedTest < ActiveSupport::TestCase
     assert reference.update_if_changed(params, typeahead_params, "a user")
     changed_reference = Reference.find_by(id: reference.id)
     assert_equal reference.created_at,
-      changed_reference.updated_at,
-      "Reference should not have been updated."
+                 changed_reference.updated_at,
+                 "Reference should not have been updated."
   end
 end

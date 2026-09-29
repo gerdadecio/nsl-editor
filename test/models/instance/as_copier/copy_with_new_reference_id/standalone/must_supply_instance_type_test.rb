@@ -25,7 +25,7 @@ class InstAsCopierWNewRefSAloneMustSupplyITypeTest < ActiveSupport::TestCase
       instances(:gaertner_created_metrosideros_costata).id
     )
     assert_not master_instance.citations.empty?,
-      "Master instance should have at least 1 citation."
+               "Master instance should have at least 1 citation."
     target_reference = references(:never_used)
     dummy_username = "fred"
     params = ActionController::Parameters.new(

@@ -36,10 +36,10 @@ class ReferenceUnauthenticatedShowNoTabLinkTest < ActionController::TestCase
     assert_select "a#reference-show-tab", false, "Should not show 'Detail' tab."
     assert_select "a#reference-edit-tab", false, "Should not show 'Edit' tab."
     assert_select "a#reference-comments-tab",
-      false,
-      "Should not show 'Comments' tab."
+                  false,
+                  "Should not show 'Comments' tab."
     assert_select "a#tab-heading",
-      false,
-      "Should not have tab heading showing a_book."
+                  false,
+                  "Should not have tab heading showing a_book."
   end
 end

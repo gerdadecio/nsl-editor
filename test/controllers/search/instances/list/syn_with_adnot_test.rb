@@ -37,7 +37,7 @@ class SearchInstListSynWithAdnotTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /[0-9] record\b/,
-      "Should find at least 1 record"
+                  /[0-9] record\b/,
+                  "Should find at least 1 record"
   end
 end

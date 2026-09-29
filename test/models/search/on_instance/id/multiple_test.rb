@@ -31,7 +31,7 @@ class SearchOnInstanceIdMultipleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_equal 2,
-      search.executed_query.results.size,
-      "Exactly 2 results for multiple instance ids expected."
+                 search.executed_query.results.size,
+                 "Exactly 2 results for multiple instance ids expected."
   end
 end

@@ -38,6 +38,6 @@ class AuthorMustHaveNameTest < ActiveSupport::TestCase
     author.abbrev = nil
     author.name = "some name"
     assert author.valid?,
-      "Author should be valid with a name even if no abbrev."
+           "Author should be valid with a name even if no abbrev."
   end
 end

@@ -24,8 +24,8 @@ def test_reference_text_field_change_is_detected(field_name)
   assert(
     reference
         .update_if_changed({ field_name => new_column_value },
-          {},
-          user_name),
+                           {},
+                           user_name),
     "Reference should have been changed."
   )
   assert_changed(field_name, reference, new_column_value, user_name)

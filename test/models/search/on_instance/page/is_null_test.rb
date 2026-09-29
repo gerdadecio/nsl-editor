@@ -24,8 +24,8 @@ class SearchOnInstanceAuthorIsNullTest < ActiveSupport::TestCase
   test "search on intance page is null" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "instance",
-        query_string: "page: ",
-        current_user: build_edit_user)
+           query_string: "page: ",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|

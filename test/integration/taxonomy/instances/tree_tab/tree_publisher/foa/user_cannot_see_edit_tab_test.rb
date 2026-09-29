@@ -27,10 +27,10 @@ class TaxoInstanceTreePublisherFoaCannotSeeEditTab < ActionController::TestCase
     foa_draft = tree_versions(:foa_draft_version)
     instance = instances(:triodia_in_brassard)
     assert_routing "/instances/1/tab/tree",
-      controller: "instances",
-      action: "tab",
-      id: "1",
-      tab: "tree"
+                   controller: "instances",
+                   action: "tab",
+                   id: "1",
+                   tab: "tree"
     get(
       "tab",
       params: { id: "#{instance.id}", tab: "edit_tab" },

@@ -25,9 +25,9 @@ class SearchOnRefAssertionDupeAbbrevDuplicateTest < ActiveSupport::TestCase
     search = Search::Base
       .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_target: "reference",
-                    query_string: "duplicate:",
-                    current_user: build_edit_user))
+                       query_string: "duplicate:",
+                       current_user: build_edit_user))
     assert_not search.executed_query.results.empty?,
-      "Should find duplicate reference."
+               "Should find duplicate reference."
   end
 end

@@ -32,6 +32,6 @@ class SearchOnNameDefaultSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert search.executed_query.results.size > 1,
-      "Expected at least one search result"
+           "Expected at least one search result"
   end
 end

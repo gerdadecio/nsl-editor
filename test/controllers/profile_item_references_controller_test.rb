@@ -52,15 +52,15 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
     )
 
     post :create,
-      params: {
-        profile_item_reference: {
-          reference_id: @reference.id,
-          annotation: "2nd Annotation",
-          profile_item_id: @profile_item.id,
-        },
-      },
-      session: @session,
-      xhr: true
+         params: {
+           profile_item_reference: {
+             reference_id: @reference.id,
+             annotation: "2nd Annotation",
+             profile_item_id: @profile_item.id,
+           },
+         },
+         session: @session,
+         xhr: true
 
     assert_response :unprocessable_content
     assert_match "Only one reference per profile item is permitted", assigns(:message)
@@ -70,15 +70,15 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
   test "should fail to create profile item reference when there is no enough permission granted to db" do
     Profile::ProfileItemReference.stub_any_instance(:save!, -> { raise PG::InsufficientPrivilege, "ERROR: permission denied for table \"profile_item_references\"" }) do
       post :create,
-        params: {
-          profile_item_reference: {
-            reference_id: @reference.id,
-            annotation: "2nd Annotation",
-            profile_item_id: @profile_item.id,
-          },
-        },
-        session: @session,
-        xhr: true
+           params: {
+             profile_item_reference: {
+               reference_id: @reference.id,
+               annotation: "2nd Annotation",
+               profile_item_id: @profile_item.id,
+             },
+           },
+           session: @session,
+           xhr: true
 
       assert_response :unprocessable_content
       assert_match "Error creating profile item reference: ERROR: permission denied for table \"profile_item_references\"", assigns(:message)
@@ -98,15 +98,15 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
     )
 
     put :update,
-      params: {
-        reference_id: @reference.id,
-        profile_item_id: @profile_item.id,
-        profile_item_reference: {
-          annotation: "Updated Annotation",
+        params: {
+          reference_id: @reference.id,
+          profile_item_id: @profile_item.id,
+          profile_item_reference: {
+            annotation: "Updated Annotation",
+          },
         },
-      },
-      session: @session,
-      xhr: true
+        session: @session,
+        xhr: true
     assert_response :success
     assert_equal "Saved", assigns(:message)
     assert_template :update
@@ -124,15 +124,15 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
     )
 
     put :update,
-      params: {
-        reference_id: @reference.id,
-        profile_item_id: @profile_item.id,
-        profile_item_reference: {
-          annotation: "1st Annotation",
+        params: {
+          reference_id: @reference.id,
+          profile_item_id: @profile_item.id,
+          profile_item_reference: {
+            annotation: "1st Annotation",
+          },
         },
-      },
-      session: @session,
-      xhr: true
+        session: @session,
+        xhr: true
 
     assert_response :success
     assert_equal "No change", assigns(:message)
@@ -150,12 +150,12 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       profile_item_id: @profile_item.id
     )
     delete :destroy,
-      params: {
-        reference_id: @reference.id,
-        profile_item_id: @profile_item.id,
-      },
-      session: @session,
-      xhr: true
+           params: {
+             reference_id: @reference.id,
+             profile_item_id: @profile_item.id,
+           },
+           session: @session,
+           xhr: true
     assert_response :success
     assert_equal "Deleted profile item reference.", assigns(:message)
     assert_template :destroy
@@ -174,12 +174,12 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
 
     Profile::ProfileItemReference.stub_any_instance(:destroy, false) do
       delete :destroy,
-        params: {
-          reference_id: @reference.id,
-          profile_item_id: @profile_item.id,
-        },
-        session: @session,
-        xhr: true
+             params: {
+               reference_id: @reference.id,
+               profile_item_id: @profile_item.id,
+             },
+             session: @session,
+             xhr: true
       assert_response :unprocessable_content
       assert_template :destroy_failed
     end

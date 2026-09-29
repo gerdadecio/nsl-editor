@@ -65,12 +65,12 @@ class ShowEditTest < ActionController::TestCase
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
       "input#author-by-abbrev[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete " \
       "input#name_author_id[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete ul[data-autocomplete-target='results']",
-      true
+                  true
     assert_select "div.autocomplete label[for='author-by-abbrev']", "Author"
   end
 
@@ -90,13 +90,13 @@ class ShowEditTest < ActionController::TestCase
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
       "input#base-author-by-abbrev" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete " \
       "input#name_base_author_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete label[for='base-author-by-abbrev']",
-      "Base Name Author"
+                  "Base Name Author"
   end
 
   # Ex Author is the third field moved onto the shared partial.
@@ -115,13 +115,13 @@ class ShowEditTest < ActionController::TestCase
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
       "input#ex-author-by-abbrev" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete " \
       "input#name_ex_author_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete label[for='ex-author-by-abbrev']",
-      "Ex Author"
+                  "Ex Author"
   end
 
   # Ex Base Author is the fourth field moved onto the shared partial.
@@ -140,13 +140,13 @@ class ShowEditTest < ActionController::TestCase
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
       "input#ex-base-author-by-abbrev" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete " \
       "input#name_ex_base_author_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete label[for='ex-base-author-by-abbrev']",
-      "Ex Base Name Author"
+                  "Ex Base Name Author"
   end
 
   # Sanctioning Author is the fifth and last field moved onto the shared
@@ -166,13 +166,13 @@ class ShowEditTest < ActionController::TestCase
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
       "input#sanctioning-author-by-abbrev" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete " \
       "input#name_sanctioning_author_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete label[for='sanctioning-author-by-abbrev']",
-      "Sanctioning Author"
+                  "Sanctioning Author"
   end
 
   # The name form's first Parent field, off typeahead.js and onto the same
@@ -192,13 +192,13 @@ class ShowEditTest < ActionController::TestCase
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
       "input#name-parent-typeahead" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete " \
       "input#name_parent_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete label[for='name-parent-typeahead']",
-      "Parent*"
+                  "Parent*"
     assert_no_match(/setUpNameParentTypeahead\(\)/, @response.body)
     assert_no_match(/setUpNameHybridParentTypeahead\(\)/, @response.body)
     assert_no_match(/setUpNameCultivarParentTypeahead\(\)/, @response.body)
@@ -251,13 +251,13 @@ class ShowEditTest < ActionController::TestCase
     assert_select "div.autocomplete[data-controller='autocomplete'] " \
       "input#name-family-typeahead" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete " \
       "input#name_family_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete label[for='name-family-typeahead']",
-      "Family*"
+                  "Family*"
     assert_no_match(/setUpNameFamilyTypeahead\(\)/, @response.body)
   end
 
@@ -280,7 +280,7 @@ class ShowEditTest < ActionController::TestCase
       div.css("input#name-family-typeahead").any?
     end
     assert_equal "/names/name_family_suggestions.html",
-      field["data-autocomplete-url-value"]
+                 field["data-autocomplete-url-value"]
     assert_equal(
       { "rank_id" => "name_name_rank_id" },
       JSON.parse(field["data-autocomplete-live-params-value"])
@@ -336,13 +336,13 @@ class ShowEditTest < ActionController::TestCase
       "'/suggestions/name/hybrid_parent.html'] " \
       "input#name-parent-typeahead" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete input#name_parent_id" \
       "[data-autocomplete-target='hidden']" \
       "[value='#{hybrid.parent_id}']",
-      true
+                  true
     assert_select "div.autocomplete label[for='name-parent-typeahead']",
-      "First Parent*"
+                  "First Parent*"
     assert_no_match(/setUpNameHybridParentTypeahead\(\)/, @response.body)
     field = css_select("div.autocomplete").find do |div|
       div.css("input#name-parent-typeahead").any?
@@ -380,13 +380,13 @@ class ShowEditTest < ActionController::TestCase
       "input#name-second-parent-typeahead" \
       "[data-autocomplete-target='input'][required]" \
       "[value='#{hybrid.second_parent.full_name}']",
-      true
+                  true
     assert_select "div.autocomplete input#name_second_parent_id" \
       "[data-autocomplete-target='hidden']" \
       "[value='#{hybrid.second_parent_id}']",
-      true
+                  true
     assert_select "div.autocomplete label[for='name-second-parent-typeahead']",
-      "Second parent*"
+                  "Second parent*"
     assert_no_match(/setUpNameSecondParentTypeahead\(\)/, @response.body)
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
@@ -427,20 +427,20 @@ class ShowEditTest < ActionController::TestCase
       "[data-autocomplete-url-value=" \
       "'/suggestions/name/cultivar_parent.html'] " \
       "input#name-parent-typeahead",
-      true
+                  true
     assert_select "div.autocomplete[data-controller='autocomplete']" \
       "[data-autocomplete-url-value=" \
       "'/suggestions/name/cultivar_parent.html'] " \
       "input#name-second-parent-typeahead" \
       "[data-autocomplete-target='input']" \
       "[value='#{cultivar_hybrid.second_parent.full_name}']",
-      true
+                  true
     assert_select "div.autocomplete input#name_second_parent_id" \
       "[data-autocomplete-target='hidden']" \
       "[value='#{cultivar_hybrid.second_parent_id}']",
-      true
+                  true
     assert_select "div.autocomplete label[for='name-second-parent-typeahead']",
-      /Second parent/
+                  /Second parent/
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
       @response.body

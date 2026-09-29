@@ -43,8 +43,8 @@ class SearchRefsOnIdPopulatesPublishedTreesMapTest < ActionController::TestCase
     )
     assert_response :success
     assert_kind_of Hash,
-      assigns(:published_trees_map),
-      "Expected @published_trees_map to be populated as a Hash"
+                   assigns(:published_trees_map),
+                   "Expected @published_trees_map to be populated as a Hash"
   end
 
   test "populates @published_trees_map with an empty Hash when no instances are in the results" do

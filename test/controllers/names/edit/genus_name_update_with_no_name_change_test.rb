@@ -46,13 +46,13 @@ class GenusNameUpdateWithNoNameChangeTest < ActionController::TestCase
         "User-Agent" => /rest-client.*ruby.*/,
       })
       .to_return(status: 200,
-        body: {
-          result: {
-            simpleName: "Acacia",
-            fullName: "Acacia",
-          },
-        }.to_json,
-        headers: {})
+                 body: {
+                   result: {
+                     simpleName: "Acacia",
+                     fullName: "Acacia",
+                   },
+                 }.to_json,
+                 headers: {})
   end
 
   test "genus name update with no name change" do
@@ -73,9 +73,9 @@ class GenusNameUpdateWithNoNameChangeTest < ActionController::TestCase
     species_afterwards = Name.find(@species.id)
     Name.find(@genus.id)
     assert @species.full_name == species_afterwards.full_name,
-      "Genus name not changed so species's name should not change"
+           "Genus name not changed so species's name should not change"
     subspecies_afterwards = Name.find(@subspecies.id)
     assert @subspecies.full_name == subspecies_afterwards.full_name,
-      "Genus name has not changed so subspecies's name. should not change"
+           "Genus name has not changed so subspecies's name. should not change"
   end
 end

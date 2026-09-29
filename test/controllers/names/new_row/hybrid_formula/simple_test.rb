@@ -34,7 +34,7 @@ class NamesNewRowScientificHybridFormulaSimpleTest < ActionController::TestCase
       xhr: true
     )
     assert_response :success,
-      "Cannot start new row for a scientific hybrid formula name"
+                    "Cannot start new row for a scientific hybrid formula name"
     assert_match(
       /search-results-table/,
       response.body.to_s,

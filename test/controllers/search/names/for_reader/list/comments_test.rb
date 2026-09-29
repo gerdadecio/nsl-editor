@@ -34,7 +34,7 @@ class ReaderSearchControllerNamesCommentsListTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /\b1 name\b/,
-      "Should find at least a couple of names"
+                  /\b1 name\b/,
+                  "Should find at least a couple of names"
   end
 end

@@ -24,8 +24,8 @@ class SearchOnReferencePublicationDateAbbrevPDTest < ActiveSupport::TestCase
   test "search on reference publication date abbrev PD simple" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "pd: 1970-",
-        current_user: build_edit_user)
+           query_string: "pd: 1970-",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end

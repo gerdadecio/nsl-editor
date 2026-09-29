@@ -25,13 +25,13 @@ class SearchOnReferenceIdSimpleTest < ActiveSupport::TestCase
     reference = references(:simple)
     params =  ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "id: #{reference.id}",
-        current_user: build_edit_user)
+           query_string: "id: #{reference.id}",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-      search.executed_query.results.size,
-      "Exactly 1 result is expected."
+                 search.executed_query.results.size,
+                 "Exactly 1 result is expected."
   end
 end

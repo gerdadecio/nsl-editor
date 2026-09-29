@@ -38,6 +38,6 @@ class InstCreateWarnMultiplePrimarySimpleTest < ActiveSupport::TestCase
     end
     name_after = Name.find(name.id)
     assert name_after.instances.size == 1,
-      "Should still be only 1 primary instance"
+           "Should still be only 1 primary instance"
   end
 end

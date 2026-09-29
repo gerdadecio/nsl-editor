@@ -30,7 +30,7 @@ class SearchOnNameAssertIsOrthVarWEarliestInst2ndRefT < ActiveSupport::TestCase
       )
     )
     assert_equal 1,
-      search.executed_query.results.size,
-      "Expect orth. var. name with first instance a secondary ref."
+                 search.executed_query.results.size,
+                 "Expect orth. var. name with first instance a secondary ref."
   end
 end

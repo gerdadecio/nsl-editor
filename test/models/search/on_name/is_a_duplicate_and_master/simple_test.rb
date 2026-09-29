@@ -41,7 +41,7 @@ class SearchOnNameIsADuplicateAndMasterSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_not search.executed_query.results.empty?,
-      "Expected at least one name that is both a duplicate and a master"
+               "Expected at least one name that is both a duplicate and a master"
   end
 
   test "is-a-duplicate-and-master: includes a_duplicate_species in results" do
@@ -53,7 +53,7 @@ class SearchOnNameIsADuplicateAndMasterSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     result_ids = search.executed_query.results.map(&:id)
     assert_includes result_ids,
-      names(:a_duplicate_species).id,
-      "Expected a_duplicate_species (duplicate of a_species, master of a_duplicate_of_a_duplicate_species) to appear in results"
+                    names(:a_duplicate_species).id,
+                    "Expected a_duplicate_species (duplicate of a_species, master of a_duplicate_of_a_duplicate_species) to appear in results"
   end
 end

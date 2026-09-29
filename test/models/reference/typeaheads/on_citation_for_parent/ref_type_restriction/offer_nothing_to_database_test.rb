@@ -28,6 +28,6 @@ class TAOnCitn4ParRefTypeRestrictionNothingForDatabase < ActiveSupport::TestCase
       ref_types(:database).id
     )
     assert typeahead.results.empty?,
-      "Should be no results because database takes no parent."
+           "Should be no results because database takes no parent."
   end
 end

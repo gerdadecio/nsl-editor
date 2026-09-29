@@ -35,7 +35,7 @@ class TreeBuilderFoaCanSeeTaxonomyMenuTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "a#draft-taxo-dropdown-menu-link",
-      /Draft Taxonomies/,
-      "#{user.user_name} should see Draft Taxonomies menu link."
+                  /Draft Taxonomies/,
+                  "#{user.user_name} should see Draft Taxonomies menu link."
   end
 end

@@ -29,7 +29,7 @@ class NameAsEdAuthIdWPartStringMatchingAnotherAuthor < ActiveSupport::TestCase
       "Some Author Field"
     )
     assert_equal author_2.id,
-      result.value,
-      "Should get matching ID for part string despite mismatched ID"
+                 result.value,
+                 "Should get matching ID for part string despite mismatched ID"
   end
 end

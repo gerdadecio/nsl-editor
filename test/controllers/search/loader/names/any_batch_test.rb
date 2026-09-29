@@ -34,7 +34,7 @@ class SearchLoaderNameAnyBatchTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /\b[1-9]\d* records*\b/,
-      "Should find at least one loader name record with any-batch wildcard search"
+                  /\b[1-9]\d* records*\b/,
+                  "Should find at least one loader name record with any-batch wildcard search"
   end
 end

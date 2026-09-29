@@ -30,12 +30,12 @@ class ForMullerWithUmlautTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-      search.executed_query.results.size,
-      "Exactly 1 result is expected."
+                 search.executed_query.results.size,
+                 "Exactly 1 result is expected."
     assert_equal authors(:muller_f_with_umlaut).name,
-      search.executed_query.results.first[:name]
+                 search.executed_query.results.first[:name]
   end
 
   test "simple search for muller with umlaut using u" do
@@ -46,11 +46,11 @@ class ForMullerWithUmlautTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-      search.executed_query.results.size,
-      "Exactly 1 result is expected - perhaps müll wasn't found"
+                 search.executed_query.results.size,
+                 "Exactly 1 result is expected - perhaps müll wasn't found"
     assert_equal authors(:muller_f_with_umlaut).name,
-      search.executed_query.results.first[:name]
+                 search.executed_query.results.first[:name]
   end
 end

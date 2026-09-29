@@ -30,6 +30,6 @@ class SearchOnNameeAssertionHasASecondParentTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Should find name that has second parent."
+               "Should find name that has second parent."
   end
 end

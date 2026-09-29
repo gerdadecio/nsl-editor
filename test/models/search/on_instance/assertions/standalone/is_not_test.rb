@@ -32,6 +32,6 @@ class SearchOnInstanceIsNotStandaloneTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Expected results for is-not-standalone: — fixtures include basionym and nomenclatural_synonym instances"
+               "Expected results for is-not-standalone: — fixtures include basionym and nomenclatural_synonym instances"
   end
 end

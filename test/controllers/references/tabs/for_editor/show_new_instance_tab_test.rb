@@ -37,8 +37,8 @@ class ReferenceEditorShowNewInstanceTabTest < ActionController::TestCase
       }
     )
     assert_select "li.active a#reference-new-instance-tab",
-      /New instance/,
-      "Should show 'New instance' tab."
+                  /New instance/,
+                  "Should show 'New instance' tab."
     assert_select "form", true
   end
 
@@ -61,11 +61,11 @@ class ReferenceEditorShowNewInstanceTabTest < ActionController::TestCase
       "[data-autocomplete-url-value='/names/typeahead_on_full_name.html'] " \
       "input#instance-name-typeahead" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete " \
       "input#instance_name_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     # The hidden name_id is rendered once, by the partial, not also by the
     # form as it used to be.
     assert_select "input#instance_name_id", count: 1

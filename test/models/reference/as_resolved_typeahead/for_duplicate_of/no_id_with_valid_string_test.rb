@@ -27,7 +27,7 @@ class ReferenceARTA4DuplicateOfNoIdWithValidString < ActiveSupport::TestCase
       reference_1.citation
     )
     assert_equal reference_1.id,
-      result.value,
-      "Should get a matching id for the citation"
+                 result.value,
+                 "Should get a matching id for the citation"
   end
 end

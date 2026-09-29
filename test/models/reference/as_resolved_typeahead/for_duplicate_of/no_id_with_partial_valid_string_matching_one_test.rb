@@ -27,7 +27,7 @@ class RefARTA4DupeOfNoIdWPartialValidStringMatchingOne < ActiveSupport::TestCase
       reference.citation.chop
     )
     assert_equal reference.id,
-      result.value,
-      "Should get a matching id for the citation"
+                 result.value,
+                 "Should get a matching id for the citation"
   end
 end

@@ -27,13 +27,13 @@ class SearchOnNameStatusMultiTest < ActiveSupport::TestCase
     n2 = names(:nom_cult_name_one_for_eflora)
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string:
-        "status: #{name.name_status.name}, #{n2.name_status.name}",
-        current_user: build_edit_user)
+           query_string:
+           "status: #{name.name_status.name}, #{n2.name_status.name}",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 2,
-      search.executed_query.results.size,
-      "Exactly 2 results are expected."
+                 search.executed_query.results.size,
+                 "Exactly 2 results are expected."
   end
 end

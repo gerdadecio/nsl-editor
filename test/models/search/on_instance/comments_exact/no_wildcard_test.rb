@@ -29,6 +29,6 @@ class SearchOnInstanceCommentsExactNoWildCardTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?,
-      "No instances with comment expected."
+           "No instances with comment expected."
   end
 end

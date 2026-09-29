@@ -27,7 +27,7 @@ class RefARTA4ParentIdWithMatchingString < ActiveSupport::TestCase
       reference.citation
     )
     assert_equal reference.id,
-      result.value,
-      "Should get a matching id for the parent citation"
+                 result.value,
+                 "Should get a matching id for the parent citation"
   end
 end

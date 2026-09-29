@@ -36,8 +36,8 @@ class InstanceAsCopierCopyStandaloneWithNewNameIdTest < ActiveSupport::TestCase
     after_for_name = target_name.instances.count
     assert_equal before + 1, after, "There should be one extra instance."
     assert_equal before_for_name + 1,
-      after_for_name,
-      "There should be 1 extra instance attached to the target name."
+                 after_for_name,
+                 "There should be 1 extra instance attached to the target name."
     assert_equal copied_instance.name_id, target_name.id
     assert_equal copied_instance.reference_id, master_instance.reference_id
     assert_equal dummy_username, copied_instance.created_by

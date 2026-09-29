@@ -30,7 +30,7 @@ class SearchOnInstanceIdsSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Instance with id expected for ids search."
+                 search.executed_query.results.size,
+                 "Instance with id expected for ids search."
   end
 end

@@ -24,9 +24,9 @@ class ShouldIncludeAZeroInstancesCount < ActiveSupport::TestCase
     dummy_avoid_id = 1
     name = Name.find_by(full_name: "a genus without an instance")
     assert name.present?,
-      'The name "a genus without an instance" should be found.'
+           'The name "a genus without an instance" should be found.'
     assert name.instances.empty?,
-      "The name 'a genus without an instance' should have no instances."
+           "The name 'a genus without an instance' should have no instances."
     typeahead =
       Name::AsTypeahead::ForParent.new(
         term: "a genus without an instance",
@@ -39,7 +39,7 @@ class ShouldIncludeAZeroInstancesCount < ActiveSupport::TestCase
       'suggestions for "a genus without an instance" should have a record'
     )
     assert_match "genus without an instance | Genus | 0 instances",
-      typeahead.suggestions.first[:value],
-      "Name par typeahead needs right val with a 0 instances count"
+                 typeahead.suggestions.first[:value],
+                 "Name par typeahead needs right val with a 0 instances count"
   end
 end

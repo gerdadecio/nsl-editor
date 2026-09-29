@@ -33,6 +33,6 @@ class SearchOnNameHasMultipleBasionymsSimpleTest < ActiveSupport::TestCase
     confirm_results_class(search.executed_query.results)
     assert :success
     assert search.executed_query.results.empty?,
-      "Expected no hits"
+           "Expected no hits"
   end
 end

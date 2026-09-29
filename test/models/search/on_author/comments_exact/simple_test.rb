@@ -29,6 +29,6 @@ class SearchOnAuthorCommentsExactSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?,
-      "No Authors with comments for comments-exact search expected."
+           "No Authors with comments for comments-exact search expected."
   end
 end

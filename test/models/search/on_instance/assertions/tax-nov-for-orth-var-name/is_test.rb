@@ -30,6 +30,6 @@ class SearchOnInstanceIsTaxNovForOrthVarNameTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Should find tax. nov. instance for an orth. var. name."
+               "Should find tax. nov. instance for an orth. var. name."
   end
 end

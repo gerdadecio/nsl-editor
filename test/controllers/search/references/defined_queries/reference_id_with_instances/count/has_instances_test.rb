@@ -41,7 +41,7 @@ class SrchRefsDefinedQuerRefIdWithInstCountHasInst < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /29 records\b/,
-      "Should show a correct count of records"
+                  /29 records\b/,
+                  "Should show a correct count of records"
   end
 end

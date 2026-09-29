@@ -42,7 +42,7 @@ class SearchOnReferenceNoDoiSimpleTest < ActiveSupport::TestCase
     assert_not results.empty?, "Results expected."
     results.each do |reference|
       assert reference.doi.blank?,
-        "#{reference.citation} should have no doi recorded"
+             "#{reference.citation} should have no doi recorded"
     end
   end
 

@@ -50,8 +50,8 @@ class ReferencesEditDuplicateOfIdClearTest < ActionController::TestCase
     assert changed.duplicate_of_id.blank?, "Should not be a duplicate now."
     assert changed.updated_by = username
     assert reference.updated_by != changed.updated_by,
-      "Updated_by should be set"
+           "Updated_by should be set"
     assert reference.updated_at != changed.updated_at,
-      "Updated_at should be set"
+           "Updated_at should be set"
   end
 end

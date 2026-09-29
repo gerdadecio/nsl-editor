@@ -28,7 +28,7 @@ class RefARTA4DofIdWPartStrMatchingAnotherReference < ActiveSupport::TestCase
       reference_2.citation.chop
     )
     assert_equal reference_2.id,
-      result.value,
-      "Should get a matching id for the reference citation"
+                 result.value,
+                 "Should get a matching id for the reference citation"
   end
 end

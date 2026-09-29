@@ -34,8 +34,8 @@ class InstanceAsServicesTrueSuccess200Test < ActiveSupport::TestCase
         "User-Agent" => /ruby/,
       })
       .to_return(status: 200,
-        body: body_hash.to_json,
-        headers: {})
+                 body: body_hash.to_json,
+                 headers: {})
   end
 
   def body_hash

@@ -27,7 +27,7 @@ class AuthorAsTypeaheadOnNameDuplicateOfAuthorTest < ActiveSupport::TestCase
       authors(:haeckel).id
     )
     assert_equal 0,
-      result.size,
-      "Expecting no records because Haeckel should be excluded."
+                 result.size,
+                 "Expecting no records because Haeckel should be excluded."
   end
 end

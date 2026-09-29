@@ -28,7 +28,7 @@ class NameAsResolvedTypeahead4ParentIdWMatchingString < ActiveSupport::TestCase
       "parent"
     )
     assert_equal name.id,
-      result.value,
-      "Should get a matching id for the parent name"
+                 result.value,
+                 "Should get a matching id for the parent name"
   end
 end

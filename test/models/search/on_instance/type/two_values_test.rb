@@ -29,6 +29,6 @@ class SearchOnInstanceTypeTwoValuesTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.size > 30,
-      "Plenty of results expected."
+           "Plenty of results expected."
   end
 end

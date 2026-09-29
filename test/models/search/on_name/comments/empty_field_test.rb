@@ -24,9 +24,9 @@ class SearchOneNameCommentsEmptyFieldTest < ActiveSupport::TestCase
   def setup
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "a_species",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "a_species",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert(search.executed_query.results.size == 2, "2 results expected.")
   end
@@ -34,9 +34,9 @@ class SearchOneNameCommentsEmptyFieldTest < ActiveSupport::TestCase
   test "search on name comments empty field" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "a_species comments:",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "a_species comments:",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.size == 1, "1 result expected."
   end

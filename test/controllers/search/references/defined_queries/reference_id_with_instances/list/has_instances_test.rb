@@ -44,7 +44,7 @@ class SearchRefsDefinedQRefIdWithInstsListHasInst < ActionController::TestCase
     # attached instances are shown but no longer folded into the count) -
     # see Search::OnModel::Base#run_list_query.
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should find 1 record"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

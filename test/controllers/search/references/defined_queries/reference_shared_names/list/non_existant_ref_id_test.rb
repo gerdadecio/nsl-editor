@@ -39,7 +39,7 @@ class SearchRefsDQRefSharedNamesListNonExistantTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /No Reference ID: *#{ref_1}/,
-      "Should report Reference does not exist"
+                  /No Reference ID: *#{ref_1}/,
+                  "Should report Reference does not exist"
   end
 end

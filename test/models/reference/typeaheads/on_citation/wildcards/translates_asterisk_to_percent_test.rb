@@ -27,6 +27,6 @@ class TAOnCitnWildcardsTranslatesAsteriskToPercent < ActiveSupport::TestCase
       current_reference.id
     )
     assert_not typeahead.results.empty?,
-      "Should be at least one result for asterisk wildcard"
+               "Should be at least one result for asterisk wildcard"
   end
 end

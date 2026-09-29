@@ -49,8 +49,8 @@ class AdTreebuilderNoRolesCanOnlyCreateDraftForAcceptedTreeTest < ActionControll
     )
     assert_response :success
     assert_select "a#create-draft-taxonomy-menu-link",
-      /Create draft taxonomy for APC/,
-      "Should show Create Draft Taxonomy link for APC (accepted tree)."
+                  /Create draft taxonomy for APC/,
+                  "Should show Create Draft Taxonomy link for APC (accepted tree)."
   end
 
   test "AD treebuilder without roles does not see create draft for FOA (non-accepted tree)" do
@@ -66,7 +66,7 @@ class AdTreebuilderNoRolesCanOnlyCreateDraftForAcceptedTreeTest < ActionControll
     )
     assert_response :success
     assert_select "a",
-      { count: 0, text: /Create draft taxonomy for FOA/ },
-      "Should NOT show Create Draft Taxonomy link for FOA (non-accepted tree)."
+                  { count: 0, text: /Create draft taxonomy for FOA/ },
+                  "Should NOT show Create Draft Taxonomy link for FOA (non-accepted tree)."
   end
 end

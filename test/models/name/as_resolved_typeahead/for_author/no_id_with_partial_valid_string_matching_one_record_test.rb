@@ -28,7 +28,7 @@ class NameAsEdNoAuthIdWPartValStrMatchingOneRecord < ActiveSupport::TestCase
       "SOME FIELD"
     )
     assert_equal author.id,
-      result.value,
-      "Should get a matching id for the author name"
+                 result.value,
+                 "Should get a matching id for the author name"
   end
 end

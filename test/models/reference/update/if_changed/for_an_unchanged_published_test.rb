@@ -34,10 +34,10 @@ class ForAnUnchangedRefPublishedTest < ActiveSupport::TestCase
     )
     changed_reference = Reference.find_by(id: reference.id)
     assert_equal reference.send(field_name) || "isnil",
-      changed_reference.send(field_name) || "isnil",
-      "#{field_name} should not have changed"
+                 changed_reference.send(field_name) || "isnil",
+                 "#{field_name} should not have changed"
     assert_equal reference.created_at,
-      changed_reference.updated_at,
-      "Reference should not have been updated."
+                 changed_reference.updated_at,
+                 "Reference should not have been updated."
   end
 end

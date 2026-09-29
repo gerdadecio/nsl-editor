@@ -28,6 +28,6 @@ class TAOnCitn4ParRefTypeRestrictNilForHerbAnnotation < ActiveSupport::TestCase
       ref_types(:herbarium_annotation).id
     )
     assert typeahead.results.empty?,
-      "Should be no results because herbarium annotation takes no parent."
+           "Should be no results because herbarium annotation takes no parent."
   end
 end

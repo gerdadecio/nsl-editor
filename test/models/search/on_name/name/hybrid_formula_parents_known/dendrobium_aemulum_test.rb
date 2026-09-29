@@ -32,7 +32,7 @@ class SearchOnNameNameNamedHybridDendrobiumaemulumTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Expected 1 result"
+                 search.executed_query.results.size,
+                 "Expected 1 result"
   end
 end

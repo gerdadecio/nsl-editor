@@ -34,15 +34,15 @@ class ForAChangedPublishedTest < ActiveSupport::TestCase
       {},
       "a user"
     ),
-      "Reference should have been changed."
+           "Reference should have been changed."
     changed_reference = Reference.find_by(id: reference.id)
     assert_equal new_column_value,
-      changed_reference.published,
-      "The published column value should have changed to new value"
+                 changed_reference.published,
+                 "The published column value should have changed to new value"
     assert_match "a user",
-      changed_reference.updated_by,
-      "Reference.updated_by should have changed to the updating user"
+                 changed_reference.updated_by,
+                 "Reference.updated_by should have changed to the updating user"
     assert reference.created_at < changed_reference.updated_at,
-      "Reference updated at should have changed."
+           "Reference updated at should have changed."
   end
 end

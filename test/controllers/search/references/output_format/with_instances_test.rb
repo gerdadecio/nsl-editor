@@ -38,16 +38,16 @@ class SearchRefsOutputFormatWithInstancesTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "a.show-details-link.indent-level-1",
-      /Metrosideros costata Gaertn./,
-      "Need Metrosideros costata Gaertn. for the orth. var. test"
+                  /Metrosideros costata Gaertn./,
+                  "Need Metrosideros costata Gaertn. for the orth. var. test"
     assert_select "a.show-details-link.indent-level-1" do
       assert_select "span.non-legit-name-status",
-        /orth. var./,
-        "Orth var. name formatted incorrectly"
+                    /orth. var./,
+                    "Orth var. name formatted incorrectly"
     end
     # NOTES (limit/total redesign, follow-up): see on_id/with_instances_test.rb.
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should find 1 record"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

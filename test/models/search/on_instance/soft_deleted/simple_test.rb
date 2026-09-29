@@ -34,33 +34,33 @@ class SearchOnInstanceSoftDeletedSimpleTest < ActiveSupport::TestCase
 
   test "is-soft-deleted: includes a soft deleted instance" do
     assert_includes search_ids("is-soft-deleted:"),
-      instances(:a_soft_deleted_instance).id,
-      "Expected the soft deleted instance in the results"
+                    instances(:a_soft_deleted_instance).id,
+                    "Expected the soft deleted instance in the results"
   end
 
   test "is-soft-deleted: excludes an instance that is not soft deleted" do
     assert_not_includes search_ids("is-soft-deleted:"),
-      instances(:gaertner_created_metrosideros_costata).id,
-      "Expected a live instance to be excluded from the results"
+                        instances(:gaertner_created_metrosideros_costata).id,
+                        "Expected a live instance to be excluded from the results"
   end
 
   test "is-not-soft-deleted: includes an instance that is not soft deleted" do
     assert_includes search_ids("is-not-soft-deleted:"),
-      instances(:gaertner_created_metrosideros_costata).id,
-      "Expected a live instance in the results"
+                    instances(:gaertner_created_metrosideros_costata).id,
+                    "Expected a live instance in the results"
   end
 
   test "is-not-soft-deleted: excludes a soft deleted instance" do
     assert_not_includes search_ids("is-not-soft-deleted:"),
-      instances(:a_soft_deleted_instance).id,
-      "Expected the soft deleted instance to be excluded"
+                        instances(:a_soft_deleted_instance).id,
+                        "Expected the soft deleted instance to be excluded"
   end
 
   test "the two directives return disjoint result sets" do
     deleted_ids = search_ids("is-soft-deleted:")
     live_ids = search_ids("is-not-soft-deleted:")
     assert_empty deleted_ids & live_ids,
-      "An instance should never be both soft deleted and not " \
-        "soft deleted"
+                 "An instance should never be both soft deleted and not " \
+                   "soft deleted"
   end
 end

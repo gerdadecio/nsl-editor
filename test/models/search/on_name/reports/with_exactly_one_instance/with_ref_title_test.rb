@@ -32,6 +32,6 @@ class SearchOnNameReportsWithExactly1InstRefTitleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_not search.executed_query.results.empty?,
-      "Expected > 0 search result for exactly one instance + ref-title:"
+               "Expected > 0 search result for exactly one instance + ref-title:"
   end
 end

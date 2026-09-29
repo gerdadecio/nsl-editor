@@ -29,9 +29,9 @@ class NeedsCreatedBy < ActiveSupport::TestCase
       updated_by: "tester"
     )
     assert_not name_tag_name.valid?,
-      "Name Tag Name record should not be valid without created_by."
+               "Name Tag Name record should not be valid without created_by."
     name_tag_name.created_by = "tester"
     assert name_tag_name.valid?,
-      "Name Tag Name record should now be valid with created_by."
+           "Name Tag Name record should now be valid with created_by."
   end
 end

@@ -32,6 +32,6 @@ class SearchOnNameReportsAutonymNameMismatchSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert search.executed_query.results.size > 2,
-      "Expected at least three search result for autonym-name-mismatch:"
+           "Expected at least three search result for autonym-name-mismatch:"
   end
 end

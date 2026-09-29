@@ -30,6 +30,6 @@ class SearchOnAuthorIdSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Author with id expected."
+               "Author with id expected."
   end
 end

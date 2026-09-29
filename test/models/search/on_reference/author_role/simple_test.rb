@@ -25,8 +25,8 @@ class SearchOnReferenceAuthorRoleSimpleTest < ActiveSupport::TestCase
     author_role = ref_author_roles(:editor)
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "author-role: #{author_role.name}",
-        current_user: build_edit_user)
+           query_string: "author-role: #{author_role.name}",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end

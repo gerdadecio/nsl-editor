@@ -37,11 +37,11 @@ class TreePubFoaWDUserCanSeeMenuOptsEditDraftTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "a",
-      /FOA draft version/,
-      "Should show FOA draft version menu link."
+                  /FOA draft version/,
+                  "Should show FOA draft version menu link."
     assert_select "a#edit-draft-taxonomy-menu-link-FOA-#{foa_draft.draft_name.tr(" ", "-")}",
-      /Edit FOA draft version/,
-      "Should show Edit Draft Taxonomy for FOA menu link-#{foa_draft.draft_name.tr(" ", "-")}"
+                  /Edit FOA draft version/,
+                  "Should show Edit Draft Taxonomy for FOA menu link-#{foa_draft.draft_name.tr(" ", "-")}"
     assert_select "a", { count: 0, text: "Edit APC draft version" }, "Should not show edit APC draft version link"
   end
 end

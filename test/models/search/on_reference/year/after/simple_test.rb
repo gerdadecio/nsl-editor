@@ -25,15 +25,15 @@ class SearchOnReferenceAfterYearSimpleTest < ActiveSupport::TestCase
     @reference = references(:paper_by_brassard)
     @params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string:
-        "after-year: #{@reference.iso_publication_date.to_i - 1}",
-        current_user: build_edit_user)
+           query_string:
+           "after-year: #{@reference.iso_publication_date.to_i - 1}",
+           current_user: build_edit_user)
   end
 
   test "search on after year simple" do
     search = Search::Base.new(@params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

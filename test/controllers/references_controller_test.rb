@@ -26,8 +26,8 @@ class ReferencesControllerTest < ActionController::TestCase
 
   test "should route to reference typeahead suggestions by citation" do
     assert_routing "/references/typeahead/on_citation",
-      controller: "references",
-      action: "typeahead_on_citation"
+                   controller: "references",
+                   action: "typeahead_on_citation"
   end
 
   # test "should route to show a reference" do

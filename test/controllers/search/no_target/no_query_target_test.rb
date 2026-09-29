@@ -34,7 +34,7 @@ class SearchControllerNoQueryTargetTest < ActionController::TestCase
     )
     assert_response :success
     assert_match "Search needs a target. Do you have the right permissions?",
-      @response.body,
-      "Expected an error message referring to the missing search query target"
+                 @response.body,
+                 "Expected an error message referring to the missing search query target"
   end
 end

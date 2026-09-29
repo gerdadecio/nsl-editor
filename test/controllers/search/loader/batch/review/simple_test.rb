@@ -34,8 +34,8 @@ class SearchLoaderBatchReviewSimpleTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /\b[0-9] records\b/,
-      "Should find records for an author wildcard search"
+                  /\b[0-9] records\b/,
+                  "Should find records for an author wildcard search"
     assert_select "a.show-details-link", /WG Review for Batch One/, "Should find WG Review for Batch One"
     assert_select "a.show-details-link", /WG Review for Batch Two/, "Should find WG Review for Batch Two"
   end

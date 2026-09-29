@@ -37,8 +37,8 @@ class ReferenceEditorShowEdit3Test < ActionController::TestCase
       }
     )
     assert_select "li.active a#reference-edit-3-tab",
-      /Edit\.\.\./,
-      "Should show 'Edit...' tab."
+                  /Edit\.\.\./,
+                  "Should show 'Edit...' tab."
     assert_select "form", true
     assert_select "input#reference_doi", true
     assert_select "input#reference_isbn", true

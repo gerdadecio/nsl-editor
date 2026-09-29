@@ -35,7 +35,7 @@ class NonTreePublisherDoesNotSeeTaxonomyMenuTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "a#draft-taxo-dropdown-menu-link",
-      false,
-      "Should not show #{user.user_name} user the Draft Taxonomies menu link."
+                  false,
+                  "Should not show #{user.user_name} user the Draft Taxonomies menu link."
   end
 end

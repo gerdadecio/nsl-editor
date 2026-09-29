@@ -27,7 +27,7 @@ class ReferenceARTA4DupeOfIdWithMatchingString < ActiveSupport::TestCase
       reference.citation
     )
     assert_equal reference.id,
-      result.value,
-      "The typeahead result should match the ID"
+                 result.value,
+                 "The typeahead result should match the ID"
   end
 end

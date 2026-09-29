@@ -29,6 +29,6 @@ class SearchOnInstanceAdnotExactNoWildCardTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?,
-      "No instances with adnot expected."
+           "No instances with adnot expected."
   end
 end

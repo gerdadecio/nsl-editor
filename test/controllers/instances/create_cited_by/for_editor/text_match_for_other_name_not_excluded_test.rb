@@ -35,8 +35,8 @@ class InstancesCreateCitedByTextMatchNotExcludedTest < ActionController::TestCas
 
   test "exact text match for a different name still succeeds with context_name_id set" do
     assert_not_equal @name.id,
-      @cited_by.name.id,
-      "Fixture sanity check: target name and context name must differ"
+                     @cited_by.name.id,
+                     "Fixture sanity check: target name and context name must differ"
 
     assert_difference("Instance.count") do
       post(

@@ -26,15 +26,15 @@ class InstanceNotesControllerTest < ActionController::TestCase
 
   test "instance notes index should route to the catch-all" do
     assert_routing "/instance_notes",
-      controller: "search",
-      action: "search",
-      random: "instance_notes"
+                   controller: "search",
+                   action: "search",
+                   random: "instance_notes"
   end
 
   test "instance notes new should route to a new instance note" do
     assert_routing "/instance_notes/new",
-      controller: "instance_notes",
-      action: "new"
+                   controller: "instance_notes",
+                   action: "new"
   end
 
   test "should get new" do
@@ -73,14 +73,14 @@ class InstanceNotesControllerTest < ActionController::TestCase
   test "should show instance_note" do
     @request.headers["Accept"] = "application/javascript"
     get :show,
-      params: { id: @instance_note }
+        params: { id: @instance_note }
     assert_response :success
   end
 
   test "should get edit" do
     @request.headers["Accept"] = "application/javascript"
     get :edit,
-      params: { id: @instance_note }
+        params: { id: @instance_note }
     assert_response :success
   end
 

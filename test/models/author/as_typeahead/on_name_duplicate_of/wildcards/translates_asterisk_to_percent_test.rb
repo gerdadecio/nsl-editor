@@ -23,6 +23,6 @@ class AuthTAheadsOnNameDupeOfWcardsTransAst2Percent < ActiveSupport::TestCase
   test "typeahead on name dup of wildcards translates asterisk to percent" do
     results = Author::AsTypeahead.on_name_duplicate_of("*", -1)
     assert_not results.empty?,
-      "Should be at least one result for asterisk wildcard"
+               "Should be at least one result for asterisk wildcard"
   end
 end

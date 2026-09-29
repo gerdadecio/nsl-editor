@@ -25,11 +25,11 @@ class SearchOnReferenceTitleExactSimpleNegativeTest < ActiveSupport::TestCase
     reference = references(:nuytsia)
     params =  ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "title-exact: #{reference.title}.chop",
-        current_user: build_edit_user)
+           query_string: "title-exact: #{reference.title}.chop",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert search.executed_query.results.empty?, "No results expected."
   end
 end

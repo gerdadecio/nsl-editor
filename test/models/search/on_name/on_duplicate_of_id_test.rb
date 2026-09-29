@@ -31,10 +31,10 @@ class SearchOnNameOnDuplicateOfIdTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_equal Array,
-      search.executed_query.results.class,
-      "Results should be an Array"
+                 search.executed_query.results.class,
+                 "Results should be an Array"
     assert_equal 1,
-      search.executed_query.results.size,
-      "Exactly 1 result is expected."
+                 search.executed_query.results.size,
+                 "Exactly 1 result is expected."
   end
 end

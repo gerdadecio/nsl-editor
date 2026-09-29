@@ -68,7 +68,7 @@ class TaxFormsTreeBuilderAPCUserCannotReplacePlacementOnFOADraftTest < ActionCon
     )
     assert_response :forbidden, "APC tree builder should be not able to replace_placement on FOA draft entry"
     assert_match "You are not authorized to replace",
-      response.body,
-      "Expecting Not authorized message"
+                 response.body,
+                 "Expecting Not authorized message"
   end
 end

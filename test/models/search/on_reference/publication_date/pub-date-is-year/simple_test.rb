@@ -24,11 +24,11 @@ class SearchOnReferencePubDateIsYearTest < ActiveSupport::TestCase
   test "search for ref with publication date which is a year" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "pub-date-is-year:",
-        current_user: build_edit_user)
+           query_string: "pub-date-is-year:",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

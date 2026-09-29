@@ -38,8 +38,8 @@ class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li.active a#reference-edit-show-1-tab",
-      /Details/,
-      "Does not show 'Details' tab link."
+                  /Details/,
+                  "Does not show 'Details' tab link."
     asserts
   end
 

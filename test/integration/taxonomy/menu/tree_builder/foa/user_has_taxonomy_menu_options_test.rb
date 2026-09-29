@@ -35,8 +35,8 @@ class TreeBuilderFoaUserHasTaxonomyMenuOptionsTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "a",
-      /FOA draft version/,
-      "Should show FOA draft version menu link."
+                  /FOA draft version/,
+                  "Should show FOA draft version menu link."
     assert_select "a", { count: 0, text: "APC draft version" }, "Should not show APC draft version"
     assert_select "a", { count: 0, text: "Create draft taxonomy" }, "Should not show Create Draft Taxonomy menu link"
   end

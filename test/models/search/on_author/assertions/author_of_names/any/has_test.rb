@@ -31,6 +31,6 @@ class SearchOnAuthorAssertionAuthorOfNameAnyHasTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Should find at least one author of a name in any way."
+               "Should find at least one author of a name in any way."
   end
 end

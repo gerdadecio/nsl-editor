@@ -29,9 +29,9 @@ class MustNotExcludeNamesWithoutAnInstanceTest < ActiveSupport::TestCase
   test "name parent suggestions should not exclude names without an instance" do
     name = Name.find_by(full_name: "a genus without an instance")
     assert name.present?,
-      'The name "a genus without an instance" should be found.'
+           'The name "a genus without an instance" should be found.'
     assert name.instances.empty?,
-      "The name 'a genus without an instance' should have no instances."
+           "The name 'a genus without an instance' should have no instances."
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "a genus without an instance",
       avoid_id: 1,

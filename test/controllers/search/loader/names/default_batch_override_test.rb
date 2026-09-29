@@ -44,8 +44,8 @@ class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionController::Test
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /\b1 record*\b/,
-      "Any-batch target should find Hardenbergia violacea even though the default batch is 'Batch Two'"
+                  /\b1 record*\b/,
+                  "Any-batch target should find Hardenbergia violacea even though the default batch is 'Batch Two'"
   end
 
   test "plain loader names target, for contrast, is restricted to the default batch" do
@@ -68,8 +68,8 @@ class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionController::Test
     # query's actual row count instead, the same value the view would use
     # to render "N records" when there is at least one.
     assert_equal 0,
-      assigns(:search).executed_query.count,
-      "Plain 'loader names' target should be restricted to the default batch " \
-        "'Batch Two' and so should NOT find Hardenbergia violacea, which lives in 'Batch One'"
+                 assigns(:search).executed_query.count,
+                 "Plain 'loader names' target should be restricted to the default batch " \
+                   "'Batch Two' and so should NOT find Hardenbergia violacea, which lives in 'Batch One'"
   end
 end

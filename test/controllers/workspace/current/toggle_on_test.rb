@@ -38,8 +38,8 @@ class WorkspaceCurrentToggleOnTest < ActionController::TestCase
     )
     assert_response :success
     assert @request.session["draft"].present?,
-      "Session draft expected, but not there."
+           "Session draft expected, but not there."
     assert @request.session["draft"]["id"].to_i == @tree.id,
-      "Session draft ID should match expected."
+           "Session draft ID should match expected."
   end
 end

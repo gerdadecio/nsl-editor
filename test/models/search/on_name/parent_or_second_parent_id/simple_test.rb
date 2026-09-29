@@ -33,7 +33,7 @@ class SearchOnNameParentOr2ndParentIdSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Exactly 1 result expected for parent-or-2nd-parent-id search."
+                 search.executed_query.results.size,
+                 "Exactly 1 result expected for parent-or-2nd-parent-id search."
   end
 end

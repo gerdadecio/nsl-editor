@@ -2,15 +2,15 @@ inherit_mode:
   merge:
     - Exclude
 
-inherit_gem:
-  rubocop-shopify: rubocop.yml
+#inherit_gem:
+  #rubocop-shopify: rubocop.yml
 
 plugins:
   - rubocop-rails
   - rubocop-performance
 
-inherit_from:
-  - .rubocop_strict.yml
+#inherit_from:
+  #- .rubocop_strict.yml
 
 AllCops:
   TargetRubyVersion: 3.4.8

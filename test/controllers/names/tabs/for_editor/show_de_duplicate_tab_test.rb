@@ -38,7 +38,7 @@ class NameShowDeDuplicateTabForEditorTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li a#name-de-duplicate-tab",
-      "De-duplicate",
-      "Should show 'De-duplicate' tab."
+                  "De-duplicate",
+                  "Should show 'De-duplicate' tab."
   end
 end

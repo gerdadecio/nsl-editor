@@ -40,7 +40,7 @@ class SearchRefsDQRefSharedNamesListMT2IDTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /Exactly 2 reference IDs are expected/,
-      "Should report Reference does not exist"
+                  /Exactly 2 reference IDs are expected/,
+                  "Should report Reference does not exist"
   end
 end

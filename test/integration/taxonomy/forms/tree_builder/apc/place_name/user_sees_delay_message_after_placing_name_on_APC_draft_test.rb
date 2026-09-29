@@ -61,8 +61,8 @@ class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest <
         }
       )
       .to_return(status: 200,
-        body: { ok: true, payload: { message: "Placed on the draft" } }.to_json,
-        headers: {})
+                 body: { ok: true, payload: { message: "Placed on the draft" } }.to_json,
+                 headers: {})
   end
 
   test "APC tree builder user is told a placement may be delayed" do
@@ -95,7 +95,7 @@ class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest <
     assert_response :success, "APC tree builder should be able to place a name on APC draft"
     assert_template "place_name"
     assert_includes @response.body,
-      "Placed on the draft",
-      "Placing should report what the services said"
+                    "Placed on the draft",
+                    "Placing should report what the services said"
   end
 end

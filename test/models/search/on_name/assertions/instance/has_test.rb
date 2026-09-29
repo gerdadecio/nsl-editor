@@ -28,6 +28,6 @@ class SearchOnNameAssertionHasInstancesTest < ActiveSupport::TestCase
       current_user: build_edit_user
     ))
     assert_not search.executed_query.results.empty?,
-      "Should find name that has an instance."
+               "Should find name that has an instance."
   end
 end

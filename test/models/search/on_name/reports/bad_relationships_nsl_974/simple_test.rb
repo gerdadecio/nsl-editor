@@ -32,6 +32,6 @@ class SearchOnNameReportsBadRelationshipsNsl974Test < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_not search.executed_query.results.empty?,
-      "Expected at least 1 result for bad-relationships-974:"
+               "Expected at least 1 result for bad-relationships-974:"
   end
 end

@@ -38,7 +38,7 @@ class ReaderSearchContNamesExBaseAuthorIdListTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /\b1 name\b/,
-      "Should find name for ex base author ID: #{author.id}"
+                  /\b1 name\b/,
+                  "Should find name for ex base author ID: #{author.id}"
   end
 end

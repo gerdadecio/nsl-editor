@@ -28,8 +28,8 @@ class TaxFormsTreePubAPCPublishErrorRendersJsonErrorFieldTest < ActionController
   def setup
     stub_request(:put, /http:..localhost:90...nsl.services.api.treeVersion.publish.apiKey=test-api-key.as=apc-tax-publisher/)
       .to_return(status: 200,
-        body: '{"ok":false,"error":"Publishing service unavailable"}',
-        headers: { "Content-Type" => "application/json" })
+                 body: '{"ok":false,"error":"Publishing service unavailable"}',
+                 headers: { "Content-Type" => "application/json" })
   end
 
   test "publish failure renders the error field from the JSON response" do

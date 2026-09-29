@@ -28,6 +28,6 @@ class THOnCitn4ParRefTypeRestrictionNothingForSeries < ActiveSupport::TestCase
       ref_types(:series).id
     )
     assert typeahead.results.empty?,
-      "Should be no results because series takes no parent."
+           "Should be no results because series takes no parent."
   end
 end

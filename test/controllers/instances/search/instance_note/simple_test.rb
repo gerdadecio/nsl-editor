@@ -39,10 +39,10 @@ class InstanceSearchOnInstanceNoteSimpleTest < ActionController::TestCase
     assert_response :success
     assert_select "span#search-results-summary", true, "Should find 1 record"
     assert_select "span#search-results-summary",
-      /\b1 record\b/,
-      "Should find 1 record"
+                  /\b1 record\b/,
+                  "Should find 1 record"
     assert_select "tr#search-result-#{instance.id}",
-      true,
-      "Should find the instance."
+                  true,
+                  "Should find the instance."
   end
 end

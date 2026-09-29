@@ -45,69 +45,69 @@ class SearchOnAuthorApiNameSimpleTest < ActiveSupport::TestCase
 
   test "api-name: matches the author changed by that api" do
     assert_includes search_ids("api-name: jira-sync"),
-      authors(:bentham).id,
-      "Expected the author changed by jira-sync in the results"
+                    authors(:bentham).id,
+                    "Expected the author changed by jira-sync in the results"
   end
 
   test "api-name: excludes an author changed by another api" do
     assert_not_includes search_ids("api-name: jira-sync"),
-      authors(:hooker).id,
-      "Expected the author changed by batch-loader to be excluded"
+                        authors(:hooker).id,
+                        "Expected the author changed by batch-loader to be excluded"
   end
 
   test "api-name: ignores case" do
     assert_includes search_ids("api-name: JIRA-SYNC"),
-      authors(:bentham).id,
-      "Expected the search to be case insensitive"
+                    authors(:bentham).id,
+                    "Expected the search to be case insensitive"
   end
 
   test "api-name: adds wildcards at both ends" do
     assert_includes search_ids("api-name: sync"),
-      authors(:bentham).id,
-      "Expected a partial search term to match"
+                    authors(:bentham).id,
+                    "Expected a partial search term to match"
     assert_includes search_ids("api-name: loader"),
-      authors(:hooker).id,
-      "Expected a partial search term to match"
+                    authors(:hooker).id,
+                    "Expected a partial search term to match"
   end
 
   test "api-name: excludes an author never changed by an api" do
     assert_not_includes search_ids("api-name: sync"),
-      authors(:britten).id,
-      "Expected an author with no api_name to be excluded"
+                        authors(:britten).id,
+                        "Expected an author with no api_name to be excluded"
   end
 
   test "has-api-name: includes an author changed by an api" do
     ids = search_ids("has-api-name: #{ALL}")
     assert_includes ids,
-      authors(:bentham).id,
-      "Expected the author changed by jira-sync in the results"
+                    authors(:bentham).id,
+                    "Expected the author changed by jira-sync in the results"
     assert_includes ids,
-      authors(:hooker).id,
-      "Expected the author changed by batch-loader in the results"
+                    authors(:hooker).id,
+                    "Expected the author changed by batch-loader in the results"
   end
 
   test "has-api-name: excludes an author never changed by an api" do
     assert_not_includes search_ids("has-api-name: #{ALL}"),
-      authors(:britten).id,
-      "Expected an author with no api_name to be excluded"
+                        authors(:britten).id,
+                        "Expected an author with no api_name to be excluded"
   end
 
   test "has-no-api-name: includes an author never changed by an api" do
     assert_includes search_ids("has-no-api-name: #{ALL}"),
-      authors(:britten).id,
-      "Expected an author with no api_name in the results"
+                    authors(:britten).id,
+                    "Expected an author with no api_name in the results"
   end
 
   test "has-no-api-name: excludes an author changed by an api" do
     assert_not_includes search_ids("has-no-api-name: #{ALL}"),
-      authors(:bentham).id,
-      "Expected the author changed by jira-sync to be excluded"
+                        authors(:bentham).id,
+                        "Expected the author changed by jira-sync to be excluded"
   end
 
   test "the two directives return disjoint result sets" do
     with_api_name = search_ids("has-api-name: #{ALL}")
     without_api_name = search_ids("has-no-api-name: #{ALL}")
     assert_empty with_api_name & without_api_name,
-      "An author cannot both have and not have an api name"
+                 "An author cannot both have and not have an api name"
   end
 end

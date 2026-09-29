@@ -39,8 +39,8 @@ class SearchParsedRequestList20Test < ActiveSupport::TestCase
     assert parsed_request.limited, "Should be parsed as a query with a limit."
     assert_equal parsed_request.limit, 20, "Should be parsed with limit of 20."
     assert_not parsed_request.common_and_cultivar,
-      "Should be parsed as query excluding common and cultivars."
+               "Should be parsed as query excluding common and cultivars."
     assert parsed_request.where_arguments.blank?,
-      "Should be parsed as a query with no where arguments."
+           "Should be parsed as a query with no where arguments."
   end
 end

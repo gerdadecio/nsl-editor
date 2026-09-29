@@ -29,6 +29,6 @@ class SearchOnInstanceNoteKeyNoteTypeSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching notes of key type expected."
+               "Instances with matching notes of key type expected."
   end
 end

@@ -33,7 +33,7 @@ class SearchOnName2ndParIdCultivarsInclByDefaultTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Expect cultivar name to be included for 2nd parent id query"
+                 search.executed_query.results.size,
+                 "Expect cultivar name to be included for 2nd parent id query"
   end
 end

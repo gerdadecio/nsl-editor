@@ -61,7 +61,7 @@ class TaxFormsNoRoleUserCannotRemoveNamePlacementForTaxonOnFOADraftTest < Action
       }
     )
     assert_response :forbidden,
-      "No Role User should not be allowed to remove placement from FOA draft"
+                    "No Role User should not be allowed to remove placement from FOA draft"
     assert_match(
       /Access denied/i,
       response.body,

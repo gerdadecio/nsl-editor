@@ -31,9 +31,9 @@ class SearchOnRefCitTextPrefixFragmentAnomaliesDupTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 2,
-      search.executed_query.results.size,
-      "Two results expected"
+                 search.executed_query.results.size,
+                 "Two results expected"
   end
 end

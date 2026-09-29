@@ -37,8 +37,8 @@ class ReferenceEditorShowEdit1TabTest < ActionController::TestCase
       }
     )
     assert_select "li.active a#reference-edit-1-tab",
-      /Edit\./,
-      "Should show 'Edit 1' tab."
+                  /Edit\./,
+                  "Should show 'Edit 1' tab."
     assert_select "form", true
     assert_select "select#reference_ref_type_id", true
     assert_select "input#reference-parent-typeahead", true

@@ -37,8 +37,8 @@ class AuthorEditorShowEditTest < ActionController::TestCase
       }
     )
     assert_select "li.active a#author-edit-tab",
-      "Edit",
-      "Should show 'Edit' tab."
+                  "Edit",
+                  "Should show 'Edit' tab."
     assert_select "form", true
     assert_select "input#author_name", true
     assert_select "input#author_abbrev", true

@@ -31,6 +31,6 @@ class SearchOnAuthorAssertionSanctioningOfNameHasTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Should find at least one sanctioned name."
+               "Should find at least one sanctioned name."
   end
 end

@@ -29,6 +29,6 @@ class TypeaheadsOnCit4ParWorks4NewRecWNoIdTest < ActiveSupport::TestCase
       curr.ref_type_id
     )
     assert_not typeahead.results.empty?,
-      "Should be at least one result for asterisk wildcard"
+               "Should be at least one result for asterisk wildcard"
   end
 end

@@ -28,7 +28,7 @@ class TypeaheadsOnCitationForParWordCount3ChaplinsTest < ActiveSupport::TestCase
       ref_types(:paper).id
     )
     assert_equal 1,
-      typeahead.results.size,
-      "Should be exactly one record returned."
+                 typeahead.results.size,
+                 "Should be exactly one record returned."
   end
 end

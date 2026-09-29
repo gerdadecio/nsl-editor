@@ -28,7 +28,7 @@ class TypeaheadsOnCitForParWordCountTwoChaplinsTest < ActiveSupport::TestCase
       ref_types(:paper).id
     )
     assert_equal 2,
-      typeahead.results.size,
-      "Should be exactly two records returned."
+                 typeahead.results.size,
+                 "Should be exactly two records returned."
   end
 end

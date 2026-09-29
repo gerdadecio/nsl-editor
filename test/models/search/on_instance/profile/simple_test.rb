@@ -29,7 +29,7 @@ class SearchOnInstanceProfileSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching profile item expected."
+               "Instances with matching profile item expected."
   end
 
   test "search on instance without profile result" do
@@ -40,7 +40,7 @@ class SearchOnInstanceProfileSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?,
-      "No profile item result"
+           "No profile item result"
   end
 
   test "search on instance profile default result" do
@@ -51,7 +51,7 @@ class SearchOnInstanceProfileSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with profile items return by default."
+               "Instances with profile items return by default."
   end
 
   test "search on instance id and profile result" do
@@ -62,6 +62,6 @@ class SearchOnInstanceProfileSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching profile item expected."
+               "Instances with matching profile item expected."
   end
 end

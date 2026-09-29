@@ -40,8 +40,8 @@ class TaxoInstanceTreeBuilderAPCCannotSeeFOATreeTab < ActionController::TestCase
     )
     assert_response :success, "Tree tab request should be successful"
     assert_match "You do not have permission to place names in this draft taxonomy.",
-      response.body,
-      "Tab should inform user they lack permission"
+                 response.body,
+                 "Tab should inform user they lack permission"
     assert_no_match "<form", response.body, "Tab should not contain a form"
   end
 end

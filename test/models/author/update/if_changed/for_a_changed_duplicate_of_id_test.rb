@@ -35,12 +35,12 @@ class ForAChangedDuplicateOfIdTest < ActiveSupport::TestCase
   test "changed duplicate of id" do
     changed_author = Author.find_by(id: @author.id)
     assert_equal authors(:brongn).id,
-      changed_author.duplicate_of_id,
-      "Duplicate of id should have changed to the new value"
+                 changed_author.duplicate_of_id,
+                 "Duplicate of id should have changed to the new value"
     assert_match "a user",
-      changed_author.updated_by,
-      "Author.updated_by should have changed to the updating user"
+                 changed_author.updated_by,
+                 "Author.updated_by should have changed to the updating user"
     assert @author.created_at < changed_author.updated_at,
-      "Author updated at should have changed."
+           "Author updated at should have changed."
   end
 end

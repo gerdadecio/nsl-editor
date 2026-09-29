@@ -40,8 +40,8 @@ class TaxoInstanceTreeBuilderFoaCanSeeFoaTreeTab < ActionController::TestCase
     )
     assert_response :success, "Tree builder should see Tree tab for Instance with FoA Tree Active"
     assert_match 'data-tab-name="tab_classification" href="#">Tree</a>',
-      response.body,
-      "Tab Classification should be in the response"
+                 response.body,
+                 "Tab Classification should be in the response"
     assert_match "<form", response.body, "Tab should contain a form"
   end
 end

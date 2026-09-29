@@ -28,6 +28,6 @@ class SearchOnNameeAssertionHasNoSecondParentTest < ActiveSupport::TestCase
       current_user: build_edit_user
     ))
     assert_not search.executed_query.results.empty?,
-      "Should find name that has no second parent."
+               "Should find name that has no second parent."
   end
 end

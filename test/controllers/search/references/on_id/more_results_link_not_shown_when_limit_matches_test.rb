@@ -57,8 +57,8 @@ class SearchRefsOnIdMoreResultsLinkNotShownWhenLimitMatchesTest < ActionControll
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should find 1 record"
+                  /1 record\b/,
+                  "Should find 1 record"
     # NOTES (test fix): the wrapping span itself
     # (#search-results-limited-notice) always renders whenever
     # total >= limit - which, with Search::OnModel::ListQuery#limited
@@ -67,9 +67,9 @@ class SearchRefsOnIdMoreResultsLinkNotShownWhenLimitMatchesTest < ActionControll
     # protects is the absence of the link itself, not the (harmless,
     # empty) wrapping span.
     assert_select "#search-results-limited-notice a",
-      false,
-      "No 'List more'/'List all' link should appear when the " \
-        "limit already covers every matching reference, however " \
-        "many instances that reference has attached"
+                  false,
+                  "No 'List more'/'List all' link should appear when the " \
+                    "limit already covers every matching reference, however " \
+                    "many instances that reference has attached"
   end
 end

@@ -8,6 +8,6 @@ class LoaderBatchCountReviewPeriodsTest < ActiveSupport::TestCase
 
   test "Count review periods" do
     assert @batch_one.review_periods_in_any_review.size == 2,
-      "Batch One should have 2 Review Periods"
+           "Batch One should have 2 Review Periods"
   end
 end

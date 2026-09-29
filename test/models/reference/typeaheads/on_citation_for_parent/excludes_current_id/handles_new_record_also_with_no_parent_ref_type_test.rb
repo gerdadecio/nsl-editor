@@ -28,6 +28,6 @@ class TheadsOnCit4ParWks4NewRecAlsoWNoParRefTypeTest < ActiveSupport::TestCase
       curr.ref_type_id
     )
     assert typeahead.results.empty?,
-      "Should be no results for new record with missing ref type"
+           "Should be no results for new record with missing ref type"
   end
 end

@@ -30,7 +30,7 @@ class SrchOnRefRepParRefWrongChildTypeSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_equal 7,
-      search.executed_query.results.size,
-      "Expected 7 results for parent-ref-wrong-child-type:"
+                 search.executed_query.results.size,
+                 "Expected 7 results for parent-ref-wrong-child-type:"
   end
 end

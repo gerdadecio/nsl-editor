@@ -31,8 +31,8 @@ class RefTypeaheadOnCit4DupNonDiacriticFindsBothTest < ActiveSupport::TestCase
     assert_equal 2, typeahead.results.length, "Expecting 2 record for 'Hulten'."
     ids = typeahead.results.collect { |reference| reference[:id] }
     assert ids.include?(references(:hulten_with_diacritic).id.to_s),
-      "Expecting hulten_with_diacritic"
+           "Expecting hulten_with_diacritic"
     assert ids.include?(references(:hulten_without_diacritic).id.to_s),
-      "Expecting hulten_without_diacritic"
+           "Expecting hulten_without_diacritic"
   end
 end

@@ -24,7 +24,7 @@ class RefARTA4AutNoIdWPartValidStringMatchingOneAuthor < ActiveSupport::TestCase
     author = authors(:chaplin)
     result = Reference::AsResolvedTypeahead::ForAuthor.new("", author.name.chop)
     assert_equal author.id,
-      result.value,
-      "Should get a matching id for the author"
+                 result.value,
+                 "Should get a matching id for the author"
   end
 end

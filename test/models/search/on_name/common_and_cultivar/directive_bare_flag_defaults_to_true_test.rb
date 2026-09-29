@@ -34,8 +34,8 @@ class SearchOnNameNameDirectiveBareFlagDefaultsToTrueTest < ActiveSupport::TestC
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Expected common name because the bare directive defaults to true"
+                 search.executed_query.results.size,
+                 "Expected common name because the bare directive defaults to true"
   end
 
   test "search on name name bare icc abbreviation defaults to true" do
@@ -47,7 +47,7 @@ class SearchOnNameNameDirectiveBareFlagDefaultsToTrueTest < ActiveSupport::TestC
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Expected common name because the bare icc: abbreviation defaults to true"
+                 search.executed_query.results.size,
+                 "Expected common name because the bare icc: abbreviation defaults to true"
   end
 end

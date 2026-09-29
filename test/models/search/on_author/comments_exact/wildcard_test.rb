@@ -29,6 +29,6 @@ class SearchOnAuthorCommentsExactWildcardTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Author with comment for comments-exact wildcard search expected."
+               "Author with comment for comments-exact wildcard search expected."
   end
 end

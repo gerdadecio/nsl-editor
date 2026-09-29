@@ -38,8 +38,8 @@ class ReferenceEditorShowCommentsTabTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li.active a#reference-comments-tab",
-      "Comments",
-      "Should show 'Comments' tab."
+                  "Comments",
+                  "Should show 'Comments' tab."
     assert_select "form", true
     assert_select "textarea#comment_text", true
   end

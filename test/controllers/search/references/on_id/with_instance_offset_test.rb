@@ -43,7 +43,7 @@ class SearchRefsOnIdWithInstanceOffsetTest < ActionController::TestCase
     # on_id/with_instances_test.rb for why this is "1 record" rather than
     # the old combined "28".
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should find 1 record"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

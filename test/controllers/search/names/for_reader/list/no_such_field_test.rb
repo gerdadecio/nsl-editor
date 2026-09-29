@@ -33,7 +33,7 @@ class ReaderSearchControllerNamesNoSuchFieldTest < ActionController::TestCase
       }
     )
     assert_select "span#search-results-summary",
-      /Cannot search names for: not-a-real-field:./,
-      "Should get error message."
+                  /Cannot search names for: not-a-real-field:./,
+                  "Should get error message."
   end
 end

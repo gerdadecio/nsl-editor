@@ -29,6 +29,6 @@ class SearchOnInstanceNameSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching names expected."
+               "Instances with matching names expected."
   end
 end

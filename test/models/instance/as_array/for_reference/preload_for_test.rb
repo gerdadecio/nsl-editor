@@ -45,8 +45,8 @@ class InstanceAsArrayForReferencePreloadForTest < ActiveSupport::TestCase
       ).results.map(&:id)
 
       assert_equal separately_queried,
-        from_preload,
-        "Batched results for #{ref.citation} should match querying it alone"
+                   from_preload,
+                   "Batched results for #{ref.citation} should match querying it alone"
     end
   end
 
@@ -79,11 +79,11 @@ class InstanceAsArrayForReferencePreloadForTest < ActiveSupport::TestCase
     end
 
     assert_operator batched_count,
-      :<,
-      per_reference_count,
-      "Expected preload_for (#{batched_count} queries) to cost less than " \
-        "querying these #{refs.size} references one at a time " \
-        "(#{per_reference_count} queries)"
+                    :<,
+                    per_reference_count,
+                    "Expected preload_for (#{batched_count} queries) to cost less than " \
+                      "querying these #{refs.size} references one at a time " \
+                      "(#{per_reference_count} queries)"
   end
 
   private

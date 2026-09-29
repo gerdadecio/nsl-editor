@@ -27,7 +27,7 @@ class RefARTA4PNoIdWValidStringWithTrailingWhitespace < ActiveSupport::TestCase
       "#{reference.citation} "
     )
     assert_equal reference.id,
-      result.value,
-      "Should get a matching id for the reference"
+                 result.value,
+                 "Should get a matching id for the reference"
   end
 end

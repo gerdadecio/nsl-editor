@@ -52,7 +52,7 @@ class TreePublisherWithRolesCanCreateDraftForNonAcceptedTreeTest < ActionControl
     )
     assert_response :success
     assert_select "a#create-draft-taxonomy-menu-link",
-      /Create draft taxonomy for FOA/,
-      "Should show Create Draft Taxonomy link for FOA even though it's a non-accepted tree, because user has roles."
+                  /Create draft taxonomy for FOA/,
+                  "Should show Create Draft Taxonomy link for FOA even though it's a non-accepted tree, because user has roles."
   end
 end

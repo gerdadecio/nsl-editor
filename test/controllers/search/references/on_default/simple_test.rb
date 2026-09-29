@@ -34,7 +34,7 @@ class SearchRefsOnDefaultSimpleTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should find 1 record"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

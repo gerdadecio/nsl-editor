@@ -29,6 +29,6 @@ class SearchOnAuthorCommentsExactNeedsWildcardTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?,
-      "No author with comment for comments-exact search expected."
+           "No author with comment for comments-exact search expected."
   end
 end

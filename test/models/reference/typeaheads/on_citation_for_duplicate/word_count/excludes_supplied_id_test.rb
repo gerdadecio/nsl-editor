@@ -28,7 +28,7 @@ class TAOnCitationForDuplicateExcludesSuppliedIdTest < ActiveSupport::TestCase
     )
     assert_equal 1, typeahead.results.size, "Should be just one result"
     assert_equal references(:walsh_paper_in_walsh_book).id,
-      typeahead.results.first[:id].to_i,
-      "Unexpected typeahead suggestion."
+                 typeahead.results.first[:id].to_i,
+                 "Unexpected typeahead suggestion."
   end
 end

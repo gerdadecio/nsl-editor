@@ -29,9 +29,9 @@ class NeedsUpdatedBy < ActiveSupport::TestCase
       created_by: "tester"
     )
     assert_not name_tag_name.valid?,
-      "Name Tag Name record should not be valid without updated_by."
+               "Name Tag Name record should not be valid without updated_by."
     name_tag_name.updated_by = "tester"
     assert name_tag_name.valid?,
-      "Name Tag Name record should now be valid with updated_by."
+           "Name Tag Name record should now be valid with updated_by."
   end
 end

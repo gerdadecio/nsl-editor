@@ -34,7 +34,7 @@ class SearchNamesAsRderListAssertHasNoPrimInstTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /[0-9][0-9] names\b/,
-      "Should find some names"
+                  /[0-9][0-9] names\b/,
+                  "Should find some names"
   end
 end

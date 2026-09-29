@@ -43,10 +43,10 @@ class NameSrch4NameTypeCommSetCommCultFlagTrueTest < ActionController::TestCase
     assert_response :success
     assert_select "input.checkbox[type=checkbox]
                   [id=query_common_and_cultivar][value=t]",
-      true,
-      "The query-common-and-cultivar checkbox should be true"
+                  true,
+                  "The query-common-and-cultivar checkbox should be true"
     assert_select "tr[id=search-result-#{common.id}]",
-      true,
-      "Should find one common at least"
+                  true,
+                  "Should find one common at least"
   end
 end

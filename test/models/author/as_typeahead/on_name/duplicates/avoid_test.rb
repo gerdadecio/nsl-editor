@@ -24,6 +24,6 @@ class AuthorTypeaheadsOnNameDuplicatesAvoidTest < ActiveSupport::TestCase
     duplicate = authors(:schlechter_a_duplicate)
     results = Author::AsTypeahead.on_name("schlechter")
     assert_not results.collect { |r| r[:id] }.include?(duplicate.id.to_s),
-      "Duplicate author should not be in typeahead"
+               "Duplicate author should not be in typeahead"
   end
 end

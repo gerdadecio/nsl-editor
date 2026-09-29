@@ -28,7 +28,7 @@ class RefARTA4AutIdWStringMatchingAnotherReferenceTest < ActiveSupport::TestCase
       author_2.name
     )
     assert_equal author_2.id,
-      result.value,
-      "Should get a matching id for the name despite mismatched ID"
+                 result.value,
+                 "Should get a matching id for the name despite mismatched ID"
   end
 end

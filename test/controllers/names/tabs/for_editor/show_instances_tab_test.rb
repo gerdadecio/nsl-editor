@@ -39,7 +39,7 @@ class NameShowInstanceTabForEditorTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li.active a#name-instances-tab",
-      "New instance",
-      "Should show 'New instance' tab."
+                  "New instance",
+                  "Should show 'New instance' tab."
   end
 end

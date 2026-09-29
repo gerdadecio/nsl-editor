@@ -29,6 +29,6 @@ class SearchOnInstanceAdnotBySimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with adnot by greg expected."
+               "Instances with adnot by greg expected."
   end
 end

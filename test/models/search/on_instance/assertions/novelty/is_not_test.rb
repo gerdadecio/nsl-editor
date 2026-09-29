@@ -32,6 +32,6 @@ class SearchOnInstanceIsNotNoveltyTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Expected results for is-not-novelty: — fixtures include non-primary instance types"
+               "Expected results for is-not-novelty: — fixtures include non-primary instance types"
   end
 end

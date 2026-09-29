@@ -56,7 +56,7 @@ class TaxFormsTreeBuilderAPCUserCannotUpdateTreeParentForTaxonOnFOADraftTest < A
     )
     assert_response :forbidden, "APC tree builder should be not able to update distribution on APC draft entry"
     assert_match "Not authorized to update or delete FOA draft taxon parent",
-      response.body,
-      "Expecting Not authorized message"
+                 response.body,
+                 "Expecting Not authorized message"
   end
 end

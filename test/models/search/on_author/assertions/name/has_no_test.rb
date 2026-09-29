@@ -31,6 +31,6 @@ class SearchOnAuthorAssertionNameHasNoTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Should find authors with no name."
+               "Should find authors with no name."
   end
 end

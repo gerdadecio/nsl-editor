@@ -34,6 +34,6 @@ class SearchOnInstanceIsNotRelationshipTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Expected results for is-not-relationship: — fixtures include comb_nov instances"
+               "Expected results for is-not-relationship: — fixtures include comb_nov instances"
   end
 end

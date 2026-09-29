@@ -34,7 +34,7 @@ class ReaderSearchControllerNamesSimpleListTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /\b1 name\b/,
-      "Should find recs for a simple search on 'angophora costata'"
+                  /\b1 name\b/,
+                  "Should find recs for a simple search on 'angophora costata'"
   end
 end

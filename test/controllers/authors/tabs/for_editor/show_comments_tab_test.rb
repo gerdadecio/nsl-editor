@@ -38,8 +38,8 @@ class AuthorEditorShowCommentsTabTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li.active a#author-comments-tab",
-      "Comments",
-      "Should show 'Comments' tab."
+                  "Comments",
+                  "Should show 'Comments' tab."
     assert_select "form", true
     assert_select "textarea#comment_text", true
   end

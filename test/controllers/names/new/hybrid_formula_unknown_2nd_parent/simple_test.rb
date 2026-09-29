@@ -38,7 +38,7 @@ class NamesNewScientHybridFormulaUnk2ParSimpleTest < ActionController::TestCase
       xhr: true
     )
     assert_response :success,
-      "Cannot open form for a new scientific hybrid formula
+                    "Cannot open form for a new scientific hybrid formula
                     unknown 2nd parent name"
     assert_select("h4", /New Scientific Hybrid Formula Unknown 2nd Parent Name/)
   end

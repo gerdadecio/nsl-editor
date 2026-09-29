@@ -24,11 +24,11 @@ class SearchOnReferencePublishedLocationSimpleTest < ActiveSupport::TestCase
   test "search on reference published location simple" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "published-location: Brisbane",
-        current_user: build_edit_user)
+           query_string: "published-location: Brisbane",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

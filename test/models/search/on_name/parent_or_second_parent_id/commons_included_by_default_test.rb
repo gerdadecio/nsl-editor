@@ -33,7 +33,7 @@ class SearchOnNameParOr2ndParIdCommonsIncludedDefTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Expected common name for parent or 2nd parent ID query"
+                 search.executed_query.results.size,
+                 "Expected common name for parent or 2nd parent ID query"
   end
 end

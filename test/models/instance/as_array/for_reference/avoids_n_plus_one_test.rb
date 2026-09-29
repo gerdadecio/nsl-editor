@@ -77,12 +77,12 @@ class InstanceAsArrayForReferenceAvoidsNPlusOneTest < ActiveSupport::TestCase
   test "instance query count does not scale with the number of standalone instances" do
     query_count = count_instance_load_queries { Instance::AsArray::ForReference.new(@ref) }
     assert_operator query_count,
-      :<,
-      STANDALONE_COUNT,
-      "Expected the number of Instance-table queries to stay well below " \
-        "the number of standalone instances (#{STANDALONE_COUNT}) - got " \
-        "#{query_count}, which suggests a query is again being issued per " \
-        "standalone instance"
+                    :<,
+                    STANDALONE_COUNT,
+                    "Expected the number of Instance-table queries to stay well below " \
+                      "the number of standalone instances (#{STANDALONE_COUNT}) - got " \
+                      "#{query_count}, which suggests a query is again being issued per " \
+                      "standalone instance"
   end
 
   private

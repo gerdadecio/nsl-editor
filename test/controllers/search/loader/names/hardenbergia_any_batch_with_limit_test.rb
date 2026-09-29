@@ -34,7 +34,7 @@ class SearchLoaderNameHardenbergiaAnyBatchWithLimitTest < ActionController::Test
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /\b1 record*\b/,
-      "Should find one loader name record with any-batch search for Hardenbergia violacea"
+                  /\b1 record*\b/,
+                  "Should find one loader name record with any-batch search for Hardenbergia violacea"
   end
 end

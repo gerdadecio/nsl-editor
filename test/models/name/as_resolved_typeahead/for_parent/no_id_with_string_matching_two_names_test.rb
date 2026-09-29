@@ -23,7 +23,7 @@ class NameARTA4ParentIdWithStringMatchingTwoNamesTest < ActiveSupport::TestCase
   test "no id with string matching two names" do
     name_1 = names(:name_matches_another_1)
     assert Name.where(full_name: name_1.full_name).size == 2,
-      "Should be two Names with the same full name string."
+           "Should be two Names with the same full name string."
     assert_raise(
       RuntimeError,
       "Should raise a RuntimeError for invalid author string."

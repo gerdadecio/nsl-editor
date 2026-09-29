@@ -36,8 +36,8 @@ class TreePublisherApcTaxoMenuOptions < ActionController::TestCase
     )
     assert_response :success
     assert_select "a",
-      /APC draft version/,
-      "Should show APC draft version menu link."
+                  /APC draft version/,
+                  "Should show APC draft version menu link."
     assert_select "a", { count: 0, text: "FOA draft version" }, "Should not show FOA draft version"
     assert_select "li", /.*APC Tree already has.*/i, "Should say APC Tree already has draft"
   end

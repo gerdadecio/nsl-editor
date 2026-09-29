@@ -23,9 +23,9 @@ class HybridParentMustAllowNamesWithoutAnInstanceTest < ActiveSupport::TestCase
   test "name parent suggestions allows names without an instance" do
     name = Name.find_by(full_name: "a species without an instance")
     assert name.present?,
-      'Target name "a species without an instance" should be found'
+           'Target name "a species without an instance" should be found'
     assert name.instances.empty?,
-      "The name 'a species without an instance' should have no instances."
+           "The name 'a species without an instance' should have no instances."
     suggestions =
       Name::AsTypeahead.hybrid_parent_suggestions(
         "a species without an instance",

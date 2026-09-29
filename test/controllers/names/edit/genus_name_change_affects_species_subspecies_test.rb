@@ -52,7 +52,7 @@ class GenusNameChangeAffectsSpAndSubspeciesTest < ActionController::TestCase
     # puts genus.full_name
     # puts genus_afterwards.full_name
     assert genus.full_name != genus_afterwards.full_name,
-      "The genus name should change."
+           "The genus name should change."
     sleep(2) # to allow for the asynch job
     # puts species.id
     # puts species.parent_id
@@ -60,9 +60,9 @@ class GenusNameChangeAffectsSpAndSubspeciesTest < ActionController::TestCase
     # puts species.full_name
     # puts species_afterwards.full_name
     assert species.full_name != species_afterwards.full_name,
-      "The genus name change should affect the species' name."
+           "The genus name change should affect the species' name."
     subspecies_afterwards = Name.find(subspecies.id)
     assert subspecies.full_name != subspecies_afterwards.full_name,
-      "The genus name has change should affect the subspecies' name."
+           "The genus name has change should affect the subspecies' name."
   end
 end

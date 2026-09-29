@@ -32,11 +32,11 @@ class NameInAPCTest < ActiveSupport::TestCase
     )
     assert_equal true, name.accepted_concept?, "Name should be in APC"
     assert_equal expected_instance_id,
-      name.accepted_instance_id,
-      "APC instance id should be set"
+                 name.accepted_instance_id,
+                 "APC instance id should be set"
     assert_equal false, name.apc_declared_bt, "Name should not be a declared BT"
     assert_equal false,
-      name.apc_instance_is_an_excluded_name,
-      "Should not be an excluded name"
+                 name.apc_instance_is_an_excluded_name,
+                 "Should not be an excluded name"
   end
 end

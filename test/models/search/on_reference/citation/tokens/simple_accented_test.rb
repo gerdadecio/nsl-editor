@@ -26,8 +26,8 @@ class SearchOnReferenceCitationTokenSimpleAccentedTest < ActiveSupport::TestCase
     citation_wo_accent = "citation includes hulten with diacritic"
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: %(citation-token: #{citation_wo_accent}),
-        current_user: build_edit_user)
+           query_string: %(citation-token: #{citation_wo_accent}),
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     # Expect hulten wih and without diacritic
     assert search.executed_query.results.size == 2, "2 result expected."

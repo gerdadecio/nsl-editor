@@ -52,8 +52,8 @@ class InstanceAsArrayForNamePreloadForTest < ActiveSupport::TestCase
       ).results.map(&:id)
 
       assert_equal separately_queried,
-        from_preload,
-        "Batched results for #{name.full_name} should match querying it alone"
+                   from_preload,
+                   "Batched results for #{name.full_name} should match querying it alone"
     end
   end
 
@@ -81,11 +81,11 @@ class InstanceAsArrayForNamePreloadForTest < ActiveSupport::TestCase
     end
 
     assert_operator batched_count,
-      :<,
-      per_name_count,
-      "Expected preload_for (#{batched_count} queries) to cost less than " \
-        "querying these #{names_to_check.size} names one at a time " \
-        "(#{per_name_count} queries)"
+                    :<,
+                    per_name_count,
+                    "Expected preload_for (#{batched_count} queries) to cost less than " \
+                      "querying these #{names_to_check.size} names one at a time " \
+                      "(#{per_name_count} queries)"
   end
 
   private

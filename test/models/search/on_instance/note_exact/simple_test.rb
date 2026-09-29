@@ -29,6 +29,6 @@ class SearchOnInstanceNoteExactSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching exact notes expected."
+               "Instances with matching exact notes expected."
   end
 end

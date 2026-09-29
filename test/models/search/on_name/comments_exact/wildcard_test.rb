@@ -24,9 +24,9 @@ class SearchOneNameCommentsExactWildcardTest < ActiveSupport::TestCase
   test "search on name comments exact works with wildcards" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "comments-exact: *xY*",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "comments-exact: *xY*",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Name expected."
   end

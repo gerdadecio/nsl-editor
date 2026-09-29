@@ -30,6 +30,6 @@ class SearchOnInstanceIdSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instance with id expected."
+               "Instance with id expected."
   end
 end

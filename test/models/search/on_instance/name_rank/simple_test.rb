@@ -29,6 +29,6 @@ class SearchOnInstanceNameRankSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances for names with rank species expected."
+               "Instances for names with rank species expected."
   end
 end

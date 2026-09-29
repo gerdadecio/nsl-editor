@@ -29,6 +29,6 @@ class SearchOnInstancePageQualifierSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching page qualifier expected."
+               "Instances with matching page qualifier expected."
   end
 end

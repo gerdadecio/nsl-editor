@@ -27,7 +27,7 @@ class AuthARTA4DupeOfNoIdWPartValStrMatching1Rec < ActiveSupport::TestCase
       "", author.name.chop, author_to_avoid
     )
     assert_equal author.id,
-      result.value,
-      "Should get a matching id for the author"
+                 result.value,
+                 "Should get a matching id for the author"
   end
 end

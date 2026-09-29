@@ -56,21 +56,21 @@ class ConvertScientificToPhraseNameTest < ActionController::TestCase
     get_edit_as(NameCategory::PHRASE_NAME)
     assert_response :success, "Cannot edit a scientific name as a phrase name"
     assert_select "select#name_name_status_id",
-      true,
-      "Should show the name status select."
+                  true,
+                  "Should show the name status select."
   end
 
   test "editing a scientific name as a phrase name offers only the [n/a] status" do
     get_edit_as(NameCategory::PHRASE_NAME)
     assert_select "select#name_name_status_id" do
       assert_select "option[value=?]",
-        name_statuses(:na).id.to_s,
-        { count: 1 },
-        "Should offer the [n/a] status."
+                    name_statuses(:na).id.to_s,
+                    { count: 1 },
+                    "Should offer the [n/a] status."
       assert_select "option[value=?]",
-        name_statuses(:legitimate).id.to_s,
-        { count: 0 },
-        "Should not offer a scientific-only status."
+                    name_statuses(:legitimate).id.to_s,
+                    { count: 0 },
+                    "Should not offer a scientific-only status."
     end
   end
 
@@ -78,9 +78,9 @@ class ConvertScientificToPhraseNameTest < ActionController::TestCase
     get_edit_as(NameCategory::PHRASE_NAME)
     assert_select "select#name_name_status_id" do
       assert_select "option[selected][value=?]",
-        name_statuses(:na).id.to_s,
-        { count: 1 },
-        "Status should default to [n/a] for a phrase name."
+                    name_statuses(:na).id.to_s,
+                    { count: 1 },
+                    "Status should default to [n/a] for a phrase name."
     end
   end
 
@@ -89,9 +89,9 @@ class ConvertScientificToPhraseNameTest < ActionController::TestCase
     assert_response :success
     assert_select "select#name_name_status_id" do
       assert_select "option[selected][value=?]",
-        name_statuses(:legitimate).id.to_s,
-        { count: 1 },
-        "Status should stay on the name's own status."
+                    name_statuses(:legitimate).id.to_s,
+                    { count: 1 },
+                    "Status should stay on the name's own status."
     end
   end
 end

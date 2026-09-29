@@ -24,8 +24,8 @@ class SearchOnReferencePubDateMatchesTest < ActiveSupport::TestCase
   test "search on reference publication date regex simple" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "pub-date-matches: .",
-        current_user: build_edit_user)
+           query_string: "pub-date-matches: .",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end

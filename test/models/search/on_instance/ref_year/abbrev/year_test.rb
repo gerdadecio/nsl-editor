@@ -29,6 +29,6 @@ class SearchOnInstanceRefYearAbbrevYearTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching ref year abbrev year expected."
+               "Instances with matching ref year abbrev year expected."
   end
 end

@@ -53,8 +53,8 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
       }
     )
     assert_match "There is more than one active review period for the batch.",
-      response.body,
-      "Overlapping review periods should be reported"
+                 response.body,
+                 "Overlapping review periods should be reported"
   end
 
   # Regression test: both overlapping periods here belong to the same
@@ -84,10 +84,10 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
     # names below it. Before the fix it appeared a 4th time, as a second,
     # redundant entry in the Active reviews line itself.
     assert_equal 3,
-      response.body.scan("WG Review").size,
-      "Expected \"WG Review\" to appear exactly 3 times (once in Active " \
-        "reviews, once per period name) - got: " \
-        "#{response.body[/Active reviews:.*Active review periods:/m]}"
+                 response.body.scan("WG Review").size,
+                 "Expected \"WG Review\" to appear exactly 3 times (once in Active " \
+                   "reviews, once per period name) - got: " \
+                   "#{response.body[/Active reviews:.*Active review periods:/m]}"
     assert_match "WG Review Review Period Overlapping One", response.body
     assert_match "WG Review Review Period Overlapping Two", response.body
   end

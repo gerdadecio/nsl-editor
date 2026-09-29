@@ -26,7 +26,7 @@ class AuthorEditorDoNotOfferDelButtonIfNoDeleteTest < ActionController::TestCase
     author = authors(:bentham)
     @request.headers["Accept"] = "application/javascript"
     assert_not author.can_be_deleted?,
-      "Must not be able to delete this author for the test to be valid"
+               "Must not be able to delete this author for the test to be valid"
     get(
       :show,
       params: { id: author.id, tab: "tab_edit" },
@@ -37,10 +37,10 @@ class AuthorEditorDoNotOfferDelButtonIfNoDeleteTest < ActionController::TestCase
       }
     )
     assert_select "li.active a#author-edit-tab",
-      "Edit",
-      "Should show 'Edit' tab."
+                  "Edit",
+                  "Should show 'Edit' tab."
     assert_select "a#author-delete-link",
-      false,
-      "Should be no delete button because author cannot be deleted."
+                  false,
+                  "Should be no delete button because author cannot be deleted."
   end
 end

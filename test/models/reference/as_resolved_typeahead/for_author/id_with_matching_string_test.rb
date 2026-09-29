@@ -27,7 +27,7 @@ class ReferenceARTA4AuthorIdWithMatchingString < ActiveSupport::TestCase
       author.name
     )
     assert_equal author.id,
-      result.value,
-      "Should get a matching id for the author name"
+                 result.value,
+                 "Should get a matching id for the author name"
   end
 end

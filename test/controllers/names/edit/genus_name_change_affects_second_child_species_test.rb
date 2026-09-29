@@ -48,11 +48,11 @@ class GenusNameChangeAffects2ndChildSpAndSubspTest < ActionController::TestCase
     species_afterwards = Name.find(species.id)
     # puts species_afterwards.full_name
     assert species.full_name != species_afterwards.full_name,
-      "The genus's name has changed and this should affect the
+           "The genus's name has changed and this should affect the
            species's name."
     subspecies_afterwards = Name.find(subspecies.id)
     assert subspecies.full_name != subspecies_afterwards.full_name,
-      "The genus's name has changed and this should affect the
+           "The genus's name has changed and this should affect the
            subspecies's name."
   end
 end

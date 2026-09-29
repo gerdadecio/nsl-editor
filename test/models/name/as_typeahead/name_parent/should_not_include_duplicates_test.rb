@@ -33,6 +33,6 @@ class ShouldNotIncludeDuplicatesTest < ActiveSupport::TestCase
     )
     first_value = typeahead.suggestions.first[:value]
     assert first_value.start_with?("a duplicate genus not "),
-      "Should match the non-duplicate genus"
+           "Should match the non-duplicate genus"
   end
 end

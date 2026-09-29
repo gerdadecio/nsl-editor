@@ -31,6 +31,6 @@ class SearchOnAuthorAssertionAbbrevHasTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Should find authors with abbrev."
+               "Should find authors with abbrev."
   end
 end

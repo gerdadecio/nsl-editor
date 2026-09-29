@@ -39,11 +39,11 @@ class HistoryActionsY2016Test < ActionController::TestCase
     )
     assert_response :success
     assert_select "h3",
-      /\bChanges 2016\b/,
-      "Should find heading for Changes 2016"
+                  /\bChanges 2016\b/,
+                  "Should find heading for Changes 2016"
     assert_select "body",
-      /\b24-Oct-2016/,
-      "Should find 24-Oct-2016 a"
+                  /\b24-Oct-2016/,
+                  "Should find 24-Oct-2016 a"
     assert_select "body", /24-Oct.2016/
     assert_select "body", /NSL-478/
     "Should find NSL-478"

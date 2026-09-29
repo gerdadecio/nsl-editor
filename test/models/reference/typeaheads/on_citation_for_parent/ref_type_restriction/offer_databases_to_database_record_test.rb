@@ -28,7 +28,7 @@ class TAOnCitn4ParRefTypeRestrictDbase4DatabaseRecord < ActiveSupport::TestCase
       ref_types(:database_record).id
     )
     assert_not typeahead.results.empty?,
-      "Should be at least one result"
+               "Should be at least one result"
     databases = 0
     others = 0
     typeahead.results.each do |result|

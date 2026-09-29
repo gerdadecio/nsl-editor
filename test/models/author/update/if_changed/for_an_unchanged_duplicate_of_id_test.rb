@@ -35,10 +35,10 @@ class ForAnUnchangedDuplicateOfIdTest < ActiveSupport::TestCase
   test "unchanged duplicate of id" do
     changed_author = Author.find_by(id: @author.id)
     assert_equal @author.duplicate_of_id,
-      changed_author.duplicate_of_id,
-      "Duplicate of id should not have changed"
+                 changed_author.duplicate_of_id,
+                 "Duplicate of id should not have changed"
     assert_equal @author.created_at,
-      changed_author.updated_at,
-      "Author should not have been updated."
+                 changed_author.updated_at,
+                 "Author should not have been updated."
   end
 end

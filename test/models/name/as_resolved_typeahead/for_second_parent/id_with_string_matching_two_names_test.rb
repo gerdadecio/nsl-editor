@@ -28,7 +28,7 @@ class NameARTA4Parent2IdWithStringMatching2Names < ActiveSupport::TestCase
       "second_parent"
     )
     assert_equal name_2.id,
-      result.value,
-      "Should get a match for the correct id"
+                 result.value,
+                 "Should get a match for the correct id"
   end
 end

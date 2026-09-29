@@ -38,8 +38,8 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li.active a#name-copy-tab",
-      "Copy",
-      "Should show 'Copy' tab."
+                  "Copy",
+                  "Should show 'Copy' tab."
   end
 
   # Copying a hybrid is the one place outside the edit form that renders the
@@ -62,10 +62,10 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
       "'/suggestions/name/hybrid_parent.html'] " \
       "input#name-parent-typeahead" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete input#name_parent_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
   end
 
   # The copy form's Second parent is the same shared field, so the
@@ -90,11 +90,11 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
       "input#name-second-parent-typeahead" \
       "[data-autocomplete-target='input']" \
       "[value='#{hybrid.second_parent.full_name}']",
-      true
+                  true
     assert_select "div.autocomplete input#name_second_parent_id" \
       "[data-autocomplete-target='hidden']" \
       "[value='#{hybrid.second_parent_id}']",
-      true
+                  true
     assert_no_match(/setUpNameSecondParentTypeahead\(\)/, @response.body)
   end
 
@@ -120,11 +120,11 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
       "input#name-second-parent-typeahead" \
       "[data-autocomplete-target='input']" \
       "[value='#{cultivar_hybrid.second_parent.full_name}']",
-      true
+                  true
     assert_select "div.autocomplete input#name_second_parent_id" \
       "[data-autocomplete-target='hidden']" \
       "[value='#{cultivar_hybrid.second_parent_id}']",
-      true
+                  true
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
       @response.body

@@ -38,7 +38,7 @@ class NameShowCommentTabForEditorTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li.active a#name-comment-tab",
-      "Comment",
-      "Should show 'Comment' tab."
+                  "Comment",
+                  "Should show 'Comment' tab."
   end
 end

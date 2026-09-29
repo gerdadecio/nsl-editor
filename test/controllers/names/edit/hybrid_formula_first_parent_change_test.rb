@@ -47,14 +47,14 @@ class HybridFormulaFirstParentChangeTest < ActionController::TestCase
         "User-Agent" => /rest-client.*ruby.*/,
       })
       .to_return(status: 200,
-        body: %({ "class": "silly name class",
+                 body: %({ "class": "silly name class",
       "_links": { "permalink": [ ] }, "name_element":
       "redundant name element for id 91755", "action": "unnecessary action",
       "result": { "fullMarkedUpName": "full marked up name for id 91755",
         "simpleMarkedUpName": "simple marked up name for id 91755",
         "fullName": "full name for id 91755",
         "simpleName": "simple name for id 91755" } }).to_json,
-        headers: {})
+                 headers: {})
   end
 
   test "hybrid formula 1st parent change flows to name element and name path" do
@@ -77,13 +77,13 @@ class HybridFormulaFirstParentChangeTest < ActionController::TestCase
     sleep(2) # to allow for the asynch job
     hybrid_after_change = Name.find(@hybrid_formula.id)
     assert @hybrid_formula.name_element != hybrid_after_change.name_element,
-      "Name element should change"
+           "Name element should change"
     assert hybrid_after_change.name_element == @expected_name_element,
-      "Name element should change to '#{@expected_name_element}'"
+           "Name element should change to '#{@expected_name_element}'"
     assert @hybrid_formula.name_path != hybrid_after_change.name_path,
-      "Name path should change"
+           "Name path should change"
     assert hybrid_after_change.name_path == @expected_name_path,
-      "Name path should change to: '#{@expected_name_path}'"
+           "Name path should change to: '#{@expected_name_path}'"
   end
 
   def debug(name, comment)

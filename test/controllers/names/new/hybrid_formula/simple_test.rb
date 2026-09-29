@@ -37,7 +37,7 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
       xhr: true
     )
     assert_response :success,
-      "Cannot get form for a new hybrid formula name"
+                    "Cannot get form for a new hybrid formula name"
     assert_select("h4", /New Scientific Hybrid Formula Name/)
   end
 
@@ -65,9 +65,9 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
       "'/suggestions/name/hybrid_parent.html'] " \
       "input#name-parent-typeahead" \
       "[data-autocomplete-target='input'][required]",
-      true
+                  true
     assert_select "div.autocomplete label[for='name-parent-typeahead']",
-      "First Parent*"
+                  "First Parent*"
     assert_no_match(/setUpNameHybridParentTypeahead\(\)/, @response.body)
     field = css_select("div.autocomplete").find do |div|
       div.css("input#name-parent-typeahead").any?
@@ -98,12 +98,12 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
       "'/suggestions/name/hybrid_parent.html'] " \
       "input#name-second-parent-typeahead" \
       "[data-autocomplete-target='input'][required]",
-      true
+                  true
     assert_select "div.autocomplete input#name_second_parent_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete label[for='name-second-parent-typeahead']",
-      "Second parent*"
+                  "Second parent*"
     assert_no_match(/setUpNameSecondParentTypeahead\(\)/, @response.body)
   end
 end

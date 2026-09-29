@@ -33,7 +33,7 @@ class SearchOnNameNameDirectiveExcludesCommonsDespiteSessionTest < ActiveSupport
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 0,
-      search.executed_query.results.size,
-      "Expected common name to be excluded because the directive overrode the session setting"
+                 search.executed_query.results.size,
+                 "Expected common name to be excluded because the directive overrode the session setting"
   end
 end

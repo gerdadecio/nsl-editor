@@ -29,6 +29,6 @@ class SearchOnInstanceCommentsExactSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with comment expected."
+               "Instances with comment expected."
   end
 end

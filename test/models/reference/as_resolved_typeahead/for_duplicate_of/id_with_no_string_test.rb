@@ -27,7 +27,7 @@ class ReferenceARTA4DuplicateOfIdWithNoString < ActiveSupport::TestCase
       ""
     )
     assert_match "",
-      result.value,
-      "Should get nothing - treating as delete."
+                 result.value,
+                 "Should get nothing - treating as delete."
   end
 end

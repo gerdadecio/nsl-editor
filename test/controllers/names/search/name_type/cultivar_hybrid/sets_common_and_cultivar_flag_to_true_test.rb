@@ -43,10 +43,10 @@ class NameSearch4TypeCultHybSetsComCultFlagToTrueT < ActionController::TestCase
     assert_response :success
     assert_select "input.checkbox[type=checkbox]
                   [id=query_common_and_cultivar][value=t]",
-      true,
-      "The query-common-and-cultivar checkbox should be true"
+                  true,
+                  "The query-common-and-cultivar checkbox should be true"
     assert_select "tr[id=search-result-#{cultivar_hybrid.id}]",
-      true,
-      "Should find one cultivar hybrid at least"
+                  true,
+                  "Should find one cultivar hybrid at least"
   end
 end

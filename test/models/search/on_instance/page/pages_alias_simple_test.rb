@@ -29,6 +29,6 @@ class SearchOnInstancePagesAliasSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching pages expected."
+               "Instances with matching pages expected."
   end
 end

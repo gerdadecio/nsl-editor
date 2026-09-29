@@ -39,7 +39,7 @@ class SearchRefsOnCitationWithInstancesTest < ActionController::TestCase
     assert_response :success
     # NOTES (limit/total redesign, follow-up): see on_id/with_instances_test.rb.
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should find 1 record"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

@@ -65,12 +65,12 @@ class NamesNewCultivarHybridNameSimpleTest < ActionController::TestCase
       "'/suggestions/name/cultivar_parent.html'] " \
       "input#name-second-parent-typeahead" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete input#name_second_parent_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete label[for='name-second-parent-typeahead']",
-      /Second parent/
+                  /Second parent/
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
       @response.body

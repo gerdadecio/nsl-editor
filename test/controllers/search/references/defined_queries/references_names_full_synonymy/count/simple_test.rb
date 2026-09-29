@@ -41,7 +41,7 @@ class SearchRefsDQRefsNamesFullSynCountSimpleTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /[0-9][0-9] records\b/,
-      "Should find some records"
+                  /[0-9][0-9] records\b/,
+                  "Should find some records"
   end
 end

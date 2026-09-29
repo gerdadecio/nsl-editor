@@ -99,7 +99,7 @@ class NamesCopyHybridTest < ActionController::TestCase
 
     assert_not_nil copy, "the copy should keep the previewed name: #{element}"
     assert_equal "Triodia basedowii E.Pritz x Crotalaria distens Benth.",
-      copy.name_element
+                 copy.name_element
   end
 
   test "copying a hybrid name keeping the original's first parent creates a new name" do

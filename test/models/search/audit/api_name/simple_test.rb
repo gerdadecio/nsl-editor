@@ -27,7 +27,7 @@ class SearchAuditApiNameSimpleTest < ActiveSupport::TestCase
     )
     references(:paper_by_brassard)
       .update_columns(api_name: "batch-loader",
-        api_at: Time.utc(2026, 8, 15, 12))
+                      api_at: Time.utc(2026, 8, 15, 12))
     authors(:brassard).update_columns(api_name: nil, api_at: nil)
   end
 
@@ -51,56 +51,56 @@ class SearchAuditApiNameSimpleTest < ActiveSupport::TestCase
 
   test "api-name: matches a name record changed by that api" do
     assert_includes search_keys("api-name: jira-sync"),
-      "Name##{names(:a_family).id}",
-      "Expected the name changed by JIRA-Sync in the results"
+                    "Name##{names(:a_family).id}",
+                    "Expected the name changed by JIRA-Sync in the results"
   end
 
   test "api-name: is case-insensitive" do
     assert_includes search_keys("api-name: JIRA-SYNC"),
-      "Name##{names(:a_family).id}",
-      "Expected a different-case search to match"
+                    "Name##{names(:a_family).id}",
+                    "Expected a different-case search to match"
   end
 
   test "api-name: excludes records changed by another api" do
     assert_not_includes search_keys("api-name: jira-sync"),
-      "Reference##{references(:paper_by_brassard).id}",
-      "Expected the reference changed by batch-loader to be excluded"
+                        "Reference##{references(:paper_by_brassard).id}",
+                        "Expected the reference changed by batch-loader to be excluded"
   end
 
   test "api-name: supports wildcards" do
     keys = search_keys("api-name: *loader*")
     assert_includes keys,
-      "Reference##{references(:paper_by_brassard).id}",
-      "Expected a wildcard search to match batch-loader"
+                    "Reference##{references(:paper_by_brassard).id}",
+                    "Expected a wildcard search to match batch-loader"
     assert_not_includes keys,
-      "Name##{names(:a_family).id}",
-      "Expected a *loader* search to exclude JIRA-Sync"
+                        "Name##{names(:a_family).id}",
+                        "Expected a *loader* search to exclude JIRA-Sync"
   end
 
   test "api-name: matches records across record types" do
     keys = search_keys("api-name: *")
     assert_includes keys,
-      "Name##{names(:a_family).id}",
-      "Expected the api-changed name in the results"
+                    "Name##{names(:a_family).id}",
+                    "Expected the api-changed name in the results"
     assert_includes keys,
-      "Reference##{references(:paper_by_brassard).id}",
-      "Expected the api-changed reference in the results"
+                    "Reference##{references(:paper_by_brassard).id}",
+                    "Expected the api-changed reference in the results"
   end
 
   test "api-name: excludes records never changed by an api" do
     assert_not_includes search_keys("api-name: *"),
-      "Author##{authors(:brassard).id}",
-      "Expected an author with no api_name to be excluded"
+                        "Author##{authors(:brassard).id}",
+                        "Expected an author with no api_name to be excluded"
   end
 
   test "api-name: combines with api-recorded-after:" do
     keys = search_keys("api-name: *loader* api-recorded-after: 2026-08-01")
     assert_includes keys,
-      "Reference##{references(:paper_by_brassard).id}",
-      "Expected the batch-loader reference api-changed in August to match"
+                    "Reference##{references(:paper_by_brassard).id}",
+                    "Expected the batch-loader reference api-changed in August to match"
     assert_not_includes keys,
-      "Name##{names(:a_family).id}",
-      "Expected the JIRA-Sync name to be excluded by both criteria"
+                        "Name##{names(:a_family).id}",
+                        "Expected the JIRA-Sync name to be excluded by both criteria"
   end
 
   test "api-name: without a value stops with an error" do

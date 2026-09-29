@@ -32,6 +32,6 @@ class SearchOnNameReportsNameIsDoubleSynTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert search.executed_query.results.size >= 0,
-      "Expected name-is-double-synonym report to run:"
+           "Expected name-is-double-synonym report to run:"
   end
 end

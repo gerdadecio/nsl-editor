@@ -35,7 +35,7 @@ class SearchOnNameNovelNamesForRefSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_not search.executed_query.results.empty?,
-      "Expected at least one novel name for reference #{ref.id}"
+               "Expected at least one novel name for reference #{ref.id}"
   end
 
   # ref_4_genus_or_above_to_be_synonym only has nomenclatural_synonym and
@@ -50,6 +50,6 @@ class SearchOnNameNovelNamesForRefSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert search.executed_query.results.empty?,
-      "Expected no novel names for a reference with no primary instances"
+           "Expected no novel names for a reference with no primary instances"
   end
 end

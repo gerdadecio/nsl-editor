@@ -24,14 +24,14 @@ class SearchOnReferenceIPDRegexSimpleTest < ActiveSupport::TestCase
   def setup
     @params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "iso-pub-date-matches: ^....$",
-        current_user: build_edit_user)
+           query_string: "iso-pub-date-matches: ^....$",
+           current_user: build_edit_user)
   end
 
   test "search on iso_publication_date simple" do
     search = Search::Base.new(@params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

@@ -45,8 +45,8 @@ class InstancesCreateCitedByContextNameIdIgnoredTest < ActionController::TestCas
     context_name = @cited_by.name
 
     assert_not_equal @selected_name.id,
-      context_name.id,
-      "Fixture sanity check: selected name and context name must differ"
+                     context_name.id,
+                     "Fixture sanity check: selected name and context name must differ"
 
     assert_difference("Instance.count") do
       post(
@@ -69,10 +69,10 @@ class InstancesCreateCitedByContextNameIdIgnoredTest < ActionController::TestCas
 
     created = assigns(:instance)
     assert_equal @selected_name.id,
-      created.name_id,
-      "Should use the selected name, not the context/self name"
+                 created.name_id,
+                 "Should use the selected name, not the context/self name"
     assert_not_equal context_name.id,
-      created.name_id,
-      "Must not silently fall back to citing the name from itself"
+                     created.name_id,
+                     "Must not silently fall back to citing the name from itself"
   end
 end

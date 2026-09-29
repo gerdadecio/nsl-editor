@@ -44,11 +44,11 @@ class AuthorEditMESpacesNameCreateWithTest < ActionController::TestCase
       assert_not_nil assigns(:author), "Should assign author"
       new_author = Author.find_by(name: author_name.gsub(/  +/, " "))
       assert_match author_name.gsub(/  +/, " "),
-        new_author.name,
-        "New author name should not have embedded spaces"
+                   new_author.name,
+                   "New author name should not have embedded spaces"
       assert_match author_abbrev.gsub(/  +/, " "),
-        new_author.abbrev,
-        "New author abbrev should not have embedded spaces"
+                   new_author.abbrev,
+                   "New author abbrev should not have embedded spaces"
     end
   end
 end

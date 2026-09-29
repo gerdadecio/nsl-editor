@@ -23,12 +23,12 @@ class CultivarTest < ActiveSupport::TestCase
   test "cultivar name type options" do
     current_category = name_categories(:cultivar)
     assert_equal 1,
-      NameType.options_for_category(current_category).size,
-      "Should be just 1 #{current_category.name} name type."
+                 NameType.options_for_category(current_category).size,
+                 "Should be just 1 #{current_category.name} name type."
     assert NameType
       .options_for_category(current_category)
       .collect(&:first)
       .include?("cultivar"),
-      "'cultivar' should be a #{current_category.name} name type."
+           "'cultivar' should be a #{current_category.name} name type."
   end
 end

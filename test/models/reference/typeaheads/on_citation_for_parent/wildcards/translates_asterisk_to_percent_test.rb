@@ -28,6 +28,6 @@ class TypeaheadsOnCitForParWildcardsTransAsteriskToPC < ActiveSupport::TestCase
       ref_types(:book).id
     )
     assert_not typeahead.results.empty?,
-      "Should be at least one result for asterisk wildcard"
+               "Should be at least one result for asterisk wildcard"
   end
 end

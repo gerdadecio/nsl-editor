@@ -44,7 +44,7 @@ class NameSearch4NameTypeCultSetsCommCultFlagTrueT < ActionController::TestCase
     # true,
     # "The query-common-and-cultivar checkbox should be true"
     assert_select "tr[id=search-result-#{cultivar.id}]",
-      true,
-      "Should find one cultivar at least"
+                  true,
+                  "Should find one cultivar at least"
   end
 end

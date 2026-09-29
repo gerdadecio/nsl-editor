@@ -44,7 +44,7 @@ class TreePublisherFoaUserCanSeeTaxonomyMenuNoDraftTest < ActionController::Test
     assert_select "a", { count: 0, text: "FOA draft version" }, "Should not show FOA draft version"
     assert_select "a", { count: 0, text: "APC draft version" }, "Should not show APC draft version"
     assert_select "a#create-draft-taxonomy-menu-link",
-      /Create draft taxonomy/,
-      "Should show Create Draft Taxonomy menu link."
+                  /Create draft taxonomy/,
+                  "Should show Create Draft Taxonomy menu link."
   end
 end

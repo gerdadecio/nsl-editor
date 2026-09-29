@@ -47,7 +47,7 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
       extra_info: "Duplicate of another name"
     )
     assert_equal "Other; Duplicate of another name",
-      names_delete.assembled_reason
+                 names_delete.assembled_reason
   end
 
   test "assembled reason is untouched at exactly 247 characters" do
@@ -61,7 +61,7 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
     result = names_delete.assembled_reason
     assert_equal 247, result.length
     assert_not result.end_with?("..."),
-      "Should not be truncated at exactly 247 characters"
+               "Should not be truncated at exactly 247 characters"
     assert_equal "#{reason}; #{extra_info}", result
   end
 
@@ -77,7 +77,7 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
     assert_equal 247, result.length
     assert result.end_with?("..."), "Should be truncated with an ellipsis"
     assert result.start_with?("#{reason}; "),
-      "Truncation should preserve the reason at the start"
+           "Truncation should preserve the reason at the start"
   end
 
   test "assembled reason stays within 247 chars even with the longest " \
@@ -90,7 +90,7 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
     )
     result = names_delete.assembled_reason
     assert result.length <= 247,
-      "Combined reason + extra_info must never exceed 247 characters, " \
-        "was #{result.length}"
+           "Combined reason + extra_info must never exceed 247 characters, " \
+             "was #{result.length}"
   end
 end

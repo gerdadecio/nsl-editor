@@ -38,7 +38,7 @@ class NameMoreShouldShowTagTabForEditorTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li a#name-tags-tab",
-      "Tag",
-      "Should show 'Tag' tab."
+                  "Tag",
+                  "Should show 'Tag' tab."
   end
 end

@@ -32,6 +32,6 @@ class SearchOnNameNameElementExactSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_not search.executed_query.results.empty?,
-      "Expected at least one search result for name-element-exact"
+               "Expected at least one search result for name-element-exact"
   end
 end

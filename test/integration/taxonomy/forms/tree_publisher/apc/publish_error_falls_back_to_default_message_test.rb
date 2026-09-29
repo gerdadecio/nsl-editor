@@ -27,8 +27,8 @@ class TaxFormsTreePubAPCPublishErrorFallsBackToDefaultMessageTest < ActionContro
   def setup
     stub_request(:put, /http:..localhost:90...nsl.services.api.treeVersion.publish.apiKey=test-api-key.as=apc-tax-publisher/)
       .to_return(status: 200,
-        body: '{"ok":false}',
-        headers: { "Content-Type" => "application/json" })
+                 body: '{"ok":false}',
+                 headers: { "Content-Type" => "application/json" })
   end
 
   test "publish failure with no error field renders the fallback message" do

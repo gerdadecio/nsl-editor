@@ -23,9 +23,9 @@ class HistoryY2016Test < ActionController::TestCase
   tests HistoryController
   test "history 2016 should route" do
     assert_routing history_for_year_path("2016"),
-      controller: "history",
-      action: "for_year",
-      year: "2016",
-      show_status: "false"
+                   controller: "history",
+                   action: "for_year",
+                   year: "2016",
+                   show_status: "false"
   end
 end

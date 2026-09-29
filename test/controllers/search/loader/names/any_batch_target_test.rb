@@ -41,8 +41,8 @@ class SearchLoaderNameAnyBatchTargetTest < ActionController::TestCase
     )
     assert_response :success
     assert_not_select "#search-results-summary",
-      /Please set a default batch/,
-      "Should not be asked to set a default batch"
+                      /Please set a default batch/,
+                      "Should not be asked to set a default batch"
   end
 
   test "loader names (any batch) target searches across batches without an explicit any-batch directive" do
@@ -57,7 +57,7 @@ class SearchLoaderNameAnyBatchTargetTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /\b1 record*\b/,
-      "Should find one loader name record for Hardenbergia violacea across all batches"
+                  /\b1 record*\b/,
+                  "Should find one loader name record for Hardenbergia violacea across all batches"
   end
 end

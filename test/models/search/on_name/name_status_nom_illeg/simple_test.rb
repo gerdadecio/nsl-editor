@@ -32,6 +32,6 @@ class SearchOnNameNameStatusNomIllegSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_not search.executed_query.results.empty?,
-      "Expected at least one search result for name-status-nom-illeg"
+               "Expected at least one search result for name-status-nom-illeg"
   end
 end

@@ -34,7 +34,7 @@ class SearchNamesIncludeCommonAndCultivarDirectiveList2ndParentId < ActionContro
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /7 names\b/,
-      "Should find 7 names, including common/cultivars"
+                  /7 names\b/,
+                  "Should find 7 names, including common/cultivars"
   end
 end

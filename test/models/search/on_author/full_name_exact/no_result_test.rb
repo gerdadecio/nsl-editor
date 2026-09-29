@@ -34,9 +34,9 @@ class SearchOnAuthorFullNameExactNoResultTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 0,
-      search.executed_query.results.size,
-      "No results are expected."
+                 search.executed_query.results.size,
+                 "No results are expected."
   end
 end

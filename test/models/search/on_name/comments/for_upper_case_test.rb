@@ -24,9 +24,9 @@ class SearchOneNameCommentsForUpperCaseTest < ActiveSupport::TestCase
   test "search on name for upper case comments" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "comments: name MyText xYz",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "comments: name MyText xYz",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end

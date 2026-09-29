@@ -32,6 +32,6 @@ class ForNameAndReferenceYearTest < ActiveSupport::TestCase
     assert ta.results
       .collect { |r| r[:value] }
       .include?(ANGOPHORA_COSTATA_DE_FRUCT_1788_STRING),
-      ANGOPHORA_COSTATA_DE_FRUCT_1788_ERROR
+           ANGOPHORA_COSTATA_DE_FRUCT_1788_ERROR
   end
 end

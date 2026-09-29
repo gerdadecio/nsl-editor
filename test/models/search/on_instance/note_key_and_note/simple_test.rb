@@ -29,6 +29,6 @@ class SearchOnInstanceNoteKeyAndNoteSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching Neotype notes expected."
+               "Instances with matching Neotype notes expected."
   end
 end

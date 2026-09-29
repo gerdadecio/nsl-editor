@@ -46,7 +46,7 @@ class NameSearchForNameTypeWithWildCardsSimpleTest < ActionController::TestCase
     #               true,
     #               "The query-common-and-cultivar checkbox should be true"
     assert_select "tr[id=search-result-#{common.id}]",
-      true,
-      "Should find one common at least"
+                  true,
+                  "Should find one common at least"
   end
 end

@@ -37,8 +37,8 @@ class NamesSearchAtTopOfAcceptedTreeRegTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /Names.*at-top-of-accepted-tree:/,
-      "Report should be recognised"
+                  /Names.*at-top-of-accepted-tree:/,
+                  "Report should be recognised"
     assert_select "#search-results-summary" do |summary|
       summary.each do |s|
         assert_no_match(

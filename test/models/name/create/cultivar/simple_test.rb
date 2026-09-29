@@ -77,6 +77,6 @@ class NameCreateCultivarTest < ActiveSupport::TestCase
     assert name.name_element == "blah"
     assert name.name_path == "Plantae/Magnoliophyta/a_family/a_genus/a_species/blah"
     assert name.valid?,
-      "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
+           "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
   end
 end

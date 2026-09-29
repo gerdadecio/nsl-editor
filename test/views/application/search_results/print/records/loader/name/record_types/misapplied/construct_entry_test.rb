@@ -114,6 +114,6 @@ class MisappliedConstructEntryPartialTest < ActionView::TestCase
     output = render_entry_for([dated, undated])
 
     assert output.index("Undated Reference") < output.index("Later Reference"),
-      "Expected the undated match to sort before the dated one, got: #{output}"
+           "Expected the undated match to sort before the dated one, got: #{output}"
   end
 end

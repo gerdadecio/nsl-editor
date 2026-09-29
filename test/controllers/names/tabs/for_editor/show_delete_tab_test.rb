@@ -38,7 +38,7 @@ class NameShowDeleteTabForEditorTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "li.active a#name-delete-tab",
-      "Delete",
-      "Should show 'Delete' tab."
+                  "Delete",
+                  "Should show 'Delete' tab."
   end
 end

@@ -30,6 +30,6 @@ class SearchOnInstanceIsNoveltyTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Should find instance that is a novelty."
+               "Should find instance that is a novelty."
   end
 end

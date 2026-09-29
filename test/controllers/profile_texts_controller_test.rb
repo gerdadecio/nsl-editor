@@ -35,19 +35,19 @@ class ProfileTextsControllerTest < ActionController::TestCase
     assert_difference "Profile::ProfileItem.count", 1 do
       assert_difference "Profile::ProfileText.count", 1 do
         post :create,
-          params: {
-            profile_item: {
-              instance_id: @instance.id,
-              product_item_config_id: product_item_config.id,
-              profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id,
-            },
-            profile_text: {
-              value: "New profile text",
-              value_md: "New profile text",
-            },
-          },
-          session: @session,
-          xhr: true
+             params: {
+               profile_item: {
+                 instance_id: @instance.id,
+                 product_item_config_id: product_item_config.id,
+                 profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id,
+               },
+               profile_text: {
+                 value: "New profile text",
+                 value_md: "New profile text",
+               },
+             },
+             session: @session,
+             xhr: true
       end
     end
 
@@ -60,19 +60,19 @@ class ProfileTextsControllerTest < ActionController::TestCase
   test "should not create duplicate profile text" do
     product_item_config = product_item_config(:ecology_pic)
     post :create,
-      params: {
-        profile_item: {
-          instance_id: @instance.id,
-          product_item_config_id: product_item_config.id,
-          profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id,
-        },
-        profile_text: {
-          value: "Existing profile text",
-          value_md: "Existing profile text",
-        },
-      },
-      session: @session,
-      xhr: true
+         params: {
+           profile_item: {
+             instance_id: @instance.id,
+             product_item_config_id: product_item_config.id,
+             profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id,
+           },
+           profile_text: {
+             value: "Existing profile text",
+             value_md: "Existing profile text",
+           },
+         },
+         session: @session,
+         xhr: true
 
     assert_response :unprocessable_content
     assert_equal "Profile text already exists", assigns(:message)
@@ -83,13 +83,13 @@ class ProfileTextsControllerTest < ActionController::TestCase
     profile_item = profile_item(:ecology_pi)
     profile_text = profile_item.profile_text
     put :update,
-      params: {
-        id: profile_text.id,
-        profile_text: { value_md: "Updated profile text value" },
-        profile_item: { id: profile_item.id },
-      },
-      session: @session,
-      xhr: true
+        params: {
+          id: profile_text.id,
+          profile_text: { value_md: "Updated profile text value" },
+          profile_item: { id: profile_item.id },
+        },
+        session: @session,
+        xhr: true
 
     assert_response :success
     assert_equal "Updated", assigns(:message)
@@ -104,13 +104,13 @@ class ProfileTextsControllerTest < ActionController::TestCase
 
     Profile::ProfileText.stub_any_instance(:update, false) do
       put :update,
-        params: {
-          id: profile_text.id,
-          profile_text: { value_md: "Updated profile text value" },
-          profile_item: { id: profile_item.id },
-        },
-        session: @session,
-        xhr: true
+          params: {
+            id: profile_text.id,
+            profile_text: { value_md: "Updated profile text value" },
+            profile_item: { id: profile_item.id },
+          },
+          session: @session,
+          xhr: true
     end
     assert_response :unprocessable_content
     assert_equal "Not updated", assigns(:message)

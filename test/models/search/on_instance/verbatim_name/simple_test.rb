@@ -29,6 +29,6 @@ class SearchOnInstanceVerbatimNameSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instance with matching verbatim name string expected."
+               "Instance with matching verbatim name string expected."
   end
 end

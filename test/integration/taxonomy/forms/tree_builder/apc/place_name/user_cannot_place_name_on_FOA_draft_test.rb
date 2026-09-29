@@ -73,7 +73,7 @@ class TaxFormsTreeBuilderAPCUserCannotPlaceNameOnFOADraftTest < ActionController
     )
     assert_response :forbidden, "Should be forbidden"
     assert_match "You are not authorized to place names on any FOA draft",
-      response.body,
-      "Expecting Not authorized message"
+                 response.body,
+                 "Expecting Not authorized message"
   end
 end

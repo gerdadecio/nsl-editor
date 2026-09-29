@@ -29,6 +29,6 @@ class SearchOnInstanceNoteKeyAndNoteMultiWordPuncTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching APC Dist. notes expected."
+               "Instances with matching APC Dist. notes expected."
   end
 end

@@ -33,7 +33,7 @@ class SearchOnNameNameCommonsOverrideDefaultTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Expected common name because default overriden"
+                 search.executed_query.results.size,
+                 "Expected common name because default overriden"
   end
 end

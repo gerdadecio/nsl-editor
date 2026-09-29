@@ -29,6 +29,6 @@ class SearchOnInstanceRefTypeSimpleTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Instances with matching ref type expected."
+               "Instances with matching ref type expected."
   end
 end

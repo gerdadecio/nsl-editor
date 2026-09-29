@@ -38,16 +38,16 @@ class AuthorEditorShowAllTabsTest < ActionController::TestCase
     )
     assert_response :success
     assert_select "a#author-show-tab",
-      "Details",
-      "Should show 'Detail' tab."
+                  "Details",
+                  "Should show 'Detail' tab."
     assert_select "a#author-edit-tab",
-      "Edit",
-      "Should show 'Edit' tab."
+                  "Edit",
+                  "Should show 'Edit' tab."
     assert_select "a#author-comments-tab",
-      "Comments",
-      "Should show 'Comments' tab."
+                  "Comments",
+                  "Should show 'Comments' tab."
     assert_select "a#tab-heading",
-      /Bentham/,
-      "Should have tab heading showing Bentham."
+                  /Bentham/,
+                  "Should have tab heading showing Bentham."
   end
 end

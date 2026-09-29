@@ -29,18 +29,18 @@ class ForAnUnchangedRefParentIdTest < ActiveSupport::TestCase
     new_column_value = new_parent.id
     assert reference
       .update_if_changed({},
-        {
-          "parent_typeahead" => new_parent.citation,
-          "parent_id" => new_column_value,
-        },
-        "a user"),
-      "Should have returned true."
+                         {
+                           "parent_typeahead" => new_parent.citation,
+                           "parent_id" => new_column_value,
+                         },
+                         "a user"),
+           "Should have returned true."
     changed_reference = Reference.find_by(id: reference.id)
     assert_equal reference.parent_id,
-      changed_reference.parent_id,
-      "parent_id should not have changed"
+                 changed_reference.parent_id,
+                 "parent_id should not have changed"
     assert_equal reference.created_at,
-      changed_reference.updated_at,
-      "Reference should not have been updated."
+                 changed_reference.updated_at,
+                 "Reference should not have been updated."
   end
 end

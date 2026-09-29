@@ -30,7 +30,7 @@ class DefaultSearchNameTest < ActiveSupport::TestCase
       )
     )
     assert_equal 1,
-      search.executed_query.results.size,
-      "Default author search should find author with name only."
+                 search.executed_query.results.size,
+                 "Default author search should find author with name only."
   end
 end

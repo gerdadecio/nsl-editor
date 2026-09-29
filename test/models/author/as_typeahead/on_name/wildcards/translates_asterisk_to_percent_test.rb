@@ -23,6 +23,6 @@ class AuthTAheadsOnNameWildcardsTransAsterisk2Percent < ActiveSupport::TestCase
   test "author typeahead on name wildcards translates asterisk to percent" do
     results = Author::AsTypeahead.on_name("*")
     assert_not results.empty?,
-      "Should be at least one result for asterisk wildcard"
+               "Should be at least one result for asterisk wildcard"
   end
 end

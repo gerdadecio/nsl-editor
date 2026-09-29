@@ -32,6 +32,6 @@ class SearchOnNameReportsNameSynOfItselfSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert search.executed_query.results.size >= 0,
-      "Expected report name-synonym-of-itself to run:"
+           "Expected report name-synonym-of-itself to run:"
   end
 end

@@ -29,7 +29,7 @@ class AuthorARTA4DuplicateOfIdWithMatchingString < ActiveSupport::TestCase
       author_to_avoid
     )
     assert_equal author.id,
-      result.value,
-      "Should get a matching id for the duplicate of author"
+                 result.value,
+                 "Should get a matching id for the duplicate of author"
   end
 end

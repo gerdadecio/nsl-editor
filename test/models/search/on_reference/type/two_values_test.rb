@@ -24,8 +24,8 @@ class SearchOnReferenceTypeTwoValuesTest < ActiveSupport::TestCase
   test "search on reference type two values" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "type: book,journal",
-        current_user: build_edit_user)
+           query_string: "type: book,journal",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end

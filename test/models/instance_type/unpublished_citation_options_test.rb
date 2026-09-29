@@ -38,11 +38,11 @@ class InstanceTypeUnpublishedCitationOptionsTest < ActiveSupport::TestCase
   test "instance type unpublished citation options" do
     @expected.each do |expected|
       assert @names.include?(expected),
-        "Upub citation instance type options should include #{expected}"
+             "Upub citation instance type options should include #{expected}"
     end
     @names.each do |name|
       assert @expected.include?(name),
-        "#{name} is unexpected as an unpub citation type option"
+             "#{name} is unexpected as an unpub citation type option"
     end
   end
 end

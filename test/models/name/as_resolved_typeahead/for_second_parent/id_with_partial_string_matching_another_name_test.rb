@@ -29,7 +29,7 @@ class NameAsEdPar2IdWPartStringMatchingAnotherNameTest < ActiveSupport::TestCase
       "second_parent"
     )
     assert_equal name_2.id,
-      result.value,
-      "Should get matching ID for the name partial string"
+                 result.value,
+                 "Should get matching ID for the name partial string"
   end
 end

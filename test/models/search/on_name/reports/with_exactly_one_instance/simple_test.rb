@@ -32,6 +32,6 @@ class SearchOnNameReportsWithExactly1InstSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert search.executed_query.results.size > 2,
-      "Expected at least 3 records for name-with-exactly-one-instance:"
+           "Expected at least 3 records for name-with-exactly-one-instance:"
   end
 end

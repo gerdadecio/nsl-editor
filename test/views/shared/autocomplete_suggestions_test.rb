@@ -51,7 +51,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
     output = render_suggestions(suggestions, "ang")
 
     assert_select_in output,
-      "li.autocomplete-result[data-autocomplete-label='Angiospermae | legitimate']"
+                     "li.autocomplete-result[data-autocomplete-label='Angiospermae | legitimate']"
   end
 
   test "preserves an author-shaped value's spacing in data-autocomplete-label" do
@@ -64,7 +64,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
     output = render_suggestions(suggestions, "ben")
 
     assert_select_in output,
-      "li.autocomplete-result[data-autocomplete-label='Benth.  | George Bentham']"
+                     "li.autocomplete-result[data-autocomplete-label='Benth.  | George Bentham']"
   end
 
   # For a field that has to act on more than the picked record's id: the
@@ -86,8 +86,8 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
     )
 
     assert_select_in output,
-      "li.autocomplete-result[data-family-id='7']" \
-        "[data-family-value='a_family']"
+                     "li.autocomplete-result[data-family-id='7']" \
+                       "[data-family-value='a_family']"
   end
 
   test "publishes no extra data attributes without data_keys" do

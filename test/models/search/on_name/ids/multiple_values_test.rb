@@ -27,13 +27,13 @@ class SearchOnNameIdsMultiTest < ActiveSupport::TestCase
     n2 = names(:acacia)
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "ids: #{name.id},#{n2.id}",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "ids: #{name.id},#{n2.id}",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 2,
-      search.executed_query.results.size,
-      "Exactly 2 results are expected."
+                 search.executed_query.results.size,
+                 "Exactly 2 results are expected."
   end
 end

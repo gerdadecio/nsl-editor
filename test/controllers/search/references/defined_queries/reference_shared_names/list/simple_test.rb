@@ -39,7 +39,7 @@ class SearchRefsDefQuerRefSharedNamesListHasSimpleT < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /3 records\b/,
-      "Should find some records"
+                  /3 records\b/,
+                  "Should find some records"
   end
 end

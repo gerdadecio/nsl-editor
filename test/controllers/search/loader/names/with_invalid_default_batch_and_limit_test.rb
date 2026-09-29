@@ -34,8 +34,8 @@ class SearchLoaderNameInvalidDefaultBatchAndLimitTest < ActionController::TestCa
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /Please set a default batch/,
-      "Should be asked to set a default batch"
+                  /Please set a default batch/,
+                  "Should be asked to set a default batch"
 
     qs_field_value = css_select("#query-string-field[value]")
     assert_match(

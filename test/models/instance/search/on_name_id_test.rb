@@ -29,8 +29,8 @@ class OnNameIdTest < ActiveSupport::TestCase
     Search::Base
       .new(ActiveSupport::HashWithIndifferentAccess
       .new(query_string: "id: #{names(:angophora_costata).id} show-instances:",
-        query_target: "name",
-        current_user: build_edit_user))
+           query_target: "name",
+           current_user: build_edit_user))
   end
 
   def evaluate(search)

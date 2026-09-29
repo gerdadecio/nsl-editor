@@ -59,14 +59,14 @@ class SrchRefsDefQueriesRefIdWInstListHasInstWLimit < ActionController::TestCase
     )
     assert_response :success
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should still find exactly 1 reference"
+                  /1 record\b/,
+                  "Should still find exactly 1 reference"
     assert_select "tr.instance-within-reference-record" do |elements|
       assert_operator elements.size,
-        :>,
-        10,
-        "Expected more than the old limit:10 cap on the " \
-          "reference's instance rows - got: #{elements.size}"
+                      :>,
+                      10,
+                      "Expected more than the old limit:10 cap on the " \
+                        "reference's instance rows - got: #{elements.size}"
     end
   end
 end

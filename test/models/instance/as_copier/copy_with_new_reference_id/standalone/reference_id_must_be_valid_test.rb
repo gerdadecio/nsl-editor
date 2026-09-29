@@ -25,7 +25,7 @@ class InstAsCopierWNewRefSAloneRefMustBeValidTest < ActiveSupport::TestCase
       instances(:gaertner_created_metrosideros_costata).id
     )
     assert_not master_instance.citations.empty?,
-      "Master instance should have at least 1 citation."
+               "Master instance should have at least 1 citation."
     dummy_username = "fred"
     params = ActionController::Parameters.new(reference_id: Name.first.id.to_s)
     assert_raises Exception, "Reference id must be valid." do

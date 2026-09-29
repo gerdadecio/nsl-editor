@@ -31,6 +31,6 @@ class SearchOnAuthorAssertionExAuthOfNameHasTest < ActiveSupport::TestCase
       )
     )
     assert_not search.executed_query.results.empty?,
-      "Should find at least one ex-author of a name."
+               "Should find at least one ex-author of a name."
   end
 end

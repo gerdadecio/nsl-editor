@@ -25,7 +25,7 @@ class OptionsForSciHybFormUnk2ndParCatTest < ActiveSupport::TestCase
     assert NameStatus.options_for_category(cat)
       .collect(&:first)
       .include?("[n/a]"),
-      'Scientific hybrid formula unknown 2nd parent name status
+           'Scientific hybrid formula unknown 2nd parent name status
            options should include "[n/a]"'
   end
 

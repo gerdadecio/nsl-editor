@@ -90,11 +90,11 @@ class WholeRecordChangedVolumeTest < ActiveSupport::TestCase
       @typeahead_params,
       "a user"
     ),
-      "The reference has changed so it should be updated."
+           "The reference has changed so it should be updated."
     changed_reference = Reference.find_by(id: @reference.id)
     assert @reference.created_at < changed_reference.updated_at,
-      "Reference updated at should have changed."
+           "Reference updated at should have changed."
     assert @reference.updated_by.match("a user"),
-      "Reference updated by should have been set."
+           "Reference updated by should have been set."
   end
 end

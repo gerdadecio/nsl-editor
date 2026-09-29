@@ -69,18 +69,18 @@ class SearchRefsOnDefaultWildcardWithInstancesMoreResultsTest < ActionController
     # Sanity check this is actually matching many references, not
     # accidentally falling back to some narrower/empty match.
     assert_operator count,
-      :>,
-      50,
-      "Expected '*' to match most of the reference " \
-        "fixtures - got: #{summary_text.strip}"
+                    :>,
+                    50,
+                    "Expected '*' to match most of the reference " \
+                      "fixtures - got: #{summary_text.strip}"
 
     # Real instance rows are rendered (proves instances are genuinely
     # present in this result set, not just theoretically)...
     assert_select "tr.instance-within-reference-record" do |elements|
       assert_operator elements.size,
-        :>,
-        0,
-        "Expected at least one attached instance row to be rendered"
+                      :>,
+                      0,
+                      "Expected at least one attached instance row to be rendered"
     end
 
     # ...but the reported count is references only, not references+
@@ -91,10 +91,10 @@ class SearchRefsOnDefaultWildcardWithInstancesMoreResultsTest < ActionController
     # instance, so it should comfortably exceed the reported count.
     total_row_count = css_select("tr.search-result").size
     assert_operator total_row_count,
-      :>,
-      count,
-      "Expected more rendered rows (references+instances) " \
-        "than the reported record count (#{count}) - got " \
-        "#{total_row_count} rows"
+                    :>,
+                    count,
+                    "Expected more rendered rows (references+instances) " \
+                      "than the reported record count (#{count}) - got " \
+                      "#{total_row_count} rows"
   end
 end

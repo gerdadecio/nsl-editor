@@ -35,7 +35,7 @@ class SearchOnNameNameCultivarsExcludedByDefaultTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 0,
-      search.executed_query.results.size,
-      "Expected cultivar name to be excluded by default"
+                 search.executed_query.results.size,
+                 "Expected cultivar name to be excluded by default"
   end
 end

@@ -35,16 +35,16 @@ class SearchParsedRequestListDirectiveKeepsSimilarTokenTest < ActiveSupport::Tes
 
     assert parsed_request.list, "This should be parsed as a list query."
     assert_not parsed_request.count,
-      "This should not be parsed as a count query."
+               "This should not be parsed as a count query."
     assert_includes parsed_request.where_arguments,
-      "family-list:",
-      "The family-list: directive should survive parsing of the \
+                    "family-list:",
+                    "The family-list: directive should survive parsing of the \
 list: directive."
     assert_includes parsed_request.where_arguments,
-      "Fabaceae",
-      "The family-list: argument should survive parsing."
+                    "Fabaceae",
+                    "The family-list: argument should survive parsing."
     assert_not_includes parsed_request.where_arguments.split(/ /),
-      "list:",
-      "The list: directive itself should be consumed."
+                        "list:",
+                        "The list: directive itself should be consumed."
   end
 end
