@@ -18,26 +18,25 @@
 #
 require "test_helper"
 
-class NoRoleUserCannotShowSynonymyTabForFOADraftTest < ActionController::TestCase
-  tests TreesController
-
+class NoRoleUserCannotShowSynonymyTabForFOADraftTest < ActionDispatch::IntegrationTest
   # r6editor Started GET "/nsl/editor/trees/show/cas"
   # r6editor Processing by TreesController#show_cas as JS
   test "user with no role cannot show syn tab for FOA draft" do
     user = users(:no_role)
     draft = tree_versions(:foa_draft_version)
     tree_version_elements(:tve_for_red_gum)
-    get(
-      :show_cas,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: draft,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => draft.id } }
+    ) do
+      get show_cas_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "User with no role should not be able to show syn tab for FOA draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")
   end

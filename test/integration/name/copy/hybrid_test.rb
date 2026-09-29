@@ -20,18 +20,11 @@ require "test_helper"
 
 # Exercises the "copy a hybrid name" workflow that the copy form drives:
 # POST names/:id/copy with a new element and two chosen parents.
-class NamesCopyHybridTest < ActionController::TestCase
-  tests NamesController
-
+class NamesCopyHybridTest < ActionDispatch::IntegrationTest
   def setup
     @source = names(:hybrid_formula) # parent: a_species, second_parent: another_species
     @new_first_parent = names(:triodia_basedowii)
     @new_second_parent = names(:crotalaria_distans)
-    @edit_session = {
-      username: "fred",
-      user_full_name: "Fred Jones",
-      groups: ["edit"],
-    }
   end
 
   # What the form's read-only preview field posts: "first parent x second parent".
@@ -40,20 +33,18 @@ class NamesCopyHybridTest < ActionController::TestCase
   end
 
   def post_copy(name_element:, parent_id:, second_parent_id:)
-    post(
-      :copy,
-      params: {
-        name: {
-          "name_element" => name_element,
-          "name_rank_id" => @source.name_rank_id.to_s,
-          "parent_id" => parent_id.to_s,
-          "second_parent_id" => second_parent_id.to_s,
+    sign_in_as_fake_user(groups: ["edit"]) do
+      post name_copy_path(id: @source.id),
+        params: {
+          name: {
+            "name_element" => name_element,
+            "name_rank_id" => @source.name_rank_id.to_s,
+            "parent_id" => parent_id.to_s,
+            "second_parent_id" => second_parent_id.to_s,
+          },
         },
-        format: :js,
-        "id" => @source.id.to_s,
-      },
-      session: @edit_session
-    )
+        headers: { "Accept" => "text/javascript" }
+    end
   end
 
   # Wraps the callbacks that need the external services.

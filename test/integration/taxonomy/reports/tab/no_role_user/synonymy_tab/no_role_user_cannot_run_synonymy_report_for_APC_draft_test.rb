@@ -18,26 +18,25 @@
 #
 require "test_helper"
 
-class NoRoleUserCanRunSynonymyReportForAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class NoRoleUserCanRunSynonymyReportForAPCDraftTest < ActionDispatch::IntegrationTest
   # r6editor Started GET "/nsl/editor/trees/run/cas"
   # r6editor Processing by TreesController#run_cas as JS
   test "user with no role cannot run syn report for APC draft" do
     user = users(:no_role)
     draft = tree_versions(:apc_draft_version)
     tree_version_elements(:tve_for_red_gum)
-    get(
-      :run_cas,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: draft,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => draft.id } }
+    ) do
+      get run_cas_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "User with no role should not be able to run syn report for APC draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")
   end

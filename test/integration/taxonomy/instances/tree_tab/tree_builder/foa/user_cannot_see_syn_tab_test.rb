@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single search controller test.
-class TaxoInstanceTreeBuilderFoaCannotSeeSynTab < ActionController::TestCase
-  tests InstancesController
-
+class TaxoInstanceTreeBuilderFoaCannotSeeSynTab < ActionDispatch::IntegrationTest
   test "foa tree builder cannot see instance synonymy tab" do
     user = users(:foa_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
@@ -31,18 +29,18 @@ class TaxoInstanceTreeBuilderFoaCannotSeeSynTab < ActionController::TestCase
                    action: "tab",
                    id: "1",
                    tab: "tree"
-    get(
-      "tab",
-      params: { id: "#{instance.id}", tab: "tab_synonymy" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login", "xedit"],
-        draft: foa_draft,
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login", "xedit"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      get instance_tab_path(id: instance.id, tab: "tab_synonymy"),
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "Tree builder should not see Synonmy tab"
   end
 end

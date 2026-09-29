@@ -61,6 +61,71 @@ def debug(string)
   # print "#{Time.now} - #{string} \n"
 end
 
+# Fake a signed-in user inside an ActionDispatch::IntegrationTest, without
+# exercising the real AD-backed sign-in flow (see `sign_in` below, which
+# does exercise it and is for Capybara feature tests only).
+#
+# ActionDispatch::IntegrationTest's session is only ever populated as a
+# side effect of a real request/response cycle: Rails writes it out via
+# the CookieStore middleware after a response, and reads it back from the
+# cookie jar on the next request. There is no supported way to pre-load
+# session data before the first request - see rails/rails#18222, and
+# DHH's response in rails/rails#23386 ("the session is an internal
+# structure for the controller... I would rework the test to test
+# something visible").
+#
+# So rather than writing to `session` before a request (which is silently
+# discarded), this stubs ApplicationController#authenticate - the
+# before_action that would otherwise redirect to sign-in - for the
+# duration of a single real request, and sets the session and calls the
+# app's own `continue_user_session` from *inside* that request.
+# minitest-stub_any_instance runs the replacement via instance_exec, so
+# `self` inside the block is the actual controller instance mid-request:
+# the session write happens inside a genuine request/response cycle, and
+# `continue_user_session` (the app's real post-auth logic - building
+# SessionUser, setting up product context, working draft, etc.) runs for
+# real rather than being reimplemented in test code.
+#
+# Usage:
+#
+#   test "toggle workspace on" do
+#     sign_in_as_fake_user do
+#       post toggle_current_workspace_path, params: { id: @tree.id }
+#     end
+#     assert_response :success
+#   end
+#
+#   sign_in_as_fake_user(username: "qaonly", groups: ["qa"]) do
+#     get some_path
+#   end
+#
+# `extra_session:` sets any further session keys the app itself would
+# normally set during a real request (e.g. a working draft), for tests
+# that exercise behaviour depending on them. Match the shape the app's
+# own code writes into session (e.g. draft: { "id" => version.id }, the
+# same shape Workspaces::CurrentController#toggle writes) rather than
+# passing an ActiveRecord object directly - the old ActionController::
+# TestCase `session: {...}` versions of these tests often stashed a raw
+# AR object in session, which happened to work there because that test
+# style never serialises the session, but a real request/response cycle
+# does, so keep this to plain, serialisable values.
+def sign_in_as_fake_user(
+  username: "fred",
+  full_name: "Fred Jones",
+  groups: ["edit", "treebuilder"],
+  extra_session: {}
+)
+  ApplicationController.stub_any_instance(:authenticate, -> {
+    session[:username] = username
+    session[:user_full_name] = full_name
+    session[:groups] = groups
+    extra_session.each { |key, value| session[key] = value }
+    continue_user_session
+  }) do
+    yield
+  end
+end
+
 def standard_page_assertions
   standard_page_assertions_part_1
   standard_page_assertions_part_2

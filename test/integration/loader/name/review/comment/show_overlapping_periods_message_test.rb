@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class LoaderNameReviewCommentShowTab < ActionController::TestCase
-  tests Loader::NamesController
-
+class LoaderNameReviewCommentOverlappingPeriodsMsgTest < ActionDispatch::IntegrationTest
   # Started GET
   # "/nsl/editor/loader_names/52428461/tab/tab_comment/accepted
   # ?format=js&tabIndex=undefined&take_focus=true"
@@ -41,17 +39,17 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
   test "show overlapping periods message on comment tab" do
     reviewer = users(:reviewer_one)
     loader_name = loader_names(:accepted_three)
-    get(
-      "tab",
-      params: { id: "#{loader_name.id}", tab: "tab_comment" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: reviewer.user_name,
-        user_full_name: reviewer.full_name,
-        groups: ["login", "taxonomic-review"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: reviewer.user_name,
+      full_name: reviewer.full_name,
+      groups: ["login", "taxonomic-review"]
+    ) do
+      get loader_name_tab_path(id: loader_name.id, tab: "tab_comment"),
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_match "There is more than one active review period for the batch.",
                  response.body,
                  "Overlapping review periods should be reported"
@@ -67,17 +65,16 @@ class LoaderNameReviewCommentShowTab < ActionController::TestCase
   test "lists the clashing review once, and names each overlapping period" do
     reviewer = users(:reviewer_one)
     loader_name = loader_names(:accepted_three)
-    get(
-      "tab",
-      params: { id: "#{loader_name.id}", tab: "tab_comment" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: reviewer.user_name,
-        user_full_name: reviewer.full_name,
-        groups: ["login", "taxonomic-review"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: reviewer.user_name,
+      full_name: reviewer.full_name,
+      groups: ["login", "taxonomic-review"]
+    ) do
+      get loader_name_tab_path(id: loader_name.id, tab: "tab_comment"),
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
 
     # "WG Review" should appear exactly 3 times: once in the Active
     # reviews line, and once more within each of the two qualified period

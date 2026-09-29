@@ -28,10 +28,8 @@ require "test_helper"
 # Users with product roles (roles.present?) should see the create draft
 # link for any tree they have permission to create drafts for, regardless
 # of the tree's accepted_tree status.
-class TreePublisherWithRolesCanCreateDraftForNonAcceptedTreeTest < ActionController::TestCase
-  tests SearchController
-
-  def setup
+class TreePublisherWithRolesCanCreateDraftForNonAcceptedTreeTest < ActionDispatch::IntegrationTest
+  setup do
     # Ensure no draft versions exist for FOA tree for this test case
     draft_tree_version = tree_versions(:foa_draft_version)
     draft_tree_version.published = true
@@ -41,15 +39,15 @@ class TreePublisherWithRolesCanCreateDraftForNonAcceptedTreeTest < ActionControl
   test "FOA tree publisher with roles sees create draft for FOA (non-accepted tree)" do
     # FOA has accepted_tree: false, but user has product roles
     user = users(:foa_tax_publisher)
-    get(
-      :search,
-      params: {},
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      get search_path
+    end
+
     assert_response :success
     assert_select "a#create-draft-taxonomy-menu-link",
                   /Create draft taxonomy for FOA/,

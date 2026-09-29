@@ -19,24 +19,23 @@
 require "test_helper"
 
 # Single search controller test.
-class TreeBuilderFoaUserUnsetWorkspaceTest < ActionController::TestCase
-  tests Trees::Workspaces::CurrentController
-
+class TreeBuilderFoaUserUnsetWorkspaceTest < ActionDispatch::IntegrationTest
   test "foa tree builder can unset workspace version" do
     user = users(:foa_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
-    post(
-      :toggle,
-      params: { id: foa_draft.id },
-      format: :js,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: foa_draft,
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      post toggle_current_workspace_path,
+        params: { id: foa_draft.id },
+        headers: { "Accept" => "application/javascript" }
+    end
+
     assert_response :success, "Should be able to remove current workspace draft setting"
-    assert_nil session[:draft], "Should have unset the session draft"
+    assert_nil session["draft"], "Should have unset the session draft"
   end
 end

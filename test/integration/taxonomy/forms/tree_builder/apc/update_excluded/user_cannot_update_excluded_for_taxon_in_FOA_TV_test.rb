@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreeBuilderAPCUserCannotUpdateExcludedForTaxonOnFOADraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreeBuilderAPCUserCannotUpdateExcludedForTaxonOnFOADraftTest < ActionDispatch::IntegrationTest
   # r6editor Started POST "/nsl/editor/trees/update_excluded" for ::1 at 2025-07-17 09:44:34 +1000 (pid:642)
   # r6editor Processing by TreesController#update_excluded as */* (pid:642)
   # r6editor Parameters: {"excluded"=>"false", "taxonUri"=>"/tree/52410589/52410612"} (pid:642)
@@ -37,23 +35,24 @@ class TaxFormsTreeBuilderAPCUserCannotUpdateExcludedForTaxonOnFOADraftTest < Act
     user = users(:apc_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(
-      :update_excluded,
-      params: {
-        "update_parent" => {
-          "taxonUri" => tve.element_link,
-          "excluded" => "false",
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      post tree_update_excluded_path,
+        params: {
+          "update_parent" => {
+            "taxonUri" => tve.element_link,
+            "excluded" => "false",
+          },
         },
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: foa_draft,
-        groups: ["login"],
-      }
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "Success should be returned even for an error - the code is non-standard"
     assert_match "Error", response.body, "Expecting an error message"
   end

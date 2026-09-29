@@ -27,10 +27,8 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubFOANewDraftUserCanOpenFormTest < ActionController::TestCase
-  tests TreeVersionsController
-
-  def setup
+class TaxFormsTreePubFOANewDraftUserCanOpenFormTest < ActionDispatch::IntegrationTest
+  setup do
     publish_existing_draft
   end
 
@@ -43,17 +41,17 @@ class TaxFormsTreePubFOANewDraftUserCanOpenFormTest < ActionController::TestCase
 
   test "FOA tree publisher user can open new draft form" do
     user = users(:foa_tax_publisher)
-    get(
-      :new_draft,
-      params: { tree_id: trees(:FOA) },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      get tree_versions_new_draft_path(tree_id: trees(:FOA)),
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success
   end
 end

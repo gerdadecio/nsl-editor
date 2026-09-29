@@ -19,20 +19,18 @@
 require "test_helper"
 
 # Single search controller test.
-class TreeBuilderFoaUserHasTaxonomyMenuOptionsTest < ActionController::TestCase
-  tests SearchController
-
+class TreeBuilderFoaUserHasTaxonomyMenuOptionsTest < ActionDispatch::IntegrationTest
   test "foa tree builder has taxonomy menu options" do
     user = users(:foa_tax_builder)
-    get(
-      :search,
-      params: {},
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      get search_path
+    end
+
     assert_response :success
     assert_select "a",
                   /FOA draft version/,

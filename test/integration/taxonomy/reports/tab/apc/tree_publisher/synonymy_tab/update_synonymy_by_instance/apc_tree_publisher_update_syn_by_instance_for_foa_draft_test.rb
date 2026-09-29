@@ -18,10 +18,8 @@
 #
 require "test_helper"
 
-class APCTreePublisherUpdateSynByInstanceForFOADraftTest < ActionController::TestCase
-  tests TreesController
-
-  def setup
+class APCTreePublisherUpdateSynByInstanceForFOADraftTest < ActionDispatch::IntegrationTest
+  setup do
     stub_request(:post, /http:..localhost:90...tree-element.update-synonymy-by-instance.apiKey=test-api-key.as=apc-tax-publisher/)
       .with(
         headers: {
@@ -41,17 +39,18 @@ class APCTreePublisherUpdateSynByInstanceForFOADraftTest < ActionController::Tes
   test "APC tree publisher can update synonymy by instance for FOA draft" do
     user = users(:apc_tax_publisher)
     draft = tree_versions(:foa_draft_version)
-    post(
-      :update_synonymy_by_instance,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: draft,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => draft.id } }
+    ) do
+      post trees_update_synonymy_by_instance_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree publisher should not be able to update synonymy by instance for FOA draft"
   end
 end

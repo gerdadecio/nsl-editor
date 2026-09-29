@@ -18,26 +18,25 @@
 #
 require "test_helper"
 
-class APCTreePublisherShowChangesTabForFOADraftTest < ActionController::TestCase
-  tests TreesController
-
+class APCTreePublisherShowChangesTabForFOADraftTest < ActionDispatch::IntegrationTest
   # r6editor Started GET "/nsl/editor/trees/show/diff"
   # r6editor Processing by TreesController#show_diff as JS
   test "APC tree publisher show changes tab for FOA draft" do
     user = users(:apc_tax_publisher)
     draft = tree_versions(:foa_draft_version)
     tree_version_elements(:tve_for_red_gum)
-    get(
-      :show_diff,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: draft,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => draft.id } }
+    ) do
+      get show_diff_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree publisher should not be able to show Changes tab for FOA draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")
   end

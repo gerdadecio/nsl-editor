@@ -19,20 +19,18 @@
 require "test_helper"
 
 # Single search controller test.
-class TreePublisherFoaCanSeeTaxonomyMenuTest < ActionController::TestCase
-  tests SearchController
-
+class TreePublisherFoaCanSeeTaxonomyMenuTest < ActionDispatch::IntegrationTest
   test "tree publisher can see taxonomy menu" do
     user = users(:foa_tax_publisher)
-    get(
-      :search,
-      params: {},
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      get search_path
+    end
+
     assert_response :success
     assert_select "a#draft-taxo-dropdown-menu-link",
                   /Draft Taxonomies/,

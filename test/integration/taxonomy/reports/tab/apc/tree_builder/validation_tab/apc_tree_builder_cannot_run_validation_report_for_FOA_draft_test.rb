@@ -18,10 +18,8 @@
 #
 require "test_helper"
 
-class APCTreeBuilderCannotRunValidationReportForFOADraftTest < ActionController::TestCase
-  tests TreesController
-
-  def setup
+class APCTreeBuilderCannotRunValidationReportForFOADraftTest < ActionDispatch::IntegrationTest
+  setup do
   end
 
   # r6editor Started GET "/nsl/editor/trees/run/valrep"
@@ -30,17 +28,18 @@ class APCTreeBuilderCannotRunValidationReportForFOADraftTest < ActionController:
     user = users(:apc_tax_builder)
     draft = tree_versions(:foa_draft_version)
     tree_version_elements(:tve_for_red_gum)
-    get(
-      :run_valrep,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: draft,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => draft.id } }
+    ) do
+      get run_valrep_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree builder should not be able to run validation report for FOA draft"
   end
 end

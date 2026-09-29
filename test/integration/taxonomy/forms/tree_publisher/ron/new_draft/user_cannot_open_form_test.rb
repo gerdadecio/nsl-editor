@@ -27,34 +27,23 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubRONNewDraftUserCannotOpenFormTest < ActionController::TestCase
-  tests TreeVersionsController
-
-  def setup
-  end
-
-  # We need to have no draft versions for this test case
-  def publish_existing_draft
-    draft_tree_version = tree_versions(:ron_draft_version)
-    draft_tree_version.published = true
-    draft_tree_version.save!
-  end
+class TaxFormsTreePubRONNewDraftUserCannotOpenFormTest < ActionDispatch::IntegrationTest
 
   test "RON tree publisher user cannot open new draft form for read only tree" do
     user = users(:ron_tax_publisher)
+
     error = assert_raises(RuntimeError) do
-      get(
-        :new_draft,
-        params: { tree_id: trees(:RON) },
-        format: :js,
-        xhr: true,
-        session: {
-          username: user.user_name,
-          user_full_name: user.full_name,
-          groups: ["login"],
-        }
-      )
+      sign_in_as_fake_user(
+        username: user.user_name,
+        full_name: user.full_name,
+        groups: ["login"]
+      ) do
+        get tree_versions_new_draft_path(tree_id: trees(:RON)),
+          xhr: true,
+          headers: { "Accept" => "text/javascript" }
+      end
     end
+
     assert_equal "RON tree is read only - cannot create any drafts", error.message
   end
 end

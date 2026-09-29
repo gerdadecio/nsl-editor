@@ -18,10 +18,8 @@
 #
 require "test_helper"
 
-class APCTreeBuilderCanRunValidationReportForAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
-  def setup
+class APCTreeBuilderCanRunValidationReportForAPCDraftTest < ActionDispatch::IntegrationTest
+  setup do
     stub_request(:get, /http:..localhost:909..*treeVersion.validate.embed=true.version=146236284/)
       .with(
         headers: {
@@ -41,17 +39,18 @@ class APCTreeBuilderCanRunValidationReportForAPCDraftTest < ActionController::Te
     user = users(:apc_tax_builder)
     draft = tree_versions(:apc_draft_version)
     tree_version_elements(:tve_for_red_gum)
-    get(
-      :run_valrep,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: draft,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => draft.id } }
+    ) do
+      get run_valrep_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "APC tree builder should be able to run validation report for APC draft"
   end
 end

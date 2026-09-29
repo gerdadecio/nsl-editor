@@ -19,22 +19,20 @@
 require "test_helper"
 
 # Single search controller test.
-class TreePubFoaWDUserCanSeeMenuOptsPubDraftTest < ActionController::TestCase
-  tests SearchController
-
+class TreePubFoaWDUserCanSeeMenuOptsPubDraftTest < ActionDispatch::IntegrationTest
   test "foa tree publisher can see menu option publish working draft" do
     user = users(:foa_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
-    get(
-      :search,
-      params: {},
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: foa_draft,
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      get search_path
+    end
+
     assert_response :success
     assert_select "a",
                   /FOA draft version/,

@@ -19,30 +19,23 @@
 require "test_helper"
 
 # Single controller test.
-class NamesCopyInstancesSimple < ActionController::TestCase
-  tests NamesController
-
+class NamesCopyInstancesSimple < ActionDispatch::IntegrationTest
   test "editor should be able to copy name standalone instances to another name" do
     source_name = names(:angophora_costata)
     target_name = names(:angophora_fred)
+
     assert_difference("Instance.count", source_name.standalone_instances.size) do
-      post(
-        :copy_instances,
-        params: {
-          name: {
-            "target_name_id" => target_name.id.to_s,
-            "instance_ids_to_copy" => source_name.standalone_instances.map(&:id),
+      sign_in_as_fake_user(groups: ["edit"]) do
+        post name_copy_instances_path(id: source_name.id),
+          params: {
+            name: {
+              "target_name_id" => target_name.id.to_s,
+              "instance_ids_to_copy" => source_name.standalone_instances.map(&:id),
+            },
+            "commit" => "Confirm",
           },
-          "commit" => "Confirm",
-          format: :js,
-          "id" => source_name.id.to_s,
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+          headers: { "Accept" => "text/javascript" }
+      end
     end
   end
 end

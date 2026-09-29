@@ -27,32 +27,31 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePublisherAPCUserCannotUpdateCommentOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreePublisherAPCUserCannotUpdateCommentOnAPCDraftTest < ActionDispatch::IntegrationTest
   test "APC tree publisher user cannot update comment on FOA draft entry" do
     user = users(:apc_tax_publisher)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(
-      :update_comment,
-      params: {
-        "update_comment" => {
-          "element_link" => tve.element_link,
-          "comment" => "xyz comment",
-          "delete" => "",
-          "update" => "",
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      post tree_update_comment_path,
+        params: {
+          "update_comment" => {
+            "element_link" => tve.element_link,
+            "comment" => "xyz comment",
+            "delete" => "",
+            "update" => "",
+          },
         },
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      }
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree publisher should not be able to update comment on APC draft entry"
     assert_match(
       /Access Denied\! Please contact the admin for proper permissions/,

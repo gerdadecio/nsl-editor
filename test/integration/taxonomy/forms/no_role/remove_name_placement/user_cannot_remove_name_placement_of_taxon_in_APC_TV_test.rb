@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsNoRoleUserCannotRemoveNamePlacementOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsNoRoleUserCannotRemoveNamePlacementOnAPCDraftTest < ActionDispatch::IntegrationTest
   # r6editor Started DELETE "/nsl/editor/trees/723297/remove_name_placement" for ::1 at 2025-07-18 11:51:43 +1000 (pid:642)
   # r6editor Processing by TreesController#remove_name_placement as JS (pid:642)
   # r6editor Parameters: {"authenticity_token"=>"[FILTERED]",
@@ -41,25 +39,25 @@ class TaxFormsNoRoleUserCannotRemoveNamePlacementOnAPCDraftTest < ActionControll
     user = users(:no_role)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    delete(
-      :remove_name_placement,
-      params: {
-        "remove_placement" => {
-          "taxon_uri" => tve.element_link,
-          "delete" => "",
-          "cancel_remove_placement" => { "delete" => "" },
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      delete tree_remove_name_path(id: tve.id),
+        params: {
+          "remove_placement" => {
+            "taxon_uri" => tve.element_link,
+            "delete" => "",
+            "cancel_remove_placement" => { "delete" => "" },
+          },
         },
-        "id" => tve.id,
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      }
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden,
                     "No Role User should not be allowed to remove name from APC draft"
     assert_match(

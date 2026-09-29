@@ -27,24 +27,23 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubAPCUserCanUpdateAPCDraftTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsTreePubAPCUserCanUpdateAPCDraftTest < ActionDispatch::IntegrationTest
   test "APC tree publisher user can update draft" do
     user = users(:apc_tax_publisher)
     apc_draft = tree_versions(:apc_draft_version)
-    post(
-      :update_draft,
-      params: { "version_id" => apc_draft.id, "draft_name" => "zyz", "draft_log" => "xyz" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: apc_draft,
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      post tree_versions_update_draft_path,
+        params: { "version_id" => apc_draft.id, "draft_name" => "zyz", "draft_log" => "xyz" },
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success
   end
 end

@@ -22,9 +22,7 @@ require "test_helper"
 # "error" field, the controller should use that field as @message rather
 # than calling the undefined json_result method (which was the pre-fix
 # behaviour and caused a NoMethodError).
-class TaxFormsTreePubAPCPublishErrorRendersJsonErrorFieldTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsTreePubAPCPublishErrorRendersJsonErrorFieldTest < ActionDispatch::IntegrationTest
   def setup
     stub_request(:put, /http:..localhost:90...nsl.services.api.treeVersion.publish.apiKey=test-api-key.as=apc-tax-publisher/)
       .to_return(status: 200,
@@ -35,22 +33,23 @@ class TaxFormsTreePubAPCPublishErrorRendersJsonErrorFieldTest < ActionController
   test "publish failure renders the error field from the JSON response" do
     user = users(:apc_tax_publisher)
     apc_draft = tree_versions(:apc_draft_version)
-    post(
-      :publish,
-      params: {
-        "version_id" => apc_draft.id,
-        "next_draft_name" => "next draft",
-        "draft_log" => "log entry",
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: apc_draft,
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      post tree_versions_publish_path,
+        params: {
+          "version_id" => apc_draft.id,
+          "next_draft_name" => "next draft",
+          "draft_log" => "log entry",
+        },
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success
     assert_match "Publishing service unavailable", response.body
   end

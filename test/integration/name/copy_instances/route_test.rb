@@ -18,9 +18,7 @@
 #
 require "test_helper"
 
-class NamesCopyInstancesRoute < ActionController::TestCase
-  tests NamesController
-
+class NamesCopyInstancesRoute < ActionDispatch::IntegrationTest
   test "name copy instances route" do
     assert_routing(
       { path: "/names/44/copy/instances", method: :post },

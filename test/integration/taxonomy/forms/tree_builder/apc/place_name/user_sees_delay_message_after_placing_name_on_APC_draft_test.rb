@@ -31,9 +31,7 @@ require "test_helper"
 # The sibling test in this directory stops at the first API call. This one
 # stubs the whole conversation so the place_name view actually renders, which
 # is where the user is told the change may be delayed.
-class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest < ActionDispatch::IntegrationTest
   def setup
     # First call: look up the instance's preferred link, needed to build the
     # second call's payload.
@@ -69,29 +67,29 @@ class TaxFormsTreeBuilderAPCUserSeesDelayMessageAfterPlacingNameOnAPCDraftTest <
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(
-      :place_name,
-      params: {
-        "place_name" => {
-          "instance_id" => 12345,
-          "comment" => "blah",
-          "distribution" => ["NSW"],
-          "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
-          "parent_element_link" => tve.element_link,
-          "version_id" => apc_draft.id,
-          "place" => "",
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      post tree_place_name_path(id: tve.id),
+        params: {
+          "place_name" => {
+            "instance_id" => 12345,
+            "comment" => "blah",
+            "distribution" => ["NSW"],
+            "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
+            "parent_element_link" => tve.element_link,
+            "version_id" => apc_draft.id,
+            "place" => "",
+          },
         },
-        "id" => tve.id,
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      }
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "APC tree builder should be able to place a name on APC draft"
     assert_template "place_name"
     assert_includes @response.body,

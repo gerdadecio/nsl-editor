@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubAPCUserCanCreateAPCDraftTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsTreePubAPCUserCanCreateAPCDraftTest < ActionDispatch::IntegrationTest
   def setup
     publish_existing_draft
     response_body = %({"payload":{"draftName":"blah","versionNumber":#{tree_versions(:apc_draft_version).id}}})
@@ -58,17 +56,18 @@ class TaxFormsTreePubAPCUserCanCreateAPCDraftTest < ActionController::TestCase
   test "APC tree publisher user can create APC draft" do
     user = users(:apc_tax_publisher)
     apc_tree = trees(:APC)
-    post(
-      :create_draft,
-      params: { "tree_id" => apc_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      post tree_versions_create_draft_path,
+        params: { "tree_id" => apc_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success
   end
 end

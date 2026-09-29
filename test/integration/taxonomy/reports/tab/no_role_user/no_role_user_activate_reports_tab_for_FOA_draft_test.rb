@@ -18,26 +18,25 @@
 #
 require "test_helper"
 
-class NoRoleUserCannotActivateTreeReportsTabForFOADraft < ActionController::TestCase
-  tests TreesController
-
+class NoRoleUserCannotActivateTreeReportsTabForFOADraft < ActionDispatch::IntegrationTest
   # r6editor Started GET "/nsl/editor/trees/reports" for ::1 at 2025-07-21 16:39:27 +1000
   # r6editor Processing by TreesController#reports as JS
   test "user with no role cannot activate tree reports tab for FOA draft" do
     user = users(:no_role)
     foa_draft = tree_versions(:foa_draft_version)
     tree_version_elements(:tve_for_red_gum)
-    get(
-      :reports,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: foa_draft,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      get trees_reports_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree builder should not be able to activate reports tab for FOA draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")
   end

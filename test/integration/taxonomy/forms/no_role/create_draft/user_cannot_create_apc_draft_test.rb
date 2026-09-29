@@ -27,23 +27,22 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsNoRoleUserCannotCreateAPCDraftTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsNoRoleUserCannotCreateAPCDraftTest < ActionDispatch::IntegrationTest
   test "APC no role user cannot create APC draft" do
     user = users(:no_role)
     apc_tree = trees(:APC)
-    post(
-      :create_draft,
-      params: { "tree_id" => apc_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      post tree_versions_create_draft_path,
+        params: { "tree_id" => apc_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree builder should not be able to create FOA draft"
   end
 end

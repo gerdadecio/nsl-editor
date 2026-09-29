@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreeBuilderAPCUserCanRemoveNamePlacementForTaxonOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreeBuilderAPCUserCanRemoveNamePlacementForTaxonOnAPCDraftTest < ActionDispatch::IntegrationTest
   def setup
     stub_request(:post, /http:..localhost:90...nsl.services.api.treeElement.removeElement.apiKey=test-api-key.as=apc-tax-builder/)
       .with(
@@ -57,25 +55,25 @@ class TaxFormsTreeBuilderAPCUserCanRemoveNamePlacementForTaxonOnAPCDraftTest < A
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    delete(
-      :remove_name_placement,
-      params: {
-        "remove_placement" => {
-          "taxon_uri" => tve.element_link,
-          "delete" => "",
-          "cancel_remove_placement" => { "delete" => "" },
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      delete tree_remove_name_path(id: tve.id),
+        params: {
+          "remove_placement" => {
+            "taxon_uri" => tve.element_link,
+            "delete" => "",
+            "cancel_remove_placement" => { "delete" => "" },
+          },
         },
-        "id" => tve.id,
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      }
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "APC tree builder should be able to remove placement from APC draft"
   end
 end

@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePublisherAPCUserCannotPlaceNameOnFOADraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreePublisherAPCUserCannotPlaceNameOnFOADraftTest < ActionDispatch::IntegrationTest
   # r6editor Started POST "/nsl/editor/trees/513991/place_name" for ::1 at 2025-07-18 15:38:05 +1000 (pid:96312)
   # r6editor Processing by TreesController#place_name as JS (pid:96312)
   # r6editor Parameters: {"authenticity_token"=>"[FILTERED]",
@@ -45,32 +43,32 @@ class TaxFormsTreePublisherAPCUserCannotPlaceNameOnFOADraftTest < ActionControll
     user = users(:apc_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
+
     # Raising this exception means it got as far as calling the API
     # The processing after calling the API, based on what the API returns
     # (in our case, that's from a stub) is complex.  No need to simulate all that.
-    post(
-      :place_name,
-      params: {
-        "place_name" => {
-          "instance_id" => 12345,
-          "comment" => "blah",
-          "distribution" => ["NSW"],
-          "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
-          "parent_element_link" => "/tree/52410589/52410645",
-          "version_id" => foa_draft.id,
-          "place" => "",
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      post tree_place_name_path(id: tve.id),
+        params: {
+          "place_name" => {
+            "instance_id" => 12345,
+            "comment" => "blah",
+            "distribution" => ["NSW"],
+            "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
+            "parent_element_link" => "/tree/52410589/52410645",
+            "version_id" => foa_draft.id,
+            "place" => "",
+          },
         },
-        "id" => tve.id,
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: foa_draft,
-        groups: ["login"],
-      }
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "Should be forbidden"
     assert_match(
       /access denied/i,

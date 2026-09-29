@@ -27,23 +27,22 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubAPCUserCannotCreateFoADraftTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsTreePubAPCUserCannotCreateFoADraftTest < ActionDispatch::IntegrationTest
   test "APC tree publisher user cannot create FoA draft" do
     user = users(:apc_tax_publisher)
     foa_tree = trees(:FOA)
-    post(
-      :create_draft,
-      params: { "tree_id" => foa_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      post tree_versions_create_draft_path,
+        params: { "tree_id" => foa_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :bad_request, "APC tree publisher should not be able to create FOA draft"
   end
 end

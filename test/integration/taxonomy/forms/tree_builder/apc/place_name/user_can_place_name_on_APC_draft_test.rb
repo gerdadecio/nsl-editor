@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreeBuilderAPCUserCanPlaceNameOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreeBuilderAPCUserCanPlaceNameOnAPCDraftTest < ActionDispatch::IntegrationTest
   def setup
     stub_request(:get, /http:..localhost:90...*broker.preferredLink.idNumber=12345.nameSpace=anamespace.objectType=instance/)
       .with(
@@ -63,29 +61,27 @@ class TaxFormsTreeBuilderAPCUserCanPlaceNameOnAPCDraftTest < ActionController::T
     # The processing after calling the API, based on what the API returns
     # (in our case, that's from a stub) is complex.  No need to simulate all that.
     assert_raises(NoMethodError, "Place name should get this far") do
-      post(
-        :place_name,
-        params: {
-          "place_name" => {
-            "instance_id" => 12345,
-            "comment" => "blah",
-            "distribution" => ["NSW"],
-            "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
-            "parent_element_link" => "/tree/52410589/52410645",
-            "version_id" => apc_draft.id,
-            "place" => "",
+      sign_in_as_fake_user(
+        username: user.user_name,
+        full_name: user.full_name,
+        groups: ["login"],
+        extra_session: { draft: { "id" => apc_draft.id } }
+      ) do
+        post tree_place_name_path(id: tve.id),
+          params: {
+            "place_name" => {
+              "instance_id" => 12345,
+              "comment" => "blah",
+              "distribution" => ["NSW"],
+              "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
+              "parent_element_link" => "/tree/52410589/52410645",
+              "version_id" => apc_draft.id,
+              "place" => "",
+            },
           },
-          "id" => tve.id,
-        },
-        format: :js,
-        xhr: true,
-        session: {
-          username: user.user_name,
-          user_full_name: user.full_name,
-          draft: apc_draft,
-          groups: ["login"],
-        }
-      )
+          xhr: true,
+          headers: { "Accept" => "text/javascript" }
+      end
     end
   end
 end

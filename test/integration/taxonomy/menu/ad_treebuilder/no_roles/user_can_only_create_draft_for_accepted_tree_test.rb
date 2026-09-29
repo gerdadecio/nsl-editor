@@ -28,25 +28,22 @@ require "test_helper"
 # This means users without product roles should only see the create draft
 # link for trees where accepted_tree is true (e.g., APC) and not for
 # non-accepted trees (e.g., FOA).
-class AdTreebuilderNoRolesCanOnlyCreateDraftForAcceptedTreeTest < ActionController::TestCase
-  tests SearchController
-
-  def setup
+class AdTreebuilderNoRolesCanOnlyCreateDraftForAcceptedTreeTest < ActionDispatch::IntegrationTest
+  setup do
     # Ensure no draft versions exist for this test case
     TreeVersion.update_all(published: true)
   end
 
   test "AD treebuilder without roles sees create draft for APC (accepted tree)" do
     # APC has accepted_tree: true
-    get(
-      :search,
-      params: {},
-      session: {
-        username: "ad-treebuilder-no-roles",
-        user_full_name: "AD Treebuilder No Roles",
-        groups: ["treebuilder"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "ad-treebuilder-no-roles",
+      full_name: "AD Treebuilder No Roles",
+      groups: ["treebuilder"]
+    ) do
+      get search_path
+    end
+
     assert_response :success
     assert_select "a#create-draft-taxonomy-menu-link",
                   /Create draft taxonomy for APC/,
@@ -55,15 +52,14 @@ class AdTreebuilderNoRolesCanOnlyCreateDraftForAcceptedTreeTest < ActionControll
 
   test "AD treebuilder without roles does not see create draft for FOA (non-accepted tree)" do
     # FOA has accepted_tree: false
-    get(
-      :search,
-      params: {},
-      session: {
-        username: "ad-treebuilder-no-roles",
-        user_full_name: "AD Treebuilder No Roles",
-        groups: ["treebuilder"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "ad-treebuilder-no-roles",
+      full_name: "AD Treebuilder No Roles",
+      groups: ["treebuilder"]
+    ) do
+      get search_path
+    end
+
     assert_response :success
     assert_select "a",
                   { count: 0, text: /Create draft taxonomy for FOA/ },

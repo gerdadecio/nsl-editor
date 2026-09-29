@@ -18,26 +18,25 @@
 #
 require "test_helper"
 
-class APCTreeBuilderCanShowSynonymyTabForAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class APCTreeBuilderCanShowSynonymyTabForAPCDraftTest < ActionDispatch::IntegrationTest
   # r6editor Started GET "/nsl/editor/trees/show/cas"
   # r6editor Processing by TreesController#show_cas as JS
   test "APC tree builder can show syn tab for APC draft" do
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tree_version_elements(:tve_for_red_gum)
-    get(
-      :show_cas,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      }
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      get show_cas_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "APC tree builder should be able to show syn tab for APC draft"
   end
 end
