@@ -135,4 +135,83 @@ if [ "$status" -eq 2 ]; then
   exit 1
 fi
 
+# ---------------------------------------------------------------------------
+# RuboCop on staged (added/copied/modified/renamed) Ruby files.
+#
+# Runs inside the first running editor container (Docker setup), otherwise
+# with the local bundle (regular Rails setup). The container must mount this
+# repo at its working dir (both known setups mount it at /app). Note RuboCop
+# checks the working-tree file, so partially staged files are checked in full.
+#
+# Skip RuboCop only: SKIP_RUBOCOP=1 git commit ...
+# Force a runner:    RUBOCOP_RUNNER=docker|local git commit ...
+# Container name:    defaults to trying nsl_editor_source (docker-apps) then
+#                    nsl_app_dev (docker-compose.dev.yml). Override with
+#                    RUBOCOP_CONTAINER=<name> or, to persist it per clone,
+#                    git config hooks.rubocopContainer <name>
+# ---------------------------------------------------------------------------
+[ "$SKIP_RUBOCOP" = "1" ] && exit 0
+
+containers=${RUBOCOP_CONTAINER:-$(git config hooks.rubocopContainer)}
+containers=${containers:-"nsl_editor_source nsl_app_dev"}
+
+files=$(git diff --cached --name-only --diff-filter=ACMR -- \
+  '*.rb' '*.rake' '*.gemspec' '*.ru' 'Gemfile' 'Rakefile')
+
+[ -z "$files" ] && exit 0
+
+# First candidate container that is currently running (empty if none).
+CONTAINER=""
+if command -v docker >/dev/null 2>&1; then
+  running=$(docker ps --format '{{.Names}}' 2>/dev/null)
+  for c in $containers; do
+    if echo "$running" | grep -qx "$c"; then CONTAINER=$c; break; fi
+  done
+fi
+
+runner=$RUBOCOP_RUNNER
+if [ -z "$runner" ]; then
+  if [ -n "$CONTAINER" ]; then runner=docker; else runner=local; fi
+fi
+[ "$runner" = "local" ] && CONTAINER=""
+
+if [ "$runner" = "docker" ] && [ -z "$CONTAINER" ]; then
+  {
+    echo "pre-commit: RUBOCOP_RUNNER=docker but none of these containers is running: $containers"
+    echo "Start it, or set RUBOCOP_CONTAINER / git config hooks.rubocopContainer <name>."
+  } >&2
+  exit 1
+fi
+
+case "$runner" in
+  docker) rubocop_cmd="docker exec $CONTAINER bundle exec rubocop" ;;
+  local)  rubocop_cmd="bundle exec rubocop" ;;
+  *) echo "pre-commit: unknown RUBOCOP_RUNNER '$runner' (use docker or local)" >&2; exit 1 ;;
+esac
+
+if [ "$runner" = "local" ] && ! bundle exec rubocop --version >/dev/null 2>&1; then
+  {
+    echo "pre-commit: cannot run RuboCop: 'bundle exec rubocop' failed locally."
+    echo "Run 'bundle install' with the project's Ruby, or start the editor container."
+    echo "(Looked for running containers: $containers)"
+    echo "Skip with: SKIP_RUBOCOP=1 git commit ... (or --no-verify)"
+  } >&2
+  exit 1
+fi
+
+{
+  echo "pre-commit: running RuboCop ($runner${CONTAINER:+ in $CONTAINER}) on staged files..."
+  echo "$files" | sed 's/^/  /'
+} >&2
+
+# shellcheck disable=SC2086
+if ! $rubocop_cmd --force-exclusion $files >&2; then
+  {
+    echo ""
+    echo "pre-commit: RuboCop failed. Fix the offenses (try: rubocop -a <file>) and re-stage,"
+    echo "or skip with: SKIP_RUBOCOP=1 git commit ... (or --no-verify)"
+  } >&2
+  exit 1
+fi
+
 exit 0
