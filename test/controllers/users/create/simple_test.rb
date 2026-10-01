@@ -19,51 +19,47 @@
 require "test_helper"
 
 # Single controller test.
-class UserCreateSimpleTest < ActionController::TestCase
-  tests UsersController
-
+class UserCreateSimpleTest < ActionDispatch::IntegrationTest
   def setup
     @known_user = users(:user_one)
   end
 
   test "create user simple" do
-    @request.headers["Accept"] = "application/javascript"
     assert_difference("User.count") do
-      post(
-        :create,
-        params: {
-          user: {
-            "user_name" => "auser",
-            "given_name" => "a",
-            "family_name" => "user",
+      sign_in_as_fake_user(
+        username: @known_user.user_name,
+        full_name: "#{@known_user.given_name} #{@known_user.family_name}",
+        groups: ["admin"]
+      ) do
+        post users_path,
+          params: {
+            user: {
+              "user_name" => "auser",
+              "given_name" => "a",
+              "family_name" => "user",
+            },
           },
-        },
-        session: {
-          username: @known_user.user_name,
-          user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
-          groups: ["admin"],
-        }
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
   end
 
   test "created user is stamped with the creating user's user name" do
-    @request.headers["Accept"] = "application/javascript"
-    post(
-      :create,
-      params: {
-        user: {
-          "user_name" => "buser",
-          "given_name" => "b",
-          "family_name" => "user",
+    sign_in_as_fake_user(
+      username: @known_user.user_name,
+      full_name: "#{@known_user.given_name} #{@known_user.family_name}",
+      groups: ["admin"]
+    ) do
+      post users_path,
+        params: {
+          user: {
+            "user_name" => "buser",
+            "given_name" => "b",
+            "family_name" => "user",
+          },
         },
-      },
-      session: {
-        username: @known_user.user_name,
-        user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
-        groups: ["admin"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     created = User.find_by(user_name: "buser")
     assert created.present?, "New user record should have been created"
     assert_equal(

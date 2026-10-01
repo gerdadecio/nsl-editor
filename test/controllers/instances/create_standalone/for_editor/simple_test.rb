@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesCreateByEditorTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesCreateStandaloneByEditorTest < ActionDispatch::IntegrationTest
   test "editor should be able to create standalone" do
     name = names(:a_species)
     reference = references(:a_book)
@@ -35,17 +33,16 @@ class InstancesCreateByEditorTest < ActionController::TestCase
       "reference_id" => reference.id,
       "extra_primary_override" => "0",
     }
-    @request.headers["Accept"] = "application/javascript"
     assert_difference("Instance.count") do
-      post(
-        :create,
-        params: { instance: instance_params },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post instances_path,
+          params: { instance: instance_params },
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response :success
   end

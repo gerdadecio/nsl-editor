@@ -19,23 +19,19 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorEditorOfferDeleteButtonIfCanBeDelTest < ActionController::TestCase
-  tests AuthorsController
-
+class AuthorEditorOfferDeleteButtonIfCanBeDelTest < ActionDispatch::IntegrationTest
   test "should show editor author delete button if can be deleted" do
     author = authors(:has_no_dependents)
-    @request.headers["Accept"] = "application/javascript"
     assert author.can_be_deleted?,
            "Must be able to delete this author for the test to be valid"
-    get(
-      :show,
-      params: { id: author.id, tab: "tab_edit" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get author_tab_path(id: author.id, tab: "tab_edit"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_select "li.active a#author-edit-tab",
                   "Edit",
                   "Should show 'Edit' tab."

@@ -40,22 +40,19 @@ require "test_helper"
 # bucket_reference_for_default_instances, with 36 attached instances -
 # is included, without having to know or guess the exact match count or
 # sort position of any one fixture.
-class SearchRefsOnDefaultWildcardWithInstancesMoreResultsTest < ActionController::TestCase
-  tests SearchController
+class SearchRefsOnDefaultWildcardWithInstancesMoreResultsTest < ActionDispatch::IntegrationTest
 
   test "'*' with show-instances: reports references only, not instances, even unlimited" do
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "reference",
         query_string: "* show-instances: limit:500",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
       }
-    )
+    end
     assert_response :success
 
     summary_text = nil

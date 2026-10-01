@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class ShouldRouteToCopyStandaloneInstanceTest < ActionController::TestCase
-  tests InstancesController
+class ShouldRouteToCopyStandaloneInstanceTest < ActionDispatch::IntegrationTest
 
   test "should route to copy a standalone instance" do
     assert_routing(

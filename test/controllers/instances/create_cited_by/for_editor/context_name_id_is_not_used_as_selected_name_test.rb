@@ -32,13 +32,10 @@ require "test_helper"
 # search query). This test locks in that they stay independent - whatever
 # context_name_id carries must never end up as the created instance's
 # name.
-class InstancesCreateCitedByContextNameIdIgnoredTest < ActionController::TestCase
-  tests InstancesController
-
-  def setup
+class InstancesCreateCitedByContextNameIdIgnoredTest < ActionDispatch::IntegrationTest
+  setup do
     @cited_by = instances(:gaertner_created_metrosideros_costata)
     @selected_name = names(:argyle_apple)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "created instance uses the selected name_id, not context_name_id" do
@@ -49,22 +46,26 @@ class InstancesCreateCitedByContextNameIdIgnoredTest < ActionController::TestCas
                      "Fixture sanity check: selected name and context name must differ"
 
     assert_difference("Instance.count") do
-      post(
-        :create_cited_by,
-        params: {
-          instance: {
-            "name_id" => @selected_name.id,
-            "context_name_id" => context_name.id,
-            "name_typeahead" => "",
-            "page" => "",
-            "reference_id" => @cited_by.reference.id,
-            "cited_by_id" => @cited_by.id,
-            "cites_id" => "",
-            "instance_type_id" => instance_types(:common_name),
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post create_cited_by_path,
+          params: {
+            instance: {
+              "name_id" => @selected_name.id,
+              "context_name_id" => context_name.id,
+              "name_typeahead" => "",
+              "page" => "",
+              "reference_id" => @cited_by.reference.id,
+              "cited_by_id" => @cited_by.id,
+              "cites_id" => "",
+              "instance_type_id" => instance_types(:common_name).id,
+            },
           },
-        },
-        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] }
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
 
     created = assigns(:instance)

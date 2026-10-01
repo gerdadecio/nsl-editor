@@ -19,7 +19,7 @@
 require "test_helper"
 
 # Instance Notes controller tests.
-class InstanceNotesControllerTest < ActionController::TestCase
+class InstanceNotesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @instance_note = instance_notes(:one)
   end
@@ -38,8 +38,7 @@ class InstanceNotesControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
-    @request.headers["Accept"] = "application/javascript"
-    get :new
+    get new_instance_note_path, headers: { "Accept" => "application/javascript" }
     assert_response :success
   end
 
@@ -49,38 +48,33 @@ class InstanceNotesControllerTest < ActionController::TestCase
   # end
 
   test "should create instance note" do
-    @request.headers["Accept"] = "application/javascript"
     assert_difference("InstanceNote.count") do
-      post(
-        :create,
-        params: {
-          instance_note:
-                  {
-                    "instance_id" => instances(:triodia_in_brassard),
-                    "instance_note_key_id" => instance_note_keys(:neotype),
-                    "value" => "this is a note",
-                  },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post instance_notes_path,
+          params: {
+            instance_note:
+                    {
+                      "instance_id" => instances(:triodia_in_brassard).id,
+                      "instance_note_key_id" => instance_note_keys(:neotype).id,
+                      "value" => "this is a note",
+                    },
+          },
+          headers: { "Accept" => "application/javascript" }
+      end
     end
   end
 
   test "should show instance_note" do
-    @request.headers["Accept"] = "application/javascript"
-    get :show,
-        params: { id: @instance_note }
+    get instance_note_path(@instance_note), headers: { "Accept" => "application/javascript" }
     assert_response :success
   end
 
   test "should get edit" do
-    @request.headers["Accept"] = "application/javascript"
-    get :edit,
-        params: { id: @instance_note }
+    get edit_instance_note_path(@instance_note), headers: { "Accept" => "application/javascript" }
     assert_response :success
   end
 

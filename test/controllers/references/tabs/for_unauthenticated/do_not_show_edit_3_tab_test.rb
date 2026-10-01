@@ -19,19 +19,14 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceUnauthenticatedDoNotShowEdit3est < ActionController::TestCase
-  tests ReferencesController
+class ReferenceUnauthenticatedDoNotShowEdit3est < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:a_book)
   end
 
   test "should not show unauthenticated user reference edit 3 tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_edit_3" },
-      session: {}
-    )
+    get reference_tab_path(id: @reference.id, tab: "tab_edit_3"),
+      headers: { "Accept" => "application/javascript" }
     assert response.body.match(/Your session may have expired.  Please reload the whole page before continuing/)
   end
 end

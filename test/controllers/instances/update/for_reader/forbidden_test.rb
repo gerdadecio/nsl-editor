@@ -19,26 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesUpdateForReaderForbiddenTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesUpdateForReaderForbiddenTest < ActionDispatch::IntegrationTest
   test "reader should not be able to update instance" do
     instance = instances(:triodia_in_brassard)
     new_page_value = "xxxxxx"
     assert instance.page != new_page_value
-    @request.headers["Accept"] = "application/javascript"
-    put(
-      :update,
-      params: {
-        id: instance.id,
-        instance: { "page" => new_page_value },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      put instance_path(id: instance.id),
+        params: { instance: { "page" => new_page_value } },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :forbidden
     assert Instance.find(instance.id).page != new_page_value
   end

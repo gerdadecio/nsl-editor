@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class NamesSearchAtTopOfAcceptedTreeRegTest < ActionController::TestCase
-  tests SearchController
+class NamesSearchAtTopOfAcceptedTreeRegTest < ActionDispatch::IntegrationTest
 
   test "search names at top of accepted tree is registered" do
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "Names",
         query_string: "at-top-of-accepted-tree:",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
       }
-    )
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /Names.*at-top-of-accepted-tree:/,

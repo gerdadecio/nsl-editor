@@ -19,15 +19,12 @@
 require "test_helper"
 
 # Single controller test.
-class HybridFormulaFirstParentChangeTest < ActionController::TestCase
-  tests NamesController
-
+class HybridFormulaFirstParentChangeTest < ActionDispatch::IntegrationTest
   setup do
     stub_it
     @hybrid_formula = names(:hybrid_formula)
     @new_first_parent = names(:angophora_costata)
     @nfp_typeahead_string = "Angophora costata (Gaertn.) Britten | Species"
-    @request.headers["Accept"] = "application/javascript"
     @expected_name_element = "costata x another-species"
     @expected_name_path = "Plantae/Magnoliophyta/a_family/a_genus/thingbb/#{@expected_name_element}"
   end
@@ -58,21 +55,20 @@ class HybridFormulaFirstParentChangeTest < ActionController::TestCase
   end
 
   test "hybrid formula 1st parent change flows to name element and name path" do
-    post(
-      :update,
-      params: {
-        name: {
-          "parent_id" => @new_first_parent.id.to_s,
-          "parent_typeahead" => @nfp_typeahead_string,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch name_path(id: @hybrid_formula.id),
+        params: {
+          name: {
+            "parent_id" => @new_first_parent.id.to_s,
+            "parent_typeahead" => @nfp_typeahead_string,
+          },
         },
-        id: @hybrid_formula.id,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     sleep(2) # to allow for the asynch job
     hybrid_after_change = Name.find(@hybrid_formula.id)

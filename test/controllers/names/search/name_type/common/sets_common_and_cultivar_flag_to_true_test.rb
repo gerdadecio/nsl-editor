@@ -19,27 +19,24 @@
 require "test_helper"
 
 # Single controller test.
-class NameSrch4NameTypeCommSetCommCultFlagTrueTest < ActionController::TestCase
-  tests SearchController
-
+class NameSrch4NameTypeCommSetCommCultFlagTrueTest < ActionDispatch::IntegrationTest
   test "editor search 4 name type common sets common and cultivar flag true" do
     skip # Expect this to be no longer needed under revised search.
     common = names(:argyle_apple)
     # Set the common-and-cultivar flag to false.
-    get(
-      :index,
-      params: {
-        "query_on" => "name",
-        "query" => "nt:common",
-        "query_common_and_cultivar" => "f",
-        "query_limit" => "100",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get search_index_path,
+        params: {
+          "query_on" => "name",
+          "query" => "nt:common",
+          "query_common_and_cultivar" => "f",
+          "query_limit" => "100",
+        }
+    end
     assert_response :success
     assert_select "input.checkbox[type=checkbox]
                   [id=query_common_and_cultivar][value=t]",

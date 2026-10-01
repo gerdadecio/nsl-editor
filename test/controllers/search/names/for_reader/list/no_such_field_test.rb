@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class ReaderSearchControllerNamesNoSuchFieldTest < ActionController::TestCase
-  tests SearchController
+class ReaderSearchControllerNamesNoSuchFieldTest < ActionDispatch::IntegrationTest
 
   test "reader can search for a name" do
-    get(
-      :search,
-      params: { query_target: "name", query_string: "not-a-real-field: r.br." },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "name", query_string: "not-a-real-field: r.br." }
+    end
     assert_select "span#search-results-summary",
                   /Cannot search names for: not-a-real-field:./,
                   "Should get error message."

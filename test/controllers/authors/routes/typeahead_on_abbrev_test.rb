@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorsTypeaheadOnAbbrevRouteTest < ActionController::TestCase
-  tests AuthorsController
-
+class AuthorsTypeaheadOnAbbrevRouteTest < ActionDispatch::IntegrationTest
   test "should route to authors typeahead on abbrev" do
     assert_routing "/authors/typeahead_on_abbrev",
                    controller: "authors",

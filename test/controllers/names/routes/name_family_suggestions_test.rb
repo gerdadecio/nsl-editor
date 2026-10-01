@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameFamilySuggestionsRouteTest < ActionController::TestCase
-  tests NamesController
+class NameFamilySuggestionsRouteTest < ActionDispatch::IntegrationTest
   test "should route to name family suggestions" do
     assert_routing "/names/name_family_suggestions",
                    controller: "names",

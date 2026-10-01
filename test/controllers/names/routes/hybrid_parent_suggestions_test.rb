@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameHybridParentSuggestionsRouteTest < ActionController::TestCase
-  tests NamesController
+class NameHybridParentSuggestionsRouteTest < ActionDispatch::IntegrationTest
   test "should route to name hybrid parent suggestions" do
     assert_routing "/suggestions/name/hybrid_parent",
                    controller: "names",

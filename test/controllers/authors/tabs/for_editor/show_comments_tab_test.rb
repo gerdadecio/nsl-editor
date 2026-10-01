@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorEditorShowCommentsTabTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorEditorShowCommentsTabTest < ActionDispatch::IntegrationTest
   setup do
     @author = authors(:bentham)
   end
 
   test "should show editor author comments tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @author.id, tab: "tab_comments" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get author_tab_path(id: @author.id, tab: "tab_comments"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "li.active a#author-comments-tab",
                   "Comments",

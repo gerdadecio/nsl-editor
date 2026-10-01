@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchInstListSynWithNoteTest < ActionController::TestCase
-  tests SearchController
+class SearchInstListSynWithNoteTest < ActionDispatch::IntegrationTest
 
   test "search for instances that are synonyms with a note" do
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "instance",
         query_string: "syn-with-note:",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
       }
-    )
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9] record\b/,

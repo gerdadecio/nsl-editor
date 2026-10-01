@@ -2,6 +2,10 @@ inherit_mode:
   merge:
     - Exclude
 
+# Omakase Ruby styling for Rails
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
 #inherit_gem:
   #rubocop-shopify: rubocop.yml
 

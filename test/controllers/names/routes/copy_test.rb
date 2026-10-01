@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameCopyRouteTest < ActionController::TestCase
-  tests NamesController
+class NameCopyRouteTest < ActionDispatch::IntegrationTest
   test "should route to copy a name" do
     assert_routing(
       { method: "post", path: "/names/1/copy" },

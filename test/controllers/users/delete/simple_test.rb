@@ -19,21 +19,17 @@
 require "test_helper"
 
 # Single controller test.
-class UserDeleteSimpleTest < ActionController::TestCase
-  tests UsersController
-
+class UserDeleteSimpleTest < ActionDispatch::IntegrationTest
   test "delete user simple" do
-    @request.headers["Accept"] = "application/javascript"
     assert_difference("User.count", -1, "Should have deleted 1 user") do
-      post(
-        :destroy,
-        params: { id: users(:user_two) },
-        session: {
-          username: "uone",
-          user_full_name: "auser One",
-          groups: ["admin"],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "auser One",
+        groups: ["admin"]
+      ) do
+        delete user_path(users(:user_two)),
+          headers: { "Accept" => "application/javascript" }
+      end
     end
   end
 end

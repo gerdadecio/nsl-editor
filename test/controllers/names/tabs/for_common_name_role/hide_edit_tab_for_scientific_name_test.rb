@@ -19,24 +19,21 @@
 require "test_helper"
 
 # Common-name role: edit tab is hidden for non-common (scientific) names.
-class CommonNameRoleHideEditTabForScientificNameTest < ActionController::TestCase
-  tests NamesController
+class CommonNameRoleHideEditTabForScientificNameTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
   test "common-name role user does not see edit tab for a scientific name" do
-    @request.headers["Accept"] = "application/javascript"
     SessionUser.stub_any_instance(:with_role_for_context?, true) do
-      get(
-        :show,
-        params: { id: @name.id, tab: "tab_details" },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: [],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: []
+      ) do
+        get name_tab_path(id: @name.id, tab: "tab_details"),
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response :success
     assert_select "a#name-edit-tab", false, "Should not show 'Edit' tab link for scientific name."

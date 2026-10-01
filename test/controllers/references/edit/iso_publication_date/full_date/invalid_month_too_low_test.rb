@@ -19,38 +19,34 @@
 require "test_helper"
 
 # Single controller test.
-class ReferencesesUpdateInvalidMonthTooLowTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesesUpdateInvalidMonthTooLowTest < ActionDispatch::IntegrationTest
   setup do
     @month = 0
   end
 
   test "update reference invalid month too low" do
-    @request.headers["Accept"] = "application/javascript"
-    patch(
-      :update,
-      params: {
-        id: references(:simple).id,
-        reference: {
-          "ref_type_id" => ref_types(:book),
-          "title" => "Some book",
-          "author_id" => authors(:dash),
-          "author_typeahead" => "-",
-          "published" => true,
-          "parent_typeahead" => @parent_typeahead,
-          "ref_author_role_id" => ref_author_roles(:author),
-          "year" => "1999",
-          "month" => @month,
-          "day" => "4",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch reference_path(id: references(:simple).id),
+        params: {
+          reference: {
+            "ref_type_id" => ref_types(:book).id,
+            "title" => "Some book",
+            "author_id" => authors(:dash).id,
+            "author_typeahead" => "-",
+            "published" => true,
+            "parent_typeahead" => @parent_typeahead,
+            "ref_author_role_id" => ref_author_roles(:author).id,
+            "year" => "1999",
+            "month" => @month,
+            "day" => "4",
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :unprocessable_content
     assert_match(
       /Month #{@month} is below the range 1-12/,

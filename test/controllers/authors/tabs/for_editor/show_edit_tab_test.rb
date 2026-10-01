@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorEditorShowEditTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorEditorShowEditTest < ActionDispatch::IntegrationTest
   setup do
     @author = authors(:bentham)
   end
 
   test "should show editor author edit tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @author.id, tab: "tab_edit" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get author_tab_path(id: @author.id, tab: "tab_edit"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_select "li.active a#author-edit-tab",
                   "Edit",
                   "Should show 'Edit' tab."

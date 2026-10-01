@@ -19,9 +19,7 @@
 require "test_helper"
 
 # A soft deleted instance must never be offered in the typeahead.
-class InstTAhead4NameShowRefToUpdExcludesSoftDeletedTest < ActionController::TestCase
-  tests InstancesController
-
+class InstTAhead4NameShowRefToUpdExcludesSoftDeletedTest < ActionDispatch::IntegrationTest
   test "editor typeahead excludes soft deleted instances" do
     instance = instances(:xyz_costata_is_synonym_of_angophora_costata)
     before = typeahead_ids(instance)
@@ -38,12 +36,17 @@ class InstTAhead4NameShowRefToUpdExcludesSoftDeletedTest < ActionController::Tes
   private
 
   def typeahead_ids(instance)
-    @request.headers["Accept"] = "application/javascript"
-    get(:typeahead_for_name_showing_references_to_update_instance,
-        params: { term: "an", instance_id: instance.id },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get typeahead_for_name_showing_references_to_update_instance_path(
+        term: "an",
+        instance_id: instance.id
+      ),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     JSON.parse(response.body).pluck("id")
   end

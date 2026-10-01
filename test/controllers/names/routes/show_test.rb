@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameShowRouteTest < ActionController::TestCase
-  tests NamesController
+class NameShowRouteTest < ActionDispatch::IntegrationTest
   test "should route to show a name" do
     assert_routing "/names/1",
                    controller: "names",

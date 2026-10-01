@@ -19,20 +19,17 @@
 require "test_helper"
 
 # Single search controller test.
-class ReaderSearchControllerNamesNameRankListTest < ActionController::TestCase
-  tests SearchController
+class ReaderSearchControllerNamesNameRankListTest < ActionDispatch::IntegrationTest
 
   test "reader can search for a name by rank" do
     tribus = names(:a_tribus)
-    get(
-      :search,
-      params: { query_target: "name", query_string: "name-rank: tribus" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "name", query_string: "name-rank: tribus" }
+    end
     assert_response :success
     assert_select "a#name-#{tribus.id}", /a_tribus/, "Should see tribus."
   end

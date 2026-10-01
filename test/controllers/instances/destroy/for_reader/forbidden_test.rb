@@ -19,23 +19,19 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesDeleteForReaderTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesDeleteForReaderTest < ActionDispatch::IntegrationTest
   test "reader should not be able to delete instance" do
     instance = instances(:triodia_in_brassard)
-    @request.headers["Accept"] = "application/javascript"
     # This calls a service (but only if authorized), so in Test,
     # no record is actually deleted, even if authorized!
-    delete(
-      :destroy,
-      params: { id: instance.id },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      delete instance_path(id: instance.id),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :forbidden
   end
 end

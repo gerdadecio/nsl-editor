@@ -19,29 +19,23 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
-  tests InstancesController
+class InstanceEditorShowDetailAPCTabsTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:britten_created_angophora_costata)
-    @request.headers["Accept"] = "application/javascript"
     @working_draft = TreeVersion.first
   end
 
   test "should show detail and APC tab links if editor requests details tab" do
-    get(
-      :show,
-      params: {
-        id: @instance.id,
-        tab: "tab_show_1",
-        "row-type" => "instance_as_part_of_concept_record",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        draft: @working_draft,
-        groups: ["treebuilder"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["treebuilder"],
+      extra_session: { draft: { "id" => @working_draft.id } }
+    ) do
+      get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
+        params: { "row-type" => "instance_as_part_of_concept_record" },
+        headers: { "Accept" => "application/javascript" }
+    end
     asserts
   end
 

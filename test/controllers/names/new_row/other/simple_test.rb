@@ -19,20 +19,17 @@
 require "test_helper"
 
 # Single controller test.
-class NamesNewRowOtherNameSimpleTest < ActionController::TestCase
-  tests NamesController
-
+class NamesNewRowOtherNameSimpleTest < ActionDispatch::IntegrationTest
   test "editor should be able to start a new other name" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new_row,
-      params: { type: "other" },
-      session: {},
-      xhr: true
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_new_row_path(type: "other"),
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success, "Cannot start new row for a other name"
     assert_match(
       /search-results-table/,

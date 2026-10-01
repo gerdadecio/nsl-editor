@@ -19,35 +19,32 @@
 require "test_helper"
 
 # Single controller test.
-class CannotUpdateStandaloneToDupPrimEvenWOverrides < ActionController::TestCase
-  tests InstancesController
-  def setup
+class CannotUpdateStandaloneToDupPrimEvenWOverrides < ActionDispatch::IntegrationTest
+  setup do
     @instance = instances(:casuarina_inophloia_by_mueller)
     assert(@instance.instance_type == instance_types(:secondary_reference))
     @target = instances(:casuarina_inophloia_by_mueller_and_bailey)
     assert(@target.instance_type == instance_types(:tax_nov))
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "ed cannot update standalone inst 2 xtra primary even with overrides" do
-    put(
-      :update,
-      params: {
-        id: @instance.id,
-        instance: {
-          "reference_id" => @target.reference_id,
-          "instance_type_id" => @target.instance_type_id,
-          "page" => @target.page,
-          "duplicate_instance_override" => "1",
-          "multiple_primary_override" => "1",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      put instance_path(id: @instance.id),
+        params: {
+          instance: {
+            "reference_id" => @target.reference_id,
+            "instance_type_id" => @target.instance_type_id,
+            "page" => @target.page,
+            "duplicate_instance_override" => "1",
+            "multiple_primary_override" => "1",
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert Instance.find(@instance.id).name_id == @target.name_id
     check_assertions
   end

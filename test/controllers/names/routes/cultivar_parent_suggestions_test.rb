@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameCultivarParentSuggestionsRouteTest < ActionController::TestCase
-  tests NamesController
+class NameCultivarParentSuggestionsRouteTest < ActionDispatch::IntegrationTest
   test "should route to cultivar parent suggestions for a name" do
     assert_routing "/suggestions/name/cultivar_parent",
                    controller: "names",

@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesDeleteForEditorTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesDeleteForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:triodia_in_brassard)
     @reason = "Edit"
@@ -52,17 +50,15 @@ class InstancesDeleteForEditorTest < ActionController::TestCase
   end
 
   test "editor should be able to delete instance" do
-    @request.headers["Accept"] = "application/javascript"
     # This calls a service, so in Test, no record is actually deleted!
-    delete(
-      :destroy,
-      params: { id: @instance.id },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      delete instance_path(id: @instance.id),
+        headers: { "Accept" => "application/javascript" }
+    end
     # Editor has to call on services to delete an instance.
     # In test we just stub that call, so no delete happens.
     # Editor checks to see if Services (silently!) fails

@@ -38,23 +38,20 @@ require "test_helper"
 # @search.executed_query.total, not .results.size), but the wrong
 # right-hand side of the comparison did, and the fix corrects that
 # comparison to use @search.parsed_request.limit instead.
-class SearchRefsOnIdMoreResultsLinkNotShownWhenLimitMatchesTest < ActionController::TestCase
-  tests SearchController
+class SearchRefsOnIdMoreResultsLinkNotShownWhenLimitMatchesTest < ActionDispatch::IntegrationTest
 
   test "no more-results link when limit: exactly matches the (single) reference total" do
     ref = references(:bucket_reference_for_default_instances)
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "reference",
         query_string: "id: #{ref.id} show-instances: limit:1",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
       }
-    )
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /1 record\b/,

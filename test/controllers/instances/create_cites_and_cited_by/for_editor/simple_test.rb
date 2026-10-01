@@ -19,32 +19,29 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesCreateCitesAndCitedByByEditorTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesCreateCitesAndCitedByByEditorTest < ActionDispatch::IntegrationTest
   test "editor should be able to create cites and cited by instance" do
     instance_1 = instances(:triodia_in_brassard)
     instance_2 = instances(:britten_created_angophora_costata)
     instance_type = instance_types(:nomenclatural_synonym)
-    @request.headers["Accept"] = "application/javascript"
     assert_difference("Instance.count") do
-      post(
-        :create,
-        params: {
-          instance: {
-            "cites_id" => instance_1.id,
-            "cited_by_id" => instance_2.id,
-            "name_id" => instance_1.name.id,
-            "reference_id" => instance_2.reference.id,
-            "instance_type_id" => instance_type.id,
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post instances_path,
+          params: {
+            instance: {
+              "cites_id" => instance_1.id,
+              "cited_by_id" => instance_2.id,
+              "name_id" => instance_1.name.id,
+              "reference_id" => instance_2.reference.id,
+              "instance_type_id" => instance_type.id,
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response :success
   end

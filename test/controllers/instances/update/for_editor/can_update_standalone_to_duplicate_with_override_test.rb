@@ -19,34 +19,31 @@
 require "test_helper"
 
 # Single controller test.
-class CanUpdateStandaloneToDuplicateWithOverride < ActionController::TestCase
-  tests InstancesController
-  def setup
+class CanUpdateStandaloneToDuplicateWithOverride < ActionDispatch::IntegrationTest
+  setup do
     @instance = instances(:casuarina_inophloia_by_mueller)
     assert(@instance.instance_type == instance_types(:secondary_reference))
     @target = instances(:casuarina_inophloia_by_mueller)
     assert(Instance.find(@instance.id).name_id == @target.name_id)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "editor can add override to update standalone instance to a duplicate" do
-    put(
-      :update,
-      params: {
-        id: @instance.id,
-        instance: {
-          "reference_id" => @target.reference_id,
-          "instance_type_id" => @target.instance_type_id,
-          "page" => @target.page,
-          "duplicate_instance_override" => "1",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      put instance_path(id: @instance.id),
+        params: {
+          instance: {
+            "reference_id" => @target.reference_id,
+            "instance_type_id" => @target.instance_type_id,
+            "page" => @target.page,
+            "duplicate_instance_override" => "1",
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     check_assertions
   end
 

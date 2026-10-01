@@ -24,19 +24,17 @@ require "test_helper"
 # duplicate-of-specific partial - mirrors
 # test/controllers/authors/suggestions/on_abbrev_test.rb, the sibling field
 # these shared resources were generalised from.
-class NameDuplicateSuggestionsForEditorTest < ActionController::TestCase
-  tests NamesController
-
+class NameDuplicateSuggestionsForEditorTest < ActionDispatch::IntegrationTest
   def get_suggestions(term, name_id, format: :html)
-    get(
-      :duplicate_suggestions,
-      params: { term: term, name_id: name_id, format: format },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_duplicate_suggestions_path(
+        term: term, name_id: name_id, format: format
+      )
+    end
   end
 
   # The response is a bare list of <li> elements with no enclosing <ul>, so
@@ -44,7 +42,7 @@ class NameDuplicateSuggestionsForEditorTest < ActionController::TestCase
   # whole document.
   def assert_select_in_body(*args, &block)
     assert_select(
-      Nokogiri::HTML::DocumentFragment.parse(@response.body),
+      Nokogiri::HTML::DocumentFragment.parse(response.body),
       *args,
       &block
     )
@@ -67,7 +65,7 @@ class NameDuplicateSuggestionsForEditorTest < ActionController::TestCase
 
     get_suggestions("ang", current.id)
 
-    assert_includes @response.body, "<strong>Ang</strong>"
+    assert_includes response.body, "<strong>Ang</strong>"
   end
 
   # extra_params on the shared autocomplete field carries the current
@@ -110,7 +108,7 @@ class NameDuplicateSuggestionsForEditorTest < ActionController::TestCase
     get_suggestions("ang", current.id, format: :json)
 
     assert_response :success
-    suggestions = JSON.parse(@response.body)
+    suggestions = JSON.parse(response.body)
     assert_includes suggestions.map { |s| s["id"] }, match.id
   end
 end

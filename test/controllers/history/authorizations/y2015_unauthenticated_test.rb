@@ -20,11 +20,9 @@
 require "test_helper"
 
 # Single controller test.
-class HistoryAuthorizationsY2015UnauthenticatedTest < ActionController::TestCase
-  tests HistoryController
-
+class HistoryAuthorizationsY2015UnauthenticatedTest < ActionDispatch::IntegrationTest
   test "history y2015 should get redirected unauthenticated" do
-    get("for_year", params: { "year" => "2015" }, xhr: true)
+    get history_for_year_path(year: "2015"), xhr: true
     assert_match(/alert.'Your session may have expired./, response.body)
     assert_match(
       /expired. Please reload the whole page before continuing.'.;/,

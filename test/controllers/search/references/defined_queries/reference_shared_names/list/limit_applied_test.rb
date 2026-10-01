@@ -19,24 +19,21 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchRefsDefdQueryRefSharedNamesListLimit < ActionController::TestCase
-  tests SearchController
+class SearchRefsDefdQueryRefSharedNamesListLimit < ActionDispatch::IntegrationTest
 
   test "reference shared names limited" do
     ref_1 = references(:de_fructibus_et_seminibus_plantarum)
     ref_2 = references(:paper_by_britten_on_angophora)
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "references shared names",
         query_string: "#{ref_1.id},#{ref_2.id} limit:1",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
       }
-    )
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /\b1 record\b/,

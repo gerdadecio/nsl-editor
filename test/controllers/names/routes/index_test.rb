@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameIndexRouteTest < ActionController::TestCase
-  tests NamesController
+class NameIndexRouteTest < ActionDispatch::IntegrationTest
   test "names index should route to the catch-all" do
     assert_routing "/names",
                    controller: "search",

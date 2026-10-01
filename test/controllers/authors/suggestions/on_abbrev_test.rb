@@ -21,19 +21,15 @@ require "test_helper"
 # The stimulus-autocomplete flavour of the author-by-abbrev suggestions,
 # used by the name form's Author field. Same query as the JSON action, but
 # rendered as the HTML fragment the library expects.
-class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
-  tests AuthorsController
-
+class AuthorsSuggestionsOnAbbrevHtmlTest < ActionDispatch::IntegrationTest
   def get_suggestions(term)
-    get(
-      :typeahead_on_abbrev,
-      params: { term: term, format: :html },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get authors_typeahead_on_abbrev_path(term: term, format: :html)
+    end
   end
 
   # The response is a bare list of <li> elements with no enclosing <ul>, so
@@ -100,15 +96,13 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
   test "should still answer json for the legacy typeahead fields" do
     author = authors(:maslin_with_abbrev)
 
-    get(
-      :typeahead_on_abbrev,
-      params: { term: "masl", format: :json },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get authors_typeahead_on_abbrev_path(term: "masl", format: :json)
+    end
 
     assert_response :success
     suggestions = JSON.parse(@response.body)
@@ -121,18 +115,15 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionController::TestCase
   # unless the request is an XHR, in which case it honours them. Drop the
   # xhr: true below and this action answers html instead.
   test "should answer json when asked for by accept header on an xhr" do
-    @request.headers["Accept"] = "application/json, text/javascript, */*; q=0.01"
-
-    get(
-      :typeahead_on_abbrev,
-      params: { term: "masl" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-      xhr: true
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get authors_typeahead_on_abbrev_path(term: "masl"),
+        headers: { "Accept" => "application/json, text/javascript, */*; q=0.01" },
+        xhr: true
+    end
 
     assert_response :success
     assert_equal "application/json", @response.media_type

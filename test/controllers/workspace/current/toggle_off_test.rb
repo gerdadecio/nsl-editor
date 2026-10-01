@@ -19,25 +19,24 @@
 require "test_helper"
 
 # Comments controller tests.
-class WorkspaceCurrentToggleOffTest < ActionController::TestCase
-  tests ::Trees::Workspaces::CurrentController
+class WorkspaceCurrentToggleOffTest < ActionDispatch::IntegrationTest
   setup do
     @tree = tree_versions(:apc_draft_version)
   end
 
   test "toggle workspace off" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["draft"] = @tree
-    post(
-      :toggle,
-      params: { id: @tree.id },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit", "treebuilder"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit", "treebuilder"],
+      extra_session: { draft: { "id" => @tree.id } }
+    ) do
+      post toggle_current_workspace_path,
+        params: { id: @tree.id },
+        headers: { "Accept" => "application/javascript" }
+    end
+
     assert_response :success
-    assert_not @request.session["draft"].present?
+    assert_not session["draft"].present?
   end
 end

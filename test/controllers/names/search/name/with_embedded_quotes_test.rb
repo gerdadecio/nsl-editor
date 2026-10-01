@@ -19,24 +19,21 @@
 require "test_helper"
 
 # Single controller test.
-class NameSearchOnNameWithEmbeddedQuotesTest < ActionController::TestCase
-  tests SearchController
-
+class NameSearchOnNameWithEmbeddedQuotesTest < ActionDispatch::IntegrationTest
   # <tr id="search-result-76253122"
   test "name search on name with embedded quotes" do
     name = names(:boronia_lipstick)
-    get(
-      :search,
-      params: {
-        "query_target" => "name",
-        "query_string" => "*lipstick nt:*",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path,
+        params: {
+          "query_target" => "name",
+          "query_string" => "*lipstick nt:*",
+        }
+    end
     assert_response :success
     assert_select "span#search-results-summary",
                   /\b1 name\b/,

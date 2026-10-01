@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchControllerForAdminPageTest < ActionController::TestCase
-  tests SearchController
+class SearchControllerForAdminPageTest < ActionDispatch::IntegrationTest
 
   test "admin should get search with correct elements" do
-    get(
-      :search,
-      params: {},
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["admin"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["admin"]
+    ) do
+      get search_path, params: {}
+    end
     assert_response :success
     assert_select "a#new-dropdown-menu-link.dropdown-toggle",
                   false,

@@ -19,14 +19,11 @@
 require "test_helper"
 
 # Single controller test.
-class GenusNameUpdateWithNoNameChangeTest < ActionController::TestCase
-  tests NamesController
-
+class GenusNameUpdateWithNoNameChangeTest < ActionDispatch::IntegrationTest
   setup do
     @genus = names(:acacia)
     @species = names(:another_species)
     @subspecies = names(:hybrid_formula)
-    @request.headers["Accept"] = "application/javascript"
     stub_it
   end
 
@@ -56,18 +53,15 @@ class GenusNameUpdateWithNoNameChangeTest < ActionController::TestCase
   end
 
   test "genus name update with no name change" do
-    post(
-      :update,
-      params: {
-        name: { "name_element" => "Acacia", "verbatim_rank" => "sp" },
-        id: @genus.id,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch name_path(id: @genus.id),
+        params: { name: { "name_element" => "Acacia", "verbatim_rank" => "sp" } },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     sleep(2) # to allow for the asynch job
     species_afterwards = Name.find(@species.id)

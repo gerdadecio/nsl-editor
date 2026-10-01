@@ -19,29 +19,25 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorEditMarkAsDuplicateOfSimpleTest < ActionController::TestCase
-  tests AuthorsController
-
+class AuthorEditMarkAsDuplicateOfSimpleTest < ActionDispatch::IntegrationTest
   test "update author to be duplicate of simple" do
-    @request.headers["Accept"] = "application/javascript"
     author = authors(:clarke_1)
     intended_dupe = authors(:clarke_2)
-    patch(
-      :update,
-      params: {
-        id: intended_dupe.id,
-        author: {
-          "name" => "Clarke",
-          "duplicate_of_typeahead" => "Clarke",
-          "duplicate_of_id" => author,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch author_path(intended_dupe),
+        params: {
+          author: {
+            "name" => "Clarke",
+            "duplicate_of_typeahead" => "Clarke",
+            "duplicate_of_id" => author.id,
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     expected_dupe = Author.find(intended_dupe.id)
     assert_equal author.id, expected_dupe.duplicate_of_id, "Should be equal."

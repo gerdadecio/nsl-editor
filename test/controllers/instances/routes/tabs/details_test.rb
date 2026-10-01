@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceRouteToDetailsTabTest < ActionController::TestCase
-  tests InstancesController
+class InstanceRouteToDetailsTabTest < ActionDispatch::IntegrationTest
   test "should route to instance details tab" do
     assert_routing "/instances/1/tab/show",
                    controller: "instances",

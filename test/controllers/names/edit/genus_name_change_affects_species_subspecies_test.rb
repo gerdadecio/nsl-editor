@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class GenusNameChangeAffectsSpAndSubspeciesTest < ActionController::TestCase
-  tests NamesController
-
+class GenusNameChangeAffectsSpAndSubspeciesTest < ActionDispatch::IntegrationTest
   test "genus name change affects species and subspecies" do
     skip "Problem with verifying the results of the job in test."
     # By examining logs I can see the correct behaviour is occurring,
@@ -32,19 +30,15 @@ class GenusNameChangeAffectsSpAndSubspeciesTest < ActionController::TestCase
     genus = names(:a_genus)
     species = names(:a_species)
     subspecies = names(:a_subspecies)
-    @request.headers["Accept"] = "application/javascript"
-    post(
-      :update,
-      params: {
-        name: { "name_element" => "newname" },
-        id: genus.id,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch name_path(id: genus.id),
+        params: { name: { "name_element" => "newname" } },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     # puts genus.id
     # genus.children.each {|c| puts c.id}

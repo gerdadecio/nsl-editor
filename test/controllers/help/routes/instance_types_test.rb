@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class HelpRoutesInstanceTypesTest < ActionController::TestCase
-  tests InstanceTypesController
+class HelpRoutesInstanceTypesTest < ActionDispatch::IntegrationTest
   test "index should route ok" do
     assert_routing "/help/instance_types",
                    controller: "help",

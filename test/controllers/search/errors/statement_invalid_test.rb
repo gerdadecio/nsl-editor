@@ -26,23 +26,20 @@ require "test_helper"
 # "That query did not work" message. The fix routes this rescue through the
 # same run_empty_search_to_show_error helper already used - and already
 # proven safe - by the generic StandardError rescue below it.
-class SearchControllerStatementInvalidTest < ActionController::TestCase
-  tests SearchController
+class SearchControllerStatementInvalidTest < ActionDispatch::IntegrationTest
 
   test "a StatementInvalid error during search renders the search page instead of crashing" do
     SearchController.stub_any_instance(
       :run_local_search,
       -> { raise ActiveRecord::StatementInvalid, "malformed SQL" }
     ) do
-      get(
-        :search,
-        params: { query_target: "Names", query_string: "angophora" },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: [],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: []
+      ) do
+        get search_path, params: { query_target: "Names", query_string: "angophora" }
+      end
     end
 
     assert_response :success

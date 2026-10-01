@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameNewRowRouteTest < ActionController::TestCase
-  tests NamesController
+class NameNewRowRouteTest < ActionDispatch::IntegrationTest
   test "should route to names new row for a scientific type" do
     assert_routing "/names/new_row/scientific",
                    controller: "names",

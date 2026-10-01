@@ -17,15 +17,14 @@
 #   limitations under the License.
 #
 require "test_helper"
+
 # require 'sucker_punch/testing/inline'
 
 # Single controller test.
-class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
-  tests NamesController
+class GenusNameChangeHandlesDoubleParentTest < ActionDispatch::IntegrationTest
   setup do
     @grevillea = names(:grevillea_genus)
     @descendant = names(:grevillea_cultivar_hybrid)
-    @request.headers["Accept"] = "application/javascript"
     stub_request(
       :get,
       "#{resource}833026435/api/name-strings"
@@ -76,21 +75,20 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
   end
 
   def post_update
-    post(
-      :update,
-      params: {
-        "random_id" => "",
-        "category" => "",
-        "name" => name_hash,
-        "commit" => "Save",
-        "id" => @grevillea.id,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch name_path(id: @grevillea.id),
+        params: {
+          "random_id" => "",
+          "category" => "",
+          "name" => name_hash,
+          "commit" => "Save",
+        },
+        headers: { "Accept" => "application/javascript" }
+    end
   end
 
   def asserts2

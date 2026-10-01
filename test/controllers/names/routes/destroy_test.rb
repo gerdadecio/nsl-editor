@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameDestroyRouteTest < ActionController::TestCase
-  tests NamesController
+class NameDestroyRouteTest < ActionDispatch::IntegrationTest
   test "should route to destroy a name" do
     assert_routing(
       { method: "delete", path: "/names/1" },

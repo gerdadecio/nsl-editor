@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceEditorNotShowNewInstanceTabTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceEditorNotShowNewInstanceTabTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:a_book)
   end
 
   test "should not show reader reference new instance tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_new_instance" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_new_instance"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :forbidden
   end
 end

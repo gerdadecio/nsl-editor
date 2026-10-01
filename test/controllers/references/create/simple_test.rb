@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class ReferencesesCreateSimpleTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesesCreateSimpleTest < ActionDispatch::IntegrationTest
   setup do
     stub_it
   end
@@ -63,27 +61,26 @@ class ReferencesesCreateSimpleTest < ActionController::TestCase
   end
 
   test "create reference simple" do
-    @request.headers["Accept"] = "application/javascript"
     assert_difference("Reference.count") do
-      post(
-        :create,
-        params: {
-          reference: {
-            "ref_type_id" => ref_types(:book),
-            "title" => "Some book",
-            "author_id" => authors(:dash),
-            "author_typeahead" => "-",
-            "published" => true,
-            "parent_typeahead" => @parent_typeahead,
-            "ref_author_role_id" => ref_author_roles(:author),
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+        post references_path,
+          params: {
+            reference: {
+              "ref_type_id" => ref_types(:book).id,
+              "title" => "Some book",
+              "author_id" => authors(:dash).id,
+              "author_typeahead" => "-",
+              "published" => true,
+              "parent_typeahead" => @parent_typeahead,
+              "ref_author_role_id" => ref_author_roles(:author).id,
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
   end
 end

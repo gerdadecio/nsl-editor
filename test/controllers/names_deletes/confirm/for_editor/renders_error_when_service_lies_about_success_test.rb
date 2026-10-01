@@ -27,9 +27,7 @@ require "test_helper"
 # fixture row, simulating the service lying about success.
 # NamesDeletesController#name_is_gone? must catch this and report an error
 # rather than telling the user the name was deleted.
-class NamesDeleteConfirmForEditorRendersErrorWhenServiceLiesAboutSuccessTest < ActionController::TestCase
-  tests NamesDeletesController
-
+class NamesDeleteConfirmForEditorRendersErrorWhenServiceLiesAboutSuccessTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:name_to_delete)
     @reason = "some reason"
@@ -56,22 +54,21 @@ class NamesDeleteConfirmForEditorRendersErrorWhenServiceLiesAboutSuccessTest < A
   end
 
   test "renders an error and does not claim success when the service says ok but the name is still there" do
-    @request.headers["Accept"] = "application/javascript"
-    delete(
-      :confirm,
-      params: {
-        names_delete: {
-          name_id: @name.id,
-          reason: @reason,
-          extra_info: @extra_info,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      delete names_deletes_path,
+        params: {
+          names_delete: {
+            name_id: @name.id,
+            reason: @reason,
+            extra_info: @extra_info,
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_includes @response.body, "Name delete was requested but not confirmed"
     assert_not_includes @response.body, "Record deleted"

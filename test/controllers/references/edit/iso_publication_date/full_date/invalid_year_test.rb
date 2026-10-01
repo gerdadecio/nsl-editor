@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class ReferencesesUpdateInvalidYearTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesesUpdateInvalidYearTest < ActionDispatch::IntegrationTest
   setup do
     @year = Date.today.year + 1
     @msg1 = "Year must be less than or equal to #{Date.today.year}, "
@@ -29,30 +27,28 @@ class ReferencesesUpdateInvalidYearTest < ActionController::TestCase
   end
 
   test "update reference invalid year" do
-    @request.headers["Accept"] = "application/javascript"
-    patch(
-      :update,
-      params: {
-        id: references(:simple).id,
-        reference: {
-          "ref_type_id" => ref_types(:book),
-          "title" => "Some book",
-          "author_id" => authors(:dash),
-          "author_typeahead" => "-",
-          "published" => true,
-          "parent_typeahead" => @parent_typeahead,
-          "ref_author_role_id" => ref_author_roles(:author),
-          "year" => @year,
-          "month" => "3",
-          "day" => "4",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch reference_path(id: references(:simple).id),
+        params: {
+          reference: {
+            "ref_type_id" => ref_types(:book).id,
+            "title" => "Some book",
+            "author_id" => authors(:dash).id,
+            "author_typeahead" => "-",
+            "published" => true,
+            "parent_typeahead" => @parent_typeahead,
+            "ref_author_role_id" => ref_author_roles(:author).id,
+            "year" => @year,
+            "month" => "3",
+            "day" => "4",
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :unprocessable_content
     assert_match(
       /#{@msg1}#{@msg2}/,

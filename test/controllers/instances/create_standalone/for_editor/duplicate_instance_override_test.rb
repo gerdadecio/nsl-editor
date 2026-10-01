@@ -19,9 +19,8 @@
 require "test_helper"
 
 # Single controller test.
-class DuplicateInstanceOverrideTest < ActionController::TestCase
-  tests InstancesController
-  def setup
+class DuplicateInstanceOverrideTest < ActionDispatch::IntegrationTest
+  setup do
     @base_instance = instances(:casuarina_inophloia_by_mueller)
     assert_equal(
       @base_instance.instance_type_id,
@@ -35,20 +34,19 @@ class DuplicateInstanceOverrideTest < ActionController::TestCase
       "reference_id" => @base_instance.reference_id,
       "duplicate_instance_override" => "1",
     }
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "cannot create duplicate instance" do
     assert_difference("Instance.count") do
-      post(
-        :create,
-        params: { instance: @instance_params },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post instances_path,
+          params: { instance: @instance_params },
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     check_assertions
   end

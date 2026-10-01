@@ -19,19 +19,14 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorUnauthenticatedDoNotShowCommentsTabTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorUnauthenticatedDoNotShowCommentsTabTest < ActionDispatch::IntegrationTest
   setup do
     @author = authors(:bentham)
   end
 
   test "should not show unauthenticated author comments tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @author.id, tab: "tab_comments" },
-      session: {}
-    )
+    get author_tab_path(id: @author.id, tab: "tab_comments"),
+      headers: { "Accept" => "application/javascript" }
     assert response.body.match(/Your session may have expired.  Please reload the whole page before continuing/)
   end
 end

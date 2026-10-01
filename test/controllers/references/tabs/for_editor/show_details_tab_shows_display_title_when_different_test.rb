@@ -24,23 +24,20 @@ require "test_helper"
 # detail_line when @reference.title != @reference.display_title.
 # references(:simple) has title "  Simple  " and display_title
 # "Display Title", so the two clearly differ.
-class ReferenceShowEditorDetailsTabShowsDisplayTitleWhenDifferentTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceShowEditorDetailsTabShowsDisplayTitleWhenDifferentTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:simple)
   end
 
   test "shows a Display Title line when title and display_title differ" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_show_1" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_match(/Display Title/, response.body)
     assert_match(/#{Regexp.escape(@reference.display_title)}/, response.body)

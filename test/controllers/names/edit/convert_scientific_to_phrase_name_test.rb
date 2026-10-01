@@ -24,27 +24,24 @@ require "test_helper"
 # so the status select must default to it. The name's stored status
 # (legitimate) is not among a phrase name's options, so without a default the
 # select renders blank.
-class ConvertScientificToPhraseNameTest < ActionController::TestCase
-  tests NamesController
+class ConvertScientificToPhraseNameTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   def get_edit_as(new_category)
-    get(
-      :edit_as_category,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_edit_as_category_path(
         id: @name.id,
         tab: "edit_name",
-        new_category: new_category,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        new_category: new_category
+      ),
+        headers: { "Accept" => "application/javascript" }
+    end
   end
 
   test "the name under test is a scientific name with a legitimate status" do

@@ -19,23 +19,19 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceSearchOnInstanceNoteSimpleTest < ActionController::TestCase
-  tests SearchController
-
+class InstanceSearchOnInstanceNoteSimpleTest < ActionDispatch::IntegrationTest
   test "instance search on instance note with simple text" do
     instance = instances(:triodia_in_brassard)
-    get(
-      :search,
-      params: ActiveSupport::HashWithIndifferentAccess.new(
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path(
         query_target: "instance",
         query_string: "note: *ystrin*"
-      ),
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+      )
+    end
     assert_response :success
     assert_select "span#search-results-summary", true, "Should find 1 record"
     assert_select "span#search-results-summary",

@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceIndexRouteTest < ActionController::TestCase
-  tests InstancesController
+class InstanceIndexRouteTest < ActionDispatch::IntegrationTest
   test "index should route to catch all" do
     assert_routing "/instances",
                    controller: "search",

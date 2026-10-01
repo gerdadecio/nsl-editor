@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorsRouteIndexTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorsRouteIndexTest < ActionDispatch::IntegrationTest
   test "authors index should route to the catch all" do
     assert_routing "/authors",
                    controller: "search",

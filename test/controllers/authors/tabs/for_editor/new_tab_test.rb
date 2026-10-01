@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorEditorNewTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorEditorNewTest < ActionDispatch::IntegrationTest
   setup do
     @author = Author.new
   end
@@ -33,16 +32,14 @@ class AuthorEditorNewTest < ActionController::TestCase
     #      go ahead and disable forgery
     #      protection on this action to permit cross-origin
     #      JavaScript embedding. (pid:78529)
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :new,
-      params: { random_id: "12345" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get new_author_with_random_id_path(random_id: "12345"),
+        headers: { "Accept" => "application/javascript" }
+    end
     # puts response.body
     # assert_select "li.active a#author-edit-tab",
     #               "Edit",

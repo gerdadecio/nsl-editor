@@ -19,29 +19,28 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesCreateByReaderTest < ActionController::TestCase
-  tests InstancesController
-
-  test "reader should not be able to create cited_by instance" do
+#
+class InstancesCopyStandaloneForbidnForReaderUserTest < ActionDispatch::IntegrationTest
+  test "reader should not be able to copy standalone instance" do
+    instance = instances(:triodia_in_brassard)
     name = names(:a_species)
     reference = references(:a_book)
-    @request.headers["Accept"] = "application/javascript"
-    assert_no_difference("Instance.count") do
-      post(
-        :create,
-        params: {
-          instance: {
-            "name_id" => name.id,
-            "reference_id" => reference.id,
-            "instance_type_id" => instance_types(:basionym),
+    assert_no_difference("Instance.count", 1) do
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: []
+      ) do
+        post copy_standalone_path(id: instance.id),
+          params: {
+            instance: {
+              "reference_id" => reference.id,
+              "name_id" => name.id,
+              "instance_type_id" => instance_types(:basionym).id,
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: [],
-        }
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response :forbidden
   end

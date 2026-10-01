@@ -19,21 +19,17 @@
 require "test_helper"
 
 # Single controller test.
-class UserCreateUnauthorisedTest < ActionController::TestCase
-  tests UsersController
-
+class UserDeleteUnauthorisedTest < ActionDispatch::IntegrationTest
   test "delete user simple" do
-    @request.headers["Accept"] = "application/javascript"
     assert_difference("User.count", 0, "User should not be deleted") do
-      post(
-        :destroy,
-        params: { id: users(:user_two) },
-        session: {
-          username: "uone",
-          user_full_name: "auser One",
-          groups: ["edit"],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "auser One",
+        groups: ["edit"]
+      ) do
+        delete user_path(users(:user_two)),
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response(:forbidden, "Non-admin users should not delete a user")
   end

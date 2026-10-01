@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameEditAsCategoryRouteTest < ActionController::TestCase
-  tests NamesController
+class NameEditAsCategoryRouteTest < ActionDispatch::IntegrationTest
   test "should route to name edit as category" do
     assert_routing "/names/1/tab/edit/as/scientific",
                    controller: "names",

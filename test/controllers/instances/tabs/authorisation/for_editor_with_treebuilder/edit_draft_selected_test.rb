@@ -19,25 +19,22 @@
 require "test_helper"
 
 # Single controller test.
-class InstEditTabForEditWithTreeBuilderAndDraftTest < ActionController::TestCase
-  tests InstancesController
+class InstEditTabForEditWithTreeBuilderAndDraftTest < ActionDispatch::IntegrationTest
   setup do
     @triodia_in_brassard = instances(:triodia_in_brassard)
     @draft_tree_version = tree_versions(:apc_draft_version)
   end
 
   test "should include as a draft checkbox for edit" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @triodia_in_brassard.id, tab: "tab_edit" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        draft: @draft_tree_version,
-        groups: ["edit", "treebuilder"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit", "treebuilder"],
+      extra_session: { draft: { "id" => @draft_tree_version.id } }
+    ) do
+      get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_edit"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_match "on page", @response.body, "Missing: 'on page'"
     assert_match "as a draft", @response.body, "Missing: 'as a draft'"

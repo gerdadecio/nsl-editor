@@ -19,27 +19,24 @@
 require "test_helper"
 
 # Single controller test.
-class NameSearch4TypeCultHybSetsComCultFlagToTrueT < ActionController::TestCase
-  tests SearchController
-
+class NameSearch4TypeCultHybSetsComCultFlagToTrueT < ActionDispatch::IntegrationTest
   test "editor search 4 name type cult hybrid should set cultivar flag true" do
     skip # Expect this to be no longer needed under revised search.
     cultivar_hybrid = names(:a_cultivar_hybrid)
     # Set the common-and-cultivar flag to false.
-    get(
-      :index,
-      params: {
-        "query_on" => "name",
-        "query" => "nt:cultivar hybrid",
-        "query_common_and_cultivar" => "f",
-        "query_limit" => "100",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get search_index_path,
+        params: {
+          "query_on" => "name",
+          "query" => "nt:cultivar hybrid",
+          "query_common_and_cultivar" => "f",
+          "query_limit" => "100",
+        }
+    end
     assert_response :success
     assert_select "input.checkbox[type=checkbox]
                   [id=query_common_and_cultivar][value=t]",

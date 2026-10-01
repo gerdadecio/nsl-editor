@@ -23,8 +23,7 @@ require "test_helper"
 # app/views/profile_items/tabs/_tab_show_1.html.erb renders
 # AuditHelper#updated_by_api_and_when, which adds nothing when
 # @profile_item.api_at is blank - even if api_name is set.
-class ProfileItemsTabsForEditorShowDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionController::TestCase
-  tests ProfileItemsController
+class ProfileItemsTabsForEditorShowDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionDispatch::IntegrationTest
   setup do
     @profile_item = profile_item(:ecology_pi)
   end
@@ -45,12 +44,14 @@ class ProfileItemsTabsForEditorShowDetailsTabHidesBulkChangedWhenApiAtMissingTes
   private
 
   def show_details_tab
-    @request.headers["Accept"] = "application/javascript"
-    get(:tab,
-        params: { id: @profile_item.id, tab: "tab_show_1" },
-        session: { username: "uone",
-                   user_full_name: "Fred Jones",
-                   groups: ["edit", "foa"] })
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      get profile_item_tab_path(id: @profile_item.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_match(/Profile item: ##{@profile_item.id}/, response.body)
   end

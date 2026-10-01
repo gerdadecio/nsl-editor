@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceDestroyRouteTest < ActionController::TestCase
-  tests InstancesController
+class InstanceDestroyRouteTest < ActionDispatch::IntegrationTest
   test "should route to destroy an instance" do
     assert_routing(
       { method: "delete", path: "/instances/1" },

@@ -19,23 +19,22 @@
 require "test_helper"
 
 # Single controller test.
-class NameSuggsForUnpubCitTest < ActionController::TestCase
-  tests Names::Typeaheads::ForUnpubCitController
+class NameSuggsForUnpubCitTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
   test "name for unpub cit suggestions for editor" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :index,
-      params: { rank_id: name_ranks(:unranked).id, term: "search for this" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get names_typeahead_for_unpub_cit_path(
+        rank_id: name_ranks(:unranked).id, term: "search for this"
+      ),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
   end
 end

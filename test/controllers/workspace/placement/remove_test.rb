@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Tree (workspace) controller test for remove placement.
-class TreePlacementRemoveTest < ActionController::TestCase
-  tests ::TreesController
+class TreePlacementRemoveTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:usage_of_name_to_be_placed)
     @name = names(:to_be_placed)
@@ -47,23 +46,22 @@ class TreePlacementRemoveTest < ActionController::TestCase
   end
 
   test "remove name from workspace" do
-    @request.headers["Accept"] = "application/javascript"
-    delete(
-      :remove_name_placement,
-      params: {
-        id: @workspace,
-        remove_placement: {
-          taxon_uri: "tree/123/789",
-          delete: "delete",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit", "treebuilder"],
+      extra_session: { draft: { "id" => @workspace.id } }
+    ) do
+      delete tree_remove_name_path(id: @workspace.id),
+        params: {
+          remove_placement: {
+            taxon_uri: "tree/123/789",
+            delete: "delete",
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit", "treebuilder"],
-        draft: @workspace,
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
+
     assert_response :success
     assert_equal "remove_name_placement",
                  @controller.action_name,

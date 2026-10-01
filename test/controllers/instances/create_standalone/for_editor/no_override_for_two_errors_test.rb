@@ -19,9 +19,8 @@
 require "test_helper"
 
 # Single controller test.
-class NoOverrideForTwoErrorsTest < ActionController::TestCase
-  tests InstancesController
-  def setup
+class NoOverrideForTwoErrorsTest < ActionDispatch::IntegrationTest
+  setup do
     @target_instance = instances(:britten_created_angophora_costata)
     assert_equal(
       @target_instance.instance_type_id,
@@ -36,20 +35,19 @@ class NoOverrideForTwoErrorsTest < ActionController::TestCase
       "duplicate_instance_override" => "1",
       "multiple_primary_override" => "1",
     }
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "can create duplicate primary instance with override" do
     assert_no_difference("Instance.count") do
-      post(
-        :create,
-        params: { instance: @instance_params },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post instances_path,
+          params: { instance: @instance_params },
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     check_assertions_1
     check_assertions_2

@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchAuditCountSimpleTest < ActionController::TestCase
-  tests SearchController
+class SearchAuditCountSimpleTest < ActionDispatch::IntegrationTest
 
   test "count records created in the last 50 days" do
-    get(
-      :search,
-      params: { query_target: "activity", query_string: "count 50" },
-      session: {
-        username: "greg",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "greg",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "activity", query_string: "count 50" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9][0-9] records\b/,

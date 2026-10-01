@@ -19,12 +19,9 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferencesEditDuplicateOfIdClearTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesEditDuplicateOfIdClearTest < ActionDispatch::IntegrationTest
   test "references edit duplicate of id clear" do
     reference = references(:an_unknown_type_already_a_duplicate)
-    @request.headers["Accept"] = "application/javascript"
     username = "fred"
 
     reference_params = reference.attributes
@@ -32,18 +29,15 @@ class ReferencesEditDuplicateOfIdClearTest < ActionController::TestCase
     reference_params["author_typeahead"] = reference.author.name
     reference_params["duplicate_of_id"] = reference.duplicate_of_id
     reference_params["duplicate_of_typeahead"] = "" # should clear it
-    post(
-      :update,
-      params: {
-        reference: reference_params,
-        id: reference.id,
-      },
-      session: {
-        username: username,
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: username,
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch reference_path(id: reference.id),
+        params: { reference: reference_params },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     changed = Reference.find(reference.id)
     assert_not reference.duplicate_of_id.blank?, "Should have been a duplicate."

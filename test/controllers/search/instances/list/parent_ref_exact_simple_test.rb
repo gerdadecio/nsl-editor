@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchOnInstanceParentRefExact < ActionController::TestCase
-  tests SearchController
+class SearchOnInstanceParentRefExact < ActionDispatch::IntegrationTest
 
   test "reader can search for an instance by parent ref citation exact" do
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "instance",
         query_string: "parent-ref-exact: Journal*",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
       }
-    )
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9] records\b/,

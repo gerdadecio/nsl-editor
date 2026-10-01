@@ -23,8 +23,7 @@ require "test_helper"
 # app/views/names/details/_meta.html.erb (rendered by the name details tab) renders
 # AuditHelper#updated_by_api_and_when, which adds nothing when
 # @name.api_at is blank - even if api_name is set.
-class NameShowEditorDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionController::TestCase
-  tests NamesController
+class NameShowEditorDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
@@ -44,16 +43,14 @@ class NameShowEditorDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionContr
   private
 
   def show_details_tab
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @name.id, tab: "tab_details" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_details"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response(:success)
   end
 end

@@ -30,10 +30,8 @@ require "test_helper"
 # route. context_name_id now excludes the citing instance's own name from
 # that text match too, so this should be rejected rather than silently
 # creating a self-citation.
-class InstancesCreateCitedBySelfTextMatchRejectedTest < ActionController::TestCase
-  tests InstancesController
-
-  def setup
+class InstancesCreateCitedBySelfTextMatchRejectedTest < ActionDispatch::IntegrationTest
+  setup do
     # Deliberately not gaertner_created_metrosideros_costata (used by the
     # other tests in this directory) - its name's full_name text
     # ("Metrosideros costata Gaertn.") happens to collide, character for
@@ -44,27 +42,30 @@ class InstancesCreateCitedBySelfTextMatchRejectedTest < ActionController::TestCa
     # for the wrong reason. triodia_basedowii's full_name is unique across
     # the fixture set, so excluding self here can only leave zero matches.
     @cited_by = instances(:triodia_in_brassard)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "typing the citing instance's own exact name is rejected, not self-cited" do
     assert_no_difference("Instance.count") do
-      post(
-        :create_cited_by,
-        params: {
-          instance: {
-            "name_typeahead" => @cited_by.name.full_name,
-            "name_id" => "",
-            "context_name_id" => @cited_by.name.id,
-            "page" => "",
-            "reference_id" => @cited_by.reference.id,
-            "cited_by_id" => @cited_by.id,
-            "cites_id" => "",
-            "instance_type_id" => instance_types(:common_name),
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post create_cited_by_path,
+          params: {
+            instance: {
+              "name_typeahead" => @cited_by.name.full_name,
+              "name_id" => "",
+              "context_name_id" => @cited_by.name.id,
+              "page" => "",
+              "reference_id" => @cited_by.reference.id,
+              "cited_by_id" => @cited_by.id,
+              "cites_id" => "",
+              "instance_type_id" => instance_types(:common_name).id,
+            },
           },
-        },
-        session: { username: "fred", user_full_name: "Fred Jones", groups: ["edit"] }
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
 
     assert_match(/No case-sensitive exact match/, assigns(:message))

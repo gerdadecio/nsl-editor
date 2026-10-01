@@ -20,20 +20,15 @@
 require "test_helper"
 
 # Single controller test.
-class HistoryActionsY2015Test < ActionController::TestCase
-  tests HistoryController
-
+class HistoryActionsY2015Test < ActionDispatch::IntegrationTest
   test "history actions for year 2015 page" do
-    get(
-      "for_year",
-      params: { "year" => "2015" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-      xhr: true
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get history_for_year_path(year: "2015"), xhr: true
+    end
     assert_response :success
     assert_select "h3",
                   /\bChanges 2015\b/,

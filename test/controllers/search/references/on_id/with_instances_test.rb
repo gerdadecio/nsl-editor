@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchRefsOnIdWithInstancesTest < ActionController::TestCase
-  tests SearchController
+class SearchRefsOnIdWithInstancesTest < ActionDispatch::IntegrationTest
 
   test "search on reference id with show-instances" do
     run_search("show-instances:")
@@ -40,18 +39,16 @@ class SearchRefsOnIdWithInstancesTest < ActionController::TestCase
 
   def run_search(directive)
     ref = references(:bucket_reference_for_default_instances)
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "reference",
         query_string: "id: #{ref.id} #{directive}",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
       }
-    )
+    end
     assert_response(:success)
     # NOTES (limit/total redesign, follow-up): a single matching reference
     # is 1 record, full stop - its attached instances are shown but no

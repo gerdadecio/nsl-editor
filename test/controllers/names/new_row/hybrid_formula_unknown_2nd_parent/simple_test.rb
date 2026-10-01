@@ -19,20 +19,17 @@
 require "test_helper"
 
 # Single controller test.
-class NamesNewRowScientHybridFormUnk2ParSimpleTest < ActionController::TestCase
-  tests NamesController
-
+class NamesNewRowScientHybridFormUnk2ParSimpleTest < ActionDispatch::IntegrationTest
   test "editor start new scientific hybrid formula unk 2nd parent" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new_row,
-      params: { type: "hybrid-formula-unknown-2nd-parent" },
-      session: {},
-      xhr: true
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_new_row_path(type: "hybrid-formula-unknown-2nd-parent"),
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success,
                     "Cannot start new row for a scientific hybrid formula
                     unknown 2nd parent name"

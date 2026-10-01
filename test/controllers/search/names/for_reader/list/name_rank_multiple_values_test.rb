@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class ReaderSearchContNamesNameRankMultiValsListTst < ActionController::TestCase
-  tests SearchController
+class ReaderSearchContNamesNameRankMultiValsListTst < ActionDispatch::IntegrationTest
 
   test "reader can search for a name by rank with multiple values" do
     tribus = names(:a_tribus)
     subgenus = names(:a_subgenus)
     forma = names(:a_forma)
-    get(
-      :search,
-      params: { query_target: "name", query_string: "rank: tribus,subgenus,forma" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "name", query_string: "rank: tribus,subgenus,forma" }
+    end
     assert_response :success
     assert_select "a#name-#{tribus.id}", /a_tribus/, "Should see tribus."
     assert_select "a#name-#{subgenus.id}", true, "Should see subgenus."

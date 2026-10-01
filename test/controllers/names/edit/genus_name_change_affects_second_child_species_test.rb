@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class GenusNameChangeAffects2ndChildSpAndSubspTest < ActionController::TestCase
-  tests NamesController
-
+class GenusNameChangeAffects2ndChildSpAndSubspTest < ActionDispatch::IntegrationTest
   test "genus name change affects second child species and subspecies" do
     skip "Problem with suckerpunch job in test."
     genus = names(:acacia)
@@ -29,20 +27,16 @@ class GenusNameChangeAffects2ndChildSpAndSubspTest < ActionController::TestCase
     species = names(:another_species)
     # puts species.full_name
     subspecies = names(:hybrid_formula)
-    @request.headers["Accept"] = "application/javascript"
     # post(:update, { name: { 'name_element' => genus.name_element+'XYZ'},
-    post(
-      :update,
-      params: {
-        name: { "name_element" => "XYZ" },
-        id: genus.id,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch name_path(id: genus.id),
+        params: { name: { "name_element" => "XYZ" } },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     sleep(2) # to allow for the asynch job
     species_afterwards = Name.find(species.id)

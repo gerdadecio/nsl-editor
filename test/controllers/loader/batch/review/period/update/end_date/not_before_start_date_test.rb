@@ -19,36 +19,32 @@
 require "test_helper"
 
 # Single controller test.
-class BatchReviewPeriodUpdateEndDateNotBeforeStartDateTest < ActionController::TestCase
-  tests ::Loader::Batch::Review::PeriodsController
-
+class BatchReviewPeriodUpdateEndDateNotBeforeStartDateTest < ActionDispatch::IntegrationTest
   # This test does rely on the start date being in the past
   test "update batch review period end date not before start date" do
-    @request.headers["Accept"] = "application/javascript"
     target = loader_batch_batch_review_batch_review_period(:review_period_one)
-    patch(
-      :update,
-      params: {
-        id: target.id,
-        "loader_batch_review_period" => {
-          "id" => target.id,
-          "batch_review_id" => target.batch_review.id,
-          "name" => "Review Period One",
-          "start_date(3i)" => Date.today.next_week.day.to_s,
-          "start_date(2i)" => Date.today.next_week.month.to_s,
-          "start_date(1i)" => Date.today.next_week.year.to_s,
-          "end_date(3i)" => Date.today.day.to_s,
-          "end_date(2i)" => Date.today.month.to_s,
-          "end_date(1i)" => Date.today.year.to_s,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["batch-loader"]
+    ) do
+      patch update_review_period_path(id: target.id),
+        params: {
+          "loader_batch_review_period" => {
+            "id" => target.id,
+            "batch_review_id" => target.batch_review.id,
+            "name" => "Review Period One",
+            "start_date(3i)" => Date.today.next_week.day.to_s,
+            "start_date(2i)" => Date.today.next_week.month.to_s,
+            "start_date(1i)" => Date.today.next_week.year.to_s,
+            "end_date(3i)" => Date.today.day.to_s,
+            "end_date(2i)" => Date.today.month.to_s,
+            "end_date(1i)" => Date.today.year.to_s,
+          },
+          "commit" => "Save",
         },
-        "commit" => "Save",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["batch-loader"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :unprocessable_content
     Loader::Batch::Review::Period.find(target.id)
     assert_match(

@@ -19,12 +19,9 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferencesEditDuplicateOfIdSetTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesEditDuplicateOfIdSetTest < ActionDispatch::IntegrationTest
   def setup
     @reference = references(:an_unknown_type_invalid_child_of_book)
-    @request.headers["Accept"] = "application/javascript"
     @master = references(:a_section_type_intended_master)
     @username = "fred"
 
@@ -36,18 +33,15 @@ class ReferencesEditDuplicateOfIdSetTest < ActionController::TestCase
   end
 
   test "references edit duplicate of id set" do
-    post(
-      :update,
-      params: {
-        reference: @reference_params,
-        id: @reference.id,
-      },
-      session: {
-        username: @username,
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: @username,
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch reference_path(id: @reference.id),
+        params: { reference: @reference_params },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     changed = Reference.find(@reference.id)
     assert @reference.duplicate_of_id.blank?, "Should not have been a duplicate"

@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchRefsOnDefaultSimpleTest < ActionController::TestCase
-  tests SearchController
+class SearchRefsOnDefaultSimpleTest < ActionDispatch::IntegrationTest
 
   test "search on reference default" do
-    get(
-      :search,
-      params: { query_target: "reference", query_string: "de fructibus" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "reference", query_string: "de fructibus" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /1 record\b/,

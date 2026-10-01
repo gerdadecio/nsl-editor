@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchInstanceListRefTypeSingleValUCPaperTest < ActionController::TestCase
-  tests SearchController
+class SearchInstanceListRefTypeSingleValUCPaperTest < ActionDispatch::IntegrationTest
 
   test "search instances for ref type paper" do
-    get(
-      :search,
-      params: { query_target: "instance", query_string: "ref-type: PAPER" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "instance", query_string: "ref-type: PAPER" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9][0-9] records\b/,

@@ -19,24 +19,21 @@
 require "test_helper"
 
 # Test User can sign in.
-class NewSessionKnownUserUpperCaseNoNewUserRecordTest < ActionController::TestCase
-  tests SearchController
-
-  def setup
+class NewSessionKnownUserUpperCaseNoNewUserRecordTest < ActionDispatch::IntegrationTest
+  setup do
     @known_user = users(:user_one)
   end
 
   test "new session for known user upper case does not create user record" do
     assert_no_difference("User.count") do
-      get(
-        :search,
-        params: {},
-        session: {
-          username: @known_user.user_name.upcase,
-          user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
-          groups: [:login],
-        }
-      )
+      sign_in_as_fake_user(
+        username: @known_user.user_name.upcase,
+        full_name: "#{@known_user.given_name} #{@known_user.family_name}",
+        groups: [:login]
+      ) do
+        get search_path
+      end
+
       assert_response :success
     end
     assert assigns(:current_registered_user), "Current registered user should be assigned"

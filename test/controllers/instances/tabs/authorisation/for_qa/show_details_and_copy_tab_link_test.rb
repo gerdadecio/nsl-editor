@@ -19,27 +19,21 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
-  tests InstancesController
+class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:britten_created_angophora_costata)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "should show detail and copy tab links if qa user gets details tab" do
-    get(
-      :show,
-      params: {
-        id: @instance.id,
-        tab: "tab_show_1",
-        "row-type" => "instance_as_part_of_concept_record",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["QA"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["QA"]
+    ) do
+      get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
+        params: { "row-type" => "instance_as_part_of_concept_record" },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     asserts
   end
@@ -47,20 +41,15 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
   test "should show instance details tab even if profile item tables don't exist" do
     Rails.configuration.profile_v2_aware = false
     Instance.stub_any_instance(:profile_items, -> { raise PG::UndefinedTable, "relation \"profile_item\" does not exist" }) do
-      @request.headers["Accept"] = "application/javascript"
-      get(
-        :show,
-        params: {
-          id: @instance.id,
-          tab: "tab_show_1",
-          "row-type" => "instance_as_part_of_concept_record",
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["QA"],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["QA"]
+      ) do
+        get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
+          params: { "row-type" => "instance_as_part_of_concept_record" },
+          headers: { "Accept" => "application/javascript" }
+      end
       assert_response :success
     end
   end

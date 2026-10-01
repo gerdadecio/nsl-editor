@@ -26,19 +26,16 @@ require "test_helper"
 # as query_target, e.g. "Loader names (any batch)", which Search::Base
 # canonicalizes to "loader_names_(any_batch)" before ParsedRequest strips
 # the parens down to "loader_names_any_batch".
-class SearchLoaderNameAnyBatchTargetTest < ActionController::TestCase
-  tests SearchController
+class SearchLoaderNameAnyBatchTargetTest < ActionDispatch::IntegrationTest
 
   test "loader names (any batch) target does not require a default batch" do
-    get(
-      :search,
-      params: { query_target: "loader names (any batch)", query_string: "*" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:login, :"batch-loader"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:login, :"batch-loader"]
+    ) do
+      get search_path, params: { query_target: "loader names (any batch)", query_string: "*" }
+    end
     assert_response :success
     assert_not_select "#search-results-summary",
                       /Please set a default batch/,
@@ -46,15 +43,13 @@ class SearchLoaderNameAnyBatchTargetTest < ActionController::TestCase
   end
 
   test "loader names (any batch) target searches across batches without an explicit any-batch directive" do
-    get(
-      :search,
-      params: { query_target: "loader names (any batch)", query_string: "Hardenbergia violacea" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:login, :"batch-loader"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:login, :"batch-loader"]
+    ) do
+      get search_path, params: { query_target: "loader names (any batch)", query_string: "Hardenbergia violacea" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /\b1 record*\b/,

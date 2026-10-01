@@ -19,35 +19,31 @@
 require "test_helper"
 
 # Single controller test.
-class BatchReviewPeriodUpdateEndDateMissingEndDayTest < ActionController::TestCase
-  tests ::Loader::Batch::Review::PeriodsController
-
+class BatchReviewPeriodUpdateEndDateMissingEndDayTest < ActionDispatch::IntegrationTest
   test "update batch review period missing end day" do
-    @request.headers["Accept"] = "application/javascript"
     batch_review_period = loader_batch_batch_review_batch_review_period(:review_period_one)
-    patch(
-      :update,
-      params: {
-        id: batch_review_period.id,
-        "loader_batch_review_period" => {
-          "id" => batch_review_period.id,
-          "batch_review_id" => batch_review_period.batch_review.id,
-          "name" => "Review Period One",
-          "start_date(3i)" => Date.today.day.to_s,
-          "start_date(2i)" => Date.today.month.to_s,
-          "start_date(1i)" => Date.today.year.to_s,
-          "end_date(3i)" => "",
-          "end_date(2i)" => Date.today.next_week.month.to_s,
-          "end_date(1i)" => Date.today.next_week.year.to_s,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["batch-loader"]
+    ) do
+      patch update_review_period_path(id: batch_review_period.id),
+        params: {
+          "loader_batch_review_period" => {
+            "id" => batch_review_period.id,
+            "batch_review_id" => batch_review_period.batch_review.id,
+            "name" => "Review Period One",
+            "start_date(3i)" => Date.today.day.to_s,
+            "start_date(2i)" => Date.today.month.to_s,
+            "start_date(1i)" => Date.today.year.to_s,
+            "end_date(3i)" => "",
+            "end_date(2i)" => Date.today.next_week.month.to_s,
+            "end_date(1i)" => Date.today.next_week.year.to_s,
+          },
+          "commit" => "Save",
         },
-        "commit" => "Save",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["batch-loader"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :unprocessable_content
     Loader::Batch::Review::Period.find(batch_review_period.id)
     assert_match(

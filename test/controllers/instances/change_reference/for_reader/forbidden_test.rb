@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesChangeReferenceForReaderSimpleTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesChangeReferenceForReaderSimpleTest < ActionDispatch::IntegrationTest
   test "reader should not be able to change instance reference" do
     instance = instances(:triodia_in_brassard)
     reference = references(:a_book)
     assert instance.reference_id != reference.id
-    @request.headers["Accept"] = "application/javascript"
-    put(
-      :change_reference,
-      params: { id: instance.id, instance: { "reference_id" => reference.id } },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      patch change_instance_reference_path(id: instance.id),
+        params: { instance: { "reference_id" => reference.id } },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :forbidden
     assert Instance.find(instance.id).reference_id != reference.id
   end

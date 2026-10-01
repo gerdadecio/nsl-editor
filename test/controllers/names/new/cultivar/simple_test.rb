@@ -19,24 +19,18 @@
 require "test_helper"
 
 # Single controller test.
-class NamesNewCultivarNameSimpleTest < ActionController::TestCase
-  tests NamesController
-
+class NamesNewCultivarNameSimpleTest < ActionDispatch::IntegrationTest
   test "editor should be able to enter a new cultivar name" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new,
-      params: {
-        category: "cultivar",
-        random_id: "123445",
-        tabIndex: "107",
-      },
-      session: {},
-      xhr: true
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get new_name_with_category_and_random_id_path(category: "cultivar", random_id: "123445"),
+        params: { tabIndex: "107" },
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success, "Cannot start new for a cultivar name"
     assert_select("h4", /New Cultivar Name/)
   end

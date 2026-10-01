@@ -19,26 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesUpdateForEditorPageTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesUpdateForEditorPageTest < ActionDispatch::IntegrationTest
   test "editor should be able to update instance page" do
     instance = instances(:triodia_in_brassard)
     new_page_value = "xxxxxx"
     assert instance.page != new_page_value
-    @request.headers["Accept"] = "application/javascript"
-    put(
-      :update,
-      params: {
-        id: instance.id,
-        instance: { "page" => new_page_value },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      put instance_path(id: instance.id),
+        params: { instance: { "page" => new_page_value } },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert Instance.find(instance.id).page == new_page_value
   end

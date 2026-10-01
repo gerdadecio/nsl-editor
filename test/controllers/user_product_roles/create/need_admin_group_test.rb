@@ -19,10 +19,8 @@
 require "test_helper"
 
 # Single controller test.
-class UserProductRoleNeedAdminToCreateTest < ActionController::TestCase
-  tests User::ProductRolesController
-
-  def setup
+class UserProductRoleNeedAdminToCreateTest < ActionDispatch::IntegrationTest
+  setup do
     @admin = users(:user_one)
     @target = users(:user_two)
     @product_role = product_roles(:foa_tree_publisher)
@@ -30,21 +28,20 @@ class UserProductRoleNeedAdminToCreateTest < ActionController::TestCase
 
   test "need admin group to create product role simple" do
     assert_no_difference("User::ProductRole.count") do
-      post(
-        :create,
-        params: {
-          user_product_role: {
-            "user_id" => @target.id,
-            "product_role_id" => @product_role.id,
+      sign_in_as_fake_user(
+        username: @admin.user_name,
+        full_name: "#{@admin.given_name} #{@admin.family_name}",
+        groups: [""]
+      ) do
+        post user_product_roles_path,
+          params: {
+            user_product_role: {
+              "user_id" => @target.id,
+              "product_role_id" => @product_role.id,
+            },
           },
-        },
-        format: :turbo_stream,
-        session: {
-          username: @admin.user_name,
-          user_full_name: "#{@admin.given_name} #{@admin.family_name}",
-          groups: [""],
-        }
-      )
+          as: :turbo_stream
+      end
       assert_response :forbidden
     end
   end

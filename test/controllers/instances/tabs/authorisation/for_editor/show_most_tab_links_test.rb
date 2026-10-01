@@ -19,27 +19,21 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceForEditorShowMostTabsTest < ActionController::TestCase
-  tests InstancesController
+class InstanceForEditorShowMostTabsTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:britten_created_angophora_costata)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "should show all tab links if editor requests details tab" do
-    get(
-      :show,
-      params: {
-        id: @instance.id,
-        tab: "tab_show_1",
-        "row-type" => "instance_as_part_of_concept_record",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
+        params: { "row-type" => "instance_as_part_of_concept_record" },
+        headers: { "Accept" => "application/javascript" }
+    end
     asserts
   end
 

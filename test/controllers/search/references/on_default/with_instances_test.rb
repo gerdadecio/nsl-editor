@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchRefsOnDefaultWithInstancesTest < ActionController::TestCase
-  tests SearchController
+class SearchRefsOnDefaultWithInstancesTest < ActionDispatch::IntegrationTest
 
   test "search on reference default with instances" do
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "reference",
         query_string: "de fructibus show-instances:",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
       }
-    )
+    end
     assert_response :success
     # NOTES (limit/total redesign, follow-up): "de fructibus" matches
     # exactly 1 reference fixture (de_fructibus_et_seminibus_plantarum,

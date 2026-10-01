@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameTypeaheadOnFullNameRouteTest < ActionController::TestCase
-  tests NamesController
+class NameTypeaheadOnFullNameRouteTest < ActionDispatch::IntegrationTest
   test "should route to typeahead on full name" do
     assert_routing "/names/typeahead_on_full_name",
                    controller: "names",

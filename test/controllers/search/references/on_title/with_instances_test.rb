@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchRefsOnTitleWithInstancesTest < ActionController::TestCase
-  tests SearchController
+class SearchRefsOnTitleWithInstancesTest < ActionDispatch::IntegrationTest
 
   test "search on reference title with instances" do
     ref = references(:bucket_reference_for_default_instances)
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "reference",
         query_string: "title: #{ref.title} show-instances:",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
       }
-    )
+    end
     assert_response :success
     # NOTES (limit/total redesign, follow-up): see on_id/with_instances_test.rb.
     assert_select "#search-results-summary",

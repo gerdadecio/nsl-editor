@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchLoaderBatchReviewSimpleTest < ActionController::TestCase
-  tests SearchController
+class SearchLoaderBatchReviewSimpleTest < ActionDispatch::IntegrationTest
 
   test "can search for batch reviews" do
-    get(
-      :search,
-      params: { query_target: "batch reviews", query_string: "*" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:login, :"batch-loader"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:login, :"batch-loader"]
+    ) do
+      get search_path, params: { query_target: "batch reviews", query_string: "*" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /\b[0-9] records\b/,

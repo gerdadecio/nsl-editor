@@ -19,34 +19,31 @@
 require "test_helper"
 
 # Single controller test.
-class CanUpdateStandaloneToExtraPrimaryWithOverride < ActionController::TestCase
-  tests InstancesController
-  def setup
+class CanUpdateStandaloneToExtraPrimaryWithOverride < ActionDispatch::IntegrationTest
+  setup do
     @instance = instances(:casuarina_inophloia_by_mueller)
     assert(@instance.instance_type == instance_types(:secondary_reference))
     @target = instances(:casuarina_inophloia_by_mueller_and_bailey)
     assert(@target.instance_type == instance_types(:tax_nov))
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "editor can update standalone instance to extra primary with override" do
-    put(
-      :update,
-      params: {
-        id: @instance.id,
-        instance: {
-          "reference_id" => @target.reference_id,
-          "instance_type_id" => instance_types(:comb_nov),
-          "page" => @target.page,
-          "multiple_primary_override" => "1",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      put instance_path(id: @instance.id),
+        params: {
+          instance: {
+            "reference_id" => @target.reference_id,
+            "instance_type_id" => instance_types(:comb_nov).id,
+            "page" => @target.page,
+            "multiple_primary_override" => "1",
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert Instance.find(@instance.id).name_id == @target.name_id
     check_assertions
   end

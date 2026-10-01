@@ -19,9 +19,8 @@
 require "test_helper"
 
 # Single controller test.
-class SecondPrimaryNotAllowedTest < ActionController::TestCase
-  tests InstancesController
-  def setup
+class SecondPrimaryNotAllowedTest < ActionDispatch::IntegrationTest
+  setup do
     @base = instances(:britten_created_angophora_costata)
     assert_equal(
       @base.instance_type_id,
@@ -35,20 +34,19 @@ class SecondPrimaryNotAllowedTest < ActionController::TestCase
       "reference_id" => @base.reference_id,
       "extra_primary_override" => "0",
     }
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "cannot create duplicate primary instance" do
     assert_no_difference("Instance.count") do
-      post(
-        :create,
-        params: { instance: @instance_params },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post instances_path,
+          params: { instance: @instance_params },
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     check_assertions
   end

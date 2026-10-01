@@ -19,25 +19,22 @@
 require "test_helper"
 
 # Single controller test.
-class NameTypeSrchCultHybFormSetsCommCultFlagAutoT < ActionController::TestCase
-  tests SearchController
-
+class NameTypeSrchCultHybFormSetsCommCultFlagAutoT < ActionDispatch::IntegrationTest
   test "search 4 name type cult hybrid formula should set cultivar flag true" do
     skip # Expect this to be no longer needed under revised search.
     cultivar_hybrid_formula = names(:a_cultivar_hybrid_formula)
     # Set the common-and-cultivar flag to false.
-    get(
-      :search,
-      params: ActiveSupport::HashWithIndifferentAccess.new(
-        query_string: "nt:cultivar hybrid formula",
-        query_target: "name"
-      ),
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get search_path,
+        params: ActiveSupport::HashWithIndifferentAccess.new(
+          query_string: "nt:cultivar hybrid formula",
+          query_target: "name"
+        )
+    end
     assert_response :success
     # assert_select "input.checkbox[type=checkbox]
     #               [id=query_common_and_cultivar][value=t]",

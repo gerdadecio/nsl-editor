@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorsRouteShowTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorsRouteShowTest < ActionDispatch::IntegrationTest
   test "should route to show a author" do
     assert_routing "/authors/1",
                    controller: "authors",

@@ -19,30 +19,27 @@
 require "test_helper"
 
 # Single controller test.
-class NamesCreateWithInvalidAuthorTest < ActionController::TestCase
-  tests NamesController
-
+class NamesCreateWithInvalidAuthorTest < ActionDispatch::IntegrationTest
   test "editor create name with invalid author" do
-    @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Name.count") do
-      post(
-        :create,
-        params: {
-          name: {
-            "name_status_id" => name_statuses(:legitimate),
-            "name_rank_id" => name_ranks(:species),
-            "name_type_id" => name_types(:scientific),
-            "author_id" => nil,
-            "author_typeahead" => "aabasdb",
-            "name_element" => "fred",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+        post names_path,
+          params: {
+            name: {
+              "name_status_id" => name_statuses(:legitimate).id,
+              "name_rank_id" => name_ranks(:species).id,
+              "name_type_id" => name_types(:scientific).id,
+              "author_id" => nil,
+              "author_typeahead" => "aabasdb",
+              "name_element" => "fred",
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     # can we check for error message?
   end

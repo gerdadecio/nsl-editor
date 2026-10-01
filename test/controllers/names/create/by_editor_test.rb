@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NamesCreateByEditorTest < ActionController::TestCase
-  tests NamesController
-
+class NamesCreateByEditorTest < ActionDispatch::IntegrationTest
   setup do
     @name_status = name_statuses(:legitimate)
     @name_rank = name_ranks(:species)
@@ -57,29 +55,28 @@ class NamesCreateByEditorTest < ActionController::TestCase
   end
 
   test "editor should be able to create name" do
-    @request.headers["Accept"] = "application/javascript"
     assert_difference("Name.count") do
-      post(
-        :create,
-        params: {
-          name: {
-            "name_status_id" => @name_status.id,
-            "name_rank_id" => @name_rank.id,
-            "name_type_id" => @name_type.id,
-            "parent_id" => @parent.id,
-            "parent_typeahead" => @parent_typeahead,
-            "family_id" => @parent.id,
-            "family_typeahead" => @family_typeahead,
-            "name_element" => @name_element,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+        post names_path,
+          params: {
+            name: {
+              "name_status_id" => @name_status.id,
+              "name_rank_id" => @name_rank.id,
+              "name_type_id" => @name_type.id,
+              "parent_id" => @parent.id,
+              "parent_typeahead" => @parent_typeahead,
+              "family_id" => @parent.id,
+              "family_typeahead" => @family_typeahead,
+              "name_element" => @name_element,
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        },
-        xhr: true
-      )
+          headers: { "Accept" => "application/javascript" },
+          xhr: true
+      end
     end
   end
 end

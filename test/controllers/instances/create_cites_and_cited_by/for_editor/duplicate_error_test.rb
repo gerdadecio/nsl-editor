@@ -19,35 +19,33 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesCreateCitesAndCitedByByEdDupErrTest < ActionController::TestCase
-  tests InstancesController
-  def setup
+class InstancesCreateCitesAndCitedByByEdDupErrTest < ActionDispatch::IntegrationTest
+  setup do
     @instance_1 = instances(:gaertner_created_metrosideros_costata)
     @instance_2 = instances(:britten_created_angophora_costata)
     @instance_type = instance_types(:synonym)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "create duplicate cites and cited by instance should be error" do
     assert_no_difference("Instance.count") do
-      post(
-        :create,
-        params: {
-          instance: {
-            "cites_id" => @instance_1.id,
-            "cited_by_id" => @instance_2.id,
-            "name_id" => @instance_1.name.id,
-            "reference_id" => @instance_2.reference.id,
-            "instance_type_id" => @instance_type.id,
-            "page" => "xx,20,1000",
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post instances_path,
+          params: {
+            instance: {
+              "cites_id" => @instance_1.id,
+              "cited_by_id" => @instance_2.id,
+              "name_id" => @instance_1.name.id,
+              "reference_id" => @instance_2.reference.id,
+              "instance_type_id" => @instance_type.id,
+              "page" => "xx,20,1000",
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     check_assertions
   end

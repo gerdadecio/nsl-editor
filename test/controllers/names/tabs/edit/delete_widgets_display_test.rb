@@ -18,24 +18,20 @@
 #
 require "test_helper"
 
-class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
-  tests NamesController
-
+class NameDeleteTabDeleteWidgetsTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:another_species)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   def show_delete_tab
-    get(
-      :tab,
-      params: { id: @name.id, tab: "tab_delete" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_delete"),
+        headers: { "Accept" => "application/javascript" }
+    end
   end
 
   test "shows delete widgets when hard delete is allowed" do

@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameUpdateRouteTest < ActionController::TestCase
-  tests NamesController
+class NameUpdateRouteTest < ActionDispatch::IntegrationTest
   test "should route to update a name" do
     assert_routing(
       { method: "patch", path: "/names/1" },

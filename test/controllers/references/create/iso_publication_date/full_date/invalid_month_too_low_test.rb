@@ -19,38 +19,35 @@
 require "test_helper"
 
 # Single controller test.
-class ReferencesesCreateFullDateInvMonthTooLowTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesesCreateFullDateInvMonthTooLowTest < ActionDispatch::IntegrationTest
   setup do
     @month = 0
   end
 
   test "create reference full date invalid month too low" do
-    @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Reference.count") do
-      post(
-        :create,
-        params: {
-          reference: {
-            "ref_type_id" => ref_types(:book),
-            "title" => "Some book",
-            "author_id" => authors(:dash),
-            "author_typeahead" => "-",
-            "published" => true,
-            "parent_typeahead" => @parent_typeahead,
-            "ref_author_role_id" => ref_author_roles(:author),
-            "day" => "30",
-            "month" => @month,
-            "year" => "1988",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+        post references_path,
+          params: {
+            reference: {
+              "ref_type_id" => ref_types(:book).id,
+              "title" => "Some book",
+              "author_id" => authors(:dash).id,
+              "author_typeahead" => "-",
+              "published" => true,
+              "parent_typeahead" => @parent_typeahead,
+              "ref_author_role_id" => ref_author_roles(:author).id,
+              "day" => "30",
+              "month" => @month,
+              "year" => "1988",
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        }
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
       assert_match(
         /Error: Month #{@month} is below the range 1-12/,
         response.body.to_s,

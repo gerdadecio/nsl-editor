@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchNamesAsReaderListAssertionsIsAParentTst < ActionController::TestCase
-  tests SearchController
+class SearchNamesAsReaderListAssertionsIsAParentTst < ActionDispatch::IntegrationTest
 
   test "reader can search for names that are parents" do
-    get(
-      :search,
-      params: { query_target: "name", query_string: "is-a-parent:" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "name", query_string: "is-a-parent:" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /[0-9][0-9] names\b/,

@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:a_book)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "should show only details tab link if reader requests details tab" do
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_show_1" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "li.active a#reference-edit-show-1-tab",
                   /Details/,

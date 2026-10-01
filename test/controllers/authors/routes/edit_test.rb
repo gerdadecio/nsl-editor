@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorsRouteEditTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorsRouteEditTest < ActionDispatch::IntegrationTest
   test "authors edit should route to the catch-all" do
     assert_routing "/authors/edit/1",
                    controller: "search",

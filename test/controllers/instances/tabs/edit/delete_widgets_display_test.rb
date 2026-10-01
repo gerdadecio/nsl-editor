@@ -20,24 +20,20 @@ require "test_helper"
 
 # Tests which delete widget the instance edit tab displays, driven by
 # Instance#allow_delete?, #allow_soft_delete? and #deleted_at.
-class InstanceEditTabDeleteWidgetsTest < ActionController::TestCase
-  tests InstancesController
-
+class InstanceEditTabDeleteWidgetsTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:triodia_in_brassard)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   def show_edit_tab
-    get(
-      :show,
-      params: { id: @instance.id, tab: "tab_edit" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get instance_tab_path(id: @instance.id, tab: "tab_edit"),
+        headers: { "Accept" => "application/javascript" }
+    end
   end
 
   test "shows delete widgets when hard delete is allowed" do

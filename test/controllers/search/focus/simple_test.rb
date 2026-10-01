@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchNamesWithFocusSimpleTest < ActionController::TestCase
-  tests SearchController
+class SearchNamesWithFocusSimpleTest < ActionDispatch::IntegrationTest
 
   setup do
     @name = names(:angophora_costata)
   end
 
   test "search for a set of names and focus on one" do
-    get(
-      :search,
-      params: { query_target: "name", query_string: "a", focus_id: @name.id },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "name", query_string: "a", focus_id: @name.id }
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /[45][0-9] names of [45][0-9]/,

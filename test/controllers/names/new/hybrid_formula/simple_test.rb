@@ -19,23 +19,18 @@
 require "test_helper"
 
 # Single controller test.
-class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
-  tests NamesController
-
+class NamesNewScientificHybridFormulaSimpleTest < ActionDispatch::IntegrationTest
   test "editor should be able to start a new scientific hybrid formula" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new,
-      params: {
-        category: "hybrid formula",
-        random_id: "123445",
-        tabIndex: "107",
-      },
-      xhr: true
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get new_name_with_category_and_random_id_path(category: "hybrid formula", random_id: "123445"),
+        params: { tabIndex: "107" },
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success,
                     "Cannot get form for a new hybrid formula name"
     assert_select("h4", /New Scientific Hybrid Formula Name/)
@@ -46,19 +41,16 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
   # endpoint. A new name has no id yet, so name_id is sent as null - the
   # autocomplete controller's buildURL turns that into an empty param.
   test "new scientific hybrid formula's first parent is a stimulus autocomplete" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new,
-      params: {
-        category: "hybrid formula",
-        random_id: "123445",
-        tabIndex: "107",
-      },
-      xhr: true
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get new_name_with_category_and_random_id_path(category: "hybrid formula", random_id: "123445"),
+        params: { tabIndex: "107" },
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
       "[data-autocomplete-url-value=" \
@@ -68,7 +60,7 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
                   true
     assert_select "div.autocomplete label[for='name-parent-typeahead']",
                   "First Parent*"
-    assert_no_match(/setUpNameHybridParentTypeahead\(\)/, @response.body)
+    assert_no_match(/setUpNameHybridParentTypeahead\(\)/, response.body)
     field = css_select("div.autocomplete").find do |div|
       div.css("input#name-parent-typeahead").any?
     end
@@ -79,19 +71,16 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
   end
 
   test "new scientific hybrid formula's second parent is a stimulus autocomplete" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new,
-      params: {
-        category: "hybrid formula",
-        random_id: "123445",
-        tabIndex: "107",
-      },
-      xhr: true
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get new_name_with_category_and_random_id_path(category: "hybrid formula", random_id: "123445"),
+        params: { tabIndex: "107" },
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
       "[data-autocomplete-url-value=" \
@@ -104,6 +93,6 @@ class NamesNewScientificHybridFormulaSimpleTest < ActionController::TestCase
                   true
     assert_select "div.autocomplete label[for='name-second-parent-typeahead']",
                   "Second parent*"
-    assert_no_match(/setUpNameSecondParentTypeahead\(\)/, @response.body)
+    assert_no_match(/setUpNameSecondParentTypeahead\(\)/, response.body)
   end
 end

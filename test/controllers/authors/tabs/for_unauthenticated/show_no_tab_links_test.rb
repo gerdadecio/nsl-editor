@@ -19,19 +19,14 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorUnauthenticatedShowNoTabLinkTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorUnauthenticatedShowNoTabLinkTest < ActionDispatch::IntegrationTest
   setup do
     @author = authors(:bentham)
   end
 
   test "should show no tab links if unauthenticated requests details tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @author.id, tab: "tab_edit" },
-      session: {}
-    )
+    get author_tab_path(id: @author.id, tab: "tab_edit"),
+      headers: { "Accept" => "application/javascript" }
     # assert_response :redirect, 'Should be redirected.'
     assert_select "a#author-show-tab", false, "Should not show 'Detail' tab."
     assert_select "a#author-edit-tab", false, "Should not show 'Edit' tab."

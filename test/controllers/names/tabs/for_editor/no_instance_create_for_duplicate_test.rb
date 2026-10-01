@@ -19,24 +19,21 @@
 require "test_helper"
 
 # Single controller test.
-class NoInstanceCreateForDuplicateTest < ActionController::TestCase
-  tests NamesController
+class NoInstanceCreateForDuplicateTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_duplicate_species)
   end
 
   test "no instance create for duplicate name" do
     assert @name.duplicate?, "Test name must be a duplicate"
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @name.id, tab: "tab_instances" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_instances"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_template "names/tabs/_tab"
     assert_template "names/tabs/_tab_instances"

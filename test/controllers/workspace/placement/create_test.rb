@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Tree (workspace) controller test for create placement.
-class TreePlacementCreateTest < ActionController::TestCase
-  tests ::TreesController
+class TreePlacementCreateTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:usage_of_name_to_be_placed)
     @name = names(:to_be_placed)
@@ -59,29 +58,28 @@ class TreePlacementCreateTest < ActionController::TestCase
   end
 
   test "place name in workspace" do
-    @request.headers["Accept"] = "application/javascript"
-    patch(
-      :place_name,
-      params: {
-        id: @workspace,
-        place_name: {
-          name_id: @name,
-          instance_id: @instance.id,
-          parent_element_link: "tree/123/456",
-          comment: "yo",
-          distribution: ["ACT", "Wa"],
-          excluded: false,
-          version_id: @workspace.id,
-          parent_name_typeahead_string: @parent.full_name,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit", "treebuilder"],
+      extra_session: { draft: { "id" => @workspace.id } }
+    ) do
+      patch tree_place_name_path(id: @workspace.id),
+        params: {
+          place_name: {
+            name_id: @name,
+            instance_id: @instance.id,
+            parent_element_link: "tree/123/456",
+            comment: "yo",
+            distribution: ["ACT", "Wa"],
+            excluded: false,
+            version_id: @workspace.id,
+            parent_name_typeahead_string: @parent.full_name,
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit", "treebuilder"],
-        draft: @workspace,
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
+
     assert_response :success
     assert_equal "place_name",
                  @controller.action_name,

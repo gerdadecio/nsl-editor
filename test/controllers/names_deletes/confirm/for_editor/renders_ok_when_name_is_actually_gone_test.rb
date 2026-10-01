@@ -24,9 +24,7 @@ require "test_helper"
 # external Name Services app deleting the same underlying row before it
 # responds. This is the genuine-success case: the service says ok, and the
 # name really is gone.
-class NamesDeleteConfirmForEditorRendersOkWhenNameIsActuallyGoneTest < ActionController::TestCase
-  tests NamesDeletesController
-
+class NamesDeleteConfirmForEditorRendersOkWhenNameIsActuallyGoneTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:name_to_delete)
     @reason = "some reason"
@@ -57,22 +55,21 @@ class NamesDeleteConfirmForEditorRendersOkWhenNameIsActuallyGoneTest < ActionCon
   end
 
   test "renders ok and the name is gone when the service really deletes it" do
-    @request.headers["Accept"] = "application/javascript"
-    delete(
-      :confirm,
-      params: {
-        names_delete: {
-          name_id: @name.id,
-          reason: @reason,
-          extra_info: @extra_info,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      delete names_deletes_path,
+        params: {
+          names_delete: {
+            name_id: @name.id,
+            reason: @reason,
+            extra_info: @extra_info,
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      }
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_includes @response.body, "Record deleted"
     assert_not Name.exists?(@name.id)

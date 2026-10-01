@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class ReaderSearchControllerNamesCommentsByListTest < ActionController::TestCase
-  tests SearchController
+class ReaderSearchControllerNamesCommentsByListTest < ActionDispatch::IntegrationTest
 
   test "reader can search for a name with comments by" do
-    get(
-      :search,
-      params: { query_target: "name", query_string: "comments-by: *" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "name", query_string: "comments-by: *" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /\b1 name\b/,

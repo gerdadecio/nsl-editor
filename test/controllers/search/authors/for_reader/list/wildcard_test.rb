@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class ReaderSearchControllerNamesWildcardListTest < ActionController::TestCase
-  tests SearchController
+class ReaderSearchControllerNamesWildcardListTest < ActionDispatch::IntegrationTest
 
   test "reader can do wildcard search for authors" do
-    get(
-      :search,
-      params: { query_target: "author", query_string: "*" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "author", query_string: "*" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
                   /\b[0-9][0-9] records\b/,

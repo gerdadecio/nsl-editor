@@ -19,24 +19,22 @@
 require "test_helper"
 
 # Single controller test.
-class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
-  tests InstancesController
+class InstQADontShowCopyTabLinksUnlessConceptTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:britten_created_angophora_costata)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   # would be better to test the controller method
   test "do not show copy tab links unless part of concept record" do
-    get(
-      :show,
-      params: { id: @instance.id, tab: "tab_show_1", "row-type" => "instance" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["qa"],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["qa"]
+    ) do
+      get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
+        params: { "row-type" => "instance" },
+        headers: { "Accept" => "application/javascript" }
+    end
     asserts
   end
 

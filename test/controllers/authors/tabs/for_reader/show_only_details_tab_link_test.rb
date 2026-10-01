@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorReaderShowOnlyDetailsTabLinkTest < ActionDispatch::IntegrationTest
   setup do
     @author = authors(:bentham)
   end
 
   test "should show only details tab link if reader requests details tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @author.id, tab: "tab_edit" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get author_tab_path(id: @author.id, tab: "tab_edit"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :forbidden
   end
 end

@@ -19,19 +19,16 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchControllerLowerCaseTargetTest < ActionController::TestCase
-  tests SearchController
+class SearchControllerLowerCaseTargetTest < ActionDispatch::IntegrationTest
 
   test "lower case target should be returned in canonical form" do
-    get(
-      :search,
-      params: { query_target: "name", query_string: "*" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:edit, :taxonomic_review, :login],
-      }
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:edit, :taxonomic_review, :login]
+    ) do
+      get search_path, params: { query_target: "name", query_string: "*" }
+    end
     assert_select "span#search-target-button-text", /name/, "The input search target 'name' should be output as 'name'"
     assert_response :success
   end
