@@ -1,4 +1,8 @@
 - :date: 01-October-2026
+  :jira_id: '5955'
+  :description: |-
+    Loader Name Search: Restore missing search directive <code>misapp-matched-without-cross-ref:</code> from old Orchid source code
+- :date: 01-October-2026
   :jira_id: '5951'
   :description: |-
     Typeahead upgrade: Upgrade the instance reference citation typeahead fields in the instance form to use stimulus autocomplete

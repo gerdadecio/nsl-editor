@@ -1250,5 +1250,15 @@ and not exists
       leading_wildcard: true,
       trailing_wildcard: true,
     },
+    "misapp-matched-without-cross-ref:" => {
+      where_clause: " id in
+      (select ln.id
+         from loader_name ln
+              join loader_name_match lnm
+              on ln.id = lnm.loader_name_id
+        where ln.record_type = 'misapplied'
+          and lnm.relationship_instance_id is null)",
+      takes_no_arg: true,
+    },
   }.freeze
 end

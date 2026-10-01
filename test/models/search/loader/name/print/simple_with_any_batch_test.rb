@@ -34,9 +34,9 @@ class SearchLoaderNameAndPrintSimpleWithAnyBatchTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(Array),
            "Results should be an Array."
-    assert_equal 26,
+    assert_equal 29,
                  search.executed_query.results.size,
-                 "Exactly 26 results expected (9 original + 2 extra from " \
+                 "Exactly 29 results expected (9 original + 2 extra from " \
                    "accepted_one/accepted_two's formatted_text_above/" \
                    "formatted_text_below, each of which " \
                    "RewriteResultsShowingExtras expands into its own row " \
@@ -50,6 +50,8 @@ class SearchLoaderNameAndPrintSimpleWithAnyBatchTest < ActiveSupport::TestCase
                    "record_type accepted - + 4 from the " \
                    "name-match-no-primary: directive tests, which also " \
                    "don't set comment/distribution or formatted_text_above/" \
-                   "below)."
+                   "below - + 3 from the misapp-matched-without-cross-ref: " \
+                   "directive tests, which also don't set " \
+                   "comment/distribution or formatted_text_above/below)."
   end
 end

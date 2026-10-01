@@ -184,6 +184,50 @@ misapp_guards_pass:
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
 
+# Supports test/models/search/loader/name/directives/misapp_matched_without_cross_ref_test.rb
+
+misapp_matched_without_cross_ref:
+  seq: 0
+  record_type: misapplied
+  loader_batch: batch_one
+  simple_name: Misapp matched without cross ref
+  simple_name_as_loaded: Misapp matched without cross ref
+  full_name: Misapp matched without cross ref
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+misapp_matched_with_cross_ref:
+  seq: 0
+  record_type: misapplied
+  loader_batch: batch_one
+  simple_name: Misapp matched with cross ref
+  simple_name_as_loaded: Misapp matched with cross ref
+  full_name: Misapp matched with cross ref
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+misapp_multiple_matches_one_without_cross_ref:
+  seq: 0
+  record_type: misapplied
+  loader_batch: batch_one
+  simple_name: Misapp with one resolved and one unresolved match
+  simple_name_as_loaded: Misapp with one resolved and one unresolved match
+  full_name: Misapp with one resolved and one unresolved match
+  family: Myrtaceae
+  rank: species
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
 synonym_no_parent:
   seq: 0
   record_type: synonym

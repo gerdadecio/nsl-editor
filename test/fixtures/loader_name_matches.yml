@@ -76,3 +76,52 @@ match_already_matched_candidate:
   instance: gaertner_created_metrosideros_costata
   created_by: tester
   updated_by: tester
+
+# Supports test/models/search/loader/name/directives/misapp_matched_without_cross_ref_test.rb
+#
+# misapp_matched_without_cross_ref has a recorded match with no
+# relationship_instance_id - exactly what "misapp-matched-without-cross-ref:"
+# is looking for.
+match_misapp_matched_without_cross_ref:
+  loader_name: misapp_matched_without_cross_ref
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  relationship_instance_type: misapplied
+  created_by: tester
+  updated_by: tester
+
+# misapp_matched_with_cross_ref's match DOES have a relationship instance
+# identified, so "misapp-matched-without-cross-ref:" should exclude it.
+match_misapp_matched_with_cross_ref:
+  loader_name: misapp_matched_with_cross_ref
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  relationship_instance_type: misapplied
+  relationship_instance: gaertner_created_metrosideros_costata
+  relationship_instance_found: true
+  created_by: tester
+  updated_by: tester
+
+# Loader::Name::Match's loader_name_id uniqueness validation is skipped
+# for misapplied names (see Loader::Name::Match), so a misapplied name can
+# genuinely have more than one match row - unlike every other record_type.
+# misapp_multiple_matches_one_without_cross_ref has one resolved match and
+# one unresolved one; "misapp-matched-without-cross-ref:" should still
+# include it, since it has at least one match without a cross-ref.
+match_multi_resolved:
+  loader_name: misapp_multiple_matches_one_without_cross_ref
+  name: metrosideros_costata
+  instance: gaertner_created_metrosideros_costata
+  relationship_instance_type: misapplied
+  relationship_instance: gaertner_created_metrosideros_costata
+  relationship_instance_found: true
+  created_by: tester
+  updated_by: tester
+
+match_multi_unresolved:
+  loader_name: misapp_multiple_matches_one_without_cross_ref
+  name: metrosideros_costata
+  instance: triodia_in_brassard
+  relationship_instance_type: misapplied
+  created_by: tester
+  updated_by: tester
