@@ -22,24 +22,11 @@ require "test_helper"
 # whichever of its two homes renders it: the standalone update form, when
 # the instance has no synonyms, or the change reference widgets, when it
 # has.
-class InstanceEditTabReferenceFieldTest < ActionController::TestCase
-  tests InstancesController
-
-  setup do
-    @request.headers["Accept"] = "application/javascript"
-  end
-
+class InstanceEditTabReferenceFieldTest < ActionDispatch::IntegrationTest
   def get_edit_tab(instance)
-    get(
-      :show,
-      params: { id: instance.id, tab: "tab_edit" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-      xhr: true,
-    )
+    sign_in_as_fake_user(groups: [ "edit" ]) do
+      get instance_tab_path(instance, tab: "tab_edit"), xhr: true
+    end
     assert_response :success
   end
 

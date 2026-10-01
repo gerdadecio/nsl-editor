@@ -21,25 +21,15 @@ require "test_helper"
 # The name's new instance form (names - instances tab) renders its
 # Reference field on stimulus-autocomplete, through the shared partial,
 # with the dom ids other JS keys off unchanged.
-class NameInstanceCreateReferenceFieldTest < ActionController::TestCase
-  tests NamesController
-
+class NameInstanceCreateReferenceFieldTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
   test "should render the reference field as a stimulus autocomplete" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @name.id, tab: "tab_instances" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-      xhr: true,
-    )
+    sign_in_as_fake_user(groups: [ "edit" ]) do
+      get name_tab_path(@name, tab: "tab_instances"), xhr: true
+    end
 
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \

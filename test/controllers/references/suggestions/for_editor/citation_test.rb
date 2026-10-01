@@ -22,23 +22,16 @@ require "test_helper"
 # fragment to the instance forms' Reference field, now on
 # stimulus-autocomplete, and still offers json for
 # typeaheads/for_instance/reference_profile_v2.js.
-class ReferenceCitationSuggestionsForEditorTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferenceCitationSuggestionsForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:cavanilles_icones)
   end
 
   def get_suggestions(term, format: :html)
-    get(
-      :typeahead_on_citation,
-      params: { term: term, format: format },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(groups: [ "edit" ]) do
+      get references_typeahead_on_citation_path(format: format),
+          params: { term: term }
+    end
   end
 
   def assert_select_in_body(*args, &block)
