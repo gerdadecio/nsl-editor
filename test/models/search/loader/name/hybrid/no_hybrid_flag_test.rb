@@ -34,12 +34,14 @@ class SearchLoaderNameNoHybridFlagTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
            "Results should be an ActiveRecord::Relation."
-    assert_equal 18,
+    assert_equal 21,
                  search.executed_query.results.size,
-                 "Exactly 18 results expected (3 original fixtures + 11 " \
+                 "Exactly 21 results expected (3 original fixtures + 11 " \
                    "from Loader::Name::MakeOneInstance guard-ordering " \
                    "tests, none of which set hybrid_flag, + 4 from the " \
                    "name-match-no-primary: directive tests, which also " \
-                   "don't set hybrid_flag)."
+                   "don't set hybrid_flag, + 3 from the " \
+                   "misapp-matched-without-cross-ref: directive tests, " \
+                   "which also don't set hybrid_flag)."
   end
 end
