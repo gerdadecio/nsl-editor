@@ -20,17 +20,21 @@
     appears in<span class="red">*</span>
     <% if  @instance.update_reference_allowed? %>
             <% focus_taken = true %>
-            <input id="instance-reference-typeahead"
-                   name="instance[reference_typeahead]"
-                   class="typeahead form-control give-me-focus"
-                   placeholder="Reference"
-                   title="Enter a reference citation.  This is a reference typeahead - enter any fragments of the reference citation in any order to narrow the list."
-                   required="true"
-                   tabindex="<%= increment_tab_index %>"
-                   type="text"
-                   value="<%= @instance.reference.try('citation') %>"/>
-        <%= f.hidden_field :reference_id %>
-        <script> setUpInstanceReference(); </script>
+            <%# Reference: on stimulus-autocomplete, as in
+                _form_create_from_name. The shared partial renders the hidden
+                reference_id field; dom ids and param names are unchanged. %>
+            <%= render "shared/autocomplete_field",
+                       f: f,
+                       id_attribute: :reference_id,
+                       input_id: "instance-reference-typeahead",
+                       input_name: "instance[reference_typeahead]",
+                       input_value: @instance.reference.try("citation"),
+                       input_class: "give-me-focus",
+                       required: true,
+                       placeholder: "Reference",
+                       title: "Enter a reference citation.  This is a reference typeahead - enter any fragments of the reference citation in any order to narrow the list.",
+                       url: references_typeahead_on_citation_path(format: :html),
+                       term_delimiter: " |" %>
     <% else %>
       <% focus_taken = false %>
       <%= show_field_as_linked_lookup('',@instance.reference,'citation', search_path(query_string: %Q(id:#{@instance.reference_id}),query_target: 'reference'),'to the reference') %>
