@@ -25,7 +25,7 @@ class TAOnCit4ParentRefTypeRestrictionSeriesForBook < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "%",
       current_reference.id,
-      ref_types(:book).id,
+      ref_types(:book).id
     )
     assert_not typeahead.results.empty?, "Should be at least one result"
     series = 0

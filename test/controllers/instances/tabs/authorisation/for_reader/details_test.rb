@@ -19,38 +19,33 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceDetailsTabForReaderTest < ActionController::TestCase
-  tests InstancesController
+class InstanceDetailsTabForReaderTest < ActionDispatch::IntegrationTest
   setup do
     @triodia_in_brassard = instances(:triodia_in_brassard)
   end
   test "should show instance details tab to reader" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @triodia_in_brassard.id, tab: "tab_show_1" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
   end
 
   test "should show instance details tab even if profile item tables don't exist" do
     Rails.configuration.profile_v2_aware = false
     Instance.stub_any_instance(:profile_items, -> { raise PG::UndefinedTable, "relation \"profile_item\" does not exist" }) do
-      @request.headers["Accept"] = "application/javascript"
-      get(
-        :show,
-        params: { id: @triodia_in_brassard.id, tab: "tab_show_1" },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: [],
-        },
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: []
+      ) do
+        get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_show_1"),
+          headers: { "Accept" => "application/javascript" }
+      end
       assert_response :success
     end
   end

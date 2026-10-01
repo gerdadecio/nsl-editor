@@ -24,9 +24,9 @@ class SearchOnNameAuthorIsNullTest < ActiveSupport::TestCase
   test "search on name author is null" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "author-id: ",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "author-id: ",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|

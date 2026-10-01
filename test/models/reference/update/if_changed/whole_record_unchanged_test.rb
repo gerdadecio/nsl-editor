@@ -22,7 +22,7 @@ require "test_helper"
 class WholeRecordUnchangedTest < ActiveSupport::TestCase
   test "realistic form submission with no change" do
     reference = Reference::AsEdited.find(
-      references(:for_whole_record_change_detection).id,
+      references(:for_whole_record_change_detection).id
     )
 
     params = {
@@ -49,7 +49,7 @@ class WholeRecordUnchangedTest < ActiveSupport::TestCase
     assert reference.update_if_changed(params, typeahead_params, "a user")
     changed_reference = Reference.find_by(id: reference.id)
     assert_equal reference.created_at,
-      changed_reference.updated_at,
-      "Reference should not have been updated."
+                 changed_reference.updated_at,
+                 "Reference should not have been updated."
   end
 end

@@ -23,8 +23,7 @@ require "test_helper"
 # app/views/instances/tabs/_tab_show_1.html.erb renders
 # AuditHelper#updated_by_api_and_when, which adds nothing when
 # @instance.api_at is blank - even if api_name is set.
-class InstanceShowEditorDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionController::TestCase
-  tests InstancesController
+class InstanceShowEditorDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:triodia_in_brassard)
   end
@@ -44,16 +43,14 @@ class InstanceShowEditorDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionC
   private
 
   def show_details_tab
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @instance.id, tab: "tab_show_1" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response(:success)
   end
 end

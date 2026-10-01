@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubAPCNewDraftUserOferedAPCTreeOnlyTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsTreePubAPCNewDraftUserOferedAPCTreeOnlyTest < ActionDispatch::IntegrationTest
   def setup
     publish_existing_draft
   end
@@ -47,17 +45,17 @@ class TaxFormsTreePubAPCNewDraftUserOferedAPCTreeOnlyTest < ActionController::Te
 
   test "APC tree publisher user offered apc tree only" do
     user = users(:apc_tax_publisher)
-    get(
-      :new_draft,
-      params: { tree_id: trees(:APC) },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      get tree_versions_new_draft_path(tree_id: trees(:APC)),
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "This test assumes the new draft form will open for apc_tax_publisher"
     assert_dom "form", true, "Should be a form element"
     assert_dom "input:match('id', ?)", /tree_id/, true, "Should be a tree_id input element"

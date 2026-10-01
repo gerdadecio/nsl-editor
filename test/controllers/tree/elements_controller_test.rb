@@ -24,11 +24,9 @@ require "test_helper"
 # an excluded taxon, or an invalid distribution value) must short-circuit
 # the whole action: render the error view with 422, and leave any pending
 # comment change unapplied - see app/models/concerns/tree/element/profile.rb.
-class TreeElementsControllerTest < ActionController::TestCase
-  tests Tree::ElementsController
-
+class TreeElementsControllerTest < ActionDispatch::IntegrationTest
   def valid_session
-    { username: "fred", user_full_name: "Fred Jones", groups: ["edit", "treebuilder"] }
+    { username: "fred", full_name: "Fred Jones", groups: ["edit", "treebuilder"] }
   end
 
   test "distribution error on an excluded taxon renders the error view and skips the comment update" do
@@ -36,31 +34,29 @@ class TreeElementsControllerTest < ActionController::TestCase
     trel.update_column(:excluded, true)
     assert_nil(trel.comment_value, "Expect no comment to start this test")
 
-    @request.headers["Accept"] = "application/javascript"
-    patch(
-      :update_profile,
-      params: {
-        id: trel.id,
-        tree_element: {
-          distribution_value: "WA, NSW",
-          comment_value: "should not be applied",
+    sign_in_as_fake_user(**valid_session) do
+      patch tree_element_path(trel),
+        params: {
+          tree_element: {
+            distribution_value: "WA, NSW",
+            comment_value: "should not be applied",
+          },
         },
-      },
-      session: valid_session,
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
 
     assert_response :unprocessable_content
     assert_template "update_profile_error"
     assert_match(/Distribution update error:.*excluded taxa/i, assigns(:message))
     assert_nil(
       assigns(:comment_message),
-      "Comment should never have been processed",
+      "Comment should never have been processed"
     )
 
     te_unchanged = Tree::Element.find(trel.id)
     assert_nil(
       te_unchanged.comment_value,
-      "Expected comment to be unchanged when the distribution update errors",
+      "Expected comment to be unchanged when the distribution update errors"
     )
   end
 
@@ -68,18 +64,16 @@ class TreeElementsControllerTest < ActionController::TestCase
     trel = tree_elements(:red_gum_in_taxonomy)
     assert_nil(trel.profile, "Expect no profile to start this test")
 
-    @request.headers["Accept"] = "application/javascript"
-    patch(
-      :update_profile,
-      params: {
-        id: trel.id,
-        tree_element: {
-          distribution_value: "NSW, WA",
-          comment_value: "a new comment",
+    sign_in_as_fake_user(**valid_session) do
+      patch tree_element_path(trel),
+        params: {
+          tree_element: {
+            distribution_value: "NSW, WA",
+            comment_value: "a new comment",
+          },
         },
-      },
-      session: valid_session,
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
 
     assert_response :success
     assert_template "update_profile"

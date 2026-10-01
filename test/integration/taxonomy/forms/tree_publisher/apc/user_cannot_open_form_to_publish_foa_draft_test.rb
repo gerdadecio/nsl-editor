@@ -27,29 +27,27 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubAPCUserCannotOpenFormToPublishFoADraftTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsTreePubAPCUserCannotOpenFormToPublishFoADraftTest < ActionDispatch::IntegrationTest
   test "APC tree publisher user cannot open form to publish FOA draft" do
     user = users(:apc_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
-    get(
-      :form_to_publish,
-      params: {},
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: foa_draft,
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      get tree_versions_form_to_publish_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree publisher should not be able to open form to publish FOA draft"
     assert_match(
       /Access Denied\! Please contact the admin for proper permissions/,
       response.body,
-      "Expecting Access Denied message",
+      "Expecting Access Denied message"
     )
   end
 end

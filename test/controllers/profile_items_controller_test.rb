@@ -18,36 +18,59 @@
 #
 require "test_helper"
 
-class ProfileItemsControllerTest < ActionController::TestCase
+class ProfileItemsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @profile_item = profile_item(:ecology_pi)
     @user_product_role = user_product_roles(:user_one_foa_draft_profile_editor)
-    @session = { username: "uone", user_full_name: "Fred Jones", groups: ["edit", "foa"] }
   end
 
   test "should destroy profile item and set message" do
     assert_difference("Profile::ProfileItem.count", -1) do
-      delete :destroy, params: { id: @profile_item.id }, session: @session, xhr: true
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "Fred Jones",
+        groups: ["edit", "foa"]
+      ) do
+        delete profile_item_path(@profile_item), xhr: true
+      end
     end
     assert_response :success
     assert_equal "Deleted profile item.", assigns(:message)
   end
 
   test "should set instance variables" do
-    delete :destroy, params: { id: @profile_item.id }, session: @session, xhr: true
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      delete profile_item_path(@profile_item), xhr: true
+    end
     assert_equal @profile_item, assigns(:profile_item)
     assert_equal @profile_item.product_item_config, assigns(:product_item_config)
     assert_equal @profile_item.instance_id, assigns(:instance_id)
   end
 
   test "should set product item config" do
-    delete :destroy, params: { id: @profile_item.id }, session: @session, xhr: true
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      delete profile_item_path(@profile_item), xhr: true
+    end
     assert_equal @profile_item.product_item_config, assigns(:product_item_config)
   end
 
   test "should handle error when destroy fails" do
     Profile::ProfileItem.stub_any_instance(:destroy, false) do
-      delete :destroy, params: { id: @profile_item.id }, session: @session, xhr: true
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "Fred Jones",
+        groups: ["edit", "foa"]
+      ) do
+        delete profile_item_path(@profile_item), xhr: true
+      end
       assert_equal @profile_item.destroy, false
       assert_equal "Error deleting profile item: Not saved: #{@profile_item.errors.full_messages.to_sentence}", assigns(:message)
       assert_response :unprocessable_content
@@ -56,7 +79,13 @@ class ProfileItemsControllerTest < ActionController::TestCase
   end
 
   test "#index to set instance variables" do
-    get :index, params: { instance_id: @profile_item.instance_id }, session: @session, xhr: true
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      get profile_items_path, params: { instance_id: @profile_item.instance_id }, xhr: true
+    end
     assert_equal @profile_item.instance, assigns(:instance)
   end
 end

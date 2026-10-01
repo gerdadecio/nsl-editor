@@ -24,10 +24,10 @@ class RefARTA4AuthNoIdWValStringWithTrailingWhitespace < ActiveSupport::TestCase
     author = authors(:chaplin)
     result = Reference::AsResolvedTypeahead::ForAuthor.new(
       "",
-      "#{author.name} ",
+      "#{author.name} "
     )
     assert_equal author.id,
-      result.value,
-      "Should get a matching id for the author"
+                 result.value,
+                 "Should get a matching id for the author"
   end
 end

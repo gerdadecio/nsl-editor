@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class BatchesControllerTest < ActionController::TestCase
+class BatchesControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

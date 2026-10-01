@@ -24,8 +24,8 @@ class SearchOnReferenceCommentsBySimpleTest < ActiveSupport::TestCase
   test "search on reference comments by simple" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "comments-by: greg",
-        current_user: build_edit_user)
+           query_string: "comments-by: greg",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end

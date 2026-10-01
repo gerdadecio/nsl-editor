@@ -24,10 +24,10 @@ class AuthorCannotLoseAbbrevIfNamesSanctionAuthorTest < ActiveSupport::TestCase
     author = authors(:has_sanctioned_one_name_that_is_all)
     assert author.valid?, "Author should start out valid"
     assert_not author.sanctioned_names.empty?,
-      "Author should have at least one sanctioned name attached"
+               "Author should have at least one sanctioned name attached"
     assert author.abbrev.present?, "Author should start with an abbreviation."
     author.abbrev = ""
     assert_not author.valid?,
-      "Author sanctioning names should not be valid without an abbrev"
+               "Author sanctioning names should not be valid without an abbrev"
   end
 end

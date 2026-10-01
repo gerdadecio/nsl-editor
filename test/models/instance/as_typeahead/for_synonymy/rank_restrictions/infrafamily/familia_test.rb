@@ -23,7 +23,7 @@ class TypeaheadForSynonymyFamiliaTest < ActiveSupport::TestCase
   def setup
     @ta = Instance::AsTypeahead::ForSynonymy.new(
       "*",
-      names(:a_family).id,
+      names(:a_family).id
     )
   end
 
@@ -65,7 +65,7 @@ class TypeaheadForSynonymyFamiliaTest < ActiveSupport::TestCase
       escape_s = Regexp.escape(rank_string)
       assert(
         @rank_names.none? { |e| e.match(/\A#{escape_s}\z/) },
-        "Expect no #{rank_string} to be suggested",
+        "Expect no #{rank_string} to be suggested"
       )
     end
   end
@@ -80,7 +80,7 @@ class TypeaheadForSynonymyFamiliaTest < ActiveSupport::TestCase
       escape_s = Regexp.escape(rank_string)
       assert(
         @rank_names.select { |e| e.match(/\A#{escape_s}\z/) }.size >= 1,
-        "Expect one #{rank_string} to be suggested",
+        "Expect one #{rank_string} to be suggested"
       )
     end
   end

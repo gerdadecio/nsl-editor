@@ -23,7 +23,7 @@ class NameAsServicesDeleteSuccessTest < ActiveSupport::TestCase
   setup do
     stub_request(
       :delete,
-      "#{action}?apiKey=test-api-key&reason=#{reason}",
+      "#{action}?apiKey=test-api-key&reason=#{reason}"
     )
       .with(headers: headers)
       .to_return(status: 200, body: { ok: true }.to_json, headers: {})
@@ -50,6 +50,6 @@ class NameAsServicesDeleteSuccessTest < ActiveSupport::TestCase
     name_id = names(:name_to_delete).id
     name = Name::AsServices.find(name_id)
     assert name.delete_with_reason("200 this is the reason....."),
-      "Should be true"
+           "Should be true"
   end
 end

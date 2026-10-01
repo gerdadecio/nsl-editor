@@ -22,28 +22,24 @@ require "test_helper"
 # fragment to a cultivar's Parent field and a cultivar hybrid's Second
 # parent field, both on stimulus-autocomplete, and still offers json for
 # parity with the other suggestion actions.
-class NameCultivarParentSuggestionsForEditorTest < ActionController::TestCase
-  tests NamesController
-
+class NameCultivarParentSuggestionsForEditorTest < ActionDispatch::IntegrationTest
   def get_suggestions(term, format: :html)
-    get(
-      :cultivar_parent_suggestions,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_cultivar_parent_suggestions_path(
         rank_id: name_ranks(:unranked).id,
         term: term,
-        format: format,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        format: format
+      )
+    end
   end
 
   def assert_select_in_body(*args, &block)
     assert_select(
-      Nokogiri::HTML::DocumentFragment.parse(@response.body),
+      Nokogiri::HTML::DocumentFragment.parse(response.body),
       *args,
       &block
     )
@@ -55,7 +51,7 @@ class NameCultivarParentSuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{names(:a_genus).id}']",
-      true,
+      true
     )
   end
 
@@ -73,14 +69,14 @@ class NameCultivarParentSuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-      text: "No matches"
+                          text: "No matches"
   end
 
   test "should still answer json" do
     get_suggestions("a_gen", format: :json)
 
     assert_response :success
-    suggestions = JSON.parse(@response.body)
+    suggestions = JSON.parse(response.body)
     assert_includes suggestions.map { |s| s["id"] }, names(:a_genus).id
   end
 end

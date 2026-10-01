@@ -30,7 +30,7 @@ class SearchOnNameNameWithPrintDirTest < ActiveSupport::TestCase
       query_string:
             "name: angophora print:",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     error = assert_raises(RuntimeError) do
       Search::Base.new(params)

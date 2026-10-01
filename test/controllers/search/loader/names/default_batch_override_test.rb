@@ -24,41 +24,36 @@ require "test_helper"
 # both being appended to the query string and AND-ed together, so the
 # default silently won. "Any batch" must mean any batch, regardless of
 # whether a default batch is set.
-class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionController::TestCase
-  tests SearchController
+class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionDispatch::IntegrationTest
 
   test "any batch target finds a record outside the default batch" do
     # Hardenbergia violacea lives in "Batch One" (see test/fixtures/loader/batch.yml
     # and test/fixtures/loader_names.yml). Setting "Batch Two" as the default
     # batch means a plain "loader names" search would miss it entirely - the
     # any-batch target must find it anyway.
-    get(
-      :search,
-      params: { query_target: "loader names (any batch)", query_string: "Hardenbergia violacea" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:login, :"batch-loader"],
-        default_loader_batch_name: "Batch Two",
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:login, :"batch-loader"],
+      extra_session: { default_loader_batch_name: "Batch Two" }
+    ) do
+      get search_path, params: { query_target: "loader names (any batch)", query_string: "Hardenbergia violacea" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /\b1 record*\b/,
-      "Any-batch target should find Hardenbergia violacea even though the default batch is 'Batch Two'"
+                  /\b1 record*\b/,
+                  "Any-batch target should find Hardenbergia violacea even though the default batch is 'Batch Two'"
   end
 
   test "plain loader names target, for contrast, is restricted to the default batch" do
-    get(
-      :search,
-      params: { query_target: "loader names", query_string: "Hardenbergia violacea" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:login, :"batch-loader"],
-        default_loader_batch_name: "Batch Two",
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:login, :"batch-loader"],
+      extra_session: { default_loader_batch_name: "Batch Two" }
+    ) do
+      get search_path, params: { query_target: "loader names", query_string: "Hardenbergia violacea" }
+    end
     assert_response :success
     # Search::Base#empty is set once to false in set_defaults and never
     # reassigned - it does NOT mean "zero results", so it can't be used
@@ -68,8 +63,8 @@ class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionController::Test
     # query's actual row count instead, the same value the view would use
     # to render "N records" when there is at least one.
     assert_equal 0,
-      assigns(:search).executed_query.count,
-      "Plain 'loader names' target should be restricted to the default batch " \
-        "'Batch Two' and so should NOT find Hardenbergia violacea, which lives in 'Batch One'"
+                 assigns(:search).executed_query.count,
+                 "Plain 'loader names' target should be restricted to the default batch " \
+                   "'Batch Two' and so should NOT find Hardenbergia violacea, which lives in 'Batch One'"
   end
 end

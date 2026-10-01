@@ -19,23 +19,25 @@
 require "test_helper"
 
 # Single controller test.
-class NameShowDetailsTabForEditor < ActionController::TestCase
-  tests NamesController
+class NameShowDetailsTabForEditor < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
   test "should show name to editor" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @name, tab: "tab_details" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:edit],
-      },
-    )
+    # NOTE: pre-existing anomaly, preserved as-is: groups: [:edit] uses a
+    # symbol, but SessionUser#edit? checks groups.include?("edit") (a
+    # string), so this never actually granted edit permission. Doesn't
+    # change this test's outcome since the default tab doesn't require
+    # edit access.
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:edit]
+    ) do
+      get name_tab_path(id: @name, tab: "tab_details"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
   end
 end

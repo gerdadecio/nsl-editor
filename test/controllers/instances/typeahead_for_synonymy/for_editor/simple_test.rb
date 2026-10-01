@@ -19,20 +19,16 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesTypeaheadForSynonymyForEditorTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesTypeaheadForSynonymyForEditorTest < ActionDispatch::IntegrationTest
   test "editor should be able to typehead for synonymy instance" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :typeahead_for_synonymy,
-      params: { term: "abc", name_id: names(:a_species).id },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get typeahead_for_synonymy_path(term: "abc", name_id: names(:a_species).id),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
   end
 end

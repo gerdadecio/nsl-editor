@@ -25,9 +25,9 @@ class SearchOnNameAssertionDuplicateIsNotTest < ActiveSupport::TestCase
     search = Search::Base.new(ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "is-not-a-duplicate:",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     ))
     assert_not search.executed_query.results.empty?,
-      "Should find non-duplicate name."
+               "Should find non-duplicate name."
   end
 end

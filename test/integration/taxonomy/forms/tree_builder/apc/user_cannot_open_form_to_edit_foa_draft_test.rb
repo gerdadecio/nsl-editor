@@ -27,24 +27,22 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreeBuilderAPCUserCannotOpenEditFormToEdFoADraftTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsTreeBuilderAPCUserCannotOpenEditFormToEdFoADraftTest < ActionDispatch::IntegrationTest
   test "APC tree builder user cannot open edit draft form for foa draft" do
     user = users(:apc_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
-    get(
-      :edit_draft,
-      params: {},
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: foa_draft,
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      get tree_versions_edit_draft_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree builder should not be able to open form to edit FOA draft"
   end
 end

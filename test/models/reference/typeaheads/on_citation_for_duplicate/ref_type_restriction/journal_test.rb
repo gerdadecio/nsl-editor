@@ -24,7 +24,7 @@ class TAOnCitnForDuplicateRefTypeRestrictionJournal < ActiveSupport::TestCase
     curr_ref = references(:journal_with_papers)
     typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "o",
-      curr_ref.id,
+      curr_ref.id
     )
     assert_not typeahead.results.empty?, "Should be at least one result"
     journals = 0
@@ -41,8 +41,8 @@ class TAOnCitnForDuplicateRefTypeRestrictionJournal < ActiveSupport::TestCase
       end
     end
     assert_equal 0,
-      others,
-      "Only journals and unknown type references expected."
+                 others,
+                 "Only journals and unknown type references expected."
     assert journals.positive?, "Expecting at least 1 journal."
     assert unknowns.positive?, "Expecting at least 1 unknown ref type."
   end

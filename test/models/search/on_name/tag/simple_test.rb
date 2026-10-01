@@ -24,9 +24,9 @@ class SearchOneNameTagSimpleTest < ActiveSupport::TestCase
   test "search on name tag" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "tag: acra",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "tag: acra",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end
@@ -34,9 +34,9 @@ class SearchOneNameTagSimpleTest < ActiveSupport::TestCase
   test "search on name tag is case insensitive" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "tag: ACRA",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "tag: ACRA",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end
@@ -44,9 +44,9 @@ class SearchOneNameTagSimpleTest < ActiveSupport::TestCase
   test "search on name tag with no match returns nothing" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "tag: no-such-tag",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "tag: no-such-tag",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?, "No results expected."
   end
@@ -54,9 +54,9 @@ class SearchOneNameTagSimpleTest < ActiveSupport::TestCase
   test "has-tags finds tagged names" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "has-tags:",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "has-tags:",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end
@@ -64,9 +64,9 @@ class SearchOneNameTagSimpleTest < ActiveSupport::TestCase
   test "has-no-tags finds untagged names" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "has-no-tags:",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "has-no-tags:",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end
@@ -74,9 +74,9 @@ class SearchOneNameTagSimpleTest < ActiveSupport::TestCase
   test "empty tag directive finds untagged names" do
     params =  ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "tag:",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "tag:",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end

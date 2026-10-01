@@ -32,7 +32,7 @@ class Instance::DisplayableTest < ActiveSupport::TestCase
     instance = instances(:has_no_page_bhl_url_verbatim_name_string)
     assert instance.page.blank?, "fixture should have no page"
     assert instance.name.name_status.name_for_instance_display.present?,
-      "fixture status should render display text"
+           "fixture status should render display text"
     assert instance.needs_a_comma?
   end
 
@@ -40,7 +40,7 @@ class Instance::DisplayableTest < ActiveSupport::TestCase
     instance = Instance.new(
       name: names(:a_species),
       reference: references(:dummy_reference_1),
-      instance_type: instance_types(:comb_nov),
+      instance_type: instance_types(:comb_nov)
     )
     assert instance.name.name_status.legitimate?, "fixture status should be legitimate"
     assert instance.page.blank?
@@ -51,7 +51,7 @@ class Instance::DisplayableTest < ActiveSupport::TestCase
     instance = Instance.new(
       name: names(:argyle_apple),
       reference: references(:dummy_reference_1),
-      instance_type: instance_types(:comb_nov),
+      instance_type: instance_types(:comb_nov)
     )
     assert instance.name.name_status.na?, "fixture status should be n/a"
     assert instance.page.blank?

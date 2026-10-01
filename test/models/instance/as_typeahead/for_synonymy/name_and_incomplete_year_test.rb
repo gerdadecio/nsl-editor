@@ -24,13 +24,13 @@ class ForNameAndReferenceYearTest < ActiveSupport::TestCase
   def setup
     @typeahead = Instance::AsTypeahead::ForSynonymy.new(
       "angophora costata 178",
-      names(:a_species).id,
+      names(:a_species).id
     )
   end
 
   test "name and incomplete year search" do
     assert @typeahead.results.instance_of?(Array), "Results should be an array."
     assert @typeahead.results.size == 0,
-      "Incomplete year should not be ignored and no records should be returned."
+           "Incomplete year should not be ignored and no records should be returned."
   end
 end

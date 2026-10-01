@@ -24,11 +24,11 @@ class SearchOneNameCommentsExactAlt2SimpleTest < ActiveSupport::TestCase
   test "search on name comments exact alt 2 simple" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "exact-comment: *",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "exact-comment: *",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Results expected for exact-comment."
+               "Results expected for exact-comment."
   end
 end

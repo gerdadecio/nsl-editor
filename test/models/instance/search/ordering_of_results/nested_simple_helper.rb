@@ -25,7 +25,7 @@ def test1
   assert_with_args(
     @results,
     4,
-    "zzzz99902 - Casuarina inophloia F.Muell. & F.M.Bailey",
+    "zzzz99902 - Casuarina inophloia F.Muell. & F.M.Bailey"
   )
 end
 
@@ -33,14 +33,14 @@ def test2
   assert_with_args(
     @results,
     5,
-    "zzzz99901 - Casuarina inophloia F.Muell. & F.M.Bailey",
+    "zzzz99901 - Casuarina inophloia F.Muell. & F.M.Bailey"
   )
   assert_with_args(@results, 6, "zzzz99904 - a genus with one instance")
   assert_with_args(@results, 7, "zzzz99905 - a genus with two instances")
   assert_with_args(
     @results,
     8,
-    "zzzz99903 - Casuarina inophloia F.Muell. & F.M.Bailey",
+    "zzzz99903 - Casuarina inophloia F.Muell. & F.M.Bailey"
   )
 end
 
@@ -50,7 +50,7 @@ def test3
   assert_with_args(
     @results,
     11,
-    "xx 15 - Angophora costata (Gaertn.) Britten",
+    "xx 15 - Angophora costata (Gaertn.) Britten"
   )
   assert_with_args(@results, 12, "xx,20,1000 - Metrosideros costata Gaertn.")
   assert_with_args(@results, 13, "146 - Angophora costata (Gaertn.) Britten")
@@ -72,17 +72,17 @@ def test5
   assert_with_args(
     @results,
     24,
-    "zzzz99901 - a an infrafamily with an instance",
+    "zzzz99901 - a an infrafamily with an instance"
   )
   assert_with_args(
     @results,
     25,
-    "zzzz99901 - a an infragenus with an instance",
+    "zzzz99901 - a an infragenus with an instance"
   )
   assert_with_args(
     @results,
     26,
-    "zzzz99901 - a an infraspecies with an instance",
+    "zzzz99901 - a an infraspecies with an instance"
   )
   assert_with_args(@results, 27, "zzzz99901 - a an na with an instance")
 end
@@ -130,22 +130,22 @@ def test10
   assert_with_args(
     @results,
     55,
-    "57-58 - dummy_name_2",
+    "57-58 - dummy_name_2"
   )
   assert_with_args(
     @results,
     56,
-    "57 - dummy_name_3",
+    "57 - dummy_name_3"
   )
   assert_with_args(
     @results,
     57,
-    "75, t. 101 - Magnoliophyta Cronquist, Takht. & W.Zimm. ex Reveal a_division",
+    "75, t. 101 - Magnoliophyta Cronquist, Takht. & W.Zimm. ex Reveal a_division"
   )
   assert_with_args(
     @results,
     58,
-    "75, t. 102 - Magnoliopsida Brongn. a_classis",
+    "75, t. 102 - Magnoliopsida Brongn. a_classis"
   )
   assert_with_args(@results, 59, "76 - Metrosideros costata Gaertn.")
   assert_with_args(@results, 60, "9999999999 - orth var for tax nov")

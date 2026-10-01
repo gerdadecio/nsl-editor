@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchAuditForEditorListByDateCreatedTest < ActionController::TestCase
-  tests SearchController
+class SearchAuditForEditorListByDateCreatedTest < ActionDispatch::IntegrationTest
 
   test "search for records created on a specific date" do
     skip "date arithmetic is test not working"
-    get(
-      :search,
-      params: { query_target: "review", query_string: "date-created: 2015-11-17" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "review", query_string: "date-created: 2015-11-17" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /[0-9][0-9] records\b/,
-      "Should find some records"
+                  /[0-9][0-9] records\b/,
+                  "Should find some records"
   end
 end

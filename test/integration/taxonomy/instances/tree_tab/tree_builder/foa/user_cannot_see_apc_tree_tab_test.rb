@@ -19,25 +19,24 @@
 require "test_helper"
 
 # Single search controller test.
-class TaxoInstanceTreeBuilderFoaCannotSeeAPCTreeTab < ActionController::TestCase
-  tests InstancesController
-
+class TaxoInstanceTreeBuilderFoaCannotSeeAPCTreeTab < ActionDispatch::IntegrationTest
   test "foa tree builder cannot see instance tree tab for APC version" do
     user = users(:foa_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     instance = instances(:triodia_in_brassard)
-    get(
-      "tab",
-      params: { id: "#{instance.id}", tab: "tab_classification", "row-type": "instance_record" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: apc_draft,
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      get instance_tab_path(id: instance.id, tab: "tab_classification"),
+        params: { "row-type" => "instance_record" },
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "Tab request should be successful"
     assert_no_match 'data-tab-name="tab_classification"', response.body, "Tree tab should not appear in nav for unauthorized user"
     assert_no_match "<form", response.body, "Tab should not contain a form"

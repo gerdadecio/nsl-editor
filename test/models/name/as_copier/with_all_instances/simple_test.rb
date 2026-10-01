@@ -82,7 +82,7 @@ class NameAsCopierWithAllInstancesSimpleTest < ActiveSupport::TestCase
     @master_instances_before = @master_name.instances.size
     @copied_name = @master_name.copy_with_all_instances(
       @dummy_name_element,
-      @dummy_username,
+      @dummy_username
     )
   end
 
@@ -96,7 +96,7 @@ class NameAsCopierWithAllInstancesSimpleTest < ActiveSupport::TestCase
     assert_equal(
       @master_instances_before,
       @copied_instances_after,
-      "New name should have instances.",
+      "New name should have instances."
     )
   end
 

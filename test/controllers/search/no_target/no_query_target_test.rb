@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchControllerNoQueryTargetTest < ActionController::TestCase
-  tests SearchController
+class SearchControllerNoQueryTargetTest < ActionDispatch::IntegrationTest
 
   test "search with no query target provided" do
-    get(
-      :search,
-      params: { query_string: "*" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_string: "*" }
+    end
     assert_response :success
     assert_match "Search needs a target. Do you have the right permissions?",
-      @response.body,
-      "Expected an error message referring to the missing search query target"
+                 response.body,
+                 "Expected an error message referring to the missing search query target"
   end
 end

@@ -25,7 +25,7 @@ class NameSuggestionsParentOrderingForSpeciesTest < ActiveSupport::TestCase
     @typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.species.id,
+      rank_id: NameRank.species.id
     )
     check_order
   end
@@ -53,8 +53,8 @@ class NameSuggestionsParentOrderingForSpeciesTest < ActiveSupport::TestCase
       @first = false
     else
       assert(rank.sort_order >= @previous_rank_sort_order,
-      %(Rank "#{rank.name}" is higher than previously ) +
-        "listed rank '#{@previous_rank.name}'")
+             %(Rank "#{rank.name}" is higher than previously ) +
+               "listed rank '#{@previous_rank.name}'")
     end
     @previous_rank_sort_order = rank.sort_order
     @previous_rank = rank

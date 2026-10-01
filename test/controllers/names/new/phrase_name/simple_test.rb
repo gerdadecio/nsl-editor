@@ -20,24 +20,18 @@ require "test_helper"
 
 # Single controller test.
 #  Started GET "/names/new?category=phrase&random_id=3617584730&tabIndex=107"
-class NamesNewPhraseNameSimpleTest < ActionController::TestCase
-  tests NamesController
-
+class NamesNewPhraseNameSimpleTest < ActionDispatch::IntegrationTest
   test "editor should be able to start a new phrase name" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new,
-      params: {
-        category: "phrase",
-        random_id: "123445",
-        tabIndex: "107",
-      },
-      session: {},
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get new_name_with_category_and_random_id_path(category: "phrase", random_id: "123445"),
+        params: { tabIndex: "107" },
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success, "Cannot edit new phrase name in details tab"
     check_status
   end

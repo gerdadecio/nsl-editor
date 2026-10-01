@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single session test.
-class SessionsSigninRouteTest < ActionController::TestCase
-  tests SessionsController
+class SessionsSigninRouteTest < ActionDispatch::IntegrationTest
   test "should route to a signin a new session" do
     assert_routing "/sign_in", controller: "sessions", action: "new"
   end

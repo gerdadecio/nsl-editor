@@ -19,28 +19,25 @@
 require "test_helper"
 
 # Single controller test.
-class NameTagNamesCreateByReaderForbiddenTest < ActionController::TestCase
-  tests NameTagNamesController
-
+class NameTagNamesCreateByReaderForbiddenTest < ActionDispatch::IntegrationTest
   test "reader should not be able to create name tag name" do
     name = names(:a_species)
     name_tag = name_tags(:acra)
-    @request.headers["Accept"] = "application/javascript"
     assert_no_difference("NameTagName.count") do
-      post(
-        :create,
-        params: {
-          name_tag_name: {
-            "name_id" => name.id,
-            "tag_id" => name_tag.id,
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: []
+      ) do
+        post name_tag_names_path,
+          params: {
+            name_tag_name: {
+              "name_id" => name.id,
+              "tag_id" => name_tag.id,
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: [],
-        },
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response :forbidden
   end

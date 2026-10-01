@@ -28,7 +28,7 @@ def suggestions_should_include(suggestions, given_rank_name, expected_rank_name)
         0
       end
     end.sum.positive?,
-    "#{given_rank_name} should suggest #{expected_rank_name}",
+    "#{given_rank_name} should suggest #{expected_rank_name}"
   )
 end
 
@@ -41,7 +41,7 @@ def suggestions_should_not_include(suggestions,
       rank = h[:value].split("|")[1].strip
       /\A#{Regexp.quote(unexpected_rank_name)}\z/.match?(rank) ? 1 : 0
     end.sum.positive?,
-    "#{given_rank_name} should not suggest #{unexpected_rank_name}",
+    "#{given_rank_name} should not suggest #{unexpected_rank_name}"
   )
 end
 
@@ -76,7 +76,7 @@ def suggestion_rank_should_be_at_or_below(suggestion,
   rank = rank_from_suggestion(suggestion)
   assert(
     rank.sort_order >= upper_rank.sort_order,
-    "#{rank.name} is higher than #{upper_rank.name}",
+    "#{rank.name} is higher than #{upper_rank.name}"
   )
 end
 

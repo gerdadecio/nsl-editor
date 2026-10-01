@@ -19,27 +19,24 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:a_book)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "should show only details tab link if reader requests details tab" do
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_show_1" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "li.active a#reference-edit-show-1-tab",
-      /Details/,
-      "Does not show 'Details' tab link."
+                  /Details/,
+                  "Does not show 'Details' tab link."
     asserts
   end
 
@@ -53,17 +50,17 @@ class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
     assert_select(
       "a#reference-edit-tab",
       false,
-      "Should not show 'Edit' tab.",
+      "Should not show 'Edit' tab."
     )
     assert_select(
       "a#reference-edit-1-tab",
       false,
-      "Shows 'Edit.' tab link.",
+      "Shows 'Edit.' tab link."
     )
     assert_select(
       "a#reference-edit-2-tab",
       false,
-      "Shows 'Edit..' tab link.",
+      "Shows 'Edit..' tab link."
     )
   end
 
@@ -71,17 +68,17 @@ class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
     assert_select(
       "a#reference-edit-3-tab",
       false,
-      "Shows 'Edit...' tab link.",
+      "Shows 'Edit...' tab link."
     )
     assert_select(
       "a#reference-comments-tab",
       false,
-      "Shows 'Comments' tab link.",
+      "Shows 'Comments' tab link."
     )
     assert_select(
       "a#reference-new-instance-tab",
       false,
-      "Shows 'New instance' tab link.",
+      "Shows 'New instance' tab link."
     )
   end
 
@@ -89,7 +86,7 @@ class ReferenceReaderShowOnlyDetailsTabLinkTest < ActionController::TestCase
     assert_select(
       "a#tab-heading",
       /A Book/,
-      "Should have tab heading showing 'A Book'.",
+      "Should have tab heading showing 'A Book'."
     )
   end
 end

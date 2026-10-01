@@ -19,29 +19,26 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchRefsDefinedQRefsNamesFullSynZeroTest < ActionController::TestCase
-  tests SearchController
+class SearchRefsDefinedQRefsNamesFullSynZeroTest < ActionDispatch::IntegrationTest
   setup do
     @ref = references(:bucket_reference_for_default_instances)
   end
 
   test "count references names full synonymy" do
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "References, names, full synonymy",
         query_string: "count b*",
         query_submit: "Search",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+      }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /[0-9][0-9] records\b/,
-      "Should find some records"
+                  /[0-9][0-9] records\b/,
+                  "Should find some records"
   end
 end

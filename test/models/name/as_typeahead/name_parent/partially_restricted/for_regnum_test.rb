@@ -27,16 +27,16 @@ class ForRegnumPartiallyRestrictedTest < ActiveSupport::TestCase
 
   test "name parent suggestion for regnum" do
     assert_not ShardConfig.name_parent_rank_restriction?,
-      "Name parent rank restriction should be off for this test."
+               "Name parent rank restriction should be off for this test."
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "Regnum").id,
+      rank_id: NameRank.find_by(name: "Regnum").id
     )
     suggestions_should_only_include(
       typeahead.suggestions,
       "Regnum",
-      [],
+      []
     )
   end
 end

@@ -19,11 +19,10 @@
 require "test_helper"
 
 # Single controller test.
-class HelpRoutesNameRulesTest < ActionController::TestCase
-  tests HelpController
+class HelpRoutesNameRulesTest < ActionDispatch::IntegrationTest
   test "help on name rules should route ok" do
     assert_routing "/help/name/rules",
-      controller: "help",
-      action: "name_rules"
+                   controller: "help",
+                   action: "name_rules"
   end
 end

@@ -24,8 +24,7 @@ require "test_helper"
 # note on the instance notes tab. It renders
 # AuditHelper#updated_by_api_and_when, which adds a "Bulk changed" audit
 # line when instance_note.api_at is set.
-class InstanceTabsNotesShowsBulkChangedWhenApiAtPresentTest < ActionController::TestCase
-  tests InstancesController
+class InstanceTabsNotesShowsBulkChangedWhenApiAtPresentTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:triodia_in_brassard)
     @instance_note = instance_notes(:one)
@@ -64,21 +63,19 @@ class InstanceTabsNotesShowsBulkChangedWhenApiAtPresentTest < ActionController::
   private
 
   def show_notes_tab
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @instance.id, tab: "tab_edit_notes" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get instance_tab_path(id: @instance.id, tab: "tab_edit_notes"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response(:success)
     assert_select(
       "form#edit_instance_note_#{@instance_note.id}",
       1,
-      "Needs the edit form for the existing note.",
+      "Needs the edit form for the existing note."
     )
   end
 end

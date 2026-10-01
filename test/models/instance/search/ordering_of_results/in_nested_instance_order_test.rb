@@ -38,7 +38,7 @@ class InNestedInstanceOrderTest < ActiveSupport::TestCase
     assert(
       /\A#{Regexp.escape(expected)}\z/.match(results[index].instance_type.name),
       "Wrong at index #{index}; should be: #{expected}
-      NOT #{results[index].instance_type.name}",
+      NOT #{results[index].instance_type.name}"
     )
   end
 

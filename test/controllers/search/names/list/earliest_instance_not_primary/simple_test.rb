@@ -19,25 +19,22 @@
 require "test_helper"
 
 # Single search controller test.
-class NamesSearchDefinedListEarliestInstNotPrimary < ActionController::TestCase
-  tests SearchController
+class NamesSearchDefinedListEarliestInstNotPrimary < ActionDispatch::IntegrationTest
 
   test "search for earliest instance not primary" do
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "Names",
         query_string: "earliest-instance-not-primary:",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+      }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /[0-9][0-9]* names of/,
-      "Should find some names"
+                  /[0-9][0-9]* names of/,
+                  "Should find some names"
   end
 end

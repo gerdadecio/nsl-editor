@@ -40,33 +40,30 @@ require "test_helper"
 # has 36 fixture instances at time of writing, but that's incidental to
 # what this test protects) - what matters is that it's well over the
 # limit:10 that used to cap it.
-class SrchRefsDefQueriesRefIdWInstListHasInstWLimit < ActionController::TestCase
-  tests SearchController
+class SrchRefsDefQueriesRefIdWInstListHasInstWLimit < ActionDispatch::IntegrationTest
 
   test "limit: no longer truncates a single reference's instance list" do
     ref = references(:bucket_reference_for_default_instances)
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "references",
         query_string: "id: #{ref.id} show-instances: limit:10",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+      }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should still find exactly 1 reference"
+                  /1 record\b/,
+                  "Should still find exactly 1 reference"
     assert_select "tr.instance-within-reference-record" do |elements|
       assert_operator elements.size,
-        :>,
-        10,
-        "Expected more than the old limit:10 cap on the " \
-          "reference's instance rows - got: #{elements.size}"
+                      :>,
+                      10,
+                      "Expected more than the old limit:10 cap on the " \
+                        "reference's instance rows - got: #{elements.size}"
     end
   end
 end

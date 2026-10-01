@@ -19,26 +19,23 @@
 require "test_helper"
 
 # Single search controller test.
-class ReaderSearchContNamesExBaseAuthorIdListTest < ActionController::TestCase
-  tests SearchController
+class ReaderSearchContNamesExBaseAuthorIdListTest < ActionDispatch::IntegrationTest
 
   test "reader can search for a name by ex-base author id" do
     author = authors(:is_a_name_authority_of_every_type)
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "name",
         query_string: "ex-base-author-id: #{author.id}",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+      }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /\b1 name\b/,
-      "Should find name for ex base author ID: #{author.id}"
+                  /\b1 name\b/,
+                  "Should find name for ex base author ID: #{author.id}"
   end
 end

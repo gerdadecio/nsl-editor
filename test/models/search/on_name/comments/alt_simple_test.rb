@@ -24,11 +24,11 @@ class SearchOneNameCommentsAltSimpleTest < ActiveSupport::TestCase
   test "search on name comments alt simple" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "comment: *",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "comment: *",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?,
-      "Results expected for comment search."
+               "Results expected for comment search."
   end
 end

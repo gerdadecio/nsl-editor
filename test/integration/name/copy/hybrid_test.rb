@@ -20,18 +20,11 @@ require "test_helper"
 
 # Exercises the "copy a hybrid name" workflow that the copy form drives:
 # POST names/:id/copy with a new element and two chosen parents.
-class NamesCopyHybridTest < ActionController::TestCase
-  tests NamesController
-
+class NamesCopyHybridTest < ActionDispatch::IntegrationTest
   def setup
     @source = names(:hybrid_formula) # parent: a_species, second_parent: another_species
     @new_first_parent = names(:triodia_basedowii)
     @new_second_parent = names(:crotalaria_distans)
-    @edit_session = {
-      username: "fred",
-      user_full_name: "Fred Jones",
-      groups: ["edit"],
-    }
   end
 
   # What the form's read-only preview field posts: "first parent x second parent".
@@ -40,20 +33,18 @@ class NamesCopyHybridTest < ActionController::TestCase
   end
 
   def post_copy(name_element:, parent_id:, second_parent_id:)
-    post(
-      :copy,
-      params: {
-        name: {
-          "name_element" => name_element,
-          "name_rank_id" => @source.name_rank_id.to_s,
-          "parent_id" => parent_id.to_s,
-          "second_parent_id" => second_parent_id.to_s,
+    sign_in_as_fake_user(groups: ["edit"]) do
+      post name_copy_path(id: @source.id),
+        params: {
+          name: {
+            "name_element" => name_element,
+            "name_rank_id" => @source.name_rank_id.to_s,
+            "parent_id" => parent_id.to_s,
+            "second_parent_id" => second_parent_id.to_s,
+          },
         },
-        format: :js,
-        "id" => @source.id.to_s,
-      },
-      session: @edit_session,
-    )
+        headers: { "Accept" => "text/javascript" }
+    end
   end
 
   # Wraps the callbacks that need the external services.
@@ -72,7 +63,7 @@ class NamesCopyHybridTest < ActionController::TestCase
         post_copy(
           name_element: element,
           parent_id: @new_first_parent.id,
-          second_parent_id: @new_second_parent.id,
+          second_parent_id: @new_second_parent.id
         )
       end
       new_name = Name.find_by(name_element: element)
@@ -91,7 +82,7 @@ class NamesCopyHybridTest < ActionController::TestCase
       post_copy(
         name_element: element,
         parent_id: @new_first_parent.id,
-        second_parent_id: @new_second_parent.id,
+        second_parent_id: @new_second_parent.id
       )
     end
 
@@ -99,7 +90,7 @@ class NamesCopyHybridTest < ActionController::TestCase
 
     assert_not_nil copy, "the copy should keep the previewed name: #{element}"
     assert_equal "Triodia basedowii E.Pritz x Crotalaria distens Benth.",
-      copy.name_element
+                 copy.name_element
   end
 
   test "copying a hybrid name keeping the original's first parent creates a new name" do
@@ -108,7 +99,7 @@ class NamesCopyHybridTest < ActionController::TestCase
         post_copy(
           name_element: preview_for(@source.parent, @new_second_parent),
           parent_id: @source.parent_id,
-          second_parent_id: @new_second_parent.id,
+          second_parent_id: @new_second_parent.id
         )
       end
     end
@@ -120,7 +111,7 @@ class NamesCopyHybridTest < ActionController::TestCase
         post_copy(
           name_element: preview_for(@new_first_parent, @source.second_parent),
           parent_id: @new_first_parent.id,
-          second_parent_id: @source.second_parent_id,
+          second_parent_id: @source.second_parent_id
         )
       end
     end
@@ -131,7 +122,7 @@ class NamesCopyHybridTest < ActionController::TestCase
       post_copy(
         name_element: preview_for(@source.parent, @source.second_parent),
         parent_id: @source.parent_id,
-        second_parent_id: @source.second_parent_id,
+        second_parent_id: @source.second_parent_id
       )
     end
 
@@ -143,7 +134,7 @@ class NamesCopyHybridTest < ActionController::TestCase
       post_copy(
         name_element: preview_for(@new_first_parent, @new_second_parent),
         parent_id: @new_first_parent.id,
-        second_parent_id: "",
+        second_parent_id: ""
       )
     end
 

@@ -24,12 +24,12 @@ class NameAsEdNoAuthIdWPartValidStrMatchMoreThan1Rec < ActiveSupport::TestCase
     author = authors(:dummy_author_1)
     assert_raise(
       RuntimeError,
-      "Should raise exception because multiple matches.",
+      "Should raise exception because multiple matches."
     ) do
       Name::AsResolvedTypeahead::ForAuthor.new(
         "",
         author.abbrev.chop,
-        "SOME FIELD",
+        "SOME FIELD"
       )
     end
   end

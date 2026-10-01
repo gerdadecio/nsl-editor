@@ -35,7 +35,7 @@ class ForAnyRankTest < ActiveSupport::TestCase
         "Subspecies",
         "Species",
         "[infraspecies]"
-      ],
+      ]
     )
   end
 end

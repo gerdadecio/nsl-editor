@@ -19,30 +19,28 @@
 require "test_helper"
 
 # Single search controller test.
-class TaxoInstanceTreeBuilderFoaCannotSeeEditTab < ActionController::TestCase
-  tests InstancesController
-
+class TaxoInstanceTreeBuilderFoaCannotSeeEditTab < ActionDispatch::IntegrationTest
   test "foa tree builder cannot see instance edit tab" do
     user = users(:foa_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
     instance = instances(:triodia_in_brassard)
     assert_routing "/instances/1/tab/tree",
-      controller: "instances",
-      action: "tab",
-      id: "1",
-      tab: "tree"
-    get(
-      "tab",
-      params: { id: "#{instance.id}", tab: "edit_tab" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login", "xedit"],
-        draft: foa_draft,
-      },
-    )
+                   controller: "instances",
+                   action: "tab",
+                   id: "1",
+                   tab: "tree"
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login", "xedit"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      get instance_tab_path(id: instance.id, tab: "edit_tab"),
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "Tree builder should not see Edit tab"
   end
 end

@@ -19,24 +19,22 @@
 require "test_helper"
 
 # Single controller test.
-class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
-  tests InstancesController
+class InstQADontShowCopyTabLinksUnlessConceptTest < ActionDispatch::IntegrationTest
   setup do
     @instance = instances(:britten_created_angophora_costata)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   # would be better to test the controller method
   test "do not show copy tab links unless part of concept record" do
-    get(
-      :show,
-      params: { id: @instance.id, tab: "tab_show_1", "row-type" => "instance" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["qa"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["qa"]
+    ) do
+      get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
+        params: { "row-type" => "instance" },
+        headers: { "Accept" => "application/javascript" }
+    end
     asserts
   end
 
@@ -51,17 +49,17 @@ class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
     assert_select(
       "li.active a#instance-show-tab",
       /Details/,
-      "Should show 'Details' tab link.",
+      "Should show 'Details' tab link."
     )
     assert_select(
       "a#instance-edit-tab",
       false,
-      "Should not show 'Edit' tab link.",
+      "Should not show 'Edit' tab link."
     )
     assert_select(
       "a#instance-edit-notes-tab",
       false,
-      "Should not show 'Notes' tab link.",
+      "Should not show 'Notes' tab link."
     )
   end
 
@@ -69,17 +67,17 @@ class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
     assert_select(
       "a#instance-cite-this-instance-tab",
       false,
-      "Should not show 'Syn' tab link.",
+      "Should not show 'Syn' tab link."
     )
     assert_select(
       "a#unpublished-citation-tab",
       false,
-      "Should not show 'Unpub' tab link.",
+      "Should not show 'Unpub' tab link."
     )
     assert_select(
       "a#instance-apc-placement-tab",
       false,
-      "Should not show 'APC' tab link.",
+      "Should not show 'APC' tab link."
     )
   end
 
@@ -87,13 +85,13 @@ class InstQADontShowCopyTabLinksUnlessConceptTest < ActionController::TestCase
     assert_select(
       "a#instance-comments-tab",
       false,
-      "Should not show 'Adnot' tab link.",
+      "Should not show 'Adnot' tab link."
     )
     assert_select(
       "a#instance-copy-to-new-reference-tab",
       false,
       "Should not show 'Copy' tab link because not part of
-                  concept record.",
+                  concept record."
     )
   end
 end

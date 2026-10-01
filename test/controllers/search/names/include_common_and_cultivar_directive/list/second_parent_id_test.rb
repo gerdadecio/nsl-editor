@@ -19,22 +19,23 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchNamesIncludeCommonAndCultivarDirectiveList2ndParentId < ActionController::TestCase
-  tests SearchController
+class SearchNamesIncludeCommonAndCultivarDirectiveList2ndParentId < ActionDispatch::IntegrationTest
 
   test "search names second parent id with include-common-and-cultivar directive true" do
     name = names(:another_species)
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "name",
         query_string: "second-parent-id: #{name.id} include-common-and-cultivar:true",
-      },
-      session: { username: "fred", user_full_name: "Fred Jones", groups: [] },
-    )
+      }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /7 names\b/,
-      "Should find 7 names, including common/cultivars"
+                  /7 names\b/,
+                  "Should find 7 names, including common/cultivars"
   end
 end

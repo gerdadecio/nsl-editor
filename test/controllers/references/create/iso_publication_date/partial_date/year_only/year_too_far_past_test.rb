@@ -19,36 +19,33 @@
 require "test_helper"
 
 # Single controller test.
-class ReferencesesCreateYearOnlyYearTooFarPastTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesesCreateYearOnlyYearTooFarPastTest < ActionDispatch::IntegrationTest
   test "create reference year only year too far past" do
-    @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Reference.count") do
-      post(
-        :create,
-        params: {
-          reference: {
-            "ref_type_id" => ref_types(:book),
-            "title" => "Some book",
-            "author_id" => authors(:dash),
-            "author_typeahead" => "-",
-            "published" => true,
-            "parent_typeahead" => @parent_typeahead,
-            "ref_author_role_id" => ref_author_roles(:author),
-            "year" => "0999",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+        post references_path,
+          params: {
+            reference: {
+              "ref_type_id" => ref_types(:book).id,
+              "title" => "Some book",
+              "author_id" => authors(:dash).id,
+              "author_typeahead" => "-",
+              "published" => true,
+              "parent_typeahead" => @parent_typeahead,
+              "ref_author_role_id" => ref_author_roles(:author).id,
+              "year" => "0999",
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        },
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
       assert_match(
         /Error: Year must be greater than or equal to 1000/,
         response.body.to_s,
-        "Missing or incorrect error message",
+        "Missing or incorrect error message"
       )
     end
   end

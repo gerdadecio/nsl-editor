@@ -23,7 +23,7 @@ class TypeaheadForSynonymySimpleTest < ActiveSupport::TestCase
   test "instance typeahead for synonymy simple" do
     ta = Instance::AsTypeahead::ForSynonymy.new(
       "angophora",
-      names(:a_species).id,
+      names(:a_species).id
     )
     assert ta.results.size >= 2, "Should be at least 2 synonyms for angophora"
   end

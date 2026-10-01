@@ -19,30 +19,27 @@
 require "test_helper"
 
 # Single controller test.
-class NamesNewRowScientificSimpleTest < ActionController::TestCase
-  tests NamesController
-
+class NamesNewRowScientificSimpleTest < ActionDispatch::IntegrationTest
   test "editor should be able to start a new scientific" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new_row,
-      params: { type: "scientific" },
-      session: {},
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_new_row_path(type: "scientific"),
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success, "Cannot start new row for a scientific name"
     assert_match(
       /search-results-table/,
       response.body.to_s,
-      "Missing expected element",
+      "Missing expected element"
     )
     assert_match(
       /New Scientific Name/,
       response.body.to_s,
-      "Missing expected element",
+      "Missing expected element"
     )
   end
 end

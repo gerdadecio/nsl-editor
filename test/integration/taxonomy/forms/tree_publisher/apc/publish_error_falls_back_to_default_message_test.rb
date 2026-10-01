@@ -21,35 +21,34 @@ require "test_helper"
 # When the publish service returns a non-ok response with no "error" field,
 # the controller should fall back to the default message rather than
 # calling the undefined json_result method or rendering nothing useful.
-class TaxFormsTreePubAPCPublishErrorFallsBackToDefaultMessageTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsTreePubAPCPublishErrorFallsBackToDefaultMessageTest < ActionDispatch::IntegrationTest
   def setup
     stub_request(:put, /http:..localhost:90...nsl.services.api.treeVersion.publish.apiKey=test-api-key.as=apc-tax-publisher/)
       .to_return(status: 200,
-        body: '{"ok":false}',
-        headers: { "Content-Type" => "application/json" })
+                 body: '{"ok":false}',
+                 headers: { "Content-Type" => "application/json" })
   end
 
   test "publish failure with no error field renders the fallback message" do
     user = users(:apc_tax_publisher)
     apc_draft = tree_versions(:apc_draft_version)
-    post(
-      :publish,
-      params: {
-        "version_id" => apc_draft.id,
-        "next_draft_name" => "next draft",
-        "draft_log" => "log entry",
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: apc_draft,
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      post tree_versions_publish_path,
+        params: {
+          "version_id" => apc_draft.id,
+          "next_draft_name" => "next draft",
+          "draft_log" => "log entry",
+        },
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success
     assert_match "Unknown error trying to publish tree", response.body
   end

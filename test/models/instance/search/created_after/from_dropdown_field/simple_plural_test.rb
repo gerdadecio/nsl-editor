@@ -26,12 +26,12 @@ class InstanceSrchCrdAfterFromDropdownSimplePluralTest < ActiveSupport::TestCase
     search = Search::Base
       .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_string: "2 instances-only:",
-                    query_target: "Activity",
-                    current_user: build_edit_user))
+                       query_target: "Activity",
+                       current_user: build_edit_user))
     assert_equal search.executed_query.results.class,
-      Array,
-      "Results should be an Array"
+                 Array,
+                 "Results should be an Array"
     assert search.executed_query.results.size > 20,
-      "Plenty of records expected."
+           "Plenty of records expected."
   end
 end

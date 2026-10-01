@@ -27,11 +27,13 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsUserWithNoRoleCannotReplacePlacementOnFOADraftTest < ActionController::TestCase
-  tests TreesController
-
-  # r6editor Started PATCH "/nsl/editor/trees/612279/replace_placement" for ::1 at 2025-07-17 15:34:26 +1000 (pid:642)
-  # r6editor Processing by TreesController#replace_placement as JS (pid:642)
+class TaxFormsUserWithNoRoleCannotReplacePlacementOnFOADraftTest < ActionDispatch::IntegrationTest
+  # Example of a real request this action receives (from server logs), for
+  # reference - id and instance_id below are this test's own fixture values,
+  # not the ones shown here:
+  #
+  # r6editor Started PATCH "/nsl/editor/trees/:id/replace_placement"
+  # r6editor Processing by TreesController#replace_placement as JS
   # Parameters: {"authenticity_token"=>"[FILTERED]",
   #             "move_placement"=>{"element_link"=>"/tree/52410589/52410631",
   #                                "instance_id"=>"612279",
@@ -44,28 +46,28 @@ class TaxFormsUserWithNoRoleCannotReplacePlacementOnFOADraftTest < ActionControl
     user = users(:no_role)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    patch(
-      :replace_placement,
-      params: {
-        "move_placement" => {
-          "element_link" => tve.element_link,
-          "instance_id" => "12345",
-          "comment" => "xyz comment",
-          "parent_name_typeahead_string" => "Angophora Cav.",
-          "parent_element_link" => tve.element_link,
-          "update" => "",
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      patch tree_replace_placement_path(id: tve.id),
+        params: {
+          "move_placement" => {
+            "element_link" => tve.element_link,
+            "instance_id" => tve.id,
+            "comment" => "xyz comment",
+            "parent_name_typeahead_string" => "Angophora Cav.",
+            "parent_element_link" => tve.element_link,
+            "update" => "",
+          },
         },
-        "id" => "612279",
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: foa_draft,
-        groups: ["login"],
-      },
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree publisher should be not able to replace_placement on FOA draft entry"
     assert_match "Access Denied", response.body, "Expecting Access Denied message"
   end

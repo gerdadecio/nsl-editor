@@ -18,20 +18,22 @@
 #
 require "test_helper"
 
-# Single controller test.
-class NameForbidOtherTabForReaderTest < ActionController::TestCase
-  tests NamesController
+class WorkspaceCurrentToggleOnTest < ActionDispatch::IntegrationTest
   setup do
-    @name = names(:a_species)
+    @tree = tree_versions(:apc_draft_version)
   end
 
-  test "reader requests forbidden other tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(:show,
-        params: { id: @name.id, tab: "tab_more" },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: [] })
-    assert_response :forbidden
+  test "toggle workspace on" do
+    sign_in_as_fake_user do
+      post toggle_current_workspace_path,
+        params: { id: @tree.id },
+        headers: { "Accept" => "application/javascript" }
+    end
+
+    assert_response :success
+    assert session["draft"].present?,
+           "Session draft expected, but not there."
+    assert session["draft"]["id"].to_i == @tree.id,
+           "Session draft ID should match expected."
   end
 end

@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NameNewRouteTest < ActionController::TestCase
-  tests NamesController
+class NameNewRouteTest < ActionDispatch::IntegrationTest
   test "names new should route to a new name" do
     assert_routing(
       "/names/new/scientific/324133124124",
@@ -29,7 +28,7 @@ class NameNewRouteTest < ActionController::TestCase
         action: "new",
         category: "scientific",
         random_id: "324133124124",
-      },
+      }
     )
   end
 end

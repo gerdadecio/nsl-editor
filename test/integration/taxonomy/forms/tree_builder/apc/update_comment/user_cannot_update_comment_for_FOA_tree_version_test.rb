@@ -27,32 +27,31 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreeBuilderAPCUserCannotUpdateCommentOnFOADraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreeBuilderAPCUserCannotUpdateCommentOnFOADraftTest < ActionDispatch::IntegrationTest
   test "APC tree builder user cannot update comment on FOA draft entry" do
     user = users(:apc_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(
-      :update_comment,
-      params: {
-        "update_comment" => {
-          "element_link" => tve.element_link,
-          "comment" => "xyz comment",
-          "delete" => "",
-          "update" => "",
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      post tree_update_comment_path,
+        params: {
+          "update_comment" => {
+            "element_link" => tve.element_link,
+            "comment" => "xyz comment",
+            "delete" => "",
+            "update" => "",
+          },
         },
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: foa_draft,
-        groups: ["login"],
-      },
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree builder should not be able to update comment on FoA draft entry"
     assert_match "Not authorized to update or delete FOA draft taxon comment", response.body, "Expecting Access Denied message"
   end

@@ -80,6 +80,6 @@ class NameCreateScientificHybridFormulaTest < ActiveSupport::TestCase
     assert name.name_element == "a_species x another-species"
     assert name.name_path == "Plantae/Magnoliophyta/a_family/a_genus/a_species/a_species x another-species"
     assert name.valid?,
-      "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
+           "Name should be valid. Errs: #{name.errors.full_messages.join("; ")}"
   end
 end

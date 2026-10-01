@@ -24,17 +24,17 @@ class For_phrase_name_with_digit_search < ActiveSupport::TestCase
   def setup
     @typeahead = Instance::AsTypeahead::ForSynonymy.new(
       "Darwinia sp. 7",
-      names(:a_species).id,
+      names(:a_species).id
     )
   end
 
   test "phrase name with digit search" do
     assert @typeahead.results.instance_of?(Array), "Results should be an array."
     assert @typeahead.results.size == 1,
-      "Incomplete year should not be ignored and one record should be returned."
+           "Incomplete year should not be ignored and one record should be returned."
     assert @typeahead.results
       .collect { |r| r[:value] }
       .include?(DARWINIA_SP_7_CITATION),
-      DARWINIA_SP_7_ERROR
+           DARWINIA_SP_7_ERROR
   end
 end

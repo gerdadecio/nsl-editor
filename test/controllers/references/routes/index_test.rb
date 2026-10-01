@@ -19,12 +19,11 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferencesRouteIndexTest < ActionController::TestCase
-  tests ReferencesController
+class ReferencesRouteIndexTest < ActionDispatch::IntegrationTest
   test "references index should route to the catch all" do
     assert_routing "/references",
-      controller: "search",
-      action: "search",
-      random: "references"
+                   controller: "search",
+                   action: "search",
+                   random: "references"
   end
 end

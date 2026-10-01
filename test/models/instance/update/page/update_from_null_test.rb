@@ -32,12 +32,12 @@ class InstanceUpdatePageFromNullTest < ActiveSupport::TestCase
     assert_match(
       /#{@new_page}/,
       @instance.page,
-      "New page should be: #{@new_page}",
+      "New page should be: #{@new_page}"
     )
     assert message.start_with?("Updated"),
-      "Message should be 'Updated' not '#{message}'"
+           "Message should be 'Updated' not '#{message}'"
     assert @instance.updated_at > @unchanged.updated_at,
-      "Updated date-time should be changed."
+           "Updated date-time should be changed."
     assert @instance.updated_by == "fred", "Updated by should be 'fred'."
   end
 end

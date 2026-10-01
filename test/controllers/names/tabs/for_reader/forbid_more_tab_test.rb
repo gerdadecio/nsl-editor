@@ -19,12 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceTypeaheadForSynonymyRouteTest < ActionController::TestCase
-  tests InstancesController
+class NameForbidOtherTabForReaderTest < ActionDispatch::IntegrationTest
+  setup do
+    @name = names(:a_species)
+  end
 
-  test "should route to instances typeahead for synonymy" do
-    assert_routing "/instances/for_synonymy",
-      controller: "instances",
-      action: "typeahead_for_synonymy"
+  test "reader requests forbidden other tab" do
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_more"),
+        headers: { "Accept" => "application/javascript" }
+    end
+    assert_response :forbidden
   end
 end

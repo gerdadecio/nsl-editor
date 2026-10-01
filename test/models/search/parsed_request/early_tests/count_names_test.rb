@@ -26,7 +26,7 @@ class SearchParsedRequestCountName < ActiveSupport::TestCase
       query_target: "name",
       canonical_query_target: "names",
       query_string:
-            query_string,
+            query_string
     )
     parsed_request = Search::ParsedRequest.new(params)
     assert parsed_request.count, "This should be parsed as a count query."
@@ -34,16 +34,16 @@ class SearchParsedRequestCountName < ActiveSupport::TestCase
     assert_match(
       /\Aname\z/,
       parsed_request.target_table,
-      "This should be parsed as a query on the name table.",
+      "This should be parsed as a query on the name table."
     )
     assert_not parsed_request.limited,
-      "This should be parsed as a query with no limit."
+               "This should be parsed as a query with no limit."
     assert_equal parsed_request.limit,
-      0,
-      "This should be parsed as a query with a limit of 0."
+                 0,
+                 "This should be parsed as a query with a limit of 0."
     assert_not parsed_request.common_and_cultivar,
-      "This should be parsed as a query excluding common and cultivars."
+               "This should be parsed as a query excluding common and cultivars."
     assert parsed_request.where_arguments.blank?,
-      "This should be parsed as a query with no where arguments."
+           "This should be parsed as a query with no where arguments."
   end
 end

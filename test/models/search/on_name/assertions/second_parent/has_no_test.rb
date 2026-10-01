@@ -25,9 +25,9 @@ class SearchOnNameeAssertionHasNoSecondParentTest < ActiveSupport::TestCase
     search = Search::Base.new(ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "name",
       query_string: "has-no-second-parent:",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     ))
     assert_not search.executed_query.results.empty?,
-      "Should find name that has no second parent."
+               "Should find name that has no second parent."
   end
 end

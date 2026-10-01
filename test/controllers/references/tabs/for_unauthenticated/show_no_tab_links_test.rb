@@ -19,27 +19,22 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceUnauthenticatedShowNoTabLinkTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceUnauthenticatedShowNoTabLinkTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:a_book)
   end
 
   test "should show no tab links if unauthenticated requests details tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_edit" },
-      session: {},
-    )
+    get reference_tab_path(id: @reference.id, tab: "tab_edit"),
+      headers: { "Accept" => "application/javascript" }
     # assert_response :redirect, 'Should be redirected.'
     assert_select "a#reference-show-tab", false, "Should not show 'Detail' tab."
     assert_select "a#reference-edit-tab", false, "Should not show 'Edit' tab."
     assert_select "a#reference-comments-tab",
-      false,
-      "Should not show 'Comments' tab."
+                  false,
+                  "Should not show 'Comments' tab."
     assert_select "a#tab-heading",
-      false,
-      "Should not have tab heading showing a_book."
+                  false,
+                  "Should not have tab heading showing a_book."
   end
 end

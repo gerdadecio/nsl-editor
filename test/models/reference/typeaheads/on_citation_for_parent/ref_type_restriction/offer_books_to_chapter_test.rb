@@ -25,7 +25,7 @@ class TheadsOnCit4ParRefTypeRestrictionBooksForChapter < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "%",
       current_reference.id,
-      ref_types(:chapter).id,
+      ref_types(:chapter).id
     )
     assert_not typeahead.results.empty?, "Should be at least one result"
     books = 0

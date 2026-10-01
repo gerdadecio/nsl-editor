@@ -18,12 +18,10 @@
 #
 require "test_helper"
 
-class ProfileTextsControllerTest < ActionController::TestCase
-  def setup
+class ProfileTextsControllerTest < ActionDispatch::IntegrationTest
+  setup do
     @instance = instances(:gaertner_created_metrosideros_costata)
     @user_product_role = user_product_roles(:user_one_foa_draft_profile_editor)
-
-    @session = { username: "uone", user_full_name: "Fred Jones", groups: ["edit", "foa"] }
   end
 
   test "should create profile text" do
@@ -34,20 +32,25 @@ class ProfileTextsControllerTest < ActionController::TestCase
 
     assert_difference "Profile::ProfileItem.count", 1 do
       assert_difference "Profile::ProfileText.count", 1 do
-        post :create,
-          params: {
-            profile_item: {
-              instance_id: @instance.id,
-              product_item_config_id: product_item_config.id,
-              profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id,
+        sign_in_as_fake_user(
+          username: "uone",
+          full_name: "Fred Jones",
+          groups: ["edit", "foa"]
+        ) do
+          post profile_texts_path,
+            params: {
+              profile_item: {
+                instance_id: @instance.id,
+                product_item_config_id: product_item_config.id,
+                profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id,
+              },
+              profile_text: {
+                value: "New profile text",
+                value_md: "New profile text",
+              },
             },
-            profile_text: {
-              value: "New profile text",
-              value_md: "New profile text",
-            },
-          },
-          session: @session,
-          xhr: true
+            xhr: true
+        end
       end
     end
 
@@ -59,20 +62,25 @@ class ProfileTextsControllerTest < ActionController::TestCase
   # Test create action failure when profile text already exists
   test "should not create duplicate profile text" do
     product_item_config = product_item_config(:ecology_pic)
-    post :create,
-      params: {
-        profile_item: {
-          instance_id: @instance.id,
-          product_item_config_id: product_item_config.id,
-          profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id,
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      post profile_texts_path,
+        params: {
+          profile_item: {
+            instance_id: @instance.id,
+            product_item_config_id: product_item_config.id,
+            profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id,
+          },
+          profile_text: {
+            value: "Existing profile text",
+            value_md: "Existing profile text",
+          },
         },
-        profile_text: {
-          value: "Existing profile text",
-          value_md: "Existing profile text",
-        },
-      },
-      session: @session,
-      xhr: true
+        xhr: true
+    end
 
     assert_response :unprocessable_content
     assert_equal "Profile text already exists", assigns(:message)
@@ -82,14 +90,18 @@ class ProfileTextsControllerTest < ActionController::TestCase
   test "should update profile text" do
     profile_item = profile_item(:ecology_pi)
     profile_text = profile_item.profile_text
-    put :update,
-      params: {
-        id: profile_text.id,
-        profile_text: { value_md: "Updated profile text value" },
-        profile_item: { id: profile_item.id },
-      },
-      session: @session,
-      xhr: true
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      put profile_text_path(profile_text),
+        params: {
+          profile_text: { value_md: "Updated profile text value" },
+          profile_item: { id: profile_item.id },
+        },
+        xhr: true
+    end
 
     assert_response :success
     assert_equal "Updated", assigns(:message)
@@ -103,14 +115,18 @@ class ProfileTextsControllerTest < ActionController::TestCase
     profile_text = profile_item.profile_text
 
     Profile::ProfileText.stub_any_instance(:update, false) do
-      put :update,
-        params: {
-          id: profile_text.id,
-          profile_text: { value_md: "Updated profile text value" },
-          profile_item: { id: profile_item.id },
-        },
-        session: @session,
-        xhr: true
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "Fred Jones",
+        groups: ["edit", "foa"]
+      ) do
+        put profile_text_path(profile_text),
+          params: {
+            profile_text: { value_md: "Updated profile text value" },
+            profile_item: { id: profile_item.id },
+          },
+          xhr: true
+      end
     end
     assert_response :unprocessable_content
     assert_equal "Not updated", assigns(:message)

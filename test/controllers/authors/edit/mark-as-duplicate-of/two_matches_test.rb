@@ -19,34 +19,30 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorEditMarkAsDuplicateOfTwoMatchesTest < ActionController::TestCase
-  tests AuthorsController
-
+class AuthorEditMarkAsDuplicateOfTwoMatchesTest < ActionDispatch::IntegrationTest
   test "cannot update author to be duplicate of one of two matches" do
-    @request.headers["Accept"] = "application/javascript"
     author = authors(:hesp_1)
     intended_dupe = authors(:hesp_3)
-    patch(
-      :update,
-      params: {
-        id: intended_dupe.id,
-        author: {
-          "name" => "Hesp",
-          "duplicate_of_typeahead" => "Hesp",
-          "duplicate_of_id" => author,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch author_path(intended_dupe),
+        params: {
+          author: {
+            "name" => "Hesp",
+            "duplicate_of_typeahead" => "Hesp",
+            "duplicate_of_id" => author.id,
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :unprocessable_entity
     assert_match(
       "Error: Validation failed: Name has already been used ",
       response.body,
-      "Should report Name has already been used",
+      "Should report Name has already been used"
     )
   end
 end

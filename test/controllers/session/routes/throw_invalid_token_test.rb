@@ -19,13 +19,12 @@
 require "test_helper"
 
 # Single session test.
-class SessionCreateRouteTest < ActionController::TestCase
-  tests SessionsController
+class SessionRoutesThrowInvalidTokenTest < ActionDispatch::IntegrationTest
   test "should route to throw invalid authenticity token" do
     assert_routing(
       { method: "get", path: "/throw_invalid_authenticity_token" },
       controller: "sessions",
-      action: "throw_invalid_authenticity_token",
+      action: "throw_invalid_authenticity_token"
     )
   end
 end

@@ -23,7 +23,7 @@ class ReferenceARTA4AuthorNoIdWithInvalidString < ActiveSupport::TestCase
   test "no author id with invalid string" do
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError for invalid reference string.",
+      "Should raise a RuntimeError for invalid reference string."
     ) do
       Reference::AsResolvedTypeahead::ForAuthor.new("", "asdfasfdasd")
     end

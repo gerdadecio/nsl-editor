@@ -28,23 +28,20 @@ require "test_helper"
 #
 # The fix only falls back to query_target when original_query_target is
 # blank, so the user's actual target survives onto the error page.
-class SearchControllerQueryTargetPreservedWithoutOriginalTest < ActionController::TestCase
-  tests SearchController
+class SearchControllerQueryTargetPreservedWithoutOriginalTest < ActionDispatch::IntegrationTest
 
   test "an error during a non-'Names plus instances' search preserves the actual query target" do
     SearchController.stub_any_instance(
       :run_local_search,
-      -> { raise StandardError, "boom" },
+      -> { raise StandardError, "boom" }
     ) do
-      get(
-        :search,
-        params: { query_target: "References", query_string: "linnaeus" },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: [],
-        },
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: []
+      ) do
+        get search_path, params: { query_target: "References", query_string: "linnaeus" }
+      end
     end
 
     assert_response :success

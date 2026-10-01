@@ -43,11 +43,11 @@ class InstanceTypeStandaloneOptionsTest < ActiveSupport::TestCase
   test "instance type standalone options" do
     @expected.each do |expected|
       assert @names.include?(expected),
-        "Synonym type options should include #{expected}"
+             "Synonym type options should include #{expected}"
     end
     @names.each do |name|
       assert @expected.include?(name),
-        "#{name} is unexpected as a synonym type option"
+             "#{name} is unexpected as a synonym type option"
     end
   end
 end

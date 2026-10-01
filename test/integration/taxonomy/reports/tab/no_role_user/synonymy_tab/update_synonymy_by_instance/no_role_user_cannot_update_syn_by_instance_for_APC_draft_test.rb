@@ -18,26 +18,25 @@
 #
 require "test_helper"
 
-class NoRoleUserUpdateSynByInstanceForAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class NoRoleUserUpdateSynByInstanceForAPCDraftTest < ActionDispatch::IntegrationTest
   # r6editor Started POST "/nsl/editor/trees/update_synonymy_by_instance"
   # r6editor Processing by TreesController #update_synonymy_by_instance as JS
   # r6editor Parameters: {"versionId"=>"52410589", "instances"=>"612279", "update_checked_synonymy"=>""}
   test "user with no role cannot update synonymy by instance for APC draft" do
     user = users(:no_role)
     draft = tree_versions(:apc_draft_version)
-    post(
-      :update_synonymy_by_instance,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: draft,
-        groups: ["login"],
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => draft.id } }
+    ) do
+      post trees_update_synonymy_by_instance_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "User with no role should not be able to update synonymy by instance for APC draft"
     assert_match(/Access Denied/i, response.body, "Expecting error message")
   end

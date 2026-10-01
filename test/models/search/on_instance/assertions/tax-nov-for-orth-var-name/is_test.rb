@@ -26,10 +26,10 @@ class SearchOnInstanceIsTaxNovForOrthVarNameTest < ActiveSupport::TestCase
       ActiveSupport::HashWithIndifferentAccess.new(
         query_target: "instance",
         query_string: "is-tax-nov-for-orth-var-name:",
-        current_user: build_edit_user,
-      ),
+        current_user: build_edit_user
+      )
     )
     assert_not search.executed_query.results.empty?,
-      "Should find tax. nov. instance for an orth. var. name."
+               "Should find tax. nov. instance for an orth. var. name."
   end
 end

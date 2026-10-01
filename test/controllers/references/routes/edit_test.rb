@@ -19,12 +19,11 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferencesRouteEditTest < ActionController::TestCase
-  tests ReferencesController
+class ReferencesRouteEditTest < ActionDispatch::IntegrationTest
   test "references edit should route to the catch-all" do
     assert_routing "/references/edit/1",
-      controller: "search",
-      action: "search",
-      random: "references/edit/1"
+                   controller: "search",
+                   action: "search",
+                   random: "references/edit/1"
   end
 end

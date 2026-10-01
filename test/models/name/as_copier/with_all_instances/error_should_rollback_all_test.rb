@@ -28,8 +28,8 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
     stub_request(:get, %r{#{path}/[0-9]{1,}/api/name-strings})
       .with(headers: headers)
       .to_return(status: 200,
-        body: returned_body.to_json,
-        headers: {})
+                 body: returned_body.to_json,
+                 headers: {})
   end
 
   def returned_body
@@ -69,12 +69,12 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
     dummy_name_element = "xyz"
     dummy_username = "fred"
     assert_equal 2,
-      master_name.instances.size,
-      "Master should have two instances."
+                 master_name.instances.size,
+                 "Master should have two instances."
     assert_raises(ActiveRecord::RecordInvalid) do
       master_name.copy_with_all_instances(
         dummy_name_element,
-        dummy_username,
+        dummy_username
       )
     end
     after = Name.count

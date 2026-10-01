@@ -19,11 +19,9 @@
 require "test_helper"
 
 # Test new signin.
-class SessionsNewTest < ActionController::TestCase
-  tests SessionsController
-
+class SessionsNewTest < ActionDispatch::IntegrationTest
   test "editor should be able to get new session form to signin" do
-    get(:new)
+    get start_sign_in_path
     assert_response :success
   end
 end

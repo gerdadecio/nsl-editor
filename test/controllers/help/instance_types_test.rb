@@ -19,20 +19,16 @@
 require "test_helper"
 
 # Single controller test.
-class HelpControllerInstanceTypesForReaderTest < ActionController::TestCase
-  tests HelpController
-
+class HelpControllerInstanceTypesForReaderTest < ActionDispatch::IntegrationTest
   test "reader should get instance types" do
-    get(
-      :instance_types,
-      params: {},
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get instance_types_path, xhr: true
+    end
+
     assert_response :success
   end
 end

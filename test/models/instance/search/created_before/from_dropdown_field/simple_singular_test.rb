@@ -26,11 +26,11 @@ class InstSrchCreB4FromDropdownSimpleSingularTest < ActiveSupport::TestCase
     search = Search::Base
       .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_string: "1 instances-only:",
-                    query_target: "Activity",
-                    current_user: build_edit_user))
+                       query_target: "Activity",
+                       current_user: build_edit_user))
     assert_equal Array,
-      search.executed_query.results.class,
-      "Results should be an Array"
+                 search.executed_query.results.class,
+                 "Results should be an Array"
     assert_not search.executed_query.results.empty?, "Expect at least 1 record."
   end
 end

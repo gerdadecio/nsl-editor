@@ -19,32 +19,29 @@
 require "test_helper"
 
 # Single controller test.
-class NameTagNamesCreateByEditorSimpleTest < ActionController::TestCase
-  tests NameTagNamesController
-
+class NameTagNamesCreateByEditorSimpleTest < ActionDispatch::IntegrationTest
   test "editor should be able to create name tag name" do
     skip "irregular composite key insert test not working under Rails 7"
     # but the function itself works in development
     name = names(:a_species)
     name_tag = name_tags(:acra)
     puts NameTagName.count
-    @request.headers["Accept"] = "application/javascript"
     # assert_difference("NameTagName.count") do
-    post(
-      :create,
-      params: {
-        name_tag_name: {
-          "name_id" => name.id,
-          "tag_id" => name_tag.id,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      post name_tag_names_path,
+        params: {
+          name_tag_name: {
+            "name_id" => name.id,
+            "tag_id" => name_tag.id,
+          },
+          "commit" => "Add",
         },
-        "commit" => "Add",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     puts NameTagName.count
     # end
     assert_response :success

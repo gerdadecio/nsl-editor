@@ -19,13 +19,12 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceCreateRouteTest < ActionController::TestCase
-  tests InstancesController
+class InstanceCreateRouteTest < ActionDispatch::IntegrationTest
   test "should route to create an instance" do
     assert_routing(
       { method: "post", path: "/instances" },
       controller: "instances",
-      action: "create",
+      action: "create"
     )
   end
 end

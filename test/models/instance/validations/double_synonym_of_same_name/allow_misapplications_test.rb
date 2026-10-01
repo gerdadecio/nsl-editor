@@ -46,11 +46,11 @@ class InstanceValidationDoubleSynAllowMisappsTest < ActiveSupport::TestCase
   test "instance double synonym allow misapplications" do
     assert @first_syn.misapplied?, "Need syn to be misapplied in set up."
     assert @syn.name_id == @syn.this_cites.name_id,
-      "Name IDs must match for this test."
+           "Name IDs must match for this test."
     assert_difference(
       "Instance.count",
       1,
-      "Misapp should not be treated as double synonym",
+      "Misapp should not be treated as double synonym"
     ) do
       @syn.save!
     end

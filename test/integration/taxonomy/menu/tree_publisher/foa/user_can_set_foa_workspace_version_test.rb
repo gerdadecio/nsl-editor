@@ -19,23 +19,22 @@
 require "test_helper"
 
 # Single search controller test.
-class TreePublisherFoaUserSetWorkspaceVersionTest < ActionController::TestCase
-  tests Trees::Workspaces::CurrentController
-
+class TreePublisherFoaUserSetWorkspaceVersionTest < ActionDispatch::IntegrationTest
   test "foa tree publisher can set workspace version" do
     user = users(:foa_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
-    post(
-      :toggle,
-      params: { id: foa_draft.id },
-      format: :js,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      post toggle_current_workspace_path,
+        params: { id: foa_draft.id },
+        headers: { "Accept" => "application/javascript" }
+    end
+
     assert_response :success, "Should be able to set draft as current workspace"
-    assert_equal foa_draft.id, session[:draft].id, "Should have set the session draft"
+    assert_equal foa_draft.id, session["draft"]["id"].to_i, "Should have set the session draft"
   end
 end

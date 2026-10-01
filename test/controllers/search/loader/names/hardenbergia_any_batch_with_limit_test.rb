@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchLoaderNameHardenbergiaAnyBatchWithLimitTest < ActionController::TestCase
-  tests SearchController
+class SearchLoaderNameHardenbergiaAnyBatchWithLimitTest < ActionDispatch::IntegrationTest
 
   test "can search loader names for Hardenbergia violacea in any batch with limit on results" do
-    get(
-      :search,
-      params: { query_target: "loader names", query_string: "Hardenbergia violacea any-baTCh: limit: 100" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:ogin, :"atch-loader"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:ogin, :"atch-loader"]
+    ) do
+      get search_path, params: { query_target: "loader names", query_string: "Hardenbergia violacea any-baTCh: limit: 100" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /\b1 record*\b/,
-      "Should find one loader name record with any-batch search for Hardenbergia violacea"
+                  /\b1 record*\b/,
+                  "Should find one loader name record with any-batch search for Hardenbergia violacea"
   end
 end

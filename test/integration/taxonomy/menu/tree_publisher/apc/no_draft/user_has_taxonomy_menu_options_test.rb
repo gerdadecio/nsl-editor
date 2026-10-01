@@ -19,9 +19,8 @@
 require "test_helper"
 
 # Single search controller test.
-class TreePublisherApcTaxoNoDraftMenuOptions < ActionController::TestCase
-  tests SearchController
-  def setup
+class TreePublisherApcTaxoNoDraftMenuOptions < ActionDispatch::IntegrationTest
+  setup do
     # We needto have no draft versions for this test case
     draft_tree_version = tree_versions(:apc_draft_version)
     draft_tree_version.published = true
@@ -30,20 +29,20 @@ class TreePublisherApcTaxoNoDraftMenuOptions < ActionController::TestCase
 
   test "APC tree publisher has taxonomy menu options when no draft" do
     user = users(:apc_tax_publisher)
-    get(
-      :search,
-      params: {},
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      get search_path
+    end
+
     assert_response :success
     assert_select "a", { count: 0, text: "APC draft version" }, "Should not show APC draft version"
     assert_select "a", { count: 0, text: "FOA draft version" }, "Should not show FOA draft version"
     assert_select "a#create-draft-taxonomy-menu-link",
-      /Create draft taxonomy/,
-      "Should show Create Draft Taxonomy menu link."
+                  /Create draft taxonomy/,
+                  "Should show Create Draft Taxonomy menu link."
   end
 end

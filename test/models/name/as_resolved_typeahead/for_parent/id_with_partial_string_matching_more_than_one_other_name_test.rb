@@ -25,12 +25,12 @@ class NameAsEdParIdWPartStrMatchMoreThanOneOtherName < ActiveSupport::TestCase
     name_2 = names(:name_matches_another_1)
     assert_raise(
       RuntimeError,
-      "Should fail - string does not identify just one name",
+      "Should fail - string does not identify just one name"
     ) do
       Name::AsResolvedTypeahead::ForParent.new(
         name_1.id.to_s,
         name_2.full_name[0],
-        "parent",
+        "parent"
       )
     end
   end

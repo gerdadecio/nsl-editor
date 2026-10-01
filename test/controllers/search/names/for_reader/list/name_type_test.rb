@@ -19,20 +19,17 @@
 require "test_helper"
 
 # Single search controller test.
-class ReaderSearchControllerNamesNameTypeListTest < ActionController::TestCase
-  tests SearchController
+class ReaderSearchControllerNamesNameTypeListTest < ActionDispatch::IntegrationTest
 
   test "reader can search for a name by type" do
     name = names(:argyle_apple)
-    get(
-      :search,
-      params: { query_target: "name", query_string: "type: common" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "name", query_string: "type: common" }
+    end
     assert_response :success
     assert_select "a#name-#{name.id}", true, "Should see argyle apple."
   end

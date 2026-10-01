@@ -19,31 +19,27 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesCopyStandaloneForQAUserTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesCopyStandaloneForQAUserTest < ActionDispatch::IntegrationTest
   test "qa user should be able to copy standalone instance" do
     instance = instances(:triodia_in_brassard)
     name = names(:a_species)
     reference = references(:a_book)
-    @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Instance.count") do
-      post(
-        :copy_standalone,
-        params: {
-          id: instance.id,
-          instance: {
-            "reference_id" => reference.id,
-            "name_id" => name.id,
-            "instance_type_id" => instance_types(:basionym),
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["QA"]
+      ) do
+        post copy_standalone_path(id: instance.id),
+          params: {
+            instance: {
+              "reference_id" => reference.id,
+              "name_id" => name.id,
+              "instance_type_id" => instance_types(:basionym).id,
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["QA"],
-        },
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response :forbidden
   end

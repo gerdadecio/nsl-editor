@@ -19,36 +19,33 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorEditMESpacesNameCreateWithTest < ActionController::TestCase
-  tests AuthorsController
-
+class AuthorEditMESpacesNameCreateWithTest < ActionDispatch::IntegrationTest
   test "name created with multiple embedded spaces to single space" do
-    @request.headers["Accept"] = "application/javascript"
     author_name = "j   jjjjjj"
     author_abbrev = "ff  x    r"
     assert_difference("Author.count", 1) do
-      post(
-        :create,
-        params: {
-          author: {
-            "name" => author_name,
-            "abbrev" => author_abbrev,
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post authors_path,
+          params: {
+            author: {
+              "name" => author_name,
+              "abbrev" => author_abbrev,
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        },
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
       assert_not_nil assigns(:author), "Should assign author"
       new_author = Author.find_by(name: author_name.gsub(/  +/, " "))
       assert_match author_name.gsub(/  +/, " "),
-        new_author.name,
-        "New author name should not have embedded spaces"
+                   new_author.name,
+                   "New author name should not have embedded spaces"
       assert_match author_abbrev.gsub(/  +/, " "),
-        new_author.abbrev,
-        "New author abbrev should not have embedded spaces"
+                   new_author.abbrev,
+                   "New author abbrev should not have embedded spaces"
     end
   end
 end

@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class ReferencesesUpdateIsoPartiaFutureYearTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesesUpdateIsoPartiaFutureYearTest < ActionDispatch::IntegrationTest
   setup do
     @future_year = Date.today.year + 1
     @msg_part1 = "Year must be less than or equal to #{Date.today.year}, "
@@ -29,33 +27,31 @@ class ReferencesesUpdateIsoPartiaFutureYearTest < ActionController::TestCase
   end
 
   test "update reference iso partial future year" do
-    @request.headers["Accept"] = "application/javascript"
-    patch(
-      :update,
-      params: {
-        id: references(:simple).id,
-        reference: {
-          "ref_type_id" => ref_types(:book),
-          "title" => "Some book",
-          "author_id" => authors(:dash),
-          "author_typeahead" => "-",
-          "published" => true,
-          "parent_typeahead" => @parent_typeahead,
-          "ref_author_role_id" => ref_author_roles(:author),
-          "year" => @future_year,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch reference_path(id: references(:simple).id),
+        params: {
+          reference: {
+            "ref_type_id" => ref_types(:book).id,
+            "title" => "Some book",
+            "author_id" => authors(:dash).id,
+            "author_typeahead" => "-",
+            "published" => true,
+            "parent_typeahead" => @parent_typeahead,
+            "ref_author_role_id" => ref_author_roles(:author).id,
+            "year" => @future_year,
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :unprocessable_content
     assert_match(
       /#{@msg_part1}#{@msg_part2}/,
       response.body.to_s,
-      "Missing or incorrect error message",
+      "Missing or incorrect error message"
     )
   end
 end

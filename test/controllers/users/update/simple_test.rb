@@ -19,29 +19,25 @@
 require "test_helper"
 
 # Single controller test.
-class UserUpdateSimpleTest < ActionController::TestCase
-  tests UsersController
-
+class UserUpdateSimpleTest < ActionDispatch::IntegrationTest
   test "update user simple" do
-    @request.headers["Accept"] = "application/javascript"
     user = users(:user_two)
-    patch(
-      :update,
-      params: {
-        id: user.id,
-        "user" => {
-          "user_name" => "updated_name",
-          "given_name" => "updated_given_name",
-          "family_name" => "updated_family_name",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["admin"]
+    ) do
+      patch user_path(user),
+        params: {
+          "user" => {
+            "user_name" => "updated_name",
+            "given_name" => "updated_given_name",
+            "family_name" => "updated_family_name",
+          },
+          "commit" => "Save",
         },
-        "commit" => "Save",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["admin"],
-      },
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response(:success)
     changed = User.find(user.id)
     assert_match(changed.user_name, "updated_name")
@@ -50,12 +46,12 @@ class UserUpdateSimpleTest < ActionController::TestCase
     assert_equal(
       "fred",
       changed.updated_by,
-      "updated_by should be the updating user's user name",
+      "updated_by should be the updating user's user name"
     )
     assert_equal(
       user.created_by,
       changed.created_by,
-      "created_by should not change on update",
+      "created_by should not change on update"
     )
   end
 end

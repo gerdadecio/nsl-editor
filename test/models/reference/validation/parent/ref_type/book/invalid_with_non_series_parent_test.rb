@@ -33,7 +33,7 @@ class BookInvalidWithNonSeriesParentTest < ActiveSupport::TestCase
   def part1
     assert(
       @ref.valid?,
-      "Book without parent should be valid - starting condition.",
+      "Book without parent should be valid - starting condition."
     )
     @ref.parent = references(:a_book)
     assert_not(@ref.valid?, "Book with book parent should be invalid.")
@@ -47,12 +47,12 @@ class BookInvalidWithNonSeriesParentTest < ActiveSupport::TestCase
   def part2
     assert_not(
       @ref.valid?,
-      "Book with database record parent should be invalid.",
+      "Book with database record parent should be invalid."
     )
     @ref.parent = references(:an_herbarium_annotation)
     assert_not(
       @ref.valid?,
-      "Book with herbarium annotation parent should be invalid.",
+      "Book with herbarium annotation parent should be invalid."
     )
     @ref.parent = references(:an_index)
     assert_not(@ref.valid?, "Book with index parent should be invalid.")

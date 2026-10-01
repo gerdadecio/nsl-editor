@@ -29,7 +29,7 @@ class SearchLoaderNameAndPrintFailWithDuplicatePrintDirective < ActiveSupport::T
       query_string:
             "* any-batch: print: print:",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     error = assert_raises(RuntimeError) do
       Search::Base.new(params)

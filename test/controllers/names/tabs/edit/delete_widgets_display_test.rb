@@ -18,24 +18,20 @@
 #
 require "test_helper"
 
-class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
-  tests NamesController
-
+class NameDeleteTabDeleteWidgetsTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:another_species)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   def show_delete_tab
-    get(
-      :tab,
-      params: { id: @name.id, tab: "tab_delete" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_delete"),
+        headers: { "Accept" => "application/javascript" }
+    end
   end
 
   test "shows delete widgets when hard delete is allowed" do
@@ -44,11 +40,11 @@ class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
     end
     assert_response :success
     assert_select "a#name-delete-link",
-      "Delete...",
-      "Should show the hard delete link."
+                  "Delete...",
+                  "Should show the hard delete link."
     assert_select "a#name-soft-delete-link",
-      false,
-      "Should not show the soft delete link."
+                  false,
+                  "Should not show the soft delete link."
   end
 
   test "shows soft delete widgets when only soft delete is allowed" do
@@ -59,17 +55,17 @@ class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
     end
     assert_response :success
     assert_select "a#name-soft-delete-link",
-      "Soft delete name",
-      "Should show the soft delete link."
+                  "Soft delete name",
+                  "Should show the soft delete link."
     assert_select "a#confirm-name-soft-delete-link",
-      "Confirm soft delete",
-      "Should show the confirm soft delete link."
+                  "Confirm soft delete",
+                  "Should show the confirm soft delete link."
     assert_select "a#cancel-soft-delete-link",
-      "Cancel soft delete",
-      "Should show the cancel soft delete link."
+                  "Cancel soft delete",
+                  "Should show the cancel soft delete link."
     assert_select "a#name-delete-link",
-      false,
-      "Should not show the hard delete link."
+                  false,
+                  "Should not show the hard delete link."
   end
 
   # A soft deleted name is read only. The delete tab is still served, but its
@@ -86,14 +82,14 @@ class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
     assert_response :success
     assert_match(
       /This name has been soft-deleted and cannot be modified/,
-      response.body,
+      response.body
     )
     assert_select "a#name-soft-delete-link",
-      false,
-      "Should not show the soft delete link."
+                  false,
+                  "Should not show the soft delete link."
     assert_select "a#name-delete-link",
-      false,
-      "Should not show the hard delete link."
+                  false,
+                  "Should not show the hard delete link."
   end
 
   test "shows no-delete reasons when no delete is allowed" do
@@ -105,10 +101,10 @@ class NameDeleteTabDeleteWidgetsTest < ActionController::TestCase
     assert_response :success
     assert_match(/Blocked: cannot delete/, response.body)
     assert_select "a#name-delete-link",
-      false,
-      "Should not show the hard delete link."
+                  false,
+                  "Should not show the hard delete link."
     assert_select "a#name-soft-delete-link",
-      false,
-      "Should not show the soft delete link."
+                  false,
+                  "Should not show the soft delete link."
   end
 end

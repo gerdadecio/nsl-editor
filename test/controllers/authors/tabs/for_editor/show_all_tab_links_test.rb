@@ -19,35 +19,32 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorEditorShowAllTabsTest < ActionController::TestCase
-  tests AuthorsController
+class AuthorEditorShowAllTabsTest < ActionDispatch::IntegrationTest
   setup do
     @author = authors(:bentham)
   end
 
   test "should show all tab links if editor requests details tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @author.id, tab: "tab_edit" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get author_tab_path(id: @author.id, tab: "tab_edit"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "a#author-show-tab",
-      "Details",
-      "Should show 'Detail' tab."
+                  "Details",
+                  "Should show 'Detail' tab."
     assert_select "a#author-edit-tab",
-      "Edit",
-      "Should show 'Edit' tab."
+                  "Edit",
+                  "Should show 'Edit' tab."
     assert_select "a#author-comments-tab",
-      "Comments",
-      "Should show 'Comments' tab."
+                  "Comments",
+                  "Should show 'Comments' tab."
     assert_select "a#tab-heading",
-      /Bentham/,
-      "Should have tab heading showing Bentham."
+                  /Bentham/,
+                  "Should have tab heading showing Bentham."
   end
 end

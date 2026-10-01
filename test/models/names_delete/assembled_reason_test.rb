@@ -35,7 +35,7 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
     names_delete = NamesDelete.new(
       name_id: name_id,
       reason: "Name does not exist",
-      extra_info: "",
+      extra_info: ""
     )
     assert_equal "Name does not exist", names_delete.assembled_reason
   end
@@ -44,10 +44,10 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
     names_delete = NamesDelete.new(
       name_id: name_id,
       reason: "Other",
-      extra_info: "Duplicate of another name",
+      extra_info: "Duplicate of another name"
     )
     assert_equal "Other; Duplicate of another name",
-      names_delete.assembled_reason
+                 names_delete.assembled_reason
   end
 
   test "assembled reason is untouched at exactly 247 characters" do
@@ -56,12 +56,12 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
     names_delete = NamesDelete.new(
       name_id: name_id,
       reason: reason,
-      extra_info: extra_info,
+      extra_info: extra_info
     )
     result = names_delete.assembled_reason
     assert_equal 247, result.length
     assert_not result.end_with?("..."),
-      "Should not be truncated at exactly 247 characters"
+               "Should not be truncated at exactly 247 characters"
     assert_equal "#{reason}; #{extra_info}", result
   end
 
@@ -71,13 +71,13 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
     names_delete = NamesDelete.new(
       name_id: name_id,
       reason: reason,
-      extra_info: extra_info,
+      extra_info: extra_info
     )
     result = names_delete.assembled_reason
     assert_equal 247, result.length
     assert result.end_with?("..."), "Should be truncated with an ellipsis"
     assert result.start_with?("#{reason}; "),
-      "Truncation should preserve the reason at the start"
+           "Truncation should preserve the reason at the start"
   end
 
   test "assembled reason stays within 247 chars even with the longest " \
@@ -86,11 +86,11 @@ class NamesDeleteAssembledReasonTest < ActiveSupport::TestCase
     names_delete = NamesDelete.new(
       name_id: name_id,
       reason: LONGEST_PRESET_REASON,
-      extra_info: extra_info,
+      extra_info: extra_info
     )
     result = names_delete.assembled_reason
     assert result.length <= 247,
-      "Combined reason + extra_info must never exceed 247 characters, " \
-        "was #{result.length}"
+           "Combined reason + extra_info must never exceed 247 characters, " \
+             "was #{result.length}"
   end
 end

@@ -19,34 +19,31 @@
 require "test_helper"
 
 # Single controller test.
-class NameSearchForNameTypeWithWildCardsSimpleTest < ActionController::TestCase
-  tests SearchController
-
+class NameSearchForNameTypeWithWildCardsSimpleTest < ActionDispatch::IntegrationTest
   test "editor search for name type with wildcards simple" do
     skip # Expect this to be no longer needed under revised search.
     common = names(:argyle_apple)
     # Set the common-and-cultivar flag to false.
-    get(
-      :search,
-      params: {
-        "search_from" => "string",
-        "query" => "count D* nt:*",
-        "controller" => "new_search",
-        "action" => "search",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get search_path,
+        params: {
+          "search_from" => "string",
+          "query" => "count D* nt:*",
+          "controller" => "new_search",
+          "action" => "search",
+        }
+    end
     assert_response :success
     # assert_select "input.checkbox[type=checkbox]
     #               [id=query_common_and_cultivar][value=t]",
     #               true,
     #               "The query-common-and-cultivar checkbox should be true"
     assert_select "tr[id=search-result-#{common.id}]",
-      true,
-      "Should find one common at least"
+                  true,
+                  "Should find one common at least"
   end
 end

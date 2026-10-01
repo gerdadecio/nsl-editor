@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreeBuilderAPCUserCanUpdateTreeParentForTaxonOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreeBuilderAPCUserCanUpdateTreeParentForTaxonOnAPCDraftTest < ActionDispatch::IntegrationTest
   def setup
     stub_request(:put, /http:..localhost:909..nsl.services.api.treeElement.changeParentElement.apiKey=test-api-key.as=apc-tax-builder/)
       .with(
@@ -41,7 +39,7 @@ class TaxFormsTreeBuilderAPCUserCanUpdateTreeParentForTaxonOnAPCDraftTest < Acti
           "Content-Type" => /json/,
           "Host" => /localhost:.*/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: { result: "result..." }.to_json, headers: {})
   end
@@ -50,26 +48,27 @@ class TaxFormsTreeBuilderAPCUserCanUpdateTreeParentForTaxonOnAPCDraftTest < Acti
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(
-      :update_tree_parent,
-      params: {
-        "update_parent" => {
-          "element_link" => tve.element_link,
-          "parent_name_typeahead_string" => "Sersalisia R.Br. - Genus",
-          "parent_element_link" => "/tree/52410590/51363635",
-          "version_id" => apc_draft.id,
-          "update" => "",
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      post tree_update_parent_path,
+        params: {
+          "update_parent" => {
+            "element_link" => tve.element_link,
+            "parent_name_typeahead_string" => "Sersalisia R.Br. - Genus",
+            "parent_element_link" => "/tree/52410590/51363635",
+            "version_id" => apc_draft.id,
+            "update" => "",
+          },
         },
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      },
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "APC tree builder should be able to update distribution on APC draft entry"
   end
 end

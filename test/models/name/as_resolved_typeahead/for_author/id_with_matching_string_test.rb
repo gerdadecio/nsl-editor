@@ -25,10 +25,10 @@ class NameAsEditedAuthorIdWithMatchingString < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForAuthor.new(
       author.id.to_s,
       author.name,
-      "some field",
+      "some field"
     )
     assert_equal author.id,
-      result.value,
-      "Should get a matching id for the author name"
+                 result.value,
+                 "Should get a matching id for the author name"
   end
 end

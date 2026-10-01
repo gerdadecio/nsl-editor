@@ -19,26 +19,23 @@
 require "test_helper"
 
 # Single controller test.
-class NameShowDeDuplicateTabForEditorTest < ActionController::TestCase
-  tests NamesController
+class NameShowDeDuplicateTabForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_duplicate_species)
   end
 
   test "should show refresh tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @name.id, tab: "tab_more" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_more"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "li a#name-de-duplicate-tab",
-      "De-duplicate",
-      "Should show 'De-duplicate' tab."
+                  "De-duplicate",
+                  "Should show 'De-duplicate' tab."
   end
 end

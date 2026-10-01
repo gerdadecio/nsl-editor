@@ -19,24 +19,22 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceEditTabForEditorTest < ActionController::TestCase
-  tests InstancesController
+class InstanceEditTabForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @triodia_in_brassard = instances(:triodia_in_brassard)
     @draft_tree_version = tree_versions(:apc_draft_version)
   end
+
   test "should show instance edit tab to editor" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @triodia_in_brassard.id, tab: "tab_edit" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        draft: @draft_tree_version,
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"],
+      extra_session: { draft: { "id" => @draft_tree_version.id } }
+    ) do
+      get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_edit"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_match "on page", response.body, "Should show: 'on page'"
     assert_no_match "as a draft", response.body, "Should not be authorised to show: 'as a draft'"

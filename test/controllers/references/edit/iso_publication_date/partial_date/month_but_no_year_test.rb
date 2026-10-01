@@ -19,37 +19,33 @@
 require "test_helper"
 
 # Single controller test.
-class ReferencesesUpdateIsoPartMonthButNoYearTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesesUpdateIsoPartMonthButNoYearTest < ActionDispatch::IntegrationTest
   test "update reference iso partial month but no year test" do
-    @request.headers["Accept"] = "application/javascript"
-    patch(
-      :update,
-      params: {
-        id: references(:simple).id,
-        reference: {
-          "ref_type_id" => ref_types(:book),
-          "title" => "Some book",
-          "author_id" => authors(:dash),
-          "author_typeahead" => "-",
-          "published" => true,
-          "parent_typeahead" => @parent_typeahead,
-          "ref_author_role_id" => ref_author_roles(:author),
-          "month" => "2",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch reference_path(id: references(:simple).id),
+        params: {
+          reference: {
+            "ref_type_id" => ref_types(:book).id,
+            "title" => "Some book",
+            "author_id" => authors(:dash).id,
+            "author_typeahead" => "-",
+            "published" => true,
+            "parent_typeahead" => @parent_typeahead,
+            "ref_author_role_id" => ref_author_roles(:author).id,
+            "month" => "2",
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :unprocessable_content
     assert_match(
       /Month entered but no year/,
       response.body.to_s,
-      "Missing or incorrect error message",
+      "Missing or incorrect error message"
     )
   end
 end

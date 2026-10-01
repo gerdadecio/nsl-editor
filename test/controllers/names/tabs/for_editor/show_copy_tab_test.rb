@@ -19,53 +19,48 @@
 require "test_helper"
 
 # Single controller test.
-class NameShowCopyTabForEditorTest < ActionController::TestCase
-  tests NamesController
+class NameShowCopyTabForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
   test "should show copy tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @name.id, tab: "tab_copy" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_copy"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "li.active a#name-copy-tab",
-      "Copy",
-      "Should show 'Copy' tab."
+                  "Copy",
+                  "Should show 'Copy' tab."
   end
 
   # Copying a hybrid is the one place outside the edit form that renders the
   # Parent field, and a hybrid takes its parents from their own endpoint -
   # what setUpNameHybridParentTypeahead used to wire up.
   test "should show the parent field on the copy tab of a hybrid" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: names(:hybrid_formula).id, tab: "tab_copy" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: names(:hybrid_formula).id, tab: "tab_copy"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
       "[data-autocomplete-url-value=" \
       "'/suggestions/name/hybrid_parent.html'] " \
       "input#name-parent-typeahead" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete input#name_parent_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
   end
 
   # The copy form's Second parent is the same shared field, so the
@@ -73,16 +68,14 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
   # of bubbling events.
   test "should show the second parent field on the copy tab of a hybrid" do
     hybrid = names(:hybrid_formula)
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: hybrid.id, tab: "tab_copy" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: hybrid.id, tab: "tab_copy"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
       "[data-autocomplete-url-value=" \
@@ -90,12 +83,12 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
       "input#name-second-parent-typeahead" \
       "[data-autocomplete-target='input']" \
       "[value='#{hybrid.second_parent.full_name}']",
-      true
+                  true
     assert_select "div.autocomplete input#name_second_parent_id" \
       "[data-autocomplete-target='hidden']" \
       "[value='#{hybrid.second_parent_id}']",
-      true
-    assert_no_match(/setUpNameSecondParentTypeahead\(\)/, @response.body)
+                  true
+    assert_no_match(/setUpNameSecondParentTypeahead\(\)/, response.body)
   end
 
   # A cultivar hybrid's copy form takes both parents from the
@@ -103,16 +96,14 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
   # setUpNameCultivarSecondParentTypeahead.
   test "should show the second parent field on the copy tab of a cultivar hybrid" do
     cultivar_hybrid = names(:a_cultivar_hybrid)
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: cultivar_hybrid.id, tab: "tab_copy" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: cultivar_hybrid.id, tab: "tab_copy"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
       "[data-autocomplete-url-value=" \
@@ -120,14 +111,14 @@ class NameShowCopyTabForEditorTest < ActionController::TestCase
       "input#name-second-parent-typeahead" \
       "[data-autocomplete-target='input']" \
       "[value='#{cultivar_hybrid.second_parent.full_name}']",
-      true
+                  true
     assert_select "div.autocomplete input#name_second_parent_id" \
       "[data-autocomplete-target='hidden']" \
       "[value='#{cultivar_hybrid.second_parent_id}']",
-      true
+                  true
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
-      @response.body,
+      response.body
     )
   end
 end

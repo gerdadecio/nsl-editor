@@ -24,8 +24,8 @@ class SearchOnReferenceCommentsExactNeedsWildCardTest < ActiveSupport::TestCase
   test "search on reference comments exact needs wildcards" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "comments-exact: Xy",
-        current_user: build_edit_user)
+           query_string: "comments-exact: Xy",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?, "No results expected."
   end

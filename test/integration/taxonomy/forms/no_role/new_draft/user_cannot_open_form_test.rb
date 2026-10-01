@@ -27,22 +27,20 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubNoRoleUserCannotOpenNewDraftFormTest < ActionController::TestCase
-  tests TreeVersionsController
-
+class TaxFormsTreePubNoRoleUserCannotOpenNewDraftFormTest < ActionDispatch::IntegrationTest
   test "No role user cannot open new draft form" do
     user = users(:no_role)
-    get(
-      :new_draft,
-      params: { tree_id: Tree.first },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      get tree_versions_new_draft_path(tree_id: Tree.first),
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "User without roles should not be able to open new draft taxonomy form"
   end
 end

@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceEditorShowAllTabsTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceEditorShowAllTabsTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:a_book)
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "should show all tab links if editor requests details tab" do
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_show_1" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     asserts1
     asserts2
     asserts3
@@ -46,17 +43,17 @@ class ReferenceEditorShowAllTabsTest < ActionController::TestCase
     assert_select(
       "li.active a#reference-edit-show-1-tab",
       /Details/,
-      "Does not show 'Details' tab link.",
+      "Does not show 'Details' tab link."
     )
     assert_select(
       "a#reference-edit-1-tab",
       /Edit\./,
-      "Does not show 'Edit.' tab link.",
+      "Does not show 'Edit.' tab link."
     )
     assert_select(
       "a#reference-edit-2-tab",
       /Edit\.\./,
-      "Does not show 'Edit..' tab link.",
+      "Does not show 'Edit..' tab link."
     )
   end
 
@@ -64,17 +61,17 @@ class ReferenceEditorShowAllTabsTest < ActionController::TestCase
     assert_select(
       "a#reference-edit-3-tab",
       /Edit\.\.\./,
-      "Does not show 'Edit...' tab link.",
+      "Does not show 'Edit...' tab link."
     )
     assert_select(
       "a#reference-comments-tab",
       "Comments",
-      "Should show 'Comments' tab link.",
+      "Should show 'Comments' tab link."
     )
     assert_select(
       "a#reference-new-instance-tab",
       /New instance/,
-      "Should show 'New instance' tab link.",
+      "Should show 'New instance' tab link."
     )
   end
 
@@ -82,7 +79,7 @@ class ReferenceEditorShowAllTabsTest < ActionController::TestCase
     assert_select(
       "a#tab-heading",
       /A Book/,
-      "Should have tab heading showing 'A Book'.",
+      "Should have tab heading showing 'A Book'."
     )
   end
 end

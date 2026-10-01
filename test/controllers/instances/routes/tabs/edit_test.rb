@@ -19,13 +19,12 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceRouteToEditTabTest < ActionController::TestCase
-  tests InstancesController
+class InstanceRouteToEditTabTest < ActionDispatch::IntegrationTest
   test "should route to instance edit tab" do
     assert_routing "/instances/1/tab/edit",
-      controller: "instances",
-      action: "tab",
-      id: "1",
-      tab: "edit"
+                   controller: "instances",
+                   action: "tab",
+                   id: "1",
+                   tab: "edit"
   end
 end

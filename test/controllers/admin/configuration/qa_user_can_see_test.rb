@@ -19,20 +19,16 @@
 require "test_helper"
 
 # Single test per file
-class AdminControllerQAUserCanSeeConfigTest < ActionController::TestCase
-  tests AdminController
-
+class AdminControllerQAUserCanSeeConfigTest < ActionDispatch::IntegrationTest
   test "qa user should get configuration" do
-    get(
-      :index,
-      params: {},
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["QA"],
-      },
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["QA"]
+    ) do
+      get admin_path, xhr: true
+    end
+
     assert_response :success, "QA user should see configuration"
   end
 end

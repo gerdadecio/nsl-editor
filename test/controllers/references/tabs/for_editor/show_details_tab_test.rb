@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceShowEditorDetailsTabTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceShowEditorDetailsTabTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:a_book)
   end
 
   test "should show editor reference details tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_show_1" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
   end
 end

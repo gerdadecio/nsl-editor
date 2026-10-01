@@ -19,12 +19,11 @@
 require "test_helper"
 
 # Single controller test.
-class NameNewRowRouteTest < ActionController::TestCase
-  tests NamesController
+class NameNewRowRouteTest < ActionDispatch::IntegrationTest
   test "should route to names new row for a cultivar type" do
     assert_routing "/names/new_row/cultivar",
-      controller: "names",
-      action: "new_row",
-      type: "cultivar"
+                   controller: "names",
+                   action: "new_row",
+                   type: "cultivar"
   end
 end

@@ -19,25 +19,23 @@
 require "test_helper"
 
 # Single search controller test.
-class TreePublisherApcTaxoMenuOptions < ActionController::TestCase
-  tests SearchController
-
+class TreePublisherApcTaxoMenuOptions < ActionDispatch::IntegrationTest
   # Assumes one APC draft tree_version
   test "APC tree publisher has taxonomy menu options" do
     user = users(:apc_tax_publisher)
-    get(
-      :search,
-      params: {},
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      get search_path
+    end
+
     assert_response :success
     assert_select "a",
-      /APC draft version/,
-      "Should show APC draft version menu link."
+                  /APC draft version/,
+                  "Should show APC draft version menu link."
     assert_select "a", { count: 0, text: "FOA draft version" }, "Should not show FOA draft version"
     assert_select "li", /.*APC Tree already has.*/i, "Should say APC Tree already has draft"
   end

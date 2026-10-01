@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionDispatch::IntegrationTest
   def setup
     # First call: look up the instance's preferred link, needed to build the
     # second call's payload.
@@ -41,7 +39,7 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
           "Content-Type" => /json/,
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: { link: "http://localhost:9091/nsl/instance/apni/12345" }.to_json, headers: {})
 
@@ -54,7 +52,7 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
           "Content-Type" => /json/,
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: { ok: true, payload: {} }.to_json, headers: {})
   end
@@ -73,37 +71,37 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionContro
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    # The replace_placement is complex with one API call (preferredLink) providing
-    # params for a second API call (replaceElement) - both are stubbed in setup.
-    patch(
-      :replace_placement,
-      params: {
-        "move_placement" => {
-          "element_link" => tve.element_link,
-          "instance_id" => "12345",
-          "comment" => "xyz comment",
-          "parent_name_typeahead_string" => "Angophora Cav.",
-          "parent_element_link" => tve.element_link,
-          "update" => "",
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      # The replace_placement is complex with one API call (preferredLink) providing
+      # params for a second API call (replaceElement) - both are stubbed in setup.
+      patch tree_replace_placement_path(id: "612279"),
+        params: {
+          "move_placement" => {
+            "element_link" => tve.element_link,
+            "instance_id" => "12345",
+            "comment" => "xyz comment",
+            "parent_name_typeahead_string" => "Angophora Cav.",
+            "parent_element_link" => tve.element_link,
+            "update" => "",
+          },
         },
-        "id" => "612279",
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      },
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "APC tree builder should be able to replace_placement on APC draft entry"
     assert_template "moved_placement"
     assert_includes @response.body,
-      "refreshTreeTab",
-      "Replacing should offer a refresh button"
+                    "refreshTreeTab",
+                    "Replacing should offer a refresh button"
     assert_not_includes @response.body,
-      "$('#instance-classification-tab').click()",
-      "Replacing should not reload the tree tab immediately"
+                        "$('#instance-classification-tab').click()",
+                        "Replacing should not reload the tree tab immediately"
   end
 end

@@ -18,8 +18,8 @@
 #
 require "test_helper"
 
-class ProfileItemReferencesControllerTest < ActionController::TestCase
-  def setup
+class ProfileItemReferencesControllerTest < ActionDispatch::IntegrationTest
+  setup do
     @profile_item = profile_item(:ecology_pi)
     @reference = references(:section_with_heyland_author_different_from_parent)
     @user_product_role = user_product_roles(:user_one_foa_draft_profile_editor)
@@ -30,11 +30,16 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
         profile_item_id: @profile_item.id,
       },
     }
-    @session = { username: "uone", user_full_name: "Fred Jones", groups: ["edit", "foa"] }
   end
 
   test "should create profile item reference successfully" do
-    post :create, params: @valid_params, session: @session, xhr: true
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      post profile_item_references_path, params: @valid_params, xhr: true
+    end
     assert_response :success
     assert_equal "Saved", assigns(:message)
     assert_template :create
@@ -48,19 +53,24 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
 
-    post :create,
-      params: {
-        profile_item_reference: {
-          reference_id: @reference.id,
-          annotation: "2nd Annotation",
-          profile_item_id: @profile_item.id,
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      post profile_item_references_path,
+        params: {
+          profile_item_reference: {
+            reference_id: @reference.id,
+            annotation: "2nd Annotation",
+            profile_item_id: @profile_item.id,
+          },
         },
-      },
-      session: @session,
-      xhr: true
+        xhr: true
+    end
 
     assert_response :unprocessable_content
     assert_match "Only one reference per profile item is permitted", assigns(:message)
@@ -69,16 +79,21 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
 
   test "should fail to create profile item reference when there is no enough permission granted to db" do
     Profile::ProfileItemReference.stub_any_instance(:save!, -> { raise PG::InsufficientPrivilege, "ERROR: permission denied for table \"profile_item_references\"" }) do
-      post :create,
-        params: {
-          profile_item_reference: {
-            reference_id: @reference.id,
-            annotation: "2nd Annotation",
-            profile_item_id: @profile_item.id,
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "Fred Jones",
+        groups: ["edit", "foa"]
+      ) do
+        post profile_item_references_path,
+          params: {
+            profile_item_reference: {
+              reference_id: @reference.id,
+              annotation: "2nd Annotation",
+              profile_item_id: @profile_item.id,
+            },
           },
-        },
-        session: @session,
-        xhr: true
+          xhr: true
+      end
 
       assert_response :unprocessable_content
       assert_match "Error creating profile item reference: ERROR: permission denied for table \"profile_item_references\"", assigns(:message)
@@ -94,19 +109,25 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
 
-    put :update,
-      params: {
-        reference_id: @reference.id,
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      put save_profile_item_references_path(
         profile_item_id: @profile_item.id,
-        profile_item_reference: {
-          annotation: "Updated Annotation",
+        reference_id: @reference.id
+      ),
+        params: {
+          profile_item_reference: {
+            annotation: "Updated Annotation",
+          },
         },
-      },
-      session: @session,
-      xhr: true
+        xhr: true
+    end
     assert_response :success
     assert_equal "Saved", assigns(:message)
     assert_template :update
@@ -120,19 +141,25 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
 
-    put :update,
-      params: {
-        reference_id: @reference.id,
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      put save_profile_item_references_path(
         profile_item_id: @profile_item.id,
-        profile_item_reference: {
-          annotation: "1st Annotation",
+        reference_id: @reference.id
+      ),
+        params: {
+          profile_item_reference: {
+            annotation: "1st Annotation",
+          },
         },
-      },
-      session: @session,
-      xhr: true
+        xhr: true
+    end
 
     assert_response :success
     assert_equal "No change", assigns(:message)
@@ -147,15 +174,19 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
-    delete :destroy,
-      params: {
-        reference_id: @reference.id,
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      delete delete_profile_item_references_path(
         profile_item_id: @profile_item.id,
-      },
-      session: @session,
-      xhr: true
+        reference_id: @reference.id
+      ),
+        xhr: true
+    end
     assert_response :success
     assert_equal "Deleted profile item reference.", assigns(:message)
     assert_template :destroy
@@ -169,17 +200,21 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       created_at: Time.current,
       updated_by: "tester",
       updated_at: Time.current,
-      profile_item_id: @profile_item.id,
+      profile_item_id: @profile_item.id
     )
 
     Profile::ProfileItemReference.stub_any_instance(:destroy, false) do
-      delete :destroy,
-        params: {
-          reference_id: @reference.id,
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "Fred Jones",
+        groups: ["edit", "foa"]
+      ) do
+        delete delete_profile_item_references_path(
           profile_item_id: @profile_item.id,
-        },
-        session: @session,
-        xhr: true
+          reference_id: @reference.id
+        ),
+          xhr: true
+      end
       assert_response :unprocessable_content
       assert_template :destroy_failed
     end

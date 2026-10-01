@@ -19,26 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceTabsNotesTest < ActionController::TestCase
-  tests InstancesController
+class InstanceTabsNotesTest < ActionDispatch::IntegrationTest
   setup do
     @triodia_in_brassard = instances(:triodia_in_brassard)
   end
 
   test "notes tab simple" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: {
-        id: @triodia_in_brassard.id,
-        tab: "tab_edit_notes",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_edit_notes"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     asserts
   end
@@ -53,7 +47,7 @@ class InstanceTabsNotesTest < ActionController::TestCase
     assert_select(
       "h5",
       "Add Note for #{@triodia_in_brassard.name.simple_name}",
-      "Needs correct heading.",
+      "Needs correct heading."
     )
     assert_select("form#new_instance_note", true, "Needs insert form.")
     assert_select("form#new_instance_note") do

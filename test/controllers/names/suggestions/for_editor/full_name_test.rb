@@ -22,27 +22,24 @@ require "test_helper"
 # to the instance form's Name field (references - new instance tab), now on
 # stimulus-autocomplete, and still offers json for parity with the other
 # suggestion actions.
-class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
-  tests NamesController
+class NameFullNameSuggestionsForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
   def get_suggestions(term, format: :html)
-    get(
-      :typeahead_on_full_name,
-      params: { term: term, format: format },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get names_typeahead_on_full_name_path(term: term, format: format)
+    end
   end
 
   def assert_select_in_body(*args, &block)
     assert_select(
-      Nokogiri::HTML::DocumentFragment.parse(@response.body),
+      Nokogiri::HTML::DocumentFragment.parse(response.body),
       *args,
       &block
     )
@@ -54,7 +51,7 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{@name.id}']",
-      true,
+      true
     )
   end
 
@@ -67,7 +64,7 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{@name.id}']" \
         "[data-autocomplete-label='#{@name.full_name} - #{@name.name_status.name}']",
-      true,
+      true
     )
   end
 
@@ -76,14 +73,14 @@ class NameFullNameSuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-      text: "No matches"
+                          text: "No matches"
   end
 
   test "should still answer json" do
     get_suggestions("a_spec", format: :json)
 
     assert_response :success
-    suggestions = JSON.parse(@response.body)
+    suggestions = JSON.parse(response.body)
     assert_includes suggestions.map { |s| s["id"] }, @name.id
   end
 end

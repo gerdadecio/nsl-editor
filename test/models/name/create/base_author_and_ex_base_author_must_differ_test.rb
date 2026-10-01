@@ -43,13 +43,13 @@ class BaseAuthorExBaseAuthorMustDifferOnCreateTest < ActiveSupport::TestCase
     assert(
       @name.valid?,
       "New name should be valid without authorr.
-           Errors: #{@name.errors.full_messages.join("; ")}",
+           Errors: #{@name.errors.full_messages.join("; ")}"
     )
     @name.author = authors(:bentham)
     assert(
       @name.valid?,
       "New name should be valid with an author.
-           Errors: #{@name.errors.full_messages.join("; ")}",
+           Errors: #{@name.errors.full_messages.join("; ")}"
     )
     @name.base_author = authors(:joe)
   end
@@ -58,18 +58,18 @@ class BaseAuthorExBaseAuthorMustDifferOnCreateTest < ActiveSupport::TestCase
     assert(
       @name.valid?,
       "New name should be valid with a base author.
-           Errors: #{@name.errors.full_messages.join("; ")}",
+           Errors: #{@name.errors.full_messages.join("; ")}"
     )
     @name.ex_base_author = authors(:bentham)
     assert(
       @name.valid?,
       "New name should be valid with an ex-base author.
-           Errors: #{@name.errors.full_messages.join("; ")}",
+           Errors: #{@name.errors.full_messages.join("; ")}"
     )
     @name.ex_base_author = authors(:joe)
     assert_not(
       @name.valid?,
-      "New name shldnt be valid with same base and ex-base author",
+      "New name shldnt be valid with same base and ex-base author"
     )
   end
 
@@ -77,7 +77,7 @@ class BaseAuthorExBaseAuthorMustDifferOnCreateTest < ActiveSupport::TestCase
     assert_equal(
       @name.errors.full_messages.first,
       "The ex-base author cannot be the same as the base author.",
-      "Wrong error message.",
+      "Wrong error message."
     )
   end
 end

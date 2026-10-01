@@ -30,7 +30,7 @@ class NameAsPartOfInstanceRecordPartialTest < ActionView::TestCase
   def render_record_for(name)
     render(
       partial: "application/search_results/name_as_part_of_instance_record",
-      locals: { search_result: name, give_me_focus: false },
+      locals: { search_result: name, give_me_focus: false }
     )
     rendered
   end

@@ -19,29 +19,26 @@
 require "test_helper"
 
 # Single search controller test.
-class SrchRefsDefinedQuerRefIdWithInstCountHasInst < ActionController::TestCase
-  tests SearchController
+class SrchRefsDefinedQuerRefIdWithInstCountHasInst < ActionDispatch::IntegrationTest
 
   test "reference id with instances count" do
     skip # I want to retire this test because the defined query
     # is now replaced by show-instances:, but there isn't a count
     # option for show instances.  If demand for one I can add it.
     ref = references(:bucket_reference_for_default_instances)
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "instances for ref id",
         query_string: "count #{ref.id}",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+      }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /29 records\b/,
-      "Should show a correct count of records"
+                  /29 records\b/,
+                  "Should show a correct count of records"
   end
 end

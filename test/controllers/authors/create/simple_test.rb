@@ -19,26 +19,23 @@
 require "test_helper"
 
 # Single controller test.
-class AuthorCreateSimpleTest < ActionController::TestCase
-  tests AuthorsController
-
+class AuthorCreateSimpleTest < ActionDispatch::IntegrationTest
   test "name created with multiple embedded spaces to single space" do
-    @request.headers["Accept"] = "application/javascript"
     assert_difference("Author.count") do
-      post(
-        :create,
-        params: {
-          author: {
-            "name" => "newauthor",
-            "abbrev" => "na",
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post authors_path,
+          params: {
+            author: {
+              "name" => "newauthor",
+              "abbrev" => "na",
+            },
           },
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        },
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
   end
 end

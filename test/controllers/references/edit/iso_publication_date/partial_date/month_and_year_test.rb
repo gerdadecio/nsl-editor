@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class ReferencesesUpdateIsoPartialMonthAndYearTest < ActionController::TestCase
-  tests ReferencesController
-
+class ReferencesesUpdateIsoPartialMonthAndYearTest < ActionDispatch::IntegrationTest
   setup do
     stub_it
   end
@@ -57,35 +55,33 @@ class ReferencesesUpdateIsoPartialMonthAndYearTest < ActionController::TestCase
         headers: {
           "Accept" => "text/json",
           "Accept-Encoding" => encoding,
-        },
+        }
       )
       .to_return(status: 200, body: body, headers: {})
   end
 
   test "update reference iso partial month and year test" do
-    @request.headers["Accept"] = "application/javascript"
-    patch(
-      :update,
-      params: {
-        id: references(:simple).id,
-        reference: {
-          "ref_type_id" => ref_types(:book),
-          "title" => "Some book",
-          "author_id" => authors(:dash),
-          "author_typeahead" => "-",
-          "published" => true,
-          "parent_typeahead" => @parent_typeahead,
-          "ref_author_role_id" => ref_author_roles(:author),
-          "month" => "4",
-          "year" => "2018",
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch reference_path(id: references(:simple).id),
+        params: {
+          reference: {
+            "ref_type_id" => ref_types(:book).id,
+            "title" => "Some book",
+            "author_id" => authors(:dash).id,
+            "author_typeahead" => "-",
+            "published" => true,
+            "parent_typeahead" => @parent_typeahead,
+            "ref_author_role_id" => ref_author_roles(:author).id,
+            "month" => "4",
+            "year" => "2018",
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
   end
 end

@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceDestroyForEditorSimpleTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceDestroyForEditorSimpleTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:simple)
   end
@@ -28,21 +27,19 @@ class ReferenceDestroyForEditorSimpleTest < ActionController::TestCase
   #  assert_difference('Reference.count') do
   test "editor should destroy reference not associated to a product" do
     @reference.products.update_all(reference_id: nil)
-    @request.headers["Accept"] = "application/javascript"
     assert_difference(
       "Reference.count",
       -1,
-      "References should reduce by 1 when editor destroys 1",
+      "References should reduce by 1 when editor destroys 1"
     ) do
-      post(
-        :destroy,
-        params: { id: @reference.id },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        },
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        delete reference_path(id: @reference.id),
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response :success, "Editor should be able to destroy reference"
   end

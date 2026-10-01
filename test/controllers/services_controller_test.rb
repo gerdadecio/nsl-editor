@@ -19,23 +19,23 @@
 require "test_helper"
 
 # Services controller tests not yet broken into single test files.
-class ServicesControllerTest < ActionController::TestCase
+class ServicesControllerTest < ActionDispatch::IntegrationTest
   setup do
   end
 
   test "no user should get index" do
     assert_raises(ActionController::UrlGenerationError) do
-      get(:index, params: {}, session: {})
+      url_for(controller: "services", action: "index", only_path: true)
     end
   end
 
   test "unauthenticated user should get ping" do
-    get(:ping, params: {}, session: {})
+    get ping_service_path
     assert_response :success
   end
 
   test "unauthenticated user should get build" do
-    get(:build, params: {}, session: {})
+    get build_service_path
     assert_response :success
   end
 end

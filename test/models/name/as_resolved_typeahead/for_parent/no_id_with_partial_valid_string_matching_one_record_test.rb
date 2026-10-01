@@ -25,7 +25,7 @@ class NameAsEdNoParIdWPartValStrMatchingOneRecord < ActiveSupport::TestCase
     result = Name::AsResolvedTypeahead::ForParent.new(
       "",
       name.full_name.chop,
-      "parent",
+      "parent"
     )
     assert_equal name.id, result.value, "Should get a matching id for the name"
   end

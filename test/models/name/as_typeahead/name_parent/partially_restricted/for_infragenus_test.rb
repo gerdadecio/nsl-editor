@@ -27,16 +27,16 @@ class ForInfragenusPartiallyRestrictedTest < ActiveSupport::TestCase
 
   test "name parent suggestion for infragenus" do
     assert_not ShardConfig.name_parent_rank_restriction?,
-      "Name parent rank restriction should be off for this test."
+               "Name parent rank restriction should be off for this test."
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.find_by(name: "[infragenus]").id,
+      rank_id: NameRank.find_by(name: "[infragenus]").id
     )
     suggestions_should_only_include(
       typeahead.suggestions,
       "[infragenus]",
-      ["Genus", "Subgenus", "Sectio", "Subsectio", "Series", "Subseries", "Superspecies"],
+      ["Genus", "Subgenus", "Sectio", "Subsectio", "Series", "Subseries", "Superspecies"]
     )
   end
 end

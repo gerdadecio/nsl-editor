@@ -19,29 +19,27 @@
 require "test_helper"
 
 # Single search controller test.
-class TreePubFoaWDUserCanSeeMenuOptsEditDraftTest < ActionController::TestCase
-  tests SearchController
-
+class TreePubFoaWDUserCanSeeMenuOptsEditDraftTest < ActionDispatch::IntegrationTest
   test "foa tree publisher can see menu option edit working draft" do
     user = users(:foa_tax_publisher)
     foa_draft = tree_versions(:foa_draft_version)
-    get(
-      :search,
-      params: {},
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: foa_draft,
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      get search_path
+    end
+
     assert_response :success
     assert_select "a",
-      /FOA draft version/,
-      "Should show FOA draft version menu link."
+                  /FOA draft version/,
+                  "Should show FOA draft version menu link."
     assert_select "a#edit-draft-taxonomy-menu-link-FOA-#{foa_draft.draft_name.tr(" ", "-")}",
-      /Edit FOA draft version/,
-      "Should show Edit Draft Taxonomy for FOA menu link-#{foa_draft.draft_name.tr(" ", "-")}"
+                  /Edit FOA draft version/,
+                  "Should show Edit Draft Taxonomy for FOA menu link-#{foa_draft.draft_name.tr(" ", "-")}"
     assert_select "a", { count: 0, text: "Edit APC draft version" }, "Should not show edit APC draft version link"
   end
 end

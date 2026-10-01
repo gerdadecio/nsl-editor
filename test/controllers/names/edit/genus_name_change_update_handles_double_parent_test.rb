@@ -17,18 +17,17 @@
 #   limitations under the License.
 #
 require "test_helper"
+
 # require 'sucker_punch/testing/inline'
 
 # Single controller test.
-class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
-  tests NamesController
+class GenusNameChangeHandlesDoubleParentTest < ActionDispatch::IntegrationTest
   setup do
     @grevillea = names(:grevillea_genus)
     @descendant = names(:grevillea_cultivar_hybrid)
-    @request.headers["Accept"] = "application/javascript"
     stub_request(
       :get,
-      "#{resource}833026435/api/name-strings",
+      "#{resource}833026435/api/name-strings"
     )
       .with(headers: {
         "Accept" => "*/*",
@@ -67,30 +66,29 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
   def asserts1
     assert(
       @descendant.parent == @grevillea,
-      "Grevillea should be the parent for this test.",
+      "Grevillea should be the parent for this test."
     )
     assert(
       @descendant.second_parent == @grevillea,
-      "Grevillea should be the second parent for this test.",
+      "Grevillea should be the second parent for this test."
     )
   end
 
   def post_update
-    post(
-      :update,
-      params: {
-        "random_id" => "",
-        "category" => "",
-        "name" => name_hash,
-        "commit" => "Save",
-        "id" => @grevillea.id,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch name_path(id: @grevillea.id),
+        params: {
+          "random_id" => "",
+          "category" => "",
+          "name" => name_hash,
+          "commit" => "Save",
+        },
+        headers: { "Accept" => "application/javascript" }
+    end
   end
 
   def asserts2
@@ -99,7 +97,7 @@ class GenusNameChangeHandlesDoubleParentTest < ActionController::TestCase
     descendant_after = Name.find(@descendant.id)
     assert(
       @descendant.full_name != descendant_after.full_name,
-      "Grevillea's name change should affect the descendant's name.",
+      "Grevillea's name change should affect the descendant's name."
     )
   end
 

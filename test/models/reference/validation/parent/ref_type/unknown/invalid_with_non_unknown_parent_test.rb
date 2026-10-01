@@ -34,7 +34,7 @@ class UnknownInvalidWithNonUnknownParentTest < ActiveSupport::TestCase
     assert(@ref.parent.blank?, "Unknown should start test without parent")
     assert(
       @ref.valid?,
-      "unknown without parent should be valid - starting condition.",
+      "unknown without parent should be valid - starting condition."
     )
     @ref.parent = references(:a_book)
     assert_not(@ref.valid?, "Unknown with book parent should be invalid.")
@@ -48,12 +48,12 @@ class UnknownInvalidWithNonUnknownParentTest < ActiveSupport::TestCase
     @ref.parent = references(:a_database_record)
     assert_not(
       @ref.valid?,
-      "Unknown with database record parent should be invalid.",
+      "Unknown with database record parent should be invalid."
     )
     @ref.parent = references(:an_herbarium_annotation)
     assert_not(
       @ref.valid?,
-      "Unknown with herbarium annotation parent should be invalid.",
+      "Unknown with herbarium annotation parent should be invalid."
     )
     @ref.parent = references(:an_index)
     assert_not(@ref.valid?, "Unknown with index parent should be invalid.")

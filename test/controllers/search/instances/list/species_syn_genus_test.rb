@@ -19,25 +19,22 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchInstListSpeciesSynGenusTest < ActionController::TestCase
-  tests SearchController
+class SearchInstListSpeciesSynGenusTest < ActionDispatch::IntegrationTest
 
   test "search for instances which make a genus syn for a species" do
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "instance",
         query_string: "species-or-below-syn-with-genus-or-above:",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+      }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /[0-9] record\b/,
-      "Should find at least 1 record"
+                  /[0-9] record\b/,
+                  "Should find at least 1 record"
   end
 end

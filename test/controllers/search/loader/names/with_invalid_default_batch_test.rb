@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchLoaderNameWithInvalidDefaultBatchTest < ActionController::TestCase
-  tests SearchController
+class SearchLoaderNameWithInvalidDefaultBatchTest < ActionDispatch::IntegrationTest
 
   test "search loader names for H violacea invalid default batch gets right message" do
-    get(
-      :search,
-      params: { query_target: "loader names", query_string: "Hardenbergia violacea default-batch: abc" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:login, :"batch-loader"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:login, :"batch-loader"]
+    ) do
+      get search_path, params: { query_target: "loader names", query_string: "Hardenbergia violacea default-batch: abc" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /Please set a default batch/,
-      "Should be asked to set a default batch"
+                  /Please set a default batch/,
+                  "Should be asked to set a default batch"
   end
 end

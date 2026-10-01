@@ -24,8 +24,8 @@ class SearchOnReferenceAuthorSimpleNegativeTest < ActiveSupport::TestCase
   test "search on reference author simple negative" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "author-exact: eVaNs",
-        current_user: build_edit_user)
+           query_string: "author-exact: eVaNs",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?, "No results expected."
   end

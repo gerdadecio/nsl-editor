@@ -19,15 +19,12 @@
 require "test_helper"
 
 # Single controller test.
-class HybridFormulaFirstParentChangeTest < ActionController::TestCase
-  tests NamesController
-
+class HybridFormulaFirstParentChangeTest < ActionDispatch::IntegrationTest
   setup do
     stub_it
     @hybrid_formula = names(:hybrid_formula)
     @new_first_parent = names(:angophora_costata)
     @nfp_typeahead_string = "Angophora costata (Gaertn.) Britten | Species"
-    @request.headers["Accept"] = "application/javascript"
     @expected_name_element = "costata x another-species"
     @expected_name_path = "Plantae/Magnoliophyta/a_family/a_genus/thingbb/#{@expected_name_element}"
   end
@@ -47,43 +44,42 @@ class HybridFormulaFirstParentChangeTest < ActionController::TestCase
         "User-Agent" => /rest-client.*ruby.*/,
       })
       .to_return(status: 200,
-        body: %({ "class": "silly name class",
+                 body: %({ "class": "silly name class",
       "_links": { "permalink": [ ] }, "name_element":
       "redundant name element for id 91755", "action": "unnecessary action",
       "result": { "fullMarkedUpName": "full marked up name for id 91755",
         "simpleMarkedUpName": "simple marked up name for id 91755",
         "fullName": "full name for id 91755",
         "simpleName": "simple name for id 91755" } }).to_json,
-        headers: {})
+                 headers: {})
   end
 
   test "hybrid formula 1st parent change flows to name element and name path" do
-    post(
-      :update,
-      params: {
-        name: {
-          "parent_id" => @new_first_parent.id.to_s,
-          "parent_typeahead" => @nfp_typeahead_string,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      patch name_path(id: @hybrid_formula.id),
+        params: {
+          name: {
+            "parent_id" => @new_first_parent.id.to_s,
+            "parent_typeahead" => @nfp_typeahead_string,
+          },
         },
-        id: @hybrid_formula.id,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     sleep(2) # to allow for the asynch job
     hybrid_after_change = Name.find(@hybrid_formula.id)
     assert @hybrid_formula.name_element != hybrid_after_change.name_element,
-      "Name element should change"
+           "Name element should change"
     assert hybrid_after_change.name_element == @expected_name_element,
-      "Name element should change to '#{@expected_name_element}'"
+           "Name element should change to '#{@expected_name_element}'"
     assert @hybrid_formula.name_path != hybrid_after_change.name_path,
-      "Name path should change"
+           "Name path should change"
     assert hybrid_after_change.name_path == @expected_name_path,
-      "Name path should change to: '#{@expected_name_path}'"
+           "Name path should change to: '#{@expected_name_path}'"
   end
 
   def debug(name, comment)

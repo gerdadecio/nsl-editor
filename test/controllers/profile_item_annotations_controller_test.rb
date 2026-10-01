@@ -18,28 +18,28 @@
 #
 require "test_helper"
 
-class ProfileItemAnnotationsControllerTest < ActionController::TestCase
-  def setup
+class ProfileItemAnnotationsControllerTest < ActionDispatch::IntegrationTest
+  setup do
     @user_product_role = user_product_roles(:user_one_foa_draft_profile_editor)
-    @session = {
-      username: "uone",
-      user_full_name: "Fred Jones",
-      groups: ["edit", "foa"],
-    }
   end
 
   test "should create a profile item annotation" do
     assert_difference("Profile::ProfileItemAnnotation.count", 1) do
       profile_item = profile_item(:notes_pi)
-      post :create,
-        params: {
-          profile_item_annotation: {
-            profile_item_id: profile_item.id,
-            value: "New Annotation",
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "Fred Jones",
+        groups: ["edit", "foa"]
+      ) do
+        post profile_item_annotations_path,
+          params: {
+            profile_item_annotation: {
+              profile_item_id: profile_item.id,
+              value: "New Annotation",
+            },
           },
-        },
-        session: @session,
-        xhr: true
+          xhr: true
+      end
     end
 
     assert_equal assigns(:profile_item_annotation).value, "New Annotation"
@@ -50,15 +50,19 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
   test "should update profile item annotation" do
     profile_item = profile_item(:ecology_pi)
     profile_item_annotation = profile_item.profile_item_annotation
-    put :update,
-      params: {
-        id: profile_item_annotation.id,
-        profile_item_annotation: {
-          value: "Updated Annotation",
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      put profile_item_annotation_path(profile_item_annotation),
+        params: {
+          profile_item_annotation: {
+            value: "Updated Annotation",
+          },
         },
-      },
-      session: @session,
-      xhr: true
+        xhr: true
+    end
 
     assert_response :success
     assert_equal profile_item_annotation.id, assigns(:profile_item_annotation).id
@@ -70,15 +74,19 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
   test "should not update if value has not changed" do
     profile_item = profile_item(:ecology_pi)
     profile_item_annotation = profile_item.profile_item_annotation
-    put :update,
-      params: {
-        id: profile_item_annotation.id,
-        profile_item_annotation: {
-          value: profile_item_annotation.value,
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      put profile_item_annotation_path(profile_item_annotation),
+        params: {
+          profile_item_annotation: {
+            value: profile_item_annotation.value,
+          },
         },
-      },
-      session: @session,
-      xhr: true
+        xhr: true
+    end
 
     assert_response :success
     assert_equal profile_item_annotation.id, assigns(:profile_item_annotation).id
@@ -91,15 +99,19 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
     profile_item_annotation = profile_item.profile_item_annotation
 
     Profile::ProfileItemAnnotation.stub_any_instance(:update, false) do
-      put :update,
-        params: {
-          id: profile_item_annotation.id,
-          profile_item_annotation: {
-            value: "New Value",
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "Fred Jones",
+        groups: ["edit", "foa"]
+      ) do
+        put profile_item_annotation_path(profile_item_annotation),
+          params: {
+            profile_item_annotation: {
+              value: "New Value",
+            },
           },
-        },
-        session: @session,
-        xhr: true
+          xhr: true
+      end
 
       assert_response :unprocessable_content
       assert_equal profile_item_annotation.id, assigns(:profile_item_annotation).id
@@ -111,15 +123,19 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
     profile_item = profile_item(:ecology_pi)
     profile_item_annotation = profile_item.profile_item_annotation
 
-    put :update,
-      params: {
-        id: profile_item_annotation.id,
-        profile_item_annotation: {
-          value: "",
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: ["edit", "foa"]
+    ) do
+      put profile_item_annotation_path(profile_item_annotation),
+        params: {
+          profile_item_annotation: {
+            value: "",
+          },
         },
-      },
-      session: @session,
-      xhr: true
+        xhr: true
+    end
 
     assert_response :unprocessable_content
     assert_match "can't be blank", assigns(:message)
@@ -132,10 +148,13 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
     profile_item_annotation = profile_item.profile_item_annotation
 
     assert_difference("Profile::ProfileItemAnnotation.count", -1) do
-      delete :destroy,
-        params: { id: profile_item_annotation.id },
-        session: @session,
-        xhr: true
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "Fred Jones",
+        groups: ["edit", "foa"]
+      ) do
+        delete profile_item_annotation_path(profile_item_annotation), xhr: true
+      end
     end
 
     assert_response :success

@@ -23,8 +23,7 @@ require "test_helper"
 # app/views/references/tabs/_tab_show_1.html.erb renders
 # AuditHelper#updated_by_api_and_when, which adds a "Bulk changed" audit
 # line when @reference.api_at is set.
-class ReferenceShowEditorDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceShowEditorDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:simple)
     @api_at = 2.days.ago
@@ -62,16 +61,14 @@ class ReferenceShowEditorDetailsTabShowsBulkChangedWhenApiAtPresentTest < Action
   private
 
   def show_details_tab
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_show_1" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response(:success)
   end
 end

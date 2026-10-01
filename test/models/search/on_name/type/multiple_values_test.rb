@@ -27,13 +27,13 @@ class SearchOnNameTypeMultiTest < ActiveSupport::TestCase
     n2 = names(:a_cultivar)
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string:
-        "type: #{name.name_type.name}, #{n2.name_type.name}",
-        current_user: build_edit_user)
+           query_string:
+           "type: #{name.name_type.name}, #{n2.name_type.name}",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 2,
-      search.executed_query.results.size,
-      "Exactly 2 results are expected."
+                 search.executed_query.results.size,
+                 "Exactly 2 results are expected."
   end
 end

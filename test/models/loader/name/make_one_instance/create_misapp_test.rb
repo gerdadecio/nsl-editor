@@ -34,7 +34,7 @@ class LoaderNameMakeOneInstanceCreateMisappTest < ActiveSupport::TestCase
     Loader::Name::MakeOneInstance.new(
       loader_names(loader_name_key),
       "tester",
-      JOB_NUMBER,
+      JOB_NUMBER
     )
   end
 
@@ -51,7 +51,7 @@ class LoaderNameMakeOneInstanceCreateMisappTest < ActiveSupport::TestCase
         declines: 1,
         declines_reasons: { parent_no_preferred_match: 1 },
       },
-      result,
+      result
     )
   end
 
@@ -63,7 +63,7 @@ class LoaderNameMakeOneInstanceCreateMisappTest < ActiveSupport::TestCase
         declines: 1,
         declines_reasons: { parent_is_using_existing_instance: 1 },
       },
-      result,
+      result
     )
   end
 
@@ -72,7 +72,7 @@ class LoaderNameMakeOneInstanceCreateMisappTest < ActiveSupport::TestCase
     result = creator_for(:misapp_guards_pass).create_misapp
     assert_equal(
       { declines: 1, declines_reasons: { no_preferred_match: 1 } },
-      result,
+      result
     )
   end
 end

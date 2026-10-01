@@ -19,8 +19,7 @@
 require "test_helper"
 
 # Single session test.
-class SessionsRetrySigninRouteTest < ActionController::TestCase
-  tests SessionsController
+class SessionsRetrySigninRouteTest < ActionDispatch::IntegrationTest
   test "should route to retry a new session" do
     assert_routing "/retry_sign_in", controller: "sessions", action: "retry_new"
   end

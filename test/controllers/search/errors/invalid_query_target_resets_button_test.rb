@@ -27,19 +27,16 @@ require "test_helper"
 # fix. The error message itself correctly names the bad target - that's
 # unchanged and intentional - but the button is a control that should only
 # ever hold a real target.
-class SearchControllerInvalidQueryTargetResetsButtonTest < ActionController::TestCase
-  tests SearchController
+class SearchControllerInvalidQueryTargetResetsButtonTest < ActionDispatch::IntegrationTest
 
   test "an unknown query target shows the error but resets the target button to the default" do
-    get(
-      :search,
-      params: { query_target: "fred", query_string: "ang" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "fred", query_string: "ang" }
+    end
 
     assert_response :success
     assert_select "#search-target-button-text", /Names/
@@ -52,17 +49,15 @@ class SearchControllerInvalidQueryTargetResetsButtonTest < ActionController::Tes
   test "an error unrelated to the target still preserves the actual query target" do
     SearchController.stub_any_instance(
       :run_local_search,
-      -> { raise StandardError, "boom" },
+      -> { raise StandardError, "boom" }
     ) do
-      get(
-        :search,
-        params: { query_target: "References", query_string: "linnaeus" },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: [],
-        },
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: []
+      ) do
+        get search_path, params: { query_target: "References", query_string: "linnaeus" }
+      end
     end
 
     assert_response :success

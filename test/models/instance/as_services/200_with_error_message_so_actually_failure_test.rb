@@ -25,12 +25,12 @@ class InstanceDeleteService200WithErrorMessageTest < ActiveSupport::TestCase
     @id = instances(:britten_created_angophora_costata).id
     stub_request(
       :delete,
-      "#{action}?apiKey=test-api-key&reason=Edit",
+      "#{action}?apiKey=test-api-key&reason=Edit"
     )
       .with(headers: headers)
       .to_return(status: 200,
-        body: body.to_json,
-        headers: {})
+                 body: body.to_json,
+                 headers: {})
   end
 
   def action
@@ -53,12 +53,12 @@ class InstanceDeleteService200WithErrorMessageTest < ActiveSupport::TestCase
   test "instance delete service 200 with error message" do
     exception = assert_raise(
       UncaughtThrowError,
-      "Should raise runtime exception for not deleted",
+      "Should raise runtime exception for not deleted"
     ) do
       Instance::AsServices.delete(@id)
     end
     assert_match 'uncaught throw "Check after 3s shows record not deleted"',
-      exception.message,
-      "Wrong message"
+                 exception.message,
+                 "Wrong message"
   end
 end

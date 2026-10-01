@@ -23,6 +23,6 @@ class BasionymInstanceTypeIssourcedTest < ActiveSupport::TestCase
   test "basionym instance type is sourced" do
     basionym_type = instance_types(:basionym)
     assert_not basionym_type.unsourced?,
-      "Basionym instance type should be sourced."
+               "Basionym instance type should be sourced."
   end
 end

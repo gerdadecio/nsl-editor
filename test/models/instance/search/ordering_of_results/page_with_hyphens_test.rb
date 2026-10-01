@@ -36,9 +36,9 @@ class InstanceSearchOrderOfResultsPageWithHyphensTest < ActiveSupport::TestCase
       .ordered_by_name
     # print_results(results)
     assert results.first.id == @with_hyphen.id,
-      "Wrong name order at first value: #{results[0].id}."
+           "Wrong name order at first value: #{results[0].id}."
     assert results.second.id == @without_hyphen.id,
-      "Wrong name order at second value: #{results[1].id}."
+           "Wrong name order at second value: #{results[1].id}."
   end
 
   # This is the important test.
@@ -50,9 +50,9 @@ class InstanceSearchOrderOfResultsPageWithHyphensTest < ActiveSupport::TestCase
       .ordered_by_page
     # print_results(results)
     assert results.first.id == @without_hyphen.id,
-      "Wrong page order at first value: #{results[0].id}."
+           "Wrong page order at first value: #{results[0].id}."
     assert results.second.id == @with_hyphen.id,
-      "Wrong page order at second value: #{results[1].id}."
+           "Wrong page order at second value: #{results[1].id}."
   end
 
   def print_results(results)

@@ -24,12 +24,12 @@ class NameDuplicateSuggestionsMustAvoidIdTest < ActiveSupport::TestCase
     name = names(:angophora_costata)
     suggestions = Name::AsTypeahead.duplicate_suggestions(
       "angophora costata",
-      name.id,
+      name.id
     )
     assert(suggestions.is_a?(Array), "suggestions should be an array")
     assert(
       suggestions.empty?,
-      'suggestions for "angophora costata" should have no elements',
+      'suggestions for "angophora costata" should have no elements'
     )
   end
 end

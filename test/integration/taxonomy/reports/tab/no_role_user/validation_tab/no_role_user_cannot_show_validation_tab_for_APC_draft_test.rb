@@ -18,26 +18,23 @@
 #
 require "test_helper"
 
-class NoRoleUserCanShowValidationTabForAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class NoRoleUserCanShowValidationTabForAPCDraftTest < ActionDispatch::IntegrationTest
   # r6editor Started GET "/nsl/editor/trees/show/valrep"
   # r6editor Processing by TreesController#show_valrep as JS
   test "user with no role cannot show validation tab for APC draft" do
     user = users(:no_role)
     apc_draft = tree_versions(:apc_draft_version)
     tree_version_elements(:tve_for_red_gum)
-    get(
-      :show_valrep,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      get show_valrep_path, xhr: true, headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "User with no role should not be able to show validation tab for APC draft"
   end
 end

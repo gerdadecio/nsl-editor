@@ -19,21 +19,18 @@
 require "test_helper"
 
 # Single controller test.
-class InstancesCreateByReaderTest < ActionController::TestCase
-  tests InstancesController
-
+class InstancesCreateByReaderTest < ActionDispatch::IntegrationTest
   test "reader should not be able to call create instance" do
-    @request.headers["Accept"] = "application/javascript"
     assert_no_difference("Instance.count") do
-      post(
-        :create,
-        params: { instance: {} },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: [],
-        },
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: []
+      ) do
+        post instances_path,
+          params: { instance: {} },
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response :forbidden
   end

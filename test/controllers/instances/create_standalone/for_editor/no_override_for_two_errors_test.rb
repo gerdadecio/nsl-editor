@@ -19,14 +19,13 @@
 require "test_helper"
 
 # Single controller test.
-class NoOverrideForTwoErrorsTest < ActionController::TestCase
-  tests InstancesController
-  def setup
+class NoOverrideForTwoErrorsTest < ActionDispatch::IntegrationTest
+  setup do
     @target_instance = instances(:britten_created_angophora_costata)
     assert_equal(
       @target_instance.instance_type_id,
       instance_types(:comb_nov).id,
-      "Target instance should be a comb nov.",
+      "Target instance should be a comb nov."
     )
     @instance_params = {
       "instance_type_id" => instance_types(:comb_nov).id,
@@ -36,20 +35,19 @@ class NoOverrideForTwoErrorsTest < ActionController::TestCase
       "duplicate_instance_override" => "1",
       "multiple_primary_override" => "1",
     }
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "can create duplicate primary instance with override" do
     assert_no_difference("Instance.count") do
-      post(
-        :create,
-        params: { instance: @instance_params },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["edit"],
-        },
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: ["edit"]
+      ) do
+        post instances_path,
+          params: { instance: @instance_params },
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     check_assertions_1
     check_assertions_2
@@ -60,12 +58,12 @@ class NoOverrideForTwoErrorsTest < ActionController::TestCase
     assert_match(
       /Multiple errors/,
       response.body,
-      "No mention of multiple errors",
+      "No mention of multiple errors"
     )
     assert_match(
       /No overrides are available when there are multiple errors/,
       response.body,
-      "No explanation that overrides are not available",
+      "No explanation that overrides are not available"
     )
   end
 
@@ -75,13 +73,13 @@ class NoOverrideForTwoErrorsTest < ActionController::TestCase
     assert_match(
       /#{error_s}/,
       response.body,
-      "Expected error message did not appear",
+      "Expected error message did not appear"
     )
     error_s = "already exists with the same reference, type and page."
     assert_match(
       /#{error_s}/,
       response.body,
-      "Expected error message did not appear",
+      "Expected error message did not appear"
     )
   end
 end

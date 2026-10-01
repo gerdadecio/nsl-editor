@@ -24,7 +24,7 @@ class InstanceRecordPartialTest < ActionView::TestCase
 
     render(
       partial: "application/search_results/instance/instance_record",
-      locals: { search_result: instance, give_me_focus: false },
+      locals: { search_result: instance, give_me_focus: false }
     )
     rendered
   end

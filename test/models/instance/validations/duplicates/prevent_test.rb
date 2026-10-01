@@ -26,7 +26,7 @@ class InstanceValidationDuplicatesPreventTest < ActiveSupport::TestCase
     dup = instance.dup
     assert_raises(
       ActiveRecord::RecordInvalid,
-      "Duplicate instance shouldn't be saved",
+      "Duplicate instance shouldn't be saved"
     ) do
       dup.save!
     end

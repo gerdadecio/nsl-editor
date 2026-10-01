@@ -35,14 +35,14 @@ class DatabaseRecordInvalidWithNonDatabaseParentTest < ActiveSupport::TestCase
     assert(@ref.parent.blank?, "Ref should start test without parent")
     assert(
       @ref.valid?,
-      "Database rec chapter w/o parent shld be valid - starting condition.",
+      "Database rec chapter w/o parent shld be valid - starting condition."
     )
     @ref.parent = references(:a_book)
     assert_not(@ref.valid?, "Ref with book parent should be invalid.")
     @ref.parent = references(:a_chapter)
     assert_not(
       @ref.valid?,
-      "Database record with chapter parent should be invalid.",
+      "Database record with chapter parent should be invalid."
     )
     @ref.parent = references(:a_database)
     assert(@ref.valid?, "Database record with database parent should be valid.")
@@ -52,17 +52,17 @@ class DatabaseRecordInvalidWithNonDatabaseParentTest < ActiveSupport::TestCase
     @ref.parent = references(:a_database_record)
     assert_not(
       @ref.valid?,
-      "Database record with database record parent should be invalid.",
+      "Database record with database record parent should be invalid."
     )
     @ref.parent = references(:an_herbarium_annotation)
     assert_not(
       @ref.valid?,
-      "Database record with herbarium annot parent should be invalid.",
+      "Database record with herbarium annot parent should be invalid."
     )
     @ref.parent = references(:an_index)
     assert_not(
       @ref.valid?,
-      "Database record with index parent should be invalid.",
+      "Database record with index parent should be invalid."
     )
   end
 
@@ -70,17 +70,17 @@ class DatabaseRecordInvalidWithNonDatabaseParentTest < ActiveSupport::TestCase
     @ref.parent = references(:a_journal)
     assert_not(
       @ref.valid?,
-      "Database record with journal parent should be invalid.",
+      "Database record with journal parent should be invalid."
     )
     @ref.parent = references(:a_series)
     assert_not(
       @ref.valid?,
-      "Database record with series parent should be invalid.",
+      "Database record with series parent should be invalid."
     )
     @ref.parent = references(:a_paper)
     assert_not(
       @ref.valid?,
-      "Database record with paper parent should be invalid.",
+      "Database record with paper parent should be invalid."
     )
   end
 
@@ -88,12 +88,12 @@ class DatabaseRecordInvalidWithNonDatabaseParentTest < ActiveSupport::TestCase
     @ref.parent = references(:a_section)
     assert_not(
       @ref.valid?,
-      "Database record with section parent should be invalid.",
+      "Database record with section parent should be invalid."
     )
     @ref.parent = references(:an_unknown)
     assert_not(
       @ref.valid?,
-      "Database record with an unknown parent should be invalid.",
+      "Database record with an unknown parent should be invalid."
     )
   end
 end

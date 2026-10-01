@@ -29,17 +29,17 @@ class SearchLoaderNameNoHybridFlagTest < ActiveSupport::TestCase
       query_string:
             "no-hybrid-flag: any-batch:",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 18,
-      search.executed_query.results.size,
-      "Exactly 18 results expected (3 original fixtures + 11 " \
-        "from Loader::Name::MakeOneInstance guard-ordering " \
-        "tests, none of which set hybrid_flag, + 4 from the " \
-        "name-match-no-primary: directive tests, which also " \
-        "don't set hybrid_flag)."
+                 search.executed_query.results.size,
+                 "Exactly 18 results expected (3 original fixtures + 11 " \
+                   "from Loader::Name::MakeOneInstance guard-ordering " \
+                   "tests, none of which set hybrid_flag, + 4 from the " \
+                   "name-match-no-primary: directive tests, which also " \
+                   "don't set hybrid_flag)."
   end
 end

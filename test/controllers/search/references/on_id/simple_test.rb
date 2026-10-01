@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchRefsOnIdSimpleTest < ActionController::TestCase
-  tests SearchController
+class SearchRefsOnIdSimpleTest < ActionDispatch::IntegrationTest
 
   test "search on reference id" do
     ref = references(:bucket_reference_for_default_instances)
-    get(
-      :search,
-      params: { query_target: "reference", query_string: "id: #{ref.id}" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "reference", query_string: "id: #{ref.id}" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should find 1 record"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

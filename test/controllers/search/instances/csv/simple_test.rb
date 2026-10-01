@@ -19,36 +19,33 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchInstanceCsvSimpleTest < ActionController::TestCase
-  tests SearchController
+class SearchInstanceCsvSimpleTest < ActionDispatch::IntegrationTest
 
   test "instance search result in csv format" do
     skip "fails in 6.1.4"
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "instance",
         query_string: "*angophora costata*",
         format: "csv",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+      }
+    end
     assert_response :success
     s1 = "Instance ID,Name ID,Full Name,Reference ID,Reference Citation"
     s2 = ",Number of Notes,Instance notes"
     assert_match(
       /#{s1}#{s2}/,
       response.body.to_s,
-      "Missing heading",
+      "Missing heading"
     )
     assert_match(
       /Angophora costata/,
       response.body.to_s,
-      "Missing data",
+      "Missing data"
     )
   end
 end

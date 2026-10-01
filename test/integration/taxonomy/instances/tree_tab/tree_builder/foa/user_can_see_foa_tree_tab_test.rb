@@ -19,29 +19,28 @@
 require "test_helper"
 
 # Single search controller test.
-class TaxoInstanceTreeBuilderFoaCanSeeFoaTreeTab < ActionController::TestCase
-  tests InstancesController
-
+class TaxoInstanceTreeBuilderFoaCanSeeFoaTreeTab < ActionDispatch::IntegrationTest
   test "foa tree builder can see instance tree tab for foa" do
     user = users(:foa_tax_builder)
     foa_draft = tree_versions(:foa_draft_version)
     instance = instances(:triodia_in_brassard)
-    get(
-      "tab",
-      params: { id: "#{instance.id}", tab: "tab_classification", "row-type": "instance_record" },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: foa_draft,
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => foa_draft.id } }
+    ) do
+      get instance_tab_path(id: instance.id, tab: "tab_classification"),
+        params: { "row-type" => "instance_record" },
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "Tree builder should see Tree tab for Instance with FoA Tree Active"
     assert_match 'data-tab-name="tab_classification" href="#">Tree</a>',
-      response.body,
-      "Tab Classification should be in the response"
+                 response.body,
+                 "Tab Classification should be in the response"
     assert_match "<form", response.body, "Tab should contain a form"
   end
 end

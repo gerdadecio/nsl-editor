@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class NameForbidEditTabForReaderTest < ActionController::TestCase
-  tests NamesController
+class NameForbidEditTabForReaderTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
   test "reader requests forbidden edit tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @name.id, tab: "tab_edit" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_edit"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :forbidden
   end
 end

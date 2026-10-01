@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreeBuilderAPCUserCanUpdateCommentOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreeBuilderAPCUserCanUpdateCommentOnAPCDraftTest < ActionDispatch::IntegrationTest
   def setup
     stub_request(:post, /http:..localhost:90...nsl.services.api.treeElement.editElementProfile.apiKey=test-api-key.as=apc-tax-builder/)
       .with(
@@ -41,7 +39,7 @@ class TaxFormsTreeBuilderAPCUserCanUpdateCommentOnAPCDraftTest < ActionControlle
           "Content-Type" => /json/,
           "Host" => /localhost:.*/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -51,25 +49,26 @@ class TaxFormsTreeBuilderAPCUserCanUpdateCommentOnAPCDraftTest < ActionControlle
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(
-      :update_comment,
-      params: {
-        "update_comment" => {
-          "element_link" => tve.element_link,
-          "comment" => "xyz comment",
-          "delete" => "",
-          "update" => "",
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      post tree_update_comment_path,
+        params: {
+          "update_comment" => {
+            "element_link" => tve.element_link,
+            "comment" => "xyz comment",
+            "delete" => "",
+            "update" => "",
+          },
         },
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      },
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "APC tree builder should be able to update comment on APC draft entry"
   end
 end

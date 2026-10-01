@@ -29,16 +29,16 @@ class ForMullerWithUmlautInlineTest < ActiveSupport::TestCase
       query_string:
             "name: müLl",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-      search.executed_query.results.size,
-      "Exactly 1 result is expected."
+                 search.executed_query.results.size,
+                 "Exactly 1 result is expected."
     assert_equal authors(:muller_f_with_umlaut).name,
-      search.executed_query.results.first[:name]
+                 search.executed_query.results.first[:name]
   end
 
   test "inline search on name for muller with umlaut using u" do
@@ -48,15 +48,15 @@ class ForMullerWithUmlautInlineTest < ActiveSupport::TestCase
       query_string:
             "name: muLl",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-      search.executed_query.results.size,
-      "Exactly 1 result is expected - perhaps müll wasn't found"
+                 search.executed_query.results.size,
+                 "Exactly 1 result is expected - perhaps müll wasn't found"
     assert_equal authors(:muller_f_with_umlaut).name,
-      search.executed_query.results.first[:name]
+                 search.executed_query.results.first[:name]
   end
 end

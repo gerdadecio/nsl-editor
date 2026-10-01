@@ -19,26 +19,23 @@
 require "test_helper"
 
 # Single controller test.
-class NameShowCommentTabForEditorTest < ActionController::TestCase
-  tests NamesController
+class NameShowCommentTabForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
   test "should show comments tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @name.id, tab: "tab_more" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_more"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "li.active a#name-comment-tab",
-      "Comment",
-      "Should show 'Comment' tab."
+                  "Comment",
+                  "Should show 'Comment' tab."
   end
 end

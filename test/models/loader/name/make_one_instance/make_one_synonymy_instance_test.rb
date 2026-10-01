@@ -42,7 +42,7 @@ class LoaderNameMakeOneInstanceMakeOneSynonymyInstanceTest < ActiveSupport::Test
     result = creator_for(:synonym_no_parent).create
     assert_equal(
       { declines: 1, declines_reasons: { synonym_has_no_parent: 1 } },
-      result,
+      result
     )
   end
 
@@ -54,7 +54,7 @@ class LoaderNameMakeOneInstanceMakeOneSynonymyInstanceTest < ActiveSupport::Test
         declines: 1,
         declines_reasons: { parent_no_preferred_match: 1 },
       },
-      result,
+      result
     )
   end
 
@@ -66,7 +66,7 @@ class LoaderNameMakeOneInstanceMakeOneSynonymyInstanceTest < ActiveSupport::Test
         declines: 1,
         declines_reasons: { parent_is_using_existing_instance: 1 },
       },
-      result,
+      result
     )
   end
 
@@ -78,7 +78,7 @@ class LoaderNameMakeOneInstanceMakeOneSynonymyInstanceTest < ActiveSupport::Test
         declines: 1,
         declines_reasons: { parent_has_no_standalone_instance: 1 },
       },
-      result,
+      result
     )
   end
 end

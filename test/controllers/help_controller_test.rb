@@ -19,41 +19,37 @@
 require "test_helper"
 
 # Help controller tests.
-class HelpControllerTest < ActionController::TestCase
+class HelpControllerTest < ActionDispatch::IntegrationTest
   test "should route to help index" do
     assert_routing "/help/index", controller: "help", action: "index"
   end
 
   test "should get redirected unauthenticated" do
-    get :index
+    get help_index_path
     assert_response :redirect
   end
 
   test "should get index for reader" do
-    get(
-      :index,
-      params: {},
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get help_index_path, xhr: true
+    end
+
     assert_response :success
   end
 
   test "should get index for editor" do
-    get(
-      :index,
-      params: {},
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:edit],
-      },
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:edit]
+    ) do
+      get help_index_path, xhr: true
+    end
+
     assert_response :success
   end
 end

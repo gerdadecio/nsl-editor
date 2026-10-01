@@ -34,10 +34,10 @@ class InstanceValidationPreventSynonymOfSameNameTest < ActiveSupport::TestCase
 
   test "instance prevent synonym of same name" do
     assert @syn.name_id == @syn.this_cites.name_id,
-      "Name IDs must match for this test."
+           "Name IDs must match for this test."
     assert_raises(
       ActiveRecord::RecordInvalid,
-      "Double synonym should be invalid and not saved",
+      "Double synonym should be invalid and not saved"
     ) do
       @syn.save!
     end

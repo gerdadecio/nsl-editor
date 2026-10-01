@@ -27,35 +27,35 @@ class SearchParsedRequestCountDirectiveWithWhereArgsTest < ActiveSupport::TestCa
   test "search parse query count directive with where arguments" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        canonical_query_target: "name",
-        query_string: "count: angophora costata")
+           canonical_query_target: "name",
+           query_string: "count: angophora costata")
     parsed_request = Search::ParsedRequest.new(params)
     assert parsed_request.count, "This should be parsed as a count query."
     assert_not parsed_request.list,
-      "This should not be parsed as a list query."
+               "This should not be parsed as a list query."
     assert_not parsed_request.limited,
-      "This should be parsed as a query with no limit."
+               "This should be parsed as a query with no limit."
     assert_match(
       /\Aangophora costata\z/,
       parsed_request.where_arguments,
       "The where args '#{parsed_request.where_arguments}' should \
-match /\\Aangophora costata\\z/.",
+match /\\Aangophora costata\\z/."
     )
   end
 
   test "count directive is recognised after the where arguments" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        canonical_query_target: "name",
-        query_string: "angophora costata count:")
+           canonical_query_target: "name",
+           query_string: "angophora costata count:")
     parsed_request = Search::ParsedRequest.new(params)
     assert parsed_request.count,
-      "The count: directive should be recognised in any position."
+           "The count: directive should be recognised in any position."
     assert_match(
       /\Aangophora costata\z/,
       parsed_request.where_arguments,
       "The where args '#{parsed_request.where_arguments}' should \
-match /\\Aangophora costata\\z/.",
+match /\\Aangophora costata\\z/."
     )
   end
 end

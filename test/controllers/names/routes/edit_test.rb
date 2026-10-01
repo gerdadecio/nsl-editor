@@ -19,12 +19,11 @@
 require "test_helper"
 
 # Single controller test.
-class NameEditRouteTest < ActionController::TestCase
-  tests NamesController
+class NameEditRouteTest < ActionDispatch::IntegrationTest
   test "names edit should route to the catch-all" do
     assert_routing "/names/edit/1",
-      controller: "search",
-      action: "search",
-      random: "names/edit/1"
+                   controller: "search",
+                   action: "search",
+                   random: "names/edit/1"
   end
 end

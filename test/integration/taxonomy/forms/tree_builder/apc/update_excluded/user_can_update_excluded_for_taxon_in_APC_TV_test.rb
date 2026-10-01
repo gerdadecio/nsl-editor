@@ -27,9 +27,7 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreeBuilderAPCUserCanUpdateExcludedForTaxonOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreeBuilderAPCUserCanUpdateExcludedForTaxonOnAPCDraftTest < ActionDispatch::IntegrationTest
   def setup
     stub_request(:post, /http:..localhost:90...nsl.services.api.treeElement.editElementStatus.apiKey=test-api-key.as=apc-tax-builder/)
       .with(
@@ -41,7 +39,7 @@ class TaxFormsTreeBuilderAPCUserCanUpdateExcludedForTaxonOnAPCDraftTest < Action
           "Content-Type" => /json/,
           "Host" => /localhost:.*/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -53,23 +51,24 @@ class TaxFormsTreeBuilderAPCUserCanUpdateExcludedForTaxonOnAPCDraftTest < Action
     user = users(:apc_tax_builder)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    post(
-      :update_excluded,
-      params: {
-        "update_parent" => {
-          "taxonUri" => tve.element_link,
-          "excluded" => "false",
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      post tree_update_excluded_path,
+        params: {
+          "update_parent" => {
+            "taxonUri" => tve.element_link,
+            "excluded" => "false",
+          },
         },
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      },
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "APC tree builder should be able to update excluded on APC draft entry"
     assert_no_match "Error", response.body, "Not expecting an error message"
   end

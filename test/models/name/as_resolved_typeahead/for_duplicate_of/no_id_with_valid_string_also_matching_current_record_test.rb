@@ -30,7 +30,7 @@ class NameAsResolvedTANoDuplicateOfIdWithValidStringAlsoMatchingCurrentRecord < 
     name = names(:the_regnum)
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError - cannot be a duplicate of itself.",
+      "Should raise a RuntimeError - cannot be a duplicate of itself."
     ) do
       Name::AsResolvedTypeahead::ForDuplicateOf.new("", name.full_name, name.id)
     end

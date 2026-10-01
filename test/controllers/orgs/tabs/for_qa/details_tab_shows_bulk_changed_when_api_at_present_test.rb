@@ -17,15 +17,13 @@
 #   limitations under the License.
 #
 require "test_helper"
-require "test_helper"
 
 # Single org controller test.
 #
 # app/views/orgs/tabs/_tab_details.html.erb renders
 # AuditHelper#updated_by_api_and_when, which adds a "Bulk changed" audit
 # line when @org.api_at is set.
-class OrgsTabsForQaDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionController::TestCase
-  tests OrgsController
+class OrgsTabsForQaDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionDispatch::IntegrationTest
   setup do
     @org = orgs(:state_herb_1)
     @api_at = 2.days.ago
@@ -63,16 +61,15 @@ class OrgsTabsForQaDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionContro
   private
 
   def show_details_tab
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @org.id, tab: "tab_details" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["QA"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["QA"]
+    ) do
+      get org_path,
+        params: { id: @org.id, tab: "tab_details" },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response(:success)
     assert_match(/Organisation ##{@org.id}/, response.body)
   end

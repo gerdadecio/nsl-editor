@@ -19,24 +19,18 @@
 require "test_helper"
 
 # Single controller test.
-class NamesNewCultivarHybridNameSimpleTest < ActionController::TestCase
-  tests NamesController
-
+class NamesNewCultivarHybridNameSimpleTest < ActionDispatch::IntegrationTest
   test "editor should be able to start a new cultivar hybrid name" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new,
-      params: {
-        category: "cultivar hybrid",
-        random_id: "123445",
-        tabIndex: "107",
-      },
-      session: {},
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get new_name_with_category_and_random_id_path(category: "cultivar hybrid", random_id: "123445"),
+        params: { tabIndex: "107" },
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success, "Cannot edit a new cultivar hybrid name"
     assert_select("h4", /New Cultivar Hybrid Name/)
   end
@@ -46,41 +40,38 @@ class NamesNewCultivarHybridNameSimpleTest < ActionController::TestCase
   # endpoint. A new name has no id yet, so name_id is sent as null - the
   # autocomplete controller's buildURL turns that into an empty param.
   test "new cultivar hybrid's second parent is a stimulus autocomplete" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new,
-      params: {
-        category: "cultivar hybrid",
-        random_id: "123445",
-        tabIndex: "107",
-      },
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get new_name_with_category_and_random_id_path(category: "cultivar hybrid", random_id: "123445"),
+        params: { tabIndex: "107" },
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success
     assert_select "div.autocomplete[data-controller='autocomplete']" \
       "[data-autocomplete-url-value=" \
       "'/suggestions/name/cultivar_parent.html'] " \
       "input#name-second-parent-typeahead" \
       "[data-autocomplete-target='input']",
-      true
+                  true
     assert_select "div.autocomplete input#name_second_parent_id" \
       "[data-autocomplete-target='hidden']",
-      true
+                  true
     assert_select "div.autocomplete label[for='name-second-parent-typeahead']",
-      /Second parent/
+                  /Second parent/
     assert_no_match(
       /setUpNameCultivarSecondParentTypeahead\(\)/,
-      @response.body,
+      response.body
     )
     field = css_select("div.autocomplete").find do |div|
       div.css("input#name-second-parent-typeahead").any?
     end
     assert_equal(
       { "name_id" => nil },
-      JSON.parse(field["data-autocomplete-extra-params-value"]),
+      JSON.parse(field["data-autocomplete-extra-params-value"])
     )
   end
 end

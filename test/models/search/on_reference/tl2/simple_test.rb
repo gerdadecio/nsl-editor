@@ -25,11 +25,11 @@ class SearchOnReferenceTL2SimpleTest < ActiveSupport::TestCase
     reference = references(:stanley_and_ross_1986_flora_of_se_qld)
     params =  ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "tl2: #{reference.tl2}",
-        current_user: build_edit_user)
+           query_string: "tl2: #{reference.tl2}",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_not search.executed_query.results.empty?, "Results expected."
   end
 end

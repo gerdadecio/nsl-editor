@@ -24,24 +24,23 @@ require "test_helper"
 # version for tree they have no access to (what harm would happen if they could UNset it is the
 # point) - but the test is here as part of a suite of
 # tests I'm setting up for this change in permissions.
-class TreeBuilderFoaUserCannotUnsetWorkspaceTest < ActionController::TestCase
-  tests Trees::Workspaces::CurrentController
-
+class TreeBuilderFoaUserCannotUnsetWorkspaceTest < ActionDispatch::IntegrationTest
   test "foa tree builder cannot unset apc workspace version" do
     user = users(:foa_tax_builder)
     draft = tree_versions(:apc_draft_version)
-    post(
-      :toggle,
-      params: { id: draft.id },
-      format: :js,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-        draft: draft,
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => draft.id } }
+    ) do
+      post toggle_current_workspace_path,
+        params: { id: draft.id },
+        headers: { "Accept" => "application/javascript" }
+    end
+
     assert_response :forbidden, "Should not be able to remove current workspace draft setting"
-    assert_not_nil session[:draft], "Should not have unset the session draft"
+    assert_not_nil session["draft"], "Should not have unset the session draft"
   end
 end

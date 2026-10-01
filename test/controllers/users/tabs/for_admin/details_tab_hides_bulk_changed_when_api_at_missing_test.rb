@@ -17,15 +17,13 @@
 #   limitations under the License.
 #
 require "test_helper"
-require "test_helper"
 
 # Single user controller test.
 #
 # app/views/users/tabs/_tab_details.html.erb renders
 # AuditHelper#updated_by_api_and_when, which adds nothing when
 # @user.api_at is blank - even if api_name is set.
-class UsersTabsForAdminDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionController::TestCase
-  tests UsersController
+class UsersTabsForAdminDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:user_one)
   end
@@ -45,16 +43,15 @@ class UsersTabsForAdminDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionCo
   private
 
   def show_details_tab
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @user.id, tab: "tab_details" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["admin"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["admin"]
+    ) do
+      get user_show_path,
+        params: { id: @user.id, tab: "tab_details" },
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response(:success)
     assert_match(/User ##{@user.id}/, response.body)
   end

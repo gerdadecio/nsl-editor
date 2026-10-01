@@ -31,7 +31,7 @@ class NameAsResolvedTANoDuplicateOfIdWithValidStringMatchingAnExistingDuplicate 
     other_name = names(:the_regnum)
     assert_raise(
       RuntimeError,
-      "Should raise a RuntimeError - cannot resolve to a record that is already a duplicate.",
+      "Should raise a RuntimeError - cannot resolve to a record that is already a duplicate."
     ) do
       Name::AsResolvedTypeahead::ForDuplicateOf.new(
         "", already_a_duplicate.full_name, other_name.id

@@ -25,7 +25,7 @@ class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
     actual = "#{results[index].page} - #{results[index].name.full_name}"
     assert(
       /\A#{Regexp.escape(actual)}\z/.match(expected),
-      "Wrong at index #{index}; should be: #{expected} NOT #{actual}",
+      "Wrong at index #{index}; should be: #{expected} NOT #{actual}"
     )
   end
 

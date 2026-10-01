@@ -31,7 +31,7 @@ class InstanceUpdateChangeReferenceSimpleTest < ActiveSupport::TestCase
     before
     @instance_back_door.change_reference(
       { "reference_id" => @new_reference.id },
-      "ref-changer",
+      "ref-changer"
     )
     after
   end
@@ -39,11 +39,11 @@ class InstanceUpdateChangeReferenceSimpleTest < ActiveSupport::TestCase
   def before
     assert(
       @instance_back_door.reference_id != @new_reference.id,
-      "Reference IDs should start out different.",
+      "Reference IDs should start out different."
     )
     assert(
       @instance_back_door.updated_by != @username,
-      "Usernames should start out different.",
+      "Usernames should start out different."
     )
     assert_not(@instance.citations.empty?, "Need citations for this test.")
     check_citations_before
@@ -53,7 +53,7 @@ class InstanceUpdateChangeReferenceSimpleTest < ActiveSupport::TestCase
     @instance.citations.each do |citation|
       assert(
         citation.reference_id == @instance.reference_id,
-        "Should start out pointing to the same reference.",
+        "Should start out pointing to the same reference."
       )
     end
   end
@@ -61,11 +61,11 @@ class InstanceUpdateChangeReferenceSimpleTest < ActiveSupport::TestCase
   def after
     assert(
       @instance_back_door.reference_id == @new_reference.id,
-      "Reference IDs should now be the same.",
+      "Reference IDs should now be the same."
     )
     assert(
       @instance_back_door.updated_by == @username,
-      "Usernames should now be the same.",
+      "Usernames should now be the same."
     )
     check_citations_after
   end
@@ -75,11 +75,11 @@ class InstanceUpdateChangeReferenceSimpleTest < ActiveSupport::TestCase
       citation_back_door = InstanceBackDoor.find(citation.id)
       assert(
         citation_back_door.reference_id == @new_reference.id,
-        "Dependent instance should now also point to the new reference.",
+        "Dependent instance should now also point to the new reference."
       )
       assert(
         citation_back_door.updated_by == @username,
-        "Dependent instance should now also point to the new reference.",
+        "Dependent instance should now also point to the new reference."
       )
     end
   end

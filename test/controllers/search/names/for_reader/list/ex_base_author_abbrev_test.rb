@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class ReaderSearchControNamesExBaseAuthorAbbrevList < ActionController::TestCase
-  tests SearchController
+class ReaderSearchControNamesExBaseAuthorAbbrevList < ActionDispatch::IntegrationTest
 
   test "reader can search for a name by ex-base-author abbrev" do
-    get(
-      :search,
-      params: { query_target: "name", query_string: "ex-base-author: *" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "name", query_string: "ex-base-author: *" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /[2-9] names\b/,
-      "Should find at least a couple of names"
+                  /[2-9] names\b/,
+                  "Should find at least a couple of names"
   end
 end

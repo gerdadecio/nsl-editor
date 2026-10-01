@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchNamesAsRderListAssertHasNoPrimInstTest < ActionController::TestCase
-  tests SearchController
+class SearchNamesAsRderListAssertHasNoPrimInstTest < ActionDispatch::IntegrationTest
 
   test "reader can search for names that have no primary instance" do
-    get(
-      :search,
-      params: { query_target: "name", query_string: "has-no-primary-instance:" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: { query_target: "name", query_string: "has-no-primary-instance:" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /[0-9][0-9] names\b/,
-      "Should find some names"
+                  /[0-9][0-9] names\b/,
+                  "Should find some names"
   end
 end

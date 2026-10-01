@@ -26,13 +26,13 @@ class SearchOnNameIdsSimpleTest < ActiveSupport::TestCase
     name = names(:angophora_costata)
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "name",
-        query_string: "ids: #{name.id}",
-        include_common_and_cultivar_session: true,
-        current_user: build_edit_user)
+           query_string: "ids: #{name.id}",
+           include_common_and_cultivar_session: true,
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_equal 1,
-      search.executed_query.results.size,
-      "Exactly 1 result is expected."
+                 search.executed_query.results.size,
+                 "Exactly 1 result is expected."
   end
 end

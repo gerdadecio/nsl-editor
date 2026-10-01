@@ -19,12 +19,10 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceCreateRouteTest < ActionController::TestCase
-  tests InstancesController
-
+class InstanceRouteTypeaheadsForSynTest < ActionDispatch::IntegrationTest
   test "should route to instances typeahead for synonymy" do
     assert_routing "/instances/for_synonymy",
-      controller: "instances",
-      action: "typeahead_for_synonymy"
+                   controller: "instances",
+                   action: "typeahead_for_synonymy"
   end
 end

@@ -29,7 +29,7 @@ class ForSpeciesFullyRestrictedTest < ActiveSupport::TestCase
     typeahead = Name::AsTypeahead::ForParent.new(
       term: "%",
       avoid_id: 1,
-      rank_id: NameRank.species.id,
+      rank_id: NameRank.species.id
     )
     suggestions_should_only_include(
       typeahead.suggestions,
@@ -44,7 +44,7 @@ class ForSpeciesFullyRestrictedTest < ActiveSupport::TestCase
         "Superseries",
         "\n",
         "Superspecies"
-      ],
+      ]
     )
   end
 end

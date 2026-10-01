@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class InstTAhead4NameShowRefToUpdSynonymy4EditTest < ActionController::TestCase
-  tests InstancesController
-
+class InstTAhead4NameShowRefToUpdSynonymy4EditTest < ActionDispatch::IntegrationTest
   ROSS = "Ross, E.M., (1986) Flora of South-eastern Queensland. 2:1986"
   FIN = "De Fructibus et Seminibus Plantarum. 1:1788  [invalid publication]"
 
@@ -30,19 +28,17 @@ class InstTAhead4NameShowRefToUpdSynonymy4EditTest < ActionController::TestCase
 
   test "editor should be able to typehead for synonymy instance" do
     instance = instances(:xyz_costata_is_synonym_of_angophora_costata)
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :typeahead_for_name_showing_references_to_update_instance,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get typeahead_for_name_showing_references_to_update_instance_path(
         term: "an",
-        instance_id: instance.id,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        instance_id: instance.id
+      ),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert response.body.length > 2, "Search should have results."
     assert_match FIN, response.body, "Missing: #{FIN}"
     assert_match FCOMB, response.body, "Missing: #{FCOMB}"

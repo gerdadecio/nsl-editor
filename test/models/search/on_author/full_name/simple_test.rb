@@ -29,16 +29,16 @@ class Simple < ActiveSupport::TestCase
       query_string:
             "full-name: stanley",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 1,
-      search.executed_query.results.size,
-      "Exactly 1 result is expected."
+                 search.executed_query.results.size,
+                 "Exactly 1 result is expected."
     assert_equal authors(:stanley).name,
-      search.executed_query.results.first[:name],
-      "Author stanley expected."
+                 search.executed_query.results.first[:name],
+                 "Author stanley expected."
   end
 end

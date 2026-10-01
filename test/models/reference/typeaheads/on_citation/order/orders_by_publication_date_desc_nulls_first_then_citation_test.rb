@@ -34,8 +34,8 @@ class TAOnCitnOrdersByPublicationDateTest < ActiveSupport::TestCase
       references(:flibbertigibbet_late).id.to_s,
       references(:flibbertigibbet_early).id.to_s
     ],
-      ids,
-      "Expected no-date reference first (nulls first), then " \
-        "most recently published, then the earliest."
+                 ids,
+                 "Expected no-date reference first (nulls first), then " \
+                   "most recently published, then the earliest."
   end
 end

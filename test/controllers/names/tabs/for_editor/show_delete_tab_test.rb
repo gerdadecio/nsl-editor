@@ -19,26 +19,23 @@
 require "test_helper"
 
 # Single controller test.
-class NameShowDeleteTabForEditorTest < ActionController::TestCase
-  tests NamesController
+class NameShowDeleteTabForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
   test "should show delete tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @name.id, tab: "tab_delete" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_delete"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
     assert_select "li.active a#name-delete-tab",
-      "Delete",
-      "Should show 'Delete' tab."
+                  "Delete",
+                  "Should show 'Delete' tab."
   end
 end

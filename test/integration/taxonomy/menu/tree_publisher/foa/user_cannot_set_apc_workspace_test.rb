@@ -19,23 +19,22 @@
 require "test_helper"
 
 # Single search controller test.
-class TreePublisherFoaUserCannotSetAPCWorkspaceTest < ActionController::TestCase
-  tests Trees::Workspaces::CurrentController
-
+class TreePublisherFoaUserCannotSetAPCWorkspaceTest < ActionDispatch::IntegrationTest
   test "foa tree publisher cannot set apc workspace version" do
     user = users(:foa_tax_publisher)
     foa_draft = tree_versions(:apc_draft_version)
-    post(
-      :toggle,
-      params: { id: foa_draft.id },
-      format: :js,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        groups: ["login"],
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"]
+    ) do
+      post toggle_current_workspace_path,
+        params: { id: foa_draft.id },
+        headers: { "Accept" => "application/javascript" }
+    end
+
     assert_response :forbidden, "Should not be able to set draft as current workspace"
-    assert_nil session[:draft], "Should be no session draft value set"
+    assert_nil session["draft"], "Should be no session draft value set"
   end
 end

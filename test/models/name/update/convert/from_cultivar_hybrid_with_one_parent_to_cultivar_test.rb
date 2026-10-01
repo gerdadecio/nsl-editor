@@ -31,29 +31,29 @@ class FromCultivarHybridWithOneParentToCultivarTest < ActiveSupport::TestCase
     # incorrectly in the old APNI.
     assert(
       name.second_parent_id.blank?,
-      "Expecting 2nd parent to be blank in this fixture.",
+      "Expecting 2nd parent to be blank in this fixture."
     )
     assert_not(
       name.valid?,
-      "Cultivar Hybrid name with one parent should not be valid",
+      "Cultivar Hybrid name with one parent should not be valid"
     )
 
     name.change_category_to = Name::CULTIVAR_CATEGORY
     assert_equal(
       name.category,
       Name::CULTIVAR_CATEGORY,
-      "Name category should now be CULTIVAR.",
+      "Name category should now be CULTIVAR."
     )
 
     assert_not(
       name.valid?,
-      "Name should still not be valid now as a cultivar name",
+      "Name should still not be valid now as a cultivar name"
     )
 
     assert(name.errors.size == 1, "There should be just 1 error.")
     assert(
       name.errors.collect { |k, _v| k.to_s }.include?("name_type_id"),
-      "There should be an error for name_type_id.",
+      "There should be an error for name_type_id."
     )
 
     name.name_type_id = NameType.find_by(name: "cultivar").id
@@ -62,7 +62,7 @@ class FromCultivarHybridWithOneParentToCultivarTest < ActiveSupport::TestCase
     name.save!
     assert(
       name.raw_category == Name::CULTIVAR_CATEGORY,
-      "Name converted from cultivar hybrid should now be a cultivar name",
+      "Name converted from cultivar hybrid should now be a cultivar name"
     )
   end
 end

@@ -29,7 +29,7 @@ class InstanceAsCopierWNewRefSAloneWithCitationsTest < ActiveSupport::TestCase
   def setup1
     @before = Instance.count
     @master_instance = Instance::AsCopier.find(
-      instances(:gaertner_created_metrosideros_costata).id,
+      instances(:gaertner_created_metrosideros_costata).id
     )
     @target_reference = references(:never_used)
     @target_instance_type = instance_types(:secondary_reference)
@@ -41,7 +41,7 @@ class InstanceAsCopierWNewRefSAloneWithCitationsTest < ActiveSupport::TestCase
   def setup2
     params = ActionController::Parameters.new(
       reference_id: @target_reference.id.to_s,
-      instance_type_id: @target_instance_type.id,
+      instance_type_id: @target_instance_type.id
     )
     @copied_instance = @master_instance.copy_with_citations_to_new_reference(
       params, @dummy_username
@@ -65,18 +65,18 @@ class InstanceAsCopierWNewRefSAloneWithCitationsTest < ActiveSupport::TestCase
   def test1
     assert_not(
       @master_instance.citations.empty?,
-      "Master instance should have at least 1 citation.",
+      "Master instance should have at least 1 citation."
     )
     assert_equal(
       @instances_attached_to_new_ref_b4 +
             1 + @master_instance.reverse_of_this_is_cited_by.size,
       @instances_attached_to_new_ref_after,
-      "Unexpected number of instances attached to the target ref",
+      "Unexpected number of instances attached to the target ref"
     )
     assert_equal(
       @instances_attached_to_name_b4 + 1,
       @instances_attached_to_name_after,
-      "Should be 1 extra instance attached to current name.",
+      "Should be 1 extra instance attached to current name."
     )
   end
 
@@ -84,17 +84,17 @@ class InstanceAsCopierWNewRefSAloneWithCitationsTest < ActiveSupport::TestCase
     assert_equal(
       @copied_instance.reference_id,
       @target_reference.id,
-      "Copied instance should link to the new (i.e. target) ref.",
+      "Copied instance should link to the new (i.e. target) ref."
     )
     assert_equal(
       @copied_instance.instance_type_id,
       @target_instance_type.id,
-      "Copied instance type is not correct.",
+      "Copied instance type is not correct."
     )
     assert_equal(
       @dummy_username,
       @copied_instance.created_by,
-      "Create audit should record the expected username.",
+      "Create audit should record the expected username."
     )
   end
 
@@ -102,12 +102,12 @@ class InstanceAsCopierWNewRefSAloneWithCitationsTest < ActiveSupport::TestCase
     assert_equal(
       @copied_instance.name_id,
       @master_instance.name_id,
-      "Copied instance should link to same name as orig. instance.",
+      "Copied instance should link to same name as orig. instance."
     )
     assert_equal(
       @dummy_username,
       @copied_instance.created_by,
-      "Create audit should record the expected username.",
+      "Create audit should record the expected username."
     )
   end
 
@@ -115,7 +115,7 @@ class InstanceAsCopierWNewRefSAloneWithCitationsTest < ActiveSupport::TestCase
     assert_equal(
       @dummy_username,
       @copied_instance.updated_by,
-      "Update audit should record the expected username.",
+      "Update audit should record the expected username."
     )
   end
 
@@ -123,13 +123,13 @@ class InstanceAsCopierWNewRefSAloneWithCitationsTest < ActiveSupport::TestCase
     assert_equal(
       @master_instance.reverse_of_this_is_cited_by.size,
       @copied_instance.reverse_of_this_is_cited_by.size,
-      "Copied instance should have the same number of relationships.",
+      "Copied instance should have the same number of relationships."
     )
     assert_equal(
       @before + 1 +
             @master_instance.reverse_of_this_is_cited_by.size,
       @after,
-      "There should be the correct number of extra instances.",
+      "There should be the correct number of extra instances."
     )
   end
 end

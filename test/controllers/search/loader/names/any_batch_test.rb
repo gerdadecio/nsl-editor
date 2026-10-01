@@ -19,22 +19,19 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchLoaderNameAnyBatchTest < ActionController::TestCase
-  tests SearchController
+class SearchLoaderNameAnyBatchTest < ActionDispatch::IntegrationTest
 
   test "can search for loader names" do
-    get(
-      :search,
-      params: { query_target: "loader names", query_string: "* aNy-batch:" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:login, :"batch-loader"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [:login, :"batch-loader"]
+    ) do
+      get search_path, params: { query_target: "loader names", query_string: "* aNy-batch:" }
+    end
     assert_response :success
     assert_select "#search-results-summary",
-      /\b[1-9]\d* records*\b/,
-      "Should find at least one loader name record with any-batch wildcard search"
+                  /\b[1-9]\d* records*\b/,
+                  "Should find at least one loader name record with any-batch wildcard search"
   end
 end

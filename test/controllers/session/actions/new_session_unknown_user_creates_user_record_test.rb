@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# efrozen_string_literal: true
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -21,25 +19,22 @@
 require "test_helper"
 
 # Test User can sign in.
-class NewSessionUnknownUserCreatesUserRecordTest < ActionController::TestCase
-  tests SearchController
-
-  def setup
+class NewSessionUnknownUserCreatesUserRecordTest < ActionDispatch::IntegrationTest
+  setup do
     @unknown_user_name = "fjones"
     @unknown_user_full_name = "Fred Jones"
   end
 
   test "new session for unknown user creates user record" do
     assert_difference("User.count") do
-      get(
-        :search,
-        params: {},
-        session: {
-          username: @unknown_user_name,
-          user_full_name: @unknown_user_full_name,
-          groups: [:login],
-        },
-      )
+      sign_in_as_fake_user(
+        username: @unknown_user_name,
+        full_name: @unknown_user_full_name,
+        groups: [:login]
+      ) do
+        get search_path
+      end
+
       assert_response :success
     end
     assert assigns(:current_registered_user), "Current registered user should be assigned"

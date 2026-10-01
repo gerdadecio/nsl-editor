@@ -19,24 +19,21 @@
 require "test_helper"
 
 # Single controller test.
-class NameSearch4NameTypeNRankWildcardRankThenTypeT < ActionController::TestCase
-  tests SearchController
-
+class NameSearch4NameTypeNRankWildcardRankThenTypeT < ActionDispatch::IntegrationTest
   test "editor search for name type and rank wildcard rank then type test" do
-    get(
-      :search,
-      params: {
-        "query_target" => "Names",
-        "query_string" => "nr:* nt:*",
-        "controller" => "new_search",
-        "action" => "search",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get search_path,
+        params: {
+          "query_target" => "Names",
+          "query_string" => "nr:* nt:*",
+          "controller" => "new_search",
+          "action" => "search",
+        }
+    end
     assert_response :success
     assert_select "span#search-results-summary", true, "Should find names"
   end

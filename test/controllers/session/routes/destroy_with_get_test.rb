@@ -19,13 +19,12 @@
 require "test_helper"
 
 # Single session test.
-class SessionDestroyWithGetRouteTest < ActionController::TestCase
-  tests SessionsController
+class SessionDestroyWithGetRouteTest < ActionDispatch::IntegrationTest
   test "should route to destroy a session with get" do
     assert_routing(
       { method: "get", path: "/sign_out" },
       controller: "sessions",
-      action: "destroy",
+      action: "destroy"
     )
   end
 end

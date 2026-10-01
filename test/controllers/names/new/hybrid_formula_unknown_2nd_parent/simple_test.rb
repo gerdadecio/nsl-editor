@@ -19,26 +19,20 @@
 require "test_helper"
 
 # Single controller test.
-class NamesNewScientHybridFormulaUnk2ParSimpleTest < ActionController::TestCase
-  tests NamesController
-
+class NamesNewScientHybridFormulaUnk2ParSimpleTest < ActionDispatch::IntegrationTest
   test "editor start new scientific hybrid formula unk 2nd parent" do
-    @request.headers["Accept"] = "application/javascript"
-    @request.session["username"] = "fred"
-    @request.session["user_full_name"] = "Fred Jones"
-    @request.session["groups"] = ["edit"]
-    get(
-      :new,
-      params: {
-        category: "hybrid formula unknown 2nd parent",
-        random_id: "123445",
-        tabIndex: "107",
-      },
-      session: {},
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get new_name_with_category_and_random_id_path(category: "hybrid formula unknown 2nd parent", random_id: "123445"),
+        params: { tabIndex: "107" },
+        headers: { "Accept" => "application/javascript" },
+        xhr: true
+    end
     assert_response :success,
-      "Cannot open form for a new scientific hybrid formula
+                    "Cannot open form for a new scientific hybrid formula
                     unknown 2nd parent name"
     assert_select("h4", /New Scientific Hybrid Formula Unknown 2nd Parent Name/)
   end

@@ -28,22 +28,19 @@ require "test_helper"
 # The show-novelties: directive raises a RuntimeError (StandardError subclass)
 # for the "name" target (only allowed for "references"), giving us a reliable
 # way to exercise the error path without a database error.
-class NamesSearchControllerNamesAndInstancesErrorPreservesQueryTargetTest < ActionController::TestCase
-  tests SearchController
+class NamesSearchControllerNamesAndInstancesErrorPreservesQueryTargetTest < ActionDispatch::IntegrationTest
 
   test "error during Names plus instances search preserves original query target in rendered form" do
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "Names plus instances",
         query_string: "angophora show-novelties:",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+      }
+    end
     assert_response :success
     assert_select "input#query-target[value=?]", "Names plus instances"
   end

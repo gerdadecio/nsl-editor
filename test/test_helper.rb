@@ -61,6 +61,71 @@ def debug(string)
   # print "#{Time.now} - #{string} \n"
 end
 
+# Fake a signed-in user inside an ActionDispatch::IntegrationTest, without
+# exercising the real AD-backed sign-in flow (see `sign_in` below, which
+# does exercise it and is for Capybara feature tests only).
+#
+# ActionDispatch::IntegrationTest's session is only ever populated as a
+# side effect of a real request/response cycle: Rails writes it out via
+# the CookieStore middleware after a response, and reads it back from the
+# cookie jar on the next request. There is no supported way to pre-load
+# session data before the first request - see rails/rails#18222, and
+# DHH's response in rails/rails#23386 ("the session is an internal
+# structure for the controller... I would rework the test to test
+# something visible").
+#
+# So rather than writing to `session` before a request (which is silently
+# discarded), this stubs ApplicationController#authenticate - the
+# before_action that would otherwise redirect to sign-in - for the
+# duration of a single real request, and sets the session and calls the
+# app's own `continue_user_session` from *inside* that request.
+# minitest-stub_any_instance runs the replacement via instance_exec, so
+# `self` inside the block is the actual controller instance mid-request:
+# the session write happens inside a genuine request/response cycle, and
+# `continue_user_session` (the app's real post-auth logic - building
+# SessionUser, setting up product context, working draft, etc.) runs for
+# real rather than being reimplemented in test code.
+#
+# Usage:
+#
+#   test "toggle workspace on" do
+#     sign_in_as_fake_user do
+#       post toggle_current_workspace_path, params: { id: @tree.id }
+#     end
+#     assert_response :success
+#   end
+#
+#   sign_in_as_fake_user(username: "qaonly", groups: ["qa"]) do
+#     get some_path
+#   end
+#
+# `extra_session:` sets any further session keys the app itself would
+# normally set during a real request (e.g. a working draft), for tests
+# that exercise behaviour depending on them. Match the shape the app's
+# own code writes into session (e.g. draft: { "id" => version.id }, the
+# same shape Workspaces::CurrentController#toggle writes) rather than
+# passing an ActiveRecord object directly - the old ActionController::
+# TestCase `session: {...}` versions of these tests often stashed a raw
+# AR object in session, which happened to work there because that test
+# style never serialises the session, but a real request/response cycle
+# does, so keep this to plain, serialisable values.
+def sign_in_as_fake_user(
+  username: "fred",
+  full_name: "Fred Jones",
+  groups: ["edit", "treebuilder"],
+  extra_session: {}
+)
+  ApplicationController.stub_any_instance(:authenticate, -> {
+    session[:username] = username
+    session[:user_full_name] = full_name
+    session[:groups] = groups
+    extra_session.each { |key, value| session[key] = value }
+    continue_user_session
+  }) do
+    yield
+  end
+end
+
 def standard_page_assertions
   standard_page_assertions_part_1
   standard_page_assertions_part_2
@@ -76,7 +141,7 @@ def standard_page_assertions_part_2
   assert(page.has_selector?("#search-button"), "Page has no #search-button")
   assert(
     page.has_selector?("input#search-field"),
-    "Page has no #search-field element",
+    "Page has no #search-field element"
   )
   assert(page.has_field?("query"), 'Page has no "query" field')
 end
@@ -205,7 +270,7 @@ def set_name_parent
     "name-parent-typeahead",
     "name_parent_id",
     "Agenus",
-    names(:a_genus).id,
+    names(:a_genus).id
   )
   find("#search-result-details h4").click
 end
@@ -215,7 +280,7 @@ def set_name_second_parent_to_a_species
     "name-second-parent-typeahead",
     "name_second_parent_id",
     "Aspecies",
-    names(:a_species).id,
+    names(:a_species).id
   )
   find("#search-result-details h4").click
 end
@@ -225,7 +290,7 @@ def set_name_parent_to_a_species
     "name-parent-typeahead",
     "name_parent_id",
     "Aspecies",
-    names(:a_species).id,
+    names(:a_species).id
   )
   find("#search-result-details h4").click
 end
@@ -235,7 +300,7 @@ def set_name_parent_to_a_genus
     "name-parent-typeahead",
     "name_parent_id",
     "Agenus",
-    names(:a_genus).id,
+    names(:a_genus).id
   )
   find("#search-result-details h4").click
 end
@@ -292,7 +357,7 @@ def load_new_hybrid_formula_form
   find_link("New hybrid formula name").click
   search_result_must_include_content("New hybrid formula name")
   search_result_details_must_include_content(
-    "New Scientific Hybrid Formula Name",
+    "New Scientific Hybrid Formula Name"
   )
 end
 
@@ -315,7 +380,7 @@ def load_new_hybrid_formula_unknown_2nd_parent_form
   select_from_menu(["New", "Hybrid formula unknown 2nd parent name"])
   search_result_must_include_link("New hybrid formula unknown 2nd parent name")
   search_result_details_must_include_content(
-    "New Scientific Hybrid Formula Unknown 2nd Parent Name",
+    "New Scientific Hybrid Formula Unknown 2nd Parent Name"
   )
 end
 
@@ -380,7 +445,7 @@ def assert_expected(expected_contents)
     assert(
       page.has_content?(expected_content),
       "assert_successful_create_for says:
-           Missing expected content: #{expected_content}",
+           Missing expected content: #{expected_content}"
     )
   end
 end
@@ -390,7 +455,7 @@ def assert_no_prohibited(prohibited_contents)
     assert(
       page.has_no_content?(prohibited_content),
       "assert_successful_create_for says:
-           Missing prohibited content: #{prohibited_content}",
+           Missing prohibited content: #{prohibited_content}"
     )
   end
 end

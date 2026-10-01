@@ -29,7 +29,7 @@ class InstanceDeleteServiceNotPermitted403Test < ActiveSupport::TestCase
     }
     stub_request(
       :delete,
-      "#{action}?apiKey=test-api-key&reason=Edit",
+      "#{action}?apiKey=test-api-key&reason=Edit"
     )
       .with(headers: headers)
       .to_return(status: 403, body: raw.to_json, headers: {})
@@ -51,7 +51,7 @@ class InstanceDeleteServiceNotPermitted403Test < ActiveSupport::TestCase
   test "instance delete service not permitted 403" do
     exception = assert_raise(
       RuntimeError,
-      "Should raise runtime exception for not permitted",
+      "Should raise runtime exception for not permitted"
     ) do
       # The test mock service determines response based on the id
       Instance::AsServices.delete(403)

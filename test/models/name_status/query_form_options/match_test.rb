@@ -93,7 +93,7 @@ class NameStatusQueryFormOptionsMatchTest < ActiveSupport::TestCase
     assert(pair[0] == str, "Expected '#{str}', not '#{pair[0]}'")
     assert(
       pair[1] == "status: #{str}",
-      "Expected: status #{str}, not #{pair[1]}",
+      "Expected: status #{str}, not #{pair[1]}"
     )
   end
 end

@@ -25,7 +25,7 @@ class SearchOnInstanceProfilePrintTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "show-profiles: print:",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert search.parsed_request.print, "Print directive should be enabled"
@@ -36,7 +36,7 @@ class SearchOnInstanceProfilePrintTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "id: 1 print:",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     error = assert_raises(RuntimeError) do
       Search::Base.new(params)
@@ -48,7 +48,7 @@ class SearchOnInstanceProfilePrintTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "show-profiles: print:",
-      current_user: build_edit_user,
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Search should return results to verify behavior"

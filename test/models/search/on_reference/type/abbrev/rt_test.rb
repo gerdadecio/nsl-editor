@@ -24,8 +24,8 @@ class SearchOnReferenceAbbrevRtSimpleTest < ActiveSupport::TestCase
   test "search on reference abbrev rt simple" do
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "rt: book",
-        current_user: build_edit_user)
+           query_string: "rt: book",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert_not search.executed_query.results.empty?, "Results expected."
   end

@@ -27,37 +27,35 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePublisherAPCUserCannotRemoveNamePlacementForTaxonOnAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
+class TaxFormsTreePublisherAPCUserCannotRemoveNamePlacementForTaxonOnAPCDraftTest < ActionDispatch::IntegrationTest
   test "APC tree publisher user cannot remove name placement of taxon on APC draft" do
     user = users(:apc_tax_publisher)
     apc_draft = tree_versions(:apc_draft_version)
     tve = tree_version_elements(:tve_for_red_gum)
-    delete(
-      :remove_name_placement,
-      params: {
-        "remove_placement" => {
-          "taxon_uri" => tve.element_link,
-          "delete" => "",
-          "cancel_remove_placement" => { "delete" => "" },
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => apc_draft.id } }
+    ) do
+      delete tree_remove_name_path(id: tve.id),
+        params: {
+          "remove_placement" => {
+            "taxon_uri" => tve.element_link,
+            "delete" => "",
+            "cancel_remove_placement" => { "delete" => "" },
+          },
         },
-        "id" => tve.id,
-      },
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: apc_draft,
-        groups: ["login"],
-      },
-    )
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :forbidden, "APC tree publisher should not be able to remove placement from APC draft"
     assert_match(
       /access denied/i,
       response.body,
-      "Expecting Not authorized message",
+      "Expecting Not authorized message"
     )
   end
 end

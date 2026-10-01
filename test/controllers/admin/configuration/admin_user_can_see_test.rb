@@ -19,25 +19,21 @@
 require "test_helper"
 
 # Single test per file
-class AdminControllerAdminUserCanSeeDBConnsTest < ActionController::TestCase
-  tests AdminController
-
+class AdminControllerAdminUserCanSeeDBConnsTest < ActionDispatch::IntegrationTest
   test "admin user should get configuration page" do
-    get(
-      :index,
-      params: {},
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["admin"],
-      },
-      xhr: true,
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["admin"]
+    ) do
+      get admin_path, xhr: true
+    end
+
     assert_response :success
     assert_match(
       /Bundler.*#{Regexp.escape(Bundler::VERSION)}/mo,
       response.body,
-      "expected the admin page to show the Bundler version",
+      "expected the admin page to show the Bundler version"
     )
   end
 end

@@ -19,33 +19,30 @@
 require "test_helper"
 
 # Single controller test.
-class CannotUpdateStandaloneToDuplicatePrimary < ActionController::TestCase
-  tests InstancesController
-  def setup
+class CannotUpdateStandaloneToDuplicatePrimary < ActionDispatch::IntegrationTest
+  setup do
     @instance = instances(:casuarina_inophloia_by_mueller)
     assert(@instance.instance_type == instance_types(:secondary_reference))
     @target = instances(:casuarina_inophloia_by_mueller_and_bailey)
     assert(@target.instance_type == instance_types(:tax_nov))
-    @request.headers["Accept"] = "application/javascript"
   end
 
   test "editor cannot update standalone instance to extra primary" do
-    put(
-      :update,
-      params: {
-        id: @instance.id,
-        instance: {
-          "reference_id" => @target.reference_id,
-          "instance_type_id" => @target.instance_type_id,
-          "page" => @target.page,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      put instance_path(id: @instance.id),
+        params: {
+          instance: {
+            "reference_id" => @target.reference_id,
+            "instance_type_id" => @target.instance_type_id,
+            "page" => @target.page,
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert Instance.find(@instance.id).name_id == @target.name_id
     check_assertions
   end
@@ -56,14 +53,14 @@ class CannotUpdateStandaloneToDuplicatePrimary < ActionController::TestCase
     assert_match(
       /#{es}/,
       response.body,
-      "Expected error message did not appear",
+      "Expected error message did not appear"
     )
     es = "Saving this instance would result in multiple primary instances"
     es += " for the same name."
     assert_match(
       /#{es}/,
       response.body,
-      "Expected error message did not appear",
+      "Expected error message did not appear"
     )
   end
 end

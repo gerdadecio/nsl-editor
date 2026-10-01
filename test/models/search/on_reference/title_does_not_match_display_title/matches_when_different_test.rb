@@ -33,11 +33,11 @@ class SearchOnReferenceTitleDoesNotMatchDisplayTitleMatchesWhenDifferentTest < A
 
     params = ActiveSupport::HashWithIndifferentAccess
       .new(query_target: "reference",
-        query_string: "title-does-not-match-display-title:",
-        current_user: build_edit_user)
+           query_string: "title-does-not-match-display-title:",
+           current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_includes search.executed_query.results.map(&:id), reference.id
   end
 end

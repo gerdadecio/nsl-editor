@@ -19,23 +19,20 @@
 require "test_helper"
 
 # Single search controller test.
-class SearchRefsDefinedQRefIdWithInstsListHasInst < ActionController::TestCase
-  tests SearchController
+class SearchRefsDefinedQRefIdWithInstsListHasInst < ActionDispatch::IntegrationTest
 
   test "reference id with instances" do
     ref = references(:bucket_reference_for_default_instances)
-    get(
-      :search,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get search_path, params: {
         query_target: "references",
         query_string: "id: #{ref.id} show-instances:",
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [],
-      },
-    )
+      }
+    end
     assert_response :success
     # NOTES (limit/total redesign, follow-up): despite the directory name,
     # this hits the generic (non-defined-query) path - query_target here is
@@ -44,7 +41,7 @@ class SearchRefsDefinedQRefIdWithInstsListHasInst < ActionController::TestCase
     # attached instances are shown but no longer folded into the count) -
     # see Search::OnModel::Base#run_list_query.
     assert_select "#search-results-summary",
-      /1 record\b/,
-      "Should find 1 record"
+                  /1 record\b/,
+                  "Should find 1 record"
   end
 end

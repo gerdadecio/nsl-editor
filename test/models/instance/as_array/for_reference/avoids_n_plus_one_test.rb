@@ -49,7 +49,7 @@ class InstanceAsArrayForReferenceAvoidsNPlusOneTest < ActiveSupport::TestCase
         # a second comb_nov here would fail validation regardless of which
         # reference it's on.
         instance_type: instance_types(:comb_et_stat_nov),
-        page: "n-plus-one-standalone-#{n}",
+        page: "n-plus-one-standalone-#{n}"
       )
     end
     @standalones.each_with_index do |standalone, n|
@@ -61,7 +61,7 @@ class InstanceAsArrayForReferenceAvoidsNPlusOneTest < ActiveSupport::TestCase
         name: names(:the_regnum),
         instance_type: instance_types(:nomenclatural_synonym),
         this_is_cited_by: standalone,
-        page: "n-plus-one-citing-#{n}",
+        page: "n-plus-one-citing-#{n}"
       )
     end
   end
@@ -77,12 +77,12 @@ class InstanceAsArrayForReferenceAvoidsNPlusOneTest < ActiveSupport::TestCase
   test "instance query count does not scale with the number of standalone instances" do
     query_count = count_instance_load_queries { Instance::AsArray::ForReference.new(@ref) }
     assert_operator query_count,
-      :<,
-      STANDALONE_COUNT,
-      "Expected the number of Instance-table queries to stay well below " \
-        "the number of standalone instances (#{STANDALONE_COUNT}) - got " \
-        "#{query_count}, which suggests a query is again being issued per " \
-        "standalone instance"
+                    :<,
+                    STANDALONE_COUNT,
+                    "Expected the number of Instance-table queries to stay well below " \
+                      "the number of standalone instances (#{STANDALONE_COUNT}) - got " \
+                      "#{query_count}, which suggests a query is again being issued per " \
+                      "standalone instance"
   end
 
   private

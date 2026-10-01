@@ -19,27 +19,24 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceDestroyForbiddenForReaderTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceDestroyForbiddenForReaderTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:simple)
   end
 
   test "reader should not be able to destroy a reference" do
-    @request.headers["Accept"] = "application/javascript"
     assert_no_difference(
       "Reference.count",
-      "No references should be harmed in this test",
+      "No references should be harmed in this test"
     ) do
-      post(
-        :destroy,
-        params: { id: @reference.id },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: [],
-        },
-      )
+      sign_in_as_fake_user(
+        username: "fred",
+        full_name: "Fred Jones",
+        groups: []
+      ) do
+        delete reference_path(id: @reference.id),
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     assert_response :forbidden, "Reader should not be able to destroy reference"
   end

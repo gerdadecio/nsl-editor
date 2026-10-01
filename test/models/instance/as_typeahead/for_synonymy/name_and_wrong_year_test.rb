@@ -24,7 +24,7 @@ class ForNameAndReferenceYearTest < ActiveSupport::TestCase
   test "name and wrong year search" do
     ta = Instance::AsTypeahead::ForSynonymy.new(
       "angophora costata 1789",
-      names(:a_species).id,
+      names(:a_species).id
     )
     assert ta.results.instance_of?(Array), "Results should be an array."
     assert ta.results.empty?, "Results should include no records."

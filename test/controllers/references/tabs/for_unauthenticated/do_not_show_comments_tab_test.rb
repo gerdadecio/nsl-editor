@@ -19,19 +19,14 @@
 require "test_helper"
 
 # Single reference controller test.
-class ReferenceUnauthcatedDoNotShowCommentsTabTest < ActionController::TestCase
-  tests ReferencesController
+class ReferenceUnauthcatedDoNotShowCommentsTabTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:a_book)
   end
 
   test "should not show unauthenticated reference comments tab" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @reference.id, tab: "tab_comments" },
-      session: {},
-    )
+    get reference_tab_path(id: @reference.id, tab: "tab_comments"),
+      headers: { "Accept" => "application/javascript" }
     assert response.body.match(/Your session may have expired.  Please reload the whole page before continuing/)
   end
 end

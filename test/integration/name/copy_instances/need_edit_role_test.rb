@@ -19,30 +19,23 @@
 require "test_helper"
 
 # Single controller test.
-class NamesCopyInstancesNeedEditRole < ActionController::TestCase
-  tests NamesController
-
+class NamesCopyInstancesNeedEditRole < ActionDispatch::IntegrationTest
   test "user needs edit role to copy name standalone instances" do
     source_name = names(:angophora_costata)
     target_name = names(:angophora_fred)
+
     assert_difference("Instance.count", 0) do
-      post(
-        :copy_instances,
-        params: {
-          name: {
-            "target_name_id" => target_name.id.to_s,
-            "instance_ids_to_copy" => source_name.standalone_instances.map(&:id),
+      sign_in_as_fake_user(groups: ["login"]) do
+        post name_copy_instances_path(id: source_name.id),
+          params: {
+            name: {
+              "target_name_id" => target_name.id.to_s,
+              "instance_ids_to_copy" => source_name.standalone_instances.map(&:id),
+            },
+            "commit" => "Confirm",
           },
-          "commit" => "Confirm",
-          format: :js,
-          "id" => source_name.id.to_s,
-        },
-        session: {
-          username: "fred",
-          user_full_name: "Fred Jones",
-          groups: ["login"],
-        },
-      )
+          headers: { "Accept" => "text/javascript" }
+      end
     end
   end
 end

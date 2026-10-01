@@ -26,18 +26,18 @@ class AuthorMustHaveNameTest < ActiveSupport::TestCase
     assert_match(
       /Name can't be blank/,
       author.errors.full_messages.join(";"),
-      "Error should mention blank name",
+      "Error should mention blank name"
     )
     assert_match(
       /Abbrev can't be blank if name is blank/,
       author.errors.full_messages.join(";"),
-      "Error should mention blank abbrev",
+      "Error should mention blank abbrev"
     )
     author.abbrev = "wilma"
     assert_not author.valid?, "Author should not be valid with an abbrev if no name."
     author.abbrev = nil
     author.name = "some name"
     assert author.valid?,
-      "Author should be valid with a name even if no abbrev."
+           "Author should be valid with a name even if no abbrev."
   end
 end

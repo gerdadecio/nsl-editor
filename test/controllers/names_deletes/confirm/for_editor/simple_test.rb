@@ -19,9 +19,7 @@
 require "test_helper"
 
 # Single controller test.
-class NamesDeleteConfirmForEditorSimpleTest < ActionController::TestCase
-  tests NamesDeletesController
-
+class NamesDeleteConfirmForEditorSimpleTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:name_to_delete)
     @reason = "some reason"
@@ -48,22 +46,21 @@ class NamesDeleteConfirmForEditorSimpleTest < ActionController::TestCase
   end
 
   test "editor should be able to confirm name delete" do
-    @request.headers["Accept"] = "application/javascript"
-    delete(
-      :confirm,
-      params: {
-        names_delete: {
-          name_id: @name.id,
-          reason: @reason,
-          extra_info: @extra_info,
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      delete names_deletes_path,
+        params: {
+          names_delete: {
+            name_id: @name.id,
+            reason: @reason,
+            extra_info: @extra_info,
+          },
         },
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success, "Reader should be able to delete"
   end
 end

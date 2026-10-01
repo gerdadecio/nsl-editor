@@ -19,27 +19,24 @@
 require "test_helper"
 
 # Single controller test.
-class UserCreateUnauthorisedTest < ActionController::TestCase
-  tests UsersController
-
+class UserCreateUnauthorisedTest < ActionDispatch::IntegrationTest
   test "create user unauthorised" do
-    @request.headers["Accept"] = "application/javascript"
     assert_no_difference("User.count") do
-      post(
-        :create,
-        params: {
-          user: {
-            "user_name" => "auser",
-            "given_name" => "a",
-            "family_name" => "user",
+      sign_in_as_fake_user(
+        username: "uone",
+        full_name: "auser One",
+        groups: ["edit"]
+      ) do
+        post users_path,
+          params: {
+            user: {
+              "user_name" => "auser",
+              "given_name" => "a",
+              "family_name" => "user",
+            },
           },
-        },
-        session: {
-          username: "uone",
-          user_full_name: "auser One",
-          groups: ["edit"],
-        },
-      )
+          headers: { "Accept" => "application/javascript" }
+      end
     end
     # assert_response(:forbidden, 'Non-admin users should not create a user')
   end

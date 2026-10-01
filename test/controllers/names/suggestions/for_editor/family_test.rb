@@ -23,8 +23,7 @@ require "test_helper"
 # the shared html fragment as well as the json it always has. Mirrors
 # test/controllers/names/suggestions/for_editor/parent_test.rb, the sibling
 # field migrated just before it.
-class NameFamilySuggestionsForEditorTest < ActionController::TestCase
-  tests NamesController
+class NameFamilySuggestionsForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
@@ -32,20 +31,18 @@ class NameFamilySuggestionsForEditorTest < ActionController::TestCase
   # name_id and rank_id ride along because the field sends them, as the
   # typeahead.js widget before it did.
   def get_suggestions(term, format: :html)
-    get(
-      :name_family_suggestions,
-      params: {
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: ["edit"]
+    ) do
+      get name_name_family_suggestions_path(
         term: term,
         rank_id: name_ranks(:species).id,
         name_id: @name.id,
-        format: format,
-      },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: ["edit"],
-      },
-    )
+        format: format
+      )
+    end
   end
 
   # The response is a bare list of <li> elements with no enclosing <ul>, so
@@ -53,7 +50,7 @@ class NameFamilySuggestionsForEditorTest < ActionController::TestCase
   # whole document.
   def assert_select_in_body(*args, &block)
     assert_select(
-      Nokogiri::HTML::DocumentFragment.parse(@response.body),
+      Nokogiri::HTML::DocumentFragment.parse(response.body),
       *args,
       &block
     )
@@ -65,14 +62,14 @@ class NameFamilySuggestionsForEditorTest < ActionController::TestCase
     assert_response :success
     assert_select_in_body(
       "li.autocomplete-result[data-autocomplete-value='#{names(:a_family).id}']",
-      true,
+      true
     )
   end
 
   test "should bold the matched part of the name" do
     get_suggestions("a_fam")
 
-    assert_includes @response.body, "<strong>a_fam</strong>"
+    assert_includes response.body, "<strong>a_fam</strong>"
   end
 
   # Only names of family rank are offered - the field is asking which family
@@ -82,7 +79,7 @@ class NameFamilySuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-      text: "No matches"
+                          text: "No matches"
   end
 
   test "should render a no matches option for a term matching nothing" do
@@ -90,7 +87,7 @@ class NameFamilySuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-      text: "No matches"
+                          text: "No matches"
   end
 
   test "should render a no matches option for a blank term" do
@@ -98,14 +95,14 @@ class NameFamilySuggestionsForEditorTest < ActionController::TestCase
 
     assert_response :success
     assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
-      text: "No matches"
+                          text: "No matches"
   end
 
   test "should still answer json" do
     get_suggestions("a_fam", format: :json)
 
     assert_response :success
-    suggestions = JSON.parse(@response.body)
+    suggestions = JSON.parse(response.body)
     assert_includes suggestions.map { |s| s["id"] }, names(:a_family).id
   end
 end

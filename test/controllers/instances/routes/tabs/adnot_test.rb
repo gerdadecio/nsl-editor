@@ -19,13 +19,12 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceRouteToAdnotTabTest < ActionController::TestCase
-  tests InstancesController
+class InstanceRouteToAdnotTabTest < ActionDispatch::IntegrationTest
   test "should route to instance adnot tab" do
     assert_routing "/instances/1/tab/adnot",
-      controller: "instances",
-      action: "tab",
-      id: "1",
-      tab: "adnot"
+                   controller: "instances",
+                   action: "tab",
+                   id: "1",
+                   tab: "adnot"
   end
 end

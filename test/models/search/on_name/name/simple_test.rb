@@ -30,11 +30,11 @@ class SearchOnNameNameSimpleTest < ActiveSupport::TestCase
       query_string:
             "name: angophora",
       current_user:
-            build_edit_user,
+            build_edit_user
     )
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert_not search.executed_query.results.empty?,
-      "Expected at least one search result"
+               "Expected at least one search result"
   end
 end

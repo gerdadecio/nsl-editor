@@ -18,10 +18,8 @@
 #
 require "test_helper"
 
-class APCTreePublisherRunSynonymyReportForAPCDraftTest < ActionController::TestCase
-  tests TreesController
-
-  def setup
+class APCTreePublisherRunSynonymyReportForAPCDraftTest < ActionDispatch::IntegrationTest
+  setup do
     stub_request(:get, /http:..localhost:90...*tree.checkCurrentSynonymy.embed=true.treeVersionId=146236284/)
       .with(
         headers: {
@@ -30,7 +28,7 @@ class APCTreePublisherRunSynonymyReportForAPCDraftTest < ActionController::TestC
           "Content-Type" => "text/html",
           "Host" => /localhost/,
           "User-Agent" => /ruby/,
-        },
+        }
       )
       .to_return(status: 200, body: "", headers: {})
   end
@@ -41,17 +39,18 @@ class APCTreePublisherRunSynonymyReportForAPCDraftTest < ActionController::TestC
     user = users(:apc_tax_publisher)
     draft = tree_versions(:apc_draft_version)
     tree_version_elements(:tve_for_red_gum)
-    get(
-      :run_cas,
-      format: :js,
-      xhr: true,
-      session: {
-        username: user.user_name,
-        user_full_name: user.full_name,
-        draft: draft,
-        groups: ["login"],
-      },
-    )
+
+    sign_in_as_fake_user(
+      username: user.user_name,
+      full_name: user.full_name,
+      groups: ["login"],
+      extra_session: { draft: { "id" => draft.id } }
+    ) do
+      get run_cas_path,
+        xhr: true,
+        headers: { "Accept" => "text/javascript" }
+    end
+
     assert_response :success, "APC tree publisher should be able to run syn report for APC draft"
   end
 end

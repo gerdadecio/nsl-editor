@@ -19,15 +19,15 @@
 require "test_helper"
 
 # Reference controller tests not yet broken into single test files.
-class ReferencesControllerTest < ActionController::TestCase
+class ReferencesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:cavanilles_icones)
   end
 
   test "should route to reference typeahead suggestions by citation" do
     assert_routing "/references/typeahead/on_citation",
-      controller: "references",
-      action: "typeahead_on_citation"
+                   controller: "references",
+                   action: "typeahead_on_citation"
   end
 
   # test "should route to show a reference" do
@@ -39,16 +39,14 @@ class ReferencesControllerTest < ActionController::TestCase
   # end
 
   test "should show reference" do
-    @request.headers["Accept"] = "application/javascript"
-    get(
-      :show,
-      params: { id: @reference, tab: "tab_show_1" },
-      session: {
-        username: "fred",
-        user_full_name: "Fred Jones",
-        groups: [:edit],
-      },
-    )
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: []
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_show_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
     assert_response :success
   end
 end
