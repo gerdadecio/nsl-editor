@@ -3,21 +3,40 @@
     <%= show_field_as_linked_lookup('',@instance.name,'full_name', search_path(query_string: %Q(id:#{@instance.name_id}),query_target: 'name'),'name') %>
     appears in reference<span class="red">*</span>
 
+    <%# Reference: powered by stimulus-autocomplete instead of the vendored
+        typeahead.js/Bloodhound widget (setUpInstanceReference and its
+        referenceByCitation source in typeaheads/for_instance/reference.js,
+        both now gone), following the new instance form's Name field. Dom
+        id, classes, title, placeholder and tab order are unchanged, so the
+        focusOnField call at the bottom of this form and the .give-me-focus
+        hook carry on untouched.
+
+        No label local: the field sits inside the "... appears in reference
+        ..." sentence, which already carries the red asterisk.
+
+        The hidden reference_id field the form used to render further down
+        is now rendered by the shared partial, inside the wrapper - same dom
+        id and param name. The create action reads reference_id and ignores
+        the typed text.
+
+        term_delimiter keeps a pick from poisoning the next search: the
+        suggestions read "<citation> | [pages] [type]". %>
     <div class="typeahead-container">
       <section class='block width-100-percent'>
-        <input id="instance-reference-typeahead"
-               class="typeahead form-control width-100-percent give-me-focus" 
-               title="Enter the reference.  Typeahead for reference citation, allows unordered fragments."
-               required="true"
-               autofocus="true"
-               tabindex="<%= increment_tab_index %>"
-               type="text" 
-               placeholder="Reference wildcarded order-insensitive citation search"
-               value="<%= @instance.reference.try('title') %>"/>
+        <%= render "shared/autocomplete_field",
+                   f: f,
+                   id_attribute: :reference_id,
+                   input_id: "instance-reference-typeahead",
+                   input_name: "instance[reference_typeahead]",
+                   input_value: @instance.reference.try("title"),
+                   input_class: "width-100-percent give-me-focus",
+                   required: true,
+                   placeholder: "Reference wildcarded order-insensitive citation search",
+                   title: "Enter the reference.  Typeahead for reference citation, allows unordered fragments.",
+                   url: references_typeahead_on_citation_path(format: :html),
+                   term_delimiter: " |" %>
       </section>
     </div>
-
-    <script> setUpInstanceReference(); </script>
 
     as an instance type<span class="red">*</span>
     <%= render partial: 'detail_line', locals: {
@@ -40,7 +59,6 @@
     <%= render partial: "instances/widgets/as_a_draft", locals: {f: f} %>
     <br>
     <%= f.hidden_field :name_id %>
-    <%= f.hidden_field :reference_id %>
     <br>
     <%= f.submit id: "save-new-instance-btn", class: 'btn-primary', title: "Save changes", tabindex: increment_tab_index %>
     <br>

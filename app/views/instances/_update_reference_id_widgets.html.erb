@@ -19,17 +19,20 @@ Change the reference for this instance and its
           </ul>
         </div>
     <% end %>
-        <input id="instance-reference-typeahead"
-               name="instance[reference_typeahead]"
-               class="typeahead form-control"
-               required="required"
-               placeholder="Reference"
-               tabindex="<%= increment_tab_index %>"
-               title="Reference typeahead.  Enter text to see matching references."
-               type="text"
-               value="<%= @instance.reference.try('citation') %>"/>
-        <%= f.hidden_field :reference_id %>
-        <script> setUpInstanceReference(); </script>
+        <%# Reference: on stimulus-autocomplete, as in
+            _form_create_from_name. The shared partial renders the hidden
+            reference_id field; dom ids and param names are unchanged. %>
+        <%= render "shared/autocomplete_field",
+                   f: f,
+                   id_attribute: :reference_id,
+                   input_id: "instance-reference-typeahead",
+                   input_name: "instance[reference_typeahead]",
+                   input_value: @instance.reference.try("citation"),
+                   required: true,
+                   placeholder: "Reference",
+                   title: "Reference typeahead.  Enter text to see matching references.",
+                   url: references_typeahead_on_citation_path(format: :html),
+                   term_delimiter: " |" %>
 
     <br>
     <%=

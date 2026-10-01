@@ -1,4 +1,8 @@
 - :date: 01-October-2026
+  :jira_id: '5951'
+  :description: |-
+    Typeahead upgrade: Upgrade the instance reference citation typeahead fields in the instance form to use stimulus autocomplete
+- :date: 01-October-2026
   :jira_id: '5950'
   :description: |-
     Code Linting: Rubocop changes mostly to test files - BAU workflow testing only

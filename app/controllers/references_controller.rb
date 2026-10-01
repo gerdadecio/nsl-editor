@@ -96,10 +96,28 @@ class ReferencesController < ApplicationController
     end
   end
 
-  # Columns such as duplicate_of_id use a typeahead search.
+  # Used by the instance forms' Reference field: new instance for a name,
+  # the standalone instance edit form, and the change reference widgets.
+  #
+  # Two response formats over the one query, as for
+  # NamesController#typeahead_on_full_name:
+  #   json - what the field asked for while it was on typeahead.js; still
+  #          asked for by typeaheads/for_instance/reference_profile_v2.js.
+  #   html - the fragment of <li role="option"> elements stimulus-autocomplete
+  #          expects, which the Reference field asks for by extension.
   def typeahead_on_citation
-    render(json: []) if params[:term].blank?
-    render(json: Reference::AsTypeahead::OnCitation.new(params[:term]).results)
+    suggestions = if params[:term].blank?
+      []
+    else
+      Reference::AsTypeahead::OnCitation.new(params[:term]).results
+    end
+    respond_to do |format|
+      format.json { render json: suggestions }
+      format.html do
+        render partial: "shared/autocomplete_suggestions",
+               locals: {suggestions: suggestions, term: params[:term]}
+      end
+    end
   end
 
   # Columns such as duplicate_of_id use a typeahead search.
