@@ -214,6 +214,45 @@ bundle install
 # run the server
 rails s
 ```
+### Git hooks
+The repo ships shared git hooks in `.githooks/`. Enable them once per clone (`bin/setup` does this for you):
+```bash
+git config core.hooksPath .githooks
+```
+
+- `pre-commit`
+  - Blocks commits that add Bootstrap 3/4 classes removed or renamed in Bootstrap 5.
+  - Runs RuboCop on the staged Ruby files (`*.rb`, `*.rake`, `*.gemspec`, `*.ru`, `Gemfile`, `Rakefile`). It runs inside the first running editor container, otherwise with the local `bundle exec rubocop`. By default it looks for `nsl_editor_source` (docker-apps setup), then `nsl_app_dev` (`docker-compose.dev.yml`).
+- `pre-push` asks for confirmation before pushing to `main`/`master`.
+
+Overriding the checks for a single commit:
+```bash
+# skip only RuboCop (the Bootstrap 5 check still runs)
+SKIP_RUBOCOP=1 git commit -m "your message"
+
+# skip all pre-commit checks
+git commit --no-verify -m "your message"   # or: git commit -n -m "..."
+
+# force where RuboCop runs
+RUBOCOP_RUNNER=docker git commit -m "your message"
+RUBOCOP_RUNNER=local git commit -m "your message"
+```
+
+If your editor container has a different name, point the hook at it. The container must mount this repo at its working directory:
+```bash
+# as an environment variable (add to ~/.zshrc or ~/.bashrc to persist)
+export RUBOCOP_CONTAINER=my_editor_container
+
+# or once per clone (also works from GUI git clients that don't load your shell profile)
+git config hooks.rubocopContainer my_editor_container
+
+# or for a single commit
+RUBOCOP_CONTAINER=my_editor_container git commit -m "your message"
+```
+If more than one is set, `RUBOCOP_CONTAINER` wins over `hooks.rubocopContainer`, which wins over the defaults.
+
+Most RuboCop offenses can be auto-fixed with `bundle exec rubocop -a <file>`; re-stage the file and commit again.
+
 ### Annotaterb
 Since we don't conventionally use db migrations, the annotaterb gem won't be triggered once a db schema is changed.
 

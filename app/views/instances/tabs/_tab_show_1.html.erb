@@ -97,6 +97,4 @@
 <% if @instance.source_system %>
   <br>Migrated from <%= "#{@instance.source_system.downcase} ##{@instance.source_id}" %>
 <% end %>
-<% if Rails.configuration.try(:soft_delete_enabled) && @instance.deleted_at %>
-  <br>Record soft deleted on: <%= formatted_timestamp(@instance.deleted_at) %>
-<% end %>
+<%= soft_deleted_by_whom_and_when(@instance).html_safe %>
