@@ -1,8 +1,4 @@
 - :date: 01-October-2026
-  :jira_id: '5955'
-  :description: |-
-    Loader Name Search: Restore missing search directive <code>misapp-matched-without-cross-ref:</code> from old Orchid source code
-- :date: 01-October-2026
   :jira_id: '5950'
   :description: |-
     Code Linting: Rubocop changes mostly to test files - BAU workflow testing only
