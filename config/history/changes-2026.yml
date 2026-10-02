@@ -1,4 +1,8 @@
 - :date: 02-October-2026
+  :jira_id: '5953'
+  :description: |-
+    Typeahead upgrade: Upgrade the instance reference typeahead in the profile v2 reference form to use stimulus autocomplete
+- :date: 02-October-2026
   :jira_id: '5958'
   :description: |-
     Final set of rubocops for Rails Omakase config - BAU workflow testing please
