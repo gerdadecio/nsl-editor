@@ -1,4 +1,8 @@
 - :date: 02-October-2026
+  :jira_id: '5952'
+  :description: |-
+    Typeahead upgrade: Upgrade the instance reference typeahead in the copy to new reference tab (which excludes the current reference) to use stimulus autocomplete
+- :date: 02-October-2026
   :jira_id: '5957'
   :description: |-
     Code Linting: More Rubocop fixes - including to some app files - BAU workflow testing only
