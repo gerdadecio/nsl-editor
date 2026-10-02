@@ -63,7 +63,6 @@ import "typeaheads_for_instance_for_name_showing_reference_update";
 import "typeaheads_for_instance_target_name_for_copy_instances";
 import "typeaheads_for_instance_name_for_unpub_citation";
 import "typeaheads_for_instance_reference_profile_v2";
-import "typeaheads_for_instance_reference_excluding_current";
 import "typeaheads_for_instance_synonymy";
 import "typeaheads_for_instance_product_item_config";
 import "typeaheads_for_instance_change_name";

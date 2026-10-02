@@ -120,14 +120,24 @@ class ReferencesController < ApplicationController
     end
   end
 
-  # Columns such as duplicate_of_id use a typeahead search.
-  # ToDo: deprecate and get rid of route
+  # Used by the copy to new reference tab's Reference field, which offers
+  # any reference but the instance's current one (params[:id]).
+  #
+  # Same two formats as typeahead_on_citation: html for the field, now on
+  # stimulus-autocomplete, and json as before.
   def typeahead_on_citation_with_exclusion
-    render(json: []) if params[:term].blank?
-    render(json: Reference::AsTypeahead::OnCitation.new(
-      params[:term],
-      params[:id],
-    ).results)
+    suggestions = if params[:term].blank?
+      []
+    else
+      Reference::AsTypeahead::OnCitation.new(params[:term], params[:id]).results
+    end
+    respond_to do |format|
+      format.json { render json: suggestions }
+      format.html do
+        render partial: "shared/autocomplete_suggestions",
+               locals: { suggestions: suggestions, term: params[:term] }
+      end
+    end
   end
 
   # Columns such as parent and duplicate_of_id use a typeahead search.

@@ -30,19 +30,33 @@
     The copied instance will be attached to a reference other than<br>
     <h6>&mdash; <%= @instance.reference.citation %></h6>
     <br>
-    <label for="instance-reference-typeahead">Reference<span class="red">*</span></label>
-    <br>
+    <%# Reference: on stimulus-autocomplete, as in
+        instances/_form_create_from_name, instead of the typeahead.js
+        widget set up by setUpInstanceReferenceExcludingCurrent (now gone).
+        The instance's current reference is excluded by the endpoint, its id
+        now baked into the url rather than read off a data-excluded-id
+        attribute at query time.
+
+        The shared partial renders the hidden reference_id field inside the
+        wrapper - same dom id and param name - and id_value keeps it empty
+        to start with, so the Copy link's must_have_value check still waits
+        for a pick. %>
     <div class="typeahead-container">
       <section class='block width-100-percent'>
-        <input id="instance-reference-typeahead"
-              class="typeahead form-control width-100-percent give-me-focus"
-              tabindex="<%= increment_tab_index %>"
-              type="text"
-              data-excluded-id="<%= @instance.reference.id %>"
-              required
-              title="Start typing to see a list of references to choose from."
-              placeholder="Reference wildcarded order-insensitive citation search"
-              value=""/>
+        <%= render "shared/autocomplete_field",
+                   f: f,
+                   id_attribute: :reference_id,
+                   id_value: "",
+                   label: "Reference",
+                   input_id: "instance-reference-typeahead",
+                   input_name: "instance[reference_typeahead]",
+                   input_value: "",
+                   input_class: "width-100-percent give-me-focus",
+                   required: true,
+                   placeholder: "Reference wildcarded order-insensitive citation search",
+                   title: "Start typing to see a list of references to choose from.",
+                   url: references_typeahead_on_citation_with_exclusion_path(@instance.reference_id, format: :html),
+                   term_delimiter: " |" %>
       </section>
     </div>
     <br>
@@ -55,9 +69,6 @@
                   title: "Select instance type. Secondary reference is the default for this operation.",
                   required: true,
                   tabindex: increment_tab_index}) %>
-
-    <script> setUpInstanceReferenceExcludingCurrent(); </script>
-    <%= f.hidden_field :reference_id, value: '' %>
     <br>
     <%= radio_button_tag 'expected', 'page number',     true, id: 'page-number-rb',    tabindex: increment_tab_index %>
     <%= label_tag "page-number-rb", 'page number'.humanize %>
