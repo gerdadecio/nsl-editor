@@ -38,7 +38,8 @@ class SessionUser < ActiveType::Object
   end
 
   def with_role_for_context?(requested_role_name)
-    return false unless user && product_from_context
+    return false unless user
+    return false unless product_from_context
 
     user.user_product_roles
       .joins(product_role: :role)

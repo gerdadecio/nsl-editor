@@ -155,7 +155,7 @@ class ApplicationController < ActionController::Base
 
   def set_working_draft_session
     @working_draft = nil
-    return unless session[:draft].present? && TreeVersion.exists?(session[:draft]["id"])
+    return if session[:draft].blank? || !TreeVersion.exists?(session[:draft]["id"])
 
     version = TreeVersion.find(session[:draft]["id"])
     if version.published
@@ -274,7 +274,8 @@ class ApplicationController < ActionController::Base
       role_names = current_registered_user&.role_names || []
       is_reviewer = @current_user.reviewer? || role_names.include?("tree-reviewer")
       only_tree_reviewer = (role_names - [ "tree-reviewer" ]).none?
-      return unless is_reviewer && only_tree_reviewer
+      return unless is_reviewer
+      return unless only_tree_reviewer
     else
       return unless @current_user.reviewer?
     end

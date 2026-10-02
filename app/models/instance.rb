@@ -584,9 +584,9 @@ class Instance < ApplicationRecord
 
   # A standalone instance with no dependents can change reference.
   def standalone_reference_id_can_change_if_no_dependents
-    return unless reference_id_changed? &&
-      standalone? &&
-      reverse_of_this_is_cited_by.present?
+    return unless reference_id_changed?
+    return unless standalone?
+    return unless reverse_of_this_is_cited_by.present?
 
     errors(:base, "this instance has relationships, ")
     errors(:base, "so you cannot alter the reference.")
@@ -607,8 +607,8 @@ class Instance < ApplicationRecord
   end
 
   def relationship_ref_must_match_cited_by_instance_ref
-    return unless relationship? &&
-      !(reference.id == this_is_cited_by.reference.id)
+    return unless relationship?
+    return unless reference.id != this_is_cited_by.reference.id
 
     errors.add(
       :reference_id,
@@ -632,7 +632,8 @@ class Instance < ApplicationRecord
   end
 
   def cites_id_with_no_cited_by_id_is_invalid
-    return unless cites_id.present? && cited_by_id.blank?
+    return unless cites_id.present?
+    return unless cited_by_id.blank?
 
     errors(:base, "A cites id with no cited by id is invalid.")
   end

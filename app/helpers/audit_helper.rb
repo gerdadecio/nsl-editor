@@ -54,7 +54,8 @@ module AuditHelper
   end
 
   def soft_deleted_by_whom_and_when(record)
-    return "" unless Rails.configuration.try(:soft_delete_enabled) && record.deleted_at.present?
+    return "" unless Rails.configuration.try(:soft_delete_enabled)
+    return "" unless record.deleted_at.present?
 
     %(<br>Record soft deleted <span class="purple"
     >#{time_ago_in_words(record.deleted_at)}&nbsp;ago</span>

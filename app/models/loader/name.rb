@@ -507,7 +507,8 @@ class Loader::Name < ApplicationRecord
   end
 
   def misapp_html
-    return unless misapp? && original_text.present?
+    return unless misapp?
+    return unless original_text.present?
 
     Rails::Html::FullSanitizer.new.sanitize(original_text)
   end

@@ -98,19 +98,22 @@ class Loader::Batch::Review::Period < ApplicationRecord
 
   def start_date_cannot_be_in_the_past
     return unless will_save_change_to_start_date?
-    return unless start_date.present? && start_date < Date.today
+    return unless start_date.present?
+    return unless start_date < Date.today
 
     errors.add(:start_date, "cannot be in the past")
   end
 
   def end_date_cannot_be_in_the_past
-    return unless end_date.present? && end_date < Date.today
+    return unless end_date.present?
+    return unless end_date < Date.today
 
     errors.add(:end_date, "cannot be changed to a past date")
   end
 
   def end_date_must_be_after_start_date
-    return unless end_date.present? && end_date < start_date
+    return unless end_date.present?
+    return unless end_date < start_date
 
     errors.add(:end_date, "must be after start date")
   end
@@ -164,8 +167,9 @@ class Loader::Batch::Review::Period < ApplicationRecord
   def params_without_dates(params)
     h = {}
     params.each do |key, val|
-      h[key] = val unless key =~ /start.date/ || key =~ /end.date/
+      h[key] = val unless key =~ /start.date|end.date/
     end
+    h
   end
 
   # The start_date is required so nil values are prevented before here.

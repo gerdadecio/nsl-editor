@@ -67,15 +67,17 @@ module Name::Authorable
   end
 
   def author_and_ex_author_must_differ
-    return unless author_id.present? && ex_author_id.present? && author_id == ex_author_id
+    return unless author_id.present?
+    return unless ex_author_id.present?
+    return unless author_id == ex_author_id
 
     errors.add(:base, "The ex-author cannot be the same as the author.")
   end
 
   def base_author_and_ex_base_author_must_differ
-    return unless base_author_id.present? &&
-      ex_base_author_id.present? &&
-      base_author_id == ex_base_author_id
+    return unless base_author_id.present?
+    return unless ex_base_author_id.present?
+    return unless base_author_id == ex_base_author_id
 
     errors.add(:base, "The ex-base author cannot be the same as the base author.")
   end

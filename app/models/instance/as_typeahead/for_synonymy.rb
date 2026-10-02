@@ -124,7 +124,7 @@ class Instance::AsTypeahead::ForSynonymy
 
   def display_value(i)
     value = "#{i.full_name} in #{i.citation}:#{i.iso_publication_date}"
-    value += " [#{i.page}]" unless i.page.blank? || i.page == "null - null"
+    value += " [#{i.page}]" if i.page.present? && i.page != "null - null"
     value += " [#{i.instance_type_name}]" unless i.instance_type_name == "secondary reference"
     value
   end
@@ -137,7 +137,7 @@ class Instance::AsTypeahead::ForSynonymy
     return nil if match.blank?
 
     reference_year = match.to_s
-    return nil unless reference_year.to_i > 1000 && reference_year.to_i < 3000
+    return nil unless reference_year.to_i.between?(1001, 2999)
 
     reference_year
   end

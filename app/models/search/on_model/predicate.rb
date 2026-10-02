@@ -112,7 +112,7 @@ class Search::OnModel::Predicate
 
   def build_scalar_predicate(rule)
     if @is_null
-      raise "#{@field} directive needs an argument" unless @takes_no_arg || @has_not_exists_clause || @takes_optional_arg
+      raise "#{@field} directive needs an argument" unless [ @takes_no_arg, @has_not_exists_clause, @takes_optional_arg ].any?
 
       build_is_null_predicate(rule)
     else

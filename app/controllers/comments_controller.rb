@@ -54,7 +54,7 @@ class CommentsController < ApplicationController
   # I had to hack it a bit and it certainly needs more looking at, but
   # the check for a javascript request seemed not important enough to delay for.
   def destroy
-    throw("request must be js") unless request.format == "text/javascript" || request.format == "application/json"
+    throw("request must be js") unless %w[text/javascript application/json].include?(request.format)
     username = current_user.username
     if @comment.update(updated_by: username) && @comment.destroy
       respond_to do |format|
