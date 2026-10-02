@@ -1,4 +1,4 @@
-# # frozen_string_literal: true
+# frozen_string_literal: true
 
 #   Copyright 2017 Australian National Botanic Gardens
 #

@@ -33,7 +33,7 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     respond_to do |format|
       if @comment.save_with_username(current_user.username)
-        format.js {}
+        format.js
       else
         @message = "Not saved: #{@comment.errors.full_messages.first}"
         format.js { render(:create_failed) }
@@ -60,7 +60,7 @@ class CommentsController < ApplicationController
       respond_to do |format|
         format.html { redirect_to(comments_url, notice: "Comment deleted.") }
         format.json { head(:no_content) }
-        format.js {}
+        format.js
       end
     else
       throw("There was a problem deleting that record.")

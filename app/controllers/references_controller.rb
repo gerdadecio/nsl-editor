@@ -115,7 +115,7 @@ class ReferencesController < ApplicationController
       format.json { render json: suggestions }
       format.html do
         render partial: "shared/autocomplete_suggestions",
-               locals: {suggestions: suggestions, term: params[:term]}
+               locals: { suggestions: suggestions, term: params[:term] }
       end
     end
   end

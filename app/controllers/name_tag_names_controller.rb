@@ -46,7 +46,7 @@ class NameTagNamesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(name_tag_names_url, notice: "Deleted.") }
       format.json { head(:no_content) }
-      format.js   {}
+      format.js
     end
   end
 
