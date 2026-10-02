@@ -30,7 +30,10 @@ class InstanceProfileV2TabReferenceFieldTest < ActionDispatch::IntegrationTest
     Rails.configuration.profile_v2_dropdown_ui = false
     @instance = instances(:gaertner_created_metrosideros_costata)
     @instance.update!(draft: true)
-    @profile_item = profile_item(:ecology_pi)
+    # ecology_pi and notes_pi share this instance and product item config,
+    # and the tab renders the form for just one of them - whichever the
+    # query happens to return first - so the test accepts either.
+    @profile_item_ids = [ profile_item(:ecology_pi).id, profile_item(:notes_pi).id ]
     @foa_context_id = Product.find_by(name: "FOA").context_id
   end
 
@@ -46,15 +49,17 @@ class InstanceProfileV2TabReferenceFieldTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_select "form.prompt-form-save div.autocomplete[data-controller='autocomplete']" \
-                  "[data-autocomplete-url-value='/references/typeahead/on_citation.html']" \
-                  " input#instance-reference-typeahead-#{@profile_item.id}" \
-                  "[data-autocomplete-target='input'][required][autofocus]" \
-                  ":not([name])",
-                  true
+    inputs = css_select("form.prompt-form-save div.autocomplete[data-controller='autocomplete']" \
+                        "[data-autocomplete-url-value='/references/typeahead/on_citation.html']" \
+                        " input[id^='instance-reference-typeahead-']" \
+                        "[data-autocomplete-target='input'][required][autofocus]" \
+                        ":not([name])")
+    assert_equal 1, inputs.size
+    field_id = inputs.first["id"].delete_prefix("instance-reference-typeahead-")
+    assert_includes @profile_item_ids.map(&:to_s), field_id
     # The hidden reference_id keeps its per-item dom id and its
     # un-namespaced param name.
-    assert_select "div.autocomplete input#reference-id-hidden-#{@profile_item.id}" \
+    assert_select "div.autocomplete input#reference-id-hidden-#{field_id}" \
                   "[name='profile_item_reference[reference_id]']" \
                   "[data-autocomplete-target='hidden']",
                   true
