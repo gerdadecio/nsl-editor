@@ -25,7 +25,6 @@ require "test_helper"
 # default silently won. "Any batch" must mean any batch, regardless of
 # whether a default batch is set.
 class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionDispatch::IntegrationTest
-
   test "any batch target finds a record outside the default batch" do
     # Hardenbergia violacea lives in "Batch One" (see test/fixtures/loader/batch.yml
     # and test/fixtures/loader_names.yml). Setting "Batch Two" as the default

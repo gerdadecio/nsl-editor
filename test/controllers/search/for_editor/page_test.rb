@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchControllerForEditorPageTest < ActionDispatch::IntegrationTest
-
   test "editor should get search with correct elements" do
     sign_in_as_fake_user(
       username: "fred",

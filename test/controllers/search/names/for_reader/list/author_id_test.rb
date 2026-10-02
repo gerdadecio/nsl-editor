@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class ReaderSearchControllerNamesAuthorIdListTest < ActionDispatch::IntegrationTest
-
   test "reader can search for a name by author id" do
     author = authors(:bentham)
     sign_in_as_fake_user(

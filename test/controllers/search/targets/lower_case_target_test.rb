@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchControllerLowerCaseTargetTest < ActionDispatch::IntegrationTest
-
   test "lower case target should be returned in canonical form" do
     sign_in_as_fake_user(
       username: "fred",

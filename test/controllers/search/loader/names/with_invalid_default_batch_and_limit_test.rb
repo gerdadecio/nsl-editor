@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchLoaderNameInvalidDefaultBatchAndLimitTest < ActionDispatch::IntegrationTest
-
   test "search loader names with invalid default batch and limit gets right message" do
     sign_in_as_fake_user(
       username: "fred",

@@ -29,7 +29,6 @@ require "test_helper"
 # for the "name" target (only allowed for "references"), giving us a reliable
 # way to exercise the error path without a database error.
 class NamesSearchControllerNamesAndInstancesErrorPreservesQueryTargetTest < ActionDispatch::IntegrationTest
-
   test "error during Names plus instances search preserves original query target in rendered form" do
     sign_in_as_fake_user(
       username: "fred",

@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchInstanceListRefTypeSingleValUCPaperTest < ActionDispatch::IntegrationTest
-
   test "search instances for ref type paper" do
     sign_in_as_fake_user(
       username: "fred",

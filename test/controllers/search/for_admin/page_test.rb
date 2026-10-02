@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchControllerForAdminPageTest < ActionDispatch::IntegrationTest
-
   test "admin should get search with correct elements" do
     sign_in_as_fake_user(
       username: "fred",

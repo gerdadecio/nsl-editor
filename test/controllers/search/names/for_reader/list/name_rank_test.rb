@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class ReaderSearchControllerNamesNameRankListTest < ActionDispatch::IntegrationTest
-
   test "reader can search for a name by rank" do
     tribus = names(:a_tribus)
     sign_in_as_fake_user(

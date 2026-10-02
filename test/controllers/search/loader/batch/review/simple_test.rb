@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchLoaderBatchReviewSimpleTest < ActionDispatch::IntegrationTest
-
   test "can search for batch reviews" do
     sign_in_as_fake_user(
       username: "fred",

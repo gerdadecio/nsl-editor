@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class ReaderSearchContNamesExBaseAuthorIdListTest < ActionDispatch::IntegrationTest
-
   test "reader can search for a name by ex-base author id" do
     author = authors(:is_a_name_authority_of_every_type)
     sign_in_as_fake_user(

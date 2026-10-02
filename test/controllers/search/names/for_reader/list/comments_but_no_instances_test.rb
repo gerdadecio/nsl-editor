@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class ReaderSearchContNamesCommentsButNoInstListTst < ActionDispatch::IntegrationTest
-
   test "reader can search for a name with comments but no instances" do
     skip "Is name search for comments-but-no-instances
          required?  If so, here is the test."

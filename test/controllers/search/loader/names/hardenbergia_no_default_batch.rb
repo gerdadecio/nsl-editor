@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchLoaderNameHardenbergiaNoDefaultBatchTest < ActionDispatch::IntegrationTest
-
   test "can search for loader names" do
     sign_in_as_fake_user(
       username: "fred",

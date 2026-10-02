@@ -39,7 +39,6 @@ require "test_helper"
 # right-hand side of the comparison did, and the fix corrects that
 # comparison to use @search.parsed_request.limit instead.
 class SearchRefsOnIdMoreResultsLinkNotShownWhenLimitMatchesTest < ActionDispatch::IntegrationTest
-
   test "no more-results link when limit: exactly matches the (single) reference total" do
     ref = references(:bucket_reference_for_default_instances)
     sign_in_as_fake_user(

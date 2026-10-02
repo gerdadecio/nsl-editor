@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchLoaderNameWithInvalidDefaultBatchTest < ActionDispatch::IntegrationTest
-
   test "search loader names for H violacea invalid default batch gets right message" do
     sign_in_as_fake_user(
       username: "fred",

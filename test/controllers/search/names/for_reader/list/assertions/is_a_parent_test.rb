@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchNamesAsReaderListAssertionsIsAParentTst < ActionDispatch::IntegrationTest
-
   test "reader can search for names that are parents" do
     sign_in_as_fake_user(
       username: "fred",

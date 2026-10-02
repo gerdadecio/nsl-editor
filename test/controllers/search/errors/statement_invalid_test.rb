@@ -27,7 +27,6 @@ require "test_helper"
 # same run_empty_search_to_show_error helper already used - and already
 # proven safe - by the generic StandardError rescue below it.
 class SearchControllerStatementInvalidTest < ActionDispatch::IntegrationTest
-
   test "a StatementInvalid error during search renders the search page instead of crashing" do
     SearchController.stub_any_instance(
       :run_local_search,

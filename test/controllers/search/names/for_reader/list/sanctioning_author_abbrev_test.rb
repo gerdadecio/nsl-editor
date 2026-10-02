@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class ReaderSearchContNamesSanctAuthAbbrevListTest < ActionDispatch::IntegrationTest
-
   test "reader can search for a name by sanctioning author abbrev" do
     sign_in_as_fake_user(
       username: "fred",

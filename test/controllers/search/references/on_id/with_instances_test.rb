@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchRefsOnIdWithInstancesTest < ActionDispatch::IntegrationTest
-
   test "search on reference id with show-instances" do
     run_search("show-instances:")
   end

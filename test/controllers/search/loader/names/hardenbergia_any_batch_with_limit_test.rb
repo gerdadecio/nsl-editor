@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchLoaderNameHardenbergiaAnyBatchWithLimitTest < ActionDispatch::IntegrationTest
-
   test "can search loader names for Hardenbergia violacea in any batch with limit on results" do
     sign_in_as_fake_user(
       username: "fred",

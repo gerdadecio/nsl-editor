@@ -41,7 +41,6 @@ require "test_helper"
 # is included, without having to know or guess the exact match count or
 # sort position of any one fixture.
 class SearchRefsOnDefaultWildcardWithInstancesMoreResultsTest < ActionDispatch::IntegrationTest
-
   test "'*' with show-instances: reports references only, not instances, even unlimited" do
     sign_in_as_fake_user(
       username: "fred",

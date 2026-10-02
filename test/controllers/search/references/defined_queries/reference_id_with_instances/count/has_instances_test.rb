@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SrchRefsDefinedQuerRefIdWithInstCountHasInst < ActionDispatch::IntegrationTest
-
   test "reference id with instances count" do
     skip # I want to retire this test because the defined query
     # is now replaced by show-instances:, but there isn't a count

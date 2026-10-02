@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchOnInstanceParentRefExact < ActionDispatch::IntegrationTest
-
   test "reader can search for an instance by parent ref citation exact" do
     sign_in_as_fake_user(
       username: "fred",

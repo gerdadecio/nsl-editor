@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchRefsDQRefSharedNamesListNonExistantTest < ActionDispatch::IntegrationTest
-
   test "reference shared names simple" do
     ref_1 = -1
     ref_2 = -2

@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchAuditListSimpleTest < ActionDispatch::IntegrationTest
-
   test "search for records created in the last 50 days" do
     sign_in_as_fake_user(
       username: "greg",

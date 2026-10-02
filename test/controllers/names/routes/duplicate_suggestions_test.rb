@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single controller test.
 class NameDuplicateSuggestionsRouteTest < ActionDispatch::IntegrationTest
-
   test "should route to name duplicate suggestions" do
     assert_routing "/suggestions/name/duplicate",
                    controller: "names",

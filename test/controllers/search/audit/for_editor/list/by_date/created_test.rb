@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchAuditForEditorListByDateCreatedTest < ActionDispatch::IntegrationTest
-
   test "search for records created on a specific date" do
     skip "date arithmetic is test not working"
     sign_in_as_fake_user(

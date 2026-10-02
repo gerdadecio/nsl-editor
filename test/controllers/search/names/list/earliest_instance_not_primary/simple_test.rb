@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class NamesSearchDefinedListEarliestInstNotPrimary < ActionDispatch::IntegrationTest
-
   test "search for earliest instance not primary" do
     sign_in_as_fake_user(
       username: "fred",

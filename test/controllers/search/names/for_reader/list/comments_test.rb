@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class ReaderSearchControllerNamesCommentsListTest < ActionDispatch::IntegrationTest
-
   test "reader can search for a name with comments" do
     sign_in_as_fake_user(
       username: "fred",
