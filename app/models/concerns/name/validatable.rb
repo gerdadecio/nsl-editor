@@ -111,7 +111,8 @@ module Name::Validatable
   def genus_parent_must_match_family_if_both_ranked_family
     return unless name_rank.genus?
     return if parent_id == family_id
-    return unless parent.name_rank.family? && family.name_rank.family?
+    return unless parent.name_rank.family?
+    return unless family.name_rank.family?
 
     errors.add(
       :parent_id,

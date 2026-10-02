@@ -122,6 +122,5 @@ gem "next_rails"
 gem "ostruct" # previously ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 3.5.0.
 
 group :development, :test do
-  gem 'rubocop-rails-omakase', require: false
+  gem "rubocop-rails-omakase", require: false
 end
-

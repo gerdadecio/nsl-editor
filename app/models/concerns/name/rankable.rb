@@ -21,7 +21,8 @@ module Name::Rankable
 
   # TODO: Boolean function shouldn't add error.
   def parent_rank_high_enough?
-    return unless requires_parent? && requires_higher_ranked_parent?
+    return unless requires_parent?
+    return unless requires_higher_ranked_parent?
     return if parent.blank? || parent_rank_above? || both_unranked?
 
     errors.add(:parent_id, "rank (#{parent.try("name_rank").try("name")}) \

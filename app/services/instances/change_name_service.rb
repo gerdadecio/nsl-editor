@@ -34,8 +34,8 @@ module Instances
         return errors.add(:base, "#{new_name.full_name} is listed as a synonym of this instance.")
       end
 
-      unless new_name.name_type_id == @instance.name.name_type_id &&
-          new_name.name_rank_id == @instance.name.name_rank_id
+      if new_name.name_type_id != @instance.name.name_type_id ||
+          new_name.name_rank_id != @instance.name.name_rank_id
         return errors.add(:base, "The selected name must be the same type and rank as the current name.")
       end
 

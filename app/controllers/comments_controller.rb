@@ -33,7 +33,7 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     respond_to do |format|
       if @comment.save_with_username(current_user.username)
-        format.js {}
+        format.js
       else
         @message = "Not saved: #{@comment.errors.full_messages.first}"
         format.js { render(:create_failed) }
@@ -54,13 +54,13 @@ class CommentsController < ApplicationController
   # I had to hack it a bit and it certainly needs more looking at, but
   # the check for a javascript request seemed not important enough to delay for.
   def destroy
-    throw("request must be js") unless request.format == "text/javascript" || request.format == "application/json"
+    throw("request must be js") unless %w[text/javascript application/json].include?(request.format)
     username = current_user.username
     if @comment.update(updated_by: username) && @comment.destroy
       respond_to do |format|
         format.html { redirect_to(comments_url, notice: "Comment deleted.") }
         format.json { head(:no_content) }
-        format.js {}
+        format.js
       end
     else
       throw("There was a problem deleting that record.")

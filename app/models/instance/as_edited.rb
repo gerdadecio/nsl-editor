@@ -97,7 +97,8 @@ class Instance::AsEdited < Instance
   private
 
   def prevent_double_overrides
-    return unless multiple_primary_override && duplicate_instance_override
+    return unless multiple_primary_override
+    return unless duplicate_instance_override
 
     self.multiple_primary_override = self.duplicate_instance_override = false
   end

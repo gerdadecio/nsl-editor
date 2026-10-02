@@ -491,13 +491,15 @@ query_string: '#{@query_string}'",
   # Called via send
   def preprocess_loader_names
     loader_batch_preprocessing?
-    unless @params["query_string"].match(/\bdefault-batch:/) ||
-        @params["query_string"].match(/\bbatch-id:/i) ||
-        @params["query_string"].match(/\bbatch-name:/i) ||
-        @params["query_string"].match(/\bany-batch:/i) ||
-        @params["query_string"].match(/[^-]id:/i) ||
-        @params["query_string"].match(/\Aid:/i) ||
-        @params["query_string"].match(/\bid-with-syn:/i)
+    unless [
+      @params["query_string"].match(/\bdefault-batch:/), # case-sensitive: see note above
+      @params["query_string"].match(/\bbatch-id:/i),
+      @params["query_string"].match(/\bbatch-name:/i),
+      @params["query_string"].match(/\bany-batch:/i),
+      @params["query_string"].match(/[^-]id:/i),
+      @params["query_string"].match(/\Aid:/i),
+      @params["query_string"].match(/\bid-with-syn:/i),
+    ].any?
       raise "Please set a default batch, or specify a 'batch-id:', a 'batch-name:' or 'any-batch:'"
     end
   end

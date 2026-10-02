@@ -35,7 +35,7 @@ class Loader::Batch::ReviewersController < ApplicationController
     @random_id = (Random.new.rand * 10_000_000_000).to_i
     respond_to do |format|
       format.html { redirect_to(new_search_path) }
-      format.js {}
+      format.js
     end
   end
 
