@@ -17,8 +17,8 @@
 #   limitations under the License.
 #
 class Loader::Name::MatchesController < ApplicationController
-  before_action :find_loader_name, only: [:set]
-  before_action :find_loader_name_match, only: [:update, :force_remove]
+  before_action :find_loader_name, only: [ :set ]
+  before_action :find_loader_name_match, only: [ :update, :force_remove ]
   # before_action :find_loader_name_match, only: [:delete]
 
   # For a given loader_name record, a set action may involve

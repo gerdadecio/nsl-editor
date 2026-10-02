@@ -64,7 +64,7 @@ class Instance::AsArray::ForReference::ForNovelties < Array
         .includes(name: :name_status)
         .joins(:instance_type)
         .where(instance_type: { primary_instance: true })
-        .includes(this_is_cited_by: [:name, :instance_type])
+        .includes(this_is_cited_by: [ :name, :instance_type ])
       sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
     end
   end

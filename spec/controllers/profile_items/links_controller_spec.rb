@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe(ProfileItems::LinksController, type: :controller) do
-  let(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
+  let(:session_user) { FactoryBot.create(:session_user, groups: [ "login" ]) }
   let(:current_user) { FactoryBot.create(:user) }
 
   before do
@@ -115,7 +115,7 @@ RSpec.describe(ProfileItems::LinksController, type: :controller) do
     context "when the update fails" do
       let(:service_result) do
         double(
-          errors: double(full_messages: ["An error occurred"], any?: true),
+          errors: double(full_messages: [ "An error occurred" ], any?: true),
           profile_item: nil,
           profile_text: nil,
         )

@@ -108,7 +108,7 @@ class Loader::Name::BulkSearch
     end
     s.chop!
     s += ")"
-    @search.where([s] + family_a.map(&:downcase))
+    @search.where([ s ] + family_a.map(&:downcase))
   end
 
   def add_acc_clause

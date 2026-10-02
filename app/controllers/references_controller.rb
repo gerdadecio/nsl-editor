@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class ReferencesController < ApplicationController
-  before_action :find_reference, only: [:edit, :update, :destroy, :show, :tab]
+  before_action :find_reference, only: [ :edit, :update, :destroy, :show, :tab ]
 
   # GET /references/1/tab/:tab
   # Sets up RHS details panel on the search results page.

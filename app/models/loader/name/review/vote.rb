@@ -20,14 +20,14 @@
 class Loader::Name::Review::Vote < ApplicationRecord
   strip_attributes
   self.table_name = "name_review_vote"
-  self.primary_key = [:org_id, :batch_review_id, :loader_name_id]
+  self.primary_key = [ :org_id, :batch_review_id, :loader_name_id ]
   self.sequence_name = "nsl_global_seq"
 
   belongs_to :loader_name, class_name: "Loader::Name", foreign_key: "loader_name_id"
   belongs_to :org
   belongs_to :batch_review, class_name: "Loader::Batch::Review", foreign_key: "batch_review_id"
 
-  validates :vote, inclusion: { in: [true, false] }
+  validates :vote, inclusion: { in: [ true, false ] }
 
   attr_accessor :give_me_focus, :message
 

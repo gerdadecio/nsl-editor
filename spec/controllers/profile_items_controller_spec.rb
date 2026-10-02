@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe(ProfileItemsController, type: :controller) do
-  let(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
+  let(:session_user) { FactoryBot.create(:session_user, groups: [ "login" ]) }
   let(:current_user) { FactoryBot.create(:user) }
 
   let(:instance) { FactoryBot.create(:instance) }
@@ -55,7 +55,7 @@ RSpec.describe(ProfileItemsController, type: :controller) do
 
     before do
       allow(Instance).to(receive(:find_by!).with(id: instance.id.to_s).and_return(instance))
-      allow(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs).to(receive_message_chain(:new, :run_query).and_return([query_result, nil]))
+      allow(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs).to(receive_message_chain(:new, :run_query).and_return([ query_result, nil ]))
     end
 
     subject { get :index, params: { instance_id: instance.id }, format: :turbo_stream }

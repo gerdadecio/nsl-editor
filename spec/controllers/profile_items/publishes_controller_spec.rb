@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe ProfileItems::PublishesController, type: :controller do
-  let(:session_user) { create(:session_user, groups: ["login"]) }
+  let(:session_user) { create(:session_user, groups: [ "login" ]) }
   let(:current_user) { create(:user) }
 
   before do
@@ -17,7 +17,7 @@ describe ProfileItems::PublishesController, type: :controller do
     let(:instance) { profile_item.instance }
     let(:service_errors) { ActiveModel::Errors.new("Some error") }
     let(:mock_service_result) { double("ProfileItems::Published::MarkPublishService", new_profile_item: profile_item, errors: {}) }
-    let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [[], nil]) }
+    let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [ [], nil ]) }
     let(:params) { { instance_id: instance.id, id: profile_item.id } }
 
     subject { post :create, params: params, format: :turbo_stream }
@@ -41,7 +41,7 @@ describe ProfileItems::PublishesController, type: :controller do
 
       context "when it has existing published profile item" do
         let(:existing_published_profile_item) { create(:profile_item, end_date: nil, is_draft: false, instance: instance) }
-        let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [[existing_published_profile_item], nil]) }
+        let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [ [ existing_published_profile_item ], nil ]) }
 
         before do
           allow(ProfileItems::Published::MarkPublishService).to(receive(:call).and_return(mock_service_result))
@@ -58,7 +58,7 @@ describe ProfileItems::PublishesController, type: :controller do
       end
 
       context "when it does not have existing published profile item" do
-        let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [[], nil]) }
+        let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [ [], nil ]) }
 
         before do
           allow(ProfileItems::Published::MarkPublishService).to(receive(:call).and_return(mock_service_result))
@@ -77,7 +77,7 @@ describe ProfileItems::PublishesController, type: :controller do
     end
 
     context "when publish fails" do
-      let(:errors) { double("errors", any?: true, full_messages: ["Some error"]) }
+      let(:errors) { double("errors", any?: true, full_messages: [ "Some error" ]) }
       let(:mock_service_result) { double("ProfileItems::Published::MarkPublishService", new_profile_item: nil, errors: errors) }
 
       before do

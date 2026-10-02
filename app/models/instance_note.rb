@@ -57,19 +57,19 @@ class InstanceNote < ApplicationRecord
   belongs_to :instance_note_key
   validates :value, presence: true
   validates :instance_note_key_id, presence: true
-  validate :create_one_apc_dist_per_instance, on: [:create]
-  validate :update_one_apc_dist_per_instance, on: [:update]
+  validate :create_one_apc_dist_per_instance, on: [ :create ]
+  validate :update_one_apc_dist_per_instance, on: [ :update ]
   validate :deprecated_instance_note_key_cannot_be_used
   scope :apc, (lambda do
                  joins(:instance_note_key)
                    .where("instance_note_key.name" =>
-                          ["APC Comment", "APC Dist."])
+                          [ "APC Comment", "APC Dist." ])
                end)
   scope :non_apc, (lambda do
                      joins(:instance_note_key)
                        .where
                        .not("instance_note_key.name" =>
-                            ["APC Comment", "APC Dist."])
+                            [ "APC Comment", "APC Dist." ])
                    end)
   def set_defaults
     self.namespace_id = Namespace.default.id if namespace_id.blank?

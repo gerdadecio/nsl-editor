@@ -44,14 +44,14 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
     context "when profile_v2_aware config is enabled" do
       context "when there is no product" do
         it "returns an array of product_configs_and_profile_items and product" do
-          expect(subject).to(eq([[], nil]))
+          expect(subject).to(eq([ [], nil ]))
         end
       end
 
       context "whern there is no instance" do
         let(:instance) { nil }
         it "returns an array of product_configs_and_profile_items and product" do
-          expect(subject).to(eq([[], nil]))
+          expect(subject).to(eq([ [], nil ]))
         end
       end
 
@@ -60,12 +60,12 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
         let!(:product) { FactoryBot.create(:product, name: "FOA") }
 
         before do
-          allow(session_user.user).to(receive(:products).and_return(instance_double(ActiveRecord::Relation, where: [product])))
+          allow(session_user.user).to(receive(:products).and_return(instance_double(ActiveRecord::Relation, where: [ product ])))
         end
 
         context "and the product is not attached to a product_item_config" do
           it "returns an empty array of product_configs_and_profile_items and product" do
-            expect(subject).to(eq([[], product]))
+            expect(subject).to(eq([ [], product ]))
           end
         end
         context "and a product is attached to a product_item_config" do
@@ -74,7 +74,7 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
             profile_item = double("ProfileItem")
             allow(Profile::ProfileItem).to(receive(:new).and_return(profile_item))
             result = [
-              [{ product_item_config: product_item_config, profile_item: profile_item }],
+              [ { product_item_config: product_item_config, profile_item: profile_item } ],
               product
             ]
 
@@ -95,7 +95,7 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
               profile_item = double("ProfileItem")
               allow(Profile::ProfileItem).to(receive(:new).and_return(profile_item))
               result = [
-                [{ product_item_config: product_item_config, profile_item: profile_item }],
+                [ { product_item_config: product_item_config, profile_item: profile_item } ],
                 product
               ]
 
@@ -142,14 +142,14 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
 
       context "when there is no product" do
         it "returns an array of product_configs_and_profile_items and product" do
-          expect(subject).to(eq([[], nil]))
+          expect(subject).to(eq([ [], nil ]))
         end
       end
 
       context "whern there is no instance" do
         let(:instance) { nil }
         it "returns an array of product_configs_and_profile_items and product" do
-          expect(subject).to(eq([[], nil]))
+          expect(subject).to(eq([ [], nil ]))
         end
       end
 
@@ -159,13 +159,13 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
 
         context "and the product is not attached to a product_item_config" do
           it "returns an empty array of product_configs_and_profile_items and product" do
-            expect(subject).to(eq([[], nil]))
+            expect(subject).to(eq([ [], nil ]))
           end
         end
         context "and a product is attached to a product_item_config" do
           let!(:product_item_config) { FactoryBot.create(:product_item_config, product: product) }
           it "returns an array of product_configs_and_profile_items and product" do
-            expect(subject).to(eq([[], nil]))
+            expect(subject).to(eq([ [], nil ]))
           end
         end
       end

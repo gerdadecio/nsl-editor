@@ -81,7 +81,7 @@ class InstanceBackDoor < ApplicationRecord
       self.updated_by = username
       save
       InstanceBackDoor
-        .find_by_sql(["select * from instance where cited_by_id = ?", id])
+        .find_by_sql([ "select * from instance where cited_by_id = ?", id ])
         .each do |instance|
         instance.reference_id = params["reference_id"]
         instance.updated_by = username

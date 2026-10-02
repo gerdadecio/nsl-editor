@@ -138,14 +138,14 @@ class Ability
 
       context_product.has_the_same_reference?(instance)
     end
-    can([:create, :read], Author)
+    can([ :create, :read ], Author)
     can(:update, Author) do |author|
       !author.referenced_in_any_instance? && author.no_other_authored_names? && author.names.blank?
     end
     can(:manage, Profile::ProfileItem) do |profile_item|
       profile_item.is_draft?
     end
-    can([:read, :create], Profile::ProfileItem)
+    can([ :read, :create ], Profile::ProfileItem)
     can(:manage, Profile::ProfileItemReference) do |profile_item_reference|
       profile_item_reference.profile_item.is_draft?
     end
@@ -191,7 +191,7 @@ class Ability
   end
 
   def profile_reference_auth(user)
-    can([:create, :read], Author)
+    can([ :create, :read ], Author)
     can(:update, Author) do |author|
       !author.referenced_in_any_instance? && author.no_other_authored_names? && author.names.blank?
     end
@@ -284,7 +284,7 @@ class Ability
     can(:manage, Profile::ProfileText)
     can(:manage, Profile::ProfileItemAnnotation)
     can(:manage_profile, Instance) do |instance|
-      instance.profile_items.includes([:product]).any? { |item| item.product && user_products.include?(item.product) }
+      instance.profile_items.includes([ :product ]).any? { |item| item.product && user_products.include?(item.product) }
     end
     can(:create_adnot, Instance) do |instance|
       instance.in_any_local_tree_ids?(user_product_tree_ids)
@@ -327,9 +327,9 @@ class Ability
   def name_index_editor(user)
     can(:manage,              Author)
     can(:manage,              Name)
-    can([:create, :read, :destroy], Reference)
+    can([ :create, :read, :destroy ], Reference)
     can(:update, Reference)
-    can([:create, :edit, :update, :destroy], Instance)
+    can([ :create, :edit, :update, :destroy ], Instance)
     can("authors",            :all)
     can("comments",           :all)
     can("instances",          :all)
@@ -494,7 +494,7 @@ class Ability
     can("menu",               "admin")
     can("users",              :all)
     can("user/product_roles", :all)
-    can([:create, :destroy], User::ProductRole)
+    can([ :create, :destroy ], User::ProductRole)
   end
 
   def batch_loader_auth
@@ -638,7 +638,7 @@ class Ability
       admin_manageable_product_role_ids = Product::Role.where(product_id: admin_product_ids).pluck(:id)
 
       cannot("user/product_roles", :all)
-      cannot([:create, :destroy], User::ProductRole)
+      cannot([ :create, :destroy ], User::ProductRole)
 
       can("names/de_duplicates", :all) if session_user.product_from_context&.is_name_index? && admin_product_ids.include?(session_user.product_from_context&.id)
       can("user/product_roles", "index")
@@ -647,7 +647,7 @@ class Ability
       can("user/product_roles", "destroy")
       can("user/product_roles", "update")
       can("user/product_roles", "choose_product_for_role")
-      can([:create, :destroy], User::ProductRole) do |user_product_role|
+      can([ :create, :destroy ], User::ProductRole) do |user_product_role|
         admin_manageable_product_role_ids.include?(user_product_role.product_role_id)
       end
     else

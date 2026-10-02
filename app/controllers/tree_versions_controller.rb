@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class TreeVersionsController < ApplicationController
-  before_action :find_tree_version, only: [:show, :tab]
+  before_action :find_tree_version, only: [ :show, :tab ]
 
   # GET /tree_vesions/1
   # GET /tree_vesions/1/tab/:tab

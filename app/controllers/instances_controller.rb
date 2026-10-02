@@ -20,8 +20,8 @@
 class InstancesController < ApplicationController
   include ActionView::Helpers::TextHelper
 
-  before_action :find_instance, only: [:show, :tab, :destroy]
-  before_action :find_instance_for_copy, only: [:copy_standalone, :copy_for_profile_v2]
+  before_action :find_instance, only: [ :show, :tab, :destroy ]
+  before_action :find_instance_for_copy, only: [ :copy_standalone, :copy_for_profile_v2 ]
   before_action :authorise_instance_change,
     only: [
       :update,
@@ -297,7 +297,7 @@ class InstancesController < ApplicationController
 
   # Different types of instances require different sets of tabs.
   def tabs_to_offer
-    offer = ["tab_show_1", "tab_edit", "tab_edit_profile_v2", "tab_edit_notes"]
+    offer = [ "tab_show_1", "tab_edit", "tab_edit_profile_v2", "tab_edit_notes" ]
 
     if @instance.standalone?
       offer << "tab_unpublished_citation"

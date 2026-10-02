@@ -15,7 +15,7 @@ RSpec.describe(NameType, type: :model) do
 
     it "returns the common name type with correct structure" do
       options = NameType.common_only_options
-      expect(options.first).to(eq(["common", common_name_type.id, { class: "other" }]))
+      expect(options.first).to(eq([ "common", common_name_type.id, { class: "other" } ]))
     end
 
     it "does not include vernacular name types" do

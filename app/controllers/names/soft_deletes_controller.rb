@@ -17,8 +17,8 @@
 #   limitations under the License.
 
 class Names::SoftDeletesController < ApplicationController
-  before_action :find_name, only: [:create]
-  before_action :authorise_name_change, only: [:create]
+  before_action :find_name, only: [ :create ]
+  before_action :authorise_name_change, only: [ :create ]
 
   def create
     @name.current_user = current_user

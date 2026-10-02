@@ -87,7 +87,7 @@ RSpec.describe(Name, type: :model) do
         end
 
         it "returns the tree rows for this name" do
-          expect(name.tree_join_v.pluck(:name_id)).to(eq([name.id]))
+          expect(name.tree_join_v.pluck(:name_id)).to(eq([ name.id ]))
         end
       end
 

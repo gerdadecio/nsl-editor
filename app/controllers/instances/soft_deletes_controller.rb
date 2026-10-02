@@ -18,7 +18,7 @@
 
 class Instances::SoftDeletesController < ApplicationController
   before_action :find_instance
-  before_action :authorise_instance_change, only: [:create]
+  before_action :authorise_instance_change, only: [ :create ]
 
   # Whether the soft delete is allowed is decided by the model - see
   # SoftDeletable#soft_delete_must_be_allowed - so a save failure here

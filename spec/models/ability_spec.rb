@@ -268,7 +268,7 @@ RSpec.describe(Ability, type: :model) do
         end
 
         it "cannot update references with instances" do
-          allow(reference).to(receive(:instances).and_return([create(:instance)]))
+          allow(reference).to(receive(:instances).and_return([ create(:instance) ]))
           expect(subject.can?(:update, reference)).to(eq(false))
         end
       end
@@ -465,7 +465,7 @@ RSpec.describe(Ability, type: :model) do
       context "when reference has instances" do
         it "cannot update references" do
           allow(reference).to(receive(:not_used_by_any_related_table?).and_return(false))
-          allow(reference).to(receive(:instances).and_return([instance]))
+          allow(reference).to(receive(:instances).and_return([ instance ]))
           expect(subject.can?(:update, reference)).to(eq(false))
         end
       end
@@ -482,7 +482,7 @@ RSpec.describe(Ability, type: :model) do
         end
 
         it "cannot update references with instances even if profile item reference exists" do
-          allow(reference).to(receive(:instances).and_return([instance]))
+          allow(reference).to(receive(:instances).and_return([ instance ]))
 
           expect(subject.can?(:update, reference)).to(eq(false))
         end
@@ -499,7 +499,7 @@ RSpec.describe(Ability, type: :model) do
         end
 
         it "cannot update references with instances" do
-          allow(reference).to(receive(:instances).and_return([instance]))
+          allow(reference).to(receive(:instances).and_return([ instance ]))
           expect(subject.can?(:update, reference)).to(eq(false))
         end
       end
@@ -685,7 +685,7 @@ RSpec.describe(Ability, type: :model) do
         before do
           product = create(:product, name: "TEST_PRODUCT")
           products_collection = double("products_collection")
-          allow(products_collection).to(receive(:pluck).with(:name).and_return([product.name]))
+          allow(products_collection).to(receive(:pluck).with(:name).and_return([ product.name ]))
           allow(instance).to(receive_message_chain(:reference, :products).and_return(products_collection))
           allow(session_user).to(receive(:product_from_context).and_return(product))
         end
@@ -697,7 +697,7 @@ RSpec.describe(Ability, type: :model) do
         it "cannot edit the relationship instance if it's cited by an instance with different product" do
           other_product = create(:product, name: "other_product")
           other_products_collection = double("other_products_collection")
-          allow(other_products_collection).to(receive(:pluck).with(:name).and_return([other_product.name]))
+          allow(other_products_collection).to(receive(:pluck).with(:name).and_return([ other_product.name ]))
           allow(instance).to(receive_message_chain(:reference, :products).and_return(other_products_collection))
           expect(subject.can?(:edit, relationship_instance)).to(eq(false))
         end
@@ -707,7 +707,7 @@ RSpec.describe(Ability, type: :model) do
         before do
           product = create(:product, name: "TEST_PRODUCT")
           products_collection = double("products_collection")
-          allow(products_collection).to(receive(:pluck).with(:name).and_return([product.name]))
+          allow(products_collection).to(receive(:pluck).with(:name).and_return([ product.name ]))
           allow(instance).to(receive_message_chain(:reference, :products).and_return(products_collection))
           allow(session_user).to(receive(:product_from_context).and_return(nil))
           allow(session_user).to(receive(:product_from_roles).and_return(product))
@@ -720,7 +720,7 @@ RSpec.describe(Ability, type: :model) do
         it "cannot edit the relationship instance if it's cited by an instance with different product" do
           other_product = create(:product, name: "other_product")
           other_products_collection = double("other_products_collection")
-          allow(other_products_collection).to(receive(:pluck).with(:name).and_return([other_product.name]))
+          allow(other_products_collection).to(receive(:pluck).with(:name).and_return([ other_product.name ]))
           allow(instance).to(receive_message_chain(:reference, :products).and_return(other_products_collection))
           expect(subject.can?(:edit, relationship_instance)).to(eq(false))
         end
@@ -729,7 +729,7 @@ RSpec.describe(Ability, type: :model) do
       it "cannot edit the relationship instance if not cited by a draft instance" do
         product = create(:product, name: "TEST_PRODUCT")
         products_collection = double("products_collection")
-        allow(products_collection).to(receive(:pluck).with(:name).and_return([product.name]))
+        allow(products_collection).to(receive(:pluck).with(:name).and_return([ product.name ]))
         allow(instance).to(receive_message_chain(:reference, :products).and_return(products_collection))
         allow(session_user).to(receive(:product_from_roles).and_return(product))
         allow(instance).to(receive(:draft?).and_return(false))
@@ -744,7 +744,7 @@ RSpec.describe(Ability, type: :model) do
         before do
           product = create(:product, name: "TEST_PRODUCT")
           products_collection = double("products_collection")
-          allow(products_collection).to(receive(:pluck).with(:name).and_return([product.name]))
+          allow(products_collection).to(receive(:pluck).with(:name).and_return([ product.name ]))
           allow(instance).to(receive_message_chain(:reference, :products).and_return(products_collection))
           allow(session_user).to(receive(:product_from_context).and_return(product))
         end
@@ -770,7 +770,7 @@ RSpec.describe(Ability, type: :model) do
         before do
           product = create(:product, name: "TEST_PRODUCT")
           products_collection = double("products_collection")
-          allow(products_collection).to(receive(:pluck).with(:name).and_return([product.name]))
+          allow(products_collection).to(receive(:pluck).with(:name).and_return([ product.name ]))
           allow(instance).to(receive_message_chain(:reference, :products).and_return(products_collection))
           allow(session_user).to(receive(:product_from_context).and_return(nil))
           allow(session_user).to(receive(:product_from_roles).and_return(product))
@@ -798,7 +798,7 @@ RSpec.describe(Ability, type: :model) do
           instance_product = create(:product, name: "INSTANCE_PRODUCT")
           user_product = create(:product, name: "USER_PRODUCT")
           products_collection = double("products_collection")
-          allow(products_collection).to(receive(:pluck).with(:name).and_return([instance_product.name]))
+          allow(products_collection).to(receive(:pluck).with(:name).and_return([ instance_product.name ]))
           allow(instance).to(receive_message_chain(:reference, :products).and_return(products_collection))
           allow(session_user).to(receive(:product_from_context).and_return(nil))
           allow(session_user).to(receive(:product_from_roles).and_return(user_product))
@@ -869,7 +869,7 @@ RSpec.describe(Ability, type: :model) do
 
       before do
         products_collection = double("products_collection")
-        allow(products_collection).to(receive(:pluck).with(:name).and_return([product.name]))
+        allow(products_collection).to(receive(:pluck).with(:name).and_return([ product.name ]))
         allow(instance).to(receive_message_chain(:reference, :products).and_return(products_collection))
         allow(session_user).to(receive(:product_from_context).and_return(product))
       end
@@ -885,7 +885,7 @@ RSpec.describe(Ability, type: :model) do
 
       before do
         products_collection = double("products_collection")
-        allow(products_collection).to(receive(:pluck).with(:name).and_return([other_product.name]))
+        allow(products_collection).to(receive(:pluck).with(:name).and_return([ other_product.name ]))
         allow(instance).to(receive_message_chain(:reference, :products).and_return(products_collection))
       end
 
@@ -899,7 +899,7 @@ RSpec.describe(Ability, type: :model) do
 
       before do
         products_collection = double("products_collection")
-        allow(products_collection).to(receive(:pluck).with(:name).and_return([product.name]))
+        allow(products_collection).to(receive(:pluck).with(:name).and_return([ product.name ]))
         allow(instance).to(receive_message_chain(:reference, :products).and_return(products_collection))
       end
 
@@ -1042,7 +1042,7 @@ RSpec.describe(Ability, type: :model) do
 
       context "when instance is in a tree that user has access to" do
         before do
-          allow(instance).to(receive(:in_any_local_tree_ids?).with([tree.id]).and_return(true))
+          allow(instance).to(receive(:in_any_local_tree_ids?).with([ tree.id ]).and_return(true))
         end
 
         it "can create_adnot on the instance" do
@@ -1052,7 +1052,7 @@ RSpec.describe(Ability, type: :model) do
 
       context "when instance is in a tree that user does not have access to" do
         before do
-          allow(instance).to(receive(:in_any_local_tree_ids?).with([tree.id]).and_return(false))
+          allow(instance).to(receive(:in_any_local_tree_ids?).with([ tree.id ]).and_return(false))
         end
 
         it "cannot create_adnot on the instance" do
@@ -1062,7 +1062,7 @@ RSpec.describe(Ability, type: :model) do
 
       context "when instance is not in any local trees" do
         before do
-          allow(instance).to(receive(:in_any_local_tree_ids?).with([tree.id]).and_return(false))
+          allow(instance).to(receive(:in_any_local_tree_ids?).with([ tree.id ]).and_return(false))
         end
 
         it "cannot create_adnot on the instance" do
@@ -1956,7 +1956,7 @@ RSpec.describe(Ability, type: :model) do
 
     # The subset an 'edit' group user holds - proving the rule withdraws a
     # permission the user really had, rather than one they never had.
-    [:modify, :edit, :update, :destroy].each do |action|
+    [ :modify, :edit, :update, :destroy ].each do |action|
       it "allows '#{action}' on an instance that has not been soft deleted" do
         expect(subject.can?(action, live_instance)).to(eq(true))
       end

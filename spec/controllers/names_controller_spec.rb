@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe(NamesController, type: :controller) do
   describe "GET #show" do
-    let(:user) { FactoryBot.create(:session_user, groups: ["login", "edit"]) }
+    let(:user) { FactoryBot.create(:session_user, groups: [ "login", "edit" ]) }
     let(:name) { FactoryBot.create(:name) }
 
     before do

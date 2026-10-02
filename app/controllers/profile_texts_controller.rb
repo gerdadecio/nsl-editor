@@ -21,8 +21,8 @@ class ProfileTextsController < ApplicationController
 
   skip_before_action :authorise
 
-  before_action :set_profile_text, :find_profile_item, only: [:update]
-  before_action :authorise_user!, except: [:create]
+  before_action :set_profile_text, :find_profile_item, only: [ :update ]
+  before_action :authorise_user!, except: [ :create ]
 
   # POST /profile_texts
   # POST /profile_texts.json

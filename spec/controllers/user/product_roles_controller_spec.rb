@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe(User::ProductRolesController, type: :controller) do
-  let(:session_user) { FactoryBot.create(:session_user, groups: ["login", "admin"]) }
+  let(:session_user) { FactoryBot.create(:session_user, groups: [ "login", "admin" ]) }
   let(:current_user) { FactoryBot.create(:user) }
   let(:product) { FactoryBot.create(:product) }
   let(:role) { FactoryBot.create(:role) }
@@ -124,7 +124,7 @@ RSpec.describe(User::ProductRolesController, type: :controller) do
     end
 
     before do
-      allow(User::ProductRole).to(receive(:find).with([current_user.id.to_s, product_role.id.to_s]).and_return(user_product_role))
+      allow(User::ProductRole).to(receive(:find).with([ current_user.id.to_s, product_role.id.to_s ]).and_return(user_product_role))
       allow(Users::ProductRoles::DestroyService).to(receive(:call).and_return(destroy_service))
     end
 
@@ -137,7 +137,7 @@ RSpec.describe(User::ProductRolesController, type: :controller) do
 
       it "finds the user product role" do
         subject
-        expect(User::ProductRole).to(have_received(:find).with([current_user.id.to_s, product_role.id.to_s]))
+        expect(User::ProductRole).to(have_received(:find).with([ current_user.id.to_s, product_role.id.to_s ]))
       end
 
       it "calls the DestroyService with the user product role" do

@@ -19,8 +19,8 @@
 class CommentsController < ApplicationController
   # All text/html requests should go to the search page.
   before_action :javascript_only
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_for_instance!, only: [:create, :update, :destroy]
+  before_action :set_comment, only: [ :show, :edit, :update, :destroy ]
+  before_action :authorize_for_instance!, only: [ :create, :update, :destroy ]
 
   # GET /comments/1
   # GET /comments/1.json

@@ -71,13 +71,13 @@ class Instance::AsArray::ForReference < Array
     # preloaded_cited_by_map: above) for every reference in `references`.
     def preload_for(references, sort_by: "name")
       reference_ids = references.map(&:id)
-      return [{}, {}] if reference_ids.empty?
+      return [ {}, {} ] if reference_ids.empty?
 
       instances = base_query(sort_by).where(reference_id: reference_ids).to_a
       instances_by_reference = instances.group_by(&:reference_id)
 
       standalone_ids = instances.select { |instance| instance.cited_by_id.blank? }.map(&:id)
-      [instances_by_reference, cited_by_map_for(standalone_ids)]
+      [ instances_by_reference, cited_by_map_for(standalone_ids) ]
     end
 
     def base_query(sort_by)
@@ -85,7 +85,7 @@ class Instance::AsArray::ForReference < Array
         .joins(:name)
         .includes(name: :name_status)
         .includes(:instance_type)
-        .includes(this_is_cited_by: [:name, :instance_type])
+        .includes(this_is_cited_by: [ :name, :instance_type ])
       sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
     end
 

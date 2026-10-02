@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Loader::Name::Review::VotesController < ApplicationController
-  before_action :find_vote, only: [:destroy]
+  before_action :find_vote, only: [ :destroy ]
 
   def create
     @review_vote = Loader::Name::Review::Vote.new(review_vote_params)
@@ -63,6 +63,6 @@ class Loader::Name::Review::VotesController < ApplicationController
   end
 
   def find_vote
-    @vote = Loader::Name::Review::Vote.find([params[:org_id], params[:batch_review_id], params[:loader_name_id]])
+    @vote = Loader::Name::Review::Vote.find([ params[:org_id], params[:batch_review_id], params[:loader_name_id] ])
   end
 end

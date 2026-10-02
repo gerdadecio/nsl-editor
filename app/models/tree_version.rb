@@ -69,7 +69,7 @@ class TreeVersion < ApplicationRecord
   def query_name_in_version(term)
     tree_version_elements
       .joins(:tree_element)
-      .where(["lower(tree_element.simple_name) like lower(?)", term])
+      .where([ "lower(tree_element.simple_name) like lower(?)", term ])
       .order(:name_path)
       .limit(50)
   end
@@ -77,14 +77,14 @@ class TreeVersion < ApplicationRecord
   def query_name_in_version_at_rank(term, rank_name)
     tree_version_elements
       .joins(:tree_element)
-      .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank = ?", term, rank_name])
+      .where([ "lower(tree_element.simple_name) like lower(?) and tree_element.rank = ?", term, rank_name ])
       .limit(15)
   end
 
   def query_name_version_ranks(term, rank_names)
     tree_version_elements
       .joins(:tree_element)
-      .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank in (?)", term, rank_names])
+      .where([ "lower(tree_element.simple_name) like lower(?) and tree_element.rank in (?)", term, rank_names ])
       .order(:name_path)
       .limit(15)
   end

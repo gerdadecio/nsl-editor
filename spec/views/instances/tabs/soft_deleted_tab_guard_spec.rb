@@ -34,7 +34,7 @@ RSpec.describe("the soft delete guard on the instance tab partials", type: :view
   ]
 
   # Tabs that already had an authorisation fallback and reuse it.
-  empty_tabs = ["tab_edit_profile_v2"]
+  empty_tabs = [ "tab_edit_profile_v2" ]
 
   before do
     assign(:instance, instance)

@@ -28,7 +28,7 @@ module Name::Typeaheads
           locals: {
             suggestions: typeahead.suggestions,
             term: params[:term],
-            data_keys: [:family_id, :family_value],
+            data_keys: [ :family_id, :family_value ],
           },
         )
       end

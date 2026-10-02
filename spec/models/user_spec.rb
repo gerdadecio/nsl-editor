@@ -130,7 +130,7 @@ RSpec.describe(User, type: :model) do
     let!(:user_product_role2) { create(:user_product_role, product_role: product_role2, user:) }
 
     it "returns an array of role names" do
-      expect(user.role_names).to(match_array(["admin", "editor"]))
+      expect(user.role_names).to(match_array([ "admin", "editor" ]))
     end
 
     it "memoizes the result" do
@@ -201,7 +201,7 @@ RSpec.describe(User, type: :model) do
     let!(:user_product_role3) { create(:user_product_role, user: user, product: product3, role: role3) }
 
     it "returns all unique products for all roles" do
-      expect(user.available_products_from_roles).to(match_array([product1, product2, product3]))
+      expect(user.available_products_from_roles).to(match_array([ product1, product2, product3 ]))
     end
 
     it "returns unique products only" do
@@ -216,7 +216,7 @@ RSpec.describe(User, type: :model) do
       product2.update(context_id: 1, context_sort_order: 1)
       product3.update(context_id: 1, context_sort_order: 2)
 
-      expect(user.available_products_from_roles).to(eq([product2, product3, product1]))
+      expect(user.available_products_from_roles).to(eq([ product2, product3, product1 ]))
     end
   end
 
@@ -232,7 +232,7 @@ RSpec.describe(User, type: :model) do
     let!(:reviewer_product_role) { create(:product_role, product: product, role: reviewer_role) }
 
     before do
-      allow(Product::Role).to(receive(:non_admins).and_return([editor_product_role, reviewer_product_role]))
+      allow(Product::Role).to(receive(:non_admins).and_return([ editor_product_role, reviewer_product_role ]))
     end
 
     context "when user has no product roles" do
@@ -240,8 +240,8 @@ RSpec.describe(User, type: :model) do
         result = user.grantable_product_roles_for_select
 
         expect(result).to(match_array([
-          ["#{product.name} editor product role", editor_product_role.id],
-          ["#{product.name} reviewer product role", reviewer_product_role.id]
+          [ "#{product.name} editor product role", editor_product_role.id ],
+          [ "#{product.name} reviewer product role", reviewer_product_role.id ]
         ]))
       end
 
@@ -251,13 +251,13 @@ RSpec.describe(User, type: :model) do
         zebra_product_role = create(:product_role, product: product, role: zebra_role)
         alpha_product_role = create(:product_role, product: product, role: alpha_role)
 
-        allow(Product::Role).to(receive(:non_admins).and_return([zebra_product_role, alpha_product_role]))
+        allow(Product::Role).to(receive(:non_admins).and_return([ zebra_product_role, alpha_product_role ]))
 
         result = user.grantable_product_roles_for_select
 
         expect(result).to(eq([
-          ["#{product.name} alpha product role", alpha_product_role.id],
-          ["#{product.name} zebra product role", zebra_product_role.id]
+          [ "#{product.name} alpha product role", alpha_product_role.id ],
+          [ "#{product.name} zebra product role", zebra_product_role.id ]
         ]))
       end
     end
@@ -270,7 +270,7 @@ RSpec.describe(User, type: :model) do
       it "excludes roles the user already has" do
         result = user.grantable_product_roles_for_select
 
-        expect(result).to(eq([["#{product.name} reviewer product role", reviewer_product_role.id]]))
+        expect(result).to(eq([ [ "#{product.name} reviewer product role", reviewer_product_role.id ] ]))
         expect(result.map(&:first)).not_to(include("#{product.name} editor product role"))
       end
     end
@@ -356,7 +356,7 @@ RSpec.describe(User, type: :model) do
       it "restricts available roles to products they have admin access to" do
         result = user.grantable_product_roles_for_select(session_user)
 
-        expect(result).to(eq([["FOA editor product role", foa_editor_product_role.id]]))
+        expect(result).to(eq([ [ "FOA editor product role", foa_editor_product_role.id ] ]))
         expect(result.map(&:first)).not_to(include("APC editor product role"))
       end
 
@@ -388,7 +388,7 @@ RSpec.describe(User, type: :model) do
           result = user.grantable_product_roles_for_select(session_user)
 
           expect(result.size).to(eq(2))
-          expect(result.map(&:first)).to(match_array(["FOA editor product role", "APC editor product role"]))
+          expect(result.map(&:first)).to(match_array([ "FOA editor product role", "APC editor product role" ]))
         end
       end
 
@@ -409,7 +409,7 @@ RSpec.describe(User, type: :model) do
           result = user.grantable_product_roles_for_select(session_user)
 
           expect(result.size).to(eq(2))
-          expect(result.map(&:first)).to(match_array(["FOA editor product role", "APNI editor product role"]))
+          expect(result.map(&:first)).to(match_array([ "FOA editor product role", "APNI editor product role" ]))
           expect(result.map(&:first)).not_to(include("APC editor product role"))
         end
       end
@@ -428,8 +428,8 @@ RSpec.describe(User, type: :model) do
         result = user.grantable_product_roles_for_select(session_user)
 
         expect(result).to(match_array([
-          ["#{product.name} editor product role", editor_product_role.id],
-          ["#{product.name} reviewer product role", reviewer_product_role.id]
+          [ "#{product.name} editor product role", editor_product_role.id ],
+          [ "#{product.name} reviewer product role", reviewer_product_role.id ]
         ]))
       end
     end

@@ -29,16 +29,16 @@ RSpec.describe(InstanceType, type: :model) do
     it "returns only instance types with relationship true, not deprecated, and not unsourced" do
       result = InstanceType.synonym_options
       expect(result).to(contain_exactly(
-        [instance_type1.name, instance_type1.id],
-        [instance_type2.name, instance_type2.id],
+        [ instance_type1.name, instance_type1.id ],
+        [ instance_type2.name, instance_type2.id ],
       ))
     end
 
     it "returns the instance types sorted by name" do
       result = InstanceType.synonym_options
       expect(result).to(eq([
-        [instance_type1.name, instance_type1.id],
-        [instance_type2.name, instance_type2.id]
+        [ instance_type1.name, instance_type1.id ],
+        [ instance_type2.name, instance_type2.id ]
       ].sort_by(&:first)))
     end
   end
@@ -53,16 +53,16 @@ RSpec.describe(InstanceType, type: :model) do
     it "returns only instance types with relationship true, unsourced true, and not deprecated" do
       result = InstanceType.unpublished_citation_options
       expect(result).to(contain_exactly(
-        [instance_type1.name, instance_type1.id],
-        [instance_type2.name, instance_type2.id],
+        [ instance_type1.name, instance_type1.id ],
+        [ instance_type2.name, instance_type2.id ],
       ))
     end
 
     it "returns the instance types sorted by name" do
       result = InstanceType.unpublished_citation_options
       expect(result).to(eq([
-        [instance_type1.name, instance_type1.id],
-        [instance_type2.name, instance_type2.id]
+        [ instance_type1.name, instance_type1.id ],
+        [ instance_type2.name, instance_type2.id ]
       ].sort_by(&:first)))
     end
   end

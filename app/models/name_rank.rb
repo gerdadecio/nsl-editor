@@ -151,25 +151,25 @@ class NameRank < ApplicationRecord
   def self.options
     where("deprecated is false")
       .order(:sort_order)
-      .collect { |rank| [rank.display_name, rank.id] }
+      .collect { |rank| [ rank.display_name, rank.id ] }
   end
 
   def self.query_form_options
     where("deprecated is false")
       .order(:sort_order)
-      .collect { |n| [n.name, "rank: #{n.name.downcase}"] }
+      .collect { |n| [ n.name, "rank: #{n.name.downcase}" ] }
   end
 
   def self.query_form_ranked_below_options
     where("deprecated is false")
       .order(:sort_order)
-      .collect { |n| [n.name, "below-rank: #{n.name.downcase}"] }
+      .collect { |n| [ n.name, "below-rank: #{n.name.downcase}" ] }
   end
 
   def self.xquery_form_ranked_above_options
     where("deprecated is false")
       .order(:sort_order)
-      .collect { |n| [n.name, "above-rank: #{n.name.downcase}"] }
+      .collect { |n| [ n.name, "above-rank: #{n.name.downcase}" ] }
   end
 
   def self.cultivar_hybrid_options
@@ -178,7 +178,7 @@ class NameRank < ApplicationRecord
       .where(" sort_order >= (select sort_order from name_rank where lower(name)
     = 'species')")
       .order(:sort_order)
-      .collect { |rank| [rank.name, rank.id] }
+      .collect { |rank| [ rank.name, rank.id ] }
   end
 
   def self.cultivar_options
@@ -187,21 +187,21 @@ class NameRank < ApplicationRecord
       .where(" sort_order >= (select sort_order from name_rank where lower(name)
     = 'species')")
       .order(:sort_order)
-      .collect { |rank| [rank.name, rank.id] }
+      .collect { |rank| [ rank.name, rank.id ] }
   end
 
   def self.below_family_options
     where("deprecated is false")
       .where(" sort_order > (select sort_order from name_rank where lower(name) = 'familia')")
       .order(:sort_order)
-      .collect { |rank| [rank.name, rank.id] }
+      .collect { |rank| [ rank.name, rank.id ] }
   end
 
   def self.above_family_options
     where("deprecated is false")
       .where(" sort_order <= (select sort_order from name_rank where lower(name) = 'familia')")
       .order(:sort_order)
-      .collect { |rank| [rank.name, rank.id] }
+      .collect { |rank| [ rank.name, rank.id ] }
   end
 
   def self.id_is_unranked?(id)
@@ -278,7 +278,7 @@ class NameRank < ApplicationRecord
   end
 
   def infrafamilial?
-    [FAMILIA, SUBFAMILIA, TRIBUS, SUBTRIBUS, INFRAFAMILY].include?(name)
+    [ FAMILIA, SUBFAMILIA, TRIBUS, SUBTRIBUS, INFRAFAMILY ].include?(name)
   end
 
   def self.genus

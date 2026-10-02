@@ -3,7 +3,7 @@
 module ProfileItems
   class PublishesController < ProfileItemsController
     prepend_before_action :set_profile_item
-    before_action :authorise_user!, only: [:create]
+    before_action :authorise_user!, only: [ :create ]
 
     def create
       @instance = Instance.find(params[:instance_id])

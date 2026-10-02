@@ -35,7 +35,7 @@ module Tree::Element::Profile
 
     return apply_non_blank_comment(comment_param, username)
 
-    [message, refresh || false]
+    [ message, refresh || false ]
   end
 
   def apply_blank_comment(username)
@@ -49,7 +49,7 @@ module Tree::Element::Profile
       message = "Comment removed"
       refresh = true
     end
-    [message, refresh]
+    [ message, refresh ]
   end
 
   def apply_non_blank_comment(comment_param, username)
@@ -64,7 +64,7 @@ module Tree::Element::Profile
       message = "No change to comment"
       refresh = false
     end
-    [message, refresh]
+    [ message, refresh ]
   end
 
   def add_comment(comment_param, username)
@@ -75,7 +75,7 @@ module Tree::Element::Profile
     end
     message = "Comment added"
     refresh = true
-    [message, refresh || false]
+    [ message, refresh || false ]
   end
 
   def update_distribution(dist_param, username)
@@ -88,7 +88,7 @@ module Tree::Element::Profile
       message, refresh =
         transaction_for_update_accepted_distribution(dist_param, username)
     end
-    [message, refresh]
+    [ message, refresh ]
   end
 
   def transaction_for_update_accepted_distribution(dist_param, username)
@@ -101,7 +101,7 @@ module Tree::Element::Profile
       Rails.logger.error(e.to_s)
       raise
     end
-    [message, refresh]
+    [ message, refresh ]
   end
 
   def update_accepted_distribution(dist_param, username)

@@ -53,7 +53,7 @@ RSpec.describe("names/tabs/_tab_more.html.erb", type: :view) do
 
     context "and the more_comment tab is available" do
       let(:product_tab_service_mock) do
-        instance_double(Products::ProductTabService, all_available_tabs: { "name" => [{ tab: "more_comment" }] })
+        instance_double(Products::ProductTabService, all_available_tabs: { "name" => [ { tab: "more_comment" } ] })
       end
 
       it "does not render the tab_comments partial" do
@@ -73,7 +73,7 @@ RSpec.describe("names/tabs/_tab_more.html.erb", type: :view) do
 
     context "and the more_comment tab is available" do
       let(:product_tab_service_mock) do
-        instance_double(Products::ProductTabService, all_available_tabs: { "name" => [{ tab: "more_comment" }] })
+        instance_double(Products::ProductTabService, all_available_tabs: { "name" => [ { tab: "more_comment" } ] })
       end
 
       it "renders the tab_comments partial" do
@@ -85,7 +85,7 @@ RSpec.describe("names/tabs/_tab_more.html.erb", type: :view) do
     context "and the more_comment tab is not configured" do
       before do
         allow(Rails.configuration).to(receive(:multi_product_tabs_enabled).and_return(true))
-        mock_context_service = instance_double(Products::ProductContextService, available_contexts: [1])
+        mock_context_service = instance_double(Products::ProductContextService, available_contexts: [ 1 ])
         view.define_singleton_method(:product_context_service) { mock_context_service }
       end
 

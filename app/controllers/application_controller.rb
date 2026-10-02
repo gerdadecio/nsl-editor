@@ -273,7 +273,7 @@ class ApplicationController < ActionController::Base
     if Rails.configuration.try(:multi_product_tabs_enabled)
       role_names = current_registered_user&.role_names || []
       is_reviewer = @current_user.reviewer? || role_names.include?("tree-reviewer")
-      only_tree_reviewer = (role_names - ["tree-reviewer"]).none?
+      only_tree_reviewer = (role_names - [ "tree-reviewer" ]).none?
       return unless is_reviewer && only_tree_reviewer
     else
       return unless @current_user.reviewer?

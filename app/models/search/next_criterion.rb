@@ -36,7 +36,7 @@ class Search::NextCriterion
       @field = ""
       get_value
     end
-    [@field, @value, @tokens.join(" ")]
+    [ @field, @value, @tokens.join(" ") ]
   end
 
   def first_is_a_field

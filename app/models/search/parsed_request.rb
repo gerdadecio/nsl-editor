@@ -114,7 +114,7 @@ class Search::ParsedRequest
     "bulk processing log" => "BulkProcessingLog",
   }.freeze
 
-  TARGET_MODEL_SUPPORTS_PRINT_DIRECTIVE = ["Loader::Name", "Instance"]
+  TARGET_MODEL_SUPPORTS_PRINT_DIRECTIVE = [ "Loader::Name", "Instance" ]
 
   DEFAULT_QUERY_DIRECTIVES = {
     "author" => "name-or-abbrev:",
@@ -149,16 +149,16 @@ class Search::ParsedRequest
     "bulk processing log" => " logged_at desc ",
   }.freeze
 
-  INCLUDE_INSTANCES_FOR = ["name", "reference"]
+  INCLUDE_INSTANCES_FOR = [ "name", "reference" ]
 
   INCLUDE_INSTANCES_CLASS = {
     "name" => "Search::OnName::WithInstances",
     "references" => "Search::OnName::WithInstances",
   }.freeze
 
-  ALLOW_SHOW_INSTANCES_TARGETS = ["names", "name", "references", "reference"]
-  ALLOW_SHOW_NOVELTIES_TARGETS = ["references", "reference"]
-  ALLOW_INCLUDE_COMMON_AND_CULTIVAR_TARGETS = ["names", "name"]
+  ALLOW_SHOW_INSTANCES_TARGETS = [ "names", "name", "references", "reference" ]
+  ALLOW_SHOW_NOVELTIES_TARGETS = [ "references", "reference" ]
+  ALLOW_INCLUDE_COMMON_AND_CULTIVAR_TARGETS = [ "names", "name" ]
 
   TRIM_RESULTS = {
     "loader name" => true,

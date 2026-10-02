@@ -57,7 +57,7 @@ describe Instances::CheckDeleteService do
       end
     end
 
-    [:cites_id, :cited_by_id, :parent_id].each do |foreign_key|
+    [ :cites_id, :cited_by_id, :parent_id ].each do |foreign_key|
       context "when the instance is referenced via #{foreign_key} by a live instance" do
         before { create_referencing_instance(foreign_key => instance.id) }
 

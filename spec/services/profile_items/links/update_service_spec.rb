@@ -77,7 +77,7 @@ RSpec.describe(ProfileItems::Links::UpdateService, type: :service) do
 
         new_refs = Profile::ProfileItemReference.where(profile_item_id: profile_item.id)
         expect(new_refs.count).to(eq(2))
-        expect(new_refs.pluck(:reference_id)).to(match_array([reference1.reference_id, reference2.reference_id]))
+        expect(new_refs.pluck(:reference_id)).to(match_array([ reference1.reference_id, reference2.reference_id ]))
         expect(new_refs.pluck(:created_by)).to(all(eq(user.user_name)))
         expect(new_refs.pluck(:updated_by)).to(all(eq(user.user_name)))
         expect(new_refs.pluck(:annotation)).to(all(eq("Modified from.")))

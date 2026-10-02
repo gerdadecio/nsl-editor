@@ -19,7 +19,7 @@
 #   Trees are classification graphs for taxa.
 #   There are several types of trees - see the model.
 class TreesController < ApplicationController
-  before_action :find_tree, only: [:show, :tab]
+  before_action :find_tree, only: [ :show, :tab ]
   def index; end
 
   # GET /trees/1

@@ -46,19 +46,19 @@ RSpec.describe(Instance::AsArray::ForName, type: :model) do
     it "sorts all instances chronologically by year" do
       years = standalone_results.map { |i| i.reference.year.to_i }
 
-      expect(years).to(eq([1990, 2000, 2020, 2021]))
+      expect(years).to(eq([ 1990, 2000, 2020, 2021 ]))
     end
 
     it "sorts draft instances chronologically by year" do
       years = draft_results.map { |i| i.reference.year.to_i }
 
-      expect(years).to(eq([2020, 2021]))
+      expect(years).to(eq([ 2020, 2021 ]))
     end
 
     it "sorts non-draft instances by year ascending" do
       years = non_draft_results.map { |i| i.reference.year.to_i }
 
-      expect(years).to(eq([1990, 2000]))
+      expect(years).to(eq([ 1990, 2000 ]))
     end
   end
 
@@ -71,7 +71,7 @@ RSpec.describe(Instance::AsArray::ForName, type: :model) do
     let(:standalone_results) { subject.results.select { |r| r.is_a?(Instance) && r.standalone? } }
 
     it "places non-draft before draft when they have the same year" do
-      expect(standalone_results.map(&:id)).to(eq([non_draft_2020.id, draft_2020.id]))
+      expect(standalone_results.map(&:id)).to(eq([ non_draft_2020.id, draft_2020.id ]))
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe(Instance::AsArray::ForName, type: :model) do
       undated_drafts = standalone_results.select { |i| i.draft? && i.reference.year.nil? }
       author_names = undated_drafts.map { |i| i.reference.author.name }
 
-      expect(author_names).to(eq(["Gamma", "Zeta"]))
+      expect(author_names).to(eq([ "Gamma", "Zeta" ]))
     end
   end
 
@@ -113,7 +113,7 @@ RSpec.describe(Instance::AsArray::ForName, type: :model) do
       standalone_results = subject.results.select { |r| r.is_a?(Instance) && r.standalone? }
       years = standalone_results.map { |i| i.reference.year.to_i }
 
-      expect(years).to(eq([1990, 2000]))
+      expect(years).to(eq([ 1990, 2000 ]))
     end
   end
 
@@ -127,7 +127,7 @@ RSpec.describe(Instance::AsArray::ForName, type: :model) do
       standalone_results = subject.results.select { |r| r.is_a?(Instance) && r.standalone? }
       years = standalone_results.map { |i| i.reference.year.to_i }
 
-      expect(years).to(eq([2020, 2021]))
+      expect(years).to(eq([ 2020, 2021 ]))
     end
   end
 
@@ -152,7 +152,7 @@ RSpec.describe(Instance::AsArray::ForName, type: :model) do
       standalone_results = all_instances.select(&:standalone?).uniq(&:id)
       years = standalone_results.map { |i| i.reference.year.to_i }
 
-      expect(years).to(eq([2000, 2020, 2021]))
+      expect(years).to(eq([ 2000, 2020, 2021 ]))
     end
 
     it "includes both standalone and relationship draft instances in draft results" do
@@ -171,7 +171,7 @@ RSpec.describe(Instance::AsArray::ForName, type: :model) do
     it "sorts draft standalone instances chronologically by year" do
       draft_standalones = all_instances.select { |i| i.standalone? && i.draft? }
       years = draft_standalones.map { |i| i.reference.year.to_i }
-      expect(years).to(eq([2020, 2021]))
+      expect(years).to(eq([ 2020, 2021 ]))
     end
   end
 end

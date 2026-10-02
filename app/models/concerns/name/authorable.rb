@@ -39,7 +39,7 @@ module Name::Authorable
   # and name category configuration
   # for a set of author types.
   def takes_this_type_of_author?(type_of_author)
-    throw("Unknown type of author") unless [EX, BASE, EX_BASE, SANCTIONING].include?(type_of_author)
+    throw("Unknown type of author") unless [ EX, BASE, EX_BASE, SANCTIONING ].include?(type_of_author)
     return false unless category_for_edit.takes_authors?
     return false unless author_type_allowed_in_config(type_of_author)
 

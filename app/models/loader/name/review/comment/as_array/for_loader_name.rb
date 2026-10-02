@@ -51,7 +51,7 @@ class Loader::Name::Review::Comment::AsArray::ForLoaderName < Array
   def built_query
     @loader_name
       .name_review_comments
-      .where(["lower(name_review_comment.context) like lower(?)", @context])
+      .where([ "lower(name_review_comment.context) like lower(?)", @context ])
       .includes(:batch_reviewer)
       .includes(:name_review_comment_type)
       .order("name_review_comment_type.name, name_review_comment.created_at")

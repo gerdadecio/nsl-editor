@@ -9,6 +9,6 @@ module Name::Familyable
   end
 
   def family_members
-    Name.where(["family_id = ?", id])
+    Name.where([ "family_id = ?", id ])
   end
 end

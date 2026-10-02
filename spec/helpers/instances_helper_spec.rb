@@ -33,7 +33,7 @@ RSpec.describe(InstancesHelper, type: :helper) do
   end
 
   describe "#tab_for_iapo_concept_record" do
-    let(:tabs_to_offer) { ["tab_synonymy", "tab_classification", "tab_copy_to_new_reference"] }
+    let(:tabs_to_offer) { [ "tab_synonymy", "tab_classification", "tab_copy_to_new_reference" ] }
 
     before { assign(:tabs_to_offer, tabs_to_offer) }
 

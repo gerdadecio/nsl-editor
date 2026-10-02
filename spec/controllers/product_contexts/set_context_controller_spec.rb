@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe(ProductContexts::SetContextController, type: :controller) do
-  let!(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
+  let!(:session_user) { FactoryBot.create(:session_user, groups: [ "login" ]) }
   let!(:current_user) { FactoryBot.create(:user) }
   let!(:product) { FactoryBot.create(:product) }
   let!(:context_id) { 1 }

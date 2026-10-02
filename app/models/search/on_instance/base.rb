@@ -91,7 +91,7 @@ class Search::OnInstance::Base
       results << instance
         .profile_items
         .where(profile_object_rdf_id: "text")
-        .includes([:profile_text])
+        .includes([ :profile_text ])
 
       results.flatten!
     end

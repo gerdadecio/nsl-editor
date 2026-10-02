@@ -33,9 +33,9 @@ module ActiveRecord
 
         # Identical to Rails 8.1 default but without --set ON_ERROR_STOP=1,
         # so psql continues past errors instead of aborting on the first one.
-        args = ["--quiet", "--no-psqlrc", "--output", File::NULL]
+        args = [ "--quiet", "--no-psqlrc", "--output", File::NULL ]
         args.concat(Array(extra_flags)) if extra_flags
-        args.concat(["--file", filename])
+        args.concat([ "--file", filename ])
         args << db_config.database
         run_cmd("psql", *args)
       end
@@ -79,7 +79,7 @@ namespace :db do
     sql.gsub!(/^CREATE MATERIALIZED VIEW public\.trees_mv AS.*?WITH NO DATA;\n/m, "")
 
     # g, h, i, j, k, l — remove views (delete to next blank line)
-    ["taxon_v", "nsl_tree_mv", "cited_usage_v", "taxon_name_usage_v", "taxonomic_status_v", "tree_closure_v"].each do |view|
+    [ "taxon_v", "nsl_tree_mv", "cited_usage_v", "taxon_name_usage_v", "taxonomic_status_v", "tree_closure_v" ].each do |view|
       sql.gsub!(/^CREATE VIEW public\.#{view} AS.*?\n[ \t]*\n/m, "")
     end
 

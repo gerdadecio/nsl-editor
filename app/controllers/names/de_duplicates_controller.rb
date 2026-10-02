@@ -19,7 +19,7 @@
 #
 # Bulk de-duplication of Names.
 class Names::DeDuplicatesController < ApplicationController
-  before_action :javascript_only, only: [:transfer_all_dependents]
+  before_action :javascript_only, only: [ :transfer_all_dependents ]
 
   def index
   end

@@ -26,7 +26,7 @@ RSpec.describe(ApplicationController, type: :controller) do
   end
 
   let!(:user) { FactoryBot.create(:user) }
-  let!(:session_user) { FactoryBot.create(:session_user, username: user.user_name, full_name: "Test User", groups: ["login", "edit"]) }
+  let!(:session_user) { FactoryBot.create(:session_user, username: user.user_name, full_name: "Test User", groups: [ "login", "edit" ]) }
 
   before do
     allow(controller).to(receive(:current_registered_user).and_return(user))
@@ -135,7 +135,7 @@ RSpec.describe(ApplicationController, type: :controller) do
   end
 
   describe "#product_tab_service" do
-    let(:products) { [instance_double("Product")] }
+    let(:products) { [ instance_double("Product") ] }
     let(:product_tab_service_instance) { instance_double("Products::ProductTabService") }
 
     before do
@@ -221,7 +221,7 @@ RSpec.describe(ApplicationController, type: :controller) do
     context "when current_registered_user has multiple products" do
       let(:product1) { instance_double("Product") }
       let(:product2) { instance_double("Product") }
-      let(:products) { [product1, product2] }
+      let(:products) { [ product1, product2 ] }
 
       before do
         session[:current_context_id] = nil
@@ -230,7 +230,7 @@ RSpec.describe(ApplicationController, type: :controller) do
 
       it "passes all products to ProductTabService" do
         expect(Products::ProductTabService).to(receive(:call)
-          .with([product1, product2])
+          .with([ product1, product2 ])
           .and_return(product_tab_service_instance))
 
         controller.send(:product_tab_service)
@@ -452,7 +452,7 @@ RSpec.describe(ApplicationController, type: :controller) do
           before do
             allow(session_user).to(receive(:edit?).and_return(false))
             allow(session_user).to(receive(:reviewer?).and_return(true))
-            allow(user).to(receive(:role_names).and_return(["draft-editor"]))
+            allow(user).to(receive(:role_names).and_return([ "draft-editor" ]))
           end
 
           it "sets view_mode to STANDARD" do
@@ -467,7 +467,7 @@ RSpec.describe(ApplicationController, type: :controller) do
           before do
             allow(session_user).to(receive(:edit?).and_return(false))
             allow(session_user).to(receive(:reviewer?).and_return(false))
-            allow(user).to(receive(:role_names).and_return(["tree-reviewer"]))
+            allow(user).to(receive(:role_names).and_return([ "tree-reviewer" ]))
           end
 
           it "sets view_mode to REVIEW" do
@@ -482,7 +482,7 @@ RSpec.describe(ApplicationController, type: :controller) do
           before do
             allow(session_user).to(receive(:edit?).and_return(false))
             allow(session_user).to(receive(:reviewer?).and_return(false))
-            allow(user).to(receive(:role_names).and_return(["tree-reviewer", "draft-editor"]))
+            allow(user).to(receive(:role_names).and_return([ "tree-reviewer", "draft-editor" ]))
           end
 
           it "sets view_mode to STANDARD" do
@@ -524,7 +524,7 @@ RSpec.describe(ApplicationController, type: :controller) do
 
       context "and has available products" do
         let(:product1) { instance_double("Product", context_id: 100, name: "APNI") }
-        let(:products) { [product1] }
+        let(:products) { [ product1 ] }
 
         before do
           allow(user).to(receive(:available_products_from_roles).and_return(products))
@@ -559,7 +559,7 @@ RSpec.describe(ApplicationController, type: :controller) do
 
       context "and save fails" do
         let(:product1) { instance_double("Product", context_id: 100, name: "APNI") }
-        let(:products) { [product1] }
+        let(:products) { [ product1 ] }
         let(:errors) { instance_double("ActiveModel::Errors") }
 
         before do
@@ -568,7 +568,7 @@ RSpec.describe(ApplicationController, type: :controller) do
           allow(user).to(receive(:save).and_return(false))
           allow(user).to(receive(:user_name).and_return("test_user"))
           allow(user).to(receive(:errors).and_return(errors))
-          allow(errors).to(receive(:full_messages).and_return(["Validation failed"]))
+          allow(errors).to(receive(:full_messages).and_return([ "Validation failed" ]))
         end
 
         it "logs error messages with username and validation errors" do
@@ -612,7 +612,7 @@ RSpec.describe(ApplicationController, type: :controller) do
       context "and has multiple available products" do
         let(:product1) { instance_double("Product", context_id: 100, name: "APNI") }
         let(:product2) { instance_double("Product", context_id: 200, name: "APC") }
-        let(:products) { [product1, product2] }
+        let(:products) { [ product1, product2 ] }
 
         before do
           allow(user).to(receive(:available_products_from_roles).and_return(products))

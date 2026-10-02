@@ -23,8 +23,8 @@ class Search::Loader::Name::RewriteResultsShowingExtras
   private
 
   def one_record(rec)
-    top_level_record(rec) if ["accepted", "excluded"].include?(rec[:record_type])
-    push_preceding if ["in-batch-note", "in-batch-compiler-note", "heading"].include?(rec[:record_type])
+    top_level_record(rec) if [ "accepted", "excluded" ].include?(rec[:record_type])
+    push_preceding if [ "in-batch-note", "in-batch-compiler-note", "heading" ].include?(rec[:record_type])
     @results_with_comments << formatted_text_above(rec) if rec.formatted_text_above.present?
     @results_with_comments << rec
     @results_with_comments << formatted_text_below(rec) if rec.formatted_text_below.present?

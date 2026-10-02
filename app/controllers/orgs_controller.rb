@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class OrgsController < ApplicationController
-  before_action :find_org, only: [:show, :tab]
+  before_action :find_org, only: [ :show, :tab ]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.

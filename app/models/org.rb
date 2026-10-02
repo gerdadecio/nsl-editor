@@ -70,13 +70,13 @@ class Org < ApplicationRecord
   end
 
   def self.xorgs_reviewer_can_vote_on_behalf_of_in_a_review(username, review)
-    Org.joins(batch_reviewers: [:user, :batch_review_period])
+    Org.joins(batch_reviewers: [ :user, :batch_review_period ])
       .where("users.user_name": username)
       .where("batch_review_period.batch_review_id": review.id)
   end
 
   def self.yorgs_reviewer_can_vote_on_behalf_of_in_a_review(reviewer)
-    Org.joins(batch_reviewers: [:user, :batch_review_period])
+    Org.joins(batch_reviewers: [ :user, :batch_review_period ])
       .where("users.user_name": username)
       .where("batch_review_period.batch_review_id": review.id)
   end

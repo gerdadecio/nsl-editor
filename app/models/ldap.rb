@@ -100,7 +100,7 @@ class Ldap < ActiveType::Object
   # See https://github.com/ruby-ldap/ruby-net-ldap/issues/290
   def change_password(uid, new_password, _salt)
     conn = admin_connection
-    [[:replace, :unicodePwd, unicode_password(new_password)]]
+    [ [ :replace, :unicodePwd, unicode_password(new_password) ] ]
     person = conn.search(base: USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD, uid))
     person = conn.search(base: GENERIC_USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD, uid)) if person.blank?
     Rails.logger.debug { "person.first.dn: #{person.first.dn}" }
@@ -223,7 +223,7 @@ class Ldap < ActiveType::Object
   rescue StandardError => e
     Rails.logger.error("Error in Ldap#ldap_user_groups for username: #{username}")
     Rails.logger.error(e.to_s)
-    ["error getting groups"]
+    [ "error getting groups" ]
   end
 
   def unicode_password(clear_text_password)

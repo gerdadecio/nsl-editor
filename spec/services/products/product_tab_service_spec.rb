@@ -161,12 +161,12 @@ RSpec.describe(Products::ProductTabService) do
   describe "#execute" do
     it "has the correct active_flags" do
       subject
-      expect(subject.active_flags).to(match_array(["is_name_index", "has_default_reference", "manages_taxonomy", "manages_profile"]))
+      expect(subject.active_flags).to(match_array([ "is_name_index", "has_default_reference", "manages_taxonomy", "manages_profile" ]))
     end
 
     it "has enabled_models" do
       subject
-      expect(subject.enabled_models).to(match_array(["author", "instance", "name", "profile", "reference"]))
+      expect(subject.enabled_models).to(match_array([ "author", "instance", "name", "profile", "reference" ]))
     end
 
     it "has products" do
@@ -189,16 +189,16 @@ RSpec.describe(Products::ProductTabService) do
     end
 
     context "when passing a single product in the array" do
-      let!(:products) { [product_with_name_index] }
+      let!(:products) { [ product_with_name_index ] }
 
       it "has the correct active_flags" do
         subject
-        expect(subject.active_flags).to(match_array(["is_name_index"]))
+        expect(subject.active_flags).to(match_array([ "is_name_index" ]))
       end
 
       it "has enabled_models" do
         subject
-        expect(subject.enabled_models).to(match_array(["author", "instance", "name", "profile", "reference"]))
+        expect(subject.enabled_models).to(match_array([ "author", "instance", "name", "profile", "reference" ]))
       end
 
       it "has products" do
@@ -248,7 +248,7 @@ RSpec.describe(Products::ProductTabService) do
     end
 
     context "with single product having is_name_index flag" do
-      let!(:products) { [product_with_name_index] }
+      let!(:products) { [ product_with_name_index ] }
 
       it "returns hash mapping product to its models and tabs" do
         result = subject.tabs_per_product
@@ -256,13 +256,13 @@ RSpec.describe(Products::ProductTabService) do
         expect(result).to(have_key(product_with_name_index))
         expect(result[product_with_name_index]).to(have_key("author"))
         expect(result[product_with_name_index]).to(have_key("reference"))
-        expect(result[product_with_name_index]["author"]).to(eq(["new", "details", "edit", "comments", "copy"]))
-        expect(result[product_with_name_index]["reference"]).to(eq(["new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy"]))
+        expect(result[product_with_name_index]["author"]).to(eq([ "new", "details", "edit", "comments", "copy" ]))
+        expect(result[product_with_name_index]["reference"]).to(eq([ "new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy" ]))
       end
     end
 
     context "with single product having has_default_reference flag" do
-      let!(:products) { [product_with_default_reference] }
+      let!(:products) { [ product_with_default_reference ] }
 
       it "returns hash mapping product to its models and tabs" do
         result = subject.tabs_per_product
@@ -270,29 +270,29 @@ RSpec.describe(Products::ProductTabService) do
         expect(result).to(have_key(product_with_default_reference))
         expect(result[product_with_default_reference]).to(have_key("author"))
         expect(result[product_with_default_reference]).to(have_key("reference"))
-        expect(result[product_with_default_reference]["author"]).to(eq(["details"]))
-        expect(result[product_with_default_reference]["reference"]).to(eq(["details"]))
+        expect(result[product_with_default_reference]["author"]).to(eq([ "details" ]))
+        expect(result[product_with_default_reference]["reference"]).to(eq([ "details" ]))
       end
     end
 
     context "with multiple products having different flags" do
-      let!(:products) { [product_name_only, product_reference_only] }
+      let!(:products) { [ product_name_only, product_reference_only ] }
       it "returns hash mapping each product to its respective models and tabs" do
         result = subject.tabs_per_product
 
         expect(result).to(have_key(product_name_only))
         expect(result).to(have_key(product_reference_only))
 
-        expect(result[product_name_only]["author"]).to(eq(["new", "details", "edit", "comments", "copy"]))
-        expect(result[product_name_only]["reference"]).to(eq(["new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy"]))
+        expect(result[product_name_only]["author"]).to(eq([ "new", "details", "edit", "comments", "copy" ]))
+        expect(result[product_name_only]["reference"]).to(eq([ "new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy" ]))
 
-        expect(result[product_reference_only]["author"]).to(eq(["details"]))
-        expect(result[product_reference_only]["reference"]).to(eq(["details"]))
+        expect(result[product_reference_only]["author"]).to(eq([ "details" ]))
+        expect(result[product_reference_only]["reference"]).to(eq([ "details" ]))
       end
     end
 
     context "with product having no flags" do
-      let!(:products) { [product_no_flags] }
+      let!(:products) { [ product_no_flags ] }
 
       it "returns empty hash for product" do
         result = subject.tabs_per_product
@@ -303,20 +303,20 @@ RSpec.describe(Products::ProductTabService) do
     end
 
     context "with product having multiple flags" do
-      let!(:products) { [product_with_multiple_flags] }
+      let!(:products) { [ product_with_multiple_flags ] }
 
       it "returns combined tabs for the product" do
         result = subject.tabs_per_product
 
         expect(result).to(have_key(product_with_multiple_flags))
-        expect(result[product_with_multiple_flags]["author"]).to(eq(["new", "details", "edit", "comments", "copy"]))
-        expect(result[product_with_multiple_flags]["reference"]).to(eq(["new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy"]))
+        expect(result[product_with_multiple_flags]["author"]).to(eq([ "new", "details", "edit", "comments", "copy" ]))
+        expect(result[product_with_multiple_flags]["reference"]).to(eq([ "new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy" ]))
       end
     end
   end
 
   describe "#tab_options_for" do
-    let!(:products) { [product_with_name_index, product_with_default_reference] }
+    let!(:products) { [ product_with_name_index, product_with_default_reference ] }
     it "returns the tab for the given model and tab name" do
       result = subject.tab_options_for(:author, :new)
 

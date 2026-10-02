@@ -18,7 +18,7 @@
 
 class Instances::ChangeNameController < ApplicationController
   before_action :find_instance
-  before_action :authorise_instance_change, only: [:update]
+  before_action :authorise_instance_change, only: [ :update ]
 
   def update
     new_name_id = params[:instance]&.fetch(:name_id, nil)

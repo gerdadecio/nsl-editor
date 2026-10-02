@@ -34,7 +34,7 @@ class Loader::Batch::Reviewer < ApplicationRecord
     end
 
     def by_review(batch_review_id)
-      where(["batch_review_period_id in (select id from batch_review_period brp where brp.batch_review_id = ?)", batch_review_id])
+      where([ "batch_review_period_id in (select id from batch_review_period brp where brp.batch_review_id = ?)", batch_review_id ])
     end
   end
 
@@ -91,14 +91,14 @@ class Loader::Batch::Reviewer < ApplicationRecord
   def self.batch_reviewers_for_org_username_batch_review(org, username, batch_review)
     where(org_id: org.id)
       .joins(:user)
-      .where(["users.user_name = ?", username])
+      .where([ "users.user_name = ?", username ])
       .joins(batch_review_period: :batch_review)
-      .where(["batch_review.loader_batch_id = ?", batch_review.loader_batch_id])
+      .where([ "batch_review.loader_batch_id = ?", batch_review.loader_batch_id ])
       .distinct
   end
 
   def self.username_to_reviewers_for_review(username, review)
-    Loader::Batch::Reviewer.joins([:user, :batch_review])
+    Loader::Batch::Reviewer.joins([ :user, :batch_review ])
       .where("users.user_name": username)
       .where("batch_review.id": review.id)
   end

@@ -32,7 +32,7 @@ RSpec.describe(ApplicationHelper, type: :helper) do
       let(:product_role_3) { double("ProductRole", product: product_a, role: role_admin) }
       let(:product_role_4) { double("ProductRole", product: product_b, role: role_editor) }
 
-      let(:unsorted_product_roles) { [product_role_1, product_role_2, product_role_3, product_role_4] }
+      let(:unsorted_product_roles) { [ product_role_1, product_role_2, product_role_3, product_role_4 ] }
       let(:product_roles_relation) { double("ProductRoles", includes: unsorted_product_roles) }
       let(:user) { double("User", product_roles: product_roles_relation) }
 
@@ -64,7 +64,7 @@ RSpec.describe(ApplicationHelper, type: :helper) do
       let(:product_role_2) { double("ProductRole", product: product_same, role: role_admin) }
       let(:product_role_3) { double("ProductRole", product: product_same, role: role_editor) }
 
-      let(:unsorted_product_roles) { [product_role_1, product_role_2, product_role_3] }
+      let(:unsorted_product_roles) { [ product_role_1, product_role_2, product_role_3 ] }
       let(:product_roles_relation) { double("ProductRoles", includes: unsorted_product_roles) }
       let(:user) { double("User", product_roles: product_roles_relation) }
 
@@ -89,7 +89,7 @@ RSpec.describe(ApplicationHelper, type: :helper) do
       let(:product_role_1) { double("ProductRole", product: product_upper, role: role_lower) }
       let(:product_role_2) { double("ProductRole", product: product_lower, role: role_upper) }
 
-      let(:unsorted_product_roles) { [product_role_1, product_role_2] }
+      let(:unsorted_product_roles) { [ product_role_1, product_role_2 ] }
       let(:product_roles_relation) { double("ProductRoles", includes: unsorted_product_roles) }
       let(:user) { double("User", product_roles: product_roles_relation) }
 

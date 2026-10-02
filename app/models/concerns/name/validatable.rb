@@ -36,25 +36,25 @@ module Name::Validatable
     validates :status_summary, length: { maximum: 50 }
     validates :duplicate_of_id,
       exclusion: {
-        in: ->(name) { [name.id] },
+        in: ->(name) { [ name.id ] },
         allow_blank: true,
         message: "and master cannot be the same record",
       }
     validates :parent_id,
       exclusion: {
-        in: ->(name) { [name.id] },
+        in: ->(name) { [ name.id ] },
         allow_blank: true,
         message: "cannot be the same record",
       }
     validates :second_parent_id,
       exclusion: {
-        in: ->(name) { [name.id] },
+        in: ->(name) { [ name.id ] },
         allow_blank: true,
         message: "cannot be the same record",
       }
     validates :second_parent_id,
       exclusion: {
-        in: ->(name) { [name.parent_id] },
+        in: ->(name) { [ name.parent_id ] },
         allow_blank: true,
         message: "cannot be the same as the first parent",
         unless: -> { cultivar_hybrid? },

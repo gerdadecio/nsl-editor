@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe(Instances::ChangeNameController, type: :controller) do
-  let(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
+  let(:session_user) { FactoryBot.create(:session_user, groups: [ "login" ]) }
   let(:name_type) { FactoryBot.create(:name_type) }
   let(:name_rank) { FactoryBot.create(:name_rank) }
   let(:current_name) { FactoryBot.create(:name, name_type:, name_rank:) }

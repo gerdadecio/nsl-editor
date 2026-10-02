@@ -45,7 +45,7 @@ RSpec.describe(Users::ProductRoles::DestroyService, type: :service) do
     context "when user_product_role destroy fails" do
       before do
         allow(user_product_role1).to(receive(:destroy).and_return(false))
-        allow(user_product_role1).to(receive_message_chain(:errors, :full_messages).and_return(["Cannot destroy"]))
+        allow(user_product_role1).to(receive_message_chain(:errors, :full_messages).and_return([ "Cannot destroy" ]))
       end
 
       it "adds an error message" do

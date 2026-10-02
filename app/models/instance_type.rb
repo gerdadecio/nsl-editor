@@ -88,7 +88,7 @@ class InstanceType < ApplicationRecord
   def self.standalone_options
     where("standalone").where.not("deprecated")
       .sort_by(&:name)
-      .collect { |i| [i.name, i.id] }
+      .collect { |i| [ i.name, i.id ] }
   end
 
   # For new records: just the standard set.
@@ -96,7 +96,7 @@ class InstanceType < ApplicationRecord
     where("relationship").where.not("deprecated")
       .where.not("unsourced")
       .sort_by(&:name)
-      .collect { |i| [i.name, i.id] }
+      .collect { |i| [ i.name, i.id ] }
   end
 
   # For new records: just the standard set.
@@ -104,7 +104,7 @@ class InstanceType < ApplicationRecord
     where("relationship").where("unsourced")
       .where.not("deprecated")
       .sort_by(&:name)
-      .collect { |i| [i.name, i.id] }
+      .collect { |i| [ i.name, i.id ] }
   end
 
   # For existing records.
@@ -113,9 +113,9 @@ class InstanceType < ApplicationRecord
   def standalone_options
     InstanceType.standalone_options.collect do |instance_type|
       if instance_type.standalone
-        [instance_type.name, instance_type.id]
+        [ instance_type.name, instance_type.id ]
       else
-        ["#{instance_type.name}  [not allowed]", instance_type.id]
+        [ "#{instance_type.name}  [not allowed]", instance_type.id ]
       end
     end
   end
@@ -144,7 +144,7 @@ class InstanceType < ApplicationRecord
 
   def self.query_form_options
     all.sort_by(&:name)
-      .collect { |n| [n.name, n.name.downcase, { class: "" }] }
+      .collect { |n| [ n.name, n.name.downcase, { class: "" } ] }
   end
 
   def self.secondary_reference

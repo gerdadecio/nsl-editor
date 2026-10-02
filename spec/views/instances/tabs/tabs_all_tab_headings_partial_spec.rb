@@ -204,7 +204,7 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
 
       context "and user has roles" do
         before do
-          allow(user_with_roles).to(receive(:roles).and_return(["some_role"]))
+          allow(user_with_roles).to(receive(:roles).and_return([ "some_role" ]))
           user = user_with_roles
           view.define_singleton_method(:current_registered_user) { user }
         end
@@ -222,7 +222,7 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
       before do
         product = matching_product
         view.define_singleton_method(:current_product_from_context) { product }
-        allow(user_with_roles).to(receive(:roles).and_return(["some_role"]))
+        allow(user_with_roles).to(receive(:roles).and_return([ "some_role" ]))
         user = user_with_roles
         view.define_singleton_method(:current_registered_user) { user }
       end
@@ -337,7 +337,7 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
       product = product_without_profile
       view.define_singleton_method(:current_product_from_context) { product }
 
-      allow(user_with_tree_builder_role).to(receive(:role_names).and_return(["tree-builder"]))
+      allow(user_with_tree_builder_role).to(receive(:role_names).and_return([ "tree-builder" ]))
       user = user_with_tree_builder_role
       view.define_singleton_method(:current_registered_user) { user }
     end

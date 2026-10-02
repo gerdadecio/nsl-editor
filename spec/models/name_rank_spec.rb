@@ -54,7 +54,7 @@ RSpec.describe(NameRank, type: :model) do
       end
 
       it "lets .options_for_category return rank options instead of raising" do
-        scientific = create(:name_category, valid_names: ["scientific"])
+        scientific = create(:name_category, valid_names: [ "scientific" ])
 
         expect { described_class.options_for_category(scientific, genus) }
           .not_to(raise_error)
@@ -67,11 +67,11 @@ RSpec.describe(NameRank, type: :model) do
 
     it "labels each option with the rank name, not the display name" do
       expect(options).to(eq([
-        ["Genus", genus.id],
-        ["Species", species.id],
-        ["Varietas", varietas.id],
-        ["[unranked]", unranked.id],
-        ["[infraspecies]", infraspecies.id]
+        [ "Genus", genus.id ],
+        [ "Species", species.id ],
+        [ "Varietas", varietas.id ],
+        [ "[unranked]", unranked.id ],
+        [ "[infraspecies]", infraspecies.id ]
       ]))
     end
 
@@ -89,8 +89,8 @@ RSpec.describe(NameRank, type: :model) do
 
     it "labels each option with the rank name, not the display name" do
       expect(options).to(eq([
-        ["Regnum", regnum.id],
-        ["Familia", familia.id]
+        [ "Regnum", regnum.id ],
+        [ "Familia", familia.id ]
       ]))
     end
 
@@ -104,9 +104,9 @@ RSpec.describe(NameRank, type: :model) do
 
     it "labels each option with the rank name, not the display name" do
       expect(options).to(eq([
-        ["Species", species.id],
-        ["Varietas", varietas.id],
-        ["[unranked]", unranked.id]
+        [ "Species", species.id ],
+        [ "Varietas", varietas.id ],
+        [ "[unranked]", unranked.id ]
       ]))
     end
 
@@ -124,9 +124,9 @@ RSpec.describe(NameRank, type: :model) do
 
     it "labels each option with the rank name, not the display name" do
       expect(options).to(eq([
-        ["Species", species.id],
-        ["Varietas", varietas.id],
-        ["[unranked]", unranked.id]
+        [ "Species", species.id ],
+        [ "Varietas", varietas.id ],
+        [ "[unranked]", unranked.id ]
       ]))
     end
 
@@ -136,7 +136,7 @@ RSpec.describe(NameRank, type: :model) do
   end
 
   describe ".options_for_category" do
-    let(:scientific) { create(:name_category, valid_names: ["scientific"]) }
+    let(:scientific) { create(:name_category, valid_names: [ "scientific" ]) }
 
     it "uses the below-family options when the current rank is below family" do
       options = described_class.options_for_category(scientific, species)
@@ -149,20 +149,20 @@ RSpec.describe(NameRank, type: :model) do
       options = described_class.options_for_category(scientific, familia)
 
       expect(options).to(eq(described_class.above_family_options))
-      expect(options.collect(&:first)).to(eq(["Regnum", "Familia"]))
+      expect(options.collect(&:first)).to(eq([ "Regnum", "Familia" ]))
     end
   end
 
   describe ".options" do
     it "still labels each option with the display name" do
       expect(described_class.options).to(eq([
-        ["Regnum display", regnum.id],
-        ["Familia display", familia.id],
-        ["Genus display", genus.id],
-        ["Species display", species.id],
-        ["Varietas display", varietas.id],
-        ["[unranked] display", unranked.id],
-        ["[infraspecies] display", infraspecies.id]
+        [ "Regnum display", regnum.id ],
+        [ "Familia display", familia.id ],
+        [ "Genus display", genus.id ],
+        [ "Species display", species.id ],
+        [ "Varietas display", varietas.id ],
+        [ "[unranked] display", unranked.id ],
+        [ "[infraspecies] display", infraspecies.id ]
       ]))
     end
   end
