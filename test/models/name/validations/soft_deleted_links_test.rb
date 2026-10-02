@@ -30,7 +30,7 @@ class NameValidationsSoftDeletedLinksTest < ActiveSupport::TestCase
   { parent_id: "parent name",
     second_parent_id: "second parent name",
     duplicate_of_id: "name it duplicates",
-    family_id: "family name" }.each do |foreign_key, label|
+    family_id: "family name", }.each do |foreign_key, label|
     test "rejects a soft deleted #{label}" do
       @name.public_send("#{foreign_key}=", @soft_deleted.id)
       @name.valid?
