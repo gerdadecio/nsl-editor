@@ -19,9 +19,9 @@
 class ProfileItemAnnotationsController < ApplicationController
   skip_before_action :authorise
 
-  before_action :set_profile_item_annotation, only: [:update, :destroy]
+  before_action :set_profile_item_annotation, only: [ :update, :destroy ]
 
-  before_action :authorise_user!, except: [:create]
+  before_action :authorise_user!, except: [ :create ]
 
   def create
     # Check for existing ProfileAnnotation based on profile_item_id

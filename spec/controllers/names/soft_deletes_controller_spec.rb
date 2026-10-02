@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe(Names::SoftDeletesController, type: :controller) do
-  let(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
+  let(:session_user) { FactoryBot.create(:session_user, groups: [ "login" ]) }
   let(:name) { FactoryBot.create(:name) }
 
   before do
@@ -63,7 +63,7 @@ RSpec.describe(Names::SoftDeletesController, type: :controller) do
         name # create the record before the any_instance stubs take effect
         allow_any_instance_of(Name).to(receive(:save).and_return(false))
         allow_any_instance_of(Name).to(receive(:errors)
-          .and_return(instance_double(ActiveModel::Errors, full_messages: ["Save failed"])))
+          .and_return(instance_double(ActiveModel::Errors, full_messages: [ "Save failed" ])))
       end
 
       it "renders the error template with the validation messages" do

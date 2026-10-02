@@ -25,7 +25,7 @@
 # 2025-04-01 11:51:27.618 [omg] r6editor AbstractController::ActionNotFound (The action 'create' could not be found for Users::ProductRolesController):
 
 class User::ProductRolesController < ApplicationController
-  before_action :find_upr, only: [:destroy]
+  before_action :find_upr, only: [ :destroy ]
 
   # POST
   def create
@@ -61,7 +61,7 @@ class User::ProductRolesController < ApplicationController
   private
 
   def find_upr
-    @upr = User::ProductRole.find([params[:user_id], params[:product_role_id]])
+    @upr = User::ProductRole.find([ params[:user_id], params[:product_role_id] ])
   end
 
   def user_product_role_params

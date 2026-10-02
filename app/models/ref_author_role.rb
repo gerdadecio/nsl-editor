@@ -54,10 +54,10 @@ class RefAuthorRole < ApplicationRecord
   end
 
   def self.options
-    all.order(:name).collect { |r| [r.name, r.id] }
+    all.order(:name).collect { |r| [ r.name, r.id ] }
   end
 
   def self.query_form_options
-    all.sort_by(&:name).collect { |n| [n.name, n.name.downcase, { class: "" }] }
+    all.sort_by(&:name).collect { |n| [ n.name, n.name.downcase, { class: "" } ] }
   end
 end

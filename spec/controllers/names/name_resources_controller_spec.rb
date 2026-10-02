@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe(Names::NameResourcesController, type: :controller) do
-  let(:session_user) { FactoryBot.create(:session_user, groups: ["login", "edit"]) }
+  let(:session_user) { FactoryBot.create(:session_user, groups: [ "login", "edit" ]) }
   let(:current_user) { FactoryBot.create(:user) }
   let(:name) { FactoryBot.create(:name) }
   let(:resource_host) { FactoryBot.create(:resource_host) }
@@ -86,7 +86,7 @@ RSpec.describe(Names::NameResourcesController, type: :controller) do
       before do
         allow_any_instance_of(NameResource).to(receive(:save).and_return(false))
         allow_any_instance_of(NameResource).to(receive(:errors).and_return(
-          double(full_messages: ["Resource host must exist"]),
+          double(full_messages: [ "Resource host must exist" ]),
         ))
       end
 
@@ -249,7 +249,7 @@ RSpec.describe(Names::NameResourcesController, type: :controller) do
       before do
         allow_any_instance_of(NameResource).to(receive(:save).and_return(false))
         allow_any_instance_of(NameResource).to(receive(:errors).and_return(
-          double(full_messages: ["Validation failed"]),
+          double(full_messages: [ "Validation failed" ]),
         ))
       end
 
@@ -373,7 +373,7 @@ RSpec.describe(Names::NameResourcesController, type: :controller) do
       before do
         allow_any_instance_of(NameResource).to(receive(:destroy).and_return(false))
         allow_any_instance_of(NameResource).to(receive(:errors).and_return(
-          double(full_messages: ["Cannot delete resource"]),
+          double(full_messages: [ "Cannot delete resource" ]),
         ))
       end
 

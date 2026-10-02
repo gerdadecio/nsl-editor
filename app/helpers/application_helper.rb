@@ -11,7 +11,7 @@ module ApplicationHelper
     user
       .product_roles
       .includes(:product, :role)
-      .sort_by { |pr| [pr.product.name, pr.role.name] }
+      .sort_by { |pr| [ pr.product.name, pr.role.name ] }
   end
 
   def markdown_to_html(markdown)

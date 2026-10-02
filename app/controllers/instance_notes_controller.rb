@@ -17,8 +17,8 @@
 #   limitations under the License.
 #
 class InstanceNotesController < ApplicationController
-  before_action :set_instance_note, only: [:show, :edit, :update, :destroy]
-  before_action :authorise_instance_change, only: [:create, :update, :destroy]
+  before_action :set_instance_note, only: [ :show, :edit, :update, :destroy ]
+  before_action :authorise_instance_change, only: [ :create, :update, :destroy ]
 
   # GET /instance_notes/1
   # GET /instance_notes/1.json

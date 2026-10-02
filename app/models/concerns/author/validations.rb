@@ -65,7 +65,7 @@ module Author::Validations
     }
     validates :duplicate_of_id,
       exclusion: {
-        in: ->(author) { [author.id] },
+        in: ->(author) { [ author.id ] },
         allow_blank: true,
         message: "and master cannot be the same record",
       }

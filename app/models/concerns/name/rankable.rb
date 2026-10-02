@@ -38,13 +38,13 @@ module Name::Rankable
 
   def ranks_up_to_next_major
     next_major = next_major_rank
-    NameRank.where(["sort_order < :this_rank and sort_order >= :major_rank", {
+    NameRank.where([ "sort_order < :this_rank and sort_order >= :major_rank", {
       this_rank: name_rank.sort_order, major_rank: next_major.sort_order,
-    }])
+    } ])
   end
 
   def next_major_rank
-    NameRank.where(["sort_order < :this_rank and major", { this_rank: name_rank.sort_order }])
+    NameRank.where([ "sort_order < :this_rank and major", { this_rank: name_rank.sort_order } ])
       .order(:sort_order).reverse_order.first
   end
 end

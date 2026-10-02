@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe(ProfileItemAnnotationsController, type: :controller) do
-  let(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
+  let(:session_user) { FactoryBot.create(:session_user, groups: [ "login" ]) }
   let(:user) { FactoryBot.create(:user) }
   let!(:profile_item) { FactoryBot.create(:profile_item) }
 

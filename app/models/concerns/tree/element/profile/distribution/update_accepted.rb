@@ -19,7 +19,7 @@ module Tree::Element::Profile::Distribution::UpdateAccepted
     elsif distribution_value != dist_param
       change_dist(dist_param, username)
     else
-      ["No change to distribution", false]
+      [ "No change to distribution", false ]
     end
   end
 
@@ -36,7 +36,7 @@ module Tree::Element::Profile::Distribution::UpdateAccepted
       message = "Distribution removed"
       refresh = true
     end
-    [message, refresh]
+    [ message, refresh ]
   end
 
   def add_dist_to_profile(dist_param, username)
@@ -45,7 +45,7 @@ module Tree::Element::Profile::Distribution::UpdateAccepted
     add_validated_dist_to_profile(new_cleaned, username)
     te = Tree::Element.find(id)
     te.apply_string_to_tedes
-    ["Distribution added", true]
+    [ "Distribution added", true ]
   end
 
   def add_dist_to_empty_profile(dist_param, username)
@@ -58,7 +58,7 @@ module Tree::Element::Profile::Distribution::UpdateAccepted
     add_profile_and_distribution(new_cleaned, username)
     te = Tree::Element.find(id)
     te.apply_string_to_tedes
-    ["Distribution added to a fresh profile", true]
+    [ "Distribution added to a fresh profile", true ]
   end
 
   def change_dist(dist_param, username)
@@ -78,6 +78,6 @@ module Tree::Element::Profile::Distribution::UpdateAccepted
       refresh = true
       message = "Distribution changed"
     end
-    [message, refresh]
+    [ message, refresh ]
   end
 end

@@ -35,7 +35,7 @@ class Name::AsTypeahead::ForUnpubCit
   def query
     Name.not_a_duplicate
       .not_soft_deleted
-      .where(["lower(full_name) like lower(?)", prepared_search_term])
+      .where([ "lower(full_name) like lower(?)", prepared_search_term ])
       .where.not(name: { id: @params[:context_name_id].to_i })
       .includes(:name_status)
       .joins(:name_rank)

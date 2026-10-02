@@ -31,7 +31,7 @@ module Loader::Name::SourcedSynonyms
         seq: seq_value,
       )
       s.consider_sort_key
-      s.name_status = nil if ["legitimate", "[n/a]"].include?(s.name_status)
+      s.name_status = nil if [ "legitimate", "[n/a]" ].include?(s.name_status)
       s.save!
       s.create_match_to_loaded_from_instance_name(current_user.username)
     end

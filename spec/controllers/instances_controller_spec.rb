@@ -146,11 +146,11 @@ RSpec.describe(InstancesController, type: :controller) do
   end
 
   describe "GET #typeahead_for_product_item_config" do
-    let(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
+    let(:session_user) { FactoryBot.create(:session_user, groups: [ "login" ]) }
     let(:user) { FactoryBot.create(:user) }
     let(:instance) { FactoryBot.create(:instance) }
     let(:mock_typeahead_service) { double("Instance::AsTypeahead::ForProductItemConfig") }
-    let(:mock_instances) { [instance] }
+    let(:mock_instances) { [ instance ] }
     let!(:profile_item) { instance_double("Profile::ProfileItem", id: 1, product_item_config_id: "1") }
     let(:params) { { instance_id: instance.id, term: "test", product_item_config_id: profile_item.product_item_config_id } }
 
@@ -175,7 +175,7 @@ RSpec.describe(InstancesController, type: :controller) do
   end
 
   describe "POST #copy_for_profile_v2" do
-    let(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
+    let(:session_user) { FactoryBot.create(:session_user, groups: [ "login" ]) }
     let(:instance) { FactoryBot.create(:instance) }
     let(:mocked_instance) { instance_double("Instance", id: 1) }
     let(:params) do
@@ -220,7 +220,7 @@ RSpec.describe(InstancesController, type: :controller) do
 
       it "handles the error and renders the error template" do
         post :copy_for_profile_v2, params: params, xhr: true
-        expect(assigns(:message)).to(eq(["Something went wrong"]))
+        expect(assigns(:message)).to(eq([ "Something went wrong" ]))
         expect(response).to(render_template("instances/copy_standalone/error"))
       end
     end

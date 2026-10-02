@@ -27,7 +27,7 @@ module Profile
     include UserTrackable
 
     self.table_name = "profile_item_reference"
-    self.primary_key = [:profile_item_id, :reference_id]
+    self.primary_key = [ :profile_item_id, :reference_id ]
 
     belongs_to :profile_item, class_name: "Profile::ProfileItem", foreign_key: "profile_item_id"
     belongs_to :reference, class_name: "Reference", foreign_key: "reference_id"
@@ -35,7 +35,7 @@ module Profile
     validate :reference_and_profile_item_uniqueness, on: :create
 
     def profile_item_id_reference_id
-      [profile_item_id, reference_id].join("_")
+      [ profile_item_id, reference_id ].join("_")
     end
 
     private

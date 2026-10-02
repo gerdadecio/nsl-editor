@@ -123,7 +123,7 @@ class NameStatus < ApplicationRecord
 
   def self.query_form_options
     all.ordered_by_name.collect do |n|
-      [n.name, "status: #{n.name.downcase}"]
+      [ n.name, "status: #{n.name.downcase}" ]
     end
   end
 
@@ -131,20 +131,20 @@ class NameStatus < ApplicationRecord
     not_cultivar
       .not_deprecated
       .ordered_by_name.collect do |n|
-      [n.name, n.id]
+      [ n.name, n.id ]
     end
   end
 
   def self.na_option
     where(" name = '[n/a]' ").collect do |n|
-      [n.name, n.id]
+      [ n.name, n.id ]
     end
   end
 
   def self.na_default_and_deleted_options
     where(" name = '[n/a]' or name = '[default]' or name = '[deleted]' ")
       .order("name").collect do |n|
-        [n.name, n.id]
+        [ n.name, n.id ]
       end
   end
 
@@ -152,7 +152,7 @@ class NameStatus < ApplicationRecord
     not_cultivar
       .not_deprecated
       .ordered_by_name.collect do |n|
-      [n.name]
+      [ n.name ]
     end
   end
 end

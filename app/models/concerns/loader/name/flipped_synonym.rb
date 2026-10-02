@@ -27,7 +27,7 @@ module Loader::Name::FlippedSynonym
       seq: seq_value,
     )
     synonym.consider_sort_key
-    synonym.name_status = nil if ["legitimate", "[n/a]"].include?(synonym.name_status)
+    synonym.name_status = nil if [ "legitimate", "[n/a]" ].include?(synonym.name_status)
     synonym.save!
     synonym.create_match_to_loaded_from_instance_name(current_user.username)
   end

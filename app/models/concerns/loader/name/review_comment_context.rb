@@ -8,11 +8,11 @@ module Loader::Name::ReviewCommentContext
   def contexts
     case record_type
     when "accepted"
-      ["accepted", "concept-note", "distribution"]
+      [ "accepted", "concept-note", "distribution" ]
     when "excluded"
-      ["excluded", "concept-note"]
+      [ "excluded", "concept-note" ]
     else
-      [record_type]
+      [ record_type ]
     end
   end
 end

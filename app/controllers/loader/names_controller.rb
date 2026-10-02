@@ -20,9 +20,9 @@ class Loader::NamesController < ApplicationController
   include Loader::Names::ParentTypeahead
 
   before_action :find_loader_name,
-    only: [:show, :destroy, :tab, :update, :set_preferred_match]
+    only: [ :show, :destroy, :tab, :update, :set_preferred_match ]
   before_action :find_loader_name_including_matches,
-    only: [:force_destroy]
+    only: [ :force_destroy ]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
@@ -252,7 +252,7 @@ class Loader::NamesController < ApplicationController
   end
 
   def find_loader_name_including_matches
-    @loader_name = Loader::Name.includes([:loader_name_matches]).where(id: params[:id]).first
+    @loader_name = Loader::Name.includes([ :loader_name_matches ]).where(id: params[:id]).first
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the loader name record."
     redirect_to(loader_names_path)

@@ -33,7 +33,7 @@ RSpec.describe(Name::InstancesCopyable, type: :model) do
       undated = standalone_instance_for(name, iso: nil)
       earlier = standalone_instance_for(name, iso: "2000")
 
-      expect(name.standalone_instances_sorted).to(eq([undated, earlier, later]))
+      expect(name.standalone_instances_sorted).to(eq([ undated, earlier, later ]))
     end
 
     it "returns an empty array when there are no standalone instances" do

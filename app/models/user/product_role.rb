@@ -36,10 +36,10 @@
 class User::ProductRole < ApplicationRecord
   strip_attributes
   self.table_name = "user_product_role"
-  self.primary_key = [:user_id, :product_role_id]
+  self.primary_key = [ :user_id, :product_role_id ]
   validates :user_id, :product_role_id, presence: true
   validates :user_id, uniqueness: {
-    scope: [:product_role_id],
+    scope: [ :product_role_id ],
     message: "already has that product role",
   }
   belongs_to :user

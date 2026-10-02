@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Loader::Batch::Review::PeriodsController < ApplicationController
-  before_action :find_review_period, only: [:show, :destroy, :tab, :update]
+  before_action :find_review_period, only: [ :show, :destroy, :tab, :update ]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.

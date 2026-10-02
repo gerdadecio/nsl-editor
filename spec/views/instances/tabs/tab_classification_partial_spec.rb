@@ -97,7 +97,7 @@ RSpec.describe("instances/tabs/_tab_classification.html.erb", type: :view) do
           before do
             product = matching_product
             view.define_singleton_method(:current_product_from_context) { product }
-            allow(user_with_roles).to(receive(:roles).and_return(["some_role"]))
+            allow(user_with_roles).to(receive(:roles).and_return([ "some_role" ]))
             u = user_with_roles
             view.define_singleton_method(:current_registered_user) { u }
           end
@@ -128,7 +128,7 @@ RSpec.describe("instances/tabs/_tab_classification.html.erb", type: :view) do
 
           context "and user has roles" do
             before do
-              allow(user_with_roles).to(receive(:roles).and_return(["some_role"]))
+              allow(user_with_roles).to(receive(:roles).and_return([ "some_role" ]))
               u = user_with_roles
               view.define_singleton_method(:current_registered_user) { u }
             end

@@ -66,7 +66,7 @@ RSpec.describe(Product::Role, type: :model) do
 
     describe "scope combinations" do
       it "ensures admins and non_admins scopes are mutually exclusive" do
-        all_product_roles = [admin_product_role, editor_product_role, viewer_product_role]
+        all_product_roles = [ admin_product_role, editor_product_role, viewer_product_role ]
         admins = described_class.admins.to_a
         non_admins = described_class.non_admins.to_a
 

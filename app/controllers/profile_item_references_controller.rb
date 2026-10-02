@@ -19,9 +19,9 @@
 class ProfileItemReferencesController < ApplicationController
   skip_before_action :authorise
 
-  before_action :set_profile_item_reference, only: [:update, :destroy]
+  before_action :set_profile_item_reference, only: [ :update, :destroy ]
 
-  before_action :authorise_user!, except: [:create]
+  before_action :authorise_user!, except: [ :create ]
 
   def create
     @profile_item_reference = Profile::ProfileItemReference.new(

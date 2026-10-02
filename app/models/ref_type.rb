@@ -72,7 +72,7 @@ class RefType < ApplicationRecord
   end
 
   def self.options
-    all.order(:name).collect { |r| [r.name, r.id] }
+    all.order(:name).collect { |r| [ r.name, r.id ] }
   end
 
   def self.options_for_parent_of(children_ref_types)
@@ -87,16 +87,16 @@ class RefType < ApplicationRecord
     all.order(:name)
       .collect do |r|
       if /#{pref}/.match?(r.name)
-        [r.name, r.id, { class: "none" }]
+        [ r.name, r.id, { class: "none" } ]
       else
-        ["#{r.name} - may be incompatible with child", r.id, { class: "red" }]
+        [ "#{r.name} - may be incompatible with child", r.id, { class: "red" } ]
       end
     end
   end
 
   def self.query_form_options
     all.sort_by(&:name)
-      .collect { |n| [n.name, n.name.downcase, { class: "" }] }
+      .collect { |n| [ n.name, n.name.downcase, { class: "" } ] }
   end
 
   def rule

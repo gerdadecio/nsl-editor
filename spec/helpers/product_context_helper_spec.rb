@@ -5,12 +5,12 @@ require "rails_helper"
 RSpec.describe(ProductContextHelper, type: :helper) do
   let!(:product) { instance_double(Product, name: "FOO", context_id: 1) }
   let!(:user) do
-    instance_double(User, available_products_from_roles: [product])
+    instance_double(User, available_products_from_roles: [ product ])
   end
   let!(:product_context_service) do
     instance_double(
       Products::ProductContextService,
-      available_contexts: [{ name: product.name, context_id: product.context_id }],
+      available_contexts: [ { name: product.name, context_id: product.context_id } ],
     )
   end
 
@@ -25,7 +25,7 @@ RSpec.describe(ProductContextHelper, type: :helper) do
 
   describe "#available_contexts_for_current_user" do
     it "returns the names of available contexts" do
-      expect(helper.available_contexts_for_current_user).to(eq([{ name: product.name, context_id: product.context_id }]))
+      expect(helper.available_contexts_for_current_user).to(eq([ { name: product.name, context_id: product.context_id } ]))
     end
 
     context "for multiple contexts" do
@@ -41,7 +41,7 @@ RSpec.describe(ProductContextHelper, type: :helper) do
       end
 
       it "sorts contexts by context_id" do
-        expect(helper.available_contexts_for_current_user.collect { |context| context[:context_id] }).to(eq([1, 2, 3]))
+        expect(helper.available_contexts_for_current_user.collect { |context| context[:context_id] }).to(eq([ 1, 2, 3 ]))
       end
     end
   end

@@ -50,7 +50,7 @@ RSpec.describe(TreesHelper, type: :helper) do
       end
 
       it "names the tree in the singular" do
-        expect(messages).to(eq(["Instance is in the currently accepted APC tree"]))
+        expect(messages).to(eq([ "Instance is in the currently accepted APC tree" ]))
       end
     end
 
@@ -72,7 +72,7 @@ RSpec.describe(TreesHelper, type: :helper) do
 
       it "names both trees in the plural" do
         expect(messages)
-          .to(eq(["Instance is in the currently accepted APC, FOA trees"]))
+          .to(eq([ "Instance is in the currently accepted APC, FOA trees" ]))
       end
     end
 
@@ -86,7 +86,7 @@ RSpec.describe(TreesHelper, type: :helper) do
       end
 
       it "reports the draft tree" do
-        expect(messages).to(eq(["Instance is in the APC draft tree"]))
+        expect(messages).to(eq([ "Instance is in the APC draft tree" ]))
       end
     end
 
@@ -101,7 +101,7 @@ RSpec.describe(TreesHelper, type: :helper) do
 
       it "reports it as an old classification" do
         expect(messages)
-          .to(eq(["Instance is in at least one old classification: APC tree"]))
+          .to(eq([ "Instance is in at least one old classification: APC tree" ]))
       end
     end
 
@@ -158,7 +158,7 @@ RSpec.describe(TreesHelper, type: :helper) do
       end
 
       it "uses the name as the subject of the message" do
-        expect(messages).to(eq(["Name is in the currently accepted APC tree"]))
+        expect(messages).to(eq([ "Name is in the currently accepted APC tree" ]))
       end
     end
   end

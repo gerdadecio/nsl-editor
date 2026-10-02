@@ -7,13 +7,13 @@ RSpec.describe(Products::ProductContextService) do
   let!(:product_2) { create(:product, name: "APNI", context_id: 1, context_sort_order: 3) }
   let!(:product_3) { create(:product, name: "FOA", context_id: 2, context_sort_order: 2) }
 
-  subject(:service) { described_class.new(products: [product_1, product_2, product_3]) }
+  subject(:service) { described_class.new(products: [ product_1, product_2, product_3 ]) }
 
   before { allow(Rails.configuration).to(receive(:multi_product_tabs_enabled).and_return(true)) }
 
   describe ".initialize" do
     it "sets products" do
-      expect(service.products).to(eq([product_1, product_2, product_3]))
+      expect(service.products).to(eq([ product_1, product_2, product_3 ]))
     end
   end
 
@@ -34,8 +34,8 @@ RSpec.describe(Products::ProductContextService) do
       apc_apni_context = result.find { |ctx| ctx[:context_id] == 1 }
       foa_context = result.find { |ctx| ctx[:context_id] == 2 }
 
-      expect(apc_apni_context[:products].map(&:name)).to(eq([product_1.name, product_2.name]))
-      expect(foa_context[:products].map(&:name)).to(eq([product_3.name]))
+      expect(apc_apni_context[:products].map(&:name)).to(eq([ product_1.name, product_2.name ]))
+      expect(foa_context[:products].map(&:name)).to(eq([ product_3.name ]))
     end
 
     it "sets the available_products instance variable" do
@@ -53,7 +53,7 @@ RSpec.describe(Products::ProductContextService) do
   end
 
   describe "#product_with_context" do
-    subject(:service) { described_class.call(products: [product_1, product_2, product_3]) }
+    subject(:service) { described_class.call(products: [ product_1, product_2, product_3 ]) }
 
     it "returns the correct product for a given context_id" do
       result = service.product_with_context(1)
@@ -72,7 +72,7 @@ RSpec.describe(Products::ProductContextService) do
   end
 
   describe "#available_contexts" do
-    subject(:service) { described_class.call(products: [product_1, product_2, product_3]) }
+    subject(:service) { described_class.call(products: [ product_1, product_2, product_3 ]) }
 
     it "returns cached available contexts after first call" do
       first_call = service.available_contexts

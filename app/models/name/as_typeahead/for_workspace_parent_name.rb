@@ -64,7 +64,7 @@ class Name::AsTypeahead::ForWorkspaceParentName
     this_name = Name.find(@params[:name_id])
     basic_query
       .joins(tree_element: { name: :name_rank })
-      .where(["name_rank.sort_order < ?", this_name.name_rank.sort_order])
+      .where([ "name_rank.sort_order < ?", this_name.name_rank.sort_order ])
       .collect do |n|
       { value: "#{n.tree_element.name.simple_name} - #{n.tree_element.name.name_rank.name}", id: n.element_link }
     end

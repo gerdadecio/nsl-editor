@@ -39,10 +39,10 @@ class InstanceNoteKey < ApplicationRecord
   APC_DIST = "APC Dist."
   NOTE_MATCHES = "-note-matches:"
   has_many :instance_notes
-  scope :apc, -> { where(name: ["APC Comment", "APC Dist."]) }
-  scope :apc_comment, -> { where(name: ["APC Comment"]) }
-  scope :apc_dist, -> { where(name: [APC_DIST]) }
-  scope :non_apc, -> { where.not(name: ["APC Comment", "APC Dist."]) }
+  scope :apc, -> { where(name: [ "APC Comment", "APC Dist." ]) }
+  scope :apc_comment, -> { where(name: [ "APC Comment" ]) }
+  scope :apc_dist, -> { where(name: [ APC_DIST ]) }
+  scope :non_apc, -> { where.not(name: [ "APC Comment", "APC Dist." ]) }
 
   def self.edit_options
     all.order(:sort_order)
@@ -67,7 +67,7 @@ class InstanceNoteKey < ApplicationRecord
     all.where(deprecated: false)
       .apc
       .order(:sort_order)
-      .collect { |n| [n.name, n.id] }
+      .collect { |n| [ n.name, n.id ] }
   end
 
   def self.apc_options_for_instance(instance)
@@ -75,7 +75,7 @@ class InstanceNoteKey < ApplicationRecord
       all.where(deprecated: false)
         .apc_comment
         .order(:sort_order)
-        .collect { |n| [n.name, n.id] }
+        .collect { |n| [ n.name, n.id ] }
     else
       apc_options
     end
@@ -84,13 +84,13 @@ class InstanceNoteKey < ApplicationRecord
   def self.non_apc_options
     all.where(deprecated: false)
       .non_apc.order(:sort_order)
-      .collect { |n| [n.name, n.id] }
+      .collect { |n| [ n.name, n.id ] }
   end
 
   def self.query_form_options
     all.where(deprecated: false)
       .sort_by(&:name)
-      .collect { |n| [n.name, n.name.downcase, { class: "" }] }
+      .collect { |n| [ n.name, n.name.downcase, { class: "" } ] }
   end
 
   def apc_dist?
@@ -100,7 +100,7 @@ class InstanceNoteKey < ApplicationRecord
   def self.string_has_embedded_note_key?(str)
     if /#{NOTE_MATCHES}\z/io.match?(str)
       possible_key = str.sub(/#{NOTE_MATCHES}\z/io, "").tr("-", " ")
-      where(["lower(name) = lower(?)", possible_key]).size == 1
+      where([ "lower(name) = lower(?)", possible_key ]).size == 1
     else
       false
     end

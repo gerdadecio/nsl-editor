@@ -136,7 +136,7 @@ class User < ApplicationRecord
   end
 
   def self.users_not_already_reviewers(batch_review)
-    all.order([:given_name, :family_name]) - batch_review.batch_reviewers.collect { |reviewer| reviewer.user }
+    all.order([ :given_name, :family_name ]) - batch_review.batch_reviewers.collect { |reviewer| reviewer.user }
   end
 
   def can_be_deleted?
@@ -157,7 +157,7 @@ class User < ApplicationRecord
       available_roles = available_roles.select { |pr| admin_product_ids.include?(pr.product_id) }
     end
 
-    available_roles.sort_by(&:name).map { |pr| [pr.name, pr.id] }
+    available_roles.sort_by(&:name).map { |pr| [ pr.name, pr.id ] }
   end
 
   def inspect

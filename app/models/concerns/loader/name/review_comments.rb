@@ -24,7 +24,7 @@ module Loader::Name::ReviewComments
 
   def real_record_comments(role)
     name_review_comments
-      .includes(batch_reviewer: [:batch_review_role])
+      .includes(batch_reviewer: [ :batch_review_role ])
       .select { |comment| comment.reviewer.role.name == role }
       .select { |comment| comment.context == record_type || comment.context == "main" }
   end
@@ -59,7 +59,7 @@ module Loader::Name::ReviewComments
   # Special total for all comments
 
   def total_compiler_and_reviewer_comments
-    [reviewer_comments, compiler_comments].flatten
+    [ reviewer_comments, compiler_comments ].flatten
   end
 
   def compiler_or_reviewer_comments?(context = "any")
@@ -71,7 +71,7 @@ module Loader::Name::ReviewComments
   def children_reviewer_comments
     children.map do |child|
       child.name_review_comments
-        .includes(batch_reviewer: [:batch_review_role])
+        .includes(batch_reviewer: [ :batch_review_role ])
         .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::NAME_REVIEWER }
     end.flatten
   end
@@ -79,7 +79,7 @@ module Loader::Name::ReviewComments
   def children_compiler_comments
     children.map do |child|
       child.name_review_comments
-        .includes(batch_reviewer: [:batch_review_role])
+        .includes(batch_reviewer: [ :batch_review_role ])
         .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::COMPILER }
     end.flatten
   end
@@ -120,7 +120,7 @@ module Loader::Name::ReviewComments
 
   def pretend_record_comments(role, context)
     name_review_comments
-      .includes(batch_reviewer: [:batch_review_role])
+      .includes(batch_reviewer: [ :batch_review_role ])
       .select { |comment| comment.reviewer.role.name == role }
       .select { |comment| comment.context == context }
   end

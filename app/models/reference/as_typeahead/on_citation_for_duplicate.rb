@@ -81,7 +81,7 @@ class Reference::AsTypeahead::OnCitationForDuplicate
     if Reference.find(current_id).ref_type.unknown?
       base_query(terms, current_id)
     else
-      base_query(terms, current_id).where(ref_type_id: [Reference.find(current_id).ref_type_id, RefType.unknown.id])
+      base_query(terms, current_id).where(ref_type_id: [ Reference.find(current_id).ref_type_id, RefType.unknown.id ])
     end
   end
 end

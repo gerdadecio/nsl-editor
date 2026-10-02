@@ -29,7 +29,7 @@ class Search::OnInstance::ListQuery
   def prepare_query
     Rails.logger.debug("Search::OnInstance::ListQuery#prepare_query")
     prepared_query = Instance.where("1=1")
-      .includes(:name, [name: :name_status])
+      .includes(:name, [ name: :name_status ])
       .includes(:reference)
       .includes(:instance_type)
     where_clauses = Search::OnInstance::WhereClauses.new(

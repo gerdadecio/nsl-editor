@@ -19,8 +19,8 @@
 class ProfileItemsController < ApplicationController
   skip_before_action :authorise
 
-  before_action :set_profile_item, only: [:show, :tab, :destroy, :details]
-  before_action :authorise_user!, except: [:tab, :index, :details]
+  before_action :set_profile_item, only: [ :show, :tab, :destroy, :details ]
+  before_action :authorise_user!, except: [ :tab, :index, :details ]
 
   def index
     @instance = Instance.find(permitted_profile_item_params[:instance_id])

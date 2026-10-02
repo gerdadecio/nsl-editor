@@ -227,7 +227,7 @@ class Loader::Name < ApplicationRecord
   # Tried this - much slower, not sure why given Name is set up for lower(f_unaccent()) searches
   def names_unaccent_simple_name_matching
     ::Name.where(
-      ["lower(f_unaccent(simple_name)) = lower(f_unaccent(?))", simple_name],
+      [ "lower(f_unaccent(simple_name)) = lower(f_unaccent(?))", simple_name ],
     )
       .where(duplicate_of_id: nil)
       .joins(:name_type).where(name_type: { scientific: true })
@@ -376,7 +376,7 @@ class Loader::Name < ApplicationRecord
   # This is used in bulk jobs
   def self.family_string_search(family_string)
     fam = family_string.downcase.tr("*", "%")
-    Loader::Name.where(["lower(family) like lower(?) ", fam])
+    Loader::Name.where([ "lower(family) like lower(?) ", fam ])
   end
 
   # This is used in bulk jobs
@@ -499,7 +499,7 @@ class Loader::Name < ApplicationRecord
     end
     entry = "Job finished: create instance for preferred matches for '#{taxon_s}', #{authorising_user}; records created: #{records}; errors: #{errors}"
     BulkProcessingLog.log(entry, "job controller")
-    [records, errors]
+    [ records, errors ]
   end
 
   def match_for_name_id(name_id)

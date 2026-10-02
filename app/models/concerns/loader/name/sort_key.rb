@@ -13,7 +13,7 @@ module Loader::Name::SortKey
   end
 
   def should_reset_sort_key?
-    return false if ["in-batch-note", "in-batch-compile-note", "heading"].include?(record_type)
+    return false if [ "in-batch-note", "in-batch-compile-note", "heading" ].include?(record_type)
     return true if changed? && !changes_to_save.keys.include?("sort_key")
 
     false

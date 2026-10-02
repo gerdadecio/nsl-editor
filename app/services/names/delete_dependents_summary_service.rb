@@ -15,7 +15,7 @@ module Names
 
     # NOTES: The tables behind the "Resources" group. They are legacy and are planned for
     # removal, so their presence is checked before they are queried.
-    LEGACY_RESOURCE_TABLES = ["name_resources", "resource", "resource_type"].freeze
+    LEGACY_RESOURCE_TABLES = [ "name_resources", "resource", "resource_type" ].freeze
 
     Group = Struct.new(:label, :entries) do
       # NOTES: Entries is an array of [label, count] pairs
@@ -103,7 +103,7 @@ module Names
     end
 
     def labelled(counts)
-      counts.map { |label, count| [label.presence || UNLABELLED, count.to_i] }
+      counts.map { |label, count| [ label.presence || UNLABELLED, count.to_i ] }
     end
   end
 end

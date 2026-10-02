@@ -44,7 +44,7 @@ class Loader::Name::NameMatchInSynonymy
   end
 
   def main
-    query = Loader::Name.send(:sanitize_sql, [RAW_SELECT, @name_id])
+    query = Loader::Name.send(:sanitize_sql, [ RAW_SELECT, @name_id ])
     connection = ActiveRecord::Base.connection
     query_result = connection.execute(query).first
     @result = query_result["qty"] > 0

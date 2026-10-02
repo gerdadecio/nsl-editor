@@ -12,7 +12,7 @@ module Loader::Name::SeqGapMaker
                               from loader_batch \
                              where lower(name) = ?)"
       sanitized_s = ActiveRecord::Base.sanitize_sql(
-        [update_s, batch.name.downcase],
+        [ update_s, batch.name.downcase ],
       )
       ActiveRecord::Base.connection.execute(sanitized_s)
     end

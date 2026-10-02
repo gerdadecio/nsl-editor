@@ -82,7 +82,7 @@ class Instance::AsArray::ForName < Array
     # `names`.
     def preload_for(names)
       name_ids = names.map(&:id)
-      return [{}, {}, {}] if name_ids.empty?
+      return [ {}, {}, {} ] if name_ids.empty?
 
       instances = Instance.where(name_id: name_ids)
         .includes([
@@ -255,7 +255,7 @@ class Instance::AsArray::ForName < Array
   #   - display these relationship instances as cited_by the standalone instance
   def standalone_instance_records(instance)
     debug("show_standalone_instance_records #{instance.id}")
-    results = [instance.display_as_part_of_concept]
+    results = [ instance.display_as_part_of_concept ]
     records_cited_by_standalone(instance)
       .each do |cited_by_original_instance|
         cited_by_original_instance.expanded_instance_type =
@@ -270,7 +270,7 @@ class Instance::AsArray::ForName < Array
   def records_cited_by_standalone(instance)
     debug("records_cited_by_standalone for instance #{instance.id}")
     @preloaded_standalone_cited_by_map&.fetch(instance.id, []) ||
-      self.class.standalone_cited_by_map_for([instance.id]).fetch(instance.id, [])
+      self.class.standalone_cited_by_map_for([ instance.id ]).fetch(instance.id, [])
   end
 
   def show_relationship_instance(name, instance)
@@ -287,7 +287,7 @@ class Instance::AsArray::ForName < Array
   # NSL-536: If instance name is not the subject name then
   # do not show the instance type.
   def relationship_instance_records(name, instance)
-    results = [instance.display_as_citing_instance_within_name_search]
+    results = [ instance.display_as_citing_instance_within_name_search ]
     records_cited_by_relationship(instance)
       .each do |cited_by_original_instance|
       next unless cited_by_original_instance.name.id == name.id
@@ -313,6 +313,6 @@ class Instance::AsArray::ForName < Array
   def records_cited_by_relationship(instance)
     debug("records_cited_by_relationship for instance #{instance.id}")
     @preloaded_relationship_cited_by_map&.fetch(instance.id, []) ||
-      self.class.relationship_cited_by_map_for([instance.id]).fetch(instance.id, [])
+      self.class.relationship_cited_by_map_for([ instance.id ]).fetch(instance.id, [])
   end
 end

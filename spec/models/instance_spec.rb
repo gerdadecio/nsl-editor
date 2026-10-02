@@ -127,7 +127,7 @@ RSpec.describe(Instance, type: :model) do
 
     context "when instance_notes are present" do
       before do
-        allow(instance).to(receive(:instance_notes).and_return([double]))
+        allow(instance).to(receive(:instance_notes).and_return([ double ]))
         allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
         allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
         allow(instance).to(receive(:comments).and_return([]))
@@ -145,7 +145,7 @@ RSpec.describe(Instance, type: :model) do
     context "when reverse_of_this_cites are present" do
       before do
         allow(instance).to(receive(:instance_notes).and_return([]))
-        allow(instance).to(receive(:reverse_of_this_cites).and_return([double]))
+        allow(instance).to(receive(:reverse_of_this_cites).and_return([ double ]))
         allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
         allow(instance).to(receive(:comments).and_return([]))
         allow(instance).to(receive(:in_any_tree?).and_return(false))
@@ -163,7 +163,7 @@ RSpec.describe(Instance, type: :model) do
       before do
         allow(instance).to(receive(:instance_notes).and_return([]))
         allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
-        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([double]))
+        allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([ double ]))
         allow(instance).to(receive(:comments).and_return([]))
         allow(instance).to(receive(:in_any_tree?).and_return(false))
         allow(instance).to(receive(:children).and_return([]))
@@ -181,7 +181,7 @@ RSpec.describe(Instance, type: :model) do
         allow(instance).to(receive(:instance_notes).and_return([]))
         allow(instance).to(receive(:reverse_of_this_cites).and_return([]))
         allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
-        allow(instance).to(receive(:comments).and_return([double]))
+        allow(instance).to(receive(:comments).and_return([ double ]))
         allow(instance).to(receive(:in_any_tree?).and_return(false))
         allow(instance).to(receive(:children).and_return([]))
         allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
@@ -217,7 +217,7 @@ RSpec.describe(Instance, type: :model) do
         allow(instance).to(receive(:reverse_of_this_is_cited_by).and_return([]))
         allow(instance).to(receive(:comments).and_return([]))
         allow(instance).to(receive(:in_any_tree?).and_return(false))
-        allow(instance).to(receive(:children).and_return([double]))
+        allow(instance).to(receive(:children).and_return([ double ]))
         allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
         allow(instance).to(receive(:profile_items).and_return([]))
       end
@@ -253,7 +253,7 @@ RSpec.describe(Instance, type: :model) do
         allow(instance).to(receive(:in_any_tree?).and_return(false))
         allow(instance).to(receive(:children).and_return([]))
         allow(instance).to(receive(:not_linked_to_loader_name_matches?).and_return(true))
-        allow(instance).to(receive(:profile_items).and_return([double]))
+        allow(instance).to(receive(:profile_items).and_return([ double ]))
       end
 
       it "returns false" do
@@ -333,7 +333,7 @@ RSpec.describe(Instance, type: :model) do
 
       before do
         allow(instance).to(receive(:draft).and_return(false))
-        allow(instance).to(receive(:profile_items).and_return([draft_profile_item]))
+        allow(instance).to(receive(:profile_items).and_return([ draft_profile_item ]))
       end
 
       it "returns true" do
@@ -346,7 +346,7 @@ RSpec.describe(Instance, type: :model) do
 
       before do
         allow(instance).to(receive(:draft).and_return(false))
-        allow(instance).to(receive(:profile_items).and_return([published_profile_item]))
+        allow(instance).to(receive(:profile_items).and_return([ published_profile_item ]))
       end
 
       it "returns false" do
@@ -359,7 +359,7 @@ RSpec.describe(Instance, type: :model) do
 
       before do
         allow(instance).to(receive(:draft).and_return(true))
-        allow(instance).to(receive(:profile_items).and_return([draft_profile_item]))
+        allow(instance).to(receive(:profile_items).and_return([ draft_profile_item ]))
       end
 
       it "returns true" do
@@ -373,7 +373,7 @@ RSpec.describe(Instance, type: :model) do
 
       before do
         allow(instance).to(receive(:draft).and_return(false))
-        allow(instance).to(receive(:profile_items).and_return([published_profile_item, draft_profile_item]))
+        allow(instance).to(receive(:profile_items).and_return([ published_profile_item, draft_profile_item ]))
       end
 
       it "returns true" do

@@ -6,14 +6,14 @@ shared_context "#group_check?" do |method_name, group|
   subject { session_user.send(method_name) }
 
   context "when group includes #{group}" do
-    let(:session_user) { FactoryBot.create(:session_user, groups: [group]) }
+    let(:session_user) { FactoryBot.create(:session_user, groups: [ group ]) }
     it "returns true" do
       expect(subject).to(eq(true))
     end
   end
 
   context "when group does not include #{method_name.to_s.downcase}" do
-    let(:session_user) { FactoryBot.create(:session_user, groups: ["something"]) }
+    let(:session_user) { FactoryBot.create(:session_user, groups: [ "something" ]) }
     it "returns false" do
       expect(subject).to(eq(false))
     end
@@ -54,7 +54,7 @@ RSpec.describe(SessionUser, type: :model) do
     end
 
     it "can access the groups" do
-      expect(session_user.groups).to(eq(["admin"]))
+      expect(session_user.groups).to(eq([ "admin" ]))
     end
   end
 
@@ -89,7 +89,7 @@ RSpec.describe(SessionUser, type: :model) do
   describe "#registered_user" do
     let(:username) { "testuser" }
     let(:full_name) { "Test User" }
-    let(:groups) { ["group1", "group2"] }
+    let(:groups) { [ "group1", "group2" ] }
 
     subject { described_class.new(username:, full_name:, groups:).registered_user }
 
@@ -156,7 +156,7 @@ RSpec.describe(SessionUser, type: :model) do
   describe "#with_role?" do
     let(:username) { "testuser" }
     let(:full_name) { "Test User" }
-    let(:groups) { ["group1", "group2"] }
+    let(:groups) { [ "group1", "group2" ] }
 
     let!(:user) { FactoryBot.create(:user, user_name: username) }
     let!(:role) { FactoryBot.create(:role, name: "admin") }
@@ -193,7 +193,7 @@ RSpec.describe(SessionUser, type: :model) do
   describe "#with_role_for_context?" do
     let(:username) { "testuser" }
     let(:full_name) { "Test User" }
-    let(:groups) { ["group1"] }
+    let(:groups) { [ "group1" ] }
 
     let!(:user) { FactoryBot.create(:user, user_name: username) }
     let!(:product) { FactoryBot.create(:product) }
@@ -253,7 +253,7 @@ RSpec.describe(SessionUser, type: :model) do
   describe "#user" do
     let(:username) { "test" }
     let!(:user) { FactoryBot.create(:user, user_name: username) }
-    let!(:session_user) { FactoryBot.create(:session_user, username: "test", groups: ["login"]) }
+    let!(:session_user) { FactoryBot.create(:session_user, username: "test", groups: [ "login" ]) }
 
     subject { session_user.user }
 
@@ -274,7 +274,7 @@ RSpec.describe(SessionUser, type: :model) do
   describe "#product_from_roles" do
     let(:username) { "test" }
     let!(:user) { FactoryBot.create(:user, user_name: username) }
-    let!(:session_user) { FactoryBot.create(:session_user, username: "test", groups: ["login"]) }
+    let!(:session_user) { FactoryBot.create(:session_user, username: "test", groups: [ "login" ]) }
 
     let!(:role) { FactoryBot.create(:role, name: "admin") }
     let!(:product_role) { FactoryBot.create(:product_role, role:) }

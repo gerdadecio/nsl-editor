@@ -34,7 +34,7 @@ RSpec.describe("layouts/_user_menu.html.erb", type: :view) do
 
     context "when user has groups" do
       before do
-        allow(session_user).to(receive(:groups).and_return(["edit", "admin"]))
+        allow(session_user).to(receive(:groups).and_return([ "edit", "admin" ]))
       end
 
       it "displays the user's groups" do

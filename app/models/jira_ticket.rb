@@ -72,7 +72,7 @@ class JiraTicket < ActiveType::Object
       body = {
         jql: jql(keys_subset),
         maxResults: 100,
-        fields: ["status"],
+        fields: [ "status" ],
       }.to_json
 
       request = Net::HTTP::Post.new(uri.request_uri)

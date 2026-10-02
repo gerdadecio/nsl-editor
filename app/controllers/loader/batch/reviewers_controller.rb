@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Loader::Batch::ReviewersController < ApplicationController
-  before_action :find_batch_reviewer, only: [:show, :destroy, :tab]
+  before_action :find_batch_reviewer, only: [ :show, :destroy, :tab ]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.

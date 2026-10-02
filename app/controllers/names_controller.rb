@@ -25,7 +25,7 @@ class NamesController < ApplicationController
   include Name::CopyInstances
 
   # All text/html requests should go to the search page, except for rules.
-  before_action :javascript_only, except: [:rules, :refresh_children]
+  before_action :javascript_only, except: [ :rules, :refresh_children ]
   before_action :find_name,
     only: [
       :show,

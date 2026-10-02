@@ -176,9 +176,9 @@ RSpec.describe(Instance::Treeable) do
       instance_2 = create(:instance)
       publish_instance_in(instance_1, tree, tree_version)
 
-      map = Instance.published_trees_map_for([instance_1, instance_2])
+      map = Instance.published_trees_map_for([ instance_1, instance_2 ])
 
-      expect(map[instance_1.id].map { |r| r[:tree_name] }).to(eq(["Published Tree"]))
+      expect(map[instance_1.id].map { |r| r[:tree_name] }).to(eq([ "Published Tree" ]))
       expect(map).not_to(have_key(instance_2.id))
     end
 
@@ -186,9 +186,9 @@ RSpec.describe(Instance::Treeable) do
       instance = create(:instance)
       publish_instance_in(instance, tree, tree_version)
 
-      map = Instance.published_trees_map_for([instance.id])
+      map = Instance.published_trees_map_for([ instance.id ])
 
-      expect(map[instance.id].map { |r| r[:tree_name] }).to(eq(["Published Tree"]))
+      expect(map[instance.id].map { |r| r[:tree_name] }).to(eq([ "Published Tree" ]))
     end
 
     it "returns an empty hash for an empty list" do
@@ -238,12 +238,12 @@ RSpec.describe(Instance::Treeable) do
       end
 
       it "returns true" do
-        expect(instance.in_any_local_tree_ids?([tree.id])).to(eq(true))
+        expect(instance.in_any_local_tree_ids?([ tree.id ])).to(eq(true))
       end
 
       it "returns true when tree is among multiple tree_ids" do
         other_tree = create(:tree)
-        expect(instance.in_any_local_tree_ids?([other_tree.id, tree.id])).to(eq(true))
+        expect(instance.in_any_local_tree_ids?([ other_tree.id, tree.id ])).to(eq(true))
       end
     end
 
@@ -265,7 +265,7 @@ RSpec.describe(Instance::Treeable) do
       end
 
       it "returns false" do
-        expect(instance.in_any_local_tree_ids?([other_tree.id])).to(eq(false))
+        expect(instance.in_any_local_tree_ids?([ other_tree.id ])).to(eq(false))
       end
     end
 
@@ -273,7 +273,7 @@ RSpec.describe(Instance::Treeable) do
       let(:tree) { create(:tree, is_read_only: false) }
 
       it "returns false" do
-        expect(instance.in_any_local_tree_ids?([tree.id])).to(eq(false))
+        expect(instance.in_any_local_tree_ids?([ tree.id ])).to(eq(false))
       end
     end
 
@@ -295,7 +295,7 @@ RSpec.describe(Instance::Treeable) do
       end
 
       it "returns false because instance is only in old version" do
-        expect(instance.in_any_local_tree_ids?([tree.id])).to(eq(false))
+        expect(instance.in_any_local_tree_ids?([ tree.id ])).to(eq(false))
       end
     end
   end

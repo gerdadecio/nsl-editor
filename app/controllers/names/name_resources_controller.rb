@@ -18,7 +18,7 @@
 #
 class Names::NameResourcesController < ApplicationController
   before_action :find_name
-  before_action :authorise_name_change, only: [:create, :update, :destroy]
+  before_action :authorise_name_change, only: [ :create, :update, :destroy ]
 
   def create
     @name_resource = @name.name_resources.new(permitted_params)

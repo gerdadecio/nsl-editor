@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class AuthorsController < ApplicationController
-  before_action :find_author, only: [:show, :destroy, :tab]
+  before_action :find_author, only: [ :show, :destroy, :tab ]
 
   # GET /authors/1
   # GET /authors/1/tab/:tab

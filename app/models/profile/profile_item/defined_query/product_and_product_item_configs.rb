@@ -5,7 +5,7 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
     :instance,
     :product_configs_and_profile_items
 
-  SUPPORTED_PRODUCTS = ["FOA"].freeze
+  SUPPORTED_PRODUCTS = [ "FOA" ].freeze
 
   def initialize(session_user, instance, params = {})
     @params = params
@@ -25,7 +25,7 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
     debug("run_query")
     @product_configs_and_profile_items = find_or_initialize_profile_items if profile_v2_aware?
 
-    [product_configs_and_profile_items, product]
+    [ product_configs_and_profile_items, product ]
   end
 
   private

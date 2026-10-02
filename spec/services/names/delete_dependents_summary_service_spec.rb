@@ -107,7 +107,7 @@ describe Names::DeleteDependentsSummaryService do
 
       it "counts them by resource host name, ordered by host name" do
         expect(group_for("Name resources").entries)
-          .to(eq([["BHL", 1], ["IPNI", 1]]))
+          .to(eq([ [ "BHL", 1 ], [ "IPNI", 1 ] ]))
       end
 
       it "totals the entries" do
@@ -119,7 +119,7 @@ describe Names::DeleteDependentsSummaryService do
       end
 
       it "does not report the other groups" do
-        expect(service.groups.map(&:label)).to(eq(["Name resources"]))
+        expect(service.groups.map(&:label)).to(eq([ "Name resources" ]))
       end
     end
 
@@ -131,7 +131,7 @@ describe Names::DeleteDependentsSummaryService do
 
       it "labels the entry as unnamed and counts them together" do
         expect(group_for("Name resources").entries)
-          .to(eq([[described_class::UNLABELLED, 2]]))
+          .to(eq([ [ described_class::UNLABELLED, 2 ] ]))
       end
     end
 
@@ -144,7 +144,7 @@ describe Names::DeleteDependentsSummaryService do
 
       it "counts them by resource type, ordered by description" do
         expect(group_for("Resources").entries)
-          .to(eq([["Biodiversity Heritage Library", 1], ["Protologue", 2]]))
+          .to(eq([ [ "Biodiversity Heritage Library", 1 ], [ "Protologue", 2 ] ]))
       end
 
       it "totals the entries" do
@@ -160,7 +160,7 @@ describe Names::DeleteDependentsSummaryService do
 
       it "counts them by tag, ordered by tag name" do
         expect(group_for("Name tags").entries)
-          .to(eq([["ambiguous", 1], ["vetted", 1]]))
+          .to(eq([ [ "ambiguous", 1 ], [ "vetted", 1 ] ]))
       end
 
       it "totals the entries" do
@@ -180,7 +180,7 @@ describe Names::DeleteDependentsSummaryService do
 
       it "leaves the resources group out instead of raising" do
         expect(service.groups.map(&:label))
-          .to(eq(["Name resources", "Name tags"]))
+          .to(eq([ "Name resources", "Name tags" ]))
       end
     end
 
@@ -213,11 +213,11 @@ describe Names::DeleteDependentsSummaryService do
 
       it "reports the groups in a fixed order" do
         expect(service.groups.map(&:label))
-          .to(eq(["Name resources", "Resources", "Name tags"]))
+          .to(eq([ "Name resources", "Resources", "Name tags" ]))
       end
 
       it "counts each group separately" do
-        expect(service.groups.map(&:total)).to(eq([1, 1, 1]))
+        expect(service.groups.map(&:total)).to(eq([ 1, 1, 1 ]))
       end
     end
   end

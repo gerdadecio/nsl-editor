@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Loader::Name::Review::CommentsController < ApplicationController
-  before_action :find_comment, only: [:edit, :cancel_edit, :destroy, :dialog_to_delete, :cancel_dialog_to_delete]
+  before_action :find_comment, only: [ :edit, :cancel_edit, :destroy, :dialog_to_delete, :cancel_dialog_to_delete ]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.

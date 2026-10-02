@@ -51,8 +51,8 @@ class Language < ApplicationRecord
   # For any language select list.
   def self.options
     all.order(Arel.sql(ORDER_BY)).collect do |lang|
-      [lang.name, lang.id]
-    end.insert(5, ["──────────", "disabled"])
+      [ lang.name, lang.id ]
+    end.insert(5, [ "──────────", "disabled" ])
   end
 
   def self.english

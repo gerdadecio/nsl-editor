@@ -35,7 +35,7 @@ gem "jbuilder", "~> 2.7"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: [:windows]
+gem "tzinfo-data", platforms: [ :windows ]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -108,8 +108,8 @@ gem "addressable", ">= 2.8.0"
 
 gem "simplecov", require: false, group: :test
 
-gem "standard", group: [:development, :test]
-gem "standardrb", group: [:development, :test]
+gem "standard", group: [ :development, :test ]
+gem "standardrb", group: [ :development, :test ]
 
 gem "csv"
 gem "font-awesome-sass", "~> 6.4"

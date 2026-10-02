@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Tree::ElementsController < ApplicationController
-  before_action :find_tree_element, only: [:show, :tab, :update_profile]
+  before_action :find_tree_element, only: [ :show, :tab, :update_profile ]
 
   # GET /tree_vesions/1
   # GET /tree_vesions/1/tab/:tab

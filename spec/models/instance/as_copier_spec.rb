@@ -91,7 +91,7 @@ RSpec.describe(Instance::AsCopier, type: :model) do
           subj.multiple_primary_override = true
           subj.duplicate_instance_override = true
 
-          allow(subj).to(receive(:reverse_of_this_is_cited_by).and_return([instance_citation]))
+          allow(subj).to(receive(:reverse_of_this_is_cited_by).and_return([ instance_citation ]))
           copied_instance = subj.copy_with_product_reference(params, username)
           copied_citation = copied_instance.reverse_of_this_is_cited_by.first
           expect(copied_citation.name_id).to(eq(instance_citation.name_id))
@@ -108,7 +108,7 @@ RSpec.describe(Instance::AsCopier, type: :model) do
           let(:current_profile_item) { FactoryBot.create(:profile_item, instance: instance, end_date: nil) }
           before do
             allow(subject).to(receive(:copy_profile_items).and_return(true))
-            allow(subject).to(receive(:profile_items).and_return([current_profile_item]))
+            allow(subject).to(receive(:profile_items).and_return([ current_profile_item ]))
             allow_any_instance_of(Profile::ProfileItem).to(receive(:fact?).and_return(true))
           end
 
@@ -144,7 +144,7 @@ RSpec.describe(Instance::AsCopier, type: :model) do
             let(:ended_profile_item) { FactoryBot.create(:profile_item, instance: instance, end_date: Time.current) }
 
             before do
-              allow(subject).to(receive(:profile_items).and_return([ended_profile_item]))
+              allow(subject).to(receive(:profile_items).and_return([ ended_profile_item ]))
             end
 
             it "skips copying the profile item" do
@@ -159,7 +159,7 @@ RSpec.describe(Instance::AsCopier, type: :model) do
 
           before do
             allow(subject).to(receive(:copy_profile_items).and_return(false))
-            allow(subject).to(receive(:profile_items).and_return([profile_item]))
+            allow(subject).to(receive(:profile_items).and_return([ profile_item ]))
           end
 
           it "does not copy the profile items" do

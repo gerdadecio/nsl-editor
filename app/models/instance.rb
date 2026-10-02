@@ -818,7 +818,7 @@ class Instance < ApplicationRecord
   def self.expansion(search_string)
     expand_wanted = !search_string.match(/expand:/).nil?
     logger.debug("display should be:  expand_wanted: #{expand_wanted}")
-    [expand_wanted, search_string.gsub(/expand:[^ ]*/, "")]
+    [ expand_wanted, search_string.gsub(/expand:[^ ]*/, "") ]
   end
 
   def self.extract_query_token(search_string, requested_token)
@@ -888,7 +888,7 @@ class Instance < ApplicationRecord
                 x.instance_note_key.sort_order <=> y.instance_note_key.sort_order
               end
                     .each
-                    .collect { |n| [n.instance_note_key.name, n.value] })
+                    .collect { |n| [ n.instance_note_key.name, n.value ] })
       .flatten
   end
 

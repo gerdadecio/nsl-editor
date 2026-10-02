@@ -3,7 +3,7 @@
 # Help for tree display
 module TreesHelper
   # NOTES: The order the messages are shown in.
-  TREE_USAGES = [:current, :draft, :historical].freeze
+  TREE_USAGES = [ :current, :draft, :historical ].freeze
 
   # NOTES: The trees a record (an instance or a name) is used in, worded for
   # the delete tabs, which have to tell three kinds of usage apart:
@@ -38,7 +38,7 @@ module TreesHelper
       # NOTES: uniq because one tree can reach a usage by more than one
       # version - two drafts, or two superseded published versions.
       tree_names = grouped[usage]&.map(&:first)&.uniq
-      [usage, tree_names] if tree_names.present?
+      [ usage, tree_names ] if tree_names.present?
     end
   end
 

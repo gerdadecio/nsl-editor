@@ -5,7 +5,7 @@ module Reference::Validations
   extend ActiveSupport::Concern
 
   included do
-    validates :published, inclusion: { in: [true, false] }
+    validates :published, inclusion: { in: [ true, false ] }
     validates :volume,
       length: {
         maximum: 50,
@@ -40,19 +40,19 @@ module Reference::Validations
       },
       allow_nil: true
     validates :iso_publication_date, exclusion: {
-      in: [nil],
+      in: [ nil ],
       message: "is required",
       if: :iso_publication_date_required?,
     }
     validates :parent_id,
       exclusion: {
-        in: ->(reference) { [reference.id] },
+        in: ->(reference) { [ reference.id ] },
         allow_blank: true,
         message: "and child cannot be the same record",
       }
     validates :duplicate_of_id,
       exclusion: {
-        in: ->(reference) { [reference.id] },
+        in: ->(reference) { [ reference.id ] },
         allow_blank: true,
         message: "and master cannot be the same record",
       }
@@ -80,20 +80,20 @@ module Reference::Validations
   end
 
   def validate_uniqueness
-    return if Reference.where(["coalesce(lower(title),'no title') = coalesce(lower(?),'no title')", title])
+    return if Reference.where([ "coalesce(lower(title),'no title') = coalesce(lower(?),'no title')", title ])
       .where(ref_type_id: ref_type_id)
-      .where(["coalesce(parent_id,0) = coalesce(?,0)", parent_id])
+      .where([ "coalesce(parent_id,0) = coalesce(?,0)", parent_id ])
       .where(published: published)
       .where(author_id: author_id)
       .where(ref_author_role_id: ref_author_role_id)
-      .where(["coalesce(edition,'no edition data') = coalesce(?,'no edition data')", edition])
-      .where(["coalesce(volume,'no volume data') = coalesce(?,'no volume data')", volume])
-      .where(["coalesce(pages,'no pages data') = coalesce(?,'no pages data')", pages])
-      .where(["coalesce(iso_publication_date,'0') = coalesce(?,'0')", iso_publication_date])
+      .where([ "coalesce(edition,'no edition data') = coalesce(?,'no edition data')", edition ])
+      .where([ "coalesce(volume,'no volume data') = coalesce(?,'no volume data')", volume ])
+      .where([ "coalesce(pages,'no pages data') = coalesce(?,'no pages data')", pages ])
+      .where([ "coalesce(iso_publication_date,'0') = coalesce(?,'0')", iso_publication_date ])
       .where([
         "coalesce(publication_date,'no publication date data') = coalesce(?,'no publication date data')", publication_date
       ])
-      .where(["coalesce(notes,'no notes data') = coalesce(?,'no notes data')", notes])
+      .where([ "coalesce(notes,'no notes data') = coalesce(?,'no notes data')", notes ])
       .where.not(id: id)
       .where("duplicate_of_id is null")
       .count == 0

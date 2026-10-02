@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe(ProfileItemReferencesController, type: :controller) do
-  let(:session_user) { FactoryBot.create(:session_user, groups: ["login"]) }
+  let(:session_user) { FactoryBot.create(:session_user, groups: [ "login" ]) }
   let(:profile_item) { instance_double("Profile::ProfileItem", id: 1, product_item_config: double(id: 10)) }
   let(:profile_item_reference) do
     instance_double(

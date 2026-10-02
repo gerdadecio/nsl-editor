@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe ProfileItems::VersionedCopiesController, type: :controller do
-  let(:session_user) { create(:session_user, groups: ["login"]) }
+  let(:session_user) { create(:session_user, groups: [ "login" ]) }
   let(:current_user) { create(:user) }
 
   before do
@@ -53,7 +53,7 @@ describe ProfileItems::VersionedCopiesController, type: :controller do
     end
 
     context "when service returns errors" do
-      let(:errors) { double("errors", any?: true, full_messages: ["Some error"]) }
+      let(:errors) { double("errors", any?: true, full_messages: [ "Some error" ]) }
       let(:mock_service_result) { double("ProfileItems::Published::CreateNewVersionService", new_profile_item: nil, errors: errors) }
 
       before do

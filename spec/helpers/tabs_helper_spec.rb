@@ -6,12 +6,12 @@ RSpec.describe(TabsHelper, type: :helper) do
   let(:product1) { instance_double(Product, name: "FOO", context_id: 1) }
   let(:product2) { instance_double(Product, name: "BAR", context_id: 2) }
   let!(:mock_product_tab_service) { instance_double(Products::ProductTabService) }
-  let!(:mock_product_context_service) { instance_double(Products::ProductContextService, available_contexts: [1, 2]) }
+  let!(:mock_product_context_service) { instance_double(Products::ProductContextService, available_contexts: [ 1, 2 ]) }
   let(:user) do
     instance_double(
       User,
       available_product_from_roles: product1,
-      available_products_from_roles: [product1, product2],
+      available_products_from_roles: [ product1, product2 ],
     )
   end
 
@@ -76,9 +76,9 @@ RSpec.describe(TabsHelper, type: :helper) do
         allow(Products::ProductTabService).to(receive(:call).with(product2).and_return(author_service2))
 
         allow(author_service1).to(receive(:available_tabs_for).with(:author)
-          .and_return([{ tab: "edit", product: product1 }]))
+          .and_return([ { tab: "edit", product: product1 } ]))
         allow(author_service2).to(receive(:available_tabs_for).with(:author)
-          .and_return([{ tab: "edit", product: product2 }]))
+          .and_return([ { tab: "edit", product: product2 } ]))
       end
 
       it "returns product name with default text" do
@@ -203,7 +203,7 @@ RSpec.describe(TabsHelper, type: :helper) do
   end
 
   describe "#tab_available?" do
-    let(:tabs_array) { ["details", "edit", "comments"] }
+    let(:tabs_array) { [ "details", "edit", "comments" ] }
 
     it "returns true when tab is available" do
       expect(helper.tab_available?(tabs_array, "edit")).to(be(true))

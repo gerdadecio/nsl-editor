@@ -81,14 +81,14 @@ class NameType < ApplicationRecord
 
   def self.query_form_options
     not_deprecated.sort_by(&:name)
-      .collect { |n| [n.capitalised_name, n.name.to_s, { class: "" }] }
-      .unshift(["Include common, cultivars", "type:*"])
-      .unshift(["Exclude common, cultivars", ""])
+      .collect { |n| [ n.capitalised_name, n.name.to_s, { class: "" } ] }
+      .unshift([ "Include common, cultivars", "type:*" ])
+      .unshift([ "Exclude common, cultivars", "" ])
   end
 
   def self.options
     all.sort_by(&:name)
-      .collect { |n| [n.capitalised_name, n.id, { class: "" }] }
+      .collect { |n| [ n.capitalised_name, n.id, { class: "" } ] }
   end
 
   def self.option_ids_for_category(name_category)
@@ -122,14 +122,14 @@ class NameType < ApplicationRecord
       .where(" (not hybrid or name in ('named hybrid autonym'))")
       .where(" name != 'phrase name' ")
       .where("name != 'autonym'")
-      .sort_by(&:name).collect { |n| [n.name, n.id] }
+      .sort_by(&:name).collect { |n| [ n.name, n.id ] }
   end
 
   def self.scientific_1_parent_options
     where(scientific: true)
       .where(" (not hybrid or name in ('named hybrid autonym'))")
       .where(" name != 'phrase name' ")
-      .sort_by(&:name).collect { |n| [n.name, n.id] }
+      .sort_by(&:name).collect { |n| [ n.name, n.id ] }
   end
 
   def self.scientific_2_parent_options
@@ -137,17 +137,17 @@ class NameType < ApplicationRecord
           or (scientific and hybrid and name not in
           ('hybrid formula unknown 2nd parent','named hybrid',
           'named hybrid autonym'))")
-      .sort_by(&:name).collect { |n| [n.name, n.id] }
+      .sort_by(&:name).collect { |n| [ n.name, n.id ] }
   end
 
   def self.scientific_hybrid_formula_unknown_2nd_parent_options
     where(" name in ('hybrid formula unknown 2nd parent')")
-      .sort_by(&:name).collect { |n| [n.name, n.id] }
+      .sort_by(&:name).collect { |n| [ n.name, n.id ] }
   end
 
   def self.phrase_options
     n = find_by(name: "phrase name")
-    [[n.name, n.id]]
+    [ [ n.name, n.id ] ]
   end
 
   def self.cultivar_hybrid_options
@@ -158,7 +158,7 @@ class NameType < ApplicationRecord
       .where(" name not in ('cultivar hybrid formula', 'graft/chimera')")
       .sort_by(&:name)
       .collect do |n|
-      [n.name, n.id, { class: "cultivar_hybrid" }]
+      [ n.name, n.id, { class: "cultivar_hybrid" } ]
     end
   end
 
@@ -170,28 +170,28 @@ class NameType < ApplicationRecord
       .where(" name not in ('cultivar hybrid formula', 'graft/chimera')")
       .sort_by(&:name)
       .collect do |n|
-      [n.name, n.id, { class: "cultivar" }]
+      [ n.name, n.id, { class: "cultivar" } ]
     end
   end
 
   def self.named_hybrid_options
     where(scientific: true)
       .where(" name = 'named hybrid'")
-      .sort_by(&:name).collect { |n| [n.name, n.id] }
+      .sort_by(&:name).collect { |n| [ n.name, n.id ] }
   end
 
   def self.other_options
     where(scientific: false).where(cultivar: false)
       .sort_by(&:name)
       .collect do |n|
-      [n.name, n.id, { class: "other" }]
+      [ n.name, n.id, { class: "other" } ]
     end
   end
 
   def self.common_only_options
     where("lower(name) = ?", "common")
       .sort_by(&:name)
-      .map { |n| [n.name, n.id, { class: "other" }] }
+      .map { |n| [ n.name, n.id, { class: "other" } ] }
   end
 
   def hybrid?
