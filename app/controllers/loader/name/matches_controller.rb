@@ -312,7 +312,7 @@ class Loader::Name::MatchesController < ApplicationController
     changed = false
     @loader_name_matches.each do |loader_name_match|
       if loader_name_match.name_id != loader_name_params[:name_id].to_i ||
-         loader_name_match.instance_id != loader_name_params[:instance_id]
+          loader_name_match.instance_id != loader_name_params[:instance_id]
         changed = true
       end
     end

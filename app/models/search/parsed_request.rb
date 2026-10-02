@@ -486,7 +486,6 @@ query_string: '#{@query_string}'",
   # Note limitation of the checks: doesn't care if result of search is in only
   # one batch.
   #
-  #
   # Note: default-batch is deliberately case-sensitive due to its more complex
   # processing at this time.
   # Called via send
