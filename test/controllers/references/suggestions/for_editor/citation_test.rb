@@ -19,9 +19,8 @@
 require "test_helper"
 
 # ReferencesController#typeahead_on_citation. Answers the shared html
-# fragment to the instance forms' Reference field, now on
-# stimulus-autocomplete, and still offers json for
-# typeaheads/for_instance/reference_profile_v2.js.
+# fragment to the instance forms' and profile v2 reference form's Reference
+# fields, now on stimulus-autocomplete, and still offers json.
 class ReferenceCitationSuggestionsForEditorTest < ActionDispatch::IntegrationTest
   setup do
     @reference = references(:cavanilles_icones)
