@@ -75,7 +75,7 @@ class TaxFormsTreeBuilderAPCUserCanReplacePlacementOnAPCDraftTest < ActionDispat
     sign_in_as_fake_user(
       username: user.user_name,
       full_name: user.full_name,
-      groups: ["login"],
+      groups: [ "login" ],
       extra_session: { draft: { "id" => apc_draft.id } }
     ) do
       # The replace_placement is complex with one API call (preferredLink) providing

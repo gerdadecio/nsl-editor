@@ -20,12 +20,11 @@ require "test_helper"
 
 # Single search controller test.
 class SearchLoaderNameNoDefaultBatchTest < ActionDispatch::IntegrationTest
-
   test "search for loader names needs a default batch" do
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"]
+      groups: [ :login, :"batch-loader" ]
     ) do
       get search_path, params: { query_target: "loader names", query_string: "*" }
     end

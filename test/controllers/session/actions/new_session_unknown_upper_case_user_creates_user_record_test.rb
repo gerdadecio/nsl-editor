@@ -30,7 +30,7 @@ class NewSessionUnknownUserUpperCaseCreatesUserRecordTest < ActionDispatch::Inte
       sign_in_as_fake_user(
         username: @unknown_user_name,
         full_name: @unknown_user_full_name,
-        groups: [:login]
+        groups: [ :login ]
       ) do
         get search_path
       end

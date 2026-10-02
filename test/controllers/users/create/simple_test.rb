@@ -29,7 +29,7 @@ class UserCreateSimpleTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: @known_user.user_name,
         full_name: "#{@known_user.given_name} #{@known_user.family_name}",
-        groups: ["admin"]
+        groups: [ "admin" ]
       ) do
         post users_path,
           params: {
@@ -48,7 +48,7 @@ class UserCreateSimpleTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: @known_user.user_name,
       full_name: "#{@known_user.given_name} #{@known_user.family_name}",
-      groups: ["admin"]
+      groups: [ "admin" ]
     ) do
       post users_path,
         params: {

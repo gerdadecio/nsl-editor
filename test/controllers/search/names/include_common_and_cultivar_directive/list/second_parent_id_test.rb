@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchNamesIncludeCommonAndCultivarDirectiveList2ndParentId < ActionDispatch::IntegrationTest
-
   test "search names second parent id with include-common-and-cultivar directive true" do
     name = names(:another_species)
     sign_in_as_fake_user(

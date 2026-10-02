@@ -29,7 +29,7 @@ class InstEditTabForEditWithTreeBuilderAndDraftTest < ActionDispatch::Integratio
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit", "treebuilder"],
+      groups: [ "edit", "treebuilder" ],
       extra_session: { draft: { "id" => @draft_tree_version.id } }
     ) do
       get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_edit"),

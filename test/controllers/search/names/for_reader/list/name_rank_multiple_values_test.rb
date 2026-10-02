@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class ReaderSearchContNamesNameRankMultiValsListTst < ActionDispatch::IntegrationTest
-
   test "reader can search for a name by rank with multiple values" do
     tribus = names(:a_tribus)
     subgenus = names(:a_subgenus)

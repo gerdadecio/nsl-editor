@@ -32,7 +32,7 @@ class ForSubfamiliaFullyRestrictedTest < ActiveSupport::TestCase
       rank_id: NameRank.find_by(name: "Subfamilia").id
     )
     suggestions_should_only_include(
-      typeahead.suggestions, "Subfamilia", ["Familia"]
+      typeahead.suggestions, "Subfamilia", [ "Familia" ]
     )
   end
 end

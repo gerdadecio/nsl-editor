@@ -40,9 +40,9 @@ class InstanceAsArrayForNamePreloadForTest < ActiveSupport::TestCase
     name_c = names(:rusty_gum)
 
     instances_by_name, standalone_map, relationship_map =
-      Instance::AsArray::ForName.preload_for([name_a, name_b, name_c])
+      Instance::AsArray::ForName.preload_for([ name_a, name_b, name_c ])
 
-    [name_a, name_b, name_c].each do |name|
+    [ name_a, name_b, name_c ].each do |name|
       separately_queried = Instance::AsArray::ForName.new(name).results.map(&:id)
       from_preload = Instance::AsArray::ForName.new(
         name,

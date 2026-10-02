@@ -29,7 +29,7 @@ class InstanceEditorShowDetailAPCTabsTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["treebuilder"],
+      groups: [ "treebuilder" ],
       extra_session: { draft: { "id" => @working_draft.id } }
     ) do
       get instance_tab_path(id: @instance.id, tab: "tab_show_1"),

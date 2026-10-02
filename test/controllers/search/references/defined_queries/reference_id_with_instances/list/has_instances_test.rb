@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchRefsDefinedQRefIdWithInstsListHasInst < ActionDispatch::IntegrationTest
-
   test "reference id with instances" do
     ref = references(:bucket_reference_for_default_instances)
     sign_in_as_fake_user(

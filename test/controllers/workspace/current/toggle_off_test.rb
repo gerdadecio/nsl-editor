@@ -28,7 +28,7 @@ class WorkspaceCurrentToggleOffTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit", "treebuilder"],
+      groups: [ "edit", "treebuilder" ],
       extra_session: { draft: { "id" => @tree.id } }
     ) do
       post toggle_current_workspace_path,

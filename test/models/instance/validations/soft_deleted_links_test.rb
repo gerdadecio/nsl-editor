@@ -30,7 +30,7 @@ class InstanceValidationsSoftDeletedLinksTest < ActiveSupport::TestCase
 
   { cites_id: "cited instance",
     cited_by_id: "citing instance",
-    parent_id: "parent instance" }.each do |foreign_key, label|
+    parent_id: "parent instance", }.each do |foreign_key, label|
     test "rejects a soft deleted #{label}" do
       @instance.public_send("#{foreign_key}=", @soft_deleted.id)
       @instance.valid?

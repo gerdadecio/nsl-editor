@@ -43,6 +43,6 @@ end
 def body
   {
     "action" => "delete",
-    "errors" => ["The Instance was not found."],
+    "errors" => [ "The Instance was not found." ],
   }.to_json
 end

@@ -24,7 +24,7 @@ class NamesNewScientHybridFormulaUnk2ParSimpleTest < ActionDispatch::Integration
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get new_name_with_category_and_random_id_path(category: "hybrid formula unknown 2nd parent", random_id: "123445"),
         params: { tabIndex: "107" },

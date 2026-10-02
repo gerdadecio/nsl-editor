@@ -64,7 +64,7 @@ class InstanceShowEditorDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionD
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
         headers: { "Accept" => "application/javascript" }

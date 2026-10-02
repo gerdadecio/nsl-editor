@@ -29,7 +29,7 @@ class NoRoleUserCannotRunValidationReportForFOADraftTest < ActionDispatch::Integ
     sign_in_as_fake_user(
       username: user.user_name,
       full_name: user.full_name,
-      groups: ["login"],
+      groups: [ "login" ],
       extra_session: { draft: { "id" => draft.id } }
     ) do
       get run_valrep_path,

@@ -29,7 +29,7 @@ class LoaderNameMatchSoftDeletedInstanceTest < ActiveSupport::TestCase
   { instance_id: "instance",
     standalone_instance_id: "standalone instance",
     relationship_instance_id: "relationship instance",
-    source_for_copy_instance_id: "source instance for copy" }.each do |foreign_key, label|
+    source_for_copy_instance_id: "source instance for copy", }.each do |foreign_key, label|
     test "rejects a soft deleted #{label}" do
       @match.public_send("#{foreign_key}=", @soft_deleted.id)
       @match.valid?
@@ -39,7 +39,7 @@ class LoaderNameMatchSoftDeletedInstanceTest < ActiveSupport::TestCase
   end
 
   { name_id: "name",
-    intended_tree_parent_name_id: "intended tree parent name" }.each do |foreign_key, label|
+    intended_tree_parent_name_id: "intended tree parent name", }.each do |foreign_key, label|
     test "rejects a soft deleted #{label}" do
       soft_deleted_name = names(:has_no_instances)
       soft_deleted_name.update_column(:deleted_at, Time.current)

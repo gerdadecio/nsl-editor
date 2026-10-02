@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchRefsOnDefaultWithInstancesTest < ActionDispatch::IntegrationTest
-
   test "search on reference default with instances" do
     sign_in_as_fake_user(
       username: "fred",

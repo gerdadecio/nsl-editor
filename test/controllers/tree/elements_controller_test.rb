@@ -26,7 +26,7 @@ require "test_helper"
 # comment change unapplied - see app/models/concerns/tree/element/profile.rb.
 class TreeElementsControllerTest < ActionDispatch::IntegrationTest
   def valid_session
-    { username: "fred", full_name: "Fred Jones", groups: ["edit", "treebuilder"] }
+    { username: "fred", full_name: "Fred Jones", groups: [ "edit", "treebuilder" ] }
   end
 
   test "distribution error on an excluded taxon renders the error view and skips the comment update" do

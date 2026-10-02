@@ -29,7 +29,7 @@ class InstanceEditTabForEditorTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"],
+      groups: [ "edit" ],
       extra_session: { draft: { "id" => @draft_tree_version.id } }
     ) do
       get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_edit"),

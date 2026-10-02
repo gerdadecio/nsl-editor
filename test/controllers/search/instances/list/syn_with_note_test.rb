@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchInstListSynWithNoteTest < ActionDispatch::IntegrationTest
-
   test "search for instances that are synonyms with a note" do
     sign_in_as_fake_user(
       username: "fred",

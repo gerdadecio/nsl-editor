@@ -24,7 +24,7 @@ class NamesNewRowScientificSimpleTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_new_row_path(type: "scientific"),
         headers: { "Accept" => "application/javascript" },

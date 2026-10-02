@@ -50,7 +50,7 @@ class TreeMenuDraftsTest < ActiveSupport::TestCase
   def with_ron_not_read_only
     menu_drafts = Tree.menu_drafts
     assert_equal(3, menu_drafts.size, "Expecting three menu drafts not #{menu_drafts.size}")
-    assert(menu_drafts.pluck(:name).sort == ["APC", "FOA", "RON"], "Menu drafts should now be 'APC','FOA', and 'RON'")
+    assert(menu_drafts.pluck(:name).sort == [ "APC", "FOA", "RON" ], "Menu drafts should now be 'APC','FOA', and 'RON'")
   end
 
   def make_ron_read_only

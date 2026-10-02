@@ -30,7 +30,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
   end
 
   test "bolds the matched substring within a suggestion" do
-    suggestions = [{ value: "Angiospermae | legitimate", id: 123 }]
+    suggestions = [ { value: "Angiospermae | legitimate", id: 123 } ]
 
     output = render_suggestions(suggestions, "ang")
 
@@ -38,7 +38,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
   end
 
   test "renders the option's id as data-autocomplete-value" do
-    suggestions = [{ value: "Angiospermae | legitimate", id: 123 }]
+    suggestions = [ { value: "Angiospermae | legitimate", id: 123 } ]
 
     output = render_suggestions(suggestions, "ang")
 
@@ -46,7 +46,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
   end
 
   test "renders the unhighlighted value as data-autocomplete-label" do
-    suggestions = [{ value: "Angiospermae | legitimate", id: 123 }]
+    suggestions = [ { value: "Angiospermae | legitimate", id: 123 } ]
 
     output = render_suggestions(suggestions, "ang")
 
@@ -59,7 +59,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
     # and Name::AsResolvedTypeahead::ForAuthor parses it back by splitting on
     # the "|", so the label has to be what the server sent - not the trimmed
     # textContent the library would otherwise fall back to.
-    suggestions = [{ value: "Benth.  | George Bentham", id: 7 }]
+    suggestions = [ { value: "Benth.  | George Bentham", id: 7 } ]
 
     output = render_suggestions(suggestions, "ben")
 
@@ -72,17 +72,17 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
   # own family, see
   # app/javascript/controllers/name_parent_family_controller.js.
   test "publishes the keys named in data_keys as data attributes" do
-    suggestions = [{
+    suggestions = [ {
       value: "a_genus | Genus",
       id: 123,
       family_id: 7,
       family_value: "a_family",
-    }]
+    } ]
 
     output = render_suggestions(
       suggestions,
       "a_gen",
-      data_keys: [:family_id, :family_value]
+      data_keys: [ :family_id, :family_value ]
     )
 
     assert_select_in output,
@@ -91,7 +91,7 @@ class AutocompleteSuggestionsPartialTest < ActionView::TestCase
   end
 
   test "publishes no extra data attributes without data_keys" do
-    suggestions = [{ value: "a_genus | Genus", id: 123, family_id: 7 }]
+    suggestions = [ { value: "a_genus | Genus", id: 123, family_id: 7 } ]
 
     output = render_suggestions(suggestions, "a_gen")
 

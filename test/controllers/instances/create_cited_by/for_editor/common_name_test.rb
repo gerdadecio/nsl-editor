@@ -30,7 +30,7 @@ class InstancesCreateCommonNameTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "fred",
         full_name: "Fred Jones",
-        groups: ["edit"]
+        groups: [ "edit" ]
       ) do
         post instances_path,
           params: {

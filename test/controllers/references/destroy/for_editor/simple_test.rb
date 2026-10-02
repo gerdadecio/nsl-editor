@@ -35,7 +35,7 @@ class ReferenceDestroyForEditorSimpleTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "fred",
         full_name: "Fred Jones",
-        groups: ["edit"]
+        groups: [ "edit" ]
       ) do
         delete reference_path(id: @reference.id),
           headers: { "Accept" => "application/javascript" }

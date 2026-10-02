@@ -25,7 +25,6 @@ require "test_helper"
 # default silently won. "Any batch" must mean any batch, regardless of
 # whether a default batch is set.
 class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionDispatch::IntegrationTest
-
   test "any batch target finds a record outside the default batch" do
     # Hardenbergia violacea lives in "Batch One" (see test/fixtures/loader/batch.yml
     # and test/fixtures/loader_names.yml). Setting "Batch Two" as the default
@@ -34,7 +33,7 @@ class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionDispatch::Integr
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"],
+      groups: [ :login, :"batch-loader" ],
       extra_session: { default_loader_batch_name: "Batch Two" }
     ) do
       get search_path, params: { query_target: "loader names (any batch)", query_string: "Hardenbergia violacea" }
@@ -49,7 +48,7 @@ class SearchLoaderNameAnyBatchOverridesDefaultBatchTest < ActionDispatch::Integr
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"],
+      groups: [ :login, :"batch-loader" ],
       extra_session: { default_loader_batch_name: "Batch Two" }
     ) do
       get search_path, params: { query_target: "loader names", query_string: "Hardenbergia violacea" }

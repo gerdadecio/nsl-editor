@@ -29,7 +29,6 @@ require "test_helper"
 # The fix only falls back to query_target when original_query_target is
 # blank, so the user's actual target survives onto the error page.
 class SearchControllerQueryTargetPreservedWithoutOriginalTest < ActionDispatch::IntegrationTest
-
   test "an error during a non-'Names plus instances' search preserves the actual query target" do
     SearchController.stub_any_instance(
       :run_local_search,

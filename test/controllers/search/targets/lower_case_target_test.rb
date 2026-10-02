@@ -20,12 +20,11 @@ require "test_helper"
 
 # Single search controller test.
 class SearchControllerLowerCaseTargetTest < ActionDispatch::IntegrationTest
-
   test "lower case target should be returned in canonical form" do
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:edit, :taxonomic_review, :login]
+      groups: [ :edit, :taxonomic_review, :login ]
     ) do
       get search_path, params: { query_target: "name", query_string: "*" }
     end

@@ -49,7 +49,7 @@ class NamesDeleteConfirmForEditorSimpleTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       delete names_deletes_path,
         params: {

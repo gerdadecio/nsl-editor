@@ -26,7 +26,7 @@ class AuthorEditMarkAsDuplicateOfTwoMatchesTest < ActionDispatch::IntegrationTes
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       patch author_path(intended_dupe),
         params: {

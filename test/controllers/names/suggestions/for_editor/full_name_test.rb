@@ -31,7 +31,7 @@ class NameFullNameSuggestionsForEditorTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get names_typeahead_on_full_name_path(term: term, format: format)
     end

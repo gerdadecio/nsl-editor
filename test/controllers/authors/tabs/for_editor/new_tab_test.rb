@@ -35,7 +35,7 @@ class AuthorEditorNewTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get new_author_with_random_id_path(random_id: "12345"),
         headers: { "Accept" => "application/javascript" }

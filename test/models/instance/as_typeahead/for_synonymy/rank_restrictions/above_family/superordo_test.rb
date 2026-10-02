@@ -55,7 +55,7 @@ class TypeaheadForSynonymySuperordoTest < ActiveSupport::TestCase
     @rank_names = @tb.results.collect do |result|
       Instance.find(result[:id]).name.name_rank.name
     end
-    check_rank_names_inclusions(["Regnum"])
+    check_rank_names_inclusions([ "Regnum" ])
   end
 
   test "instance typeahead for synonymy rank restriction superordo division" do
@@ -63,6 +63,6 @@ class TypeaheadForSynonymySuperordoTest < ActiveSupport::TestCase
     @rank_names = @tc.results.collect do |result|
       Instance.find(result[:id]).name.name_rank.name
     end
-    check_rank_names_inclusions(["Division", "Classis"])
+    check_rank_names_inclusions([ "Division", "Classis" ])
   end
 end

@@ -28,7 +28,6 @@ require "test_helper"
 # ActionController::InvalidCrossOriginRequest: Security warning:
 #   an embedded <script> tag on another site requested protected JavaScript.
 class TaxFormsTreePubRONNewDraftUserCannotOpenFormTest < ActionDispatch::IntegrationTest
-
   test "RON tree publisher user cannot open new draft form for read only tree" do
     user = users(:ron_tax_publisher)
 
@@ -36,7 +35,7 @@ class TaxFormsTreePubRONNewDraftUserCannotOpenFormTest < ActionDispatch::Integra
       sign_in_as_fake_user(
         username: user.user_name,
         full_name: user.full_name,
-        groups: ["login"]
+        groups: [ "login" ]
       ) do
         get tree_versions_new_draft_path(tree_id: trees(:RON)),
           xhr: true,

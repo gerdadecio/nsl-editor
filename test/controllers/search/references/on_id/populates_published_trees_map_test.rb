@@ -25,7 +25,6 @@ require "test_helper"
 # Instance.published_trees_map_for) so InstancesHelper#published_trees_for
 # can look each instance up in memory instead of querying per row.
 class SearchRefsOnIdPopulatesPublishedTreesMapTest < ActionDispatch::IntegrationTest
-
   test "populates @published_trees_map with a Hash for a show-instances search" do
     ref = references(:bucket_reference_for_default_instances)
     sign_in_as_fake_user(

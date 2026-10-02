@@ -25,7 +25,7 @@ class UserDeleteSimpleTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "auser One",
-        groups: ["admin"]
+        groups: [ "admin" ]
       ) do
         delete user_path(users(:user_two)),
           headers: { "Accept" => "application/javascript" }

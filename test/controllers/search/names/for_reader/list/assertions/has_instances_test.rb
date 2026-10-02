@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchNamesAsReaderListAssertionsHasInstTest < ActionDispatch::IntegrationTest
-
   test "reader can search for names that have instances" do
     sign_in_as_fake_user(
       username: "fred",

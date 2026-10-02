@@ -29,7 +29,7 @@ class InstQADontShowCopyTabLinksUnlessConceptTest < ActionDispatch::IntegrationT
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["qa"]
+      groups: [ "qa" ]
     ) do
       get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
         params: { "row-type" => "instance" },

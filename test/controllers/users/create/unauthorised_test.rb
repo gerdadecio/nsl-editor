@@ -25,7 +25,7 @@ class UserCreateUnauthorisedTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "auser One",
-        groups: ["edit"]
+        groups: [ "edit" ]
       ) do
         post users_path,
           params: {

@@ -25,7 +25,7 @@ class ReferencesesCreateDayAndYearButNoMonthTest < ActionDispatch::IntegrationTe
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
         post references_path,
           params: {

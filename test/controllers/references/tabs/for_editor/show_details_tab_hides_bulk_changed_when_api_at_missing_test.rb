@@ -46,7 +46,7 @@ class ReferenceShowEditorDetailsTabHidesBulkChangedWhenApiAtMissingTest < Action
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get reference_tab_path(id: @reference.id, tab: "tab_show_1"),
         headers: { "Accept" => "application/javascript" }

@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single Search model test for reference search
 class SearchRefDefQueriesRefSharedNamesCountTest < ActionDispatch::IntegrationTest
-
   test "reference id shared names count" do
     ref_1 = references(:de_fructibus_et_seminibus_plantarum)
     ref_2 = references(:paper_by_britten_on_angophora)

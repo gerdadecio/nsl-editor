@@ -20,12 +20,11 @@ require "test_helper"
 
 # Single search controller test.
 class SearchControllerForAdminPageTest < ActionDispatch::IntegrationTest
-
   test "admin should get search with correct elements" do
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["admin"]
+      groups: [ "admin" ]
     ) do
       get search_path, params: {}
     end

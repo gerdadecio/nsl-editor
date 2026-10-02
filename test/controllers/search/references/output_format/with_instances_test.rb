@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchRefsOutputFormatWithInstancesTest < ActionDispatch::IntegrationTest
-
   test "output format of reference search with instances" do
     ref = references(:bucket_reference_for_default_instances)
     sign_in_as_fake_user(

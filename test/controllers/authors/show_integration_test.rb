@@ -11,7 +11,7 @@ class AuthorShowTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["read"]
+      groups: [ "read" ]
     ) do
       get author_tab_path(id: @author.id, tab: "tab_show_1"),
         headers: { "Accept" => "application/javascript" }
@@ -23,7 +23,7 @@ class AuthorShowTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["read"]
+      groups: [ "read" ]
     ) do
       get author_tab_path(id: @author.id, tab: "tab_show_1"),
         headers: { "Accept" => "application/javascript" }

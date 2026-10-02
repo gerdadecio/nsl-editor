@@ -24,7 +24,7 @@ class NamesNewRowOtherNameSimpleTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_new_row_path(type: "other"),
         headers: { "Accept" => "application/javascript" },

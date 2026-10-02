@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchRefsDefdQueryRefSharedNamesListLimit < ActionDispatch::IntegrationTest
-
   test "reference shared names limited" do
     ref_1 = references(:de_fructibus_et_seminibus_plantarum)
     ref_2 = references(:paper_by_britten_on_angophora)

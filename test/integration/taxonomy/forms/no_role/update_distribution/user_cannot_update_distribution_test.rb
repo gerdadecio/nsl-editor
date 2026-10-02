@@ -36,14 +36,14 @@ class TaxFormsNoRoleUserCannotUpdateDistributionOnFOADraftTest < ActionDispatch:
     sign_in_as_fake_user(
       username: user.user_name,
       full_name: user.full_name,
-      groups: ["login"],
+      groups: [ "login" ],
       extra_session: { draft: { "id" => foa_draft.id } }
     ) do
       post tree_update_distribution_path,
         params: {
           "update_distribution" => {
             "element_link" => tve.element_link,
-            "dist" => ["NSW", "Tas"],
+            "dist" => [ "NSW", "Tas" ],
             "delete" => "",
             "update" => "",
           },

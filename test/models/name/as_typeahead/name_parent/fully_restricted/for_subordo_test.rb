@@ -34,7 +34,7 @@ class ForSubordoFullyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Subordo",
-      ["Regnum", "Division", "Classis", "Subclassis", "Superordo", "Ordo"]
+      [ "Regnum", "Division", "Classis", "Subclassis", "Superordo", "Ordo" ]
     )
   end
 end

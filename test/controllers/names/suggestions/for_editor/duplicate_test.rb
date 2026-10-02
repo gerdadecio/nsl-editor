@@ -29,7 +29,7 @@ class NameDuplicateSuggestionsForEditorTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_duplicate_suggestions_path(
         term: term, name_id: name_id, format: format

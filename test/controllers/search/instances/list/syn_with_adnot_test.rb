@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchInstListSynWithAdnotTest < ActionDispatch::IntegrationTest
-
   test "search for instances that are synonyms with an adnot" do
     sign_in_as_fake_user(
       username: "fred",

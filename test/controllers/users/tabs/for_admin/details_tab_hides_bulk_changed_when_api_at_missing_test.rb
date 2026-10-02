@@ -46,7 +46,7 @@ class UsersTabsForAdminDetailsTabHidesBulkChangedWhenApiAtMissingTest < ActionDi
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["admin"]
+      groups: [ "admin" ]
     ) do
       get user_show_path,
         params: { id: @user.id, tab: "tab_details" },

@@ -37,7 +37,7 @@ class SearchAuditApiAtSimpleTest < ActiveSupport::TestCase
     qa_user = SessionUser.new
     qa_user.username = "qa-tester"
     qa_user.full_name = "a QA tester"
-    qa_user.groups = ["QA"]
+    qa_user.groups = [ "QA" ]
     qa_user
   end
 

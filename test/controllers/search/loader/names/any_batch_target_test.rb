@@ -27,12 +27,11 @@ require "test_helper"
 # canonicalizes to "loader_names_(any_batch)" before ParsedRequest strips
 # the parens down to "loader_names_any_batch".
 class SearchLoaderNameAnyBatchTargetTest < ActionDispatch::IntegrationTest
-
   test "loader names (any batch) target does not require a default batch" do
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"]
+      groups: [ :login, :"batch-loader" ]
     ) do
       get search_path, params: { query_target: "loader names (any batch)", query_string: "*" }
     end
@@ -46,7 +45,7 @@ class SearchLoaderNameAnyBatchTargetTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"]
+      groups: [ :login, :"batch-loader" ]
     ) do
       get search_path, params: { query_target: "loader names (any batch)", query_string: "Hardenbergia violacea" }
     end

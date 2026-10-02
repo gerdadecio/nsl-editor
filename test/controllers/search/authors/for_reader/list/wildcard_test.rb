@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class ReaderSearchControllerNamesWildcardListTest < ActionDispatch::IntegrationTest
-
   test "reader can do wildcard search for authors" do
     sign_in_as_fake_user(
       username: "fred",

@@ -34,7 +34,7 @@ class ForSubgenusPartiallyRestrictedTest < ActiveSupport::TestCase
       rank_id: NameRank.find_by(name: "Subgenus").id
     )
     suggestions_should_only_include(
-      typeahead.suggestions, "Subgenus", ["Genus"]
+      typeahead.suggestions, "Subgenus", [ "Genus" ]
     )
   end
 end

@@ -25,7 +25,7 @@ class NamesNewPhraseNameSimpleTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get new_name_with_category_and_random_id_path(category: "phrase", random_id: "123445"),
         params: { tabIndex: "107" },

@@ -36,7 +36,7 @@ class ReferencesEditDuplicateOfIdSetTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: @username,
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       patch reference_path(id: @reference.id),
         params: { reference: @reference_params },

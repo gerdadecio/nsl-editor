@@ -72,7 +72,7 @@ class InstanceShowEditorDetailsTabSoftDeletedTest < ActionController::TestCase
         params: { id: @instance.id, tab: "tab_show_1" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
-                   groups: ["edit"] })
+                   groups: [ "edit" ], })
     assert_response :success
   end
 end

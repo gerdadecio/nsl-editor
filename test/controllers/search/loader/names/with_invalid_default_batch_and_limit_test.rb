@@ -20,12 +20,11 @@ require "test_helper"
 
 # Single search controller test.
 class SearchLoaderNameInvalidDefaultBatchAndLimitTest < ActionDispatch::IntegrationTest
-
   test "search loader names with invalid default batch and limit gets right message" do
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"]
+      groups: [ :login, :"batch-loader" ]
     ) do
       get search_path, params: { query_target: "loader names", query_string: "Hardenbergia violacea default-batch: abc limit: 10" }
     end

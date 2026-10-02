@@ -29,7 +29,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "fred",
         full_name: "Fred Jones",
-        groups: ["edit"]
+        groups: [ "edit" ]
       ) do
         post comments_path,
           params: { comment: { text: @comment.text, author_id: authors("haeckel").id } },
@@ -44,7 +44,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get comment_path(@comment)
     end
@@ -56,7 +56,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get edit_comment_path(@comment)
     end
@@ -68,7 +68,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "fred",
         full_name: "Fred Jones",
-        groups: ["edit"]
+        groups: [ "edit" ]
       ) do
         delete comment_path(@comment), xhr: true
       end
@@ -81,7 +81,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
         sign_in_as_fake_user(
           username: "fred",
           full_name: "Fred Jones",
-          groups: ["edit"]
+          groups: [ "edit" ]
         ) do
           post comments_path,
             params: { comment: { text: "Test comment", instance_id: instances(:triodia_in_brassard).id } },
@@ -99,7 +99,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
         sign_in_as_fake_user(
           username: "fred",
           full_name: "Fred Jones",
-          groups: ["edit"]
+          groups: [ "edit" ]
         ) do
           post comments_path,
             params: { comment: { text: "Test comment", instance_id: instance.id } },
@@ -117,7 +117,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
         sign_in_as_fake_user(
           username: "fred",
           full_name: "Fred Jones",
-          groups: ["edit"]
+          groups: [ "edit" ]
         ) do
           post comments_path,
             params: { comment: { text: "Test comment", instance_id: instance.id } },
@@ -136,7 +136,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
         sign_in_as_fake_user(
           username: "fred",
           full_name: "Fred Jones",
-          groups: ["edit"]
+          groups: [ "edit" ]
         ) do
           delete comment_path(comment), xhr: true
         end

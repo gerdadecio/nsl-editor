@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchControllerBlankTargetTest < ActionDispatch::IntegrationTest
-
   test "search with a blank target provided" do
     sign_in_as_fake_user(
       username: "fred",

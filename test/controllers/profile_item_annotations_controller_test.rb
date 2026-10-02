@@ -29,7 +29,7 @@ class ProfileItemAnnotationsControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "Fred Jones",
-        groups: ["edit", "foa"]
+        groups: [ "edit", "foa" ]
       ) do
         post profile_item_annotations_path,
           params: {
@@ -53,7 +53,7 @@ class ProfileItemAnnotationsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       put profile_item_annotation_path(profile_item_annotation),
         params: {
@@ -77,7 +77,7 @@ class ProfileItemAnnotationsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       put profile_item_annotation_path(profile_item_annotation),
         params: {
@@ -102,7 +102,7 @@ class ProfileItemAnnotationsControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "Fred Jones",
-        groups: ["edit", "foa"]
+        groups: [ "edit", "foa" ]
       ) do
         put profile_item_annotation_path(profile_item_annotation),
           params: {
@@ -126,7 +126,7 @@ class ProfileItemAnnotationsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       put profile_item_annotation_path(profile_item_annotation),
         params: {
@@ -151,7 +151,7 @@ class ProfileItemAnnotationsControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "Fred Jones",
-        groups: ["edit", "foa"]
+        groups: [ "edit", "foa" ]
       ) do
         delete profile_item_annotation_path(profile_item_annotation), xhr: true
       end

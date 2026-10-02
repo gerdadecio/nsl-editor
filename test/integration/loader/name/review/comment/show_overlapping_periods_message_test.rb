@@ -43,7 +43,7 @@ class LoaderNameReviewCommentOverlappingPeriodsMsgTest < ActionDispatch::Integra
     sign_in_as_fake_user(
       username: reviewer.user_name,
       full_name: reviewer.full_name,
-      groups: ["login", "taxonomic-review"]
+      groups: [ "login", "taxonomic-review" ]
     ) do
       get loader_name_tab_path(id: loader_name.id, tab: "tab_comment"),
         xhr: true,
@@ -69,7 +69,7 @@ class LoaderNameReviewCommentOverlappingPeriodsMsgTest < ActionDispatch::Integra
     sign_in_as_fake_user(
       username: reviewer.user_name,
       full_name: reviewer.full_name,
-      groups: ["login", "taxonomic-review"]
+      groups: [ "login", "taxonomic-review" ]
     ) do
       get loader_name_tab_path(id: loader_name.id, tab: "tab_comment"),
         xhr: true,

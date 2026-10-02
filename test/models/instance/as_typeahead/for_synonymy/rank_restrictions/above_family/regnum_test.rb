@@ -58,6 +58,6 @@ class TypeaheadForSynonymyRegnumTest < ActiveSupport::TestCase
     @rank_names = @tc.results.collect do |result|
       Instance.find(result[:id]).name.name_rank.name
     end
-    check_rank_names_inclusions(["Division", "Classis"])
+    check_rank_names_inclusions([ "Division", "Classis" ])
   end
 end

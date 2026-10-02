@@ -28,7 +28,7 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionDispatch::Integratio
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["QA"]
+      groups: [ "QA" ]
     ) do
       get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
         params: { "row-type" => "instance_as_part_of_concept_record" },
@@ -44,7 +44,7 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionDispatch::Integratio
       sign_in_as_fake_user(
         username: "fred",
         full_name: "Fred Jones",
-        groups: ["QA"]
+        groups: [ "QA" ]
       ) do
         get instance_tab_path(id: @instance.id, tab: "tab_show_1"),
           params: { "row-type" => "instance_as_part_of_concept_record" },

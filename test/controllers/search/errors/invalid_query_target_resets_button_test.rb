@@ -28,7 +28,6 @@ require "test_helper"
 # unchanged and intentional - but the button is a control that should only
 # ever hold a real target.
 class SearchControllerInvalidQueryTargetResetsButtonTest < ActionDispatch::IntegrationTest
-
   test "an unknown query target shows the error but resets the target button to the default" do
     sign_in_as_fake_user(
       username: "fred",

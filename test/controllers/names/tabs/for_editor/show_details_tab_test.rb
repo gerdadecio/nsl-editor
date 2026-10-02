@@ -33,7 +33,7 @@ class NameShowDetailsTabForEditor < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:edit]
+      groups: [ :edit ]
     ) do
       get name_tab_path(id: @name, tab: "tab_details"),
         headers: { "Accept" => "application/javascript" }

@@ -41,7 +41,6 @@ require "test_helper"
 # what this test protects) - what matters is that it's well over the
 # limit:10 that used to cap it.
 class SrchRefsDefQueriesRefIdWInstListHasInstWLimit < ActionDispatch::IntegrationTest
-
   test "limit: no longer truncates a single reference's instance list" do
     ref = references(:bucket_reference_for_default_instances)
     sign_in_as_fake_user(

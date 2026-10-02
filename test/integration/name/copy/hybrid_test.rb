@@ -33,7 +33,7 @@ class NamesCopyHybridTest < ActionDispatch::IntegrationTest
   end
 
   def post_copy(name_element:, parent_id:, second_parent_id:)
-    sign_in_as_fake_user(groups: ["edit"]) do
+    sign_in_as_fake_user(groups: [ "edit" ]) do
       post name_copy_path(id: @source.id),
         params: {
           name: {

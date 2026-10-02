@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchInstListSpeciesSynGenusTest < ActionDispatch::IntegrationTest
-
   test "search for instances which make a genus syn for a species" do
     sign_in_as_fake_user(
       username: "fred",

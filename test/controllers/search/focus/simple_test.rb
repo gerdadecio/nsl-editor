@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchNamesWithFocusSimpleTest < ActionDispatch::IntegrationTest
-
   setup do
     @name = names(:angophora_costata)
   end

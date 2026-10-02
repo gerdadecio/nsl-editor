@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchRefsOnIdSimpleTest < ActionDispatch::IntegrationTest
-
   test "search on reference id" do
     ref = references(:bucket_reference_for_default_instances)
     sign_in_as_fake_user(

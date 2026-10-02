@@ -34,7 +34,7 @@ class ForSubclassisFullyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Subclassis",
-      ["Regnum", "Division", "Classis"]
+      [ "Regnum", "Division", "Classis" ]
     )
   end
 end

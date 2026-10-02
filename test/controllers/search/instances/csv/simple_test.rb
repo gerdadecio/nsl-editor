@@ -20,7 +20,6 @@ require "test_helper"
 
 # Single search controller test.
 class SearchInstanceCsvSimpleTest < ActionDispatch::IntegrationTest
-
   test "instance search result in csv format" do
     skip "fails in 6.1.4"
     sign_in_as_fake_user(

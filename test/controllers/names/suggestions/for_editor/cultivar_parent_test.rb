@@ -27,7 +27,7 @@ class NameCultivarParentSuggestionsForEditorTest < ActionDispatch::IntegrationTe
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_cultivar_parent_suggestions_path(
         rank_id: name_ranks(:unranked).id,

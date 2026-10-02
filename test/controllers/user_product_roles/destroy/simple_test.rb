@@ -30,7 +30,7 @@ class UserProductRoleDestroySimpleTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: @admin.user_name,
         full_name: "#{@admin.given_name} #{@admin.family_name}",
-        groups: ["admin"]
+        groups: [ "admin" ]
       ) do
         delete user_product_roles_delete_path(
           user_id: @user_product_role.user_id,
