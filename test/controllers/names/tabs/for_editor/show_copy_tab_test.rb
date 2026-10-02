@@ -28,7 +28,7 @@ class NameShowCopyTabForEditorTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_tab_path(id: @name.id, tab: "tab_copy"),
         headers: { "Accept" => "application/javascript" }
@@ -46,7 +46,7 @@ class NameShowCopyTabForEditorTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_tab_path(id: names(:hybrid_formula).id, tab: "tab_copy"),
         headers: { "Accept" => "application/javascript" }
@@ -71,7 +71,7 @@ class NameShowCopyTabForEditorTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_tab_path(id: hybrid.id, tab: "tab_copy"),
         headers: { "Accept" => "application/javascript" }
@@ -99,7 +99,7 @@ class NameShowCopyTabForEditorTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_tab_path(id: cultivar_hybrid.id, tab: "tab_copy"),
         headers: { "Accept" => "application/javascript" }

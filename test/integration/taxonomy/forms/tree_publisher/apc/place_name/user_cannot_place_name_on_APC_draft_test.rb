@@ -50,7 +50,7 @@ class TaxFormsTreePublisherAPCUserCannotPlaceNameOnAPCDraftTest < ActionDispatch
     sign_in_as_fake_user(
       username: user.user_name,
       full_name: user.full_name,
-      groups: ["login"],
+      groups: [ "login" ],
       extra_session: { draft: { "id" => apc_draft.id } }
     ) do
       post tree_place_name_path(id: tve.id),
@@ -58,7 +58,7 @@ class TaxFormsTreePublisherAPCUserCannotPlaceNameOnAPCDraftTest < ActionDispatch
           "place_name" => {
             "instance_id" => 12345,
             "comment" => "blah",
-            "distribution" => ["NSW"],
+            "distribution" => [ "NSW" ],
             "parent_name_typeahead_string" => "Angophora bakeri E.C.Hall",
             "parent_element_link" => "/tree/52410589/52410645",
             "version_id" => apc_draft.id,

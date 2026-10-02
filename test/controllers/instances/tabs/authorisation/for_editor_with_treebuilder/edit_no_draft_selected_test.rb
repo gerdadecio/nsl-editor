@@ -28,7 +28,7 @@ class InstEditTabForEditWithTreeBuilderNoDraftTest < ActionDispatch::Integration
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit", "treebuilder"]
+      groups: [ "edit", "treebuilder" ]
     ) do
       get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_edit"),
         headers: { "Accept" => "application/javascript" }

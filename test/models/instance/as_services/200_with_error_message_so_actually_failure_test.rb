@@ -47,7 +47,7 @@ class InstanceDeleteService200WithErrorMessageTest < ActiveSupport::TestCase
   end
 
   def body
-    { "ok" => false, "errors" => ["some silly error"] }
+    { "ok" => false, "errors" => [ "some silly error" ] }
   end
 
   test "instance delete service 200 with error message" do

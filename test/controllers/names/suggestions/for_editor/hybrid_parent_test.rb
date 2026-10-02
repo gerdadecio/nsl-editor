@@ -27,7 +27,7 @@ class NameHybridParentSuggestionsForEditorTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_hybrid_parent_suggestions_path(
         rank_id: name_ranks(:unranked).id,

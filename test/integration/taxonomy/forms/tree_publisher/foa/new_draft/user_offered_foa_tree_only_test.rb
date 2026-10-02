@@ -45,7 +45,7 @@ class TaxFormsTreePubFOANewDraftUserOferedFOATreeOnlyTest < ActionDispatch::Inte
     sign_in_as_fake_user(
       username: user.user_name,
       full_name: user.full_name,
-      groups: ["login"]
+      groups: [ "login" ]
     ) do
       get tree_versions_new_draft_path(tree_id: trees(:FOA)),
         xhr: true,

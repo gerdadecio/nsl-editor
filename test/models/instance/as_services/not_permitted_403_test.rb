@@ -25,7 +25,7 @@ class InstanceDeleteServiceNotPermitted403Test < ActiveSupport::TestCase
       action: "delete",
       instance: {},
       ok: false,
-      errors: ["Not permitted."],
+      errors: [ "Not permitted." ],
     }
     stub_request(
       :delete,

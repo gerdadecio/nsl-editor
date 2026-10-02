@@ -26,7 +26,7 @@ class BatchReviewPeriodUpdateEndDateRemoveTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["batch-loader"]
+      groups: [ "batch-loader" ]
     ) do
       patch update_review_period_path(id: batch_review_period.id),
         params: {

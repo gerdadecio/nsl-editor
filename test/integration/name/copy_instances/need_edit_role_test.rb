@@ -25,7 +25,7 @@ class NamesCopyInstancesNeedEditRole < ActionDispatch::IntegrationTest
     target_name = names(:angophora_fred)
 
     assert_difference("Instance.count", 0) do
-      sign_in_as_fake_user(groups: ["login"]) do
+      sign_in_as_fake_user(groups: [ "login" ]) do
         post name_copy_instances_path(id: source_name.id),
           params: {
             name: {

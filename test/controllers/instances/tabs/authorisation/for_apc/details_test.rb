@@ -28,7 +28,7 @@ class InstanceDetailsForAPCTabTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["APC"]
+      groups: [ "APC" ]
     ) do
       get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_show_1"),
         headers: { "Accept" => "application/javascript" }
@@ -42,7 +42,7 @@ class InstanceDetailsForAPCTabTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "fred",
         full_name: "Fred Jones",
-        groups: ["APC"]
+        groups: [ "APC" ]
       ) do
         get instance_tab_path(id: @triodia_in_brassard.id, tab: "tab_show_1"),
           headers: { "Accept" => "application/javascript" }

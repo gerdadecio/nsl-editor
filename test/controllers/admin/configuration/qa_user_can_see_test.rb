@@ -24,7 +24,7 @@ class AdminControllerQAUserCanSeeConfigTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["QA"]
+      groups: [ "QA" ]
     ) do
       get admin_path, xhr: true
     end

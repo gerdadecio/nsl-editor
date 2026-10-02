@@ -24,7 +24,7 @@ class InstancesTypeaheadForSynonymyForEditorTest < ActionDispatch::IntegrationTe
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get typeahead_for_synonymy_path(term: "abc", name_id: names(:a_species).id),
         headers: { "Accept" => "application/javascript" }

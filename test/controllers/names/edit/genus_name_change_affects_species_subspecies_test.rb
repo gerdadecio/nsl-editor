@@ -33,7 +33,7 @@ class GenusNameChangeAffectsSpAndSubspeciesTest < ActionDispatch::IntegrationTes
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       patch name_path(id: genus.id),
         params: { name: { "name_element" => "newname" } },

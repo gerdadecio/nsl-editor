@@ -26,7 +26,7 @@ class NamesCopyInstancesStandalonesOnlyTest < ActionDispatch::IntegrationTest
     assert source_name.instances.size > source_name.standalone_instances.size, "Need some non-standalone instances for this test"
 
     assert_difference("Instance.count", source_name.standalone_instances.size) do
-      sign_in_as_fake_user(groups: ["edit"]) do
+      sign_in_as_fake_user(groups: [ "edit" ]) do
         post name_copy_instances_path(id: source_name.id),
           params: {
             name: {

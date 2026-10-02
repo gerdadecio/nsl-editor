@@ -70,7 +70,7 @@ class ProfileItemsTabsForEditorShowDetailsTabShowsBulkChangedWhenApiAtPresentTes
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       get profile_item_tab_path(id: @profile_item.id, tab: "tab_show_1"),
         headers: { "Accept" => "application/javascript" }

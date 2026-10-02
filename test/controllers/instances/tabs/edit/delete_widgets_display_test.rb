@@ -29,7 +29,7 @@ class InstanceEditTabDeleteWidgetsTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get instance_tab_path(id: @instance.id, tab: "tab_edit"),
         headers: { "Accept" => "application/javascript" }

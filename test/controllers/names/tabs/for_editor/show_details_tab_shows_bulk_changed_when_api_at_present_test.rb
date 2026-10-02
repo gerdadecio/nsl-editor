@@ -64,7 +64,7 @@ class NameShowEditorDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionDispa
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_tab_path(id: @name.id, tab: "tab_details"),
         headers: { "Accept" => "application/javascript" }

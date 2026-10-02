@@ -24,7 +24,7 @@ class SearchControllerLowerCaseTargetTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:edit, :taxonomic_review, :login]
+      groups: [ :edit, :taxonomic_review, :login ]
     ) do
       get search_path, params: { query_target: "name", query_string: "*" }
     end

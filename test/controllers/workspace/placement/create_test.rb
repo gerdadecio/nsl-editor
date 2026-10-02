@@ -61,7 +61,7 @@ class TreePlacementCreateTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit", "treebuilder"],
+      groups: [ "edit", "treebuilder" ],
       extra_session: { draft: { "id" => @workspace.id } }
     ) do
       patch tree_place_name_path(id: @workspace.id),
@@ -71,7 +71,7 @@ class TreePlacementCreateTest < ActionDispatch::IntegrationTest
             instance_id: @instance.id,
             parent_element_link: "tree/123/456",
             comment: "yo",
-            distribution: ["ACT", "Wa"],
+            distribution: [ "ACT", "Wa" ],
             excluded: false,
             version_id: @workspace.id,
             parent_name_typeahead_string: @parent.full_name,

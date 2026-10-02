@@ -56,7 +56,7 @@ class GenusNameUpdateWithNoNameChangeTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       patch name_path(id: @genus.id),
         params: { name: { "name_element" => "Acacia", "verbatim_rank" => "sp" } },

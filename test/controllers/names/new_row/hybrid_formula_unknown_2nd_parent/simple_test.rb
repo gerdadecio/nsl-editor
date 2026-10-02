@@ -24,7 +24,7 @@ class NamesNewRowScientHybridFormUnk2ParSimpleTest < ActionDispatch::Integration
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_new_row_path(type: "hybrid-formula-unknown-2nd-parent"),
         headers: { "Accept" => "application/javascript" },

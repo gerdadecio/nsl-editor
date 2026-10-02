@@ -31,7 +31,7 @@ class SearchLoaderNameAnyBatchTargetTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"]
+      groups: [ :login, :"batch-loader" ]
     ) do
       get search_path, params: { query_target: "loader names (any batch)", query_string: "*" }
     end
@@ -45,7 +45,7 @@ class SearchLoaderNameAnyBatchTargetTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"]
+      groups: [ :login, :"batch-loader" ]
     ) do
       get search_path, params: { query_target: "loader names (any batch)", query_string: "Hardenbergia violacea" }
     end

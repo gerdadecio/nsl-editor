@@ -27,7 +27,7 @@ class NameParentClassisIsOfferedForUnrankedTest < ActiveSupport::TestCase
       avoid_id: 1,
       rank_id: NameRank.find_by(name: "[unranked]").id
     )
-    expected_ranks = ["Classis"]
+    expected_ranks = [ "Classis" ]
     suggestions_should_only_include(
       typeahead.suggestions, "[unranked]", expected_ranks
     )

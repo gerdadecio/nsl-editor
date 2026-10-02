@@ -29,7 +29,7 @@ class ProfileItemsControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "Fred Jones",
-        groups: ["edit", "foa"]
+        groups: [ "edit", "foa" ]
       ) do
         delete profile_item_path(@profile_item), xhr: true
       end
@@ -42,7 +42,7 @@ class ProfileItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       delete profile_item_path(@profile_item), xhr: true
     end
@@ -55,7 +55,7 @@ class ProfileItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       delete profile_item_path(@profile_item), xhr: true
     end
@@ -67,7 +67,7 @@ class ProfileItemsControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "Fred Jones",
-        groups: ["edit", "foa"]
+        groups: [ "edit", "foa" ]
       ) do
         delete profile_item_path(@profile_item), xhr: true
       end
@@ -82,7 +82,7 @@ class ProfileItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       get profile_items_path, params: { instance_id: @profile_item.instance_id }, xhr: true
     end

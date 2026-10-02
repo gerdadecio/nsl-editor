@@ -33,7 +33,7 @@ class TaxoInstanceTreeBuilderFoaCannotSeeEditTab < ActionDispatch::IntegrationTe
     sign_in_as_fake_user(
       username: user.user_name,
       full_name: user.full_name,
-      groups: ["login", "xedit"],
+      groups: [ "login", "xedit" ],
       extra_session: { draft: { "id" => foa_draft.id } }
     ) do
       get instance_tab_path(id: instance.id, tab: "edit_tab"),

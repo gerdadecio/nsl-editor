@@ -36,7 +36,7 @@ class ProfileItemReferencesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       post profile_item_references_path, params: @valid_params, xhr: true
     end
@@ -59,7 +59,7 @@ class ProfileItemReferencesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       post profile_item_references_path,
         params: {
@@ -82,7 +82,7 @@ class ProfileItemReferencesControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "Fred Jones",
-        groups: ["edit", "foa"]
+        groups: [ "edit", "foa" ]
       ) do
         post profile_item_references_path,
           params: {
@@ -115,7 +115,7 @@ class ProfileItemReferencesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       put save_profile_item_references_path(
         profile_item_id: @profile_item.id,
@@ -147,7 +147,7 @@ class ProfileItemReferencesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       put save_profile_item_references_path(
         profile_item_id: @profile_item.id,
@@ -179,7 +179,7 @@ class ProfileItemReferencesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       delete delete_profile_item_references_path(
         profile_item_id: @profile_item.id,
@@ -207,7 +207,7 @@ class ProfileItemReferencesControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "Fred Jones",
-        groups: ["edit", "foa"]
+        groups: [ "edit", "foa" ]
       ) do
         delete delete_profile_item_references_path(
           profile_item_id: @profile_item.id,

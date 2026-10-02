@@ -34,7 +34,7 @@ class NameFamilySuggestionsForEditorTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get name_name_family_suggestions_path(
         term: term,

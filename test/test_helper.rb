@@ -112,7 +112,7 @@ end
 def sign_in_as_fake_user(
   username: "fred",
   full_name: "Fred Jones",
-  groups: ["edit", "treebuilder"],
+  groups: [ "edit", "treebuilder" ],
   extra_session: {}
 )
   ApplicationController.stub_any_instance(:authenticate, -> {
@@ -343,7 +343,7 @@ def load_new_scientific_name_form
   Timeout.timeout(Capybara.default_wait_time) do
     loop until page.evaluate_script("jQuery.active").zero?
   end
-  select_from_menu(["New", "Scientific name"])
+  select_from_menu([ "New", "Scientific name" ])
   find_link("New scientific name").click
   search_result_must_include_content("New scientific name")
   search_result_details_must_include_content("New Scientific Name")
@@ -353,7 +353,7 @@ def load_new_hybrid_formula_form
   Timeout.timeout(Capybara.default_wait_time) do
     loop until page.evaluate_script("jQuery.active").zero?
   end
-  select_from_menu(["New", "Hybrid formula name"])
+  select_from_menu([ "New", "Hybrid formula name" ])
   find_link("New hybrid formula name").click
   search_result_must_include_content("New hybrid formula name")
   search_result_details_must_include_content(
@@ -362,13 +362,13 @@ def load_new_hybrid_formula_form
 end
 
 def load_new_cultivar_hybrid_name_form
-  select_from_menu(["New", "Cultivar hybrid name"])
+  select_from_menu([ "New", "Cultivar hybrid name" ])
   search_result_must_include_content("New cultivar hybrid name")
   search_result_details_must_include_content("New Cultivar Hybrid Name")
 end
 
 def load_new_cultivar_name_form
-  select_from_menu(["New", "Cultivar name"])
+  select_from_menu([ "New", "Cultivar name" ])
   search_result_must_include_content("New cultivar name")
   search_result_details_must_include_content("New Cultivar Name")
 end
@@ -377,7 +377,7 @@ def load_new_hybrid_formula_unknown_2nd_parent_form
   Timeout.timeout(Capybara.default_wait_time) do
     loop until page.evaluate_script("jQuery.active").zero?
   end
-  select_from_menu(["New", "Hybrid formula unknown 2nd parent name"])
+  select_from_menu([ "New", "Hybrid formula unknown 2nd parent name" ])
   search_result_must_include_link("New hybrid formula unknown 2nd parent name")
   search_result_details_must_include_content(
     "New Scientific Hybrid Formula Unknown 2nd Parent Name"
@@ -385,7 +385,7 @@ def load_new_hybrid_formula_unknown_2nd_parent_form
 end
 
 def load_new_other_name_form
-  select_from_menu(["New", "Other name"])
+  select_from_menu([ "New", "Other name" ])
   search_result_must_include_content("New other name")
   search_result_details_must_include_content("New Other Name")
 end
@@ -394,7 +394,7 @@ def load_new_author_form
   Timeout.timeout(Capybara.default_wait_time) do
     loop until page.evaluate_script("jQuery.active").zero?
   end
-  select_from_menu(["New", "Author"])
+  select_from_menu([ "New", "Author" ])
   search_result_must_include_link("New author")
   search_result_details_must_include_content("New Author")
 end

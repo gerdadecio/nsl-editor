@@ -39,7 +39,7 @@ class AdTreebuilderNoRolesCanOnlyCreateDraftForAcceptedTreeTest < ActionDispatch
     sign_in_as_fake_user(
       username: "ad-treebuilder-no-roles",
       full_name: "AD Treebuilder No Roles",
-      groups: ["treebuilder"]
+      groups: [ "treebuilder" ]
     ) do
       get search_path
     end
@@ -55,7 +55,7 @@ class AdTreebuilderNoRolesCanOnlyCreateDraftForAcceptedTreeTest < ActionDispatch
     sign_in_as_fake_user(
       username: "ad-treebuilder-no-roles",
       full_name: "AD Treebuilder No Roles",
-      groups: ["treebuilder"]
+      groups: [ "treebuilder" ]
     ) do
       get search_path
     end

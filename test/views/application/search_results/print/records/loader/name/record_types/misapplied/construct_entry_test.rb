@@ -81,7 +81,7 @@ class MisappliedConstructEntryPartialTest < ActionView::TestCase
       iso_publication_date: nil
     )
 
-    output = render_entry_for([dated, undated])
+    output = render_entry_for([ dated, undated ])
 
     assert_includes output, "Smith, Flora of Nowhere: 12"
     assert_includes output, "Jones, Undated Flora: 3"
@@ -91,7 +91,7 @@ class MisappliedConstructEntryPartialTest < ActionView::TestCase
     undated_a = build_match(citation: "First Undated", page: "1", iso_publication_date: nil)
     undated_b = build_match(citation: "Second Undated", page: "2", iso_publication_date: nil)
 
-    output = render_entry_for([undated_a, undated_b])
+    output = render_entry_for([ undated_a, undated_b ])
 
     assert_includes output, "First Undated: 1"
     assert_includes output, "Second Undated: 2"
@@ -111,7 +111,7 @@ class MisappliedConstructEntryPartialTest < ActionView::TestCase
 
     # Deliberately passed in with the dated match first, so a correct result
     # here can only come from the sort, not from input order.
-    output = render_entry_for([dated, undated])
+    output = render_entry_for([ dated, undated ])
 
     assert output.index("Undated Reference") < output.index("Later Reference"),
            "Expected the undated match to sort before the dated one, got: #{output}"

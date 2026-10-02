@@ -39,7 +39,7 @@ class InstancesCreateCitedByTextMatchNotExcludedTest < ActionDispatch::Integrati
       sign_in_as_fake_user(
         username: "fred",
         full_name: "Fred Jones",
-        groups: ["edit"]
+        groups: [ "edit" ]
       ) do
         post create_cited_by_path,
           params: {

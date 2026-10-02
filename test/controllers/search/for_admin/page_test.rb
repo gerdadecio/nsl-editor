@@ -24,7 +24,7 @@ class SearchControllerForAdminPageTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["admin"]
+      groups: [ "admin" ]
     ) do
       get search_path, params: {}
     end

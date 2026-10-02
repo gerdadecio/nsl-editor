@@ -24,7 +24,7 @@ class SearchLoaderNameHardenbergiaNoDefaultBatchTest < ActionDispatch::Integrati
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"]
+      groups: [ :login, :"batch-loader" ]
     ) do
       get search_path, params: { query_target: "loader names", query_string: "Hardenbergia violacea:" }
     end

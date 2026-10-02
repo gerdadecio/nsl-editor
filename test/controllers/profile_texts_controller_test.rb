@@ -35,7 +35,7 @@ class ProfileTextsControllerTest < ActionDispatch::IntegrationTest
         sign_in_as_fake_user(
           username: "uone",
           full_name: "Fred Jones",
-          groups: ["edit", "foa"]
+          groups: [ "edit", "foa" ]
         ) do
           post profile_texts_path,
             params: {
@@ -65,7 +65,7 @@ class ProfileTextsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       post profile_texts_path,
         params: {
@@ -93,7 +93,7 @@ class ProfileTextsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "uone",
       full_name: "Fred Jones",
-      groups: ["edit", "foa"]
+      groups: [ "edit", "foa" ]
     ) do
       put profile_text_path(profile_text),
         params: {
@@ -118,7 +118,7 @@ class ProfileTextsControllerTest < ActionDispatch::IntegrationTest
       sign_in_as_fake_user(
         username: "uone",
         full_name: "Fred Jones",
-        groups: ["edit", "foa"]
+        groups: [ "edit", "foa" ]
       ) do
         put profile_text_path(profile_text),
           params: {

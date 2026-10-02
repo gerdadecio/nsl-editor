@@ -25,7 +25,7 @@ class InstanceDeleteServiceNotFound404Test < ActiveSupport::TestCase
       action: "delete",
       instance: {},
       ok: false,
-      errors: ["Not found."],
+      errors: [ "Not found." ],
     }
     stub_request(
       :delete,

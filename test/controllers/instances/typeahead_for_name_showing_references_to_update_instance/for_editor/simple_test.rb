@@ -31,7 +31,7 @@ class InstTAhead4NameShowRefToUpdSynonymy4EditTest < ActionDispatch::Integration
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get typeahead_for_name_showing_references_to_update_instance_path(
         term: "an",

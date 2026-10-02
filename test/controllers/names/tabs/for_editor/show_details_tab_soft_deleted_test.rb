@@ -72,7 +72,7 @@ class NameShowEditorDetailsTabSoftDeletedTest < ActionController::TestCase
         params: { id: @name.id, tab: "tab_details" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
-                   groups: ["edit"], })
+                   groups: [ "edit" ], })
     assert_response :success
   end
 end

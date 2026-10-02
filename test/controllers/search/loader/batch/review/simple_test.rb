@@ -24,7 +24,7 @@ class SearchLoaderBatchReviewSimpleTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:login, :"batch-loader"]
+      groups: [ :login, :"batch-loader" ]
     ) do
       get search_path, params: { query_target: "batch reviews", query_string: "*" }
     end

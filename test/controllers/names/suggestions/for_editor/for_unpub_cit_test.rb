@@ -28,7 +28,7 @@ class NameSuggsForUnpubCitTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get names_typeahead_for_unpub_cit_path(
         rank_id: name_ranks(:unranked).id, term: "search for this"

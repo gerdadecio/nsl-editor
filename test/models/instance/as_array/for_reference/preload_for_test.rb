@@ -31,9 +31,9 @@ class InstanceAsArrayForReferencePreloadForTest < ActiveSupport::TestCase
     ref_b = references(:paper_by_britten_on_angophora)
 
     instances_by_reference, cited_by_map =
-      Instance::AsArray::ForReference.preload_for([ref_a, ref_b])
+      Instance::AsArray::ForReference.preload_for([ ref_a, ref_b ])
 
-    [ref_a, ref_b].each do |ref|
+    [ ref_a, ref_b ].each do |ref|
       separately_queried = Instance::AsArray::ForReference.new(ref).results.map(&:id)
       from_preload = Instance::AsArray::ForReference.new(
         ref,

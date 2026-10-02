@@ -24,7 +24,7 @@ class SearchLoaderNameHardenbergiaAnyBatchWithLimitTest < ActionDispatch::Integr
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: [:ogin, :"atch-loader"]
+      groups: [ :ogin, :"atch-loader" ]
     ) do
       get search_path, params: { query_target: "loader names", query_string: "Hardenbergia violacea any-baTCh: limit: 100" }
     end

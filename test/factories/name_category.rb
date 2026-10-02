@@ -48,7 +48,7 @@ FactoryBot.define do
     takes_rank { true }
 
     transient do
-      valid_names { ["scientific"] }
+      valid_names { [ "scientific" ] }
     end
     sequence(:name) { |n| valid_names[n % valid_names.length] }
 

@@ -24,7 +24,7 @@ class AdminControllerAdminUserCanSeeDBConnsTest < ActionDispatch::IntegrationTes
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["admin"]
+      groups: [ "admin" ]
     ) do
       get admin_path, xhr: true
     end

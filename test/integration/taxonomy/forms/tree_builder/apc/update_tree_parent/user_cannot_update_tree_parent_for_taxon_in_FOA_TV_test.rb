@@ -36,7 +36,7 @@ class TaxFormsTreeBuilderAPCUserCannotUpdateTreeParentForTaxonOnFOADraftTest < A
     sign_in_as_fake_user(
       username: user.user_name,
       full_name: user.full_name,
-      groups: ["login"],
+      groups: [ "login" ],
       extra_session: { draft: { "id" => foa_draft.id } }
     ) do
       post tree_update_parent_path,

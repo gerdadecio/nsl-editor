@@ -23,7 +23,7 @@ class SessionsCreateByEditorTest < ActionDispatch::IntegrationTest
   test "user with login groupd should be able to signin" do
     skip "Need a way to mock ldap call"
     # post(:create, session: { "username" => "fred", "password" => "secret"})
-    post sign_in_path, params: { username: "fred", password: "secret", groups: ["login"] }
+    post sign_in_path, params: { username: "fred", password: "secret", groups: [ "login" ] }
     assert_response :success
   end
 end

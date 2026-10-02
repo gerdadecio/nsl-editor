@@ -35,7 +35,7 @@ class TaxFormsTreePubAPCUserCanOpenFormToPublishAPCDraftTest < ActionDispatch::I
     sign_in_as_fake_user(
       username: user.user_name,
       full_name: user.full_name,
-      groups: ["login"],
+      groups: [ "login" ],
       extra_session: { draft: { "id" => apc_draft.id } }
     ) do
       get tree_versions_form_to_publish_path,

@@ -34,7 +34,7 @@ class ForFamiliaFullyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Familia",
-      ["Ordo", "Subordo"]
+      [ "Ordo", "Subordo" ]
     )
   end
 end

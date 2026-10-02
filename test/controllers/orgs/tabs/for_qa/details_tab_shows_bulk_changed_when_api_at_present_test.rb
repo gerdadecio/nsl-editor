@@ -64,7 +64,7 @@ class OrgsTabsForQaDetailsTabShowsBulkChangedWhenApiAtPresentTest < ActionDispat
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["QA"]
+      groups: [ "QA" ]
     ) do
       get org_path,
         params: { id: @org.id, tab: "tab_details" },

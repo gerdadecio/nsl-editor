@@ -35,7 +35,7 @@ class TaxFormsNoRoleUserCannotCreateAPCDraftTest < ActionDispatch::IntegrationTe
     sign_in_as_fake_user(
       username: user.user_name,
       full_name: user.full_name,
-      groups: ["login"]
+      groups: [ "login" ]
     ) do
       post tree_versions_create_draft_path,
         params: { "tree_id" => apc_tree.id, "draft_name" => "abcde name", "draft_log" => "abcde log" },

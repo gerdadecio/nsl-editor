@@ -30,7 +30,7 @@ class NameTagNamesCreateByEditorSimpleTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       post name_tag_names_path,
         params: {

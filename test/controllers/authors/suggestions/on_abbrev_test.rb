@@ -26,7 +26,7 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get authors_typeahead_on_abbrev_path(term: term, format: :html)
     end
@@ -99,14 +99,14 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get authors_typeahead_on_abbrev_path(term: "masl", format: :json)
     end
 
     assert_response :success
     suggestions = JSON.parse(@response.body)
-    assert_equal [author.id.to_s], suggestions.map { |s| s["id"] }
+    assert_equal [ author.id.to_s ], suggestions.map { |s| s["id"] }
   end
 
   # Bloodhound sends no format extension - it asks by Accept header, through
@@ -118,7 +118,7 @@ class AuthorsSuggestionsOnAbbrevHtmlTest < ActionDispatch::IntegrationTest
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
-      groups: ["edit"]
+      groups: [ "edit" ]
     ) do
       get authors_typeahead_on_abbrev_path(term: "masl"),
         headers: { "Accept" => "application/json, text/javascript, */*; q=0.01" },

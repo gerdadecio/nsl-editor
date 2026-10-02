@@ -29,7 +29,7 @@ class NewSessionKnownUserUpperCaseNoNewUserRecordTest < ActionDispatch::Integrat
       sign_in_as_fake_user(
         username: @known_user.user_name.upcase,
         full_name: "#{@known_user.given_name} #{@known_user.family_name}",
-        groups: [:login]
+        groups: [ :login ]
       ) do
         get search_path
       end
