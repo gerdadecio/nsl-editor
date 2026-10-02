@@ -76,7 +76,8 @@ pin "typeaheads_for_instance_name_for_unpub_citation", to: "typeaheads/for_insta
 # Bloodhound source it also set up is still defined, for its own use, by
 # reference_profile_v2.js below.
 pin "typeaheads_for_instance_reference_profile_v2", to: "typeaheads/for_instance/reference_profile_v2.js"
-pin "typeaheads_for_instance_reference_excluding_current", to: "typeaheads/for_instance/reference_excluding_current.js"
+# The copy to new reference tab's Reference field uses stimulus-autocomplete
+# too, so typeaheads/for_instance/reference_excluding_current.js has gone.
 pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js"
 pin "typeaheads_for_instance_product_item_config", to: "typeaheads/for_instance/name_for_product_item_config.js"
 pin "typeaheads_for_instance_change_name", to: "typeaheads/for_instance/change_name.js"

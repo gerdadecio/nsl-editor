@@ -47,6 +47,10 @@
       dependents_field - element id to hand to window.setDependents after a
                          pick; omit unless the field has dependents
       min_length      - characters before suggestions are fetched (default 1)
+      id_value        - value for the hidden id field, overriding the
+                        model's; e.g. "" for the copy to new reference
+                        form, which must not start out holding the
+                        instance's current reference
 
     The hidden field must sit inside the wrapper for the library to find
     the target, and is rendered through the form builder so it keeps the
@@ -63,6 +67,8 @@
 <% term_delimiter = local_assigns.fetch(:term_delimiter, nil) %>
 <% dependents_field = local_assigns.fetch(:dependents_field, nil) %>
 <% min_length = local_assigns.fetch(:min_length, 1) %>
+<% hidden_options = { data: { "autocomplete-target": "hidden" } } %>
+<% hidden_options[:value] = local_assigns[:id_value] if local_assigns.key?(:id_value) %>
 <div class="form-group autocomplete <%= wrapper_class %>"
      data-controller="autocomplete"
      data-action="autocomplete.change->autocomplete#syncDependents"
@@ -87,6 +93,6 @@
          <%= "required" if required %>
          data-autocomplete-target="input"
          value="<%= input_value %>"/>
-  <%= f.hidden_field(id_attribute, data: { "autocomplete-target": "hidden" }) %>
+  <%= f.hidden_field(id_attribute, hidden_options) %>
   <ul class="autocomplete-results" data-autocomplete-target="results"></ul>
 </div>
