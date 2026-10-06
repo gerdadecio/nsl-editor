@@ -1,4 +1,8 @@
 - :date: 06-October-2026
+  :jira_id: '5963'
+  :description: |-
+    Security: Fix an authorisation bug Claude found
+- :date: 06-October-2026
   :jira_id: '5953'
   :description: |-
     Typeahead upgrade: Upgrade the instance reference typeahead in the profile v2 reference form to use stimulus autocomplete
