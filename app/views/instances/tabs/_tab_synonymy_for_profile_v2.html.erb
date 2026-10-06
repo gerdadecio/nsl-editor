@@ -15,19 +15,31 @@
     <% end %>
 
     The name (and optional year)<span class="red">*</span>, as referenced below:
+    <%# Name: on stimulus-autocomplete, as in tabs/_tab_copy_to_new_reference,
+        instead of the typeahead.js widget set up by setUpSynonymyInstance (now
+        gone). The instance's own name is excluded by the endpoint, its id now
+        sent as a static param rather than read off #instance-name-id at query
+        time.
+
+        No label: the field sits inside a sentence. The shared partial renders
+        the hidden cites_id field inside the wrapper - same dom id and param
+        name - empty until a pick, as create_cites_and_cited_by expects. %>
     <div class="typeahead-container">
       <section class='block width-100-percent'>
-        <input id="instance-instance-for-name-showing-reference-typeahead"
-              class="typeahead form-control width-100-percent give-me-focus"
-              title="Enter an instance.  Typeahead field on name and year.  Only names with instances are listed."
-              tabindex="<%= increment_tab_index %>"
-              type="text"
-              required='true'
-              placeholder="Name typeahead to list instances, 4 consecutive digits treated as a year"
-              value=""/>
+        <%= render "shared/autocomplete_field",
+                   f: f,
+                   id_attribute: :cites_id,
+                   input_id: "instance-instance-for-name-showing-reference-typeahead",
+                   input_name: "instance[instance_for_name_showing_reference_typeahead]",
+                   input_value: "",
+                   input_class: "width-100-percent give-me-focus",
+                   required: true,
+                   placeholder: "Name typeahead to list instances, 4 consecutive digits treated as a year",
+                   title: "Enter an instance.  Typeahead field on name and year.  Only names with instances are listed.",
+                   url: typeahead_for_synonymy_path(format: :html),
+                   extra_params: { name_id: @instance.name_id } %>
       </section>
     </div>
-    <script> setUpSynonymyInstance(); </script>
     is a type<span class="red">*</span>
     <br>
     <%= f.select(:instance_type_id,
@@ -49,7 +61,6 @@
     <%= f.hidden_field :reference_id, value: @instance.reference_id %>
     <%= f.hidden_field :name_id, id: "instance-name-id", value: @instance.name_id %>
     <%= f.hidden_field :cited_by_id, value: @instance.id %>
-    <%= f.hidden_field :cites_id %>
     <br>
     <div id="multiple-primary-override" class="form-check hidden">
       <br>

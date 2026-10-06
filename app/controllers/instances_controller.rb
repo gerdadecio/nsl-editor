@@ -209,12 +209,29 @@ class InstancesController < ApplicationController
     render("destroy_error", status: :unprocessable_content)
   end
 
+  # Used by the synonymy tabs' name field, which offers instances of names
+  # other than the instance's own (params[:name_id]).
+  #
+  # Two formats, as for ReferencesController#typeahead_on_citation:
+  #   html - the fragment of <li role="option"> elements stimulus-autocomplete
+  #          expects, which the synonymy tabs' field asks for by extension.
+  #   json - as before, still asked for by the change name form's typeahead
+  #          in typeaheads/for_instance/synonymy.js; also the answer to any
+  #          other format, as it was before html was added.
   def typeahead_for_synonymy
-    instances = Instance::AsTypeahead::ForSynonymy.new(
-      params[:term],
-      params[:name_id],
-    )
-    render(json: instances.results)
+    suggestions = if params[:term].blank?
+      []
+    else
+      Instance::AsTypeahead::ForSynonymy.new(params[:term], params[:name_id]).results
+    end
+    respond_to do |format|
+      format.json { render json: suggestions }
+      format.html do
+        render partial: "shared/autocomplete_suggestions",
+               locals: { suggestions: suggestions, term: params[:term] }
+      end
+      format.any { render json: suggestions }
+    end
   end
 
   def typeahead_for_product_item_config
@@ -227,9 +244,19 @@ class InstancesController < ApplicationController
 
   # Expect instance id - of the instance user is updating.
   # Synonym Edit tab.
+  #
+  # Same formats as typeahead_for_synonymy: html for the field, now on
+  # stimulus-autocomplete, and json as before, also for any other format.
   def typeahead_for_name_showing_references_to_update_instance
-    typeahead = Instance::AsTypeahead::ForNameShowingReferences.new(params)
-    render(json: typeahead.references)
+    suggestions = Instance::AsTypeahead::ForNameShowingReferences.new(params).references
+    respond_to do |format|
+      format.json { render json: suggestions }
+      format.html do
+        render partial: "shared/autocomplete_suggestions",
+               locals: { suggestions: suggestions, term: params[:term] }
+      end
+      format.any { render json: suggestions }
+    end
   end
 
   private
