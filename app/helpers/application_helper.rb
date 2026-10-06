@@ -14,8 +14,16 @@ module ApplicationHelper
       .sort_by { |pr| [ pr.product.name, pr.role.name ] }
   end
 
+  MARKDOWN_TABLE_TAGS = %w[table thead tbody tfoot tr th td].freeze
+
+  # Kramdown passes raw HTML through, so the output is sanitized against an
+  # allowlist. Called from views and from ProfileTextsController (which
+  # includes this helper), hence the explicit helpers proxy for sanitize.
   def markdown_to_html(markdown)
-    Kramdown::Document.new(markdown).to_html.html_safe
+    ActionController::Base.helpers.sanitize(
+      Kramdown::Document.new(markdown.to_s).to_html,
+      tags: Rails::Html::SafeListSanitizer.allowed_tags.to_a + MARKDOWN_TABLE_TAGS
+    )
   end
 
   def nav_link(text, icon_name)

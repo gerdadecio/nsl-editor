@@ -145,4 +145,43 @@ RSpec.describe(ApplicationHelper, type: :helper) do
       expect(helper.safe_uncapitalize("HELLO")).to(eq("hELLO"))
     end
   end
+
+  describe "#markdown_to_html" do
+    it "renders markdown as html_safe HTML" do
+      html = helper.markdown_to_html("**bold** x<sup>2</sup>")
+
+      expect(html).to(be_html_safe)
+      expect(html).to(include("<strong>bold</strong>"))
+      expect(html).to(include("<sup>2</sup>"))
+    end
+
+    it "keeps markdown tables" do
+      html = helper.markdown_to_html("| a | b |\n|---|---|\n| 1 | 2 |\n")
+
+      expect(html).to(include("<table>"))
+      expect(html).to(include("<td>1</td>"))
+    end
+
+    it "removes script tags" do
+      html = helper.markdown_to_html("text <script>alert(1)</script>")
+
+      expect(html).not_to(include("<script"))
+    end
+
+    it "removes event handler attributes" do
+      html = helper.markdown_to_html('<img src="x" onerror="alert(1)">')
+
+      expect(html).not_to(include("onerror"))
+    end
+
+    it "removes javascript: links" do
+      html = helper.markdown_to_html("[click](javascript:alert(1))")
+
+      expect(html).not_to(include("javascript:"))
+    end
+
+    it "handles nil" do
+      expect(helper.markdown_to_html(nil)).to(be_blank)
+    end
+  end
 end
