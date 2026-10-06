@@ -84,14 +84,30 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Actions whose routes carry a :tab segment (e.g. names/:id/tab/:tab).
+  # For these, permission is granted per tab, so the tab name is what we
+  # authorise against.
+  TAB_ACTIONS = %w[show tab edit_as_category].freeze
+
   def authorise
     controller = params[:controller]
-    action = params[:tab].presence || params[:action]
+    action = authorisable_action
     authorize!(controller, action)
   rescue CanCan::AccessDenied
     details = "is unauthorized for: #{controller} #{action}"
     logger.error("User #{@current_user.username} #{details}")
     raise
+  end
+
+  # Only a GET to a tab-displaying action may be authorised by its tab name.
+  # Anywhere else a ?tab= param must not stand in for the real action -
+  # otherwise e.g. DELETE /references/1?tab=tab_show_1 is checked as a tab view.
+  def authorisable_action
+    if request.get? && TAB_ACTIONS.include?(params[:action]) && params[:tab].present?
+      params[:tab]
+    else
+      params[:action]
+    end
   end
 
   def authenticate
