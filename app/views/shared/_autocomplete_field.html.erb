@@ -15,7 +15,9 @@
       input_id     - dom id of the visible input (other JS still keys off
                      these, e.g. app/views/names/update.js.erb)
       input_name   - param name of the visible input, e.g.
-                     "name[author_typeahead]"
+                     "name[author_typeahead]"; nil leaves the input
+                     unnamed, so it isn't submitted (the profile v2
+                     reference form never sent it)
       input_value  - what to show in the visible input on page load
       title        - the input's title/tooltip text
       url          - endpoint rendering shared/_autocomplete_suggestions
@@ -51,6 +53,14 @@
                         model's; e.g. "" for the copy to new reference
                         form, which must not start out holding the
                         instance's current reference
+      hidden_name     - param name for the hidden id field, overriding the
+                        form builder's; e.g. for the profile v2 reference
+                        form, whose namespaced model would otherwise post
+                        profile_profile_item_reference[reference_id]
+      hidden_id       - dom id for the hidden id field, overriding the
+                        form builder's; for forms rendered more than once
+                        on a page, like the profile v2 reference form
+      autofocus       - focus the visible input on render
 
     The hidden field must sit inside the wrapper for the library to find
     the target, and is rendered through the form builder so it keeps the
@@ -69,6 +79,8 @@
 <% min_length = local_assigns.fetch(:min_length, 1) %>
 <% hidden_options = { data: { "autocomplete-target": "hidden" } } %>
 <% hidden_options[:value] = local_assigns[:id_value] if local_assigns.key?(:id_value) %>
+<% hidden_options[:name] = local_assigns[:hidden_name] if local_assigns[:hidden_name].present? %>
+<% hidden_options[:id] = local_assigns[:hidden_id] if local_assigns[:hidden_id].present? %>
 <div class="form-group autocomplete <%= wrapper_class %>"
      data-controller="autocomplete"
      data-action="autocomplete.change->autocomplete#syncDependents"
@@ -84,13 +96,14 @@
   <label for="<%= input_id %>"><%= label %><% if required %><span class="red">*</span><% end %></label><%= label_suffix %><br>
   <% end %>
   <input id="<%= input_id %>"
-         name="<%= input_name %>"
+         <% if input_name.present? %>name="<%= input_name %>"<% end %>
          class="typeahead form-control <%= input_class %>"
          type="text"
          title="<%= title %>"
          <% if placeholder.present? %>placeholder="<%= placeholder %>"<% end %>
          tabindex="<%= increment_tab_index %>"
          <%= "required" if required %>
+         <%= "autofocus" if local_assigns[:autofocus] %>
          data-autocomplete-target="input"
          value="<%= input_value %>"/>
   <%= f.hidden_field(id_attribute, hidden_options) %>

@@ -97,14 +97,14 @@ class ReferencesController < ApplicationController
   end
 
   # Used by the instance forms' Reference field: new instance for a name,
-  # the standalone instance edit form, and the change reference widgets.
+  # the standalone instance edit form, and the change reference widgets;
+  # and by the profile v2 reference form.
   #
   # Two response formats over the one query, as for
   # NamesController#typeahead_on_full_name:
-  #   json - what the field asked for while it was on typeahead.js; still
-  #          asked for by typeaheads/for_instance/reference_profile_v2.js.
+  #   json - what the fields asked for while they were on typeahead.js.
   #   html - the fragment of <li role="option"> elements stimulus-autocomplete
-  #          expects, which the Reference field asks for by extension.
+  #          expects, which the Reference fields ask for by extension.
   def typeahead_on_citation
     suggestions = if params[:term].blank?
       []

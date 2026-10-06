@@ -72,10 +72,10 @@ pin "typeaheads_for_instance_target_name_for_copy_instances", to: "typeaheads/fo
 pin "typeaheads_for_instance_name_for_unpub_citation", to: "typeaheads/for_instance/name_for_unpub_citation.js"
 # The instance forms' Reference field (names - new instance tab, instance
 # edit tab, change reference widgets) uses stimulus-autocomplete too, so
-# typeaheads/for_instance/reference.js has gone. The referenceByCitation
-# Bloodhound source it also set up is still defined, for its own use, by
-# reference_profile_v2.js below.
-pin "typeaheads_for_instance_reference_profile_v2", to: "typeaheads/for_instance/reference_profile_v2.js"
+# typeaheads/for_instance/reference.js has gone. So has
+# typeaheads/for_instance/reference_profile_v2.js, along with the
+# referenceByCitation Bloodhound source it defined: the profile v2
+# reference form is on stimulus-autocomplete as well.
 # The copy to new reference tab's Reference field uses stimulus-autocomplete
 # too, so typeaheads/for_instance/reference_excluding_current.js has gone.
 pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js"
