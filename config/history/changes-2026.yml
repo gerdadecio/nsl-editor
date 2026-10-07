@@ -1,4 +1,8 @@
 - :date: 07-October-2026
+  :jira_id: '5971'
+  :description: |-
+    Loader Batch: Fix bug in the detailed logic for moving loader names to a different batch
+- :date: 07-October-2026
   :jira_id: '5970'
   :description: |-
     Name Delete: Fix bug in Family member checking that could incorrectly offer a delete option

@@ -101,7 +101,7 @@ class Loader::Name < ApplicationRecord
       # because at that point in processing the parent's sort_key is empty
       child.sort_key = if child.record_type == "synonym"
         synonym_sort_key(sort_key, child.synonym_type)
-      elsif child.record_type = "misapplied"
+      elsif child.record_type == "misapplied"
         misapp_sort_key(sort_key)
       else
         "unknown record type: #{child.record_type}"
