@@ -4,7 +4,7 @@
 <ul class="tree">
 <% @name.accepted_tree_version_element.tree_ordered_names.each do |step| %>
   <li>
-    <%= link_to(%Q(#{step.full_name}<span class="pull-right">#{step.name_rank.name}</span>).html_safe,
+    <%= link_to(%Q(#{sanitize_stored_html(step.full_name)}<span class="pull-right float-end">#{step.name_rank.name}</span>).html_safe,
                           search_path(query_string: "id: #{step.id}",query_target: 'names'),
                           tabindex: increment_tab_index,
                           title: "Search for #{step.full_name}",

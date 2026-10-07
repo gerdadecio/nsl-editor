@@ -21,7 +21,7 @@
     id="<%= %Q(#{search_result.class}-#{search_result.id}) %>"
     class="show-details-link indent-level-1 <%= "draft" if search_result.draft? %>"
     tabindex="<%= increment_tab_index %>">
-      <%= "#{ search_result.expanded_instance_type || search_result.instance_type.name} <b>#{search_result.name.full_name}</b>".html_safe %>
+      <%= "#{ search_result.expanded_instance_type || search_result.instance_type.name} <b>#{sanitize_stored_html(search_result.name.full_name)}</b>".html_safe %>
       <%= "[#{search_result.name.name_status.name}]" unless search_result.name.name_status.blank? %>
       <%= "#{search_result.page}" %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>

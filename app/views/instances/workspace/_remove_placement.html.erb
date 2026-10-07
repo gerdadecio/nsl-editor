@@ -5,7 +5,7 @@
       <%= form_tag({controller: 'trees', action: 'remove_name_placement'}, {method: :delete, remote: true, data: { turbo: false }}) do %>
         <%= hidden_field_tag("remove_placement[taxon_uri]", @tree_version_element.element_link) %>
 
-        <h3>Remove <%= @instance.name.full_name_html.html_safe %> from
+        <h3>Remove <%= sanitize_stored_html(@instance.name.full_name_html) %> from
           <%= @working_draft.draft_name %></h3>
 
         <div class="text-right">

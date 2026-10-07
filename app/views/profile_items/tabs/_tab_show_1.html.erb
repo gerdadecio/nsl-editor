@@ -1,6 +1,6 @@
 <br>
 <span class='server-response-time'><%= "(#{(Time.now - @start_time).round(2)}s)" if @start_time %></span>
-<%= link_to("#{@profile_item.instance.name.try('full_name')} #{search_icon_on_tab}".html_safe,
+<%= link_to("#{sanitize_stored_html(@profile_item.instance.name.try('full_name'))} #{search_icon_on_tab}".html_safe,
         search_path(query_target: 'name',
                     query_string: "id: #{@profile_item.instance.name_id} show-instances:"),
         title: 'Search for the name with its instances',

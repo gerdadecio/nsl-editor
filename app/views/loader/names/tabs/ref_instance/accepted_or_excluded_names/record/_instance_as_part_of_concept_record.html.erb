@@ -16,7 +16,7 @@
     <% end %>
   </td>
   <td colspan="1" class="text width-90-percent">
-    <%= form.label "#{payload_field_name}_#{record.id}", record.listing_citation.html_safe, class:'indent-level-1 font-weight-normal' %> 
+    <%= form.label "#{payload_field_name}_#{record.id}", sanitize_stored_html(record.listing_citation), class:'indent-level-1 font-weight-normal' %> 
   </td>
 </tr>
 

@@ -10,5 +10,5 @@
              title: 'Confirm Use batch default referene.' %>
       <br>
       <br>
-      <%= render partial: 'detail_line', locals: {info: match.loader_name.loader_batch.default_reference&.citation&.html_safe || 'There is no default reference for this batch', label: 'default reference'} %>
+      <%= render partial: 'detail_line', locals: {info: sanitize_stored_html(match.loader_name.loader_batch.default_reference&.citation) || 'There is no default reference for this batch', label: 'default reference'} %>
   <% end %>

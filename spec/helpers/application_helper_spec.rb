@@ -184,4 +184,56 @@ RSpec.describe(ApplicationHelper, type: :helper) do
       expect(helper.markdown_to_html(nil)).to(be_blank)
     end
   end
+
+  describe "#sanitize_stored_html" do
+    it "keeps the markup the name functions generate" do
+      html = %(<scientific><name data-id="1"><element>Acacia</element> <authors><author data-id="2" title="Mueller, F.J.H. von">F.Muell.</author></authors></name></scientific>)
+
+      expect(helper.sanitize_stored_html(html)).to(eq(html))
+    end
+
+    it "keeps the markup the reference functions generate" do
+      html = %(<ref data-id="5"><ref-section><author>Smith, J.</author> <year>(1999)</year>, <par-title><i>Flora</i></par-title></ref-section></ref>)
+
+      expect(helper.sanitize_stored_html(html)).to(eq(html))
+    end
+
+    it "keeps simple formatting and inline styles from loaded text" do
+      html = %(<i>Acacia</i> <span lang="EN-AU" style="font-style:normal;">sp.</span>)
+
+      expect(helper.sanitize_stored_html(html)).to(eq(html))
+    end
+
+    it "removes script tags" do
+      expect(helper.sanitize_stored_html("<i>a</i><script>alert(1)</script>")).not_to(include("<script"))
+    end
+
+    it "removes event handler attributes" do
+      result = helper.sanitize_stored_html(%(<name onmouseover="alert(1)">a</name><img src="x" onerror="alert(1)">))
+
+      expect(result).not_to(match(/onmouseover|onerror/))
+    end
+
+    it "removes javascript urls" do
+      expect(helper.sanitize_stored_html(%(<a href="javascript:alert(1)">a</a>))).not_to(include("javascript"))
+    end
+
+    it "strips the base tag so links cannot be re-pointed" do
+      result = helper.sanitize_stored_html(%(<base href="https://example.org/">Benth.))
+
+      expect(result).to(eq("Benth."))
+    end
+
+    it "escapes bare ampersands and angle brackets" do
+      expect(helper.sanitize_stored_html("A & B < C")).to(eq("A &amp; B &lt; C"))
+    end
+
+    it "returns an html safe string" do
+      expect(helper.sanitize_stored_html("<i>a</i>")).to(be_html_safe)
+    end
+
+    it "handles nil" do
+      expect(helper.sanitize_stored_html(nil)).to(be_nil)
+    end
+  end
 end

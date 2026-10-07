@@ -55,7 +55,7 @@
 <%= render partial: 'detail_line', locals: {info: @loader_name.year, label: 'year'} unless @loader_name.year.blank? %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.date_, label: 'date_'} unless @loader_name.date_.blank? %>
 <% if @loader_name.misapp? && @loader_name.original_text.present? %>
-  <%= render partial: 'detail_line', locals: {info: @loader_name.original_text.gsub(/&amp;/,'zzzzzzz').gsub(/;/,';<br>').gsub(/zzzzzzz/,'&amp;').html_safe, label: 'Misapp HTML'} %>
+  <%= render partial: 'detail_line', locals: {info: sanitize_stored_html(@loader_name.original_text.gsub(/&amp;/,'zzzzzzz').gsub(/;/,';<br>').gsub(/zzzzzzz/,'&amp;')), label: 'Misapp HTML'} %>
   <%  (1..@loader_name.original_text.length.div(110)).each do |i|  %>
     <br>
   <% end %>

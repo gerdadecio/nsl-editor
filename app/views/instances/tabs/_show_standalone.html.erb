@@ -1,4 +1,4 @@
-<%= link_to("#{@instance.name.try('full_name')} #{search_icon_on_tab}".html_safe,
+<%= link_to("#{sanitize_stored_html(@instance.name.try('full_name'))} #{search_icon_on_tab}".html_safe,
             search_path(query_target: 'name',
                         query_string: "id: #{@instance.name_id} show-instances:"),
             title: 'Search for the name with its instances',
@@ -30,7 +30,7 @@
 <br>
 appears in
 <br>
-<%= link_to("#{@instance.reference.citation} #{search_icon_on_tab}".html_safe,
+<%= link_to("#{sanitize_stored_html(@instance.reference.citation)} #{search_icon_on_tab}".html_safe,
             search_path(query_string: "id: #{@instance.reference_id}",
                         query_target: 'reference'),
             title: "Search for the reference.",

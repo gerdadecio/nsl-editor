@@ -1,4 +1,4 @@
         <br>
-        Using default reference: <%= @loader_name.loader_batch.default_reference&.citation&.html_safe ||
+        Using default reference: <%= sanitize_stored_html(@loader_name.loader_batch.default_reference&.citation) ||
         'There is no default reference for this batch' %> (currently) 
 

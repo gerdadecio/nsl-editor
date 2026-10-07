@@ -48,7 +48,7 @@
                                  :citation_for_standalone,
                                  options = {}, html_options = {}) do |b| %>
     <div class="checkbox-line nowrap">
-      <%= b.check_box(data: {checkbox_select_all_target: "child", action: "change->checkbox-select-all#toggleParent"}) %>&nbsp;<%= b.label %>
+      <%= b.check_box(data: {checkbox_select_all_target: "child", action: "change->checkbox-select-all#toggleParent"}) %>&nbsp;<%= b.label { sanitize_stored_html(b.text) } %>
     </div>
   <% end %>
   </div>

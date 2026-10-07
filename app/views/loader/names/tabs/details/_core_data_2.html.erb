@@ -94,7 +94,7 @@
 <% unless @loader_name.original_text.blank? %>
   <%= divider %>
   <h5>Original Text (HTML)</h5>
-  <%= render partial: 'detail_line', locals: {info: @loader_name.original_text.html_safe, label: ''} %>
+  <%= render partial: 'detail_line', locals: {info: sanitize_stored_html(@loader_name.original_text), label: ''} %>
   <h5>Literally:</h5>
   <%= @loader_name.original_text %>
 <% end %>
