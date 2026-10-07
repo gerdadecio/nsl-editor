@@ -1,4 +1,8 @@
 - :date: 07-October-2026
+  :jira_id: '5961'
+  :description: |-
+    Typeahead upgrade: Upgrade the instance change name typeahead to use stimulus autocomplete
+- :date: 07-October-2026
   :jira_id: '5971'
   :description: |-
     Loader Batch: Fix bug in the detailed logic for moving loader names to a different batch
