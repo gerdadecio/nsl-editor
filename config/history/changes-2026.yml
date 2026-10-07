@@ -1,4 +1,8 @@
 - :date: 07-October-2026
+  :jira_id: '5969'
+  :description: |-
+    Batch Loader Review Voting Security: Add validation checks to secure reviewer voting
+- :date: 07-October-2026
   :jira_id: '5964'
   :description: |-
     Security: Fix a markdown injection vulnerability reported by claude
