@@ -222,7 +222,7 @@ class Name < ApplicationRecord
 
     # From here on, only 1 family member
     return true if family_id.blank? # 1 but null so not itself
-    return false if family_id = id # 1 but is itself
+    return false if family_id == id # 1 but is itself
     return true if family_id != id # 1 but it is not itself
 
     true # fail safe - shouldn't get here
