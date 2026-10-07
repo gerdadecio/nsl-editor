@@ -17,6 +17,8 @@
 #   limitations under the License.
 #
 class Loader::Name::Review::Vote::InBulkController < ApplicationController
+  before_action :check_create_permission, only: [ :create ]
+
   def create
     result = Loader::Name::Review::Vote.in_bulk(review_vote_in_bulk_params, current_user.username)
     @message = ActionController::Base.helpers.pluralize(result, "vote") + " recorded"
@@ -38,6 +40,15 @@ class Loader::Name::Review::Vote::InBulkController < ApplicationController
   end
 
   private
+
+  def check_create_permission
+    Loader::Name::Review::VotePermission.check!(
+      username: current_user.username,
+      batch_review_id: review_vote_in_bulk_params[:batch_review_id],
+      org_id: review_vote_in_bulk_params[:org_id],
+      loader_name_id: review_vote_in_bulk_params[:loader_name_id],
+    )
+  end
 
   def review_vote_in_bulk_params
     params.require(:loader_name_review_vote).permit(

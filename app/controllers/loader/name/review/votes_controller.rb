@@ -17,6 +17,8 @@
 #   limitations under the License.
 #
 class Loader::Name::Review::VotesController < ApplicationController
+  before_action :check_create_permission, only: [ :create ]
+  before_action :check_destroy_permission, only: [ :destroy ]
   before_action :find_vote, only: [ :destroy ]
 
   def create
@@ -39,6 +41,25 @@ class Loader::Name::Review::VotesController < ApplicationController
   end
 
   private
+
+  def check_create_permission
+    Loader::Name::Review::VotePermission.check!(
+      username: current_user.username,
+      batch_review_id: review_vote_params[:batch_review_id],
+      org_id: review_vote_params[:org_id],
+      loader_name_id: review_vote_params[:loader_name_id],
+    )
+  end
+
+  # The vote to delete is identified by the URL, so check the URL's org.
+  def check_destroy_permission
+    Loader::Name::Review::VotePermission.check!(
+      username: current_user.username,
+      batch_review_id: params[:batch_review_id],
+      org_id: params[:org_id],
+      loader_name_id: params[:loader_name_id],
+    )
+  end
 
   def review_vote_params
     params.require(:loader_name_review_vote).permit(
