@@ -1,27 +1,27 @@
 <% increment_tab_index(0) %>
-<%= render partial: 'detail_line', 
+<%= render partial: 'detail_line',
            locals: {info: link_to("#{@loader_name.family}",
          search_path(query_target: "loader names",
                      query_string: "family: #{@loader_name.family} batch-id: #{@loader_name.loader_batch_id}",
                      focus_id: "loader-name-#{@loader_name.family}"),
                      title: 'Query family members',
-                     class: 'blue underline'), 
+                     class: 'blue underline'),
                      label: "query family members"} %>
 
 <% if @loader_name.rank&.downcase == 'family' %>
   <% members = Loader::Name.where(family: @loader_name.simple_name).where(loader_batch_id: @loader_name.loader_batch_id).count - 1 %>
-  <%= render partial: 'detail_line', 
+  <%= render partial: 'detail_line',
              locals: {info: link_to("Members of #{@loader_name.family}",
          search_path(query_target: "loader names",
                      query_string: "family-id: #{@loader_name.id} batch-id: #{@loader_name.batch.id}",
                      focus_id: "loader-name-#{@loader_name.id}"),
                      title: 'Query family members',
-                     class: 'blue underline'), 
+                     class: 'blue underline'),
                      label: "query family #{members} members"} %>
 <% end %>
 
 <% if @loader_name.accepted? || @loader_name.excluded? %>
-   
+
   <% if can? 'loader/names', 'update' %>
 
     <% if @loader_name.no_family_heading_or_record? %>
@@ -55,7 +55,7 @@
 <%= render partial: 'detail_line', locals: {info: @loader_name.year, label: 'year'} unless @loader_name.year.blank? %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.date_, label: 'date_'} unless @loader_name.date_.blank? %>
 <% if @loader_name.misapp? && @loader_name.original_text.present? %>
-  <%= render partial: 'detail_line', locals: {info: sanitize(@loader_name.original_text.gsub(/&amp;/,'zzzzzzz').gsub(/;/,';<br>').gsub(/zzzzzzz/,'&amp;')), label: 'Misapp HTML'} %>
+  <%= render partial: 'detail_line', locals: {info: sanitize_stored_html(@loader_name.original_text.gsub(/&amp;/,'zzzzzzz').gsub(/;/,';<br>').gsub(/zzzzzzz/,'&amp;')), label: 'Misapp HTML'} %>
   <%  (1..@loader_name.original_text.length.div(110)).each do |i|  %>
     <br>
   <% end %>

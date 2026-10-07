@@ -1,4 +1,4 @@
-<%= reference.citation_html.try('html_safe') || '[No citation found.]' %>
+<%= sanitize_stored_html(reference.citation_html).presence || '[No citation found.]' %>
 <%= display_pages(reference.pages) %>
 <% if reference.duplicate? %>
   <span class="badge badge-duplicate" title="Record flagged as duplicate">

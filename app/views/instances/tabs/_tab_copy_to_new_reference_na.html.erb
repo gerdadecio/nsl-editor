@@ -1,5 +1,5 @@
 [You can copy this instance in the context of this query: <br>
-<%= link_to("#{@instance.name.try('full_name')} #{search_icon_on_tab}".html_safe,
+<%= link_to("#{sanitize_stored_html(@instance.name.try('full_name'))} #{search_icon_on_tab}".html_safe,
             search_path(query_target: "Name",
                         query_string:
                         "id: #{@instance.name_id} show-instances:"),

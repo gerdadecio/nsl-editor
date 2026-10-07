@@ -7,7 +7,7 @@
     --
   </td>
   <td colspan="1" class="text width-90-percent">
-    <span class='indent-level-1 font-weight-normal'><%= record.listing_citation.html_safe %></span>
+    <span class='indent-level-1 font-weight-normal'><%= sanitize_stored_html(record.listing_citation) %></span>
   </td>
 </tr>
 

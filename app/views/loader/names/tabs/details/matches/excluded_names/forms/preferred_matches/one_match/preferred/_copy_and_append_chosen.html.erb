@@ -6,7 +6,7 @@
           <%= si.reference.citation %>:&nbsp;<%= si.page %>
         </span>
         and <li/> append to a new instance created to reference the batch default reference:
-        <%= @loader_name.loader_batch.default_reference&.citation&.html_safe ||
+        <%= sanitize_stored_html(@loader_name.loader_batch.default_reference&.citation) ||
         'There is no default reference for this batch' %>,
         <li/>also add any loader instances (but not duplicates).
         </ul>

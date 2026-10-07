@@ -1,5 +1,5 @@
-<tr id="search-result-<%= search_result.id %>" 
-    class="search-result <%= search_result.record_type %> <%= 'fresh' if search_result.fresh? %>"  
+<tr id="search-result-<%= search_result.id %>"
+    class="search-result <%= search_result.record_type %> <%= 'fresh' if search_result.fresh? %>"
     >
     <td width="40" class="first-indent"></td>
     <td class="text name main-content width-100-percent" colspan="5">
@@ -34,7 +34,7 @@
 
     <% unless search_result.higher_rank_comment.blank? %>
       <span class="review loader-name remark-to-reviewers">
-        <%= sanitize(search_result.higher_rank_comment) %>
+        <%= sanitize_stored_html(search_result.higher_rank_comment) %>
       </span>
     <% end %>
 
