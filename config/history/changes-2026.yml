@@ -1,4 +1,8 @@
 - :date: 07-October-2026
+  :jira_id: '5970'
+  :description: |-
+    Name Delete: Fix bug in Family member checking that could incorrectly offer a delete option
+- :date: 07-October-2026
   :jira_id: '5969'
   :description: |-
     Batch Loader Review Voting Security: Add validation checks to secure reviewer voting
