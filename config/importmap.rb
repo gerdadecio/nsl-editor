@@ -81,7 +81,10 @@ pin "typeaheads_for_instance_name_for_unpub_citation", to: "typeaheads/for_insta
 # too, so typeaheads/for_instance/reference_excluding_current.js has gone.
 pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js"
 pin "typeaheads_for_instance_product_item_config", to: "typeaheads/for_instance/name_for_product_item_config.js"
-pin "typeaheads_for_instance_change_name", to: "typeaheads/for_instance/change_name.js"
+# The change name form's Name field uses stimulus-autocomplete - see
+# app/views/shared/_autocomplete_field.html.erb - so
+# typeaheads/for_instance/change_name.js has gone. The form's synonym
+# instance field is still on typeahead.js, set up by synonymy.js above.
 
 pin "typeaheads_for_loader_batch_default_reference", to: "typeaheads/for_loader_batch/default_reference.js"
 pin "typeaheads_for_loader_name_parent", to: "typeaheads/for_loader_name/parent.js"

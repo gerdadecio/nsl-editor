@@ -54,6 +54,16 @@ class Instances::ChangeNameController < ApplicationController
     render("instances/change_name_error", status: :unprocessable_content)
   end
 
+  # Used by the change name form's Name field
+  # (app/views/instances/_form_change_name.html.erb).
+  #
+  # Two formats, as for InstancesController#typeahead_for_synonymy:
+  #   html - the fragment of <li role="option"> elements stimulus-autocomplete
+  #          expects, which the Name field asks for by extension.
+  #   json - what the field asked for while it was on typeahead.js; kept
+  #          for parity with the other suggestion actions, nothing in this
+  #          app's own views still asks for it. Also the answer to any other
+  #          format, as it was before html was added.
   def typeahead
     typeahead = Instance::AsTypeahead::ForChangeName.new(
       term: params[:term],
@@ -61,7 +71,14 @@ class Instances::ChangeNameController < ApplicationController
       name_rank_id: @instance.name.name_rank_id,
       exclude_name_id: @instance.name_id,
     )
-    render(json: typeahead.suggestions)
+    respond_to do |format|
+      format.json { render json: typeahead.suggestions }
+      format.html do
+        render partial: "shared/autocomplete_suggestions",
+               locals: { suggestions: typeahead.suggestions, term: params[:term] }
+      end
+      format.any { render json: typeahead.suggestions }
+    end
   end
 
   private

@@ -150,13 +150,13 @@ RSpec.describe(Instances::ChangeNameController, type: :controller) do
       before { matching_name }
 
       it "returns names with the same type and rank" do
-        get :typeahead, params: { instance_id: instance.id, term: "Acacia" }
+        get :typeahead, params: { instance_id: instance.id, term: "Acacia", format: :json }
         expect(result_ids).to(include(matching_name.id))
       end
 
       it "excludes names with a different rank" do
         other_rank_name = FactoryBot.create(:name, name_type:, name_rank: FactoryBot.create(:name_rank), full_name: "Acacia aneura")
-        get :typeahead, params: { instance_id: instance.id, term: "Acacia" }
+        get :typeahead, params: { instance_id: instance.id, term: "Acacia", format: :json }
         expect(result_ids).not_to(include(other_rank_name.id))
       end
 
@@ -164,7 +164,7 @@ RSpec.describe(Instances::ChangeNameController, type: :controller) do
         # current_name has full_name "Sample Full name" — create another same-type name to confirm
         # only the current name is excluded, not all matches
         other_name = FactoryBot.create(:name, name_type:, name_rank:, full_name: "Sample Other name")
-        get :typeahead, params: { instance_id: instance.id, term: "Sample" }
+        get :typeahead, params: { instance_id: instance.id, term: "Sample", format: :json }
         expect(result_ids).not_to(include(current_name.id))
         expect(result_ids).to(include(other_name.id))
       end
@@ -172,8 +172,32 @@ RSpec.describe(Instances::ChangeNameController, type: :controller) do
 
     context "when the term is blank" do
       it "returns an empty array" do
-        get :typeahead, params: { instance_id: instance.id, term: "" }
+        get :typeahead, params: { instance_id: instance.id, term: "", format: :json }
         expect(JSON.parse(response.body)).to(eq([]))
+      end
+    end
+
+    # The change name form's Name field is on stimulus-autocomplete, which
+    # asks for the shared html fragment of options rather than json.
+    context "when asked for html" do
+      render_views
+
+      let!(:matching_name) { FactoryBot.create(:name, name_type:, name_rank:, full_name: "Acacia dealbata") }
+
+      it "renders the matching names as autocomplete options" do
+        get :typeahead, params: { instance_id: instance.id, term: "Acacia", format: :html }
+
+        expect(response).to(render_template(partial: "shared/_autocomplete_suggestions"))
+        expect(response.body).to(have_selector(
+          "li.autocomplete-result[data-autocomplete-value='#{matching_name.id}']" \
+          "[data-autocomplete-label='Acacia dealbata']",
+        ))
+      end
+
+      it "renders a no matches option when nothing matches" do
+        get :typeahead, params: { instance_id: instance.id, term: "zzzz no such name", format: :html }
+
+        expect(response.body).to(have_selector("li.autocomplete-result[aria-disabled='true']", text: "No matches"))
       end
     end
   end

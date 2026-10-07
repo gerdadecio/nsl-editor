@@ -3,16 +3,27 @@
 <%= form_for(@instance,
              url: instance_name_path(@instance),
              html: { id: "change-name-form", method: :patch, remote: true, data: { turbo: false } }) do |f| %>
-  <input id="instance-name-change-typeahead"
-         name="instance[name_typeahead]"
-         class="typeahead form-control"
-         placeholder="<%= @instance.name.try('full_name') %>"
-         tabindex="<%= increment_tab_index %>"
-         title="Enter a name. Must be same type and rank as the current name."
-         type="text"
-         value=""/>
-  <%= hidden_field_tag "instance[name_id]", "", id: "instance-change-name-id" %>
-  <script>setUpInstanceNameChange(<%= @instance.id %>);</script>
+  <%# Name: on stimulus-autocomplete, as in _form_create_synonymy, instead
+      of the typeahead.js widget set up by setUpInstanceNameChange (now
+      gone). The endpoint restricts suggestions to the current name's type
+      and rank, and leaves the current name itself out.
+
+      No label: the placeholder shows the current name. The shared partial
+      renders the hidden name_id field inside the wrapper - same dom id and
+      param name as before - and id_value keeps it empty until a pick,
+      rather than holding the instance's current name, so
+      Instances::ChangeNameController#update still asks for one. %>
+  <%= render "shared/autocomplete_field",
+             f: f,
+             id_attribute: :name_id,
+             id_value: "",
+             hidden_id: "instance-change-name-id",
+             input_id: "instance-name-change-typeahead",
+             input_name: "instance[name_typeahead]",
+             input_value: "",
+             placeholder: @instance.name.try("full_name"),
+             title: "Enter a name. Must be same type and rank as the current name.",
+             url: typeahead_instance_name_path(@instance, format: :html) %>
   <div>
     <br/>
     <div>The name <%= @instance.name.try('full_name') %> will be added as a synonym to this instance.</div>
