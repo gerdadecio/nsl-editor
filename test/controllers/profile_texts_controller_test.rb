@@ -110,6 +110,30 @@ class ProfileTextsControllerTest < ActionDispatch::IntegrationTest
     assert_template :update
   end
 
+  test "should sanitize html stored from markdown on update" do
+    profile_item = profile_item(:ecology_pi)
+    profile_text = profile_item.profile_text
+    sign_in_as_fake_user(
+      username: "uone",
+      full_name: "Fred Jones",
+      groups: [ "edit", "foa" ]
+    ) do
+      put profile_text_path(profile_text),
+        params: {
+          profile_text: { value_md: %(**bold** <img src="x" onerror="alert(1)"><script>alert(1)</script>) },
+          profile_item: { id: profile_item.id },
+        },
+        xhr: true
+    end
+
+    assert_response :success
+    stored = profile_text.reload.value
+    assert_includes stored, "<strong>bold</strong>"
+    assert_not_includes stored, "onerror"
+    assert_not_includes stored, "<script"
+    assert_not_includes response.body, "onerror"
+  end
+
   test "should handle update failure" do
     profile_item = profile_item(:ecology_pi)
     profile_text = profile_item.profile_text

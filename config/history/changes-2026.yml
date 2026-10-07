@@ -1,4 +1,8 @@
 - :date: 07-October-2026
+  :jira_id: '5964'
+  :description: |-
+    Security: Fix a markdown injection vulnerability reported by claude
+- :date: 07-October-2026
   :jira_id: '5959'
   :description: |-
     Typeahead upgrade: Upgrade the instance synonymy name typeahead to use stimulus autocomplete
