@@ -19,20 +19,31 @@
   <%= @instance.name.full_name %>
   <br>
   in<span class="red">*</span>
+  <%# Cites reference: on stimulus-autocomplete, as in
+      instances/_form_create_synonymy, instead of the typeahead.js widget
+      set up by setUpInstanceInstanceForNameShowingReferenceUpdate (now
+      gone). The instance's id is sent as a static param rather than read
+      off a hidden #instance_id field at query time.
+
+      No label: the field sits inside a sentence. The shared partial renders
+      the hidden cites_id field inside the wrapper - same dom id and param
+      name - holding the instance's current cites_id until another pick. %>
   <div class="typeahead-container">
     <section class='block width-100-percent'>
-      <input id="instance-instance-for-name-showing-reference-typeahead"
-             name="instance[instance_for_name_showing_reference_typeahead]"
-             class="typeahead form-control width-100-percent give-me-focus"
-             title="Enter cites reference.  Typeahead using reference citation resticted to instances of the current name."
-             tabindex="<%= increment_tab_index %>"
-             required="true"
-             type="text"
-             placeholder="Cites reference typeahead on citation"
-             value="<%= @instance.this_cites.reference.citation %>"/>
+      <%= render "shared/autocomplete_field",
+                 f: f,
+                 id_attribute: :cites_id,
+                 input_id: "instance-instance-for-name-showing-reference-typeahead",
+                 input_name: "instance[instance_for_name_showing_reference_typeahead]",
+                 input_value: @instance.this_cites.reference.citation,
+                 input_class: "width-100-percent give-me-focus",
+                 required: true,
+                 placeholder: "Cites reference typeahead on citation",
+                 title: "Enter cites reference.  Typeahead using reference citation resticted to instances of the current name.",
+                 url: typeahead_for_name_showing_references_to_update_instance_path(format: :html),
+                 extra_params: { instance_id: @instance.id } %>
     </section>
   </div>
-  <script> setUpInstanceInstanceForNameShowingReferenceUpdate(); </script>
   is cited under
   <br>
   <%= @instance.this_is_cited_by.name.full_name %>
@@ -55,9 +66,7 @@
   with verbatim name
   <%= f.text_field :verbatim_name_string, class: "form-control", title: 'Enter verbatim name', tabindex: increment_tab_index %>
   <br>
-  <%= hidden_field :instance, :id, value: @instance.id, name: 'for-bloodhound-js-use-only' %>
   <%= f.hidden_field :name_id, value: @instance.name_id %>
-  <%= f.hidden_field :cites_id, value: @instance.cites_id %>
   <div id="multiple-primary-override" class="form-check hidden">
     <br>
     <label class="green form-check-label">

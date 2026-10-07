@@ -61,8 +61,9 @@ pin "typeahead", to: "https://cdn.jsdelivr.net/npm/typeahead.js@0.11.1/dist/type
 
 pin "typeaheads_for_author_duplicate_of", to: "typeaheads/for_author/duplicate_of.js"
 
-pin "typeaheads_for_instance_for_name_showing_reference_update",
-    to: "typeaheads/for_instance/for_name_showing_reference_update.js"
+# The synonym edit form's cites reference field uses stimulus-autocomplete -
+# see app/views/shared/_autocomplete_field.html.erb - so
+# typeaheads/for_instance/for_name_showing_reference_update.js has gone.
 # The instance form's Name field (references - new instance tab) uses
 # stimulus-autocomplete - see app/views/shared/_autocomplete_field.html.erb -
 # so typeaheads/for_instance/name.js has gone. The nameByFullName Bloodhound
