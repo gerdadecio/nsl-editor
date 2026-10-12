@@ -70,13 +70,12 @@ class Tree::DraftVersion < ApplicationRecord
       log: draft_log,
       defaultDraft: default_draft,
     }
-    logger.info("Calling #{url} with #{payload}")
-    RestClient::Request.execute(
-      method: :put,
-      url: url,
-      payload: payload.to_json,
-      headers: { content_type: :json, accept: :json },
-      timeout: 360,
+    logger.info("Calling #{ServicesHttp.loggable(url)} with #{payload}")
+    ServicesHttp.put(
+      url,
+      payload.to_json,
+      { content_type: :json, accept: :json },
+      read_timeout: 360,
     )
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::DraftVersion RestClient::ExceptionWithResponse error: #{e}")
@@ -95,8 +94,8 @@ class Tree::DraftVersion < ApplicationRecord
       logEntry: log_entry,
       nextDraftName: next_draft_name,
     }
-    logger.info("Calling #{url} with #{payload}")
-    RestClient.put(
+    logger.info("Calling #{ServicesHttp.loggable(url)} with #{payload}")
+    ServicesHttp.put(
       url,
       payload.to_json,
       { content_type: :json, accept: :json },

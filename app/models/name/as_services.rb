@@ -150,7 +150,7 @@ class Name::AsServices < Name
   # the json says "ok"
   def delete_with_reason(reason)
     url = Name::AsServices.delete_url(id, reason)
-    s_response = RestClient.delete(url, accept: :json)
+    s_response = ServicesHttp.delete(url, { accept: :json })
     json = JSON.parse(s_response)
     if s_response.code == 200 && json["ok"] == true
       true
@@ -162,7 +162,7 @@ class Name::AsServices < Name
   end
 
   def log_error(url, s_response, json)
-    logger.error("Name::AsServices.delete url: #{url}")
+    logger.error("Name::AsServices.delete url: #{ServicesHttp.loggable(url)}")
     logger.error("Name::AsServices.delete s_response: #{s_response}")
     logger.error("Name::AsServices.delete errors: #{json["errors"]}")
   end

@@ -29,9 +29,9 @@ class Tree::Workspace::Excluded < ActiveType::Object
     }
     raise errors.full_messages.first unless valid?
 
-    logger.info("EXCLUDED UPDATE calling #{url} WITH PAYLOAD: #{payload}")
+    logger.info("EXCLUDED UPDATE calling #{ServicesHttp.loggable(url)} WITH PAYLOAD: #{payload}")
 
-    RestClient.post(
+    ServicesHttp.post(
       url,
       payload.to_json,
       { content_type: :json, accept: :json },

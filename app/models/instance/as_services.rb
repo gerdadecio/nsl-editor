@@ -112,7 +112,7 @@ class Instance::AsServices < Instance
   def self.delete(id)
     instance = Instance.find_by(id: id)
     url = delete_uri(id)
-    RestClient.delete(url, accept: :json)
+    ServicesHttp.delete(url, { accept: :json })
 
     delay = Rails.configuration.try("instance_delete_delay_seconds") || 3
     logger.info("#{tag} sleeping #{delay}sec before checking services delete")
@@ -133,11 +133,11 @@ class Instance::AsServices < Instance
       logger.info("Instance destroyed or didn't exist")
     else
       logger.error("#{tag}.delete unexpected response #{e.response.code} on ##{instance.id}")
-      logger.error("Instance::AsServices.delete exception for url: #{url}")
+      logger.error("Instance::AsServices.delete exception for url: #{ServicesHttp.loggable(url)}")
       raise " from Services: #{e}"
     end
   rescue StandardError
-    logger.error("#{tag}.delete exception for url: #{url}")
+    logger.error("#{tag}.delete exception for url: #{ServicesHttp.loggable(url)}")
     raise
   end
 

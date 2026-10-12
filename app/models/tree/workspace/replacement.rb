@@ -39,9 +39,9 @@ class Tree::Workspace::Replacement < ActiveType::Object
     }
     raise errors.full_messages.first unless valid?
 
-    logger.info("REPLACEMENT calling #{url} WITH PAYLOAD: #{payload}")
+    logger.info("REPLACEMENT calling #{ServicesHttp.loggable(url)} WITH PAYLOAD: #{payload}")
 
-    RestClient.put(
+    ServicesHttp.put(
       url,
       payload.to_json,
       { content_type: :json, accept: :json },
