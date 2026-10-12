@@ -12,13 +12,14 @@
 
   <%= render partial: 'detail_line',
              locals: {label: 'Comment by',
-                      info: 
-                      "#{comment.reviewer.user.full_name} (#{comment.reviewer.org.try('abbrev')} #{comment.reviewer.role.name})
-                       #{link_to('(edit)', edit_name_review_comment_path(comment.id),
-                                           remote: true, data: { turbo: false },
-                                           class: 'blue',
-                                           title: 'Edit your comment') if comment.batch_review_period.active? && 
-                                                                          @current_user.username == comment.reviewer.user.user_name} "}
+                      info: safe_join([
+                        "#{comment.reviewer.user.full_name} (#{comment.reviewer.org.try('abbrev')} #{comment.reviewer.role.name})",
+                        (link_to('(edit)', edit_name_review_comment_path(comment.id),
+                                 remote: true, data: { turbo: false },
+                                 class: 'blue',
+                                 title: 'Edit your comment') if comment.batch_review_period.active? &&
+                                                                @current_user.username == comment.reviewer.user.user_name),
+                      ].compact, " ")}
                     %>
 
   <%= render partial: 'detail_line',

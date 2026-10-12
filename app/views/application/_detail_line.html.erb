@@ -16,11 +16,13 @@
 
 <div class="detail-line <%= 'underline' if underline %> <%= 'red' if warn %>">
   <% if info.blank? %>
-    <span class="pull-left <%= info_width %> no-color">&nbsp;</span>
+    <span class="float-start <%= info_width %> no-color">&nbsp;</span>
   <% else %>
-    <span class="pull-left <%= info_width %>"><%= info&.to_s&.html_safe %></span>
+    <%# Values the caller marked safe (links, form fields, sanitize output) pass
+        through; anything else is sanitized, so stored text can't inject script. %>
+    <span class="float-start <%= info_width %>"><%= info.html_safe? ? info : sanitize(info.to_s) %></span>
   <% end %>
-  <span class="pull-right align-right <%= label_width %> field-label">
+  <span class="float-end align-right <%= label_width %> field-label">
     <label class="align-right"><%= label %></label>
   </span>
 </div>
