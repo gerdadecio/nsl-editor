@@ -1,4 +1,8 @@
 - :date: 12-October-2026
+  :jira_id: '5985'
+  :description: |-
+    Dependabot: Update json gem to < 3 to avoid breaking changes in json 3.x
+- :date: 12-October-2026
   :jira_id: '5965'
   :description: |-
     Fixup the security issue around html sanitisation found by Claude
