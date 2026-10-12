@@ -321,7 +321,7 @@ class TreesController < ApplicationController
       message: "You are not authorized to run the synonymy report on #{@working_draft.tree.name} drafts",
     )
     url = Tree::AsServices.val_syn_link(@working_draft.id)
-    @result = RestClient.get(url, { content_type: :html, accept: :html })
+    @result = ServicesHttp.get(url, { content_type: :html, accept: :html })
   rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
     @message = json_error(e)
     render("trees/reports/run_cas_error")
@@ -350,7 +350,7 @@ class TreesController < ApplicationController
       message: "You are not authorized to run differences reports for #{@working_draft.tree.name} drafts",
     )
     url = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id)
-    @result = RestClient.get(url, { content_type: :html, accept: :html })
+    @result = ServicesHttp.get(url, { content_type: :html, accept: :html })
     return unless /Nothing to see here.*no changes, nothing, zip/.match?(@result)
 
     @result = @result.sub(
@@ -385,7 +385,7 @@ class TreesController < ApplicationController
       message: "You are not authorized to run validation reports for #{@working_draft.tree.name} drafts",
     )
     url = Tree::AsServices.val_link(@working_draft.id)
-    @result = RestClient.get(url, { content_type: :html, accept: :html })
+    @result = ServicesHttp.get(url, { content_type: :html, accept: :html })
   rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
     @message = json_error(e)
     render("trees/reports/run_valrep_error")

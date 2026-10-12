@@ -7,7 +7,7 @@ module Name::Namable
   def apni_json
     logger.info("apni_json; service call unless cached...")
     Rails.cache.fetch("#{cache_key}/in_apni", expires_in: 1.minute) do
-      JSON.parse(RestClient.get(Name::AsServices.in_apni_url(id), "Accept" => "text/json", read_timeout: 1))
+      JSON.parse(ServicesHttp.get(Name::AsServices.in_apni_url(id), { "Accept" => "text/json" }, read_timeout: 5))
     end
   rescue StandardError => e
     logger.error("Name#apni_json error: #{e}")
@@ -25,7 +25,7 @@ module Name::Namable
 
   def apni_family_json
     Rails.cache.fetch("#{cache_key}/apni_info", expires_in: 1.minute) do
-      JSON.parse(RestClient.get(Name::AsServices.apni_family_url(id), "Accept" => "text/json", read_timeout: 1))
+      JSON.parse(ServicesHttp.get(Name::AsServices.apni_family_url(id), { "Accept" => "text/json" }, read_timeout: 5))
     end
   end
 
@@ -38,7 +38,7 @@ module Name::Namable
   end
 
   def get_names_json
-    JSON.parse(RestClient.get(Name::AsServices.name_strings_url(id), "Accept" => "text/json"))
+    JSON.parse(ServicesHttp.get(Name::AsServices.name_strings_url(id), { "Accept" => "text/json" }))
   end
 
   # Use update_columns to avoid validation errors, stale object

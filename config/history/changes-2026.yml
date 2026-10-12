@@ -1,4 +1,8 @@
 - :date: 12-October-2026
+  :jira_id: '5987'
+  :description: |-
+    Security: Secure and standardise API calls to Services
+- :date: 12-October-2026
   :jira_id: '5986'
   :description: |-
     Housekeeping: Remove some old files we don't use anymore

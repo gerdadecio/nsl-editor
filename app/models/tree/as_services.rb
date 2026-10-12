@@ -104,7 +104,7 @@ class Tree::AsServices
 
   def self.instance_url(instance_id)
     url = MAPPER_API_VERSION == 1 ? preferred_link_url_v1(instance_id) : preferred_link_url_v2(instance_id)
-    response = RestClient.get(url, { content_type: :json, accept: :json })
+    response = ServicesHttp.get(url, { content_type: :json, accept: :json })
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.link
   rescue RestClient::ExceptionWithResponse => e
@@ -127,7 +127,7 @@ class Tree::AsServices
 
   def self.add_instance_link_v1(instance_id)
     url = add_instance_identifier_url_v1(instance_id)
-    response = RestClient.put(url, {}.to_json, { content_type: :json, accept: :json })
+    response = ServicesHttp.put(url, {}.to_json, { content_type: :json, accept: :json })
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.preferredURI
   rescue StandardError => e
@@ -138,7 +138,7 @@ class Tree::AsServices
   def self.add_instance_link_v2(instance_id)
     jwt = mapper_auth
     url = add_instance_identifier_url_v2(instance_id)
-    response = RestClient.put(
+    response = ServicesHttp.put(
       url,
       {}.to_json,
       { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" },
@@ -152,7 +152,7 @@ class Tree::AsServices
 
     Rails.logger.warn("#{tag} rescuing a 401 error, will log into mapper")
     jwt = force_mapper_auth
-    response = RestClient.put(
+    response = ServicesHttp.put(
       url,
       {}.to_json,
       { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" },
@@ -182,7 +182,7 @@ class Tree::AsServices
       url = "#{MAPPER_API_URL}login"
       payload = { username: MAPPER_USER, password: MAPPER_PWD }.to_json
       Rails.logger.info("Logging into mapper via url: #{url}.")
-      response = RestClient.post(url, payload, { content_type: :json, accept: :json })
+      response = ServicesHttp.post(url, payload, { content_type: :json, accept: :json })
       JSON.parse(response.body, object_class: OpenStruct)
     end
   rescue StandardError => e
@@ -204,8 +204,8 @@ class Tree::AsServices
 
   def self.update_synonymy(events, username)
     url = syn_update_link(username)
-    Rails.logger.info("calling #{url}")
-    RestClient.post(url, events, { accept: :json })
+    Rails.logger.info("calling #{ServicesHttp.loggable(url)}")
+    ServicesHttp.post(url, events, { accept: :json })
   end
 
   def self.syn_update_inst_link(username)
@@ -214,8 +214,8 @@ class Tree::AsServices
 
   def self.update_synonymy_by_instance(instances, username)
     url = syn_update_inst_link(username)
-    Rails.logger.info("calling #{url}")
-    RestClient.post(url, instances, { accept: :json })
+    Rails.logger.info("calling #{ServicesHttp.loggable(url)}")
+    ServicesHttp.post(url, instances, { accept: :json })
   end
 
   def self.val_syn_link(tree_version_id)

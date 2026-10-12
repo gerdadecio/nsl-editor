@@ -40,9 +40,9 @@ class Tree::Workspace::Placement < ActiveType::Object
     }
     raise errors.full_messages.first unless valid?
 
-    logger.info("PLACEMENT calling #{url} WITH PAYLOAD: #{payload}")
+    logger.info("PLACEMENT calling #{ServicesHttp.loggable(url)} WITH PAYLOAD: #{payload}")
 
-    RestClient.put(
+    ServicesHttp.put(
       url,
       payload.to_json,
       { content_type: :json, accept: :json },

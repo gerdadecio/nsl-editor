@@ -27,9 +27,9 @@ class Tree::Workspace::Profile < ActiveType::Object
 
     raise errors.full_messages.first unless valid?
 
-    logger.info("PROFILE UPDATE calling #{url} WITH PAYLOAD: #{payload}")
+    logger.info("PROFILE UPDATE calling #{ServicesHttp.loggable(url)} WITH PAYLOAD: #{payload}")
 
-    RestClient.post(
+    ServicesHttp.post(
       url,
       payload.to_json,
       { content_type: "application/json; charset=utf-8", accept: "application/json; charset=utf-8" },
