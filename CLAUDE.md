@@ -211,7 +211,6 @@ A security review was conducted with findings in `tmp/review/findings.md`. Key i
 - No `permit!` or `to_unsafe_h` anywhere
 
 ### Open items to address
-- **Other `.html_safe` uses** (finding 3): wrap stored data in `sanitize(...)` rather than `.html_safe`. The review comment is done (NSL-5974); the loader partials and tree name HTML remain
 - **Transport hardening** (finding 4): `assume_ssl` is on (NSL-5973). A CSP (start in report-only mode) and `config.hosts` remain
 - **Session handling** (finding 5): re-enable `reset_session` on sign-in, and add `rate_limit` to sign-in
 - **Outbound service calls** (finding 6): explicit RestClient timeouts; API key in a header rather than the query string
@@ -219,6 +218,8 @@ A security review was conducted with findings in `tmp/review/findings.md`. Key i
 
 ### Patterns to follow (from fixed findings)
 - **Markdown** (finding 2, NSL-5964): `markdown_to_html` sanitizes. Never `.html_safe` Kramdown output
+- **Stored HTML** (findings 3 and 11, NSL-5965/5979/5980): never `.html_safe` a database value. Use `sanitize_stored_html(...)` (`ApplicationHelper`) for values that hold NSL markup, such as `full_name_html`, `citation_html` and comments: it keeps the name and reference tags and strips scripts. Plain `sanitize(...)` is fine for other text. When building link text, sanitize the value and join it with icons using `safe_join`, rather than interpolating into a string and calling `.html_safe`
+- **`detail_line` partial** (finding 11, NSL-5980): sanitizes `info` unless it's already safe, so pass a `safe_join` or `sanitize`d value, not `.html_safe` on stored data
 - **JSON from services** (finding 10, NSL-5978): use `JSON.parse`, never `JSON.load`
 
 ### Common bugs to avoid
