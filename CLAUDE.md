@@ -240,6 +240,10 @@ git branch -d <branch-name>
 - `/change-history-and-version`: add a `config/history/changes-YYYY.yml` entry and bump `config/version.properties` (user-facing changes only)
 - `/post-merge-clean-up`: sync `main` with upstream after a merge, and delete the branch locally and on the fork
 
+Two more skills review code rather than automate the git workflow. Both are read-only, take a file or directory (defaulting to the current branch's changes), and group findings by severity:
+- `/ruby-review`: Ruby best practices, design, performance, and maintainability
+- `/security-review`: security vulnerabilities, checked against the Security Review section below
+
 ## Git Hooks
 
 Run `bin/setup` or `git config core.hooksPath .githooks` to enable:
