@@ -603,33 +603,6 @@ a.disabled {
   margin-bottom: 1em;
 }
 
-/* editable input overrides */
-
-.editable-container.editable-inline,
-.editableform .control-group,
-.editable-input {
-  display: block;
-  width: 100%;
-}
-
-.form-control.input-large {
-  width: 100%;
-}
-
-.editable.editable-pre-wrapped {
-  white-space: normal;
-}
-
-.editable-click {
-  margin-bottom: 0.5em;
-  border-bottom: none;
-}
-
-.editable-click:hover {
-  margin-bottom: 0.4em;
-  border-bottom:  dashed 0.1em #696076;
-}
-
 .draft span.highlight {
   color: #730E15;
 }
