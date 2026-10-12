@@ -13,7 +13,7 @@
       <div>
         <dl class="dl-horizontal">
           <dt>Full Name</dt>
-          <dd><%= @instance.name.full_name_html.html_safe %></dd>
+          <dd><%= sanitize_stored_html(@instance.name.full_name_html) %></dd>
           <dt>Reference</dt>
           <dd><%= @instance.reference.citation %></dd>
           <dt>Excluded</dt>

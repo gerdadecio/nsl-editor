@@ -18,7 +18,7 @@
     tabindex="<%= increment_tab_index %>"
     >
       <%= "#{search_result.expanded_instance_type || search_result.instance_type.name}:
-     <b>#{search_result.name.full_name}</b>".html_safe %>
+     <b>#{sanitize_stored_html(search_result.name.full_name)}</b>".html_safe %>
       <%= "[#{search_result.name.name_status.name}]" unless search_result.name.name_status.blank? %>
       <% if search_result.misapplied? %>
         by

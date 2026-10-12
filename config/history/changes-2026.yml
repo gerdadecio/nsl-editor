@@ -1,4 +1,8 @@
 - :date: 12-October-2026
+  :jira_id: '5965'
+  :description: |-
+    Fixup the security issue around html sanitisation found by Claude
+- :date: 12-October-2026
   :jira_id: '5980'
   :description: |-
     Sanitize raw html in RHS detail displays

@@ -11,7 +11,7 @@
     title="Instance cited by relationship instance record.  Select to show details."
     tabindex="<%= increment_tab_index %>">
       <%= record.instance_type.of_label %>
-      <%= "<b>#{record.this_is_cited_by.name.full_name}</b>".html_safe %>
+      <%= "<b>#{sanitize_stored_html(record.this_is_cited_by.name.full_name)}</b>".html_safe %>
       <%= "[#{record.this_is_cited_by.name.name_status.name}]" unless record.this_is_cited_by.name.name_status.blank? %>
       by
       <%= "#{record.this_cites.try('reference').try('citation')}" %>

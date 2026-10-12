@@ -1,6 +1,33 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  # Markup the NSL database functions generate for names (full_name_html)
+  # and references (citation_html), on top of the Rails default safe list.
+  # <base> is left out on purpose: it is the html element that re-points
+  # every relative link on the page, so it is stripped and its text kept.
+  NSL_NAME_TAGS = %w[
+    scientific name element authors author rank common cultivar ex
+    ex-base hybrid informal formula sanctioning
+  ].freeze
+  NSL_REFERENCE_TAGS = %w[
+    ref ref-book ref-chapter ref-database ref-database-record ref-herbarium
+    ref-journal ref-paper ref-part ref-personal ref-section ref-series
+    ref-unknown ref-title par-title year volume edition nr
+  ].freeze
+  STORED_HTML_TAGS = (
+    Rails::HTML5::SafeListSanitizer.allowed_tags.to_a + NSL_NAME_TAGS + NSL_REFERENCE_TAGS
+  ).freeze
+  STORED_HTML_ATTRIBUTES = (
+    Rails::HTML5::SafeListSanitizer.allowed_attributes.to_a + %w[data-id style]
+  ).freeze
+
+  # Use instead of .html_safe for stored values that legitimately hold
+  # markup (name and citation html, loader comments, tree comments):
+  # formatting survives, scripts and event handlers don't.
+  def sanitize_stored_html(html)
+    sanitize(html, tags: STORED_HTML_TAGS, attributes: STORED_HTML_ATTRIBUTES)
+  end
+
   def disable_common_cultivar_checkbox
     !(params[:query_on].nil? || params[:query_on].match(/\Aname\z/i))
   end

@@ -8,7 +8,7 @@
    &mdash; 
   </td>
   <td colspan="1" class="text width-90-percent">
-    <%= record.listing_citation.html_safe %>
+    <%= sanitize_stored_html(record.listing_citation) %>
   </td>
 </tr>
 

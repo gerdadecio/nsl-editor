@@ -10,7 +10,7 @@
     class="show-details-link indent-level-2 <%= "draft" if record.draft? %>"
     title="Instance is cited by record.  Select to show details."
     tabindex="<%= increment_tab_index %>">
-      <%= "#{record.expanded_instance_type || record.instance_type.name}: <b>#{record.name.full_name_html}</b>".html_safe %>
+      <%= "#{record.expanded_instance_type || record.instance_type.name}: <b>#{sanitize_stored_html(record.name.full_name_html)}</b>".html_safe %>
       <%= "#{record.page}" %>
       <%= " #{record.name.name_status.name_for_instance_display}" %>
       <%= render(partial: 'draft', locals: { search_result: record }) %>

@@ -9,8 +9,8 @@
     <dd>
       <%= render partial: 'instances/workspace/diff_field',
                  locals: {
-                     v1: tve.comment.html_safe,
-                     v2: @tree_version_element&.comment&.html_safe,
+                     v1: sanitize_stored_html(tve.comment),
+                     v2: sanitize_stored_html(@tree_version_element&.comment),
                      attrib: @tree_version_element&.tree_version&.draft_name
                  }
       %>

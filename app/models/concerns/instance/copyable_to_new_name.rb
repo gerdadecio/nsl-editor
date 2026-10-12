@@ -17,7 +17,7 @@ module Instance::CopyableToNewName
   end
 
   def citation_for_standalone
-    "#{reference.citation_html}".html_safe +
+    reference.citation_html.to_s +
       (page.present? ? ": #{page}" : "") +
       (instance_type.try("primary_instance") ? "[#{instance_type.name}]" : "")
   end
