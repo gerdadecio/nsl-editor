@@ -114,6 +114,7 @@ gem "standardrb", group: [ :development, :test ]
 gem "csv"
 gem "font-awesome-sass", "~> 6.4"
 gem "indefinite_article"
+gem "json", "< 3"
 gem "rails-ujs"
 gem "unf_ext"
 
