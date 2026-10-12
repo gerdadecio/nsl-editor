@@ -10,6 +10,16 @@ The **NSL Editor** is a Rails 8 application for editing botanical names and taxo
 - **Rails**: 8.1.x
 - **PostgreSQL**: 15.7
 - **Time Zone**: Australia/Melbourne
+- **App server / assets**: Puma; Sprockets with Importmap
+- **Key gems**: `cancancan`, `net-ldap`, `pg_search`, `strip_attributes`, `sucker_punch` (background jobs), `rest-client`, `kramdown`, `bullet` (N+1 detection in development, enabled with `BULLET_ENABLED`)
+
+### Key Domain Concepts
+
+- **Names**: Botanical names with hierarchical parent relationships (genus → species → variety), a second parent for hybrid formulas, and several author roles (author, base author, ex author, ex-base author, sanctioning author)
+- **References**: Publications (books, journals, articles) that validate nomenclatural acts. Hierarchical via a parent reference, with an ISO publication date and optional DOI
+- **Instances**: The link between a name and a reference, representing a nomenclatural act
+- **Taxonomy**: Trees of accepted classifications, with draft and published versions made up of tree elements
+- **Authors**: Botanical authors, cited in several roles on names and references
 
 ## Build/Test/Lint Commands
 
@@ -32,12 +42,25 @@ bundle exec rspec spec/models/name_spec.rb:10
 bin/rubocop                # RuboCop linter
 bin/brakeman               # Security scanner
 bundle exec annotaterb models --exclude tests,spec  # Update model annotations
+bundle exec bundle-audit   # Dependency vulnerability audit
 
 # Development
-bin/setup            # Full setup (git hooks, bundle, db, cleanup)
+bin/setup            # Full setup (git hooks, bundle, db, cleanup), then starts the server (--skip-server to skip)
 bin/dev              # Start dev server
 bundle install       # Install dependencies
 ```
+
+### Running in Docker
+
+The app can also run in Docker (`Dockerfile.dev`, `docker-compose.dev.yml`; see "Setup with Docker" in `README.md`). If the developer is using Docker, run the commands above inside the app container rather than on the host:
+
+```bash
+docker-compose -f docker-compose.dev.yml build
+docker-compose -f docker-compose.dev.yml up -d
+docker-compose -f docker-compose.dev.yml exec app_dev bundle exec rails test
+```
+
+Container and service names differ when the Editor runs as part of the wider `docker-apps` stack, so check the compose file in use.
 
 ## External Configuration (Required)
 
@@ -45,11 +68,25 @@ These files are not in the repo and must be acquired:
 - `~/.nsl/editor-database.yml` - Database credentials
 - `~/.nsl/development/editor-r7-config.rb` - App config (auth, services endpoints)
 
+## Sensitive Files - Do Not Read
+
+Never read, display, or log the contents of files that hold credentials. If a task needs to know how one is structured, ask the developer to describe the non-sensitive parts or provide a sanitized example.
+
+- `.env`, `.env.*`
+- `~/.nsl/*` and any `.nsl` directory (the external configuration above)
+- `.pgpass`, and any `database.yml` containing passwords
+- `config/master.key`, `config/*.key`, `credentials.yml.enc`, `secrets*.yml`
+- `*.pem`, `*.key`, `*.crt`, `*.p12`, SSH keys (`id_rsa`, `id_ed25519`)
+- `vpn/`, `*.ovpn`
+- Anything else likely to contain API keys, tokens, or passwords
+
+Never commit secrets, and keep secrets and personal data out of logs.
+
 ## Code Style
 
-### File Header (Required)
+### File Header
 
-All Ruby files must include frozen string literal and Apache 2.0 license:
+Every Ruby file starts with the frozen string literal comment (RuboCop enforces it). New files should also carry the Apache 2.0 license header. Nothing checks for the license, and some existing files lack it, but most have it (often the full license text rather than this short form):
 
 ```ruby
 # frozen_string_literal: true
@@ -68,12 +105,14 @@ All Ruby files must include frozen string literal and Apache 2.0 license:
 | Line/method length | No limits (disabled) |
 | `unless` | Never with `&&`/`\|\|`. Use `if !condition` |
 
-### Strict Rules (Will Fail CI)
+### Conventions Nothing Enforces
+
+The formatting rules above are RuboCop cops, run by the pre-commit hook (CI does not run RuboCop). The rules below are not: Omakase leaves `Lint/Debugger`, `Rails/Output`, `Rails/FindEach` and `Rails/UniqBeforePluck` disabled, so follow them by hand:
 
 - **No `binding.pry` or `debugger`** statements
-- **No `puts` debugging** (Rails/Output enforced)
+- **No `puts` debugging** in app code
 - Use `find_each` over `each` for AR collections
-- Use `uniq.pluck` not `pluck.uniq`
+- Use `distinct.pluck` not `pluck.uniq`
 
 ## Architecture
 
@@ -91,10 +130,11 @@ class MyModel < ApplicationRecord
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"  # Shared sequence
 
-  include NameScopable  # Use concerns for shared behavior
+  include SoftDeletable  # Use concerns for shared behavior
 end
 ```
 
+- Concerns live in `app/models/concerns/`. Model-specific ones are namespaced by model (`Name::Scopable`, `Name::Validatable`, `Name::Parentable` in `concerns/name/`)
 - `ApplicationRecord` auto-strips whitespace via `strip_attributes`
 - Schema annotations managed by `annotaterb` gem
 
@@ -128,14 +168,56 @@ MyService.new_call_transaction(params)  # With rollback on errors
 
 The search mechanism is critical - one unified page for all searches using custom directives. Two engines exist:
 
-1. **Old engine**: Some models under `search/` with `base.rb`, `predicate.rb`
-2. **New "OnModel" engine**: YAML-driven via `field_rule.rb`, `field_abbrev.rb`
+1. **Old engine**: targets with their own `base.rb`, `predicate.rb`, `where_clauses.rb`, etc. (`search/on_name/`, `search/on_instance/`). Name search rules are loaded from `config/name-searches.yml`
+2. **New generic engine** (`Search::OnModel::Base`): each enrolled target (author, reference, org, user, loader/batch) has just a `field_rule.rb` (a Ruby `RULES` hash mapping directives to SQL) and a `field_abbrev.rb`
 
-See `doco/search-engine.md` for detailed architecture.
+See the "Search Mechanism" section of `README.md` for the overview and diagram. `doco/search-engine.md` is meant to hold the detail but is still mostly a placeholder.
 
 ### External Dependencies
 
 The Editor relies on NSL Services and Mapper apps for name construction, taxonomy operations, and certain deletes.
+
+- **NSL Services**: name construction and validation, taxonomy tree operations
+- **NSL Mapper**: URI generation and resolution
+- Calls go through `rest-client`. Handle the service being unavailable, and log failures without leaking credentials
+
+## Testing
+
+Two frameworks run side by side:
+
+- **`test/`**: Minitest with YAML fixtures. `fixtures :all` loads every fixture in alphabetical order, so fixtures must keep referential integrity
+- **`spec/`**: RSpec with FactoryBot factories (in `test/factories/`)
+- External service calls (NSL Services, Mapper) are stubbed with WebMock, so tests never need those apps running
+- Shared Minitest helpers are in `test/test_helper.rb`, e.g. `fill_in_typeahead`, `make_sure_details_are_showing`, `search_result_must_include_content`
+- Cover permissions and authorization as well as the happy path and edge cases
+
+## Common Development Tasks
+
+### Adding a model
+1. The table is added to the schema externally (it arrives via `structure.sql`, not a migration)
+2. Create the model following the conventions above, with concerns for shared behavior
+3. Add associations and validations, then fixtures and/or factories
+4. Add search configuration if the records need to be searchable
+
+### Extending search
+1. Add field rules under `app/models/search/`, in whichever engine the target uses (see Search System above)
+2. Keep SQL fragments in the whitelisted maps and bind user values with `?`
+3. Test with a range of search directives
+
+## After Every Change
+
+Check the change against these before calling it done:
+
+- **SQL injection**: queries parameterized, no interpolated user input
+- **XSS**: user and stored data escaped or passed through `sanitize(...)`, not `.html_safe`
+- **N+1 queries**: `includes`/`preload` on associations used in loops and views
+- **Authorization**: new actions covered by CanCanCan abilities
+- **Sensitive data**: no secrets or personal data in logs
+
+Common gotchas:
+
+- Foreign keys, triggers, and constraints are enforced by the database, so saves and deletes can fail there even when model validations pass
+- Search and typeahead queries can be expensive, and large result sets need pagination
 
 ## Git Workflow
 
@@ -162,7 +244,7 @@ git branch -d <branch-name>
 
 Run `bin/setup` or `git config core.hooksPath .githooks` to enable:
 
-- **pre-commit**: Blocks Bootstrap 3/4 classes; runs RuboCop on staged Ruby files
+- **pre-commit**: Blocks Bootstrap 3/4 classes on added lines; runs RuboCop on staged Ruby files. RuboCop runs in a running editor container if there is one (`nsl_editor_source`, then `nsl_app_dev`), otherwise with the local bundle. Override with `RUBOCOP_RUNNER=docker|local` or `RUBOCOP_CONTAINER=<name>`
 - **pre-push**: Confirmation before pushing to main/master
 
 Override options:
@@ -175,7 +257,7 @@ git commit --no-verify -m "message"      # Skip all hooks
 
 Since there are no migrations, test database setup requires:
 ```bash
-dropdb ned_test; createdb -O nsl ned_test; bundle exec rake db:schema:dump; bundle exec rake db:clean_up_structure_sql; RAILS_ENV=test bin/rails db:setup
+dropdb ned_test; createdb -O nsl ned_test; bundle exec rake db:schema:dump; bundle exec rake db:clean_up_structure_sql_ruby; RAILS_ENV=test bin/rails db:setup
 ```
 
 The `structure.sql` may need hand-editing for complex views/extensions.
@@ -202,7 +284,7 @@ test/              # Minitest tests
 
 ## Security Review (Oct 2026)
 
-A security review was conducted with findings in `tmp/review/findings.md`. Key items:
+A security review was conducted in October 2026. The findings file (`tmp/review/findings.md`) is not in the repo, since `tmp/` is gitignored, so the finding numbers below refer to a document you may not have. Key items:
 
 ### What's in good shape
 - Search DSL: all SQL fragments from whitelisted maps, user values always bound with `?`
@@ -211,9 +293,10 @@ A security review was conducted with findings in `tmp/review/findings.md`. Key i
 - No `permit!` or `to_unsafe_h` anywhere
 
 ### Open items to address
-- **Transport hardening** (finding 4): `assume_ssl` is on (NSL-5973). A CSP (start in report-only mode) and `config.hosts` remain
-- **Session handling** (finding 5): re-enable `reset_session` on sign-in, and add `rate_limit` to sign-in
-- **Outbound service calls** (finding 6): explicit RestClient timeouts; API key in a header rather than the query string
+- **Other `.html_safe` uses** (finding 3): wrap stored data in `sanitize(...)` rather than `.html_safe`. The review comment (NSL-5974) and the RHS detail displays (NSL-5980) are done. Many `.html_safe` calls remain across the views, most of them in the loader partials; NSL-5965 (in progress) continues the work
+- **Transport hardening** (finding 4): `assume_ssl` is on (NSL-5973). A CSP (start in report-only mode) and `config.hosts` remain; both are still commented out
+- **Session handling** (finding 5): add `rate_limit` to sign-in. Sign-in deliberately does not call `reset_session`: sessions use the cookie store, so session fixation doesn't apply, and a reset broke deep links (see the comment in `sessions_controller.rb`). Revisit only if the session store moves server-side
+- **Outbound service calls** (finding 6): explicit RestClient timeouts (only a few calls set one today); API key in a header rather than the query string (`as_services.rb` files still build `?apiKey=` URLs)
 - **CI doesn't run RuboCop**: `lint-ruby.yml` runs only Brakeman, so the cops below are enforced only by the pre-commit hook. Adding a `bin/rubocop` step is pending a team decision
 
 ### Patterns to follow (from fixed findings)
