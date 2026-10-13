@@ -49,6 +49,8 @@
 #  fk_he1t3ug0o7ollnk2jbqaouooa  (instance_note_key_id => instance_note_key.id)
 #
 class InstanceNote < ApplicationRecord
+  include RejectsSoftDeletedLinks
+
   belongs_to :namespace, class_name: "Namespace", foreign_key: "namespace_id", optional: true
   before_create :set_defaults
   self.table_name = "instance_note"
@@ -60,6 +62,7 @@ class InstanceNote < ApplicationRecord
   validate :create_one_apc_dist_per_instance, on: [ :create ]
   validate :update_one_apc_dist_per_instance, on: [ :update ]
   validate :deprecated_instance_note_key_cannot_be_used
+  rejects_soft_deleted_links instance: "instance"
   scope :apc, (lambda do
                  joins(:instance_note_key)
                    .where("instance_note_key.name" =>
