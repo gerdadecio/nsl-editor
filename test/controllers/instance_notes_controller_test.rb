@@ -95,6 +95,7 @@ class InstanceNotesControllerTest < ActionDispatch::IntegrationTest
         },
         headers: { "Accept" => "application/javascript" }
     end
+
     assert_response :success
     @instance_note.reload
     assert_equal "changed value", @instance_note.value
