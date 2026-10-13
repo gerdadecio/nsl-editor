@@ -70,9 +70,9 @@ class InstanceTabsNotesTest < ActionDispatch::IntegrationTest
       assert_select("option", /\AVernacular\z/i, "Needs Vernacular option.")
       assert_select("input#instance-note-create-btn", 1, "Needs create button.")
       assert_select(
-        "input#instance-note-create-btn[value='Create Note'][data-disable-with='Create Note']",
+        "input#instance-note-create-btn[value='Create Note'][data-disable-with='Creating Note...']",
         1,
-        "Create button should keep its label while submitting."
+        "Create button should show a submitting label."
       )
     end
   end

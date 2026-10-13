@@ -46,9 +46,10 @@
       <td>
         <%= f.submit "Create Note",
                      id: "instance-note-create-btn",
-                     class: "btn btn-primary width-6em",
+                     class: "btn btn-primary min-width-6em",
                      tabindex: increment_tab_index,
-                     title: "Select to save the note." %>
+                     title: "Select to save the note.",
+                     data: { disable_with: "Creating Note..." } %>
       </td>
       <td class="align-right">
       </td>

@@ -61,8 +61,9 @@
       <td>
         <%= f.submit "Save Note",
           id: "instance-note-save-btn-#{@instance_note.id}",
-          class: 'btn btn-primary width-6em',
+          class: 'btn btn-primary min-width-6em',
           title: "Select to save the note.",
+          data: { disable_with: "Saving Note..." },
           tabindex: increment_tab_index %>
       </td>
 
