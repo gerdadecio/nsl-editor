@@ -1,4 +1,8 @@
 - :date: 13-October-2026
+  :jira_id: '5981'
+  :description: |-
+    Fixup the save/create note button label briefly showing update instance upon button press
+- :date: 13-October-2026
   :jira_id: '5202'
   :description: |-
     Synonymy Typeahead: Improve number matching

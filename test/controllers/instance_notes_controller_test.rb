@@ -78,6 +78,29 @@ class InstanceNotesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "update should change the note but never its instance" do
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [ "edit" ]
+    ) do
+      patch instance_note_path(@instance_note),
+        params: {
+          instance_note:
+                  {
+                    "instance_id" => instances(:a_soft_deleted_instance).id,
+                    "instance_note_key_id" => @instance_note.instance_note_key_id,
+                    "value" => "changed value",
+                  },
+        },
+        headers: { "Accept" => "application/javascript" }
+    end
+    assert_response :success
+    @instance_note.reload
+    assert_equal "changed value", @instance_note.value
+    assert_equal instances(:triodia_in_brassard).id, @instance_note.instance_id
+  end
+
   # test "should update instance_note" do
   # @request.headers["Accept"] = "application/javascript"
   # patch :update, id: @instance_note, instance_note: {  }
