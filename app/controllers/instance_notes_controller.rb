@@ -94,6 +94,13 @@ class InstanceNotesController < ApplicationController
     )
   end
 
+  # A note stays on the instance it was created for. Only that instance is
+  # authorised (see authorise_instance_change), so an update must not be able
+  # to move the note to another one.
+  def instance_note_update_params
+    instance_note_params.except(:instance_id)
+  end
+
   def changed?
     @instance_note.instance_note_key_id.to_s !=
       instance_note_params[:instance_note_key_id] ||
@@ -102,7 +109,7 @@ class InstanceNotesController < ApplicationController
 
   def really_update
     if @instance_note.update_attributes_with_username!(
-      instance_note_params,
+      instance_note_update_params,
       current_user.username,
     )
       @message = "Updated"
