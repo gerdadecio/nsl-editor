@@ -1,3 +1,7 @@
+- :date: 13-October-2026
+  :jira_id: '5984'
+  :description: |-
+    Housekeeping: Convert local claude slash commands into skills and push them to the repo.
 - :date: 12-October-2026
   :jira_id: '5987'
   :description: |-
