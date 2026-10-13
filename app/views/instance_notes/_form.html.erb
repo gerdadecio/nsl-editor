@@ -59,9 +59,9 @@
     </tr>
     <tr>
       <td>
-        <%= f.submit id: "instance-note-save-btn-#{@instance_note.id}",
+        <%= f.submit "Save Note",
+          id: "instance-note-save-btn-#{@instance_note.id}",
           class: 'btn btn-primary width-6em',
-          value: 'Save Note',
           title: "Select to save the note.",
           tabindex: increment_tab_index %>
       </td>
