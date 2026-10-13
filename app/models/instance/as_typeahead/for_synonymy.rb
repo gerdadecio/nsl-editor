@@ -27,6 +27,13 @@
 #   '1957 podolepis jaceoides'
 #   'podolepis 1957 jaceoides'
 #
+# NSL-5202: phrase names carry a collector's number, e.g.
+#   'Dryandra sp. 42 (A.S.George 16789)'
+# A 4-digit number on its own (between the ends of the search, spaces and
+# the % and * wildcards) might be a year or part of a name, so it matches
+# either: names published that year, OR names containing the number. Digits
+# in a longer number are only ever part of a name, e.g. 'Dryandra%16789'.
+#
 # But disordered name fragments, like
 #   'jac podolepis'
 # do not work because the text part
@@ -42,6 +49,8 @@ class Instance::AsTypeahead::ForSynonymy
     "instance.id, instance.source_system,  " \
     "instance_type.name as instance_type_name"
   SEARCH_LIMIT = 50
+  # 4 digits, not part of a longer number or word
+  YEAR = /(?<![^\s%*])[12][0-9]{3}(?![^\s%*])/
 
   # ref_parent_date(ref_id) is an existing db function (see db/structure.sql)
   # that returns the reference's own iso_publication_date, unless its ref_type
@@ -54,11 +63,12 @@ class Instance::AsTypeahead::ForSynonymy
   def initialize(terms, name_id)
     @results = []
     @name_bind_value = nil
-    terms_without_year = terms.gsub(/[1,2][0-9]{3}/, "").strip.gsub("  ", " ")
+    terms_without_year = terms.gsub(YEAR, "").strip.gsub("  ", " ")
     Rails.logger.debug { "terms_without_year: #{terms_without_year}" }
     return if terms_without_year.blank?
 
     @name_bind_value = "#{terms_without_year.tr('*', '%')}%"
+    @name_with_year_digits_bind_value = "#{terms.strip.gsub('  ', ' ').tr('*', '%')}%"
     @results = run_query(terms, name_id)
   end
 
@@ -79,11 +89,17 @@ class Instance::AsTypeahead::ForSynonymy
   def build_query(terms, name_id)
     query = Instance.select(COLUMNS)
       .joins(name: :name_rank)
-      .where(" lower(f_unaccent(full_name)) like lower(f_unaccent(?)) ", @name_bind_value)
       .joins(:reference)
 
     year_bind = reference_year_bind(terms)
-    query = query.where(" reference.iso_publication_date like ? ||'%' ", year_bind) if year_bind
+    query = if year_bind
+      query.where(" ((lower(f_unaccent(full_name)) like lower(f_unaccent(?)) " \
+                  "   and reference.iso_publication_date like ? ||'%') " \
+                  "  or lower(f_unaccent(full_name)) like lower(f_unaccent(?))) ",
+                  @name_bind_value, year_bind, @name_with_year_digits_bind_value)
+    else
+      query.where(" lower(f_unaccent(full_name)) like lower(f_unaccent(?)) ", @name_bind_value)
+    end
 
     query = query
       .joins(:instance_type)
@@ -133,7 +149,7 @@ class Instance::AsTypeahead::ForSynonymy
   # (a plain 4-digit year string), or nil if terms contains no year, or the
   # matched digits don't fall in a sane year range.
   def reference_year_bind(terms)
-    match = terms.match(/[1,2][0-9]{3}/)
+    match = terms.match(YEAR)
     return nil if match.blank?
 
     reference_year = match.to_s

@@ -1,4 +1,8 @@
 - :date: 13-October-2026
+  :jira_id: '5202'
+  :description: |-
+    Synonymy Typeahead: Improve number matching
+- :date: 13-October-2026
   :jira_id: '5984'
   :description: |-
     Housekeeping: Convert local claude slash commands into skills and push them to the repo.
