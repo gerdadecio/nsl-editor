@@ -1,4 +1,8 @@
 - :date: 13-October-2026
+  :jira_id: '5981'
+  :description: |-
+    Show saving/creating note button label when the form is submitting
+- :date: 13-October-2026
   :jira_id: '5945'
   :description: |-
     Soft-delete: Add backend validation when associating instance notes to soft-deleted instances
