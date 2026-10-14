@@ -15,6 +15,7 @@ This repo is a fork. Changes go to `upstream` (`bio-org-au/nsl-editor`) through 
   - With a Jira ticket: `nsl-<number>`, lowercase, for example `nsl-5974`.
   - Without one: a short kebab-case description, for example `update-claude-md-git-workflow`.
 - `git checkout -b <branch-name>`. Uncommitted work comes with you onto the new branch.
+- **Branch from local `main`, never from a remote branch.** `git checkout -b <branch-name> upstream/main` makes the new branch track `upstream/main`, so a plain `git push` then targets the upstream repo's `main`. Git refuses it ("The upstream branch of your current branch does not match the name of your current branch"), and the commands git suggests in that message both push to upstream. To start from the latest upstream, update local `main` first (above). If you really need to branch from `upstream/main`, add `--no-track`. Check with `git branch -vv`: a new branch should show no tracking branch until it's pushed with `git push -u origin <branch-name>`.
 
 ## 2. Commit
 
