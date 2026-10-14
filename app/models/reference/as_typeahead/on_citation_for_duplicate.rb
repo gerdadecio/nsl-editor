@@ -73,7 +73,7 @@ class Reference::AsTypeahead::OnCitationForDuplicate
       .where.not(reference: { id: current_id })
       .not_duplicate
       .where(bound_terms_array(terms))
-      .order(Arel.sql("iso_publication_date DESC NULLS FIRST"), "citation")
+      .order(Arel.sql("iso_publication_date ASC NULLS LAST"), "citation")
       .limit(SEARCH_LIMIT)
   end
 

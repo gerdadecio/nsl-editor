@@ -20,12 +20,12 @@
 require "test_helper"
 
 # Reference model typeahead search.
-# NSL-5867 follow-up: results should be ordered by iso_publication_date
-# descending, with references that have no date sorted first, then by
-# citation. Section's valid parent ref_type is Book, matching the
+# NSL-5789: results should be ordered by iso_publication_date
+# ascending (oldest first), with references that have no date sorted last,
+# then by citation. Section's valid parent ref_type is Book, matching the
 # flibbertigibbet fixtures.
 class TAOnCitnForParentOrdersByPublicationDateTest < ActiveSupport::TestCase
-  test "ref typeahead on citation for parent orders by publication date desc nulls first then citation" do
+  test "ref typeahead on citation for parent orders by publication date asc nulls last then citation" do
     current_reference = references(:simple)
     typeahead = Reference::AsTypeahead::OnCitationForParent.new(
       "flibbertigibbet",
@@ -36,12 +36,12 @@ class TAOnCitnForParentOrdersByPublicationDateTest < ActiveSupport::TestCase
     ids = typeahead.results.collect { |result| result[:id] }
 
     assert_equal [
-      references(:flibbertigibbet_no_date).id.to_s,
+      references(:flibbertigibbet_early).id.to_s,
       references(:flibbertigibbet_late).id.to_s,
-      references(:flibbertigibbet_early).id.to_s
+      references(:flibbertigibbet_no_date).id.to_s
     ],
                  ids,
-                 "Expected no-date reference first (nulls first), then " \
-                   "most recently published, then the earliest."
+                 "Expected the earliest reference first, then the later one, " \
+                   "then the no-date reference (nulls last)."
   end
 end
