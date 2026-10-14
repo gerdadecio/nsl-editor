@@ -854,6 +854,19 @@ div#search-field-and-buttons-container #search-target-button-text {
   vertical-align: inherit;
 }
 
+/* The 4px top margin above is for text fields. On a submit button it drops the
+   button 4px below the link buttons (a.btn) it sits beside, e.g. Confirm next
+   to Copy on the instance Copy tab. */
+#search-result-details input.btn {
+  margin-top: 0;
+}
+
+/* The note-type select shares a table row with the note textarea, which gets
+   the 4px top margin above; match it so the two line up. */
+#search-result-details select.instance-note-key-id-select {
+  margin-top: 4px;
+}
+
 /* Search result tabs */
 #top-navbar ul#search-results-tabset {
   top: 112px;
