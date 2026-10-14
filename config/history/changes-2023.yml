@@ -397,7 +397,7 @@
 - :date: 28-Sep-2023
   :jira_id: '4671'
   :description: |- 
-    Loader: Fix queries for <code>acc:</code> and <code>exc:</code> so they include results for synonms and misapplications
+    Loader: Fix queries for <code>acc:</code> and <code>exc:</code> so they include results for synonyms and misapplications
 - :date: 27-Sep-2023
   :jira_id: '4678'
   :description: |- 
@@ -687,7 +687,7 @@
 - :date: 21-Jul-2023
   :jira_id: '4579'
   :description: |-
-    Code Quality: mitigate code scanning alert in JavaScript code that puts search-direcives into the search field if you click the field name in help - no change to behaviour
+    Code Quality: mitigate code scanning alert in JavaScript code that puts search-directives into the search field if you click the field name in help - no change to behaviour
 - :date: 21-Jul-2023
   :jira_id: '4578'
   :description: |-
@@ -945,7 +945,7 @@
 - :date: 21-Feb-2023
   :jira_id: '4434'
   :description: |-
-    Loader: Allow synonyms and misapplications to be created from existing synonyms and misapplications; make sequencing easier; correct positon of success message
+    Loader: Allow synonyms and misapplications to be created from existing synonyms and misapplications; make sequencing easier; correct position of success message
 - :date: 21-Feb-2023
   :jira_id: '4434'
   :description: |-

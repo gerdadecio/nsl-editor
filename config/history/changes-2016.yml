@@ -130,7 +130,7 @@
 - :date: 29-Sep-2016
   :jira_id: '1999'
   :description: |-
-    Search successfully for uppper-case diacritics. e.g.
+    Search successfully for upper-case diacritics. e.g.
           you can now set author Ollegaard as duplicate of author Øllegaard.
 - :date: 21-Sep-2016
   :release: true
@@ -427,7 +427,7 @@
   :release: true
 - :date: 24-Feb-2016
   :jira_id: '1672'
-  :description: Offer typehead name parents in descending taxonomic rank
+  :description: Offer typeahead name parents in descending taxonomic rank
 - :date: 22-Feb-2016
   :jira_id: '1673'
   :description: |-
