@@ -1,6 +1,10 @@
 - :date: 14-October-2026
   :jira_id: '5982'
   :description: |-
+    Bootstrap upgrade: Fixup the "of" text alignment in unpub tab
+- :date: 14-October-2026
+  :jira_id: '5982'
+  :description: |-
     Bootstrap upgrade: UI cleanups for the dropdown and button/text alignments
 - :date: 13-October-2026
   :jira_id: '5981'
