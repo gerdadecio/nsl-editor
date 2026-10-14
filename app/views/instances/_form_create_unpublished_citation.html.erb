@@ -29,17 +29,12 @@
     </div>
     <script> setUpInstanceNameForUnpubCitation(); </script>
     is used as a type<span class="red">*</span>
-    <%= render partial: 'detail_line', locals: {
-            info: f.select(:instance_type_id, InstanceType.unpublished_citation_options,{include_blank: true},
-                           {value: @instance.instance_type_id,data:{update_url: instance_path},
-                            class: 'form-control width-50-percent', title: 'Enter instance type',
-                            required: true, tabindex: increment_tab_index}),
-            label:''
-    }
-    %>
-    of
     <br>
-    <%= @instance.name.full_name %>
+    <%= f.select(:instance_type_id, InstanceType.unpublished_citation_options,{include_blank: true},
+                 {value: @instance.instance_type_id,data:{update_url: instance_path},
+                  class: 'form-control width-50-percent', title: 'Enter instance type',
+                  required: true, tabindex: increment_tab_index}) %>
+    of <%= @instance.name.full_name %>
     <br>
     on page
     <br>
