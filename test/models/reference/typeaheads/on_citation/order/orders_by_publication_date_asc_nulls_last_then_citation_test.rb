@@ -20,26 +20,22 @@
 require "test_helper"
 
 # Reference model typeahead search.
-# NSL-5867 follow-up: results should be ordered by iso_publication_date
-# descending, with references that have no date sorted first, then by
-# citation. `simple` is ref_type unknown, so no ref_type restriction is
-# applied and all three flibbertigibbet (book) fixtures are candidates.
-class TAOnCitationForDuplicateOrdersByPublicationDateTest < ActiveSupport::TestCase
-  test "ref typeahead on citation for duplicate orders by publication date desc nulls first then citation" do
-    typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
-      "flibbertigibbet",
-      references(:simple).id
-    )
+# NSL-5789: results should be ordered by iso_publication_date
+# ascending (oldest first), with references that have no date sorted last,
+# then by citation.
+class TAOnCitnOrdersByPublicationDateTest < ActiveSupport::TestCase
+  test "ref typeahead on citation orders by publication date asc nulls last then citation" do
+    typeahead = Reference::AsTypeahead::OnCitation.new("flibbertigibbet")
 
     ids = typeahead.results.collect { |result| result[:id] }
 
     assert_equal [
-      references(:flibbertigibbet_no_date).id.to_s,
+      references(:flibbertigibbet_early).id.to_s,
       references(:flibbertigibbet_late).id.to_s,
-      references(:flibbertigibbet_early).id.to_s
+      references(:flibbertigibbet_no_date).id.to_s
     ],
                  ids,
-                 "Expected no-date reference first (nulls first), then " \
-                   "most recently published, then the earliest."
+                 "Expected the earliest reference first, then the later one, " \
+                   "then the no-date reference (nulls last)."
   end
 end
