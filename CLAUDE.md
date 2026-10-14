@@ -300,7 +300,7 @@ A security review was conducted in October 2026. The findings file (`tmp/review/
 - **Other `.html_safe` uses** (finding 3): wrap stored data in `sanitize(...)` rather than `.html_safe`. The review comment (NSL-5974) and the RHS detail displays (NSL-5980) are done. Many `.html_safe` calls remain across the views, most of them in the loader partials; NSL-5965 (in progress) continues the work
 - **Transport hardening** (finding 4): `assume_ssl` is on (NSL-5973). A CSP (start in report-only mode) and `config.hosts` remain; both are still commented out
 - **Session handling** (finding 5): add `rate_limit` to sign-in. Sign-in deliberately does not call `reset_session`: sessions use the cookie store, so session fixation doesn't apply, and a reset broke deep links (see the comment in `sessions_controller.rb`). Revisit only if the session store moves server-side
-- **Outbound service calls** (finding 6): explicit RestClient timeouts (only a few calls set one today); API key in a header rather than the query string (`as_services.rb` files still build `?apiKey=` URLs)
+- **API key in the query string** (finding 6, rest): Services URLs carry `?apiKey=`, which reaches Services and proxy access logs. Moving it to a header depends on what NSL Services supports
 - **CI doesn't run RuboCop**: `lint-ruby.yml` runs only Brakeman, so the cops below are enforced only by the pre-commit hook. Adding a `bin/rubocop` step is pending a team decision
 
 ### Patterns to follow (from fixed findings)
@@ -308,6 +308,7 @@ A security review was conducted in October 2026. The findings file (`tmp/review/
 - **Stored HTML** (findings 3 and 11, NSL-5965/5979/5980): never `.html_safe` a database value. Use `sanitize_stored_html(...)` (`ApplicationHelper`) for values that hold NSL markup, such as `full_name_html`, `citation_html` and comments: it keeps the name and reference tags and strips scripts. Plain `sanitize(...)` is fine for other text. When building link text, sanitize the value and join it with icons using `safe_join`, rather than interpolating into a string and calling `.html_safe`
 - **`detail_line` partial** (finding 11, NSL-5980): sanitizes `info` unless it's already safe, so pass a `safe_join` or `sanitize`d value, not `.html_safe` on stored data
 - **JSON from services** (finding 10, NSL-5978): use `JSON.parse`, never `JSON.load`
+- **Calls to Services** (finding 6, NSL-5987): use `ServicesHttp.get/post/put/delete` (same arguments as RestClient), never `RestClient` directly. It adds a 10s open timeout; pass `read_timeout:` only for calls that need a non-default one. Log Services URLs with `ServicesHttp.loggable(url)`, never the raw URL: it hides the API key
 
 ### Common bugs to avoid
 - **Assignment in condition**: `=` instead of `==` (finding 8). Three bugs were fixed where `if x = y` was meant to be `if x == y`
