@@ -168,6 +168,16 @@ select.form-control {
   line-height: 1.4;
 }
 
+/* --- Select dropdown arrow: BS5's `.form-control` sets `appearance: none`,
+   which strips the native arrow from a <select> (BS5 expects `.form-select`,
+   which draws its own). The app's selects still carry BS3's `.form-control`,
+   so restore the native appearance to bring the arrow back. ---------------- */
+select.form-control {
+  -webkit-appearance: auto;
+     -moz-appearance: auto;
+          appearance: auto;
+}
+
 .btn:not([class*="btn-"]) {
   --bs-btn-color: #333;
   --bs-btn-bg: rgb(239, 239, 239);
