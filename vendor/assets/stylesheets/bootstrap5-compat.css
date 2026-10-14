@@ -178,6 +178,23 @@ select.form-control {
           appearance: auto;
 }
 
+/* --- .form-select: a few selects (the synonym instance-type dropdowns) carry
+   BS5's `.form-select`, whose 16px text and tall padding get clipped by the
+   app's fixed select height, and whose drawn chevron sits off-centre. Size
+   them like `select.form-control` above, with the native arrow, and keep
+   them inline so trailing text ("for") stays on the same line. -------------- */
+select.form-select {
+  display: inline-block;
+  height: 26px;
+  padding: 3px 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  background-image: none;
+  -webkit-appearance: auto;
+     -moz-appearance: auto;
+          appearance: auto;
+}
+
 .btn:not([class*="btn-"]) {
   --bs-btn-color: #333;
   --bs-btn-bg: rgb(239, 239, 239);
