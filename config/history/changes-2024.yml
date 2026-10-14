@@ -88,7 +88,7 @@
 - :date: 05-Nov-2024
   :jira_id: '5234'
   :description: |-
-    APC Workflow: Voting - reset the Vote tab after creating/removing a vote; add valdation on uniqueness; better delete widgets; Agree/Disagree wording
+    APC Workflow: Voting - reset the Vote tab after creating/removing a vote; add validation on uniqueness; better delete widgets; Agree/Disagree wording
 - :date: 05-Nov-2024
   :jira_id: '5234'
   :description: |-
@@ -96,7 +96,7 @@
 - :date: 01-Nov-2024
   :jira_id: '5242'
   :description: |-
-    Instance delete: Check FK in all classifcation trees, not just in the accepted tree, before offering a delete button
+    Instance delete: Check FK in all classification trees, not just in the accepted tree, before offering a delete button
 - :date: 31-Oct-2024
   :jira_id: '5235'
   :description: |-

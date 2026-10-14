@@ -48,7 +48,7 @@
 - :date: 29-Nov-2019
   :jira_id: '3422'
   :description: |-
-    Orchids refinements including moving Stats tab alongside the Reports tab, and interative improvements to batch processing and its tab.
+    Orchids refinements including moving Stats tab alongside the Reports tab, and iterative improvements to batch processing and its tab.
 - :date: 27-Nov-2019
   :jira_id: '3422'
   :description: |-
@@ -197,7 +197,7 @@
 - :date: 03-Jun-2019
   :jira_id: '1951'
   :description: |-
-    Removed the "accepted-name-synony-of-accepted-name" report as it used the old tree and didn't work. Functionality
+    Removed the "accepted-name-synonym-of-accepted-name" report as it used the old tree and didn't work. Functionality
     replaced by tree validation report.
 - :date: 30-May-2019
   :jira_id: '1622'

@@ -579,7 +579,7 @@
   :jira_id: '82'
   :jira_project: FLOR
   :description: |-
-    Foa Project: Add a fallbback for users with no product roles to show default tabs
+    Foa Project: Add a fallback for users with no product roles to show default tabs
 - :date: 30-July-2025
   :jira_id:  '5429'
   :description: |-
@@ -879,7 +879,7 @@
   :jira_id: '53'
   :jira_project: FLOR
   :description: |-
-    Foa Project draft-editor permissions: Offer to copy profile items of a standalone isntance
+    Foa Project draft-editor permissions: Offer to copy profile items of a standalone instance
 - :date: 17-Apr-2025
   :jira_id: '5397'
   :description: |-
@@ -962,7 +962,7 @@
 - :date: 26-Mar-2025
   :jira_id: '5088'
   :description: |-
-    Loader Search Targets: change order of target options to relect use
+    Loader Search Targets: change order of target options to reflect use
 - :date: 25-Mar-2025
   :jira_id: '31'
   :jira_project: FLOR
@@ -971,7 +971,7 @@
 - :date: 25-Mar-2025
   :jira_id:
   :description: |-
-    Build: Remove scripted changing of active_record timezome from :localhost to :utc - just leave production AR TZ as :utc
+    Build: Remove scripted changing of active_record timezone from :localhost to :utc - just leave production AR TZ as :utc
 - :date: 24-Mar-2025
   :jira_id: '5146'
   :description: |-

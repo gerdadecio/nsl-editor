@@ -1,4 +1,8 @@
 - :date: 14-October-2026
+  :jira_id: '5989'
+  :description: |-
+    Housekeeping: Fix typos in release notes
+- :date: 14-October-2026
   :jira_id: '5982'
   :description: |-
     Bootstrap upgrade: Fixup the "of" text alignment in unpub tab
@@ -433,7 +437,7 @@
 - :date: 04-August-2026
   :jira_id: '4317'
   :description: |-
-    Instance search : Add directives <code>is-not-novely:</code>, <code>is-relationship:</code>, <code>is-not-relationship:</code>
+    Instance search : Add directives <code>is-not-novelty:</code>, <code>is-relationship:</code>, <code>is-not-relationship:</code>
 - :date: 04-August-2026
   :jira_id: '5789'
   :description: |-
@@ -441,7 +445,7 @@
 - :date: 04-August-2026
   :jira_id: '5862'
   :description: |-
-    Fixup the loader refgerence tab table outline
+    Fixup the loader reference tab table outline
 - :date: 04-August-2026
   :jira_id: '5859'
   :description: |-
@@ -792,7 +796,7 @@
 - :date: 19-June-2026
   :jira_id: '5776'
   :description: |-
-    More css fixes in top meanu and search form for bs5
+    More css fixes in top menu and search form for bs5
 - :date: 19-June-2026
   :jira_id: '5372'
   :description: |-
@@ -956,7 +960,7 @@
   :jira_id: '237'
   :jira_project: FLOR
   :description: |-
-    Fixup the remove from tree button that seem to hang forever
+    Fixup the remove from tree button that seems to hang forever
 - :date: 18-May-2026
   :jira_id: '223'
   :jira_project: FLOR
@@ -1056,7 +1060,7 @@
   :jira_id: '200'
   :jira_project: FLOR
   :description: |-
-    Fixup the issue whenn publish PI is incorrectly setting the end_date of related profile items
+    Fixup the issue when publish PI is incorrectly setting the end_date of related profile items
 - :date: 09-Apr-2026
   :jira_id: '200'
   :jira_project: FLOR
