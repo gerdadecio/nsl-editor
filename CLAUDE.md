@@ -298,7 +298,7 @@ A security review was conducted in October 2026. The findings file (`tmp/review/
 
 ### Open items to address
 - **Other `.html_safe` uses** (finding 3): wrap stored data in `sanitize(...)` rather than `.html_safe`. The review comment (NSL-5974) and the RHS detail displays (NSL-5980) are done. Many `.html_safe` calls remain across the views, most of them in the loader partials; NSL-5965 (in progress) continues the work
-- **Transport hardening** (finding 4): `assume_ssl` is on (NSL-5973). A CSP (start in report-only mode) and `config.hosts` remain; both are still commented out
+- **Transport hardening** (finding 4): `assume_ssl` is on (NSL-5973), and `force_ssl` too, with `/ping` excluded from the redirect (NSL-5966). The CSP runs in report-only mode, with violations logged by `ServicesController#csp_report` (NSL-5966); enforcing it is still to do. `config.hosts` remains commented out
 - **Session handling** (finding 5): add `rate_limit` to sign-in. Sign-in deliberately does not call `reset_session`: sessions use the cookie store, so session fixation doesn't apply, and a reset broke deep links (see the comment in `sessions_controller.rb`). Revisit only if the session store moves server-side
 - **API key in the query string** (finding 6, rest): Services URLs carry `?apiKey=`, which reaches Services and proxy access logs. Moving it to a header depends on what NSL Services supports
 - **CI doesn't run RuboCop**: `lint-ruby.yml` runs only Brakeman, so the cops below are enforced only by the pre-commit hook. Adding a `bin/rubocop` step is pending a team decision
