@@ -151,7 +151,7 @@ The health check, `/ping`, is excluded from the redirect through `config.ssl_opt
 
 ### Content Security Policy
 
-`config/initializers/content_security_policy.rb` defines a Content Security Policy in **report-only** mode: browsers block nothing, but they post anything the policy would have blocked to `/csp-report`. `ServicesController#csp_report` logs each report as a `CSP violation:` warning, with query strings removed. The endpoint needs no sign-in, and each IP can send 60 reports a minute.
+`config/initializers/content_security_policy.rb` defines a Content Security Policy in **report-only** mode: browsers block nothing, but they post anything the policy would have blocked to `/csp-report`. `CspReportsController#create` logs each report as a `CSP violation:` warning, with query strings removed. The endpoint needs no sign-in or CSRF token (it is based on `ActionController::API`, with no session), and each IP can send 60 reports a minute.
 
 The policy allows `'unsafe-inline'` for scripts and styles, because of the inline `<script>` blocks, inline event handlers and `.js.erb` (UJS) responses. It lists each outside host the Editor loads scripts, styles and fonts from. If you add a library from a new CDN, add its host to the policy, or every page will report it.
 

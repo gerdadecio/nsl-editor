@@ -7,7 +7,7 @@
 # https://guides.rubyonrails.org/security.html#content-security-policy-header
 #
 # The policy is in report-only mode: browsers block nothing, they only post
-# violations to /csp-report (ServicesController#csp_report), which logs them.
+# violations to /csp-report (CspReportsController#create), which logs them.
 # Use the logged violations to fix the policy or the page before enforcing it.
 #
 # 'unsafe-inline' is needed for scripts because of the inline <script> blocks,

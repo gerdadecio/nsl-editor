@@ -60,7 +60,7 @@ Rails.application.routes.draw do
   match "/ping", as: "ping_service", to: "services#ping", via: :get
   match "/version", as: "version_service", to: "services#version", via: :get
   match "/build", as: "build_service", to: "services#build", via: :get
-  match "/csp-report", as: "csp_report_service", to: "services#csp_report", via: :post
+  match "/csp-report", as: "csp_report", to: "csp_reports#create", via: :post
 
   resources :name_tag_names, only: %i[show create new]
   match "name_tag_names/:name_id/:tag_id",
