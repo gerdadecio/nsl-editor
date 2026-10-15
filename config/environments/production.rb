@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
@@ -35,15 +37,17 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  # AWS ALB terminates TLS, so we don't need force_ssl (HTTP->HTTPS redirect),
-  # but we DO need assume_ssl so session cookies get the Secure flag.
+  # AWS ALB terminates TLS, so requests reach the app over plain HTTP; assume_ssl
+  # makes them count as HTTPS, so force_ssl below doesn't redirect-loop.
   config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  # assume_ssl alone does not add the Secure flag to cookies; the SSL middleware
+  # that force_ssl adds does that, and also sends the HSTS header.
+  config.force_ssl = true
 
-  # Skip http-to-https redirect for the default health check endpoint.
-  # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
+  # Skip http-to-https redirect for the health check endpoint.
+  config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/ping" } } }
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -119,4 +123,3 @@ end
 
 puts "loading config from #{Rails.configuration.resolved_editor_config_file}"
 load "#{Rails.configuration.resolved_editor_config_file}"
-

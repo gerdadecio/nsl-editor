@@ -137,6 +137,18 @@ You'll need a user registered in that LDAP, ideally with appropriate group membe
 cd [app home]
 rails s
 
+### HTTPS in production
+
+In production the AWS ALB terminates TLS and forwards requests to the app over plain HTTP. `config/environments/production.rb` sets two options for this:
+
+- `config.assume_ssl = true` makes the app treat every request from the ALB as HTTPS.
+- `config.force_ssl = true` adds Rails' SSL middleware, which:
+  - redirects plain-HTTP requests to HTTPS. Behind the ALB this doesn't happen, because of `assume_ssl`, so there's no redirect loop;
+  - marks every cookie, including the session cookie, as `Secure`. `assume_ssl` on its own doesn't do this;
+  - sends a `Strict-Transport-Security` (HSTS) header with the Rails default of 2 years, not covering subdomains. Browsers that have seen it refuse plain HTTP for that hostname until it expires, so serve every Editor hostname over HTTPS only.
+
+The health check, `/ping`, is excluded from the redirect through `config.ssl_options`, so the ALB can check it over plain HTTP. If the health check path changes, update that exclusion too, or the check will get a 301 and the ALB may mark the targets unhealthy.
+
 ## Development
 
 Current stack:
