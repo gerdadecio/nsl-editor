@@ -127,8 +127,10 @@ class ApplicationController < ActionController::Base
   end
 
   # Edge case of deep linking to sign_in can happen after a login that failed due to no login group.
+  # Keep only the path and query, never the host: the deep link survives the
+  # sign-in reset_session, so it must not be able to point anywhere else.
   def ask_user_to_sign_in
-    session[:url_after_sign_in] = request.url unless /sign_in/.match?(request.url.to_s)
+    session[:url_after_sign_in] = request.fullpath unless /sign_in/.match?(request.fullpath)
     respond_to do |format|
       format.html { redirect_to(start_sign_in_url, notice: "Please sign in.") }
       format.json { render(partial: "layouts/no_session.js") }
