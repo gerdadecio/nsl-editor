@@ -298,8 +298,8 @@ A security review was conducted in October 2026. The findings file (`tmp/review/
 
 ### Open items to address
 - **Other `.html_safe` uses** (finding 3): wrap stored data in `sanitize(...)` rather than `.html_safe`. The review comment (NSL-5974) and the RHS detail displays (NSL-5980) are done. Many `.html_safe` calls remain across the views, most of them in the loader partials; NSL-5965 (in progress) continues the work
-- **Transport hardening** (finding 4): `assume_ssl` is on (NSL-5973), and `force_ssl` too, with `/ping` excluded from the redirect (NSL-5966). The CSP runs in report-only mode, with violations logged by `CspReportsController#create` (NSL-5966); enforcing it is still to do. `config.hosts` remains commented out
-- **Session handling** (finding 5): add `rate_limit` to sign-in. Sign-in deliberately does not call `reset_session`: sessions use the cookie store, so session fixation doesn't apply, and a reset broke deep links (see the comment in `sessions_controller.rb`). Revisit only if the session store moves server-side
+- **Transport hardening** (finding 4): `assume_ssl` is on (NSL-5973), and `force_ssl` too, with `/ping` excluded from the redirect (NSL-5966). The CSP runs in report-only mode, with violations logged by `CspReportsController#create`
+- **Session handling** (finding 5): add `rate_limit` to sign-in. Successful sign-in now calls `reset_session` (NSL-5967) and carries `url_after_sign_in` across it, so deep links still work. The deep link is stored as a path (`request.fullpath`) and `deep_link` follows it only if it is a local path (`local_path?`), so it can never send a user to another host. Keep the reset in `create` after authentication, never in `build_sign_in`: resetting on every sign-in page load is what broke deep links in 2020
 - **API key in the query string** (finding 6, rest): Services URLs carry `?apiKey=`, which reaches Services and proxy access logs. Moving it to a header depends on what NSL Services supports
 - **CI doesn't run RuboCop**: `lint-ruby.yml` runs only Brakeman, so the cops below are enforced only by the pre-commit hook. Adding a `bin/rubocop` step is pending a team decision
 
