@@ -19,6 +19,13 @@
 class SessionsController < ApplicationController
   skip_before_action :authenticate
 
+  # Slow down password guessing: at most 10 sign-in attempts per client IP in
+  # 3 minutes. LDAP account lockout protects a single account; this also slows
+  # guessing across many accounts from one client. Behind the AWS ALB,
+  # remote_ip is the client's address (the ALB's private address is a trusted
+  # proxy). Counts live in Rails.cache, so each app container counts separately.
+  rate_limit to: 10, within: 3.minutes, only: :create, with: :too_many_sign_in_attempts
+
   def new
     build_sign_in
   end
@@ -57,6 +64,13 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  # Runs instead of create once the rate limit is hit, so LDAP is not asked.
+  def too_many_sign_in_attempts
+    build_sign_in
+    @sign_in.errors.add(:base, "Too many sign-in attempts. Please wait a few minutes and try again.")
+    render("new", status: :too_many_requests)
+  end
 
   def build_sign_in
     @sign_in = SignIn.new(sign_in_params)
