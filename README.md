@@ -149,6 +149,14 @@ In production the AWS ALB terminates TLS and forwards requests to the app over p
 
 The health check, `/ping`, is excluded from the redirect through `config.ssl_options`, so the ALB can check it over plain HTTP. If the health check path changes, update that exclusion too, or the check will get a 301 and the ALB may mark the targets unhealthy.
 
+### Content Security Policy
+
+`config/initializers/content_security_policy.rb` defines a Content Security Policy in **report-only** mode: browsers block nothing, but they post anything the policy would have blocked to `/csp-report`. `CspReportsController#create` logs each report as a `CSP violation:` warning, with query strings removed. The endpoint needs no sign-in or CSRF token (it is based on `ActionController::API`, with no session), and each IP can send 60 reports a minute.
+
+The policy allows `'unsafe-inline'` for scripts and styles, because of the inline `<script>` blocks, inline event handlers and `.js.erb` (UJS) responses. It lists each outside host the Editor loads scripts, styles and fonts from. If you add a library from a new CDN, add its host to the policy, or every page will report it.
+
+Before switching to enforcement (`content_security_policy_report_only = false`), check the logs for violations and fix them.
+
 ## Development
 
 Current stack:

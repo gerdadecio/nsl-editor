@@ -38,4 +38,12 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     get build_service_path
     assert_response :success
   end
+
+  test "responses carry a report-only content security policy" do
+    get ping_service_path
+    policy = response.headers["Content-Security-Policy-Report-Only"]
+    assert_includes policy, "report-uri /csp-report"
+    assert_includes policy, "script-src 'self' 'unsafe-inline'"
+    assert_nil response.headers["Content-Security-Policy"]
+  end
 end

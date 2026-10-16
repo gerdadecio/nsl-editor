@@ -1,3 +1,7 @@
+- :date: 16-October-2026
+  :jira_id: '5966'
+  :description: |-
+    Security: Configure the csp_report_only option for the Rails app to ensure all CSP violations are logged but not blocked, as suggested by Claude
 - :date: 15-October-2026
   :jira_id: '5966'
   :description: |-
