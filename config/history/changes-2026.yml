@@ -1,3 +1,7 @@
+- :date: 19-October-2026
+  :jira_id: '5988'
+  :description: |-
+    Synonymy: Make order of fields the same for synonym create and edit
 - :date: 16-October-2026
   :jira_id: '5966'
   :description: |-
