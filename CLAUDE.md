@@ -309,6 +309,7 @@ A security review was conducted in October 2026. The findings file (`tmp/review/
 - **`detail_line` partial** (finding 11, NSL-5980): sanitizes `info` unless it's already safe, so pass a `safe_join` or `sanitize`d value, not `.html_safe` on stored data
 - **JSON from services** (finding 10, NSL-5978): use `JSON.parse`, never `JSON.load`
 - **Calls to Services** (finding 6, NSL-5987): use `ServicesHttp.get/post/put/delete` (same arguments as RestClient), never `RestClient` directly. It adds a 10s open timeout; pass `read_timeout:` only for calls that need a non-default one. Log Services URLs with `ServicesHttp.loggable(url)`, never the raw URL: it hides the API key
+- **SSL and CSP** (finding 4, NSL-5973/5966): keep `assume_ssl` and `force_ssl` on together in `production.rb`. The AWS ALB terminates TLS, so `assume_ssl` makes requests count as HTTPS (otherwise `force_ssl` redirect-loops), and `force_ssl` adds the `Secure` cookie flag and HSTS (`assume_ssl` alone does not). When a page needs a new CDN for scripts, styles or fonts, add the host to `config/initializers/content_security_policy.rb`, and prefer JavaScript files over new inline scripts or `onclick` handlers, so the CSP can be enforced later
 
 ### Common bugs to avoid
 - **Assignment in condition**: `=` instead of `==` (finding 8). Three bugs were fixed where `if x = y` was meant to be `if x == y`
