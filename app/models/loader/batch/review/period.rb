@@ -79,10 +79,6 @@ class Loader::Batch::Review::Period < ApplicationRecord
     "Review Period"
   end
 
-  def qualified_name
-    "#{review.name} #{name}"
-  end
-
   def allow_delete?
     !name_comments.exists?
   end

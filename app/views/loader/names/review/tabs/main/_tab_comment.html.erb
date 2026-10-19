@@ -14,7 +14,7 @@ Active review periods: <%= active_review_periods.size %>
 <% if active_review_periods.size > 0 %>
   <ul>
   <% active_review_periods.each do |period| %>
-    <li><%= period.qualified_name %></li>
+    <li><%= period.name %></li>
   <% end %>
   </ul>
 <% end %>

@@ -76,16 +76,12 @@ class LoaderNameReviewCommentOverlappingPeriodsMsgTest < ActionDispatch::Integra
         headers: { "Accept" => "text/javascript" }
     end
 
-    # "WG Review" should appear exactly 3 times: once in the Active
-    # reviews line, and once more within each of the two qualified period
-    # names below it. Before the fix it appeared a 4th time, as a second,
-    # redundant entry in the Active reviews line itself.
-    assert_equal 3,
+    assert_equal 1,
                  response.body.scan("WG Review").size,
-                 "Expected \"WG Review\" to appear exactly 3 times (once in Active " \
-                   "reviews, once per period name) - got: " \
+                 "Expected \"WG Review\" to appear only once, in the Active " \
+                   "reviews line - got: " \
                    "#{response.body[/Active reviews:.*Active review periods:/m]}"
-    assert_match "WG Review Review Period Overlapping One", response.body
-    assert_match "WG Review Review Period Overlapping Two", response.body
+    assert_match "Review Period Overlapping One", response.body
+    assert_match "Review Period Overlapping Two", response.body
   end
 end
