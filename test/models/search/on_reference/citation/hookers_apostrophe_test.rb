@@ -21,9 +21,13 @@ load "test/models/search/users.rb"
 
 # Single Search model test for Reference target.
 #
-# In May 2025 I switched from 'english' to 'simple' dictionary and now this
-# test returns zero results - presumably because the 'simple' dictionary does
-# not understand apostrophes
+# In May 2025 I switched from 'english' to 'simple' dictionary and this search
+# stopped finding "Hooker's", because the 'simple' dictionary splits
+# "Hooker's" into "hooker" and "s", so "hookers" didn't match.
+#
+# From pg_search 2.4.0, scopes that ignore accents (as search_citation_text_for
+# does) strip apostrophes from the citation as well as from the query, so
+# "Hooker's" is indexed as "hookers" and the search finds it again.
 class SearchOnReferenceCitationHookersApostropheTest < ActiveSupport::TestCase
   test "search on reference citation text for hookers apostrophe" do
     params = ActiveSupport::HashWithIndifferentAccess
@@ -33,8 +37,8 @@ class SearchOnReferenceCitationHookersApostropheTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
            "Results should be an ActiveRecord::Relation."
-    assert_equal 0,
-                 search.executed_query.results.size,
-                 "No matches expected."
+    assert_equal [ references(:hookers_icones_plantarum) ],
+                 search.executed_query.results.to_a,
+                 "Expected only Hooker's Icones Plantarum."
   end
 end
