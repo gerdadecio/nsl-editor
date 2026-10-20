@@ -1,4 +1,8 @@
 - :date: 20-October-2026
+  :jira_id: '5996'
+  :description: |-
+    Remove references to Batch Review boolean column Allow Voting because it is not used in the Interface
+- :date: 20-October-2026
   :jira_id: '5789'
   :description: |-
     Reference typeahead: sort year-only and month-only publication dates after fuller dates in the same year or month
