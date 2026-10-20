@@ -61,6 +61,8 @@ class Reference::AsTypeahead::OnCitationForParent
     end
   end
 
+  # Pad partial dates (YYYY, YYYY-MM) with -99 so, within the same year or
+  # month, they sort after references with a fuller date.
   def query(terms, current_id, param_ref_type_id)
     if param_ref_type_id.present?
       best_ref_type_id = param_ref_type_id
@@ -75,7 +77,7 @@ class Reference::AsTypeahead::OnCitationForParent
       .not_duplicate
       .where(bound_terms_array(terms))
       .where(ref_type_id: RefType.find(best_ref_type_id).parent_id)
-      .order(Arel.sql("iso_publication_date ASC NULLS LAST"), "citation")
+      .order(Arel.sql("rpad(iso_publication_date, 10, '-99') ASC NULLS LAST"), "citation")
       .limit(SEARCH_LIMIT)
   end
 end
