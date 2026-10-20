@@ -4699,7 +4699,6 @@ CREATE TABLE loader.batch_review (
     id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
     loader_batch_id bigint NOT NULL,
     name character varying(200) NOT NULL,
-    allow_voting boolean DEFAULT false NOT NULL,
     lock_version bigint DEFAULT 0 NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by character varying(50) DEFAULT USER NOT NULL,

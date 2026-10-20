@@ -22,6 +22,10 @@ class Loader::Batch::Review < ApplicationRecord
   self.table_name = "batch_review"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
+  # NSL-5996: allow_voting is being dropped from the database. Ignore it so a
+  # running app does not include it in INSERTs (partial_inserts is off) and
+  # fail once the column is gone. Remove this line after the drop.
+  self.ignored_columns += [ "allow_voting" ]
 
   validates :name, presence: true
   validates :name, uniqueness: {

@@ -25,7 +25,6 @@
 #   4. the review has an active review period.
 # Also (confirmed with the team, Oct 2026, though the UI does not yet check it):
 #   5. the reviewer record must be active.
-# (Whether batch_review.allow_voting should also gate voting is deferred.)
 # The controllers must enforce the same rules, because org_id and
 # batch_review_id arrive as request params and can be changed by the client.
 module ReviewVoteTestSetup
