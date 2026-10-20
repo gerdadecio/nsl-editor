@@ -2026,3 +2026,84 @@ flibbertigibbet_late:
   ref_author_role: dash
   ref_type: book
   iso_publication_date: 1990
+
+# Fixtures for the OnCitation / OnCitationForDuplicate / OnCitationForParent
+# partial-date order tests: NSL-5789. All share the distinctive "skedaddle"
+# term (not used elsewhere). Within the same year, full dates sort first,
+# then month-only, then year-only. ref_type is book for the same reasons as
+# the flibbertigibbet fixtures above.
+skedaddle_1800:
+  <<: *DEFAULTS
+  title: "Skedaddle reference 1800"
+  citation: "Skedaddle reference 1800"
+  citation_html: "Skedaddle reference 1800"
+  display_title: "Skedaddle reference 1800"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book
+  iso_publication_date: "1800"
+
+skedaddle_1900:
+  <<: *DEFAULTS
+  title: "Skedaddle reference 1900"
+  citation: "Skedaddle reference 1900"
+  citation_html: "Skedaddle reference 1900"
+  display_title: "Skedaddle reference 1900"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book
+  iso_publication_date: "1900"
+
+skedaddle_1900_01_01:
+  <<: *DEFAULTS
+  title: "Skedaddle reference 1 January 1900"
+  citation: "Skedaddle reference 1 January 1900"
+  citation_html: "Skedaddle reference 1 January 1900"
+  display_title: "Skedaddle reference 1 January 1900"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book
+  iso_publication_date: "1900-01-01"
+
+skedaddle_1900_06:
+  <<: *DEFAULTS
+  title: "Skedaddle reference June 1900"
+  citation: "Skedaddle reference June 1900"
+  citation_html: "Skedaddle reference June 1900"
+  display_title: "Skedaddle reference June 1900"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book
+  iso_publication_date: "1900-06"
+
+skedaddle_1900_06_06:
+  <<: *DEFAULTS
+  title: "Skedaddle reference 6 June 1900"
+  citation: "Skedaddle reference 6 June 1900"
+  citation_html: "Skedaddle reference 6 June 1900"
+  display_title: "Skedaddle reference 6 June 1900"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book
+  iso_publication_date: "1900-06-06"
+
+skedaddle_1990:
+  <<: *DEFAULTS
+  title: "Skedaddle reference 1990"
+  citation: "Skedaddle reference 1990"
+  citation_html: "Skedaddle reference 1990"
+  display_title: "Skedaddle reference 1990"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book
+  iso_publication_date: "1990"
+
+skedaddle_no_date:
+  <<: *DEFAULTS
+  title: "Skedaddle reference with no date"
+  citation: "Skedaddle reference with no date"
+  citation_html: "Skedaddle reference with no date"
+  display_title: "Skedaddle reference with no date"
+  author: unknown
+  ref_author_role: dash
+  ref_type: book

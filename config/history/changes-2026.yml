@@ -1,4 +1,8 @@
 - :date: 20-October-2026
+  :jira_id: '5789'
+  :description: |-
+    Reference typeahead: sort year-only and month-only publication dates after fuller dates in the same year or month
+- :date: 20-October-2026
   :jira_id: '5801'
   :description: |-
     Loader: Remove Review Name from message listing overlapping Review Periods

@@ -61,13 +61,15 @@ class Reference::AsTypeahead::OnCitation
     end
   end
 
+  # Pad partial dates (YYYY, YYYY-MM) with -99 so, within the same year or
+  # month, they sort after references with a fuller date.
   def query(terms, excluded_id)
     Reference.includes(:ref_type)
       .where.not(ref_type: { name: "Journal" })
       .not_duplicate
       .where.not(reference: { id: excluded_id })
       .where(bound_terms_array(terms))
-      .order(Arel.sql("iso_publication_date ASC NULLS LAST"), "citation")
+      .order(Arel.sql("rpad(iso_publication_date, 10, '-99') ASC NULLS LAST"), "citation")
       .limit(SEARCH_LIMIT)
   end
 end
