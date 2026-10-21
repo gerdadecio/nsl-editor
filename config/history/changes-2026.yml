@@ -330,6 +330,9 @@
   :jira_id: '5905'
   :description: |-
     Soft delete: Don't offer the edit and other tabs for a soft-deleted instance except for the Details tab
+- :date: 21-October-2026
+  :release: true
+  :release_version: 5.1.5.33
 - :date: 21-August-2026
   :jira_id: '3732'
   :description: |-
