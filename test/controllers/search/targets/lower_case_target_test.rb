@@ -28,7 +28,7 @@ class SearchControllerLowerCaseTargetTest < ActionDispatch::IntegrationTest
     ) do
       get search_path, params: { query_target: "name", query_string: "*" }
     end
-    assert_select "span#search-target-button-text", /name/, "The input search target 'name' should be output as 'name'"
+    assert_select "span#search-target-button-text", /Names/, "The input search target 'name' should be output as 'Names'"
     assert_response :success
   end
 end

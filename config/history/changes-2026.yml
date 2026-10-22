@@ -1,4 +1,8 @@
 - :date: 22-October-2026
+  :jira_id: '6000'
+  :description: |-
+    Search: Stop Query Help and Examples tabs being unexpectedly blank
+- :date: 22-October-2026
   :jira_id: '6001'
   :description: |-
     Reference-plus-Instances search: Show at most 1000 instances per reference by default, add instance-limit: directive, and count instance rows separately

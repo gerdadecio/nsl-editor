@@ -199,7 +199,8 @@ class Search::ParsedRequest
   def initialize(params)
     @params = params
     @note_to_user = ""
-    @original_query_target_for_display = params[:query_target]
+    @original_query_target_for_display =
+      Search::TargetDisplayName.for(params[:original_query_target] || params[:query_target])
     @query_string = canonical_query_string
     @query_string = @query_string.gsub(/  */, " ") if @query_string.present?
     @query_target = (@params["canonical_query_target"] || "").delete(")").delete("(").strip.downcase
