@@ -61,6 +61,9 @@
   <% when 'instance-for-expansion' %>
     <%= render partial: "#{partials}/instance/instance_for_expansion_record",
       locals: {search_result: record, give_me_focus: give_me_focus} %>
+  <% when Search::Reference::InstanceExpansion::NOTICE %>
+    <%= render partial: "#{partials}/instance/instances_limited_notice",
+      locals: {notice: record} %>
   <% when 'Loader Batch' %>
     <%= render partial: "#{partials}/loader_batch_record",
       locals: {search_result: record, give_me_focus: give_me_focus} %>

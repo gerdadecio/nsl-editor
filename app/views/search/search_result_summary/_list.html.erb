@@ -36,4 +36,8 @@
             <%= "#{pluralize(@search.executed_query.total,"record")}" %>
           <% end %>
         <% end %>
+        <%# NSL-6001: instance rows shown, counted separately from the records. %>
+        <% if @search.executed_query.try(:instance_row_count) %>
+          (<%= pluralize(number_with_delimiter(@search.executed_query.instance_row_count), "instance row") %>)
+        <% end %>
       <% end %>
