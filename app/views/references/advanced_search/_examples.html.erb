@@ -80,6 +80,8 @@ Note: some examples here depend on APNI data - we apologise for that but for the
       {search_target: 'References', search_string: "citation: nuytsia limit: 15 show-instances:", explanation: %Q(Search explicitly on citation field and limit the results.)},
       {search_target: 'References', search_string: "citation: nuytsia limit: 15 show-instances-by-page:", explanation: %Q(Search explicitly on citation field and limit the results.)},
       {search_target: 'References', search_string: "id:8920021 show-instances-by-page: instance-offset: 1800", explanation: %Q(Search explicitly on citation field and offset the instances i.e. see the tail of the instances)},
+      {search_target: 'References', search_string: "nuytsia limit: 5 show-instances: instance-limit: 50", explanation: %Q(Show at most 50 instances for each reference.)},
+      {search_target: 'References', search_string: "id:8920021 show-instances-by-page: instance-offset: 1000 instance-limit: 500", explanation: %Q(Show instances 1001 to 1500 of the reference.)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">

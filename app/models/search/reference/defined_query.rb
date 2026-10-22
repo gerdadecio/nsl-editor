@@ -27,7 +27,8 @@ class Search::Reference::DefinedQuery
     :id,
     :count,
     :show_csv,
-    :total
+    :total,
+    :instance_row_count
 
   def initialize(parsed_request, force_list_query = false)
     @parsed_request = parsed_request
@@ -89,35 +90,12 @@ class Search::Reference::DefinedQuery
     end
   end
 
-  def instances_sort_key
-    @parsed_request.order_instances_by_page ? "page" : "name"
-  end
-
-  # See Search::OnModel::Base#show_instances for why this batches via
-  # preload_for rather than instantiating Instance::AsArray::ForReference
-  # (and letting it query) once per reference in @references.
-  #
-  # NOTES (limit/total redesign): no limit: passed here (was
-  # @parsed_request.limit) - same change as Search::OnModel::Base#show_instances,
-  # see Instance::AsArray::ForReference's own NOTES for why. instance_offset:
-  # is still honoured.
+  # See Search::OnModel::Base#show_instances - same expansion, including
+  # NSL-6001's per-reference instance-limit: and instance_row_count.
   def show_instances
-    sort_key = instances_sort_key
-    instances_by_reference, cited_by_map =
-      Instance::AsArray::ForReference.preload_for(@references, sort_by: sort_key)
-
-    @results = []
-    @references.each do |ref|
-      @results << ref
-      instances_query = Instance::AsArray::ForReference
-        .new(ref,
-          sort_key,
-          nil,
-          @parsed_request.instance_offset,
-          preloaded_instances: instances_by_reference[ref.id] || [],
-          preloaded_cited_by_map: cited_by_map)
-      instances_query.results.each { |i| @results << i }
-    end
+    expansion = Search::Reference::InstanceExpansion.new(@references, @parsed_request)
+    @results = expansion.results
+    @instance_row_count = expansion.instance_row_count
   end
 
   def debug(s)

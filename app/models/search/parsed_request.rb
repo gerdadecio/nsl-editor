@@ -37,6 +37,7 @@ class Search::ParsedRequest
     :offset,
     :offsetted,
     :instance_offset,
+    :instance_limit,
     :list,
     :order,
     :order_instances_by_page,
@@ -65,6 +66,7 @@ class Search::ParsedRequest
     :note_to_user
 
   DEFAULT_LIST_LIMIT = 100
+  DEFAULT_INSTANCE_LIMIT = 1000
   SIMPLE_QUERY_TARGETS = {
     "author" => "author",
     "authors" => "author",
@@ -233,6 +235,8 @@ class Search::ParsedRequest
     @target_button_text = parsed_defined_query.target_button_text
     unused_qs_tokens = parse_count_or_list(unused_qs_tokens)
     unused_qs_tokens = parse_print_or_display(unused_qs_tokens)
+    # instance-limit: before limit:, which would otherwise match its tail.
+    unused_qs_tokens = parse_instance_limit(unused_qs_tokens)
     unused_qs_tokens = parse_limit(unused_qs_tokens)
     unused_qs_tokens = parse_instance_offset(unused_qs_tokens)
     unused_qs_tokens = parse_offset(unused_qs_tokens)
@@ -449,6 +453,34 @@ query_string: '#{@query_string}'",
     else
       @instance_offset = nil
       @instance_offsetted = false
+    end
+    joined_tokens
+  end
+
+  # NSL-6001: how many standalone instances a reference search shows per
+  # reference (see Search::Reference::InstanceExpansion).
+  def parse_instance_limit(tokens)
+    joined_tokens = tokens.join(" ")
+    joined_tokens = apply_list_instance_limit(joined_tokens) if @list
+    filter_bad_instance_limit(joined_tokens).split(" ")
+  end
+
+  def apply_list_instance_limit(joined_tokens)
+    if /instance-limit: \d{1,}/i.match?(joined_tokens)
+      @instance_limit = joined_tokens.match(/instance-limit: (\d{1,})/i)[1].to_i
+      raise "Invalid instance limit: #{@instance_limit}" if @instance_limit.zero?
+
+      joined_tokens = joined_tokens.gsub(/instance-limit: *\d{1,}/i, "")
+    else
+      @instance_limit = DEFAULT_INSTANCE_LIMIT
+    end
+    joined_tokens
+  end
+
+  def filter_bad_instance_limit(joined_tokens)
+    if joined_tokens.match(/instance-limit: *[^\s\\]{1,}/i).present?
+      bad_instance_limit = joined_tokens.match(/instance-limit: *([^\s\\]{1,})/i)[1]
+      raise "Invalid instance limit: #{bad_instance_limit}"
     end
     joined_tokens
   end

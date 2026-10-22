@@ -61,19 +61,28 @@
 # Instance::AsArray::ForName never having a limit concept for a name's
 # instances. limit: remains available for a caller that genuinely wants
 # one (nil, the default, means unlimited).
+#
+# NOTES (NSL-6001): search callers now cap the standalone instances shown
+# per reference again (instance-limit:, default 1000), but in SQL via
+# preload_for's offset:/limit: - see Windowable - not via this class's
+# own limit:, which still counts rows as before.
 class Instance::AsArray::ForReference < Array
   attr_reader :results
 
   class << self
+    include Instance::AsArray::ForReference::Windowable
+
     # Batches the two queries find_instances_for_ref would otherwise run
     # once per reference. Returns [instances_by_reference_id,
     # cited_by_map] - pass both into .new (see preloaded_instances:/
     # preloaded_cited_by_map: above) for every reference in `references`.
-    def preload_for(references, sort_by: "name")
+    # offset:/limit: select which standalone instances of each reference
+    # to load (see Windowable); pass 0 and nil to .new alongside them.
+    def preload_for(references, sort_by: "name", offset: 0, limit: nil)
       reference_ids = references.map(&:id)
       return [ {}, {} ] if reference_ids.empty?
 
-      instances = base_query(sort_by).where(reference_id: reference_ids).to_a
+      instances = windowed_query(reference_ids, sort_by, offset: offset, limit: limit).to_a
       instances_by_reference = instances.group_by(&:reference_id)
 
       standalone_ids = instances.select { |instance| instance.cited_by_id.blank? }.map(&:id)
@@ -87,6 +96,10 @@ class Instance::AsArray::ForReference < Array
         .includes(:instance_type)
         .includes(this_is_cited_by: [ :name, :instance_type ])
       sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
+    end
+
+    def standalone_scope(reference_ids)
+      Instance.where(reference_id: reference_ids, cited_by_id: nil)
     end
 
     # See the find_instances_for_ref note (below, instance-level) for why

@@ -1,0 +1,26 @@
+<%# NSL-6001: follows a reference's instances when instance-limit: or
+    instance-offset: left some out. See Search::Reference::InstanceExpansion.
+    Deliberately not a .search-result row, so it doesn't take focus or
+    open a details panel. %>
+<tr class="instances-limited-notice" data-reference-id="<%= notice[:reference_id] %>">
+  <td class="width-1-percent"></td>
+  <td colspan="2" class="text width-80-percent">
+    <span class="indent-level-1">
+      <% if notice[:first] > notice[:last] %>
+        No instances after the first <%= number_with_delimiter(notice[:first] - 1) %>
+        (of <%= number_with_delimiter(notice[:total]) %>)
+      <% else %>
+        Showing instances <%= number_with_delimiter(notice[:first]) %>&ndash;<%= number_with_delimiter(notice[:last]) %>
+        of <%= number_with_delimiter(notice[:total]) %>
+        (<%= pluralize(number_with_delimiter(notice[:row_count]), "row") %>)
+      <% end %>
+      <% if notice[:next_query_string] %>
+        &nbsp; | &nbsp;
+        <%= link_to("Show the next instances",
+                    search_path(query_string: notice[:next_query_string], query_target: "references"),
+                    title: "Show this reference's next instances.") %>
+      <% end %>
+    </span>
+  </td>
+  <td class="width-10-percent filler"></td>
+</tr>

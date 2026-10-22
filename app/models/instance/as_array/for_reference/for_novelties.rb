@@ -47,15 +47,21 @@
 # rather than being capped by the same number controlling how many
 # References the search itself returns. limit: remains available for a
 # caller that genuinely wants one (nil, the default, means unlimited).
+#
+# NOTES (NSL-6001): capped per reference again by search callers, in SQL
+# via preload_for's offset:/limit: - same as the equivalent note on
+# Instance::AsArray::ForReference.
 class Instance::AsArray::ForReference::ForNovelties < Array
   attr_reader :results
 
   class << self
-    def preload_for(references, sort_by: "name")
+    include Instance::AsArray::ForReference::Windowable
+
+    def preload_for(references, sort_by: "name", offset: 0, limit: nil)
       reference_ids = references.map(&:id)
       return {} if reference_ids.empty?
 
-      base_query(sort_by).where(reference_id: reference_ids).to_a.group_by(&:reference_id)
+      windowed_query(reference_ids, sort_by, offset: offset, limit: limit).to_a.group_by(&:reference_id)
     end
 
     def base_query(sort_by)
@@ -66,6 +72,12 @@ class Instance::AsArray::ForReference::ForNovelties < Array
         .where(instance_type: { primary_instance: true })
         .includes(this_is_cited_by: [ :name, :instance_type ])
       sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
+    end
+
+    def standalone_scope(reference_ids)
+      Instance.joins(:instance_type)
+        .where(reference_id: reference_ids, cited_by_id: nil)
+        .where(instance_type: { primary_instance: true })
     end
   end
 

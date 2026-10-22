@@ -1,3 +1,7 @@
+- :date: 22-October-2026
+  :jira_id: '6001'
+  :description: |-
+    Reference-plus-Instances search: Show at most 1000 instances per reference by default, add instance-limit: directive, and count instance rows separately
 - :date: 20-October-2026
   :jira_id: '5996'
   :description: |-
