@@ -45,7 +45,8 @@ class Search::EmptyParsedRequest
     @empty = true
     @defined_query = false
     @target_button_text = params[:query_target] || "Names"
-    @original_query_target_for_display = @original_query_target = params[:query_target]
+    @original_query_target = params[:query_target]
+    @original_query_target_for_display = Search::TargetDisplayName.for(params[:query_target])
     @count = false
     @list = false
     @limited = false
