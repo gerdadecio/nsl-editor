@@ -215,6 +215,15 @@ class Search::ParsedRequest
     Rails.logger.debug { "Search::ParsedRequest #{s}" }
   end
 
+  # Both the count and the list query build the where clauses, so the same
+  # note can arrive twice - keep only one copy.
+  def add_note_to_user(note)
+    return if note.blank?
+    return if @note_to_user.include?(note)
+
+    @note_to_user = [ @note_to_user, note ].compact_blank.join(" ")
+  end
+
   def inspect
     "Parsed Request: count: #{@count}; list: #{@list};
     defined_query: #{@defined_query}; where_arguments: #{@where_arguments},

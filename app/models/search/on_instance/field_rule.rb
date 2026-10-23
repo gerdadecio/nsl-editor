@@ -155,7 +155,7 @@ from comment where comment.instance_id = instance.id)",
                                  where instance_note_key_id =
                                  instance_note_key.id
                                  and instance_note_key.name = 'APC Dist.')) ",
-      convert_asterisk_to_percent: false,
+      regex: true,
       case_sensitive: true,
     },
     "apc-comment-note-matches:" => {
@@ -168,7 +168,7 @@ from comment where comment.instance_id = instance.id)",
                                  where instance_note_key_id =
                                  instance_note_key.id
                                  and instance_note_key.name = 'APC Comment')) ",
-      convert_asterisk_to_percent: false,
+      regex: true,
       case_sensitive: true,
     },
     "tree-dist-matches:" => {
@@ -184,7 +184,7 @@ from comment where comment.instance_id = instance.id)",
                   and tv.id = t.current_tree_version_id
                   and te.instance_id = instance.id
                   and (te.profile -> (t.config ->> 'distribution_key') ->> 'value') ~* ?)",
-      convert_asterisk_to_percent: false,
+      regex: true,
     },
     "tree-comment-matches:" => {
       where_clause: " exists(select null
@@ -199,7 +199,7 @@ from comment where comment.instance_id = instance.id)",
                   and tv.id = t.current_tree_version_id
                   and te.instance_id = instance.id
                   and (te.profile -> (t.config ->> 'comment_key') ->> 'value') ~* ?)",
-      convert_asterisk_to_percent: false,
+      regex: true,
     },
     "non-tree-drafts:" => {
       where_clause: " draft and not exists(select null
@@ -523,7 +523,7 @@ from instance i
                                  where instance_note_key_id =
                                  instance_note_key.id
                                  and lower(instance_note_key.name) = lower('#{key}')))),
-        convert_asterisk_to_percent: false,
+        regex: true,
         case_sensitive: true,
       }
       hash[field]

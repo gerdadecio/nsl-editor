@@ -54,6 +54,7 @@ class Search::OnInstance::WhereClauses
     else
       field_or_default = field.presence || DEFAULT_FIELD
       rule = Search::OnInstance::Predicate.new(field_or_default, value)
+      @parsed_request.add_note_to_user(rule.regex_note)
       apply_rule(rule)
       apply_order(rule)
       apply_join(rule)

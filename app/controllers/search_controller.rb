@@ -17,9 +17,8 @@ class SearchController < ApplicationController
       end
     end
   rescue ActiveRecord::StatementInvalid => e
-    params[:error_message] = "That query did not work. Please check the \
-    search directives and arguments."
-    logger.error("Search error: #{e}")
+    params[:error_message] = statement_invalid_message(e)
+    logger.error("Search error: #{e}; query_target: #{params[:query_target].inspect}; query_string: #{params[:query_string].inspect}")
     run_empty_search_to_show_error(params)
   rescue StandardError => e
     params[:error_message] = e.to_s
@@ -118,6 +117,19 @@ class SearchController < ApplicationController
     @empty_search = true
     params[:query_target] = params[:original_query_target] || params[:query_target]
     @search = Search::Empty.new(params)
+  end
+
+  # Search::RegexArgument catches bad patterns for directives marked
+  # regex: true; this covers any regex rule that isn't marked (NSL-6004).
+  def statement_invalid_message(error)
+    if error.cause.is_a?(PG::InvalidRegularExpression)
+      "That query did not work: one of its arguments is not a valid regular \
+expression. Please check the arguments of any directives that match on a \
+regular expression."
+    else
+      "That query did not work. Please check the \
+    search directives and arguments."
+    end
   end
 
   # TODO: where is this needed and why?

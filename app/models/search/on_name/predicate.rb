@@ -32,7 +32,8 @@ class Search::OnName::Predicate
     :has_scope,
     :scope_,
     :order,
-    :allow_common_and_cultivar
+    :allow_common_and_cultivar,
+    :regex_note
 
   def initialize(field, value)
     @field = field
@@ -67,6 +68,7 @@ class Search::OnName::Predicate
     @allow_common_and_cultivar = rule[:allow_common_and_cultivar] || false
     @tokenize = rule[:tokenize] || false
     @convert_symbol_to_x = rule[:convert_multiply_to_x] || false
+    @regex = rule[:regex] || false
   end
 
   def apply_scope
@@ -120,9 +122,17 @@ class Search::OnName::Predicate
   def build_canon_value(val)
     if @multiple_values && @value.split(@split_char).size > 1
       val.split(@split_char).collect(&:strip)
+    elsif @regex
+      build_regex_value(val)
     else
       val.tr("*", "%")
     end
+  end
+
+  def build_regex_value(val)
+    regex_argument = Search::RegexArgument.new(@field, val)
+    @regex_note = regex_argument.note
+    regex_argument.value
   end
 
   def build_canon_field(field)

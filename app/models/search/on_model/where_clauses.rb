@@ -62,6 +62,7 @@ class Search::OnModel::WhereClauses
         field_or_default,
         value,
       )
+      @parsed_request.add_note_to_user(rule.regex_note)
       @do_count_totals = false if rule.do_count_totals == false
       apply_rule(rule)
       apply_order(rule)
