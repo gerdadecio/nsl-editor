@@ -62,6 +62,7 @@ class Search::Reference::DefinedQuery::WhereClauses
       field_or_default,
       value,
     )
+    @parsed_request.add_note_to_user(rule.regex_note)
     apply_rule(rule)
     apply_order(rule)
   end

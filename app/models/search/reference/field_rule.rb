@@ -196,7 +196,7 @@ from ref_type where lower(name) like lower(?))",
     "published-before:" => { where_clause: " iso_publication_date < ? " },
     "iso-pub-date-matches:" => {
       where_clause: " iso_publication_date ~ ? ",
-      leave_asterisks: true,
+      regex: true,
     },
     "duplicate-of-id:" => {
       multiple_values: true,
@@ -276,7 +276,10 @@ inner join ref_type xcrt on xrt.id = xcrt.parent_id))",
       where_clause: "publication_date ~ '^\\(*[0-9][0-9][0-9][0-9]\\)*$' ",
       takes_no_arg: true,
     },
-    "pub-date-matches:" => { where_clause: " publication_date ~* ? " },
+    "pub-date-matches:" => {
+      where_clause: " publication_date ~* ? ",
+      regex: true,
+    },
     "has-no-direct-or-child-instances:" => {
       where_clause: " reference.id not in
         (select id

@@ -171,6 +171,7 @@ from comment where comment.name_id = name.id)"
 'regex-name:':
   :where_clause: 'lower((full_name)) ~ (?) '
   :wildcard_embedded_spaces: false
+  :regex: true
 'name:':
   :where_clause: "lower(f_unaccent(full_name)) like lower(f_unaccent(?))
    or lower(f_unaccent(full_name)) like lower(f_unaccent('x '||?))

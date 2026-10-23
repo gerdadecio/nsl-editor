@@ -31,7 +31,8 @@ class Search::OnInstance::Predicate
     :has_scope,
     :scope_,
     :order,
-    :join_name
+    :join_name,
+    :regex_note
 
   def initialize(field, value)
     debug("Start")
@@ -70,6 +71,7 @@ class Search::OnInstance::Predicate
     @value = @value.downcase unless @rule[:case_sensitive]
     @tokenize = @rule[:tokenize] || false
     @join_name = @rule[:join] == :name
+    @regex = @rule[:regex] || false
   end
 
   def apply_scope
@@ -112,9 +114,17 @@ class Search::OnInstance::Predicate
   def build_canon_value
     if @multiple_values && @value.split(",").size > 1
       @value.split(",").collect(&:strip)
+    elsif @regex
+      build_regex_value(@value)
     else
       convert_asterisk_to_percent
     end
+  end
+
+  def build_regex_value(val)
+    regex_argument = Search::RegexArgument.new(@field, val)
+    @regex_note = regex_argument.note
+    regex_argument.value
   end
 
   def convert_asterisk_to_percent

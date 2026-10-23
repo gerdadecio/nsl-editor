@@ -30,7 +30,8 @@ class Search::Reference::DefinedQuery::Predicate
     :value,
     :has_scope,
     :scope_,
-    :order
+    :order,
+    :regex_note
 
   def initialize(field, value)
     @field = field
@@ -58,6 +59,7 @@ class Search::Reference::DefinedQuery::Predicate
     @trailing_wildcard = rule[:trailing_wildcard] || false
     @leading_wildcard = rule[:leading_wildcard] || false
     @leave_asterisks = rule[:leave_asterisks] || false
+    @regex = rule[:regex] || false
     apply_rule_overflow(rule)
   end
 
@@ -106,11 +108,19 @@ class Search::Reference::DefinedQuery::Predicate
   def build_canon_value(val)
     if @multiple_values && @value.split(",").size > 1
       val.split(",").collect(&:strip)
+    elsif @regex
+      build_regex_value(val)
     elsif @leave_asterisks
       val
     else
       val.tr("*", "%")
     end
+  end
+
+  def build_regex_value(val)
+    regex_argument = Search::RegexArgument.new(@field, val)
+    @regex_note = regex_argument.note
+    regex_argument.value
   end
 
   def build_canon_field(field)

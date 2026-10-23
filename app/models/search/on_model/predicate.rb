@@ -32,7 +32,8 @@ class Search::OnModel::Predicate
     :has_scope,
     :scope_,
     :order,
-    :do_count_totals
+    :do_count_totals,
+    :regex_note
 
   def initialize(parsed_request, field, value)
     @parsed_request = parsed_request
@@ -65,6 +66,7 @@ class Search::OnModel::Predicate
     @trailing_wildcard = rule[:trailing_wildcard] || false
     @leading_wildcard = rule[:leading_wildcard] || false
     @leave_asterisks = rule[:leave_asterisks] || false
+    @regex = rule[:regex] || false
     apply_rule_overflow(rule)
   end
 
@@ -129,11 +131,19 @@ class Search::OnModel::Predicate
   def build_canon_value(val)
     if @multiple_values && @value.split(",").size > 1
       val.split(",").collect(&:strip)
+    elsif @regex
+      build_regex_value(val)
     elsif @leave_asterisks
       val
     else
       val.tr("*", "%")
     end
+  end
+
+  def build_regex_value(val)
+    regex_argument = Search::RegexArgument.new(@field, val)
+    @regex_note = regex_argument.note
+    regex_argument.value
   end
 
   def build_canon_field(field)
