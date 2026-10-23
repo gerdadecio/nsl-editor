@@ -38,16 +38,16 @@ class Search::OnModel::Predicate
   def initialize(parsed_request, field, value)
     @parsed_request = parsed_request
     @do_count_totals = true
-    @field = field
-    @value = value
+    @field = field.downcase
     @rules_class = "Search::#{@parsed_request.target_model}::FieldRule::RULES".constantize
     @abbrevs_class = "Search::#{@parsed_request.target_model}::FieldAbbrev::ABBREVS".constantize
-    @canon_field = build_canon_field(field)
+    @canon_field = build_canon_field(@field)
     rule = @rules_class[@canon_field] || EMPTY_RULE
+    @value = rule[:regex] ? value : value.downcase
     @is_null = value.blank?
     @has_not_exists_clause = rule[:not_exists_clause].present?
     apply_rule(rule)
-    @canon_value = build_canon_value(value)
+    @canon_value = build_canon_value(@value)
     apply_scope
     @order = rule[:order] || @parsed_request.default_order_column
     process_value

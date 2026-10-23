@@ -34,13 +34,13 @@ class Search::Reference::DefinedQuery::Predicate
     :regex_note
 
   def initialize(field, value)
-    @field = field
-    @value = value
-    @canon_field = build_canon_field(field)
+    @field = field.downcase
+    @canon_field = build_canon_field(@field)
     rule = Search::Reference::FieldRule::RULES[@canon_field] || EMPTY_RULE
+    @value = rule[:regex] ? value : value.downcase
     @is_null = value.blank?
     apply_rule(rule)
-    @canon_value = build_canon_value(value)
+    @canon_value = build_canon_value(@value)
     apply_scope
     @order = rule[:order] || "citation"
     process_value

@@ -1,4 +1,8 @@
 - :date: 23-October-2026
+  :jira_id: '6006'
+  :description: |-
+    Search: Some follow up fixes to regex searches and their help text
+- :date: 23-October-2026
   :jira_id: '6004'
   :description: |-
     Search: Handle Postgres Regex errors more helpfully

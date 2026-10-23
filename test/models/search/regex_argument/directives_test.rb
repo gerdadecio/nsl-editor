@@ -86,4 +86,40 @@ class SearchRegexArgumentDirectivesTest < ActiveSupport::TestCase
     result = search("references with instances", "pub-date-matches: *")
     assert_match(/pub-date-matches: takes a regular expression/, result.parsed_request.note_to_user)
   end
+
+  # Arguments of regex: true directives are not lowercased, so escapes such
+  # as \S and \D keep their meaning instead of becoming \s and \d.
+  test "name regex-name: keeps the case of escapes" do
+    results = search("name", "regex-name: ^\\S+$").executed_query.results
+    assert_includes results.map(&:full_name), "a_family"
+    assert results.none? { |name| name.full_name.match?(/\s/) }, "Only names without spaces expected."
+  end
+
+  test "name regex-name: matches regardless of case" do
+    results = search("name", "Regex-Name: ^TRIODIA").executed_query.results
+    assert_includes results.map(&:full_name), "Triodia basedowii E.Pritz"
+  end
+
+  test "reference pub-date-matches: keeps the case of escapes" do
+    results = search("reference", "pub-date-matches: ^\\D").executed_query.results
+    assert_not results.empty?, "Results expected."
+    assert results.all? { |ref| ref.publication_date.match?(/\A\D/) }, "Only dates not starting with a digit expected."
+  end
+
+  test "references with instances pub-date-matches: keeps the case of escapes" do
+    predicate = Search::Reference::DefinedQuery::Predicate.new("Pub-Date-Matches:", "^\\D")
+    assert_equal "pub-date-matches:", predicate.canon_field
+    assert_equal "^\\D", predicate.processed_value
+  end
+
+  test "instance tree-dist-matches: keeps the case of escapes" do
+    predicate = Search::OnInstance::Predicate.new("tree-dist-matches:", "\\S")
+    assert_equal "\\S", predicate.processed_value
+  end
+
+  test "non-regex directive arguments are still lowercased" do
+    predicate = Search::OnName::Predicate.new("Simple-Name:", "Triodia")
+    assert_equal "simple-name:", predicate.canon_field
+    assert_match(/triodia/, predicate.processed_value)
+  end
 end
