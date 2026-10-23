@@ -54,6 +54,8 @@
      name-element: (above), but no wildcards are added. *"},
     {field_name: 'verbatim-rank:',
      description: "Searches verbatim rank. Adds wildcards at both ends."},
+    {field_name: 'regex-name:',
+     description: %Q(Regular expression match on the fully qualified name, in lower case, e.g. "regex-name: ^grevillea .*robusta". No wildcards are added; use ".*" for any characters.  An asterisk on its own means "has any value" (the same as ".").)},
     {field_name: 'name-path:',
      description: "Searches the name path field, which is mostly hidden but used for sorting. You can add your own wildcards."},
       ].each do |val| %>

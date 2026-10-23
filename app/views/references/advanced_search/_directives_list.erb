@@ -162,7 +162,9 @@ in the following formats:</p>
     {field_name: 'before-year:', description: "For backward compatibility, looks at the iso_publication_date"},
     {field_name: 'no-year:', description: "Iso-publication_date field has no value."},
     {field_name: 'date-matches:',
-     description: "does a regular expression match against the strictly formatted data in iso_publication_date. You can also use 'iso-pub-date-matches:', and 'pub-date-matches:'"},
+     description: "does a regular expression match against the strictly formatted data in iso_publication_date. Case-sensitive. You can also use 'iso-pub-date-matches:'.  An asterisk on its own means &quot;has any value&quot; (the same as &quot;.&quot;)."},
+    {field_name: 'pub-date-matches:',
+     description: "does a regular expression match against the textual publication date field (publication_date), not iso_publication_date. Case-insensitive.  An asterisk on its own means &quot;has any value&quot; (the same as &quot;.&quot;)."},
     {field_name: 'no-publication-date:', description: "The textual publication date field has no value."},
       ].each do |val| %>
   <tr>
