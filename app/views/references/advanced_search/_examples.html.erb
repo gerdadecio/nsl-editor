@@ -129,12 +129,12 @@ in the following formats:</p>
 <br>
 
 <h5>Publication date regular expression matches</h5>
-<p>Regular expressions provide advanced search techniques.  The following searches match regular expressions against the iso_publication_date text field, but we've used the briefer token 'date-matche:' interchangeably to show the two are equivalent.</p>
+<p>Regular expressions provide advanced search techniques.  The following searches match regular expressions against the iso_publication_date text field, but we've used the briefer token 'date-matches:' interchangeably to show the two are equivalent.</p>
 <table class="example-searches table table-striped">
   <% [
       {search_target: 'References', search_string: "chah iso-pub-date-matches: .",explanation: %Q(Any chah with a non-null iso_publication_date)},
-      {search_target: 'References', search_string: "chah date-matches: ^....$",explanation: %Q(Any chah with only a year specied)},
-      {search_target: 'References', search_string: "chah iso-pub-date-matches: ^....-..$",explanation: %Q(Any chah with a year and month specied but no day)},
+      {search_target: 'References', search_string: "chah date-matches: ^....$",explanation: %Q(Any chah with only a year specified)},
+      {search_target: 'References', search_string: "chah iso-pub-date-matches: ^....-..$",explanation: %Q(Any chah with a year and month specified but no day)},
       {search_target: 'References', search_string: "chah date-matches: ^....-02",explanation: %Q(Any chah published in February (any February))},
       {search_target: 'References', search_string: "chah iso-pub-date-matches: ^....-..-31",explanation: %Q(Any chah published on the 31st day of any month)},
       {search_target: 'References', search_string: "chah date-matches: 31$",explanation: %Q(Any chah published on the 31st day of any month (another way of expressing it))},

@@ -169,7 +169,7 @@ from comment where comment.name_id = name.id)"
   :order: case when parent_id is null then 'A' else 'B' end, full_name
   :allow_common_and_cultivar: true
 'regex-name:':
-  :where_clause: 'lower((full_name)) ~ (?) '
+  :where_clause: 'full_name ~* ? '
   :wildcard_embedded_spaces: false
   :regex: true
 'name:':

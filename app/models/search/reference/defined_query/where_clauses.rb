@@ -32,7 +32,9 @@ class Search::Reference::DefinedQuery::WhereClauses
   end
 
   def build_sql
-    args = @parsed_request.where_arguments.downcase
+    # Predicate lowercases each directive and, unless its rule is regex: true,
+    # its argument (lowercasing a regex turns \S into \s, etc.).
+    args = @parsed_request.where_arguments
     @common_and_cultivar_included = @parsed_request.common_and_cultivar
     @sql = @sql.for_id(@parsed_request.id) if @parsed_request.id
     apply_args_to_sql(args)
