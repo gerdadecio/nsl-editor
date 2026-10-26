@@ -1,3 +1,7 @@
+- :date: 27-October-2026
+  :jira_id: '5967'
+  :description: |-
+    Security: Implement reset_session while preserving deep links on successful sign-in and add a rate limit
 - :date: 26-October-2026
   :jira_id: '5995'
   :description: |-
