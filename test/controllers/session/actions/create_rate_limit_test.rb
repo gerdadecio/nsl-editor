@@ -17,14 +17,21 @@
 #   limitations under the License.
 #
 require "test_helper"
+require "minitest/mock"
 
 # Sign-in attempts are rate limited per client IP.
 #
 # The test environment uses :null_store, which never counts, so these tests
 # stub the store's increment to stand in for the attempt count.
+#
+# The stub goes on the controller's store instance, not on NullStore with
+# stub_any_instance: NullStore prepends LocalCache, so stub_any_instance thinks
+# NullStore doesn't own increment and removes NullStore#increment when it
+# restores. Every later sign-in then raises NotImplementedError from
+# Store#increment.
 class SessionsCreateRateLimitTest < ActionDispatch::IntegrationTest
   def with_attempt_count(count, &block)
-    ActiveSupport::Cache::NullStore.stub_any_instance(:increment, count, &block)
+    SessionsController.cache_store.stub(:increment, count, &block)
   end
 
   def with_ldap_sign_in(&block)
