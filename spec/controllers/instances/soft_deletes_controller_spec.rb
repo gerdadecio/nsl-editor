@@ -42,6 +42,20 @@ RSpec.describe(Instances::SoftDeletesController, type: :controller) do
         expect(response).to(render_template("create"))
         expect(response).to(have_http_status(:ok))
       end
+
+      it "records the current user in deleted_by without touching updated_by or updated_at" do
+        instance.update_columns(updated_by: "original-editor", updated_at: 1.week.ago)
+        original_updated_at = instance.reload.updated_at
+
+        post :create, params: { instance_id: instance.id }, format: :js
+
+        instance.reload
+        expect(instance.deleted_by).to(eq(session_user.username))
+        expect(instance.updated_by).to(eq("original-editor"))
+        expect(instance.updated_at).to(eq(original_updated_at))
+        expect(response).to(render_template("create"))
+        expect(response).to(have_http_status(:ok))
+      end
     end
 
     context "when the model validation does not allow the soft delete" do

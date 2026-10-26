@@ -24,9 +24,7 @@ class Instances::SoftDeletesController < ApplicationController
   # SoftDeletable#soft_delete_must_be_allowed - so a save failure here
   # carries the reason from the database's check_delete_instance function.
   def create
-    @instance.current_user = current_user
-    @instance.deleted_at = Time.current
-    return if @instance.save
+    return if @instance.soft_delete(current_user.username)
 
     @message = @instance.errors.full_messages.join("; ")
     render("create_error", status: :unprocessable_content)

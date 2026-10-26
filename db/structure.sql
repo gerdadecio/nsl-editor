@@ -1235,7 +1235,7 @@ begin
     end if;
 
 end;
-    
+
 $$;
 
 
@@ -1375,6 +1375,7 @@ CREATE TABLE public.instance (
     api_name text,
     api_at timestamp with time zone,
     deleted_at timestamp with time zone,
+    deleted_by text NULL,
     CONSTRAINT citescheck CHECK (((cites_id IS NULL) OR (cited_by_id IS NOT NULL)))
 );
 
@@ -1498,6 +1499,7 @@ CREATE TABLE public.name (
     api_name text,
     api_at timestamp with time zone,
     deleted_at timestamp with time zone,
+    deleted_by text NULL,
     CONSTRAINT published_year_limits CHECK (((published_year > 0) AND (published_year < 2500)))
 );
 
@@ -2673,7 +2675,7 @@ BEGIN
 				 LEFT JOIN public.author b ON nmx.base_author_id = b.id
 				 LEFT JOIN public.author xb ON nmx.ex_base_author_id = xb.id
 		         LEFT JOIN public.name_rank f  on f.rdf_id = 'family'
-		    
+
 		WHERE  nmx.name_rank_id = k.id;
 
 		IF code ~ 'zoological' and has_parent and current_id is null THEN
@@ -2785,7 +2787,7 @@ BEGIN
 
 
 			IF rank_rdfid ~ 'unranked' and not (state ->> 'in_cultivar')::BOOLEAN THEN
-				
+
 				name_string := CONCAT_WS(' ', public.nc_jsonb(current_id, jsonb_set(state, '{depth}',
 				                                                              to_jsonb((state ->> 'depth')::int + 1))) ->>
 				                       'name', rank_abbrev, element, author);

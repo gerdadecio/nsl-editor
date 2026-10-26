@@ -69,30 +69,37 @@ RSpec.describe(AuditHelper, type: :helper) do
     end
 
     it "shows who soft deleted the record and when" do
-      record = double("Record", deleted_at: 3.days.ago, updated_by: "carol")
+      record = double("Record", deleted_at: 3.days.ago, deleted_by: "carol")
       expect(normalize(helper.soft_deleted_by_whom_and_when(record))).to match(/\ARecord soft deleted 3 days ago by carol .+\z/)
     end
 
     it "includes the formatted deleted_at timestamp" do
       deleted_at = Time.zone.parse("2026-01-15 14:05:00")
-      record = double("Record", deleted_at: deleted_at, updated_by: "carol")
+      record = double("Record", deleted_at: deleted_at, deleted_by: "carol")
       expect(normalize(helper.soft_deleted_by_whom_and_when(record))).to end_with("by carol #{helper.formatted_timestamp(deleted_at)}")
     end
 
     it "starts on a new line" do
-      record = double("Record", deleted_at: 3.days.ago, updated_by: "carol")
+      record = double("Record", deleted_at: 3.days.ago, deleted_by: "carol")
       expect(helper.soft_deleted_by_whom_and_when(record)).to start_with("<br>")
     end
 
     it "is blank when there is no deleted_at" do
-      record = double("Record", deleted_at: nil, updated_by: "carol")
+      record = double("Record", deleted_at: nil, deleted_by: "carol")
       expect(helper.soft_deleted_by_whom_and_when(record)).to eq("")
     end
 
     it "is blank when soft delete is disabled even if deleted_at is set" do
       allow(Rails.configuration).to receive(:try).with(:soft_delete_enabled).and_return(false)
-      record = double("Record", deleted_at: 3.days.ago, updated_by: "carol")
+      record = double("Record", deleted_at: 3.days.ago, deleted_by: "carol")
       expect(helper.soft_deleted_by_whom_and_when(record)).to eq("")
+    end
+
+    it "escapes html in deleted_by" do
+      record = double("Record", deleted_at: 3.days.ago, deleted_by: "<script>alert(1)</script>")
+      result = helper.soft_deleted_by_whom_and_when(record)
+      expect(result).not_to include("<script>")
+      expect(result).to include("&lt;script&gt;")
     end
   end
 
