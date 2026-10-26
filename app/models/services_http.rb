@@ -19,17 +19,22 @@
 # HTTP calls to NSL Services and the Mapper. Use these in place of
 # RestClient.get/post/put/delete: they take the same arguments.
 #
-# Every call gets a short open_timeout. Opening a connection takes well under
-# a second, so if it hasn't happened in 10 seconds the service is down, and we
-# fail fast rather than hold a Puma thread for Net::HTTP's default 60 seconds.
-# The read timeout stays at the 60 second default unless a caller passes one,
-# because some tree operations (creating a draft, reports) are legitimately
-# slow.
+# Every call sets both timeouts explicitly, so a hung service can't hold a
+# Puma thread for longer than we chose:
 #
-# Services URLs carry the API key in the query string. Log them with
+# - open_timeout is short. Opening a connection takes well under a second, so
+#   if it hasn't happened in 10 seconds the service is down, and we fail fast.
+# - read_timeout defaults to 60 seconds, because some tree operations
+#   (publishing, reports) are legitimately slow. Callers pass a shorter one for
+#   quick lookups, or a longer one for operations known to take minutes
+#   (creating a draft).
+#
+# Services URLs carry the API key in the query string, because NSL Services
+# only reads it from the request params (ApiInterceptor). Log them with
 # ServicesHttp.loggable(url), never the raw url.
 module ServicesHttp
   OPEN_TIMEOUT = 10
+  READ_TIMEOUT = 60
 
   def self.get(url, headers = {}, read_timeout: nil)
     execute(:get, url, nil, headers, read_timeout)
@@ -48,9 +53,14 @@ module ServicesHttp
   end
 
   def self.execute(method, url, payload, headers, read_timeout)
-    args = { method: method, url: url, headers: headers, open_timeout: OPEN_TIMEOUT }
+    args = {
+      method: method,
+      url: url,
+      headers: headers,
+      open_timeout: OPEN_TIMEOUT,
+      read_timeout: read_timeout || READ_TIMEOUT,
+    }
     args[:payload] = payload unless payload.nil?
-    args[:read_timeout] = read_timeout if read_timeout
     RestClient::Request.execute(**args)
   end
   private_class_method :execute

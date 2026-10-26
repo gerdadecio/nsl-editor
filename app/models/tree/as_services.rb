@@ -18,6 +18,9 @@
 
 #  Tree services
 class Tree::AsServices
+  # Mapper lookups and logins are quick, so don't wait the default 60 seconds.
+  MAPPER_READ_TIMEOUT = 10
+
   # Services
   API_KEY = "apiKey=#{Rails.configuration.try("api_key")}"
 
@@ -104,12 +107,15 @@ class Tree::AsServices
 
   def self.instance_url(instance_id)
     url = MAPPER_API_VERSION == 1 ? preferred_link_url_v1(instance_id) : preferred_link_url_v2(instance_id)
-    response = ServicesHttp.get(url, { content_type: :json, accept: :json })
+    response = ServicesHttp.get(url, { content_type: :json, accept: :json }, read_timeout: MAPPER_READ_TIMEOUT)
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.link
+  rescue RestClient::Exceptions::Timeout => e # an ExceptionWithResponse, but with no response
+    Rails.logger.error("Tree::AsServices instance_url timeout: #{e.message}")
+    raise
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::AsServices instance_url rest_client_exception error: #{e.response}")
-    add_instance_link(instance_id) if e.response.code == 404
+    add_instance_link(instance_id) if e.response&.code == 404
   rescue StandardError => e
     Rails.logger.error("Tree::AsServices instance_url other error: #{e}")
     raise
@@ -127,11 +133,11 @@ class Tree::AsServices
 
   def self.add_instance_link_v1(instance_id)
     url = add_instance_identifier_url_v1(instance_id)
-    response = ServicesHttp.put(url, {}.to_json, { content_type: :json, accept: :json })
+    response = ServicesHttp.put(url, {}.to_json, { content_type: :json, accept: :json }, read_timeout: MAPPER_READ_TIMEOUT)
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.preferredURI
   rescue StandardError => e
-    Rails.logger.error("Tree::AsServices add_instance_link_v1 error: #{e.response}")
+    Rails.logger.error("Tree::AsServices add_instance_link_v1 error: #{e.message}")
     raise
   end
 
@@ -142,13 +148,17 @@ class Tree::AsServices
       url,
       {}.to_json,
       { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" },
+      read_timeout: MAPPER_READ_TIMEOUT,
     )
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.uri
+  rescue RestClient::Exceptions::Timeout => e
+    Rails.logger.error("Tree::AsServices add_instance_link_v2 timeout: #{e.message}")
+    raise
   rescue RestClient::ExceptionWithResponse => e
     tag = "Tree::AsServices.add_instance_link_v2"
     Rails.logger.warn("#{tag} error: #{e.response}")
-    raise unless e.response.code == 401
+    raise unless e.response&.code == 401
 
     Rails.logger.warn("#{tag} rescuing a 401 error, will log into mapper")
     jwt = force_mapper_auth
@@ -156,6 +166,7 @@ class Tree::AsServices
       url,
       {}.to_json,
       { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" },
+      read_timeout: MAPPER_READ_TIMEOUT,
     )
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.uri
@@ -182,7 +193,7 @@ class Tree::AsServices
       url = "#{MAPPER_API_URL}login"
       payload = { username: MAPPER_USER, password: MAPPER_PWD }.to_json
       Rails.logger.info("Logging into mapper via url: #{url}.")
-      response = ServicesHttp.post(url, payload, { content_type: :json, accept: :json })
+      response = ServicesHttp.post(url, payload, { content_type: :json, accept: :json }, read_timeout: MAPPER_READ_TIMEOUT)
       JSON.parse(response.body, object_class: OpenStruct)
     end
   rescue StandardError => e

@@ -122,7 +122,8 @@ class Instance::AsServices < Instance
       .where(instance_type_id: instance.try(:instance_type_id)).reload
     throw("Check after #{delay}s shows record not deleted") if records.present?
   rescue RestClient::ExceptionWithResponse => e
-    case e.response.code
+    # Timeouts are ExceptionWithResponse too, but have no response
+    case e.response&.code
     when 403
       logger.error("#{tag} 403 from Services delete ##{instance.try("id")}")
       raise " from Services: #{e}"
@@ -132,7 +133,7 @@ class Instance::AsServices < Instance
       instance.try("destroy")
       logger.info("Instance destroyed or didn't exist")
     else
-      logger.error("#{tag}.delete unexpected response #{e.response.code} on ##{instance.id}")
+      logger.error("#{tag}.delete unexpected response #{e.response&.code || e.message} on ##{instance.try("id")}")
       logger.error("Instance::AsServices.delete exception for url: #{ServicesHttp.loggable(url)}")
       raise " from Services: #{e}"
     end
