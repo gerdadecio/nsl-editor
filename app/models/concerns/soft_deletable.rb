@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Shared soft delete behaviour for models with a deleted_at column.
+# Shared soft delete behaviour for models with deleted_at and deleted_by
+# columns.
 #
 # A soft delete is applied by setting deleted_at on a persisted record. The
 # rules for whether that is allowed live in the database (the
@@ -26,6 +27,16 @@ module SoftDeletable
   # one, i.e. deleted_at is being set to a value.
   def soft_deleting?
     deleted_at_changed? && deleted_at.present?
+  end
+
+  # Soft deletes the record as the given user. A soft delete is not an edit,
+  # so it records the user in deleted_by and leaves updated_by and updated_at
+  # alone: don't set current_user (UserTrackable would overwrite updated_by),
+  # and save without touching the timestamps.
+  def soft_delete(username)
+    self.deleted_at = Time.current
+    self.deleted_by = username
+    save(touch: false)
   end
 
   def allow_soft_delete?

@@ -21,9 +21,7 @@ class Names::SoftDeletesController < ApplicationController
   before_action :authorise_name_change, only: [ :create ]
 
   def create
-    @name.current_user = current_user
-    @name.deleted_at = Time.current
-    return if @name.save
+    return if @name.soft_delete(current_user.username)
 
     @message = @name.errors.full_messages.join("; ")
     render("create_error", status: :unprocessable_content)

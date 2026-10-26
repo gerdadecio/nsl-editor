@@ -106,6 +106,32 @@ RSpec.shared_examples("a soft deletable model") do
     end
   end
 
+  describe "#soft_delete" do
+    before { allow(record).to(receive(:check_delete_result).and_return(allowed_result)) }
+
+    it "records who deleted it and leaves updated_by and updated_at alone" do
+      record.update_columns(updated_by: "original-editor", updated_at: 1.week.ago)
+      record.reload
+      original_updated_at = record.updated_at
+
+      expect(record.soft_delete("deleting-editor")).to(be(true))
+
+      record.reload
+      expect(record.deleted_at).to(be_present)
+      expect(record.deleted_by).to(eq("deleting-editor"))
+      expect(record.updated_by).to(eq("original-editor"))
+      expect(record.updated_at).to(eq(original_updated_at))
+    end
+
+    it "saves nothing when the check delete rules refuse it" do
+      allow(record).to(receive(:check_delete_result).and_return(blocked_result))
+
+      expect(record.soft_delete("deleting-editor")).to(be(false))
+      expect(record.reload.deleted_at).to(be_nil)
+      expect(record.deleted_by).to(be_nil)
+    end
+  end
+
   describe "saves that do not touch deleted_at" do
     it "does not consult the check delete rules" do
       expect(record).not_to(receive(:check_delete_result))
