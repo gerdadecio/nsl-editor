@@ -59,7 +59,7 @@ module AuditHelper
 
     %(<br>Record soft deleted <span class="purple"
     >#{time_ago_in_words(record.deleted_at)}&nbsp;ago</span>
-    by #{record.updated_by} #{formatted_timestamp(record.deleted_at)})
+    by #{h(record.deleted_by)} #{formatted_timestamp(record.deleted_at)})
   end
 
   def meaningful_update(record)

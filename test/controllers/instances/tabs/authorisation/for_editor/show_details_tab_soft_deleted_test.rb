@@ -22,7 +22,8 @@ require "test_helper"
 #
 # app/views/instances/tabs/_tab_show_1.html.erb renders
 # AuditHelper#soft_deleted_by_whom_and_when, which adds a "Record soft deleted"
-# audit line when soft delete is enabled and @instance.deleted_at is set.
+# audit line when soft delete is enabled and @instance.deleted_at is set, naming
+# deleted_by as who soft deleted it.
 class InstanceShowEditorDetailsTabSoftDeletedTest < ActionController::TestCase
   tests InstancesController
   setup do
@@ -37,7 +38,7 @@ class InstanceShowEditorDetailsTabSoftDeletedTest < ActionController::TestCase
   end
 
   test "shows a Record soft deleted line with who and when" do
-    @instance.update_columns(deleted_at: @deleted_at, updated_by: "sample-deleter")
+    @instance.update_columns(deleted_at: @deleted_at, deleted_by: "sample-deleter", updated_by: "sample-editor")
     show_details_tab
     assert_match(/Record soft deleted/, response.body)
     assert_match(/3 days&nbsp;ago/, response.body)
@@ -46,7 +47,7 @@ class InstanceShowEditorDetailsTabSoftDeletedTest < ActionController::TestCase
   end
 
   test "renders the Record soft deleted markup rather than escaping it" do
-    @instance.update_columns(deleted_at: @deleted_at, updated_by: "sample-deleter")
+    @instance.update_columns(deleted_at: @deleted_at, deleted_by: "sample-deleter", updated_by: "sample-editor")
     show_details_tab
     assert_no_match(/&lt;br&gt;Record soft deleted/, response.body)
   end
@@ -59,7 +60,7 @@ class InstanceShowEditorDetailsTabSoftDeletedTest < ActionController::TestCase
 
   test "hides the Record soft deleted line when soft delete is disabled" do
     Rails.configuration.soft_delete_enabled = false
-    @instance.update_columns(deleted_at: @deleted_at, updated_by: "sample-deleter")
+    @instance.update_columns(deleted_at: @deleted_at, deleted_by: "sample-deleter", updated_by: "sample-editor")
     show_details_tab
     assert_no_match(/Record soft deleted/, response.body)
   end
