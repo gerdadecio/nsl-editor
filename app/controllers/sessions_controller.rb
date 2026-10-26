@@ -19,6 +19,13 @@
 class SessionsController < ApplicationController
   skip_before_action :authenticate
 
+  # Slow down password guessing: at most 10 sign-in attempts per client IP in
+  # 3 minutes. LDAP account lockout protects a single account; this also slows
+  # guessing across many accounts from one client. Behind the AWS ALB,
+  # remote_ip is the client's address (the ALB's private address is a trusted
+  # proxy). Counts live in Rails.cache, so each app container counts separately.
+  rate_limit to: 10, within: 3.minutes, only: :create, with: :too_many_sign_in_attempts
+
   def new
     build_sign_in
   end
@@ -35,6 +42,7 @@ class SessionsController < ApplicationController
   def create
     build_sign_in
     if @sign_in.save && authorised_to_login?
+      reset_session_keeping_deep_link
       set_up_session
       deep_link || redirect_to(:root)
     else
@@ -57,18 +65,31 @@ class SessionsController < ApplicationController
 
   private
 
-  # No reset_session on sign-in, deliberately. Sessions use the cookie store
-  # (config/initializers/session_store.rb): the signed-in state lives inside
-  # the encrypted cookie, and signing in issues a new cookie, so a cookie
-  # planted before sign-in stays signed out and session fixation doesn't apply.
-  # A reset here also broke deep links in 2020 (6203bc092). Revisit if the
-  # session store ever moves server-side (database or cache).
+  # Runs instead of create once the rate limit is hit, so LDAP is not asked.
+  def too_many_sign_in_attempts
+    build_sign_in
+    @sign_in.errors.add(:base, "Too many sign-in attempts. Please wait a few minutes and try again.")
+    render("new", status: :too_many_requests)
+  end
+
   def build_sign_in
     @sign_in = SignIn.new(sign_in_params)
     @no_searchbar = true
     @no_search_result_details = true
     @no_advanced_search = true
     @no_menus = true
+  end
+
+  # Start a fresh session on successful sign-in so no session issued before
+  # authentication (planted or otherwise) carries over: rules out session
+  # fixation whatever the session store. Only the deep link survives. The
+  # reset lives here, not in build_sign_in: resetting on every sign-in page
+  # load (new, retry_new, failed create) is what broke deep links in 2020
+  # (6203bc092).
+  def reset_session_keeping_deep_link
+    url_after_sign_in = session[:url_after_sign_in]
+    reset_session
+    session[:url_after_sign_in] = url_after_sign_in if url_after_sign_in.present?
   end
 
   # The user's LDAP groups (edit, admin, treebuilder, etc.) are read once, here,
@@ -90,14 +111,19 @@ class SessionsController < ApplicationController
     session[:workspace] = {}
   end
 
+  # Uses up the deep link, and follows it only if it is a local path.
   def deep_link
-    if session[:url_after_sign_in].present?
-      url_after_sign_in = session[:url_after_sign_in]
-      session[:url_after_sign_in] = ""
-      redirect_to(url_after_sign_in)
-    else
-      false
-    end
+    url_after_sign_in = session.delete(:url_after_sign_in)
+    return false if !local_path?(url_after_sign_in)
+
+    redirect_to(url_after_sign_in)
+  end
+
+  # A path on this app ("/search?..."), not a full URL or a protocol-relative
+  # one ("//host", or "/\host", which browsers read the same way). Anything
+  # else is dropped and sign-in goes to root.
+  def local_path?(url)
+    url.is_a?(String) && url.start_with?("/") && !url.start_with?("//", "/\\")
   end
 
   def sign_in_params
