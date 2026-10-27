@@ -18,9 +18,27 @@
 #
 #   Names are central to the NSL.
 class Names::Typeaheads::ForUnpubCitController < ApplicationController
+  # Used by the unpublished citation forms' Name field
+  # (app/views/instances/_form_create_unpublished_citation.html.erb and
+  # app/views/instances/tabs/_tab_unpublished_citation_for_profile_v2.html.erb).
+  #
+  # Two formats, as for Instances::ChangeNameController#typeahead:
+  #   html - the fragment of <li role="option"> elements stimulus-autocomplete
+  #          expects, which the Name field asks for by extension.
+  #   json - what the field asked for while it was on typeahead.js; kept
+  #          for parity with the other suggestion actions, nothing in this
+  #          app's own views still asks for it. Also the answer to any other
+  #          format, as it was before html was added.
   def index
     typeahead = Name::AsTypeahead::ForUnpubCit.new(params)
-    render(json: typeahead.suggestions)
+    respond_to do |format|
+      format.json { render(json: typeahead.suggestions) }
+      format.html do
+        render(partial: "shared/autocomplete_suggestions",
+               locals: { suggestions: typeahead.suggestions, term: params[:term] })
+      end
+      format.any { render(json: typeahead.suggestions) }
+    end
   end
 
   private

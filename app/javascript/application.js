@@ -60,7 +60,6 @@ import "typeahead_bundle";
 import "typeaheads_for_author_duplicate_of";
 
 import "typeaheads_for_instance_target_name_for_copy_instances";
-import "typeaheads_for_instance_name_for_unpub_citation";
 import "typeaheads_for_instance_synonymy";
 import "typeaheads_for_instance_product_item_config";
 

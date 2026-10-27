@@ -70,7 +70,10 @@ pin "typeaheads_for_author_duplicate_of", to: "typeaheads/for_author/duplicate_o
 # source it also set up is still defined, for its own use, by
 # target_name_for_copy_instances.js below.
 pin "typeaheads_for_instance_target_name_for_copy_instances", to: "typeaheads/for_instance/target_name_for_copy_instances.js"
-pin "typeaheads_for_instance_name_for_unpub_citation", to: "typeaheads/for_instance/name_for_unpub_citation.js"
+# The unpublished citation forms' Name field uses stimulus-autocomplete -
+# see app/views/shared/_autocomplete_field.html.erb - so
+# typeaheads/for_instance/name_for_unpub_citation.js has gone, along with
+# the nameByFullNameForUnpubCit Bloodhound source it defined.
 # The instance forms' Reference field (names - new instance tab, instance
 # edit tab, change reference widgets) uses stimulus-autocomplete too, so
 # typeaheads/for_instance/reference.js has gone. So has
