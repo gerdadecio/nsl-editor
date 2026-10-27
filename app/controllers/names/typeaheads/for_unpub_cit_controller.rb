@@ -18,6 +18,8 @@
 #
 #   Names are central to the NSL.
 class Names::Typeaheads::ForUnpubCitController < ApplicationController
+  include AutocompleteSuggestions
+
   # Used by the unpublished citation forms' Name field
   # (app/views/instances/_form_create_unpublished_citation.html.erb and
   # app/views/instances/tabs/_tab_unpublished_citation_for_profile_v2.html.erb).
@@ -31,14 +33,7 @@ class Names::Typeaheads::ForUnpubCitController < ApplicationController
   #          format, as it was before html was added.
   def index
     typeahead = Name::AsTypeahead::ForUnpubCit.new(params)
-    respond_to do |format|
-      format.json { render(json: typeahead.suggestions) }
-      format.html do
-        render(partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: typeahead.suggestions, term: params[:term] })
-      end
-      format.any { render(json: typeahead.suggestions) }
-    end
+    render_autocomplete_suggestions(typeahead.suggestions, any_format_as_json: true)
   end
 
   private

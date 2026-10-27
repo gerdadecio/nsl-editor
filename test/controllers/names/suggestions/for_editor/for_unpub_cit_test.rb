@@ -45,18 +45,19 @@ class NameSuggsForUnpubCitTest < ActionDispatch::IntegrationTest
     )
   end
 
-  test "name for unpub cit suggestions for editor" do
+  # What the endpoint answered before html was added, kept for any caller
+  # that asks for neither json nor html.
+  test "should answer json to any other format" do
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
       groups: [ "edit" ]
     ) do
-      get names_typeahead_for_unpub_cit_path(
-        rank_id: name_ranks(:unranked).id, term: "search for this"
-      ),
+      get names_typeahead_for_unpub_cit_path(term: "a_spec"),
         headers: { "Accept" => "application/javascript" }
     end
     assert_response :success
+    assert_includes JSON.parse(response.body).pluck("id"), @name.id
   end
 
   # The label is what the library writes back into the input on a pick:

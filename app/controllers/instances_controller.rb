@@ -19,6 +19,7 @@
 #   Controls instances.
 class InstancesController < ApplicationController
   include ActionView::Helpers::TextHelper
+  include AutocompleteSuggestions
 
   before_action :find_instance, only: [ :show, :tab, :destroy ]
   before_action :find_instance_for_copy, only: [ :copy_standalone, :copy_for_profile_v2 ]
@@ -224,14 +225,7 @@ class InstancesController < ApplicationController
     else
       Instance::AsTypeahead::ForSynonymy.new(params[:term], params[:name_id]).results
     end
-    respond_to do |format|
-      format.json { render json: suggestions }
-      format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: suggestions, term: params[:term] }
-      end
-      format.any { render json: suggestions }
-    end
+    render_autocomplete_suggestions(suggestions, any_format_as_json: true)
   end
 
   def typeahead_for_product_item_config
@@ -249,14 +243,7 @@ class InstancesController < ApplicationController
   # stimulus-autocomplete, and json as before, also for any other format.
   def typeahead_for_name_showing_references_to_update_instance
     suggestions = Instance::AsTypeahead::ForNameShowingReferences.new(params).references
-    respond_to do |format|
-      format.json { render json: suggestions }
-      format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: suggestions, term: params[:term] }
-      end
-      format.any { render json: suggestions }
-    end
+    render_autocomplete_suggestions(suggestions, any_format_as_json: true)
   end
 
   private

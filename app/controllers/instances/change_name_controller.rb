@@ -17,6 +17,8 @@
 #   limitations under the License.
 
 class Instances::ChangeNameController < ApplicationController
+  include AutocompleteSuggestions
+
   before_action :find_instance
   before_action :authorise_instance_change, only: [ :update ]
 
@@ -71,14 +73,7 @@ class Instances::ChangeNameController < ApplicationController
       name_rank_id: @instance.name.name_rank_id,
       exclude_name_id: @instance.name_id,
     )
-    respond_to do |format|
-      format.json { render json: typeahead.suggestions }
-      format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: typeahead.suggestions, term: params[:term] }
-      end
-      format.any { render json: typeahead.suggestions }
-    end
+    render_autocomplete_suggestions(typeahead.suggestions, any_format_as_json: true)
   end
 
   private
