@@ -19,8 +19,8 @@
 require "test_helper"
 require "minitest/mock"
 
-# ServicesHttp wraps RestClient so every call to Services gets an open
-# timeout, and gives a way to log Services URLs without the API key.
+# ServicesHttp wraps RestClient so every call to Services gets explicit open
+# and read timeouts, and gives a way to log Services URLs without the API key.
 class ServicesHttpTest < ActiveSupport::TestCase
   def capture_execute_args
     captured = nil
@@ -30,14 +30,14 @@ class ServicesHttpTest < ActiveSupport::TestCase
     captured
   end
 
-  test "get sets the open timeout and leaves the read timeout at the default" do
+  test "get sets the open timeout and the default read timeout" do
     args = capture_execute_args { ServicesHttp.get("http://s/x", { accept: :json }) }
 
     assert_equal :get, args[:method]
     assert_equal "http://s/x", args[:url]
     assert_equal({ accept: :json }, args[:headers])
     assert_equal ServicesHttp::OPEN_TIMEOUT, args[:open_timeout]
-    assert_not args.key?(:read_timeout)
+    assert_equal ServicesHttp::READ_TIMEOUT, args[:read_timeout]
     assert_not args.key?(:payload)
   end
 
@@ -55,14 +55,16 @@ class ServicesHttpTest < ActiveSupport::TestCase
       assert_equal method, args[:method]
       assert_equal "{}", args[:payload]
       assert_equal ServicesHttp::OPEN_TIMEOUT, args[:open_timeout]
+      assert_equal ServicesHttp::READ_TIMEOUT, args[:read_timeout]
     end
   end
 
-  test "delete sets the open timeout" do
+  test "delete sets the open and read timeouts" do
     args = capture_execute_args { ServicesHttp.delete("http://s/x", { accept: :json }) }
 
     assert_equal :delete, args[:method]
     assert_equal ServicesHttp::OPEN_TIMEOUT, args[:open_timeout]
+    assert_equal ServicesHttp::READ_TIMEOUT, args[:read_timeout]
   end
 
   test "loggable hides the API key wherever it is in the query string" do
