@@ -17,20 +17,36 @@
       In
       <%= show_field_as_linked_lookup('',@instance.reference,'citation', search_path(query_string: %Q(id:#{@instance.reference_id}),query_target: 'reference'),'reference') %>
       the name<span class="red">*</span>
+      <%# Name: on stimulus-autocomplete, as in _form_create_synonymy, instead
+          of the typeahead.js widget set up by setUpInstanceNameForUnpubCitation
+          (now gone). The instance's own name is left out by the endpoint, its id
+          sent as a static param. The old widget read it off #context-name-id,
+          which this tab never had, so the own name used to be suggested here.
+
+          No label: the field sits inside a sentence. The shared partial renders
+          the hidden name_id field inside the wrapper - same dom id and param
+          name - empty until a pick. input_name stays, because create_cited_by
+          resolves the typed text when no name was picked.
+
+          term_delimiter keeps a pick from poisoning the next search: the
+          suggestions read "<full name> - <status>". %>
       <div class="typeahead-container">
         <section class='block width-100-percent'>
-          <input id="instance-name-typeahead"
-                name="instance[name_typeahead]"
-                class="typeahead form-control width-100-percent give-me-focus"
-                title="Enter an instance.  Typeahead field on name."
-                required="true"
-                tabindex="<%= increment_tab_index %>"
-                type="text"
-                placeholder="Instance for unpublished citation - typeahead using name"
-                value=""/>
+          <%= render "shared/autocomplete_field",
+                     f: f,
+                     id_attribute: :name_id,
+                     input_id: "instance-name-typeahead",
+                     input_name: "instance[name_typeahead]",
+                     input_value: "",
+                     input_class: "width-100-percent give-me-focus",
+                     required: true,
+                     placeholder: "Instance for unpublished citation - typeahead using name",
+                     title: "Enter an instance.  Typeahead field on name.",
+                     url: names_typeahead_for_unpub_cit_path(format: :html),
+                     extra_params: { context_name_id: @instance.name_id },
+                     term_delimiter: " - " %>
         </section>
       </div>
-      <script> setUpInstanceNameForUnpubCitation(); </script>
       is used as a type<span class="red">*</span>
       <br>
       <%= f.select(:instance_type_id, InstanceType.unpublished_citation_options,{include_blank: true},
@@ -39,7 +55,6 @@
                     required: true, tabindex: increment_tab_index}) %>
       <%= "of #{@instance.name.full_name}" %>
 
-      <%= f.hidden_field :name_id %>
       <%= f.hidden_field :reference_id, value: @instance.reference_id %>
       <%= f.hidden_field :cited_by_id, value: @instance.id %>
       <%= f.hidden_field :cites_id %>

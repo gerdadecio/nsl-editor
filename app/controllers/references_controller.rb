@@ -17,6 +17,8 @@
 #   limitations under the License.
 #
 class ReferencesController < ApplicationController
+  include AutocompleteSuggestions
+
   before_action :find_reference, only: [ :edit, :update, :destroy, :show, :tab ]
 
   # GET /references/1/tab/:tab
@@ -111,13 +113,7 @@ class ReferencesController < ApplicationController
     else
       Reference::AsTypeahead::OnCitation.new(params[:term]).results
     end
-    respond_to do |format|
-      format.json { render json: suggestions }
-      format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: suggestions, term: params[:term] }
-      end
-    end
+    render_autocomplete_suggestions(suggestions)
   end
 
   # Used by the copy to new reference tab's Reference field, which offers
@@ -131,13 +127,7 @@ class ReferencesController < ApplicationController
     else
       Reference::AsTypeahead::OnCitation.new(params[:term], params[:id]).results
     end
-    respond_to do |format|
-      format.json { render json: suggestions }
-      format.html do
-        render partial: "shared/autocomplete_suggestions",
-               locals: { suggestions: suggestions, term: params[:term] }
-      end
-    end
+    render_autocomplete_suggestions(suggestions)
   end
 
   # Columns such as parent and duplicate_of_id use a typeahead search.

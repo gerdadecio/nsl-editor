@@ -17,6 +17,8 @@
 #   limitations under the License.
 #
 class AuthorsController < ApplicationController
+  include AutocompleteSuggestions
+
   before_action :find_author, only: [ :show, :destroy, :tab ]
 
   # GET /authors/1
@@ -143,15 +145,7 @@ class AuthorsController < ApplicationController
     authors = []
     typeahead = Author::AsTypeahead
     authors = typeahead.on_abbrev(params[:term]) if params[:term].present?
-    respond_to do |format|
-      format.json { render(json: authors) }
-      format.html do
-        render(
-          partial: "shared/autocomplete_suggestions",
-          locals: { suggestions: authors, term: params[:term] },
-        )
-      end
-    end
+    render_autocomplete_suggestions(authors)
   end
 
   def copy

@@ -2,6 +2,7 @@
 
 module Name::Typeaheads
   extend ActiveSupport::Concern
+  include AutocompleteSuggestions
 
   # For the typeahead search.
   #
@@ -20,19 +21,7 @@ module Name::Typeaheads
   # app/javascript/controllers/name_parent_family_controller.js.
   def name_parent_suggestions
     typeahead = Name::AsTypeahead::ForParent.new(params)
-    respond_to do |format|
-      format.json { render(json: typeahead.suggestions) }
-      format.html do
-        render(
-          partial: "shared/autocomplete_suggestions",
-          locals: {
-            suggestions: typeahead.suggestions,
-            term: params[:term],
-            data_keys: [ :family_id, :family_value ],
-          },
-        )
-      end
-    end
+    render_autocomplete_suggestions(typeahead.suggestions, data_keys: [ :family_id, :family_value ])
   end
 
   # For the name form's Family field.
@@ -45,18 +34,7 @@ module Name::Typeaheads
   #          expects, which the Family field asks for by extension.
   def name_family_suggestions
     typeahead = Name::AsTypeahead::ForFamily.new(params)
-    respond_to do |format|
-      format.json { render(json: typeahead.suggestions) }
-      format.html do
-        render(
-          partial: "shared/autocomplete_suggestions",
-          locals: {
-            suggestions: typeahead.suggestions,
-            term: params[:term],
-          },
-        )
-      end
-    end
+    render_autocomplete_suggestions(typeahead.suggestions)
   end
 
   # Suggests the parent of a cultivar name.
@@ -100,15 +78,7 @@ module Name::Typeaheads
   #          header.
   def duplicate_suggestions
     suggestions = duplicate_suggestions_typeahead
-    respond_to do |format|
-      format.json { render(json: suggestions) }
-      format.html do
-        render(
-          partial: "shared/autocomplete_suggestions",
-          locals: { suggestions: suggestions, term: params[:term] },
-        )
-      end
-    end
+    render_autocomplete_suggestions(suggestions)
   end
 
   # Used on references - new instance tab, for the Name field of the
@@ -123,32 +93,13 @@ module Name::Typeaheads
   #          expects, which the Name field asks for by extension.
   def typeahead_on_full_name
     typeahead = Name::AsTypeahead::OnFullName.new(params)
-    respond_to do |format|
-      format.json { render(json: typeahead.suggestions) }
-      format.html do
-        render(
-          partial: "shared/autocomplete_suggestions",
-          locals: {
-            suggestions: typeahead.suggestions,
-            term: params[:term],
-          },
-        )
-      end
-    end
+    render_autocomplete_suggestions(typeahead.suggestions)
   end
 
   private
 
   def render_parent_suggestions(suggestions)
-    respond_to do |format|
-      format.json { render(json: suggestions) }
-      format.html do
-        render(
-          partial: "shared/autocomplete_suggestions",
-          locals: { suggestions: suggestions, term: params[:term] },
-        )
-      end
-    end
+    render_autocomplete_suggestions(suggestions)
   end
 
   def typeahead_params

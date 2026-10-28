@@ -18,23 +18,83 @@
 #
 require "test_helper"
 
-# Single controller test.
+# Names::Typeaheads::ForUnpubCitController#index. Answers the shared html
+# fragment to the unpublished citation forms' Name field, now on
+# stimulus-autocomplete, and still offers json for parity with the other
+# suggestion actions.
 class NameSuggsForUnpubCitTest < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
   end
 
-  test "name for unpub cit suggestions for editor" do
+  def get_suggestions(params, format: :html)
     sign_in_as_fake_user(
       username: "fred",
       full_name: "Fred Jones",
       groups: [ "edit" ]
     ) do
-      get names_typeahead_for_unpub_cit_path(
-        rank_id: name_ranks(:unranked).id, term: "search for this"
-      ),
+      get names_typeahead_for_unpub_cit_path(params.merge(format: format))
+    end
+  end
+
+  def assert_select_in_body(*args, &block)
+    assert_select(
+      Nokogiri::HTML::DocumentFragment.parse(response.body),
+      *args,
+      &block
+    )
+  end
+
+  # What the endpoint answered before html was added, kept for any caller
+  # that asks for neither json nor html.
+  test "should answer json to any other format" do
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [ "edit" ]
+    ) do
+      get names_typeahead_for_unpub_cit_path(term: "a_spec"),
         headers: { "Accept" => "application/javascript" }
     end
     assert_response :success
+    assert_includes JSON.parse(response.body).pluck("id"), @name.id
+  end
+
+  # The label is what the library writes back into the input on a pick:
+  # the full name and status the json value also carries.
+  test "should get suggestions as an html fragment labelled with full name and status" do
+    get_suggestions({ term: "a_spec" })
+
+    assert_response :success
+    assert_select_in_body(
+      "li.autocomplete-result[data-autocomplete-value='#{@name.id}']" \
+        "[data-autocomplete-label='#{@name.full_name} - #{@name.name_status.name}']",
+      true
+    )
+  end
+
+  test "should leave the context name out of the html fragment" do
+    get_suggestions({ term: "a_spec", context_name_id: @name.id })
+
+    assert_response :success
+    assert_select_in_body(
+      "li.autocomplete-result[data-autocomplete-value='#{@name.id}']",
+      false
+    )
+  end
+
+  test "should render a no matches option for a blank term" do
+    get_suggestions({ term: "" })
+
+    assert_response :success
+    assert_select_in_body "li.autocomplete-result[aria-disabled='true']",
+                          text: "No matches"
+  end
+
+  test "should still answer json" do
+    get_suggestions({ term: "a_spec" }, format: :json)
+
+    assert_response :success
+    assert_includes JSON.parse(response.body).pluck("id"), @name.id
   end
 end
