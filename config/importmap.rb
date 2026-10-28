@@ -83,7 +83,10 @@ pin "typeaheads_for_instance_target_name_for_copy_instances", to: "typeaheads/fo
 # The copy to new reference tab's Reference field uses stimulus-autocomplete
 # too, so typeaheads/for_instance/reference_excluding_current.js has gone.
 pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js"
-pin "typeaheads_for_instance_product_item_config", to: "typeaheads/for_instance/name_for_product_item_config.js"
+# The profile v2 link a published profile item field uses
+# stimulus-autocomplete - see app/views/profile_items/_link_profile_item.html.erb -
+# so typeaheads/for_instance/name_for_product_item_config.js has gone, along
+# with the instanceByProductItemConfig Bloodhound source it defined.
 # The change name form's Name field uses stimulus-autocomplete - see
 # app/views/shared/_autocomplete_field.html.erb - so
 # typeaheads/for_instance/change_name.js has gone. The form's synonym
