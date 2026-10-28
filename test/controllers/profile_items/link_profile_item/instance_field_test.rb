@@ -49,7 +49,7 @@ class ProfileItemsLinkProfileItemInstanceFieldTest < ActionDispatch::Integration
     assert_response :success
     pic_id = @product_item_config.id
     assert_select "div.link-profile-item-container-#{pic_id}[data-controller='link-profile-item']" \
-                  "[data-action='autocomplete.change->link-profile-item#showDetails']" \
+                  "[data-action='autocomplete.change->link-profile-item#showDetails input->link-profile-item#clearDetails']" \
                   "[data-link-profile-item-details-url-value=?]",
                   "/profile_items/PROFILE_ITEM_ID/details?instance_id=#{@instance.id}"
     assert_select "div.autocomplete[data-controller='autocomplete']" \

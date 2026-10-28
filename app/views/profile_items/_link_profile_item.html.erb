@@ -15,7 +15,7 @@
   <div class="link-profile-item-container-<%= product_item_config.id %> hidden"
        data-controller="link-profile-item"
        data-link-profile-item-details-url-value="<%= details_profile_item_path("PROFILE_ITEM_ID", instance_id: instance_id) %>"
-       data-action="autocomplete.change->link-profile-item#showDetails">
+       data-action="autocomplete.change->link-profile-item#showDetails input->link-profile-item#clearDetails">
     <%= fields(:link_profile_item) do |f| %>
       <%= render "shared/autocomplete_field",
                  f: f,
@@ -32,7 +32,7 @@
                  extra_params: { product_item_config_id: product_item_config.id },
                  hidden_id: "link-profile-item-instance-id-#{product_item_config.id}" %>
     <% end %>
-    <div id="link-profile-item-details-<%= product_item_config.id %>"></div>
+    <div id="link-profile-item-details-<%= product_item_config.id %>" data-link-profile-item-target="details"></div>
     <br/>
   </div>
   <hr/>
