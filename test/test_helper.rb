@@ -55,6 +55,14 @@ class ActiveSupport::TestCase
   # fixtures %w[users groups memberships]
 
   # Add more helper methods to be used by all tests here...
+
+  # Renames the fixture ranks from Latin to English, as a data set does when
+  # it moves to English rank names (NSL-6003). The test's transaction undoes it.
+  def use_english_rank_names
+    NameRank::ENGLISH_NAMES.each do |latin, english|
+      NameRank.where(name: latin).update_all(name: english)
+    end
+  end
 end
 
 def debug(string)

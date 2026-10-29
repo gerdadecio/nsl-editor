@@ -1,4 +1,8 @@
 - :date: 29-October-2026
+  :jira_id: '6003'
+  :description: |-
+    Ranks: Accept both the Latin and the English rank names (e.g. Familia or Family) wherever the Editor depends on a particular rank
+- :date: 29-October-2026
   :jira_id: '6017'
   :description: |-
     Change Password: Fix bug where generic users could open the change password form directly by URL

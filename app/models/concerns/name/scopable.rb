@@ -115,21 +115,24 @@ module Name::Scopable
       (lambda do
          joins(:name_rank)
           .where("name_rank.id in (select id from name_rank where
-             sort_order <= (select sort_order from name_rank where name =
-             'Subforma') or name_rank.name = '[unranked]') ")
+             sort_order <= (select sort_order from name_rank where name in
+             (?)) or name_rank.name = '[unranked]') ",
+                 NameRank.names_for(NameRank::SUBFORMA))
        end)
     scope :ranks_for_unranked_assumes_join,
       (lambda do
          where("name_rank.sort_order <= (select sort_order from name_rank
-                   where name = 'Subforma') or name_rank.name = '[unranked]' ")
+                   where name in (?)) or name_rank.name = '[unranked]' ",
+               NameRank.names_for(NameRank::SUBFORMA))
        end)
     scope :but_rank_not_too_high,
       (lambda do |rank_id|
          where(
            "name_rank.id in (select id from name_rank where sort_order
                   >= (select max(sort_order) from name_rank where major and name
-                   not in ('Tribus','Ordo','Classis','Division') and sort_order
+                   not in (?) and sort_order
                    <  (select sort_order from name_rank where id = ?)))",
+           NameRank.names_for(NameRank::TRIBUS, NameRank::ORDO, NameRank::CLASSIS, NameRank::DIVISION),
            rank_id,
          )
        end)
@@ -167,9 +170,10 @@ module Name::Scopable
       (lambda do
          joins(:name_rank)
           .where("name_rank.id in (select id from name_rank where
-             sort_order >= (select sort_order from name_rank where name =
-             'Familia') and sort_order < (select sort_order from name_rank where
-             name = 'Genus') ) ")
+             sort_order >= (select sort_order from name_rank where name in
+             (?)) and sort_order < (select sort_order from name_rank where
+             name = 'Genus') ) ",
+                 NameRank.names_for(NameRank::FAMILIA))
        end)
     scope :parent_ranks_for_infragenus,
       (lambda do
@@ -193,15 +197,18 @@ module Name::Scopable
           .where("name_rank.id in (select id from name_rank where
              sort_order < (select sort_order from name_rank where name =
              'Genus') and sort_order >=(select sort_order from name_rank where
-             name = 'Familia') ) ")
+             name in (?)) ) ",
+                 NameRank.names_for(NameRank::FAMILIA))
        end)
     scope :parent_ranks_for_family,
       (lambda do
          joins(:name_rank)
           .where("name_rank.id in (select id from name_rank where
-             sort_order < (select sort_order from name_rank where name =
-             'Familia') and sort_order >=(select sort_order from name_rank where
-             name = 'Ordo') ) ")
+             sort_order < (select sort_order from name_rank where name in
+             (?)) and sort_order >=(select sort_order from name_rank where
+             name in (?)) ) ",
+                 NameRank.names_for(NameRank::FAMILIA),
+                 NameRank.names_for(NameRank::ORDO))
        end)
     scope :parent_ranks_for_infraspecies,
       (lambda do
@@ -209,12 +216,13 @@ module Name::Scopable
           .where("name_rank.id in (select id from name_rank where
              sort_order >= (select sort_order from name_rank where name =
              'Species') and sort_order <=(select sort_order from name_rank where
-             name = 'Subforma') ) ")
+             name in (?)) ) ",
+                 NameRank.names_for(NameRank::SUBFORMA))
        end)
     scope :family_name,
       (lambda do
         joins(:name_rank)
-            .where("name_rank.name = 'Familia'")
+            .where(name_rank: { name: NameRank.names_for(NameRank::FAMILIA) })
       end)
     scope :soft_deleted, -> { where.not(deleted_at: nil) }
     # Table qualified - typeahead queries join instance, which also has deleted_at.
