@@ -86,6 +86,40 @@ class NameRank < ApplicationRecord
   INFRAGENUS = "[infragenus]"
   INFRASPECIES = "[infraspecies]"
 
+  CLASSIS = "Classis"
+  ORDO = "Ordo"
+  DIVISION = "Division"
+
+  # Each data set is moving its rank names from Latin to English, potentially one data set at a
+  # time, and some may even be moving from English to Latin temporarily,
+  # so a rank can be stored under either name (NSL-6003). Hard-coded
+  # rank names go through names_for to match both.
+  ENGLISH_NAMES = {
+    "Regio" => "Domain",
+    "Regnum" => "Kingdom",
+    CLASSIS => "Class",
+    "Subclassis" => "Subclass",
+    "Superordo" => "Superorder",
+    ORDO => "Order",
+    "Subordo" => "Suborder",
+    FAMILIA => "Family",
+    SUBFAMILIA => "Subfamily",
+    TRIBUS => "Tribe",
+    SUBTRIBUS => "Subtribe",
+    SECTIO => "Section",
+    SUBSECTIO => "Subsection",
+    VARIETAS => "Variety",
+    NOTHOVARIETAS => "Nothovariety",
+    SUBVARIETAS => "Subvariety",
+    FORMA => "Form",
+    SUBFORMA => "Subform",
+  }.freeze
+
+  # The Latin rank names given, plus the English name of each, if it has one.
+  def self.names_for(*latin_names)
+    latin_names.flat_map { |latin| [ latin, ENGLISH_NAMES[latin] ].compact }
+  end
+
   scope :not_deprecated, -> { where(deprecated: false) }
 
   scope :infraspecific,
@@ -120,13 +154,13 @@ class NameRank < ApplicationRecord
     (lambda do
       where("(name_rank.sort_order >= (select iga.sort_order
                                              from name_rank iga
-                                            where name = 'Familia')
+                                            where name in (?))
                   and
                   name_rank.sort_order < (select species.sort_order
                                             from name_rank species
                                            where name = 'Genus') )
                  or name_rank.name = '[infrafamily]'
-                 or name_rank.name = '[unranked]' ")
+                 or name_rank.name = '[unranked]' ", names_for(FAMILIA))
     end)
 
   def self.default
@@ -192,14 +226,14 @@ class NameRank < ApplicationRecord
 
   def self.below_family_options
     where("deprecated is false")
-      .where(" sort_order > (select sort_order from name_rank where lower(name) = 'familia')")
+      .where(" sort_order > (select sort_order from name_rank where name in (?))", names_for(FAMILIA))
       .order(:sort_order)
       .collect { |rank| [ rank.name, rank.id ] }
   end
 
   def self.above_family_options
     where("deprecated is false")
-      .where(" sort_order <= (select sort_order from name_rank where lower(name) = 'familia')")
+      .where(" sort_order <= (select sort_order from name_rank where name in (?))", names_for(FAMILIA))
       .order(:sort_order)
       .collect { |rank| [ rank.name, rank.id ] }
   end
@@ -214,7 +248,7 @@ class NameRank < ApplicationRecord
   end
 
   def family?
-    !name.match(/\A#{FAMILY}\z/o).nil?
+    NameRank.names_for(FAMILY).include?(name)
   end
 
   def species?
@@ -250,7 +284,7 @@ class NameRank < ApplicationRecord
   end
 
   def infraspecific?
-    [
+    NameRank.names_for(
       SPECIES,
       SUBSPECIES,
       NOTHOVARIETAS,
@@ -260,12 +294,12 @@ class NameRank < ApplicationRecord
       SUBFORMA,
       INFRASPECIES,
       NOTHOMORPH,
-      MORPHOLOGICAL_VAR
-    ].include?(name)
+      MORPHOLOGICAL_VAR,
+    ).include?(name)
   end
 
   def infrageneric?
-    [
+    NameRank.names_for(
       GENUS,
       SUBGENUS,
       SECTIO,
@@ -273,12 +307,12 @@ class NameRank < ApplicationRecord
       SERIES,
       SUBSERIES,
       SUPERSPECIES,
-      INFRAGENUS
-    ].include?(name)
+      INFRAGENUS,
+    ).include?(name)
   end
 
   def infrafamilial?
-    [ FAMILIA, SUBFAMILIA, TRIBUS, SUBTRIBUS, INFRAFAMILY ].include?(name)
+    NameRank.names_for(FAMILIA, SUBFAMILIA, TRIBUS, SUBTRIBUS, INFRAFAMILY).include?(name)
   end
 
   def self.genus
@@ -336,7 +370,7 @@ class NameRank < ApplicationRecord
   end
 
   def self.family
-    find_by(name: FAMILY)
+    find_by(name: names_for(FAMILY))
   end
 
   def real_parent?

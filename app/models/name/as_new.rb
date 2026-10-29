@@ -123,7 +123,7 @@ class Name::AsNew < Name
   def self.scientific_family_or_above
     name = Name.new
     name.name_type_id = NameType.find_by(name: "scientific").id
-    name.name_rank_id = NameRank.find_by(name: "Familia").id
+    name.name_rank_id = NameRank.family.id
     name.name_status_id = NameStatus.find_by(name: "legitimate").id
     name
   end
