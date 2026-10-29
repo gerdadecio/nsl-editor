@@ -19,24 +19,19 @@
 # Administrator Actions
 class PasswordsController < ApplicationController
   before_action :hide_details, :empty_search
+  # Generic Active Directory users can't change their password, so block
+  # every step of the flow, including going straight to the form URL.
+  before_action :reject_generic_user, only: %i[edit update show_password_form]
 
   def edit
-    if session[:generic_active_directory_user]
-      render(:edit_error)
-    else
-      edit_inner
-    end
+    edit_inner
   rescue StandardError => e
     logger.error("Password change error: #{e}")
     render(:edit_error)
   end
 
   def update
-    if session[:generic_active_directory_user]
-      render(:edit_error)
-    else
-      update_inner
-    end
+    update_inner
   end
 
   def show_password_form
@@ -44,6 +39,10 @@ class PasswordsController < ApplicationController
   end
 
   private
+
+  def reject_generic_user
+    render(:edit_error) if session[:generic_active_directory_user]
+  end
 
   def edit_inner
     @password = Password.new
