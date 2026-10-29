@@ -12,7 +12,7 @@ RSpec.describe(Users::ProductRoles::DestroyService, type: :service) do
   let!(:user_product_role1) { create(:user_product_role, user: user, product_role: product_role1) }
 
   describe "#execute" do
-    subject { described_class.new(user_product_role: user_product_role1) }
+    subject { described_class.new(user_product_role: user_product_role1, username: "actor") }
 
     it "deletes the user_product_role" do
       expect { subject.execute }.to(change(User::ProductRole, :count).by(-1))
@@ -32,6 +32,12 @@ RSpec.describe(Users::ProductRoles::DestroyService, type: :service) do
 
         expect(user.reload.default_product_context_id).to(eq(product_role2.product.context_id))
       end
+
+      it "records the actor as the user's updated_by" do
+        subject.execute
+
+        expect(user.reload.updated_by).to(eq("actor"))
+      end
     end
 
     context "when user has no other product roles remaining" do
@@ -39,6 +45,22 @@ RSpec.describe(Users::ProductRoles::DestroyService, type: :service) do
         subject.execute
 
         expect(user.reload.default_product_context_id).to(eq(Users::ProductRoles::DestroyService::MAIN_CONTEXT_ID))
+      end
+
+      it "records the actor as the user's updated_by" do
+        subject.execute
+
+        expect(user.reload.updated_by).to(eq("actor"))
+      end
+    end
+
+    context "when the default product context does not change" do
+      let!(:user) { create(:user, default_product_context_id: Users::ProductRoles::DestroyService::MAIN_CONTEXT_ID, updated_by: "owner") }
+
+      it "does not change the user's updated_by" do
+        subject.execute
+
+        expect(user.reload.updated_by).to(eq("owner"))
       end
     end
 

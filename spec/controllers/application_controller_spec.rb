@@ -544,6 +544,12 @@ RSpec.describe(ApplicationController, type: :controller) do
           controller.send(:set_default_product_context_if_missing)
         end
 
+        it "records the signed-in user as updated_by" do
+          controller.send(:set_default_product_context_if_missing)
+
+          expect(user.updated_by).to(eq(user.user_name))
+        end
+
         it "sets session[:current_context_id] to product's context_id" do
           controller.send(:set_default_product_context_if_missing)
 

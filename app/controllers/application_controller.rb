@@ -193,6 +193,7 @@ class ApplicationController < ActionController::Base
     return unless product
 
     current_registered_user.default_product_context_id = product.context_id
+    current_registered_user.updated_by = current_registered_user.user_name
 
     unless current_registered_user.save
       logger.error("Could not save default product context for user #{current_registered_user.user_name}")
