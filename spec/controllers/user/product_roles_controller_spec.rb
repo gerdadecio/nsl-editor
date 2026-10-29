@@ -140,9 +140,12 @@ RSpec.describe(User::ProductRolesController, type: :controller) do
         expect(User::ProductRole).to(have_received(:find).with([ current_user.id.to_s, product_role.id.to_s ]))
       end
 
-      it "calls the DestroyService with the user product role" do
+      it "calls the DestroyService with the user product role and the actor's username" do
         subject
-        expect(Users::ProductRoles::DestroyService).to(have_received(:call).with(user_product_role: user_product_role))
+        expect(Users::ProductRoles::DestroyService).to(have_received(:call).with(
+          user_product_role: user_product_role,
+          username: session_user.username,
+        ))
       end
 
       it "renders the 'destroy' template" do

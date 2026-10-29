@@ -47,7 +47,10 @@ class User::ProductRolesController < ApplicationController
 
   def destroy
     authorize!(:destroy, @upr)
-    service = Users::ProductRoles::DestroyService.call(user_product_role: @upr)
+    service = Users::ProductRoles::DestroyService.call(
+      user_product_role: @upr,
+      username: current_user.username,
+    )
     if service.errors.present?
       @error = service.errors.full_messages.join(", ")
       logger.error("User::ProductRolesController#destroy error: #{@error}")

@@ -1,4 +1,8 @@
 - :date: 29-October-2026
+  :jira_id: '5908'
+  :description: |-
+    Users: Record who made the change in updated_by when a user's default product changes after adding or removing a product role
+- :date: 29-October-2026
   :jira_id: '6003'
   :description: |-
     Ranks: Also accept Divisio as well as Division

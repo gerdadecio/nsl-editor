@@ -51,6 +51,7 @@ class Users::ProductRoles::CreateService < BaseService
     return unless product&.context_id
 
     user.default_product_context_id = product.context_id
+    user.updated_by = @username
     errors.add(:base, user.errors.full_messages.join(", ")) unless user.save
   end
 end

@@ -34,10 +34,21 @@ RSpec.describe(Users::ProductRoles::CreateService, type: :service) do
         subject.execute
         expect(user.reload.default_product_context_id).to(eq(product.context_id))
       end
+
+      it "records the actor as the user's updated_by" do
+        subject.execute
+        expect(user.reload.updated_by).to(eq(username))
+      end
     end
 
     context "when user already has a default product context" do
-      let(:user) { create(:user, default_product_context_id: product.context_id) }
+      let(:user) { create(:user, default_product_context_id: product.context_id, updated_by: "owner") }
+
+      it "does not change the user's updated_by" do
+        subject.execute
+
+        expect(user.reload.updated_by).to(eq("owner"))
+      end
 
       it "does not change the default product context" do
         subject.execute

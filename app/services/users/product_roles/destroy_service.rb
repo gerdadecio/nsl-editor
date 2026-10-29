@@ -5,9 +5,10 @@ class Users::ProductRoles::DestroyService < BaseService
 
   MAIN_CONTEXT_ID = 1
 
-  def initialize(user_product_role:, params: {})
+  def initialize(user_product_role:, username:, params: {})
     super(params)
     @user_product_role = user_product_role
+    @username = username
   end
 
   def execute
@@ -37,6 +38,7 @@ class Users::ProductRoles::DestroyService < BaseService
     else
       MAIN_CONTEXT_ID
     end
+    user.updated_by = @username if user.default_product_context_id_changed?
     user.save
 
     errors.add(:base, user.errors.full_messages.join(", ")) if user.errors.any?
