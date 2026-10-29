@@ -132,7 +132,7 @@ module Name::Scopable
                   >= (select max(sort_order) from name_rank where major and name
                    not in (?) and sort_order
                    <  (select sort_order from name_rank where id = ?)))",
-           NameRank.names_for(NameRank::TRIBUS, NameRank::ORDO, NameRank::CLASSIS, NameRank::DIVISION),
+           NameRank.names_for(NameRank::TRIBUS, NameRank::ORDO, NameRank::CLASSIS, NameRank::DIVISIO),
            rank_id,
          )
        end)

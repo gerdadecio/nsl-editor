@@ -1,6 +1,10 @@
 - :date: 29-October-2026
   :jira_id: '6003'
   :description: |-
+    Ranks: Also accept Divisio as well as Division
+- :date: 29-October-2026
+  :jira_id: '6003'
+  :description: |-
     Ranks: Accept both the Latin and the English rank names (e.g. Familia or Family) wherever the Editor depends on a particular rank
 - :date: 29-October-2026
   :jira_id: '6017'
