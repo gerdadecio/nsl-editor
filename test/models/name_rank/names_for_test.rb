@@ -12,6 +12,10 @@ class NamesForTest < ActiveSupport::TestCase
     assert_equal([ "Familia", "Family" ], NameRank.names_for("Familia"))
   end
 
+  test "adds Division to Divisio" do
+    assert_equal([ "Divisio", "Division" ], NameRank.names_for("Divisio"))
+  end
+
   test "leaves a rank name with no English equivalent as it is" do
     assert_equal([ "Genus" ], NameRank.names_for("Genus"))
   end

@@ -88,7 +88,7 @@ class NameRank < ApplicationRecord
 
   CLASSIS = "Classis"
   ORDO = "Ordo"
-  DIVISION = "Division"
+  DIVISIO = "Divisio"
 
   # Each data set is moving its rank names from Latin to English, potentially one data set at a
   # time, and some may even be moving from English to Latin temporarily,
@@ -97,6 +97,7 @@ class NameRank < ApplicationRecord
   ENGLISH_NAMES = {
     "Regio" => "Domain",
     "Regnum" => "Kingdom",
+    DIVISIO => "Division",
     CLASSIS => "Class",
     "Subclassis" => "Subclass",
     "Superordo" => "Superorder",
