@@ -1,4 +1,8 @@
 - :date: 28-October-2026
+  :jira_id: ''
+  :description: |-
+    Fixup the github ci workflow to use the latest ubuntu version
+- :date: 28-October-2026
   :jira_id: '5962'
   :description: |-
     Typeahead upgrade: Upgrade the instance unpublished citation name typeahead to use stimulus autocomplete
