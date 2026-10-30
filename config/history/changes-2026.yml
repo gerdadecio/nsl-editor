@@ -1,4 +1,8 @@
 - :date: 30-October-2026
+  :jira_id: '6016'
+  :description: |-
+    Users: Add an explanation to the New User form that adding a user does not let them log in to the Editor
+- :date: 30-October-2026
   :jira_id: '6020'
   :description: |-
     Code cleanup: Remove deprecated and uncalled methods - no expected change to behaviour
