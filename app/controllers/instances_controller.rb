@@ -228,12 +228,20 @@ class InstancesController < ApplicationController
     render_autocomplete_suggestions(suggestions, any_format_as_json: true)
   end
 
+  # Used by the profile v2 link a published profile item field
+  # (app/views/profile_items/_link_profile_item.html.erb).
+  #
+  # Same formats as typeahead_for_synonymy: html for the field, now on
+  # stimulus-autocomplete, and json as before, also for any other format.
+  # The html options carry the profile item id as data-profile-item-id, for
+  # app/javascript/controllers/link_profile_item_controller.js to fetch that
+  # item's details on a pick.
   def typeahead_for_product_item_config
-    typeahead = Instance::AsTypeahead::ForProductItemConfig.new(
+    suggestions = Instance::AsTypeahead::ForProductItemConfig.new(
       product_item_config_id: params[:product_item_config_id],
       term: params[:term],
-    )
-    render(json: typeahead.instances)
+    ).instances
+    render_autocomplete_suggestions(suggestions, data_keys: [ :profile_item_id ], any_format_as_json: true)
   end
 
   # Expect instance id - of the instance user is updating.

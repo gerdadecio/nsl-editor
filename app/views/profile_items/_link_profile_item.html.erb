@@ -1,23 +1,38 @@
 <%= turbo_frame_tag :link_profile_item do %>
   <%= check_box_tag "link_profile_item", '', class: "link-profile-item", data: {product_item_config_id: product_item_config.id} %>
   <%= label_tag "link_profile_item", "Link a published profile item" %>
-  <div class="link-profile-item-container-<%= product_item_config.id %> hidden">
-    <input
-      id="instance-product-item-config-typeahead-<%= product_item_config.id %>"
-      class="typeahead form-control width-100-percent give-me-focus"
-      title="Enter the instance. Typeahead for instance with similar profile item type."
-      required="true"
-      autofocus="true"
-      tabindex="<%= increment_tab_index %>"
-      type="text"
-      placeholder="Instance wildcarded order-insensitive"
-      value=""
-    />
-    <script>
-      $('#product_item_config_id').val('<%= product_item_config.id %>');
-      setUpInstanceForProductItemConfig('<%= product_item_config.id %>', '<%= instance_id %>');
-    </script>
-    <div id="link-profile-item-details-<%= product_item_config.id %>"></div>
+  <%# Instance: on stimulus-autocomplete, instead of the typeahead.js widget
+      set up by setUpInstanceForProductItemConfig (now gone). The product
+      item config is sent as a static param; the old widget read it off
+      #product_item_config_id at query time, which the inline script set,
+      so with several configs on the page the last one rendered won.
+
+      A pick shows the picked profile item's details below, see
+      link_profile_item_controller.js. The field sits in no form, so the
+      hidden instance id is never submitted; it gets a per-config dom id,
+      as the partial is rendered once per product item config. The input
+      stays unnamed, as before. %>
+  <div class="link-profile-item-container-<%= product_item_config.id %> hidden"
+       data-controller="link-profile-item"
+       data-link-profile-item-details-url-value="<%= details_profile_item_path("PROFILE_ITEM_ID", instance_id: instance_id) %>"
+       data-action="autocomplete.change->link-profile-item#showDetails input->link-profile-item#clearDetails">
+    <%= fields(:link_profile_item) do |f| %>
+      <%= render "shared/autocomplete_field",
+                 f: f,
+                 id_attribute: :instance_id,
+                 input_id: "instance-product-item-config-typeahead-#{product_item_config.id}",
+                 input_name: nil,
+                 input_value: "",
+                 input_class: "width-100-percent give-me-focus",
+                 required: true,
+                 autofocus: true,
+                 placeholder: "Instance wildcarded order-insensitive",
+                 title: "Enter the instance. Typeahead for instance with similar profile item type.",
+                 url: typeahead_for_product_item_config_path(format: :html),
+                 extra_params: { product_item_config_id: product_item_config.id },
+                 hidden_id: "link-profile-item-instance-id-#{product_item_config.id}" %>
+    <% end %>
+    <div id="link-profile-item-details-<%= product_item_config.id %>" data-link-profile-item-target="details"></div>
     <br/>
   </div>
   <hr/>
