@@ -1,4 +1,8 @@
 - :date: 30-October-2026
+  :jira_id: '6013'
+  :description: |-
+    Typeahead upgrade: Upgrade the author form's Duplicate of field to use stimulus autocomplete
+- :date: 30-October-2026
   :jira_id: '6012'
   :description: |-
     Typeahead upgrade: Upgrade the target name for copying instances to use stimulus autocomplete
