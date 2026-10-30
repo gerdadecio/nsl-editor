@@ -282,10 +282,6 @@ class Instance < ApplicationRecord
     ->(n) { where("current_date - created_at::date = ?", n) }
   scope :updated_n_days_ago,
     ->(n) { where("current_date - updated_at::date = ?", n) }
-  query = "current_date - created_at::date = ? " \
-    "or current_date - updated_at::date = ?"
-  scope :changed_n_days_ago,
-    ->(n) { where(query, n, n) }
 
   scope :created_in_the_last_n_days,
     ->(n) { where("current_date - created_at::date < ?", n) }

@@ -9,15 +9,6 @@ module AuditScopable
       ->(n) { where("current_date - created_at::date = ?", n) }
     scope :updated_n_days_ago,
       ->(n) { where("current_date - updated_at::date = ?", n) }
-    scope :xchanged_n_days_ago,
-      (lambda do |n|
-         where([
-           "current_date - created_at::date = ? or
-                   current_date - updated_at::date = ?",
-           n,
-           n
-         ])
-       end)
     scope :created_in_the_last_n_days,
       ->(n) { where("current_date - created_at::date < ?", n) }
     scope :updated_in_the_last_n_days,

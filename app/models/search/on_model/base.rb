@@ -65,7 +65,6 @@ class Search::OnModel::Base
     list_query = Search::OnModel::ListQuery.new(parsed_request)
     @relation = list_query.sql
     @results = @relation.all
-    @results = list_query.trim_results(@results)
     @limited = list_query.limited
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included

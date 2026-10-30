@@ -1,4 +1,8 @@
 - :date: 30-October-2026
+  :jira_id: '6020'
+  :description: |-
+    Code cleanup: Remove deprecated and uncalled methods - no expected change to behaviour
+- :date: 30-October-2026
   :jira_id: '6011'
   :description: |-
     Typeahead upgrade: Upgrade the name for product item config typeahead to use stimulus autocomplete

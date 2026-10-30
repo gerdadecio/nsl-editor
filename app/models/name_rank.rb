@@ -189,22 +189,10 @@ class NameRank < ApplicationRecord
       .collect { |rank| [ rank.display_name, rank.id ] }
   end
 
-  def self.query_form_options
-    where("deprecated is false")
-      .order(:sort_order)
-      .collect { |n| [ n.name, "rank: #{n.name.downcase}" ] }
-  end
-
   def self.query_form_ranked_below_options
     where("deprecated is false")
       .order(:sort_order)
       .collect { |n| [ n.name, "below-rank: #{n.name.downcase}" ] }
-  end
-
-  def self.xquery_form_ranked_above_options
-    where("deprecated is false")
-      .order(:sort_order)
-      .collect { |n| [ n.name, "above-rank: #{n.name.downcase}" ] }
   end
 
   def self.cultivar_hybrid_options

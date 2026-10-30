@@ -161,10 +161,6 @@ class Search::ParsedRequest
   ALLOW_SHOW_NOVELTIES_TARGETS = [ "references", "reference" ]
   ALLOW_INCLUDE_COMMON_AND_CULTIVAR_TARGETS = [ "names", "name" ]
 
-  TRIM_RESULTS = {
-    "loader name" => true,
-  }.freeze
-
   ADDITIONAL_NON_PREPROCESSED_TARGETS = [
     "activity",
     "references_shared_names",
@@ -745,9 +741,5 @@ query_string: '#{@query_string}'",
 
   def canonical_query_string
     @params[:query_string] || @params[:query]
-  end
-
-  def trim_results?
-    TRIM_RESULTS[@target_table].nil? ? false : true
   end
 end

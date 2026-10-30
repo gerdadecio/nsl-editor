@@ -101,13 +101,6 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
     err.to_s
   end
 
-  def xinferred_rank
-    @loader_name.rank_nsl ||
-      @loader_name.rank ||
-      @loader_name&.preferred_matches&.first&.name&.name_rank&.name ||
-      "cannot infer rank"
-  end
-
   def log_to_table(payload)
     payload = "#{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if defined? @task_start_time
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
