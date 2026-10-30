@@ -46,17 +46,4 @@ class Search::OnModel::ListQuery
     prepared_query = prepared_query.order(Name.sanitize_sql_for_order("#{@parsed_request.default_order_column}"))
     @sql = prepared_query
   end
-
-  def trim_results(results)
-    results
-  end
-
-  # Seems redundant
-  def xtrim_results(results)
-    if @parsed_request.trim_results? && results.size > @parsed_request.limit
-      @model_class.trim_results(results)
-    else
-      results
-    end
-  end
 end

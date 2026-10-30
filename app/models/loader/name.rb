@@ -171,35 +171,6 @@ class Loader::Name < ApplicationRecord
     r
   end
 
-  # Aim: Avoid displaying an accepted record without its full context of
-  # trailing synonyms.
-  #
-  # Assumptions: The set of records contains accepted records followed by all
-  # synonyms until the end of the set - the last accepted record in the set may
-  # not have all its syonyms following it in the set - because of the limit
-  # applied to the query.
-  #
-  # If there is only one accepted record in the set, then all synonyms will
-  # be there.
-  #
-  # An accepted record is a "main" or non-synonym record in this model.
-  #
-  # Only need to trim if the result set is larger than the limit - that rule
-  # is applied before here.
-  #
-  # Algorithm: remove records from the end of the result set until you reach an
-  # accepted record, then remove that accepted record, but only if there's
-  # more than one accepted record in the set
-  #
-  def self.trim_results(results)
-    ary = results.to_ary
-    if ary.size > 1 && ary.select { |r| r.record_type == "accepted" }.size > 1
-      ary.pop until ary[-1].record_type == "accepted"
-      ary.pop
-    end
-    ary
-  end
-
   def names_simple_or_full_name_matching
     ::Name.where([
       "simple_name = ? or full_name = ?",
@@ -470,15 +441,6 @@ class Loader::Name < ApplicationRecord
       loader_name.sort_key = sort_key + ".b-misapp." + "user-to-complete"
     end
     loader_name
-  end
-
-  def xrecord_type_as_context
-    case record_type
-    when "misapplied" then "synonymy"
-    when "synonym" then "synonymy"
-    when "accepted" then "main"
-    else "unknown"
-    end
   end
 
   def preferred_match?
