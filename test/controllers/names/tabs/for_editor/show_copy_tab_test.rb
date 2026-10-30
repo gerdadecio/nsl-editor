@@ -121,4 +121,35 @@ class NameShowCopyTabForEditorTest < ActionDispatch::IntegrationTest
       response.body
     )
   end
+
+  # The copy standalone instances form's Target Name field is on
+  # stimulus-autocomplete, asking the full name endpoint for html, with the
+  # dom ids and param name the copy action reads unchanged.
+  test "should render the copy instances target name field as a stimulus autocomplete" do
+    name = names(:angophora_costata)
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [ "edit" ]
+    ) do
+      get name_tab_path(id: name.id, tab: "tab_copy"),
+        headers: { "Accept" => "application/javascript" }
+    end
+    assert_response :success
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+      "[data-autocomplete-url-value='/names/typeahead_on_full_name.html']" \
+      "[data-autocomplete-term-delimiter-value=' - '] " \
+      "input#instance-target-name-typeahead" \
+      "[data-autocomplete-target='input'][required]",
+                  true
+    assert_select "label[for='instance-target-name-typeahead']", /Target Name/
+    # The hidden target_name_id starts empty and is rendered once, by the
+    # partial, so the copy action still asks for a target until a pick.
+    assert_select "div.autocomplete input#name_target_name_id" \
+      "[name='name[target_name_id]']" \
+      "[data-autocomplete-target='hidden'][value='']",
+                  true
+    assert_select "input#name_target_name_id", count: 1
+    assert_no_match(/setUpInstancesTargetName\(\)/, response.body)
+  end
 end
