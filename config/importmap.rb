@@ -59,7 +59,10 @@ pin "typeahead_bundle"
 pin "bloodhound", to: "https://cdn.jsdelivr.net/npm/typeahead.js@0.11.1/dist/bloodhound.min.js"
 pin "typeahead", to: "https://cdn.jsdelivr.net/npm/typeahead.js@0.11.1/dist/typeahead.bundle.min.js"
 
-pin "typeaheads_for_author_duplicate_of", to: "typeaheads/for_author/duplicate_of.js"
+# The author form's Duplicate of field uses stimulus-autocomplete - see
+# app/views/shared/_autocomplete_field.html.erb - so
+# typeaheads/for_author/duplicate_of.js has gone, along with the
+# authorsByNameDuplicateOf Bloodhound source it defined.
 
 # The synonym edit form's cites reference field uses stimulus-autocomplete -
 # see app/views/shared/_autocomplete_field.html.erb - so

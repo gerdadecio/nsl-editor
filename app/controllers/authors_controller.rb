@@ -112,12 +112,16 @@ class AuthorsController < ApplicationController
     end
   end
 
-  # Columns such as parent and duplicate_of_id use a typeahead search.
+  # Used by the author form's Duplicate of field, which offers any author
+  # but the one being edited (params[:id]).
+  #
+  # Same formats as typeahead_on_abbrev: html for the field, now on
+  # stimulus-autocomplete, and json as before, also for any other format.
   def typeahead_on_name_duplicate_of_current
     authors = []
     typeahead = Author::AsTypeahead
     authors = typeahead.on_name_duplicate_of(params[:term], params[:id]) if params[:term].present?
-    render(json: authors)
+    render_autocomplete_suggestions(authors, any_format_as_json: true)
   end
 
   # Columns such as parent and duplicate_of_id use a typeahead search.

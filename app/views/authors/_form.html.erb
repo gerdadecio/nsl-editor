@@ -39,19 +39,25 @@
     </div>
 
     <% unless @author.new_record? %>
-        <div class="form-group">
-          <label for="">Duplicate of</label><br>
-          <input id="author-duplicate-of-typeahead"
-                 name="author[duplicate_of_typeahead]"
-                 class="typeahead form-control"
-                 type="text"
-                 tabindex="<%= increment_tab_index %>"
-                 title="Enter author this is a duplicate of. Typeahead field - enter an author name or select one from the list which appears as you type. Not case-sensitive. No auto-wildcarding. Recognises text."
-                 data-excluded-id="<%= @author.id %>"
-                 value="<%= @author.duplicate_of.try('name_and_or_abbrev') %>"/>
-          <%= f.hidden_field(:duplicate_of_id) %>
-        </div>
-        <script> setUpAuthorDuplicateOfTypeahead(); </script>
+        <%# Duplicate of: on stimulus-autocomplete, instead of the typeahead.js
+            widget set up by setUpAuthorDuplicateOfTypeahead (now gone). The
+            current author's id is in the url path, so an author is never
+            offered as a duplicate of itself - the job the old widget's
+            data-excluded-id did. Author::AsResolvedTypeahead::ForDuplicateOf
+            is unchanged: it cuts the "<name> | <n> refs | <abbrev>" label at
+            the first "|", and term_delimiter cuts the search term there too,
+            so editing a filled-in field searches on the name alone. The
+            input keeps its dom id for update.js.erb. %>
+        <%= render "shared/autocomplete_field",
+                   f: f,
+                   id_attribute: :duplicate_of_id,
+                   input_id: "author-duplicate-of-typeahead",
+                   input_name: "author[duplicate_of_typeahead]",
+                   input_value: @author.duplicate_of.try("name_and_or_abbrev"),
+                   label: "Duplicate of",
+                   title: "Enter author this is a duplicate of. Typeahead field - enter an author name or select one from the list which appears as you type. Not case-sensitive. No auto-wildcarding. Recognises text.",
+                   url: authors_typeahead_on_name_duplicate_of_current_path(id: @author.id, format: :html),
+                   term_delimiter: "|" %>
 
     <% end %>
 
