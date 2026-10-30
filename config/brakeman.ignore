@@ -33,8 +33,42 @@
         22
       ],
       "note": "False positive. InstancesHelper#tab_for_instance_type resolves the partial name only through the ALLOWED_TABS / ALLOWED_TABS_TO_OFFER / ALLOWED_ROW_TYPES allow lists (presence_in), falling back to tab_empty. params[\"row-type\"] can only select a branch, never reach the render path."
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "9b438441df05a825232a319b4cf872ae466f97245f6cda21ab218d891c9b407b",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/authors/update.js.erb",
+      "line": 6,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "j(Author::AsEdited.find(params[:id]).duplicate_of.name_and_or_abbrev.to_s)",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "AuthorsController",
+          "method": "update",
+          "line": 88,
+          "file": "app/controllers/authors_controller.rb",
+          "rendered": {
+            "name": "authors/update",
+            "file": "app/views/authors/update.js.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "authors/update"
+      },
+      "user_input": "Author::AsEdited.find(params[:id]).duplicate_of",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": "False positive. The raw output (<%==) is wrapped in j (escape_javascript), which escapes quotes, backslashes, newlines and </, so the name cannot leave the single-quoted JS string. jQuery .val() sets it as plain text, never parsed as HTML. HTML-escaping too would show e.g. \"O&#39;Brien\" in the input (see update_js_refreshes_fields_test.rb)."
     }
   ],
-  "updated": "2026-10-09 17:02:54 +1100",
+  "updated": "2026-10-30 12:00:00 +1100",
   "brakeman_version": "7.1.2"
 }
