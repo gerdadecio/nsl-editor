@@ -1,4 +1,8 @@
 - :date: 30-October-2026
+  :jira_id: '6002'
+  :description: |-
+    Edit Profile: Remove phantom distribution update error on excluded taxa
+- :date: 30-October-2026
   :jira_id: '6016'
   :description: |-
     Users: Add an explanation to the New User form that adding a user does not let them log in to the Editor

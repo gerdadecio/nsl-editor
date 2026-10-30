@@ -80,6 +80,10 @@ module Tree::Element::Profile
     message = ""
     refresh = false
     if excluded?
+      # The form disables the distribution field for excluded taxa, so no
+      # value arrives - only raise if one actually does (NSL-6002).
+      return [ "No distribution change", false ] if dist_param.blank?
+
       message = "Error: We don't allow changes to distribution for excluded taxa"
       raise message
     else
