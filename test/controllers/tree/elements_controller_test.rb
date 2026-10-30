@@ -24,9 +24,33 @@ require "test_helper"
 # an excluded taxon, or an invalid distribution value) must short-circuit
 # the whole action: render the error view with 422, and leave any pending
 # comment change unapplied - see app/models/concerns/tree/element/profile.rb.
+#
+# The real form disables the distribution field for excluded taxa, so it
+# sends no distribution_value; that must not raise (NSL-6002).
 class TreeElementsControllerTest < ActionDispatch::IntegrationTest
   def valid_session
     { username: "fred", full_name: "Fred Jones", groups: [ "edit", "treebuilder" ] }
+  end
+
+  test "comment change on an excluded taxon with no distribution param succeeds" do
+    trel = tree_elements(:red_gum_in_taxonomy)
+    trel.update_column(:excluded, true)
+    assert_nil(trel.comment_value, "Expect no comment to start this test")
+
+    sign_in_as_fake_user(**valid_session) do
+      patch tree_element_path(trel),
+        params: { tree_element: { comment_value: "a comment for an excluded taxon" } },
+        headers: { "Accept" => "application/javascript" }
+    end
+
+    assert_response :success
+    assert_template "update_profile"
+    assert_match(/No distribution change/i, assigns(:distribution_message))
+    assert_match(/Comment added/i, assigns(:comment_message))
+    assert_equal(
+      "a comment for an excluded taxon",
+      Tree::Element.find(trel.id).comment_value
+    )
   end
 
   test "distribution error on an excluded taxon renders the error view and skips the comment update" do

@@ -27,4 +27,16 @@ class ExcludedTaxaTest < ActiveSupport::TestCase
       "Expected distribution to be unchanged for an excluded taxon"
     )
   end
+
+  # The form sends no distribution for excluded taxa (NSL-6002).
+  test "no error for a blank or missing distribution on an excluded taxon" do
+    trel = tree_elements(:red_gum_in_taxonomy)
+    trel.excluded = true
+
+    [ nil, "" ].each do |dist_param|
+      message, refresh = trel.update_distribution(dist_param, "dist user")
+      assert_equal("No distribution change", message, "for #{dist_param.inspect}")
+      assert_equal(false, refresh, "for #{dist_param.inspect}")
+    end
+  end
 end
