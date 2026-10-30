@@ -57,7 +57,6 @@ import "jquery-dateformat.min";
 import "new_search";
 import "tabs";
 import "typeahead_bundle";
-import "typeaheads_for_author_duplicate_of";
 
 import "typeaheads_for_instance_synonymy";
 

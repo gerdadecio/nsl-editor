@@ -1,7 +1,10 @@
 $('.message-container').html('');
 $('input#author_name').focus();
-$('#search-result-details-info-message-container').html('<%= @message %>');
-$('input#author-duplicate-of-typeahead').val('<%= @author.duplicate_of.try('name_and_or_abbrev') %>');
+$('#search-result-details-info-message-container').html('<%= j @message %>');
+<%# .val() sets plain text, so the name is JS-escaped only: HTML-escaping it
+    too would show e.g. "O&#39;Brien" in the input. %>
+$('input#author-duplicate-of-typeahead').val('<%== j @author.duplicate_of.try('name_and_or_abbrev').to_s %>');
+$('input#author_duplicate_of_id').val('<%= j @author.duplicate_of_id.to_s %>');
 $('a#Author-<%= @author.id %>').html('<%= escape_javascript(render partial: 'author_name_link_text', locals: {search_result: @author}) %>');
 $('td#Author-<%= @author.id %>-abbrev').html('<%= escape_javascript(render partial: 'author_abbrev_link_text', locals: {search_result: @author}) %>');
 
