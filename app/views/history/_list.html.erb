@@ -11,8 +11,10 @@
     <% if defined? the_note %>
       <p><%= the_note %></p>
     <% end %>
-    Tickets:<%= @tickets.size %><br>
-    Retrieved:<%= Time.now.to_formatted_s(:long_ordinal) %><br>
+    Tickets:<%= @ticket_count %><br>
+    <% if @tickets.present? %>
+      Retrieved:<%= Time.now.to_formatted_s(:long_ordinal) %><br>
+    <% end %>
     <% unless the_list.blank? %>
 
     <ul class="list-group">  
