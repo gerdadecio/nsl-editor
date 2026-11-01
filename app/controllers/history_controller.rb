@@ -20,8 +20,10 @@ class HistoryController < ApplicationController
   before_action :hide_details, :empty_search
 
   def for_year
+    keys = JiraTicket.keys_for_year(history_params[:year].to_i)
+    @ticket_count = keys.size
     if Rails.configuration.try("jira_status_aware")
-      JiraTicket.keys = JiraTicket.keys_for_year(history_params[:year].to_i)
+      JiraTicket.keys = keys
       JiraTicket.query_keys
       @tickets = JiraTicket.results
     else
