@@ -44,4 +44,34 @@ class ReferenceEditorShowEdit2Test < ActionDispatch::IntegrationTest
     assert_select "select#reference_language_id", true
     assert_select "input#reference_duplicate_of_id", true
   end
+
+  # Duplicate of is on the shared stimulus-autocomplete markup
+  # (app/views/shared/_autocomplete_field), not typeahead.js. The current
+  # reference's id is in the url so it is never offered as its own duplicate.
+  test "should render the duplicate of field as a stimulus autocomplete" do
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [ "edit" ]
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_edit_2"),
+        headers: { "Accept" => "application/javascript" }
+    end
+    assert_response :success
+    url = references_typeahead_on_citation_for_duplicate_path(id: @reference.id, format: :html)
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+      "[data-autocomplete-url-value='#{url}']" \
+      "[data-autocomplete-term-delimiter-value='|'] " \
+      "input#reference-duplicate-of-typeahead[data-autocomplete-target='input']" \
+      "[name='reference[duplicate_of_typeahead]']",
+                  true
+    assert_select "div.autocomplete " \
+      "input#reference_duplicate_of_id[data-autocomplete-target='hidden']",
+                  true
+    assert_select "div.autocomplete ul[data-autocomplete-target='results']",
+                  true
+    assert_select "div.autocomplete label[for='reference-duplicate-of-typeahead']",
+                  /Duplicate of/
+    assert_no_match "setUpReferenceDuplicateOf", response.body
+  end
 end

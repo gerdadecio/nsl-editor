@@ -4,8 +4,11 @@ $('#search-result-details-info-message-container').html('<%= j @message %>');
 $('select#reference_ref_type_id').focus();
 <% unless @message.match(/^No change/) %> 
   $('a#Reference-<%= @reference.id %>').html('<%= escape_javascript(render partial: 'reference_link_text', locals: {reference: @reference}) %>');
-  <%# .val() sets plain text, so the name is JS-escaped only: HTML-escaping it
-      too would show e.g. "O&#39;Brien" in the input. %>
+  <%# .val() sets plain text, so the author name and duplicate-of citation
+      are JS-escaped only: HTML-escaping them too would show e.g.
+      "O&#39;Brien" in the input. %>
   $('input#reference-author-typeahead').val('<%== j @reference.author.try('name').to_s %>');
   $('input#reference_author_id').val('<%= j @reference.author_id.to_s %>');
+  $('input#reference-duplicate-of-typeahead').val('<%== j @reference.duplicate_of.try('citation').to_s %>');
+  $('input#reference_duplicate_of_id').val('<%= j @reference.duplicate_of_id.to_s %>');
 <% end %>
