@@ -44,19 +44,38 @@
   </div>
 
 
-  <div class="form-group">
-    <label for="reference-parent-typeahead">Parent</label><br>
-    <input id="reference-parent-typeahead"
-           name="reference[parent_typeahead]"
-           class="typeahead form-control"
-					 data-current-id="<%= @reference.id %>"
-           type="text"
-           tabindex="<%= increment_tab_index %>"
-           title="Enter the parent or containing reference using the suggestions that are listed when you start typing."
-           value="<%= @reference.parent.try('citation') %>"/>
-           <p id=current-ref-type-message-about-parent>Please choose a type above before setting the parent.</p>
-  </div>
-  <%= f.hidden_field(:parent_id) %>
+  <%# Parent: on stimulus-autocomplete, instead of the typeahead.js widget
+      set up by setUpReferenceParent (now gone).
+
+      live_params sends the type currently chosen in the Type select, which
+      restricts which references can be a parent - the old Bloodhound source
+      read it from the select on every keystroke the same way, because the
+      user can change the type without leaving the form.
+
+      extra_params sends the current reference's id, so a reference is never
+      offered as its own parent - the job the old widget's data-current-id
+      did. A new reference has no id yet and sends it empty.
+
+      Reference::AsResolvedTypeahead::ForParent is unchanged: it cuts the
+      "<citation> | [type]" label at the first "|", and term_delimiter cuts
+      the search term there too. The input keeps its dom id for
+      update.js.erb. %>
+  <%= render "shared/autocomplete_field",
+             f: f,
+             id_attribute: :parent_id,
+             input_id: "reference-parent-typeahead",
+             input_name: "reference[parent_typeahead]",
+             input_value: @reference.parent.try("citation"),
+             label: "Parent",
+             title: "Enter the parent or containing reference using the suggestions that are listed when you start typing.",
+             url: references_typeahead_on_citation_for_parent_path(format: :html),
+             extra_params: { id: @reference.id },
+             live_params: { ref_type_id: "reference_ref_type_id" },
+             term_delimiter: "|" %>
+  <%# Outside the field's own wrapper div: .autocomplete-results is
+      positioned at top: 100% of that wrapper, so anything else inside it
+      would push the suggestion dropdown down below it. %>
+  <p id=current-ref-type-message-about-parent>Please choose a type above before setting the parent.</p>
 
   <% if @reference.id.present? %>
     <script>
@@ -202,7 +221,6 @@
 
 <% end %>
 
-  <script>setUpReferenceParent();</script>
   <script>RespondToType($('#reference_ref_type_id'));</script>
 
 <% if @take_focus %>

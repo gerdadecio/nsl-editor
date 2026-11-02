@@ -107,7 +107,9 @@ pin "typeaheads_for_loader_name_match_intended_tree_parent_name", to: "typeahead
 # The reference form's Duplicate of field uses stimulus-autocomplete too, so
 # typeaheads/for_reference/duplicate.js has gone, along with the
 # referenceByCitationForDuplicate Bloodhound source it defined.
-pin "typeaheads_for_reference_parent", to: "typeaheads/for_reference/parent.js"
+# The reference form's Parent field uses stimulus-autocomplete too, so
+# typeaheads/for_reference/parent.js has gone, along with the
+# referenceByCitationForParent Bloodhound source it defined.
 
 # All five name-author fields (Author, Base, Ex, Ex Base, Sanctioning) now
 # use stimulus-autocomplete - see app/views/shared/_autocomplete_field.html.erb -
