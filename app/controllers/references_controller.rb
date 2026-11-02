@@ -150,14 +150,18 @@ class ReferencesController < ApplicationController
     ).results)
   end
 
-  # Columns such as parent and duplicate_of_id use a typeahead search.
+  # Used by the reference form's Duplicate of field, which offers any
+  # reference of the same (or unknown) type but the current one (params[:id]).
+  #
+  # Same two formats as typeahead_on_citation: html for the field, now on
+  # stimulus-autocomplete, and json as before.
   def typeahead_on_citation_for_duplicate
-    render(json: []) if params[:term].blank?
-    typeahead = Reference::AsTypeahead::OnCitationForDuplicate.new(
-      params[:term],
-      params[:id],
-    )
-    render(json: typeahead.results)
+    suggestions = if params[:term].blank?
+      []
+    else
+      Reference::AsTypeahead::OnCitationForDuplicate.new(params[:term], params[:id]).results
+    end
+    render_autocomplete_suggestions(suggestions)
   end
 
   private

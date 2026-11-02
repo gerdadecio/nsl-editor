@@ -47,19 +47,24 @@
 		<p>Defaults to Undetermined if blank.</p>
   </div>
 
-  <div class="form-group">
-    <label for="reference-duplicate-of-typeahead">Duplicate of</label><br>
-    <input id="reference-duplicate-of-typeahead"
-           name="reference[duplicate_of_typeahead]"
-           class="typeahead form-control" 					 
-					 data-excluded-id="<%= @reference.id %>"
-					 data-excluded="<%= @reference.id %>"
-           type="text" 
-           title="Enter reference this duplicates.  Typeahead."
-           tabindex="<%= increment_tab_index %>"
-           value="<%= @reference.duplicate_of.try('citation') %>"/>
-  </div>
-	<%= f.hidden_field :duplicate_of_id, class: 'form-control' %>
+  <%# Duplicate of: on stimulus-autocomplete, instead of the typeahead.js
+      widget set up by setUpReferenceDuplicateOf (now gone). The current
+      reference's id is in the url path, so a reference is never offered as
+      a duplicate of itself - the job the old widget's data-excluded-id did.
+      Reference::AsResolvedTypeahead::ForDuplicateOf is unchanged: it cuts
+      the "<citation> | [type]" label at the first "|", and term_delimiter
+      cuts the search term there too, so editing a filled-in field searches
+      on the citation alone. The input keeps its dom id for update.js.erb. %>
+  <%= render "shared/autocomplete_field",
+             f: f,
+             id_attribute: :duplicate_of_id,
+             input_id: "reference-duplicate-of-typeahead",
+             input_name: "reference[duplicate_of_typeahead]",
+             input_value: @reference.duplicate_of.try("citation"),
+             label: "Duplicate of",
+             title: "Enter reference this duplicates.  Typeahead.",
+             url: references_typeahead_on_citation_for_duplicate_path(id: @reference.id, format: :html),
+             term_delimiter: "|" %>
   <br>
   <br>
   <div class="form-group align-right">
@@ -68,7 +73,6 @@
  
 <% end %>
 
-<script> setUpReferenceDuplicateOf(); </script>
 <% if @take_focus %>
   <script>
     $(document).ready(function () {

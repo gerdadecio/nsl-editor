@@ -75,7 +75,7 @@
       "check_name": "CrossSiteScripting",
       "message": "Unescaped model attribute",
       "file": "app/views/references/update.js.erb",
-      "line": 9,
+      "line": 10,
       "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
       "code": "j(Reference.find(params[:id]).author.name.to_s)",
       "render_path": [
@@ -101,6 +101,40 @@
         79
       ],
       "note": "False positive. The raw output (<%==) is wrapped in j (escape_javascript), which escapes quotes, backslashes, newlines and </, so the name cannot leave the single-quoted JS string. jQuery .val() sets it as plain text, never parsed as HTML. HTML-escaping too would show e.g. \"O&#39;Brien\" in the input (see test/controllers/references/edit/author/update_js_refreshes_fields_test.rb)."
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "284c0cc5cb334b8f2cbf31d3333c200b79517f64fa300966d9ad6a32572577c7",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/references/update.js.erb",
+      "line": 12,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "j(Reference.find(params[:id]).duplicate_of.citation.to_s)",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "ReferencesController",
+          "method": "update",
+          "line": 85,
+          "file": "app/controllers/references_controller.rb",
+          "rendered": {
+            "name": "references/update",
+            "file": "app/views/references/update.js.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "references/update"
+      },
+      "user_input": "Reference.find(params[:id]).duplicate_of",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": "False positive. The raw output (<%==) is wrapped in j (escape_javascript), which escapes quotes, backslashes, newlines and </, so the citation cannot leave the single-quoted JS string. jQuery .val() sets it as plain text, never parsed as HTML. HTML-escaping too would show e.g. \"O&#39;Brien\" in the input (see test/controllers/references/edit/duplicate_of_id/update_js_refreshes_fields_test.rb)."
     }
   ],
   "updated": "2026-11-02 12:00:00 +1100",
