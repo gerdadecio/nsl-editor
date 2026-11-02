@@ -1,4 +1,8 @@
 - :date: 02-November-2026
+  :jira_id: '6023'
+  :description: |-
+    Typeahead upgrade: Upgrade the reference form's Author field to use stimulus autocomplete
+- :date: 02-November-2026
   :jira_id: '6026'
   :description: |-
     Change-History - show correct ticket count and show no retrieval time when Jira statuses are not retrieved i.e. in production
