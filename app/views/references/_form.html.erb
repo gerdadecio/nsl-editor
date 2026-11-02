@@ -109,19 +109,24 @@
     </label>
   </div>
 
-  <div class="form-group">
-    <label for="reference-author-typeahead">Author<span class="red">*</span></label><br>
-    <input id="reference-author-typeahead"
-           name="reference[author_typeahead]"
-           class="typeahead form-control"
-           required
-           type="text"
-           tabindex="<%= increment_tab_index %>"
-           title="Select the author name from the suggestions that appear when you start typing. This field has ordered fragment searching and frequency searching."
-           value="<%= @reference.author.try('name') %>"/>
-    <p>If no author use a dash ('-')</p>
-  </div>
-  <%= f.hidden_field(:author_id) %>
+  <%# Author: on stimulus-autocomplete, instead of the typeahead.js widget
+      set up by setUpReferenceAuthor (now gone). Suggestions are labelled
+      "<name> | <n> refs | <abbrev>"; Reference::AsResolvedTypeahead::ForAuthor
+      cuts the submitted text at the first "|", and term_delimiter cuts the
+      search term there too, so editing a filled-in field searches on the
+      name alone. The input keeps its dom id for update.js.erb. %>
+  <%= render "shared/autocomplete_field",
+             f: f,
+             id_attribute: :author_id,
+             input_id: "reference-author-typeahead",
+             input_name: "reference[author_typeahead]",
+             input_value: @reference.author.try("name"),
+             label: "Author",
+             required: true,
+             title: "Select the author name from the suggestions that appear when you start typing. This field has ordered fragment searching and frequency searching.",
+             url: authors_typeahead_on_name_path(format: :html),
+             term_delimiter: "|" %>
+  <p>If no author use a dash ('-')</p>
 
   <div class="form-group">
     <label for="reference_ref_author_role_id">Author role<span class="red">*</span></label><br>
@@ -197,7 +202,6 @@
 
 <% end %>
 
-  <script>setUpReferenceAuthor();</script>
   <script>setUpReferenceParent();</script>
   <script>RespondToType($('#reference_ref_type_id'));</script>
 

@@ -52,4 +52,33 @@ class ReferenceEditorShowEdit1TabTest < ActionDispatch::IntegrationTest
     assert_select "input#reference_publication_date", true
     assert_select "textarea#reference_notes", true
   end
+
+  # Author is on the shared stimulus-autocomplete markup
+  # (app/views/shared/_autocomplete_field), not typeahead.js.
+  test "should render the author field as a stimulus autocomplete" do
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [ "edit" ]
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_edit_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
+    assert_response :success
+    url = authors_typeahead_on_name_path(format: :html)
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+      "[data-autocomplete-url-value='#{url}']" \
+      "[data-autocomplete-term-delimiter-value='|'] " \
+      "input#reference-author-typeahead[data-autocomplete-target='input']" \
+      "[name='reference[author_typeahead]'][required]",
+                  true
+    assert_select "div.autocomplete " \
+      "input#reference_author_id[data-autocomplete-target='hidden']",
+                  true
+    assert_select "div.autocomplete ul[data-autocomplete-target='results']",
+                  true
+    assert_select "div.autocomplete label[for='reference-author-typeahead']",
+                  /Author/
+    assert_no_match "setUpReferenceAuthor", response.body
+  end
 end
