@@ -1,8 +1,11 @@
 $('.message-container').html('');
-$('a#tab-heading').html('<%= @reference.citation %>');
-$('#search-result-details-info-message-container').html('<%= @message %>');
+$('a#tab-heading').html('<%= j @reference.citation %>');
+$('#search-result-details-info-message-container').html('<%= j @message %>');
 $('select#reference_ref_type_id').focus();
 <% unless @message.match(/^No change/) %> 
   $('a#Reference-<%= @reference.id %>').html('<%= escape_javascript(render partial: 'reference_link_text', locals: {reference: @reference}) %>');
-  $('input#reference-author-typeahead').val('<%= escape_javascript(@reference.author.try('name').try('html_safe')) %>');
+  <%# .val() sets plain text, so the name is JS-escaped only: HTML-escaping it
+      too would show e.g. "O&#39;Brien" in the input. %>
+  $('input#reference-author-typeahead').val('<%== j @reference.author.try('name').to_s %>');
+  $('input#reference_author_id').val('<%= j @reference.author_id.to_s %>');
 <% end %>

@@ -100,7 +100,10 @@ pin "typeaheads_for_loader_batch_default_reference", to: "typeaheads/for_loader_
 pin "typeaheads_for_loader_name_parent", to: "typeaheads/for_loader_name/parent.js"
 pin "typeaheads_for_loader_name_match_intended_tree_parent_name", to: "typeaheads/for_loader_name_match/intended_tree_parent_name.js"
 
-pin "typeaheads_for_reference_author", to: "typeaheads/for_reference/author.js"
+# The reference form's Author field uses stimulus-autocomplete - see
+# app/views/shared/_autocomplete_field.html.erb - so
+# typeaheads/for_reference/author.js has gone, along with the authorsByName
+# Bloodhound source it defined.
 pin "typeaheads_for_reference_duplicate", to: "typeaheads/for_reference/duplicate.js"
 pin "typeaheads_for_reference_parent", to: "typeaheads/for_reference/parent.js"
 

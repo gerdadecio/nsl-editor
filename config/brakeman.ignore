@@ -67,8 +67,42 @@
         79
       ],
       "note": "False positive. The raw output (<%==) is wrapped in j (escape_javascript), which escapes quotes, backslashes, newlines and </, so the name cannot leave the single-quoted JS string. jQuery .val() sets it as plain text, never parsed as HTML. HTML-escaping too would show e.g. \"O&#39;Brien\" in the input (see update_js_refreshes_fields_test.rb)."
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "5beb086ab869bfc8deea434535059f4013272e1efaab373a251f740cdc74c0cb",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/references/update.js.erb",
+      "line": 9,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "j(Reference.find(params[:id]).author.name.to_s)",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "ReferencesController",
+          "method": "update",
+          "line": 85,
+          "file": "app/controllers/references_controller.rb",
+          "rendered": {
+            "name": "references/update",
+            "file": "app/views/references/update.js.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "references/update"
+      },
+      "user_input": "Reference.find(params[:id]).author",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": "False positive. The raw output (<%==) is wrapped in j (escape_javascript), which escapes quotes, backslashes, newlines and </, so the name cannot leave the single-quoted JS string. jQuery .val() sets it as plain text, never parsed as HTML. HTML-escaping too would show e.g. \"O&#39;Brien\" in the input (see test/controllers/references/edit/author/update_js_refreshes_fields_test.rb)."
     }
   ],
-  "updated": "2026-10-30 12:00:00 +1100",
+  "updated": "2026-11-02 12:00:00 +1100",
   "brakeman_version": "7.1.2"
 }
