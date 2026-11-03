@@ -50,3 +50,14 @@
   background-color: #808080;
   color: #fff;
 }
+
+/* An excluded name in the tree workspace Parent fields' suggestions (the
+ * endpoint marks it data-excluded="true"): the red Font Awesome 4 ban icon
+ * (fa-ban) the old typeahead.js list showed, drawn here so the label written
+ * into the input stays plain text. */
+.autocomplete-result[data-excluded="true"]::before {
+  content: "\f05e";
+  font-family: FontAwesome;
+  color: red;
+  margin-right: 0.3em;
+}

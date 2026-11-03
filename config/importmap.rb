@@ -125,7 +125,10 @@ pin "typeaheads_for_loader_name_match_intended_tree_parent_name", to: "typeahead
 # _parent_2.html.erb), so the Bloodhound sources and set-up functions they
 # used - cultivar_parent.js, cultivar_second_parent.js, hybrid_parent.js and
 # second_parent.js - have gone.
-pin "typeaheads_for_name_workspace_parent_name", to: "typeaheads/for_name/workspace_parent_name.js"
+# The tree workspace Parent fields (place, replace and update parent) use
+# stimulus-autocomplete too, so typeaheads/for_name/workspace_parent_name.js
+# has gone, along with setUpWorkspaceParentName and the
+# workspaceParentNameSuggestions Bloodhound source it defined.
 
 pin "markdown_it_sub_min", to: "https://cdn.jsdelivr.net/npm/markdown-it-sub/dist/markdown-it-sub.min.js"
 pin "markdown_it_sup_min", to: "https://cdn.jsdelivr.net/npm/markdown-it-sup/dist/markdown-it-sup.min.js"

@@ -18,7 +18,29 @@
 #
 #   Names are central to the NSL.
 class Names::Typeaheads::ForWorkspaceParentNameController < ApplicationController
+  include AutocompleteSuggestions
+
+  # Used by the tree workspace Parent fields, see
+  # app/views/trees/_update_parent.html.erb (update parent on the draft) and
+  # app/views/instances/workspace/forms/_new_placement_name_typeahead.html.erb
+  # and _name_typeahead.html.erb (place and replace).
+  #
+  # Two formats, as for Names::Typeaheads::ForUnpubCitController#index:
+  #   html - the fragment stimulus-autocomplete expects, which the field asks
+  #          for by extension. Excluded names carry data-excluded="true".
+  #   json - what the field asked for while it was on typeahead.js; kept for
+  #          parity, and the answer to any other format, as before.
   def index
+    # With no draft selected there is nothing to suggest from, and the
+    # message below would fail on nil before authorize! ran. Refused like any
+    # other denial; the action and subject are set because the
+    # ApplicationController's rescue_from logs them.
+    if @working_draft.nil?
+      raise CanCan::AccessDenied.new("No draft taxonomy selected",
+        :names_typeahead_for_workspace_parent,
+        TreeVersion)
+    end
+
     authorize!(
       :names_typeahead_for_workspace_parent,
       @working_draft,
@@ -26,7 +48,9 @@ class Names::Typeaheads::ForWorkspaceParentNameController < ApplicationControlle
     )
     typeahead = Name::AsTypeahead::ForWorkspaceParentName
       .new(params, @working_draft)
-    render(json: typeahead.suggestions)
+    render_autocomplete_suggestions(typeahead.suggestions,
+      data_keys: [ :excluded ],
+      any_format_as_json: true)
   end
 
   private
