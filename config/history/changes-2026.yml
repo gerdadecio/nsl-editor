@@ -1,4 +1,8 @@
 - :date: 03-November-2026
+  :jira_id: '6005'
+  :description: |-
+    Authors: Fix search directive links on the Author Details and Edit tabs, so they find every name counted, including common and cultivar names
+- :date: 03-November-2026
   :jira_id: '6035'
   :description: |-
     Security: Escape reference citations in Loader Name misapplied entries
