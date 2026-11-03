@@ -81,4 +81,39 @@ class ReferenceEditorShowEdit1TabTest < ActionDispatch::IntegrationTest
                   /Author/
     assert_no_match "setUpReferenceAuthor", response.body
   end
+
+  # Parent is on the shared stimulus-autocomplete markup too. The current
+  # reference's id goes with every query so it is never offered as its own
+  # parent, and the type is read from the Type select at query time.
+  test "should render the parent field as a stimulus autocomplete" do
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [ "edit" ]
+    ) do
+      get reference_tab_path(id: @reference.id, tab: "tab_edit_1"),
+        headers: { "Accept" => "application/javascript" }
+    end
+    assert_response :success
+    url = references_typeahead_on_citation_for_parent_path(format: :html)
+    extra_params = { id: @reference.id }.to_json
+    live_params = { ref_type_id: "reference_ref_type_id" }.to_json
+    assert_select "div.autocomplete[data-controller='autocomplete']" \
+      "[data-autocomplete-url-value='#{url}']" \
+      "[data-autocomplete-extra-params-value='#{extra_params}']" \
+      "[data-autocomplete-live-params-value='#{live_params}']" \
+      "[data-autocomplete-term-delimiter-value='|'] " \
+      "input#reference-parent-typeahead[data-autocomplete-target='input']" \
+      "[name='reference[parent_typeahead]']",
+                  true
+    assert_select "div.autocomplete " \
+      "input#reference_parent_id[data-autocomplete-target='hidden']",
+                  true
+    assert_select "div.autocomplete ul[data-autocomplete-target='results']",
+                  true
+    assert_select "div.autocomplete label[for='reference-parent-typeahead']",
+                  /Parent/
+    assert_select "p#current-ref-type-message-about-parent", true
+    assert_no_match "setUpReferenceParent", response.body
+  end
 end
