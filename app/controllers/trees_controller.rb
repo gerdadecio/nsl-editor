@@ -98,6 +98,11 @@ class TreesController < ApplicationController
       @working_draft,
       message: "You are not authorized to replace a taxon in #{@working_draft.tree.name} draft",
     )
+    if parent_not_picked?(move_name_params)
+      @message = PARENT_NOT_PICKED_MESSAGE
+      return render("move_placement_error", status: :unprocessable_content)
+    end
+
     target = TreeVersionElement.find(move_name_params[:element_link])
     parent = TreeVersionElement.find(move_name_params[:parent_element_link])
 
@@ -140,6 +145,11 @@ class TreesController < ApplicationController
       @working_draft,
       message: "You are not authorized to place names on any #{@working_draft.tree.name} draft",
     )
+    if parent_not_picked?(place_name_params)
+      @message = PARENT_NOT_PICKED_MESSAGE
+      return render("place_name_error", status: :unprocessable_content)
+    end
+
     excluded = place_name_params[:excluded] ? true : false
     parent_element_link = place_name_params[:parent_name_typeahead_string].blank? ? nil : place_name_params[:parent_element_link]
     tree_version = TreeVersion.find(place_name_params[:version_id])
@@ -283,6 +293,11 @@ class TreesController < ApplicationController
       @working_draft,
       message: "Not authorized to update or delete #{@working_draft.tree.name} draft taxon parent",
     )
+    if parent_not_picked?(update_parent_params)
+      @message = PARENT_NOT_PICKED_MESSAGE
+      return render("update_parent_error", status: :unprocessable_content)
+    end
+
     target = TreeVersionElement.find(update_parent_params[:element_link])
     parent = TreeVersionElement.find(update_parent_params[:parent_element_link])
     reparent = Tree::Workspace::Reparent.new(
@@ -450,6 +465,18 @@ class TreesController < ApplicationController
     "<strong>#{key}:</strong><ul><li>" +
       problems.join("</li><li>") +
       "</li></ul>"
+  end
+
+  PARENT_NOT_PICKED_MESSAGE = "Please choose the parent from the suggestions list."
+
+  # The workspace Parent fields (stimulus-autocomplete) empty the hidden
+  # parent_element_link on every keystroke, and fill it again only when a
+  # suggestion is picked. Text with no link means the user typed or edited
+  # the name without picking one: refuse it, rather than placing the name
+  # with no parent or failing on TreeVersionElement.find("").
+  def parent_not_picked?(form_params)
+    form_params[:parent_name_typeahead_string].present? &&
+      form_params[:parent_element_link].blank?
   end
 
   def move_name_params

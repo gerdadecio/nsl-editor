@@ -26,7 +26,9 @@ import { Autocomplete } from "stimulus-autocomplete"
 //    by the rank currently chosen in the form's Rank select, which the
 //    user can change between two queries on the same field, so the rank
 //    has to be read when the query is built. A param whose element isn't
-//    on the page is simply left off the URL.
+//    on the page is simply left off the URL. A checkbox sends "1" when
+//    ticked and "0" when not, rather than its value attribute - the tree
+//    workspace Parent fields send their "Show higher ranks" box that way.
 //
 // 3. termDelimiter - what a field's suggestions are displayed as isn't
 //    always what should be searched on. The Parent field's suggestions
@@ -74,7 +76,10 @@ export default class extends Autocomplete {
     })
     Object.entries(this.liveParamsValue).forEach(([key, elementId]) => {
       const source = document.getElementById(elementId)
-      if (source) url.searchParams.set(key, source.value)
+      if (!source) return
+
+      const value = source.type === "checkbox" ? (source.checked ? "1" : "0") : source.value
+      url.searchParams.set(key, value)
     })
     return url.toString()
   }

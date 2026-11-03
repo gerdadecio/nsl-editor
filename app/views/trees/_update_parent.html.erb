@@ -1,31 +1,35 @@
 <div class="typeahead-container">
-  <section class='block width-100-percent'>
-    <label class="custom-control">Parent</label>
-    <label class="custom-control custom-checkbox pull-right">
-      Show higher ranks
-      <input type="checkbox" id="allow_higher_ranks" value="false"/>
-    </label>
+  <%# Parent: on stimulus-autocomplete, instead of the typeahead.js widget
+      set up by setUpWorkspaceParentName (now gone).
 
-    <input id="workspace_parent_name_typeahead"
-           name="update_parent[parent_name_typeahead_string]"
-           class="typeahead form-control width-100-percent"
-           tabindex="<%= increment_tab_index %>"
-           type="text"
-           data-name-id="<%= @instance.name.id %>"
-           data-parent-element-id="<%= parent_tve&.element_link %>"
-           title="Select a name from the suggestions as you type."
-           placeholder="Name suggestions"
-           value="<%= parent_tve&.tree_element&.name&.full_name %>"/>
-  </section>
+      extra_params sends the name being placed, whose rank decides which
+      ranks are offered. live_params sends the "Show higher ranks" box,
+      read on every query as the old Bloodhound source did.
 
-  <script> setUpWorkspaceParentName(); </script>
-  <input type="hidden"
-         id="workspace_parent_name_id"
-         name="update_parent[parent_element_link]"
-         value="<%= parent_tve&.element_link %>"/>
+      Suggestions read "<full name> - <rank>", and term_delimiter cuts the
+      search term at " -" the way the old source's / -.*/ did. The hidden
+      field holds the parent's element link, not a record id. %>
+  <%= render "shared/autocomplete_field",
+             f: nil,
+             id_attribute: nil,
+             input_id: "workspace_parent_name_typeahead",
+             input_name: "update_parent[parent_name_typeahead_string]",
+             input_value: parent_tve&.tree_element&.name&.full_name,
+             label: "Parent",
+             label_suffix: render("instances/workspace/forms/show_higher_ranks"),
+             title: "Select a name from the suggestions as you type.",
+             placeholder: "Name suggestions",
+             input_class: "width-100-percent",
+             url: workspace_parent_name_suggestions_path(format: :html),
+             extra_params: { name_id: @instance.name.id,
+                             parent_element_id: parent_tve&.element_link, },
+             live_params: { allow_higher_ranks: "allow_higher_ranks" },
+             term_delimiter: " -",
+             hidden_name: "update_parent[parent_element_link]",
+             hidden_id: "workspace_parent_name_id",
+             id_value: parent_tve&.element_link %>
   <input type="hidden"
          id="workspace_id"
          name="update_parent[version_id]"
          value="<%= @working_draft.id %>"/>
 </div>
-

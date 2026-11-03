@@ -1,31 +1,27 @@
 <div class="typeahead-container">
-  <section class='block width-100-percent'>
-    <label class="custom-control">Parent</label>
-    <label class="custom-control custom-checkbox pull-right">
-      Show higher ranks
-      <input type="checkbox" id="allow_higher_ranks" value="false"/>
-    </label>
-
-    <input id="workspace_parent_name_typeahead"
-           name="place_name[parent_name_typeahead_string]"
-           class="typeahead form-control width-100-percent"
-           tabindex="<%= increment_tab_index %>"
-           type="text"
-           data-name-id="<%= @instance.name.id %>"
-           data-parent-element-id="<%= @parent_tve&.element_link %>"
-           title="Select a name from the suggestions as you type."
-           placeholder="Name suggestions"
-           value="<%= @parent_tve&.tree_element&.name&.full_name %>"/>
-  </section>
-
-  <script> setUpWorkspaceParentName(); </script>
-  <input type="hidden"
-         id="workspace_parent_name_id"
-         name="place_name[parent_element_link]"
-         value="<%= @parent_tve&.element_link %>"/>
+  <%# Parent: on stimulus-autocomplete - see trees/_update_parent.html.erb,
+      which sets up the same field for the draft's Update parent form. %>
+  <%= render "shared/autocomplete_field",
+             f: nil,
+             id_attribute: nil,
+             input_id: "workspace_parent_name_typeahead",
+             input_name: "place_name[parent_name_typeahead_string]",
+             input_value: @parent_tve&.tree_element&.name&.full_name,
+             label: "Parent",
+             label_suffix: render("instances/workspace/forms/show_higher_ranks"),
+             title: "Select a name from the suggestions as you type.",
+             placeholder: "Name suggestions",
+             input_class: "width-100-percent",
+             url: workspace_parent_name_suggestions_path(format: :html),
+             extra_params: { name_id: @instance.name.id,
+                             parent_element_id: @parent_tve&.element_link, },
+             live_params: { allow_higher_ranks: "allow_higher_ranks" },
+             term_delimiter: " -",
+             hidden_name: "place_name[parent_element_link]",
+             hidden_id: "workspace_parent_name_id",
+             id_value: @parent_tve&.element_link %>
   <input type="hidden"
          id="workspace_id"
          name="place_name[version_id]"
          value="<%= @working_draft.id %>"/>
 </div>
-

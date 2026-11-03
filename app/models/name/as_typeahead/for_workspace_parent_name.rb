@@ -49,14 +49,20 @@ class Name::AsTypeahead::ForWorkspaceParentName
     end
   end
 
+  # The value is plain text: it is what the field writes back into the input
+  # on a pick. An excluded name is flagged with :excluded instead, which the
+  # suggestion list shows as a ban icon (see utilities/autocomplete.css). It
+  # used to carry the icon's <i> tag in the value, which the old typeahead.js
+  # wiring then had to strip back out of the input.
   def normal_query
     this_name = Name.find(@params[:name_id])
     rank_names = this_name.ranks_up_to_next_major.collect { |rank| rank.name }
     @workspace.query_name_version_ranks(prepared_search_term, rank_names)
-      .includes(:tree_element)
+      .preload(tree_element: :name)
       .collect do |n|
-      excl = n.tree_element.excluded ? '<i class="fa fa-ban red"></i> ' : ""
-      { value: "#{excl}#{n.tree_element.name.full_name} - #{n.tree_element.rank}", id: n.element_link }
+      { value: "#{n.tree_element.name.full_name} - #{n.tree_element.rank}",
+        id: n.element_link,
+        excluded: n.tree_element.excluded, }
     end
   end
 
@@ -64,9 +70,14 @@ class Name::AsTypeahead::ForWorkspaceParentName
     this_name = Name.find(@params[:name_id])
     basic_query
       .joins(tree_element: { name: :name_rank })
+      # preload, not includes: includes on the joined path would switch to
+      # eager_load, which with basic_query's limit runs an extra DISTINCT query.
+      .preload(tree_element: { name: :name_rank })
       .where([ "name_rank.sort_order < ?", this_name.name_rank.sort_order ])
       .collect do |n|
-      { value: "#{n.tree_element.name.simple_name} - #{n.tree_element.name.name_rank.name}", id: n.element_link }
+      { value: "#{n.tree_element.name.simple_name} - #{n.tree_element.name.name_rank.name}",
+        id: n.element_link,
+        excluded: n.tree_element.excluded, }
     end
   end
 end
