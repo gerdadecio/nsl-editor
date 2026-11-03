@@ -12,7 +12,7 @@ You cannot delete this Author because it has dependent records.
   <% if @author.names.size > 0 %>
     <%= render partial: 'detail_line', 
            locals: {info: link_to("#{pluralize(@author.names.size,'authored name')} ",
-                                  search_path(query_target: "names", query_string: "author-id:#{@author.id}"),
+                                  search_path(query_target: "names", query_string: "author-id:#{@author.id} icc:"),
                                   title: 'See authored names'), 
                     label: ''} %>
   <% end %>
@@ -20,28 +20,28 @@ You cannot delete this Author because it has dependent records.
   <% if @author.base_names.size > 0 %>
     <%= render partial: 'detail_line', 
            locals: {info: link_to("#{pluralize(@author.base_names.size,'base-authored name')} ",
-                                  search_path(query_target: "names", query_string: "base-author-id:#{@author.id}"),
-                                  title: 'See santioned names'), 
+                                  search_path(query_target: "names", query_string: "base-author-id:#{@author.id} icc:"),
+                                  title: 'See base-authored names'), 
                     label: ''} %>
   <% end %>
   <% if @author.ex_names.size > 0 %>
     <%= render partial: 'detail_line', 
            locals: {info: link_to("#{pluralize(@author.ex_names.size,'ex-authored name')} ",
-                                  search_path(query_target: "names", query_string: "ex-author-id:#{@author.id}"),
+                                  search_path(query_target: "names", query_string: "ex-author-id:#{@author.id} icc:"),
                                   title: 'See ex-authored names'), 
                     label: ''} %>
   <% end %>
   <% if @author.ex_base_names.size > 0 %>
     <%= render partial: 'detail_line', 
            locals: {info: link_to("#{pluralize(@author.ex_base_names.size,'ex base authored name')} ",
-                                  search_path(query_target: "names", query_string: "ex-base-author-id:#{@author.id}"),
+                                  search_path(query_target: "names", query_string: "ex-base-author-id:#{@author.id} icc:"),
                                   title: 'See ex-base-authored names'), 
                     label: ''} %>
   <% end %>
   <% if @author.sanctioned_names.size > 0 %>
     <%= render partial: 'detail_line', 
            locals: {info: link_to("#{pluralize(@author.sanctioned_names.size,'sanctioned-authored name')} ",
-                                  search_path(query_target: "names", query_string: "sanctioned-author-id:#{@author.id}"),
+                                  search_path(query_target: "names", query_string: "sanctioning-author-id:#{@author.id} icc:"),
                                   title: 'See sanctioned names'), 
                     label: ''} %>
   <% end %>
@@ -49,7 +49,7 @@ You cannot delete this Author because it has dependent records.
   <% if @author.duplicates.size > 0 %>
     <%= render partial: 'detail_line', 
            locals: {info: link_to("#{pluralize(@author.duplicates.size,'duplicate')} ",
-                                  search_path(query_target: "authors", query_string: "duplicate-of:#{@author.id}"),
+                                  search_path(query_target: "authors", query_string: "duplicate-of-id:#{@author.id}"),
                                   title: 'See duplicates'), 
                     label: ''} %>
   <% end %>
