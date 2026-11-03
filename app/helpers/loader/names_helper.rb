@@ -69,4 +69,15 @@ module Loader::NamesHelper
   def should_show_family_heading?(search_result)
     [ "accepted", "excluded", "heading" ].include?(search_result.record_type)
   end
+
+  # The name shown for a loader name in print output: the simple name, as in
+  # the web output, with a genus upcased. A leading hybrid marker keeps its
+  # case, e.g. "x Cuprocyparis" prints as "x CUPROCYPARIS".
+  def loader_name_print_name(loader_name)
+    name = loader_name.simple_name
+    return name unless loader_name.rank&.downcase == "genus"
+
+    marker = name[/\A(?:x\s+|×\s*)/].to_s
+    marker + name.delete_prefix(marker).upcase
+  end
 end

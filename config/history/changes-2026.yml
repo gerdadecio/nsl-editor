@@ -1,4 +1,8 @@
 - :date: 03-November-2026
+  :jira_id: '6030'
+  :description: |-
+    Load Name print output should use simple_name to be consistent with web output
+- :date: 03-November-2026
   :jira_id: '6025'
   :description: |-
     Typeahead upgrade: Upgrade the reference form's Parent (contained in) field to use stimulus autocomplete
