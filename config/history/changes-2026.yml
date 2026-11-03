@@ -1,4 +1,8 @@
 - :date: 03-November-2026
+  :jira_id: '6035'
+  :description: |-
+    Security: Escape reference citations in Loader Name misapplied entries
+- :date: 03-November-2026
   :jira_id: '6030'
   :description: |-
     Load Name print output should use simple_name to be consistent with web output

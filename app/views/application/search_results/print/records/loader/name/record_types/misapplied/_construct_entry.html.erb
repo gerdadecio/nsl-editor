@@ -26,13 +26,12 @@
         .sort {|x,y| (x&.instance&.reference&.iso_publication_date || '0000-00-00') <=>
                (y&.instance&.reference&.iso_publication_date || '0000-00-00') }
         .each_with_index do | match, ndx | %>
-      <% string = "#{match.instance.reference.citation}: #{match.instance.page}" %>
-      <% pp = match.relationship_instance_type.pro_parte? ? ', <i>p.p.</i>' : '' %>
-      <% if size == 1 || ndx == size - 1 %>
-        <%= "#{string}#{pp}]".html_safe %>
-      <% else %> 
-        <%= "#{string}#{pp};".html_safe %>
-      <% end %>
+      <%# safe_join escapes the stored citation and page; only the p.p. markup is HTML %>
+      <%= safe_join([
+            "#{match.instance.reference.citation}: #{match.instance.page}",
+            (safe_join([ ", ", tag.i("p.p.") ]) if match.relationship_instance_type.pro_parte?),
+            ndx == size - 1 ? "]" : ";"
+          ].compact) %>
     <% end %>
     </span>
   <% end %>
