@@ -19,6 +19,7 @@
 # Loader Batch entity
 class Loader::Batch < ApplicationRecord
   include SortKey
+  include DefaultReferenceResolvable
 
   strip_attributes
   self.table_name = "loader_batch"
@@ -34,9 +35,8 @@ class Loader::Batch < ApplicationRecord
   attr_accessor :give_me_focus, :message
 
   def self.create(params, username)
-    params[:default_reference_id] = nil if params[:default_reference_typeahead].blank?
-    params.reject! { |name, _value| name == "default_reference_typeahead" }
-    loader_batch = Loader::Batch.new(params)
+    loader_batch = Loader::Batch.new(params.except(*DEFAULT_REFERENCE_PARAMS))
+    loader_batch.resolve_default_reference(params)
     raise loader_batch.errors.full_messages.first.to_s unless loader_batch.save_with_username(username)
 
     loader_batch
@@ -81,10 +81,10 @@ class Loader::Batch < ApplicationRecord
     Loader::Batch.where("lower(name) = ?", canonical_query_target).first.id
   end
 
+  # The Default Reference field is resolved by DefaultReferenceResolvable.
   def update_if_changed(params, username)
-    params[:default_reference_id] = nil if params[:default_reference_typeahead].blank?
-    params.reject! { |name, _value| name == "default_reference_typeahead" }
-    assign_attributes(params)
+    assign_attributes(params.except(*DEFAULT_REFERENCE_PARAMS))
+    resolve_default_reference(params)
     if changed?
       self.updated_by = username
       save!
