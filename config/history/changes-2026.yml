@@ -1,3 +1,7 @@
+- :date: 05-November-2026
+  :jira_id: '6033'
+  :description: |-
+    Typeahead upgrade: Upgrade the loader name Parent field (synonym and misapplied forms, and the instance Loader 2 tab's Concept/Parent) to use stimulus autocomplete
 - :date: 04-November-2026
   :jira_id: '6032'
   :description: |-
