@@ -1,0 +1,22 @@
+<%# The Parent field on the loader name synonym and misapplied edit forms:
+    on stimulus-autocomplete, instead of the typeahead.js widget set up by
+    setUpLoaderNameParentTypeahead (now gone).
+
+    Suggestions are the accepted and excluded loader names in this record's
+    batch, labelled "<simple name> (<id>) ". Loader::Names::ParentTypeahead
+    resolves the text on save, since the library empties the hidden
+    parent_id whenever the text is edited.
+
+    Locals: f, loader_name, title. %>
+<%= render "shared/autocomplete_field",
+           f: f,
+           id_attribute: :parent_id,
+           input_id: "loader-name-parent-typeahead",
+           input_name: "loader_name[parent_typeahead]",
+           input_value: loader_name.parent&.simple_name,
+           label: "Parent",
+           title: title,
+           url: loader_names_parent_suggestions_path(format: :html),
+           extra_params: { loader_batch_id: loader_name.loader_batch_id,
+                           avoid_id: loader_name.id } %>
+<p>If you change the parent, please also consider changing the seq field.</p>

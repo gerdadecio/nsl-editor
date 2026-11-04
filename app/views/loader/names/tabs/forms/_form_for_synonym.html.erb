@@ -18,25 +18,14 @@
 
     <%= render partial: "loader/names/tabs/forms/synonym_type", locals: {f: f, loader_name: loader_name} %>
 
-    <% unless loader_name.new_record? %>
-
-    <div class="form-group">
-      <label for="loader-name-parent-typeahead">Parent</label>
-      <input id="loader-name-parent-typeahead"
-             name="loader_name[parent_typeahead]"
-             class="typeahead form-control"
-             data-loader-name-id="<%= loader_name.id %>"
-             data-loader-batch-id="<%= loader_name.loader_batch_id %>"
-             type="text"
-             tabindex="<%= increment_tab_index %>"
-             title="Raw loader name taxon that contains this loader name"
-             value="<%= loader_name.parent.try('simple_name') %>"/>
-     <p>If you change the parent, please also consider changing the seq field.</p>
-    </div>
-    <script>setUpLoaderNameParentTypeahead();</script>
-
-    <% end %>
+    <% if loader_name.new_record? %>
     <%= f.hidden_field(:parent_id, {}) %>
+    <% else %>
+    <%= render "loader/names/tabs/forms/parent_field",
+               f: f,
+               loader_name: loader_name,
+               title: "Raw loader name taxon that contains this loader name" %>
+    <% end %>
     <%= f.hidden_field(:loader_batch_id, {}) %>
 
     <div class="form-group">
