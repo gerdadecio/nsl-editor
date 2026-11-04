@@ -18,24 +18,28 @@
     </p>
    </div>
 
-   <div class="typeahead-container">
-      <section class='block width-100-percent'>
-        <label for="loader-batch-default-reference-typeahead">Default Reference</label>
-        <input id="loader-batch-default-reference-typeahead"
-               name="loader_batch[default_reference_typeahead]" 
-               class="typeahead form-control width-100-percent give-me-focus" 
-               title="Enter the reference.  Typeahead for reference citation, allows unordered fragments."
-               autofocus="true"
-               tabindex="<%= increment_tab_index %>"
-               type="text" 
-               placeholder="Reference wildcarded search on citation"
-               value="<%= @loader_batch.default_reference&.citation %>"/>
-      </section>
-    </div>
+  <%# Default Reference: on stimulus-autocomplete, instead of the typeahead.js
+      widget set up by setUpLoaderBatchDefaultReferenceTypeahead (now gone).
 
-    <script> setUpLoaderBatchDefaultReferenceTypeahead(); </script>
-
-    <%= form.hidden_field :default_reference_id %>
+      Suggestions are labelled "<citation> | [type]"; term_delimiter cuts
+      the search term at the first "|", as the old Bloodhound source did.
+      Loader::Batch::DefaultReferenceResolvable resolves the visible text on
+      save, since the library empties the hidden id whenever the text is
+      edited. typeahead-container keeps the old wrapper's spacing. %>
+  <%= render "shared/autocomplete_field",
+             f: form,
+             id_attribute: :default_reference_id,
+             input_id: "loader-batch-default-reference-typeahead",
+             input_name: "loader_batch[default_reference_typeahead]",
+             input_value: @loader_batch.default_reference&.citation,
+             label: "Default Reference",
+             title: "Enter the reference.  Typeahead for reference citation, allows unordered fragments.",
+             placeholder: "Reference wildcarded search on citation",
+             wrapper_class: "typeahead-container",
+             input_class: "width-100-percent give-me-focus",
+             autofocus: true,
+             url: loader_batches_default_reference_suggestions_path(format: :html),
+             term_delimiter: "|" %>
 
 
     <div class="form-group align-right">

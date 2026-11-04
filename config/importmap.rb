@@ -96,7 +96,10 @@ pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js
 # typeaheads/for_instance/change_name.js has gone. The form's synonym
 # instance field is still on typeahead.js, set up by synonymy.js above.
 
-pin "typeaheads_for_loader_batch_default_reference", to: "typeaheads/for_loader_batch/default_reference.js"
+# The loader batch form's Default Reference field uses stimulus-autocomplete -
+# see app/views/shared/_autocomplete_field.html.erb - so
+# typeaheads/for_loader_batch/default_reference.js has gone, along with the
+# loaderBatchDefaultReferenceSuggestions Bloodhound source it defined.
 pin "typeaheads_for_loader_name_parent", to: "typeaheads/for_loader_name/parent.js"
 pin "typeaheads_for_loader_name_match_intended_tree_parent_name", to: "typeaheads/for_loader_name_match/intended_tree_parent_name.js"
 

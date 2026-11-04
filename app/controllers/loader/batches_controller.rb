@@ -19,6 +19,7 @@
 class Loader::BatchesController < ApplicationController
   include Loader::Batches::MultiplySeqs
   include Loader::Batches::RefreshSortKey
+  include AutocompleteSuggestions
 
   before_action :find_loader_batch,
     only: [
@@ -137,9 +138,18 @@ class Loader::BatchesController < ApplicationController
     render("bulk/operation")
   end
 
+  # Used by the loader batch form's Default Reference field, which offers
+  # any reference.
+  #
+  # Same two formats as ReferencesController#typeahead_on_citation: html for
+  # the field, now on stimulus-autocomplete, and json as before.
   def default_reference_suggestions
-    render(json: []) if params[:term].blank?
-    render(json: Reference::AsTypeahead::OnCitation.new(params[:term]).results)
+    suggestions = if params[:term].blank?
+      []
+    else
+      Reference::AsTypeahead::OnCitation.new(params[:term]).results
+    end
+    render_autocomplete_suggestions(suggestions)
   end
 
   def unlock
