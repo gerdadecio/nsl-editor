@@ -23,7 +23,7 @@
         class: 'form-control',
         required: true,
         title: 'Must be within a batch',
-        onchange: "useSelectedBatch(); $('#loader_batch_id').prop('disabled', true);",
+        onchange: "$('#loader_batch_id').prop('disabled', true);",
         tabindex: increment_tab_index %>
       <p>Batch will lock once you select it - to change your batch click the Loader 2 tab heading to refresh.</p>
 
@@ -43,29 +43,26 @@
     <% end %>
 
 
-    <div class="form-group">
-      <label for="loader-name-parent-typeahead">Concept/Parent<span class="red">*</span></label>
-      <input id="loader-name-parent-typeahead"
-             name="loader_name[parent_typeahead]"
-             class="typeahead form-control"
-             data-loader-name-id="<%= loader_name.id %>"
-             data-loader-batch-id=$("#loader_batch_id").val()
-             type="text" 
-             tabindex="<%= increment_tab_index %>"
-             title="Loader Name concept"
-             required
-             placeholder="Begin typing name then select from list"
-             />
-      <p>Select a batch first</p>
-    </div>
-    <script>
-        function useSelectedBatch() {
-            batchId = $('#loader_batch_id').val();
-            $("#loader-name-parent-typeahead").attr("data-loader-batch-id", batchId);
-            setUpLoaderNameParentTypeahead();
-            loaderNameParentSuggestions.initialize();
-        }
-    </script>
+    <%# Concept/Parent: on stimulus-autocomplete, instead of the typeahead.js
+        widget set up by setUpLoaderNameParentTypeahead (now gone). The
+        batch is read from the Batch select at query time; no batch, no
+        suggestions. The create reads the concept's id from the picked
+        "<simple name> (<id>) " label, so the hidden parent_id starts empty
+        and is not relied on. %>
+    <%= render "shared/autocomplete_field",
+               f: form,
+               id_attribute: :parent_id,
+               id_value: "",
+               input_id: "loader-name-parent-typeahead",
+               input_name: "loader_name[parent_typeahead]",
+               input_value: nil,
+               label: "Concept/Parent",
+               required: true,
+               title: "Loader Name concept",
+               placeholder: "Begin typing name then select from list",
+               url: loader_names_parent_suggestions_path(format: :html),
+               live_params: { loader_batch_id: "loader_batch_id" } %>
+    <p>Select a batch first</p>
 
     <%= render partial: "loader/names/tabs/forms/synonym_type", locals: {f: form, loader_name: loader_name} %>
 

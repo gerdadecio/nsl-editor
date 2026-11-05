@@ -18,6 +18,7 @@
 #
 class Loader::NamesController < ApplicationController
   include Loader::Names::ParentTypeahead
+  include AutocompleteSuggestions
 
   before_action :find_loader_name,
     only: [ :show, :destroy, :tab, :update, :set_preferred_match ]
@@ -212,9 +213,12 @@ class Loader::NamesController < ApplicationController
     false # orc hid_params[:name_id].to_i < 0
   end
 
+  # Used by the loader name Parent field on the synonym and misapplied forms,
+  # and the Concept/Parent field on the instance Loader 2 tab, all now on
+  # stimulus-autocomplete: html for those fields, json as before.
   def parent_suggestions
     typeahead = Loader::Name::AsTypeahead::ForParent.new(params)
-    render(json: typeahead.suggestions)
+    render_autocomplete_suggestions(typeahead.suggestions)
   end
 
   def destroy
@@ -369,12 +373,6 @@ class Loader::NamesController < ApplicationController
     @loader_name.batch.reviews&.first&.periods&.first&.reviewers&.select do |x|
       x.user.userid == @current_user.username
     end&.first
-  end
-
-  def embedded_parent_typeahead_id(typeahead_value)
-    raise ArgumentError, "Input too long" if typeahead_value.length > 1000
-
-    typeahead_value.rpartition("(").last.partition(")").first
   end
 
   def current_families
