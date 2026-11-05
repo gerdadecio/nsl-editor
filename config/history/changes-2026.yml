@@ -1,3 +1,7 @@
+- :date: 06-November-2026
+  :jira_id: '6034'
+  :description: |-
+    Typeahead upgrade: Upgrade the loader name match Intended Taxonomy Parent field to use stimulus autocomplete
 - :date: 05-November-2026
   :jira_id: '6033'
   :description: |-
