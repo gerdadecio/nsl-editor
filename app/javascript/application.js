@@ -60,9 +60,6 @@ import "typeahead_bundle";
 
 import "typeaheads_for_instance_synonymy";
 
-import "typeaheads_for_loader_name_match_intended_tree_parent_name";
-
-
 import "markdown_it_sub_min";
 import "markdown_it_sup_min";
 import "markdown_it_min";

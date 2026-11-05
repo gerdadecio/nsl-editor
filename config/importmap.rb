@@ -104,7 +104,11 @@ pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js
 # instance Loader 2 tab's Concept/Parent) use stimulus-autocomplete, so
 # typeaheads/for_loader_name/parent.js has gone, along with the
 # loaderNameParentSuggestions Bloodhound source it defined.
-pin "typeaheads_for_loader_name_match_intended_tree_parent_name", to: "typeaheads/for_loader_name_match/intended_tree_parent_name.js"
+# The loader name match's Intended Taxonomy Parent field uses
+# stimulus-autocomplete too, so
+# typeaheads/for_loader_name_match/intended_tree_parent_name.js has gone,
+# along with the loaderNameMatchIntendedTreeParentSuggestions Bloodhound
+# source it defined.
 
 # The reference form's Author field uses stimulus-autocomplete - see
 # app/views/shared/_autocomplete_field.html.erb - so

@@ -375,8 +375,15 @@ class Loader::Name::MatchesController < ApplicationController
     render("update_error", format: :js)
   end
 
+  # The field is on stimulus-autocomplete, which empties the hidden id
+  # whenever the text is edited, so no id means the text wasn't picked from
+  # the suggestions. The id is checked after it is cast, so a non-numeric
+  # value can't slip through as a clear. Which names are allowed is the
+  # model's rule, see Loader::Name::Match#intended_tree_parent_is_scientific.
   def set_intended_tree_parent
     @match.intended_tree_parent_name_id = loader_name_match_params[:intended_tree_parent_name_id]
+    raise "please choose Intended Parent from suggestions" if @match.intended_tree_parent_name_id.nil?
+
     save_if_changed("Updated", "No change")
   rescue StandardError => e
     logger.error(e.to_s)
