@@ -18,9 +18,13 @@
 #
 #   Names are central to the NSL.
 class Loader::Name::Match::Suggestions::ForIntendedTreeParentController < ApplicationController
+  include AutocompleteSuggestions
+
+  # Used by the loader name match's Intended Taxonomy Parent field, now on
+  # stimulus-autocomplete: html for that field, json as before.
   def index
     typeahead = Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance.new(params)
-    render(json: typeahead.suggestions)
+    render_autocomplete_suggestions(typeahead.suggestions)
   end
 
   private

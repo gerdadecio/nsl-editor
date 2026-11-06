@@ -19,26 +19,31 @@
 
 # Provide typeahead suggestions based on a search term.
 #
-# Offer parents
-# Only accepted names
+# Offers scientific names, not soft deleted, as a loader name match's
+# intended taxonomy parent.
 class Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance
   attr_reader :suggestions,
     :params
 
   SEARCH_LIMIT = 50
 
+  # The names this field can offer: scientific, not soft deleted.
+  def self.offered_names
+    Name.not_soft_deleted
+      .joins(:name_type)
+      .where(name_type: { name: "scientific" })
+  end
+
   def initialize(params)
     @params = params
-    @suggestions =
-      if @params[:term].blank?
-        []
-      else
-        query
-      end
+    # Strings only: an array or hash term (e.g. ?term[]=x) gets no
+    # suggestions rather than a NoMethodError.
+    @term = params[:term].is_a?(String) ? params[:term] : ""
+    @suggestions = @term.blank? ? [] : query
   end
 
   def prepared_search_term
-    @params[:term].tr("*", "%").downcase + "%"
+    @term.tr("*", "%").downcase + "%"
   end
 
   # Select on full name
@@ -49,15 +54,13 @@ class Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance
   # a placeholder in a way that specifically counters SQL Injection.
   # I will dismiss the alert.
   def core_query
-    Name.not_soft_deleted
+    self.class.offered_names
       .joins(:name_rank)
       .joins(:name_status)
-      .joins(:name_type)
       .where([
         "lower(f_unaccent(name.full_name)) like lower(f_unaccent(?))",
         prepared_search_term
       ])
-      .where("name_type.name = 'scientific'")
       .select("name.id, name.full_name, case name_status.name when 'legitimate' then null else name_status.name end as status")
       .order("name_rank.sort_order, name.full_name")
       .limit(SEARCH_LIMIT)

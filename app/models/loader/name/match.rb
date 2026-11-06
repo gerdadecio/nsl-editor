@@ -59,6 +59,8 @@ class Loader::Name::Match < ApplicationRecord
     uniqueness: true,
     unless: proc { |a| a.loader_name.record_type == "misapplied" }
   validate :misapp_pref_matches_from_only_one_name
+  validate :intended_tree_parent_is_offered,
+    if: -> { intended_tree_parent_name_id.present? && intended_tree_parent_name_id_changed? }
   rejects_soft_deleted_links name: "name",
                              intended_tree_parent_name: "intended tree parent name",
                              instance: "instance",
@@ -67,6 +69,22 @@ class Loader::Name::Match < ApplicationRecord
                              source_for_copy: "source instance for copy"
 
   before_destroy :can_destroy?
+
+  # The intended tree parent must be a name the Intended Taxonomy Parent
+  # field's suggestions would offer: the rule itself lives in
+  # Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance.offered_names.
+  # Soft deleted names are left to rejects_soft_deleted_links, so they get
+  # one error, not two.
+  def intended_tree_parent_is_offered
+    if intended_tree_parent_name.nil?
+      errors.add(:base, "The intended tree parent name could not be found")
+    elsif intended_tree_parent_name.soft_deleted?
+      nil
+    elsif !Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance
+        .offered_names.exists?(id: intended_tree_parent_name_id)
+      errors.add(:base, "The intended tree parent name must be a scientific name")
+    end
+  end
 
   def misapp_pref_matches_from_only_one_name
     return unless loader_name.misapplied?

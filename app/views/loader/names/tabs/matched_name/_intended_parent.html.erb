@@ -16,24 +16,25 @@
         <br/>
         <%= form_for(preferred_match, as: 'loader_name_match', role: 'form', remote: true, data: { turbo: false }) do |f| %>
 
-          <div class="typeahead-container">
-            <section class='block width-100-percent'>
-              <input id="loader-name-match-intended-tree-parent-name-typeahead"
-                     class="typeahead form-control width-100-percent give-me-focus"
-                     title="Enter a name."
-                     tabindex="<%= increment_tab_index %>"
-                     type="text"
-                     required='true'
-                     placeholder="Enter name"
-                     value=""/>
-            </section>
-          </div>
-          <script> setUpLoaderNameMatchIntendedTreeParentTypeahead(); </script>
-  
-          <%= f.hidden_field(:intended_tree_parent_name_id, 
-                           value: preferred_match.intended_tree_parent_name_id,
-                           title: 'Intended parent') %>
-  
+          <%# On stimulus-autocomplete, instead of the typeahead.js widget set
+              up by setUpLoaderNameMatchIntendedTreeParentTypeahead (now
+              gone). The visible input is unnamed, as before: only the
+              hidden intended_tree_parent_name_id is posted. The library
+              empties it whenever the text is edited, so text that wasn't
+              picked from the list posts no id, and the save refuses it. %>
+          <%= render "shared/autocomplete_field",
+                     f: f,
+                     id_attribute: :intended_tree_parent_name_id,
+                     input_id: "loader-name-match-intended-tree-parent-name-typeahead",
+                     input_name: nil,
+                     input_value: "",
+                     input_class: "width-100-percent give-me-focus",
+                     required: true,
+                     title: "Enter a name.",
+                     placeholder: "Enter name",
+                     term_delimiter: "|",
+                     url: loader_name_matches_suggestions_for_intended_tree_parent_path(format: :html) %>
+
           <%= f.submit "Set Intended Parent",
                        id: 'save-loader-name-intended-tree-name-id',
                        tabindex: increment_tab_index,
