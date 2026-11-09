@@ -1,3 +1,7 @@
+- :date: 09-November-2026
+  :jira_id: '6039'
+  :description: |-
+    Loader Name Details tab: order preferred matches by primary reference date, earliest and most specific first
 - :date: 06-November-2026
   :jira_id: '6040'
   :description: |-
