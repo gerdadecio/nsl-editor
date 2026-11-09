@@ -44,6 +44,24 @@ class Loader::Name < ApplicationRecord
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
+  # NSL-6039: order the names that match a loader name chronologically, by
+  # the earliest publication date of their primary instances' references.
+  # iso_publication_date is text (YYYY, YYYY-MM or YYYY-MM-DD). More specific
+  # dates sort first, so a missing month or day is padded with 99: 1850
+  # sorts as 1850-99-99, after 1850-03 (1850-03-99), which sorts after
+  # 1850-03-15. Names without a dated primary reference go last, and names
+  # with the same date keep the former simple_name, name.id order.
+  MATCH_ORDER = Arel.sql(<<~SQL.squish)
+    (select min(rpad(ref.iso_publication_date, 10, '-99-99'))
+       from instance pi
+       join instance_type pit on pi.instance_type_id = pit.id
+       join reference ref on pi.reference_id = ref.id
+      where pi.name_id = name.id
+        and pit.primary_instance) nulls last,
+    name.simple_name,
+    name.id
+  SQL
+
   def self.for_batch(batch_id)
     if batch_id.nil? || batch_id == -1
       where("1=1")
@@ -192,7 +210,7 @@ class Loader::Name < ApplicationRecord
     ])
       .where(duplicate_of_id: nil)
       .joins(:name_type).where(name_type: { scientific: true })
-      .order("simple_name, name.id")
+      .order(MATCH_ORDER)
   end
 
   # Tried this - much slower, not sure why given Name is set up for lower(f_unaccent()) searches
@@ -263,7 +281,7 @@ class Loader::Name < ApplicationRecord
       "regexp_replace(simple_name,'[)(]','','g') = regexp_replace(regexp_replace(?,' [A-z][A-z]* Herbarium','','i'),'[)(]','','g')", simple_name
     ])
       .where(duplicate_of_id: nil)
-      .order("simple_name, name.id")
+      .order(MATCH_ORDER)
   end
 
   def likely_cultivar?
@@ -274,7 +292,7 @@ class Loader::Name < ApplicationRecord
   def matches_tweaked_for_cultivar
     ::Name.where(simple_name: simple_name)
       .where(duplicate_of_id: nil)
-      .order("simple_name, name.id")
+      .order(MATCH_ORDER)
   end
 
   def synonym_without_synonym_type?
