@@ -1,4 +1,8 @@
 - :date: 09-November-2026
+  :jira_id: '6041'
+  :description: |-
+    Security: Upgrade Ruby to 3.4.12
+- :date: 09-November-2026
   :jira_id: '6039'
   :description: |-
     Loader Name Details tab: order preferred matches by primary reference date, earliest and most specific first
