@@ -26,8 +26,7 @@ on:
 
 jobs:
   lint:
-    # Pinned: ubuntu-latest (26.04) only has the newest Ruby patch (3.4.12), not 3.4.8.
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     env:
       BUNDLE_ONLY: development
@@ -41,7 +40,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.4.8'
+          ruby-version: '3.4.12'
 
       - name: Install dependencies
         run: |

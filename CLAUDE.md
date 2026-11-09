@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The **NSL Editor** is a Rails 8 application for editing botanical names and taxonomy data for the Australian National Botanic Gardens (ANBG). It manages databases for Australian plants (APNI), Algae, Fungi, Lichen, and Moss, each in separate PostgreSQL databases sharing a common NSL schema.
 
-- **Ruby**: 3.4.8 (see `.ruby-version`)
+- **Ruby**: 3.4.12 (see `.ruby-version`)
 - **Rails**: 8.1.x
 - **PostgreSQL**: 15.7
 - **Time Zone**: Australia/Melbourne
