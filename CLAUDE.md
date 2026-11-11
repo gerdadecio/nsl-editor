@@ -237,7 +237,7 @@ git branch -d <branch-name>
 
 **Skills** (in `.claude/skills/`) automate these steps:
 - `/git-branch-workflow-set-up`: branch and commit, then hand back. The developer reviews, pushes, and creates the PR (using the PR template)
-- `/change-history-and-version`: add a `config/history/changes-YYYY.yml` entry and bump `config/version.properties` (user-facing changes only)
+- `/change-history-and-version`: add a `config/history/pending/NSL-<id>.yml` entry (user-facing changes only). After merge, a workflow moves it into `config/history/changes-YYYY.yml` and bumps `config/version.properties`, so PRs don't edit either file. It also covers noting a release with `bin/note-release`
 - `/post-merge-clean-up`: sync `main` with upstream after a merge, and delete the branch locally and on the fork
 
 Two more skills review code rather than automate the git workflow. Both are read-only, take a file or directory (defaulting to the current branch's changes), and group findings by severity:

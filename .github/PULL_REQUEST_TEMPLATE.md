@@ -22,5 +22,4 @@ Please delete options that are not relevant.
 <!-- Link to related issues (if any) -->
 
 ## Pre-merge steps
-- [ ] Bumped version
-- [ ] Updated changelog (Please add an entry to the changelog for the current year)
+- [ ] Added a changelog entry as `config/history/pending/NSL-<id>.yml` (user-facing changes only; the version bump happens automatically after merge)
