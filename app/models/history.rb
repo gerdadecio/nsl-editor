@@ -17,12 +17,10 @@
 #   limitations under the License.
 
 #   Record significant changes and let users read about them.
+#   The year's entries are its pending files (config/history/pending/) followed
+#   by config/history/changes-<year>.yml. See ChangeHistory.
 class History
   def self.changes(year)
-    load_changes_for(year)
-  end
-
-  def self.load_changes_for(year)
-    YAML.load_file("config/history/changes-#{year}.yml")
+    ChangeHistory.changes(year)
   end
 end

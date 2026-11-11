@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#   Copyright 2015 Australian National Botanic Gardens
+#   This file is part of the NSL Editor.
+#   Licensed under the Apache License, Version 2.0
+
+# Moves each config/history/pending/*.yml entry to the top of its year's
+# config/history/changes-<year>.yml, newest first, and deletes the pending
+# files. Run after merge by .github/workflows/fold-history-and-bump-version.yml;
+# safe to run by hand. Plain Ruby, no bundle needed.
+#
+#   bin/fold-history
+
+require_relative "../lib/change_history"
+
+Dir.chdir(File.expand_path("..", __dir__))
+
+begin
+  count = ChangeHistory.fold!
+  puts(count.zero? ? "No pending change-history entries." : "Folded #{count} pending change-history #{count == 1 ? "entry" : "entries"}.")
+rescue ChangeHistory::Error => e
+  warn "fold-history: #{e.message}"
+  exit 1
+end

@@ -1,0 +1,86 @@
+name: Fold change history and bump version
+
+# After a PR with a changelog entry (config/history/pending/NSL-<id>.yml) merges
+# to main, move the entry into config/history/changes-<year>.yml and bump the
+# last number of appversion, in one bot commit. PRs never edit either shared
+# file, so they don't conflict with each other.
+#
+# Needs: the bot must be allowed to push to main (branch protection or ruleset
+# bypass for github-actions[bot]).
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'config/history/pending/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# One run at a time. Each run folds every pending file on the latest main, so
+# a run that gets replaced while queued loses nothing.
+concurrency:
+  group: fold-history-and-bump-version
+  cancel-in-progress: false
+
+jobs:
+  fold:
+    # Only upstream: developers push main to their forks after a merge.
+    if: github.repository == 'bio-org-au/nsl-editor'
+    # Pinned: ubuntu-latest (26.04) only has the newest Ruby patch, not the one in .ruby-version.
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          # Full history, so the bump step can compare against the commit before the merge.
+          fetch-depth: 0
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+
+      - name: Fold pending changelog entries
+        run: bin/fold-history
+
+      - name: Bump version, commit and push
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          if [ -z "$(git status --porcelain config/history)" ]; then
+            echo "Nothing was folded, so no version bump."
+            exit 0
+          fi
+
+          # If the merge itself set the version by hand (e.g. a PR that moved
+          # to 5.2.0.00), keep it: fold the entry, don't bump.
+          if git cat-file -e "${BEFORE}^{commit}" 2>/dev/null \
+             && ! git diff --quiet "$BEFORE" "$AFTER" -- config/version.properties; then
+            version=$(sed -n 's/^appversion=//p' config/version.properties)
+            echo "Version was set by hand to ${version}, so no bump."
+            message="Changelog [skip ci]"
+          else
+            version=$(bin/bump-version)
+            message="Changelog and version ${version} [skip ci]"
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A config/history config/version.properties
+          git commit -m "$message"
+
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push rejected (attempt ${attempt}), rebasing on the latest main"
+            git pull --rebase origin main
+          done
+          echo "Couldn't push after 3 attempts"
+          exit 1

@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#   Copyright 2015 Australian National Botanic Gardens
+#   This file is part of the NSL Editor.
+#   Licensed under the Apache License, Version 2.0
+
+# Notes a production release in the change history. The released commit is
+# often not the latest on main, so the marker goes directly above the newest
+# entry that was in that commit: entries above the marker came after the
+# release. Run it on an up-to-date main (or a branch from it), then set the
+# next version in config/version.properties and commit both.
+#
+#   bin/note-release <released-commit> <version> [DD-Month-YYYY]
+#   bin/note-release 6d9144bbf 5.1.5.33 21-October-2026
+#
+# The date defaults to today, and picks which changes-<year>.yml is updated.
+
+require "date"
+require "open3"
+require_relative "../lib/change_history"
+
+Dir.chdir(File.expand_path("..", __dir__))
+
+def git(*args)
+  out, status = Open3.capture2("git", *args, err: File::NULL)
+  [ out, status.success? ]
+end
+
+commit, version, date = ARGV
+abort "usage: bin/note-release <released-commit> <version> [DD-Month-YYYY]" if commit.nil? || version.nil?
+
+date ||= Date.today.strftime("%d-%B-%Y")
+release_date = ChangeHistory.entry_date({ date: date })
+abort "note-release: the date should look like 21-October-2026" if release_date.nil?
+year = release_date.year
+
+if Dir.glob(File.join(ChangeHistory.pending_dir, "*.yml")).any?
+  abort "note-release: there are pending entries in #{ChangeHistory.pending_dir}. " \
+        "Pull main after the fold-history workflow has run, or run bin/fold-history, then try again."
+end
+
+sha, found = git("rev-parse", "--verify", "--quiet", "#{commit}^{commit}")
+abort "note-release: #{commit} isn't a commit" if !found
+sha = sha.strip
+
+yearly_path = ChangeHistory.yearly_path(year)
+abort "note-release: #{yearly_path} doesn't exist" if !File.exist?(yearly_path)
+
+# The year's entries as they were in the released commit, pending ones included.
+released_text, in_commit = git("show", "#{sha}:#{yearly_path}")
+released = in_commit ? Array(YAML.load(released_text)) : []
+pending_names, = git("ls-tree", "--name-only", sha, "#{ChangeHistory.pending_dir}/")
+pending_names.lines.map(&:strip).select { |name| name.end_with?(".yml") }.each do |name|
+  text, = git("show", "#{sha}:#{name}")
+  released += Array(YAML.load(text)).select { |entry| entry.is_a?(Hash) && ChangeHistory.entry_year(entry) == year }
+end
+
+begin
+  updated = ChangeHistory.insert_release_marker(File.read(yearly_path), released, version: version, date: date)
+rescue ChangeHistory::Error => e
+  abort "note-release: #{e.message}"
+end
+
+File.write(yearly_path, updated)
+puts "Noted release #{version} (#{sha[0, 9]}) in #{yearly_path}."
+puts "Next: set the next version in config/version.properties, then commit both files."
