@@ -283,11 +283,97 @@ bundle exec annotaterb models --exclude tests,spec
 
 ## Release notes
 
-There is a longish trail of release notes in annuallly rolled-over yaml files held in
-`config/history/` and visible from the help menu in the Editor.
+Release notes are kept as a change history in `config/history/`:
 
+- `changes-<year>.yml`: one file per year, newest entry first, with release markers showing
+  which entries went out in each release.
+- `pending/NSL-<id>.yml`: entries from PRs that haven't been folded into the yearly file yet.
+
+Users see them on the History page (help menu → "Changes <year>", or `/history/<year>`), which
+lists pending entries above the yearly ones. The app version lives in
+`config/version.properties`.
 
 Contact ibissupport at anbg for more information.
+
+### Change history and version
+
+Changes that users would notice (bug fixes, features, security fixes) get an entry in the
+change history, and each one bumps the last number of the app version.
+
+1. In your PR, create a new file `config/history/pending/NSL-<id>.yml` with one entry for
+   your change. Write it the same way as the entries in `changes-<year>.yml`, because it gets
+   copied into that file unchanged:
+
+   ```yaml
+   - :date: 11-November-2026
+     :jira_id: '6046'
+     :description: |-
+       History: Version number and change history now update automatically after each change is merged
+   ```
+
+   - `:date:` is `DD-Month-YYYY`, month in full. The year decides which yearly file it goes into.
+   - `:jira_id:` is the ticket number only, as a quoted string, without `NSL-`.
+   - `:description:` is `<Area>: <what changed>`, written for users.
+
+2. After the PR merges to upstream `main`, the `fold-history-and-bump-version` GitHub workflow
+   moves the entry to the top of `changes-<year>.yml` (`bin/fold-history`), deletes the pending
+   file, bumps the last number of `appversion` (`bin/bump-version`), and pushes one bot commit,
+   `Changelog and version X.Y.Z.N`.
+
+```
+  PR branch                         upstream main                       bot commit
+ ┌──────────────────────────┐ merge ┌───────────────────────────┐ workflow ┌────────────────────────────┐
+ │ code change              │──────▶│ pending/NSL-<id>.yml lands│─────────▶│ entry moved to top of      │
+ │ + pending/NSL-<id>.yml   │       │ (triggers the workflow)   │          │   changes-<year>.yml       │
+ └──────────────────────────┘       └───────────────────────────┘          │ pending file deleted       │
+                                                                           │ appversion 5.1.8.34 → .35  │
+                                                                           └────────────────────────────┘
+```
+
+Notes:
+
+- The History page shows pending entries above the yearly ones, so a change is visible locally
+  before it merges.
+- Skip the pending file for changes users won't notice (docs, CI, Claude config). A merge with
+  no pending file doesn't bump the version.
+- `test/lib/change_history_test.rb` checks every pending file, so run it before pushing.
+- The workflow only runs on the upstream repo, not on forks.
+
+#### Minor and major versions
+
+The workflow only bumps the last number. For anything bigger, run one of these in the PR and
+commit `config/version.properties`:
+
+```bash
+bin/bump-version release   # 5.1.8.33 -> 5.1.9.00
+bin/bump-version minor     # 5.1.8.33 -> 5.2.0.00
+bin/bump-version major     # 5.1.8.33 -> 6.0.0.00
+```
+
+If a PR sets the version by hand and also adds a pending entry, the workflow folds the entry
+but doesn't bump, so the version stays as the PR set it.
+
+#### Noting a release
+
+A release merges a chosen commit on `main` into the `release` branch. Release the bot's
+`Changelog and version …` commit, not the PR's merge commit, or the build shows the previous
+version. Then, on an up-to-date `main`:
+
+```bash
+bin/note-release <released-commit> <version> [DD-Month-YYYY]
+bin/bump-version release
+```
+
+`bin/note-release` puts a release marker above the newest entry included in the release. Commit
+both files.
+
+#### First change of a new year
+
+A new year's History page also needs an `app/views/history/_<year>.html.erb` partial, the year
+in the `history/:year` route constraint in `config/routes.rb`, and a "Changes <year>" link in
+`app/views/layouts/_help_menu.html.erb`. `bin/fold-history` creates the empty
+`changes-<year>.yml` if it's missing.
+
 
 
 ## Search Mechanism
