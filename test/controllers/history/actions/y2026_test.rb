@@ -14,13 +14,14 @@ class HistoryActionsY2026Test < ActionDispatch::IntegrationTest
     Dir.mktmpdir do |dir|
       FileUtils.cp("config/history/changes-2026.yml", dir)
       FileUtils.mkdir_p(File.join(dir, "pending"))
+      # Count from the copy, so real pending files don't change the total.
+      yearly_count = ChangeHistory.stub(:default_dir, dir) { JiraTicket.keys_for_year(2026).size }
       File.write(File.join(dir, "pending", "NSL-9999.yml"), <<~YAML)
         - :date: 31-December-2026
           :jira_id: '9999'
           :description: |-
             Testing: A pending change
       YAML
-      yearly_count = JiraTicket.keys_for_year(2026).size
 
       ChangeHistory.stub(:default_dir, dir) do
         sign_in_as_fake_user(username: "fred", full_name: "Fred Jones", groups: []) do
