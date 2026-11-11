@@ -4,6 +4,9 @@
 <% syn_for_copy = @instance.synonyms_for_copy_to_loader_name %>
 
 
+<%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |form| %>
+  <%= render partial: "instances/tabs/batch_loader/already_in_batches", locals: {instance: @instance} %>
+
 <h5>Add <%= loader_name.simple_name %> to a batch</h5>
 <ul>
   <li/>in the <%= loader_name.family %> family
@@ -13,7 +16,6 @@
 </ul>
 
 
-<%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |form| %>
     <div class="form-group">
       <label for="loader_batch_id">Batch<span class="red">*</span></label>
       <%= form.select :loader_batch_id,

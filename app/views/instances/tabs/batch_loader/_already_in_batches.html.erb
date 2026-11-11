@@ -1,0 +1,43 @@
+<%# NSL-5567: a name already in a batch is a warning, not a block. List the
+    batches holding the name this form would add, and make the user tick
+    "Add anyway" before saving, so the warning can't be overlooked.
+    Locals: instance - the instance whose name the form adds. %>
+<% already_in = Loader::Name.already_in_batches_for(instance).to_a %>
+<% if already_in.any? %>
+  <div class="already-in-batches">
+    <p>
+      <strong><%= instance.name.simple_name %></strong> is already in
+      <%= pluralize(already_in.map(&:loader_batch_id).uniq.size, "batch") %>:
+    </p>
+    <ul>
+      <% already_in.each do |loader_name| %>
+        <li>
+          <%= link_to(loader_name.simple_name,
+                      search_path(query_target: "loader_names",
+                                  query_string: "id: #{loader_name.id} batch-id: #{loader_name.loader_batch_id}"),
+                      title: "Show the loader name record",
+                      class: "blue") %>
+          is in batch <i><%= loader_name.loader_batch.name %></i>
+          as <%= loader_name.record_type.with_indefinite_article %>
+          <% if loader_name.parent.present? %>
+            of <%= loader_name.parent.simple_name %>
+          <% else %>
+            record
+          <% end %>
+          <%= "(loaded from this instance)" if loader_name.loaded_from_instance_id == instance.id %>
+        </li>
+      <% end %>
+    </ul>
+    <div class="form-check">
+      <label class="form-check-label">
+        <%= check_box_tag "confirm_already_in_batch", "1", false,
+                          id: nil,
+                          required: true,
+                          title: "Tick to add this name even though it is already in a batch",
+                          tabindex: increment_tab_index %>
+        Add anyway
+      </label>
+    </div>
+    <br>
+  </div>
+<% end %>
