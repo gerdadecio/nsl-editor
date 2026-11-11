@@ -1,4 +1,8 @@
 - :date: 11-November-2026
+  :jira_id: '6046'
+  :description: |-
+    History: Version number and change history now update automatically after each change is merged
+- :date: 11-November-2026
   :jira_id: '5567'
   :description: |-
     Loader tabs: warn but allow adding a name already in a batch, to the same batch or another, after ticking "Add anyway"
