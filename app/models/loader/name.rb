@@ -72,6 +72,20 @@ class Loader::Name < ApplicationRecord
 
   scope :avoids_id, ->(avoid_id) { where.not(loader_name: { id: avoid_id }) }
 
+  # NSL-5567: the name records, in any batch, for the name of an instance
+  # about to be added to a batch, so the Loader tabs can warn before adding
+  # it again. Matches on simple name (indexed by lower(simple_name),
+  # loader_batch_id), plus any loaded from the instance itself.
+  NAME_RECORD_TYPES = %w[accepted excluded synonym misapplied].freeze
+  def self.already_in_batches_for(instance)
+    where("lower(loader_name.simple_name) = lower(?)", instance.name.simple_name)
+      .or(where(loaded_from_instance_id: instance.id))
+      .where(record_type: NAME_RECORD_TYPES)
+      .joins(:loader_batch)
+      .preload(:loader_batch, :parent)
+      .order("loader_batch.name, loader_name.id")
+  end
+
   validates :record_type, presence: true
   validate :validate_family_record
   validates :rank, presence: true
