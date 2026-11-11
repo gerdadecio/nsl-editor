@@ -94,11 +94,7 @@ class JiraTicket < ActiveType::Object
   end
 
   def self.yaml_for_year(year)
-    if File.exist?("config/history/changes-#{year}.yml")
-      YAML.load_file("config/history/changes-#{year}.yml")
-    else
-      {}
-    end
+    History.changes(year)
   end
 
   def self.keys_for_year(year)

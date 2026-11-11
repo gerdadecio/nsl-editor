@@ -16,6 +16,7 @@ on:
       - '**/*.rb'
       - '**/*.erb'
       - '**/*.rake'
+      - 'config/history/**'
       - '.github/workflows/lint-ruby.yml'
 
 jobs:

@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#   Copyright 2015 Australian National Botanic Gardens
+#   This file is part of the NSL Editor.
+#   Licensed under the Apache License, Version 2.0
+
+# Bumps appversion in config/version.properties and prints the new version.
+# Each number keeps its zero padding, and the numbers after the bumped one
+# reset to zero.
+#
+#   bin/bump-version           5.1.8.33 -> 5.1.8.34  (run by the workflow after a merge)
+#   bin/bump-version release   5.1.8.33 -> 5.1.9.00  (a production release)
+#   bin/bump-version minor     5.1.8.33 -> 5.2.0.00
+#   bin/bump-version major     5.1.8.33 -> 6.0.0.00
+#
+# Plain Ruby, no bundle needed.
+
+LEVELS = { "major" => 0, "minor" => 1, "release" => 2, "build" => 3 }.freeze
+
+level = ARGV.first || "build"
+abort "usage: bin/bump-version [#{LEVELS.keys.join("|")}]" if !LEVELS.key?(level)
+
+path = File.expand_path("../config/version.properties", __dir__)
+text = File.read(path)
+current = text[/^appversion=(.+)$/, 1]&.strip
+abort "bump-version: no appversion= line in #{path}" if current.nil?
+
+parts = current.split(".")
+abort "bump-version: #{current} should be four numbers, like 5.1.8.33" if parts.size != 4 || !parts.all?(/\A\d+\z/)
+
+index = LEVELS[level]
+parts[index] = (parts[index].to_i + 1).to_s.rjust(parts[index].length, "0")
+((index + 1)...parts.size).each { |later| parts[later] = "0" * parts[later].length }
+
+bumped = parts.join(".")
+File.write(path, text.sub(/^appversion=.+$/, "appversion=#{bumped}"))
+puts bumped
