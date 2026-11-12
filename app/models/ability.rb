@@ -341,6 +341,7 @@ class Ability
     can("names_deletes",      :all)
     can("instances/soft_deletes", :all)
     can("names/soft_deletes", :all)
+    can("names/name_resources", :all)
     can("references",         :all)
     can("names/typeaheads/for_unpub_cit", :all)
     can("loader/batch/review/mode", "switch_off")
@@ -390,8 +391,6 @@ class Ability
     can("menu",               "admin") # config is the only option
     can("admin",              "index") # allows viewing of the config
     can("product_contexts/set_context", "create")
-    can("names/name_resources", :all)
-    can("names",              "tab_resource")
   end
 
   def basic_auth_2
@@ -433,6 +432,7 @@ class Ability
     can("names_deletes",      :all)
     can("instances/soft_deletes", :all)
     can("names/soft_deletes", :all)
+    can("names/name_resources", :all)
     can("references",         :all)
     can("names/typeaheads/for_unpub_cit", :all)
     can("loader/batch/review/mode", "switch_off")

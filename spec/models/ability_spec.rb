@@ -71,12 +71,12 @@ RSpec.describe(Ability, type: :model) do
       expect(subject.can?("product_contexts/set_context", "create")).to(eq(true))
     end
 
-    it "allows accessing names/name_resources" do
-      expect(subject.can?("names/name_resources", :all)).to(eq(true))
+    it "does not allow accessing names/name_resources" do
+      expect(subject.can?("names/name_resources", :all)).to(eq(false))
     end
 
-    it "allows accessing names tab_resource" do
-      expect(subject.can?("names", "tab_resource")).to(eq(true))
+    it "does not allow accessing names tab_resource" do
+      expect(subject.can?("names", "tab_resource")).to(eq(false))
     end
   end
 
@@ -1129,6 +1129,14 @@ RSpec.describe(Ability, type: :model) do
       it "allows create Instance" do
         expect(subject.can?(:create, Instance)).to(eq(true))
       end
+
+      it "allows all actions on names/name_resources" do
+        expect(subject.can?("names/name_resources", :all)).to(eq(true))
+      end
+
+      it "allows accessing names tab_resource" do
+        expect(subject.can?("names", "tab_resource")).to(eq(true))
+      end
     end
 
     context "when accessing specific actions" do
@@ -1228,6 +1236,10 @@ RSpec.describe(Ability, type: :model) do
         expect(subject.can?(:edit, Instance)).to(eq(true))
         expect(subject.can?(:update, Instance)).to(eq(true))
         expect(subject.can?(:destroy, Instance)).to(eq(true))
+      end
+
+      it "allows all actions on names/name_resources" do
+        expect(subject.can?("names/name_resources", :all)).to(eq(true))
       end
     end
 
