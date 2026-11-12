@@ -67,7 +67,7 @@ class SessionUser < ActiveType::Object
   end
 
   def password_admin?
-    groups.include?(Users::PasswordResetService::GROUP)
+    groups.include?(Users::PasswordResetService.group)
   end
 
   def qa?
