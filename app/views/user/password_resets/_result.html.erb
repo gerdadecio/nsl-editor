@@ -1,0 +1,17 @@
+<div class="alert alert-success" role="status">
+  <p>The password for <strong><%= reset.target_username %></strong> has been reset.</p>
+  <p>
+    Temporary password: <code id="temporary-password"><%= reset.temporary_password %></code>
+    <br>
+    <span class="text-muted">Read out as: <%= reset.temporary_password.scan(/[A-Z][a-z]+|\d/).join(" · ") %></span>
+  </p>
+  <% if reset.unlocked %>
+    <p>The account was locked out, and is now unlocked.</p>
+  <% end %>
+  <p>Ask them to sign in and change it straight away, using Change Password. This password isn't kept anywhere, and won't be shown again.</p>
+</div>
+<% if reset.unlock_failed %>
+  <div class="alert alert-warning" role="alert">
+    The account is locked out, and couldn't be unlocked. The new password won't work until the lockout ends.
+  </div>
+<% end %>

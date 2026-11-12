@@ -590,6 +590,7 @@ Rails.application.routes.draw do
 
   match "users", as: "user_show", to: "users#show", via: :get
   match "users/:id/tab/:tab", as: "user_tab", to: "users#tab", via: :get
+  match "users/:id/password_reset", as: "user_password_reset", to: "user/password_resets#create", via: :post
 
   match "choose/product/for/role/:id", as: "choose_product_for_role", to: "user/product_roles#choose_product_for_role", via: :get
   match "user_product_roles", as: "user_product_roles", to: "user/product_roles#create", via: :post
