@@ -74,6 +74,7 @@ class Ability
     edit_auth         if user.edit?
     qa_auth           if user.qa?
     admin_auth        if user.admin?
+    password_admin_auth if user.password_admin? && Users::PasswordResetService.enabled?
     treebuilder_auth  if user.treebuilder?
     reviewer_auth     if user.reviewer?
     batch_loader_auth if user.batch_loader?
@@ -495,6 +496,14 @@ class Ability
     can("users",              :all)
     can("user/product_roles", :all)
     can([ :create, :destroy ], User::ProductRole)
+  end
+
+  # NSL-6047: find a user and reset their AD password, without the rest of
+  # what admin_auth allows. Users::PasswordResetService checks the group again
+  # in AD at the time of the reset.
+  def password_admin_auth
+    can("users", %w[select show tab_details tab_password])
+    can("user/password_resets", "create")
   end
 
   def batch_loader_auth

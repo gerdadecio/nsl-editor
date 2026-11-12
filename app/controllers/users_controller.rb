@@ -26,6 +26,7 @@ class UsersController < ApplicationController
     set_tab_index
     @user = User.new if params[:tab] == "tab_periods"
     @take_focus = params[:take_focus] == "true"
+    check_password_reset_target if @tab == "tab_password"
     render("show", layout: false)
   end
 
@@ -100,6 +101,14 @@ class UsersController < ApplicationController
     else
       "tab_details"
     end
+  end
+
+  # NSL-6047: look the account up in AD as the Password tab opens, so a
+  # password administrator sees straight away if it can't be reset.
+  def check_password_reset_target
+    return if !can?("user/password_resets", "create")
+
+    @password_reset_check = Users::PasswordResetService.check_target(@user, admin_username: current_user.username)
   end
 
   def set_tab_index

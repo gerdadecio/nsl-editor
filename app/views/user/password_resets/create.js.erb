@@ -1,0 +1,7 @@
+$('.message-container').html('');
+<% if @reset.success? %>
+$('#password-reset-form-container').html('<%= j render(partial: "user/password_resets/result", locals: { reset: @reset }) %>');
+<% else %>
+$('#password-reset-error-message-container').html('<%= j h(@reset.errors.full_messages.join(" ")) %>');
+$('#password_reset_admin_password').val('').focus();
+<% end %>
