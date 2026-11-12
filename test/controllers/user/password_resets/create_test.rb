@@ -11,13 +11,16 @@ require_relative "../../../support/fake_password_reset_directory"
 class UserPasswordResetsCreateTest < ActionDispatch::IntegrationTest
   setup do
     @original_enabled = Rails.configuration.try(:password_reset_enabled)
+    @original_group = Rails.configuration.try(:password_reset_group)
     Rails.configuration.password_reset_enabled = true
+    Rails.configuration.password_reset_group = "password-admin"
     @directory = FakePasswordResetDirectory.new
     @user = users(:user_one)
   end
 
   teardown do
     Rails.configuration.password_reset_enabled = @original_enabled
+    Rails.configuration.password_reset_group = @original_group
   end
 
   def post_reset(groups: [ "login", "password-admin" ], admin_password: "right-password", extra_session: {})

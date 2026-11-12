@@ -98,6 +98,7 @@
     <tr><td>ldap_groups</td><td> <%= Rails.configuration.try(:ldap_groups) %> </td></tr>
     <tr><td>ldap_generic_users</td> <td> <%= Rails.configuration.try(:ldap_generic_users) %> </td></tr>
     <tr><td>ldap_group_filter_regex</td> <td> <%= Rails.configuration.try(:ldap_group_filter_regex) %> </td></tr>
+    <tr><td>password_reset_group</td> <td> <%= Users::PasswordResetService.group %><%= " (not set, so nobody can reset passwords)" if Rails.configuration.try(:password_reset_group).blank? %> </td></tr>
 
 
     <tr><td colspan="2">&nbsp;</td></tr>

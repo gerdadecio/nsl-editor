@@ -12,13 +12,16 @@ require_relative "../../../support/fake_password_reset_directory"
 class UsersTabsPasswordTabTest < ActionDispatch::IntegrationTest
   setup do
     @original_enabled = Rails.configuration.try(:password_reset_enabled)
+    @original_group = Rails.configuration.try(:password_reset_group)
     Rails.configuration.password_reset_enabled = true
+    Rails.configuration.password_reset_group = "password-admin"
     @user = users(:user_one)
     @directory = FakePasswordResetDirectory.new
   end
 
   teardown do
     Rails.configuration.password_reset_enabled = @original_enabled
+    Rails.configuration.password_reset_group = @original_group
   end
 
   def show_tab(tab, groups, username: "anna")
@@ -115,6 +118,12 @@ class UsersTabsPasswordTabTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "a#user-password-tab", count: 0
     assert_select "form#password-reset-form", count: 0
+  end
+
+  test "with no group configured, password-admin gives no access" do
+    Rails.configuration.password_reset_group = nil
+    show_tab("tab_password", [ "login", "password-admin" ])
+    assert_response :forbidden
   end
 
   test "no Password tab when the feature is off" do

@@ -14,5 +14,6 @@ class AdminConfigurationShowsPasswordResetFlagTest < ActionDispatch::Integration
 
     assert_response :success
     assert_match(/password_reset_enabled/, response.body)
+    assert_match(/password_reset_group.*unknown-group \(not set, so nobody can reset passwords\)/m, response.body)
   end
 end

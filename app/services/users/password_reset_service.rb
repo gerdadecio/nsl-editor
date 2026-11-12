@@ -19,16 +19,15 @@
 #   in this environment's OU. They may be an NSL or a generic AD user
 # - the administrator's own account: they use the Change Password page
 # - the account isn't in the NSL users OU, or is disabled
-# - the account is in a PROTECTED_GROUPS group in any environment's OU,
-#   directly or through nested groups
+# - the account is in the password reset group (another password
+#   administrator) in any environment's OU, directly or through nested groups
 #
 # The temporary password is returned to the caller to show once. It is never
 # stored or logged. Every attempt is logged with one PASSWORD_RESET line.
 class Users::PasswordResetService < BaseService
-  GROUP = "password-admin"
-  # Admins are not protected, by request: a password administrator may reset
-  # an admin's password.
-  PROTECTED_GROUPS = [ GROUP ].freeze
+  # A group nobody is in: until password_reset_group is set, no one can reset
+  # passwords. The real group name stays in the config file.
+  DEFAULT_GROUP = "unknown-group"
   POLICY_ATTEMPTS = 3
   SELF_MESSAGE = "Use Change Password to change your own password."
 
@@ -66,6 +65,19 @@ class Users::PasswordResetService < BaseService
     Rails.configuration.try(:password_reset_enabled) == true
   end
 
+  # The AD group whose members can reset passwords: password_reset_group in
+  # the config file, or DEFAULT_GROUP if that's not set.
+  def self.group
+    Rails.configuration.try(:password_reset_group).presence || DEFAULT_GROUP
+  end
+
+  # Accounts in these groups can't have their password reset here. Admins are
+  # not protected, by request: a password administrator may reset an admin's
+  # password.
+  def self.protected_groups
+    [ group ]
+  end
+
   def self.check_target(user, admin_username:, directory: Ldap::PasswordResetDirectory.new)
     username = user.user_name.to_s.downcase
     return TargetCheck.new(reason: "self", message: SELF_MESSAGE, locked: false) if username == admin_username.to_s.downcase
@@ -85,7 +97,7 @@ class Users::PasswordResetService < BaseService
       [ "not-found", "#{username} isn't an NSL account in Active Directory (it may be a generic account), so its password can't be reset here." ]
     elsif target.disabled?
       [ "disabled", "The account #{username} is disabled in Active Directory, so its password can't be reset here." ]
-    elsif directory.member_of_any?(target.dn, PROTECTED_GROUPS)
+    elsif directory.member_of_any?(target.dn, protected_groups)
       [ "protected-group", "The account #{username} is a password administrator, so its password can't be reset here." ]
     end
   end
@@ -122,7 +134,7 @@ class Users::PasswordResetService < BaseService
 
     admin = @directory.authenticate(@admin_username, @admin_password)
     raise Refused.new("bad-admin-password", "Your password was not accepted.") if admin.nil?
-    raise Refused.new("not-password-admin", "You are not in the #{GROUP} group.") if !admin.groups.include?(GROUP)
+    raise Refused.new("not-password-admin", "You are not in the #{self.class.group} group.") if !admin.groups.include?(self.class.group)
   end
 
   def find_target

@@ -11,13 +11,16 @@ require_relative "../../support/fake_password_reset_directory"
 class UsersPasswordResetServiceTest < ActiveSupport::TestCase
   setup do
     @original_enabled = Rails.configuration.try(:password_reset_enabled)
+    @original_group = Rails.configuration.try(:password_reset_group)
     Rails.configuration.password_reset_enabled = true
+    Rails.configuration.password_reset_group = "password-admin"
     @directory = FakePasswordResetDirectory.new
     @user = users(:user_one)
   end
 
   teardown do
     Rails.configuration.password_reset_enabled = @original_enabled
+    Rails.configuration.password_reset_group = @original_group
   end
 
   def reset(admin_username: "anna", admin_password: "right-password")
@@ -112,7 +115,26 @@ class UsersPasswordResetServiceTest < ActiveSupport::TestCase
   end
 
   test "admins are not protected" do
-    assert_equal [ "password-admin" ], Users::PasswordResetService::PROTECTED_GROUPS
+    assert_equal [ "password-admin" ], Users::PasswordResetService.protected_groups
+  end
+
+  test "the group is unknown-group unless the config names one" do
+    with_group(nil) { assert_equal "unknown-group", Users::PasswordResetService.group }
+    with_group("") { assert_equal "unknown-group", Users::PasswordResetService.group }
+    with_group("nsl-pw-reset") { assert_equal "nsl-pw-reset", Users::PasswordResetService.group }
+  end
+
+  test "with no group configured, nobody can reset" do
+    with_group(nil) { assert_refused(reset, "not-password-admin") }
+  end
+
+  test "a configured group is the one checked, and the one protected" do
+    with_group("nsl-pw-reset") do
+      assert_refused(reset, "not-password-admin")
+      @directory = FakePasswordResetDirectory.new(admin_groups: [ "login", "nsl-pw-reset" ])
+      assert reset.success?
+      assert_equal [ "nsl-pw-reset" ], Users::PasswordResetService.protected_groups
+    end
   end
 
   test "tries a new password when AD's policy refuses one" do
@@ -184,6 +206,14 @@ class UsersPasswordResetServiceTest < ActiveSupport::TestCase
   end
 
   private
+
+  def with_group(name)
+    original = Rails.configuration.try(:password_reset_group)
+    Rails.configuration.password_reset_group = name
+    yield
+  ensure
+    Rails.configuration.password_reset_group = original
+  end
 
   def capture_log
     output = StringIO.new
