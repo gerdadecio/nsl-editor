@@ -1,0 +1,4 @@
+- :date: 16-November-2026
+  :jira_id: '6053'
+  :description: |-
+    Security: Match usernames exactly when signing in, so wildcards such as * no longer match other accounts
