@@ -83,7 +83,7 @@ class Ldap < ActiveType::Object
 
   # Return an array of search results
   def admin_search(base, attribute, value, print_attribute)
-    filter = Net::LDAP::Filter.eq(attribute, value)
+    filter = Net::LDAP::Filter.equals(attribute, value)
     result = admin_connection.search(
       base: base,
       filter: filter,
@@ -101,8 +101,8 @@ class Ldap < ActiveType::Object
   def change_password(uid, new_password, _salt)
     conn = admin_connection
     [ [ :replace, :unicodePwd, unicode_password(new_password) ] ]
-    person = conn.search(base: USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD, uid))
-    person = conn.search(base: GENERIC_USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD, uid)) if person.blank?
+    person = conn.search(base: USERS, filter: Net::LDAP::Filter.equals(USERID_FIELD, uid))
+    person = conn.search(base: GENERIC_USERS, filter: Net::LDAP::Filter.equals(USERID_FIELD, uid)) if person.blank?
     Rails.logger.debug { "person.first.dn: #{person.first.dn}" }
     if conn.replace_attribute(person.first.dn, "unicodePwd", unicode_password(new_password))
       Rails.logger.debug("password changed!")
@@ -159,7 +159,7 @@ class Ldap < ActiveType::Object
   def validate_user_credentials
     bind_as = admin_connection.bind_as(
       base: USERS,
-      filter: Net::LDAP::Filter.eq(USERID_FIELD, username),
+      filter: Net::LDAP::Filter.equals(USERID_FIELD, username),
       password: password,
     )
     return validate_generic_user_in_active_directory unless bind_as
@@ -184,7 +184,7 @@ class Ldap < ActiveType::Object
   def validate_generic_user_in_active_directory
     bind_as = admin_connection.bind_as(
       base: GENERIC_USERS,
-      filter: Net::LDAP::Filter.eq(USERID_FIELD, username),
+      filter: Net::LDAP::Filter.equals(USERID_FIELD, username),
       password: password,
     )
     if bind_as
