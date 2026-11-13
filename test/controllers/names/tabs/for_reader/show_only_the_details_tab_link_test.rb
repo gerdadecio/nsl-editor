@@ -22,6 +22,12 @@ require "test_helper"
 class NameReaderOnlyDetailsTab < ActionDispatch::IntegrationTest
   setup do
     @name = names(:a_species)
+    @original_resource_tab_enabled = Rails.configuration.try(:resource_tab_enabled)
+    Rails.configuration.resource_tab_enabled = true
+  end
+
+  teardown do
+    Rails.configuration.resource_tab_enabled = @original_resource_tab_enabled
   end
 
   test "should not show reader the edit tab" do
@@ -52,5 +58,21 @@ class NameReaderOnlyDetailsTab < ActionDispatch::IntegrationTest
                   false,
                   "Should not show 'Instance' tab."
     assert_select "a#name-more-tab", false, "Should not show 'More' tab."
+    assert_select "a#name-resource-tab", false, "Should not show 'Resource' tab."
+  end
+
+  test "login-only user should see only details tab link" do
+    sign_in_as_fake_user(
+      username: "fred",
+      full_name: "Fred Jones",
+      groups: [ "login" ]
+    ) do
+      get name_tab_path(id: @name.id, tab: "tab_details"),
+        headers: { "Accept" => "application/javascript" }
+    end
+    assert_response :success
+    assert_select "a#name-details-tab", true, "Should show 'Detail' tab."
+    assert_select "a#name-resource-tab", false, "Should not show 'Resource' tab."
+    assert_select "a#name-edit-tab", false, "Should not show 'Edit' tab."
   end
 end

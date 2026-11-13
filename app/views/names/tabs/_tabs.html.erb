@@ -102,7 +102,7 @@
     %>
   <% end %>
 
-  <% if Rails.configuration.try(:resource_tab_enabled) %>
+  <% if Rails.configuration.try(:resource_tab_enabled) && can?("names", "tab_resource") %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {

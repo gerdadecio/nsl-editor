@@ -17,6 +17,7 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
     allow(view).to(receive(:can?).with(:manage, Name).and_return(false))
     allow(view).to(receive(:can?).with(:update_common_name, name).and_return(false))
     allow(view).to(receive(:can?).with(:create_common_name, Name).and_return(false))
+    allow(view).to(receive(:can?).with("names", "tab_resource").and_return(false))
     allow(view).to(receive(:increment_tab_index).and_return(1))
 
     mock_service = product_tab_service_mock
@@ -183,6 +184,31 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
     end
   end
 
+  describe "Resource tab visibility" do
+    context "when the resource tab is enabled but the user lacks tab_resource permission" do
+      before do
+        allow(Rails.configuration).to(receive(:resource_tab_enabled).and_return(true))
+      end
+
+      it "does not render the Resource tab" do
+        subject
+        expect(rendered).not_to(have_selector("a#name-resource-tab"))
+      end
+    end
+
+    context "when the user has tab_resource permission but the resource tab is disabled" do
+      before do
+        allow(Rails.configuration).to(receive(:resource_tab_enabled).and_return(false))
+        allow(view).to(receive(:can?).with("names", "tab_resource").and_return(true))
+      end
+
+      it "does not render the Resource tab" do
+        subject
+        expect(rendered).not_to(have_selector("a#name-resource-tab"))
+      end
+    end
+  end
+
   describe "editing tabs and the soft delete state of the name" do
     editing_tabs = [
       {
@@ -220,7 +246,10 @@ RSpec.describe("names/tabs/_tabs.html.erb", type: :view) do
       {
         label: "Resource",
         selector: "a#name-resource-tab",
-        permit: proc { allow(Rails.configuration).to(receive(:resource_tab_enabled).and_return(true)) },
+        permit: proc {
+          allow(Rails.configuration).to(receive(:resource_tab_enabled).and_return(true))
+          allow(view).to(receive(:can?).with("names", "tab_resource").and_return(true))
+        },
       },
       {
         label: "More",
