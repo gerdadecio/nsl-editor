@@ -33,12 +33,18 @@
 # counting/expansion logic as before. Same fix already applied to
 # Reference plus Instance searches - see
 # Search::OnModel::Base#show_instances.
+#
+# With tree_instances_only: true (NSL-6048, the show-tree-instances:
+# directive), each name shows only the instance used for it in the current
+# version of the accepted tree, with that instance's synonymy. A name that
+# isn't on the accepted tree shows no instances.
 class Search::OnName::WithInstances
   attr_reader :names_with_instances
 
-  def initialize(names)
+  def initialize(names, tree_instances_only: false)
     instances_by_name, standalone_cited_by_map, relationship_cited_by_map =
       Instance::AsArray::ForName.preload_for(names)
+    instances_by_name = only_tree_instances(names, instances_by_name) if tree_instances_only
 
     results = []
     names.each do |name|
@@ -54,5 +60,25 @@ class Search::OnName::WithInstances
       end
     end
     @names_with_instances = results
+  end
+
+  private
+
+  def only_tree_instances(names, instances_by_name)
+    tree_instance_ids = accepted_tree_instance_ids(names.map(&:id))
+    instances_by_name.transform_values do |instances|
+      instances.select { |instance| tree_instance_ids.include?(instance.id) }
+    end
+  end
+
+  # The instance each name has in the current version of the accepted tree.
+  def accepted_tree_instance_ids(name_ids)
+    tree_version_id = Tree.accepted.first&.current_tree_version_id
+    return Set.new if tree_version_id.nil? || name_ids.empty?
+
+    TreeVersionElement.joins(:tree_element)
+      .where(tree_version_id: tree_version_id, tree_element: { name_id: name_ids })
+      .pluck("tree_element.instance_id")
+      .to_set
   end
 end

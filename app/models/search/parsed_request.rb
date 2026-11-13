@@ -24,6 +24,7 @@
 #   "is-orth-var-and-sec-ref-first: limit: 2" })
 class Search::ParsedRequest
   attr_reader :show_instances,
+    :show_tree_instances,
     :show_novelties,
     :common_and_cultivar,
     :count,
@@ -158,6 +159,7 @@ class Search::ParsedRequest
   }.freeze
 
   ALLOW_SHOW_INSTANCES_TARGETS = [ "names", "name", "references", "reference" ]
+  ALLOW_SHOW_TREE_INSTANCES_TARGETS = [ "names", "name" ]
   ALLOW_SHOW_NOVELTIES_TARGETS = [ "references", "reference" ]
   ALLOW_INCLUDE_COMMON_AND_CULTIVAR_TARGETS = [ "names", "name" ]
 
@@ -188,6 +190,7 @@ class Search::ParsedRequest
 
   SHOW_INSTANCES = "show-instances:"
   SHOW_INSTANCES_BY_PAGE = "show-instances-by-page:"
+  SHOW_TREE_INSTANCES = "show-tree-instances:"
   SHOW_NOVELTIES = "show-novelties:"
   SHOW_NOVELTIES_BY_PAGE = "show-novelties-by-page:"
   INCLUDE_COMMON_AND_CULTIVAR = "include-common-and-cultivar:"
@@ -253,6 +256,8 @@ class Search::ParsedRequest
     unused_qs_tokens = parse_include_common_and_cultivar_directive(unused_qs_tokens)
     unused_qs_tokens = inflate_show_instances_abbrevs(unused_qs_tokens)
     unused_qs_tokens = parse_show_instances(unused_qs_tokens)
+    unused_qs_tokens = inflate_token(unused_qs_tokens, "sti:", SHOW_TREE_INSTANCES)
+    unused_qs_tokens = parse_show_tree_instances(unused_qs_tokens)
     unused_qs_tokens = inflate_show_novelties_abbrevs(unused_qs_tokens)
     unused_qs_tokens = parse_show_novelties(unused_qs_tokens)
     unused_qs_tokens = parse_order_instances(unused_qs_tokens)
@@ -700,6 +705,23 @@ query_string: '#{@query_string}'",
     tokens
   end
 
+  # NSL-6048: like show-instances:, but for each name shows only the
+  # instance used in the current version of the accepted tree, with its
+  # synonymy. Names that aren't on the accepted tree show no instances.
+  # Wins over show-instances: if both are given.
+  def parse_show_tree_instances(tokens)
+    if tokens.include?(SHOW_TREE_INSTANCES)
+      show_tree_instances_allowed?
+      @show_instances = true
+      @show_tree_instances = true
+      @order_instances_by_page = false
+      tokens.delete_if { |x| x == SHOW_TREE_INSTANCES }
+    else
+      @show_tree_instances = false
+    end
+    tokens
+  end
+
   def parse_show_novelties(tokens)
     if tokens.include?("show-novelties:")
       show_novelties_allowed?
@@ -721,6 +743,12 @@ query_string: '#{@query_string}'",
     return if ALLOW_SHOW_INSTANCES_TARGETS.include?(@query_target)
 
     raise "The show-instances: directive is not supported for this query"
+  end
+
+  def show_tree_instances_allowed?
+    return if ALLOW_SHOW_TREE_INSTANCES_TARGETS.include?(@query_target)
+
+    raise "The show-tree-instances: directive is only supported for Name searches"
   end
 
   def show_novelties_allowed?
