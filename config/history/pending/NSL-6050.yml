@@ -1,4 +1,0 @@
-- :date: 13-November-2026
-  :jira_id: '6050'
-  :description: |-
-    Name Resource tab: only editors can see the Resource tab and add, change or delete name resources; users with only the login group now see just the Details tab
