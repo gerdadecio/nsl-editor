@@ -37,6 +37,7 @@ class Search::EmptyParsedRequest
     :original_query_target_for_display,
     :target_button_text,
     :show_instances,
+    :show_tree_instances,
     :print,
     :display
 

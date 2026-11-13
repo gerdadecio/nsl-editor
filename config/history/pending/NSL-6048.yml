@@ -1,0 +1,4 @@
+- :date: 13-November-2026
+  :jira_id: '6048'
+  :description: |-
+    Name search: New <code>show-tree-instances:</code> (<code>sti:</code>) directive shows only each name's accepted tree instance, with its synonymy
