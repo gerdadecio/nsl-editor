@@ -19,12 +19,37 @@
 class SessionsController < ApplicationController
   skip_before_action :authenticate
 
-  # Slow down password guessing: at most 10 sign-in attempts per client IP in
-  # 3 minutes. LDAP account lockout protects a single account; this also slows
-  # guessing across many accounts from one client. Behind the AWS ALB,
-  # remote_ip is the client's address (the ALB's private address is a trusted
-  # proxy). Counts live in Rails.cache, so each app container counts separately.
-  rate_limit to: 10, within: 3.minutes, only: :create, with: :too_many_sign_in_attempts
+  # Slow down password guessing (NSL-6052). Three limits on sign-in attempts,
+  # each refused before LDAP is asked:
+  #
+  # - Per client IP: guessing from one client, across any accounts. Behind the
+  #   AWS ALB, remote_ip is the client's address (the ALB's private address is
+  #   a trusted proxy).
+  # - Per username: guessing at one account from many IPs. Keep it below the
+  #   AD lockout threshold, so the Editor stops before AD locks the account
+  #   (and if AD lockout is off, this is the only per-account cap). Anyone can
+  #   block a known username from signing in here for the window, which is
+  #   milder than the AD lockout the same guesses would cause.
+  # - Global: password spraying, one common password tried once per username
+  #   from many IPs, which no per-IP or per-account limit sees. A spray burst
+  #   can block all sign-ins for up to the window.
+  #
+  # Every attempt counts, successful or not. Counts live in Rails.cache, so
+  # each app container counts separately: with N containers, each limit is
+  # effectively N times higher.
+  PER_IP_LIMIT = 10
+  PER_IP_WINDOW = 3.minutes
+  PER_USERNAME_LIMIT = 5
+  PER_USERNAME_WINDOW = 15.minutes
+  GLOBAL_LIMIT = 100
+  GLOBAL_WINDOW = 5.minutes
+
+  rate_limit to: PER_IP_LIMIT, within: PER_IP_WINDOW, only: :create, name: "ip",
+    with: -> { too_many_sign_in_attempts(:ip) }
+  rate_limit to: PER_USERNAME_LIMIT, within: PER_USERNAME_WINDOW, only: :create, name: "username",
+    by: -> { rate_limit_username }, with: -> { too_many_sign_in_attempts(:username) }
+  rate_limit to: GLOBAL_LIMIT, within: GLOBAL_WINDOW, only: :create, name: "global",
+    by: -> { "all" }, with: -> { too_many_sign_in_attempts(:global) }
 
   def new
     build_sign_in
@@ -65,11 +90,24 @@ class SessionsController < ApplicationController
 
   private
 
-  # Runs instead of create once the rate limit is hit, so LDAP is not asked.
-  def too_many_sign_in_attempts
+  # Runs instead of create once a rate limit is hit, so LDAP is not asked.
+  # The message doesn't say which limit was hit; the log does, without the
+  # username or IP.
+  def too_many_sign_in_attempts(limit)
+    logger.warn("Sign-in rate limit hit: #{limit}")
     build_sign_in
     @sign_in.errors.add(:base, "Too many sign-in attempts. Please wait a few minutes and try again.")
     render("new", status: :too_many_requests)
+  end
+
+  # The username the per-username limit counts against. AD matches usernames
+  # case-insensitively, so "Fred" and " fred " share one count. Runs in a
+  # before_action, outside create's rescue, so malformed params must not raise.
+  def rate_limit_username
+    sign_in = params[:sign_in]
+    return "" if !sign_in.is_a?(ActionController::Parameters)
+
+    sign_in[:username].to_s.strip.downcase
   end
 
   def build_sign_in
