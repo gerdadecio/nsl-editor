@@ -1135,6 +1135,25 @@ RSpec.describe(Ability, type: :model) do
       expect(subject.can?(:manage_profile, instance)).to(eq(true))
     end
 
+    it "can manage_profile on instance with no profile items" do
+      instance = create(:instance, draft: false)
+
+      expect(subject.can?(:manage_profile, instance)).to(eq(true))
+    end
+
+    it "cannot manage_profile on instance whose profile items all belong to other products" do
+      user = create(:user, id: 1, user_name: session_user.username)
+      product_role = create(:product_role, product: product)
+      create(:user_product_role, user: user, product_role: product_role)
+
+      other_product = create(:product)
+      other_product_item_config = create(:product_item_config, product: other_product)
+      instance = create(:instance, draft: false)
+      create(:profile_item, instance: instance, product_item_config: other_product_item_config, is_draft: false)
+
+      expect(subject.can?(:manage_profile, instance)).to(eq(false))
+    end
+
     it "cannot manage_profile on draft Instance" do
       instance = double(draft?: true)
       expect(subject.can?(:manage_profile, instance)).to(eq(false))

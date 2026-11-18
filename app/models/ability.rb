@@ -286,7 +286,7 @@ class Ability
     can(:manage, Profile::ProfileText)
     can(:manage, Profile::ProfileItemAnnotation)
     can(:manage_profile, Instance) do |instance|
-      instance.profile_items.includes([ :product ]).any? { |item| item.product && user_products.include?(item.product) }
+      instance.profile_items.blank? || instance.profile_items.includes([ :product ]).any? { |item| item.product && user_products.include?(item.product) }
     end
     can(:create_adnot, Instance) do |instance|
       instance.in_any_local_tree_ids?(user_product_tree_ids)
