@@ -145,4 +145,65 @@ class SessionsCreateRateLimitTest < ActionDispatch::IntegrationTest
     assert_redirected_to retry_start_sign_in_path
     assert_includes @rate_limit_keys, "rate-limit:sessions:username:"
   end
+
+  # The tests above give fixed counts. These count for real, in one
+  # MemoryStore per app container, with requests sent to whichever container
+  # @container names. Each container has its own Rails.cache in production
+  # (no shared cache store is configured), which is what these model.
+  def with_containers(count, &block)
+    stores = Array.new(count) { ActiveSupport::Cache::MemoryStore.new }
+    @container = 0
+    increment = lambda do |key, amount = 1, **options|
+      stores[@container].increment(key, amount, **options)
+    end
+    SessionsController.cache_store.stub(:increment, increment, &block)
+  end
+
+  def failed_sign_in_as(username, container: 0)
+    @container = container
+    SignIn.stub_any_instance(:save, false) do
+      post sign_in_path, params: { sign_in: { username: username, password: "wrong" } }
+    end
+  end
+
+  test "repeated failed attempts at one username are counted up to the limit" do
+    with_containers(1) do
+      SessionsController::PER_USERNAME_LIMIT.times do
+        failed_sign_in_as("fred")
+        assert_response :unprocessable_content
+      end
+
+      failed_sign_in_as("fred")
+      assert_response :too_many_requests
+    end
+  end
+
+  test "a refused username doesn't block other usernames" do
+    with_containers(1) do
+      (SessionsController::PER_USERNAME_LIMIT + 1).times { failed_sign_in_as("fred") }
+      assert_response :too_many_requests
+
+      failed_sign_in_as("mary")
+      assert_response :unprocessable_content
+    end
+  end
+
+  # Documents a known limitation, not a goal: counts are per container, so
+  # with N containers an attacker gets N times each limit. If a shared cache
+  # store is configured for production, change this test to expect the
+  # limit to hold across containers.
+  test "each app container counts attempts separately" do
+    limit = SessionsController::PER_USERNAME_LIMIT
+    with_containers(2) do
+      (limit * 2).times do |attempt|
+        failed_sign_in_as("fred", container: attempt % 2)
+        assert_response :unprocessable_content, "attempt #{attempt + 1} should reach LDAP"
+      end
+
+      failed_sign_in_as("fred", container: 0)
+      assert_response :too_many_requests
+      failed_sign_in_as("fred", container: 1)
+      assert_response :too_many_requests
+    end
+  end
 end
