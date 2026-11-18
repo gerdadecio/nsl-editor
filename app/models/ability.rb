@@ -285,8 +285,14 @@ class Ability
     can(:manage, Profile::ProfileItemReference)
     can(:manage, Profile::ProfileText)
     can(:manage, Profile::ProfileItemAnnotation)
+    # The instance belongs to the context product if it already has a profile
+    # item for that product, or is placed in the product's tree.
     can(:manage_profile, Instance) do |instance|
-      instance.profile_items.blank? || instance.profile_items.includes([ :product ]).any? { |item| item.product && user_products.include?(item.product) }
+      context_product = session_user.product_from_context
+      next false if !context_product || !user_products.include?(context_product)
+
+      instance.profile_items.by_product(context_product).exists? ||
+        instance.in_any_local_tree_ids?([ context_product.tree_id ].compact)
     end
     can(:create_adnot, Instance) do |instance|
       instance.in_any_local_tree_ids?(user_product_tree_ids)
