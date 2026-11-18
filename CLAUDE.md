@@ -293,7 +293,7 @@ A security review was conducted in October 2026. The findings file (`tmp/review/
 ### What's in good shape
 - Search DSL: all SQL fragments from whitelisted maps, user values always bound with `?`
 - Raw SQL: all calls use constant strings or `sanitize_sql` with binds
-- LDAP: filters use `Net::LDAP::Filter.eq` (escapes input)
+- LDAP: user lookups use `Net::LDAP::Filter.equals`, which escapes input (NSL-6053)
 - No `permit!` or `to_unsafe_h` anywhere
 
 ### Open items to address
@@ -307,6 +307,7 @@ A security review was conducted in October 2026. The findings file (`tmp/review/
 - **Markdown** (finding 2, NSL-5964): `markdown_to_html` sanitizes. Never `.html_safe` Kramdown output
 - **Stored HTML** (findings 3 and 11, NSL-5965/5979/5980): never `.html_safe` a database value. Use `sanitize_stored_html(...)` (`ApplicationHelper`) for values that hold NSL markup, such as `full_name_html`, `citation_html` and comments: it keeps the name and reference tags and strips scripts. Plain `sanitize(...)` is fine for other text. When building link text, sanitize the value and join it with icons using `safe_join`, rather than interpolating into a string and calling `.html_safe`
 - **`detail_line` partial** (finding 11, NSL-5980): sanitizes `info` unless it's already safe, so pass a `safe_join` or `sanitize`d value, not `.html_safe` on stored data
+- **LDAP filters** (NSL-6053): build filters on any input with `Net::LDAP::Filter.equals` (or `Filter.escape`), never `Filter.eq`. `eq` does not escape, so a username of `*` matched every account and `bind_as` tried the password against the first one, which also got round the per-username sign-in limit
 - **JSON from services** (finding 10, NSL-5978): use `JSON.parse`, never `JSON.load`
 - **Calls to Services** (finding 6, NSL-5987): use `ServicesHttp.get/post/put/delete` (same arguments as RestClient), never `RestClient` directly. It adds a 10s open timeout; pass `read_timeout:` only for calls that need a non-default one. Log Services URLs with `ServicesHttp.loggable(url)`, never the raw URL: it hides the API key
 - **SSL and CSP** (finding 4, NSL-5973/5966): keep `assume_ssl` and `force_ssl` on together in `production.rb`. The AWS ALB terminates TLS, so `assume_ssl` makes requests count as HTTPS (otherwise `force_ssl` redirect-loops), and `force_ssl` adds the `Secure` cookie flag and HSTS (`assume_ssl` alone does not). When a page needs a new CDN for scripts, styles or fonts, add the host to `config/initializers/content_security_policy.rb`, and prefer JavaScript files over new inline scripts or `onclick` handlers, so the CSP can be enforced later
