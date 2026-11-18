@@ -1120,48 +1120,83 @@ RSpec.describe(Ability, type: :model) do
       end
     end
 
-    it "can manage_profile on instance if not draft and has profile items for product" do
-      # Create a user that matches the session_user's username for the user lookup to work
-      user = create(:user, id: 1, user_name: session_user.username)
-      product_role = create(:product_role, product: product)
+    describe ":manage_profile permission" do
+      let(:tree) { create(:tree) }
+      let(:product) { create(:product, is_name_index: false, manages_profile: true, tree: tree) }
+      let(:user) { create(:user, id: 1, user_name: session_user.username) }
+      let(:instance) { create(:instance, draft: false) }
 
-      create(:user_product_role, user: user, product_role: product_role)
+      before do
+        product_role = create(:product_role, product: product)
+        create(:user_product_role, user: user, product_role: product_role)
+        allow(instance).to(receive(:in_any_local_tree_ids?).and_return(false))
+      end
 
-      product_item_config = create(:product_item_config, product: product)
-      instance = create(:instance, draft: false)
+      def add_profile_item(instance, for_product)
+        product_item_config = create(:product_item_config, product: for_product)
+        create(:profile_item, instance: instance, product_item_config: product_item_config, is_draft: false)
+      end
 
-      create(:profile_item, instance: instance, product_item_config: product_item_config, is_draft: false)
+      it "can manage_profile when the instance has a profile item for the context product" do
+        add_profile_item(instance, product)
+        expect(subject.can?(:manage_profile, instance)).to(eq(true))
+      end
 
-      expect(subject.can?(:manage_profile, instance)).to(eq(true))
-    end
+      it "can manage_profile when the instance has no profile items but is in the context product's tree" do
+        allow(instance).to(receive(:in_any_local_tree_ids?).with([ tree.id ]).and_return(true))
+        expect(subject.can?(:manage_profile, instance)).to(eq(true))
+      end
 
-    it "can manage_profile on instance with no profile items" do
-      instance = create(:instance, draft: false)
+      it "can manage_profile when the instance is profiled by another product but is in the context product's tree" do
+        add_profile_item(instance, create(:product))
+        allow(instance).to(receive(:in_any_local_tree_ids?).with([ tree.id ]).and_return(true))
+        expect(subject.can?(:manage_profile, instance)).to(eq(true))
+      end
 
-      expect(subject.can?(:manage_profile, instance)).to(eq(true))
-    end
+      it "cannot manage_profile when the instance has no profile items and is not in the context product's tree" do
+        expect(subject.can?(:manage_profile, instance)).to(eq(false))
+      end
 
-    it "cannot manage_profile on instance whose profile items all belong to other products" do
-      user = create(:user, id: 1, user_name: session_user.username)
-      product_role = create(:product_role, product: product)
-      create(:user_product_role, user: user, product_role: product_role)
+      it "cannot manage_profile when the instance's profile items all belong to other products" do
+        add_profile_item(instance, create(:product))
+        expect(subject.can?(:manage_profile, instance)).to(eq(false))
+      end
 
-      other_product = create(:product)
-      other_product_item_config = create(:product_item_config, product: other_product)
-      instance = create(:instance, draft: false)
-      create(:profile_item, instance: instance, product_item_config: other_product_item_config, is_draft: false)
+      it "cannot manage_profile when the context product has no tree and the instance has no profile items" do
+        product.update!(tree: nil)
+        expect(instance).to(receive(:in_any_local_tree_ids?).with([]).and_call_original)
+        expect(subject.can?(:manage_profile, instance)).to(eq(false))
+      end
 
-      expect(subject.can?(:manage_profile, instance)).to(eq(false))
-    end
+      it "can manage_profile on a draft instance profiled for the context product" do
+        instance.update!(draft: true)
+        add_profile_item(instance, product)
+        expect(subject.can?(:manage_profile, instance)).to(eq(true))
+      end
 
-    it "cannot manage_profile on draft Instance" do
-      instance = double(draft?: true)
-      expect(subject.can?(:manage_profile, instance)).to(eq(false))
-    end
+      it "can manage_profile on a draft instance in the context product's tree" do
+        instance.update!(draft: true)
+        allow(instance).to(receive(:in_any_local_tree_ids?).with([ tree.id ]).and_return(true))
+        expect(subject.can?(:manage_profile, instance)).to(eq(true))
+      end
 
-    it "cannot :manage_profile on Instance with no profile items for product" do
-      instance = double(draft?: false, profile_items: double("profile_items", by_product: []))
-      expect(subject.can?(:manage_profile, instance)).to(eq(false))
+      it "cannot manage_profile on a draft instance with no profile items that is not in the context product's tree" do
+        instance.update!(draft: true)
+        expect(subject.can?(:manage_profile, instance)).to(eq(false))
+      end
+
+      it "cannot manage_profile when no product context is selected" do
+        add_profile_item(instance, product)
+        allow(session_user).to(receive(:product_from_context).and_return(nil))
+        expect(subject.can?(:manage_profile, instance)).to(eq(false))
+      end
+
+      it "cannot manage_profile when the user has no role on the context product" do
+        other_context = create(:product, manages_profile: true)
+        add_profile_item(instance, other_context)
+        allow(session_user).to(receive(:product_from_context).and_return(other_context))
+        expect(subject.can?(:manage_profile, instance)).to(eq(false))
+      end
     end
   end
 
