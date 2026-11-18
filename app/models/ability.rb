@@ -82,13 +82,14 @@ class Ability
 
     not_name_index = user.product_from_context.nil? || !user.product_from_context&.is_name_index?
     is_name_index  = user.product_from_context.nil? || user.product_from_context&.is_name_index?
+    manages_profile = user.product_from_context.nil? || user.product_from_context&.manages_profile?
 
     # NOTES: Broader permissions come first
     reviewer_auth(user) if user.with_role?("tree-reviewer")
     draft_editor(user) if user.with_role?("draft-editor") && not_name_index
-    profile_editor(user) if user.with_role?("profile-editor") && not_name_index
-    draft_profile_editor(user) if user.with_role?("draft-profile-editor") && not_name_index
-    profile_reference_auth(user) if user.with_role?("profile-reference") && not_name_index
+    profile_editor(user) if user.with_role?("profile-editor") && manages_profile
+    draft_profile_editor(user) if user.with_role?("draft-profile-editor") && manages_profile
+    profile_reference_auth(user) if user.with_role?("profile-reference") && manages_profile
     tree_builder_auth(user) if user.with_role?("tree-builder")
     tree_publisher_auth(user) if user.with_role?("tree-publisher")
     name_index_editor(user) if user.with_role?("name-index-editor") && is_name_index

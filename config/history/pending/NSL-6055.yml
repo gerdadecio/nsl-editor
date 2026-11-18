@@ -1,0 +1,4 @@
+- :date: 18-November-2026
+  :jira_id: '6055'
+  :description: |-
+    Profile: Profile editor, draft profile editor and profile reference permissions now depend on whether the product in context manages profile data, instead of whether it is a name index

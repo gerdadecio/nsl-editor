@@ -81,12 +81,12 @@ RSpec.describe(Ability, type: :model) do
   end
 
   describe "#draft_profile_editor role" do
-    let(:product) { create(:product, is_name_index: false) }
+    let(:product) { create(:product, is_name_index: false, manages_profile: true) }
 
     before do
       allow(session_user).to(receive(:with_role?).with("draft-profile-editor").and_return(true))
       allow(session_user).to(receive(:product_from_context).and_return(product))
-      allow(product).to(receive(:is_name_index?).and_return(false))
+      allow(product).to(receive(:manages_profile?).and_return(true))
     end
 
     it "can manage profile_v2" do
@@ -103,13 +103,23 @@ RSpec.describe(Ability, type: :model) do
       end
     end
 
-    context "when product is a name index" do
+    context "when product does not manage profile" do
       before do
-        allow(product).to(receive(:is_name_index?).and_return(true))
+        allow(product).to(receive(:manages_profile?).and_return(false))
       end
 
       it "cannot manage profile_v2" do
         expect(subject.can?(:manage, :profile_v2)).to(eq(false))
+      end
+    end
+
+    context "when product is a name index that manages profile" do
+      before do
+        allow(product).to(receive(:is_name_index?).and_return(true))
+      end
+
+      it "can manage profile_v2" do
+        expect(subject.can?(:manage, :profile_v2)).to(eq(true))
       end
     end
 
@@ -374,12 +384,12 @@ RSpec.describe(Ability, type: :model) do
   end
 
   describe "#profile_reference role" do
-    let(:product) { create(:product, is_name_index: false) }
+    let(:product) { create(:product, is_name_index: false, manages_profile: true) }
 
     before do
       allow(session_user).to(receive(:with_role?).with("profile-reference").and_return(true))
       allow(session_user).to(receive(:product_from_context).and_return(product))
-      allow(product).to(receive(:is_name_index?).and_return(false))
+      allow(product).to(receive(:manages_profile?).and_return(true))
     end
 
     context "when product_from_context is nil" do
@@ -393,9 +403,9 @@ RSpec.describe(Ability, type: :model) do
       end
     end
 
-    context "when product is a name index" do
+    context "when product does not manage profile" do
       before do
-        allow(product).to(receive(:is_name_index?).and_return(true))
+        allow(product).to(receive(:manages_profile?).and_return(false))
       end
 
       it "cannot create authors" do
@@ -404,6 +414,20 @@ RSpec.describe(Ability, type: :model) do
 
       it "cannot create references" do
         expect(subject.can?(:create, Reference)).to(eq(false))
+      end
+    end
+
+    context "when product is a name index that manages profile" do
+      before do
+        allow(product).to(receive(:is_name_index?).and_return(true))
+      end
+
+      it "can create authors" do
+        expect(subject.can?(:create, Author)).to(eq(true))
+      end
+
+      it "can create references" do
+        expect(subject.can?(:create, Reference)).to(eq(true))
       end
     end
 
@@ -910,12 +934,12 @@ RSpec.describe(Ability, type: :model) do
   end
 
   describe "#profile_editor role" do
-    let(:product) { create(:product, is_name_index: false) }
+    let(:product) { create(:product, is_name_index: false, manages_profile: true) }
 
     before do
       allow(session_user).to(receive(:with_role?).with("profile-editor").and_return(true))
       allow(session_user).to(receive(:product_from_context).and_return(product))
-      allow(product).to(receive(:is_name_index?).and_return(false))
+      allow(product).to(receive(:manages_profile?).and_return(true))
     end
 
     it "can manage profile_v2" do
@@ -932,13 +956,23 @@ RSpec.describe(Ability, type: :model) do
       end
     end
 
-    context "when product is a name index" do
+    context "when product does not manage profile" do
       before do
-        allow(product).to(receive(:is_name_index?).and_return(true))
+        allow(product).to(receive(:manages_profile?).and_return(false))
       end
 
       it "cannot manage profile_v2" do
         expect(subject.can?(:manage, :profile_v2)).to(eq(false))
+      end
+    end
+
+    context "when product is a name index that manages profile" do
+      before do
+        allow(product).to(receive(:is_name_index?).and_return(true))
+      end
+
+      it "can manage profile_v2" do
+        expect(subject.can?(:manage, :profile_v2)).to(eq(true))
       end
     end
 

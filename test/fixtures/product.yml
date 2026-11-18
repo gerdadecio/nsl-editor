@@ -34,6 +34,7 @@ foa:
   name: FOA
   reference: simple
   tree: FOA
+  manages_profile: true
   created_by: tester
   updated_by: tester
   created_at: <%= Time.now %>
