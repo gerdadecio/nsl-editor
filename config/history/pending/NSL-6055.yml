@@ -1,4 +1,0 @@
-- :date: 18-November-2026
-  :jira_id: '6055'
-  :description: |-
-    Profile: The Profile tab now depends on the selected product context. Profile editors can manage an instance's profile if it has profile items for that product, or is placed in that product's tree
