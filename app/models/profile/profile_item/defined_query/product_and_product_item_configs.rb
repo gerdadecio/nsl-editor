@@ -5,13 +5,11 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
     :instance,
     :product_configs_and_profile_items
 
-  SUPPORTED_PRODUCTS = [ "FOA" ].freeze
-
   def initialize(session_user, instance, params = {})
     @params = params
     @session_user = session_user
     @user = session_user.user
-    @product = find_product_by_name
+    @product = find_product
     @product_configs_and_profile_items = []
     @instance = instance
   end
@@ -32,11 +30,17 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
 
   attr_reader :user, :params
 
-  def find_product_by_name
+  # An explicit product_name param wins. Otherwise use the product the
+  # session is working in (the one the abilities check), as long as the user
+  # has a role on it and it manages profiles. Without a context, fall back to
+  # the user's first product that manages profiles.
+  def find_product
     return user.products.find_by(name: params[:product_name]) if params.dig(:product_name).present?
 
-    supported_product = user.products.where(name: SUPPORTED_PRODUCTS).first&.name
-    Product.find_by(name: supported_product) if supported_product
+    context_product = @session_user.product_from_context
+    return context_product if context_product&.manages_profile? && user.products.include?(context_product)
+
+    user.products.where(manages_profile: true).first
   end
 
   def profile_v2_aware?
