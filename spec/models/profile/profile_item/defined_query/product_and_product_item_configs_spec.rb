@@ -25,7 +25,7 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
 
     it "has instance variable product" do
       product = instance_double("Product")
-      allow_any_instance_of(described_class).to(receive(:find_product_by_name).and_return(product))
+      allow_any_instance_of(described_class).to(receive(:find_product).and_return(product))
       expect(subject.instance_variable_get(:@product)).to(eq(product))
     end
 
@@ -125,8 +125,8 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
         end
       end
 
-      context "when a user has a FOA product role" do
-        let(:product) { FactoryBot.create(:product, name: "FOA") }
+      context "when a user has a role on a product that manages profiles" do
+        let(:product) { FactoryBot.create(:product, name: "Any Product", manages_profile: true) }
         let!(:role) { FactoryBot.create(:role) }
         let!(:product_role) { FactoryBot.create(:product_role, product:, role:) }
         let!(:user_draft_profile_editor) { FactoryBot.create(:user_product_role, product_role:, user:) }

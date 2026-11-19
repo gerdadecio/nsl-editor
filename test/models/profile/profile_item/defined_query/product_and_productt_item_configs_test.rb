@@ -78,8 +78,17 @@ class ProductAndProductItemConfigsTest < ActiveSupport::TestCase
     end
   end
 
-  test "#run_query to return an empty profile itme when product is nil" do
+  test "#run_query finds the product whatever its name" do
     @product.update(name: "not foa")
+    SessionUser.stub_any_instance(:groups, [ "foa" ]) do
+      result = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@session_user, @instance).run_query
+      assert_equal 2, result.first.size
+      assert_equal @product, result.last
+    end
+  end
+
+  test "#run_query to return an empty profile itme when product is nil" do
+    @product.update(manages_profile: false)
     SessionUser.stub_any_instance(:groups, [ "foa" ]) do
       result = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@session_user, @instance).run_query
       assert_equal result.first, []

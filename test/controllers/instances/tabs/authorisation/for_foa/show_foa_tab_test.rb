@@ -80,11 +80,13 @@ class InstanceForFoaShowMostTabsTest < ActionDispatch::IntegrationTest
     asserts5
   end
 
-  test "shows a no product configs message when the profile item's product is not FOA" do
+  test "shows the product configs when the profile item's product is not named FOA" do
     @product = @profile_item.product
     @product.update(name: "not foa")
     show_foa_tab
-    asserts6
+    assert_response(:success)
+    assert_select("a#instance-profile-v2-tab", /Profile/)
+    assert_select("#message_no_product_configs", false)
   end
 
   test "shows a no product configs message when there are no product item configs for the product" do
@@ -204,19 +206,6 @@ class InstanceForFoaShowMostTabsTest < ActionDispatch::IntegrationTest
       "a#instance-copy-to-new-reference-tab",
       false,
       "Should not show 'Copy' tab link."
-    )
-  end
-
-  def asserts6
-    assert_response(:success)
-    assert_select(
-      "a#instance-profile-v2-tab",
-      /Profile/
-    )
-    assert_select(
-      "#message_no_product_configs",
-      "There are no product or product configs setup yet.",
-      "Should show a message"
     )
   end
 
