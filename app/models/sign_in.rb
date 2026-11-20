@@ -17,6 +17,8 @@
 #   limitations under the License.
 #
 class SignIn < ActiveType::Object
+  NOT_VERIFIED = "not verified."
+
   attribute :username, :string
   attribute :password, :string
 
@@ -35,14 +37,22 @@ class SignIn < ActiveType::Object
 
   delegate :generic_active_directory_user, to: :@ldap
 
+  # The account's password was right but it may not sign in to the Editor
+  # (no login group). Shows the same message as a wrong password, so the page
+  # can't be used to check whether a password is valid for an AD account
+  # (NSL-6059). The log says which it was, without the username.
   def make_invalid
-    errors.add(:credentials, "not authorised.")
+    Rails.logger.info("Sign-in refused: credentials verified but no login group")
+    errors.add(:credentials, NOT_VERIFIED)
   end
 
   private
 
   def validate_credentials
-    errors.add(:credentials, "not verified.") unless build_ldap.save
+    return if build_ldap.save
+
+    Rails.logger.info("Sign-in refused: credentials not verified")
+    errors.add(:credentials, NOT_VERIFIED)
   end
 
   def build_ldap

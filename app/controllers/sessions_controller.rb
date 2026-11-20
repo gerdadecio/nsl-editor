@@ -169,13 +169,14 @@ class SessionsController < ApplicationController
     sign_in_params&.permit(:username, :password)
   end
 
+  # An account without the login group fails exactly like a wrong password:
+  # same message, same status, and the session is left alone (no reset, so no
+  # new session cookie), so the response doesn't reveal that the password was
+  # right (NSL-6059). Nothing has been put in the session yet at this point.
   def authorised_to_login?
-    if @sign_in.groups.include?("login")
-      true
-    else
-      @sign_in.make_invalid # simulate failed credentials
-      reset_session
-      false
-    end
+    return true if @sign_in.groups.include?("login")
+
+    @sign_in.make_invalid
+    false
   end
 end
