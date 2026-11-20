@@ -1,4 +1,0 @@
-- :date: 20-November-2026
-  :jira_id: '6059'
-  :description: |-
-    Security: Signing in with an account that can't use the Editor now shows the same message as a wrong password, so the sign-in page no longer reveals whether a password is correct
