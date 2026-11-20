@@ -46,6 +46,7 @@ class Ldap < ActiveType::Object
   # e.g. ldap_generic_users: "cn=Users,dc=cloud,dc=biodiversity,dc=org,dc=au"
   GROUP_FILTER_REGEX = Rails.configuration.try("ldap_group_filter_regex")
   # Rails.configuration.try('group_filter_regex') = 'ou=dev,ou=nsl'
+  CONNECTION_FAILED = "connection failed with exception"
 
   def users_groups
     @groups
@@ -113,8 +114,15 @@ class Ldap < ActiveType::Object
     end
   end
 
+  # True only when AD accepted the current password. Anything else (a wrong
+  # password, or an LDAP error during the check) counts as not verified, so a
+  # password change can never go ahead on an error (NSL-6058).
   def verify_current_password
-    validate_user_credentials
+    validate_user_credentials == true
+  end
+
+  def connection_failed?
+    errors.added?(:connection, CONNECTION_FAILED)
   end
 
   def admin_connection
@@ -170,7 +178,8 @@ class Ldap < ActiveType::Object
   rescue StandardError => e
     Rails.logger.error("Exception in validate_user_credentials")
     Rails.logger.error(e.to_s)
-    errors.add(:connection, "connection failed with exception")
+    errors.add(:connection, CONNECTION_FAILED)
+    false
   end
 
   def set_bind_as_instance_variables(bind_as)
@@ -199,7 +208,8 @@ class Ldap < ActiveType::Object
   rescue StandardError => e
     Rails.logger.error("Exception in validate_generic_user_credentials")
     Rails.logger.error(e.to_s)
-    errors.add(:connection, "connection failed with exception")
+    errors.add(:connection, CONNECTION_FAILED)
+    false
   end
 
   def ldap_full_name(result)

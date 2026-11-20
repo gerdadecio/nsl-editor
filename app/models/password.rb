@@ -68,7 +68,11 @@ class Password < ActiveType::Object
     ldap.username = username
     ldap.password = current_password
     ldap.user_cn = user_cn
-    raise "current password is wrong" unless ldap.verify_current_password
+    if !ldap.verify_current_password
+      raise "Could not check your current password, please try again later." if ldap.connection_failed?
+
+      raise "current password is wrong"
+    end
 
     ldap.change_password(username, new_password, random_seed)
   end

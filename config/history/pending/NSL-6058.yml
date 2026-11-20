@@ -1,0 +1,4 @@
+- :date: 20-November-2026
+  :jira_id: '6058'
+  :description: |-
+    Security: Changing your password now always checks your current password, even when the directory server has an error. If the check can't be done, you're asked to try again later
