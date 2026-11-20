@@ -97,4 +97,55 @@ class LdapTest < ActiveSupport::TestCase
 
     assert_equal [ filter_for("\\2A") ], connection.search_calls.map { |call| call[:filter].to_s }
   end
+
+  # NSL-6058: an LDAP error while checking the current password used to
+  # return the truthy ActiveModel::Error from errors.add, so the check passed.
+  class RaisingConnection
+    def initialize(raise_on_call:)
+      @raise_on_call = raise_on_call
+      @calls = 0
+    end
+
+    def bind_as(_args)
+      @calls += 1
+      raise Net::LDAP::Error, "connection timed out" if @calls == @raise_on_call
+
+      false
+    end
+  end
+
+  def verify_with(connection)
+    ldap = Ldap.new(username: "fred", password: "a password")
+    ldap.stub(:admin_connection, connection) do
+      [ ldap.verify_current_password, ldap ]
+    end
+  end
+
+  test "an LDAP error checking users does not verify the current password" do
+    verified, ldap = verify_with(RaisingConnection.new(raise_on_call: 1))
+
+    assert_equal false, verified
+    assert ldap.connection_failed?
+  end
+
+  test "an LDAP error checking generic users does not verify the current password" do
+    verified, ldap = verify_with(RaisingConnection.new(raise_on_call: 2))
+
+    assert_equal false, verified
+    assert ldap.connection_failed?
+  end
+
+  test "a wrong current password is not verified and is not a connection failure" do
+    verified, ldap = verify_with(FakeConnection.new)
+
+    assert_equal false, verified
+    assert_not ldap.connection_failed?
+  end
+
+  test "an LDAP error during sign-in still makes the credentials invalid" do
+    ldap = Ldap.new(username: "fred", password: "a password")
+    ldap.stub(:admin_connection, RaisingConnection.new(raise_on_call: 1)) do
+      assert_not ldap.valid?
+    end
+  end
 end
