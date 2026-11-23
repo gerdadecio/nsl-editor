@@ -23,6 +23,18 @@ class PasswordsController < ApplicationController
   # every step of the flow, including going straight to the form URL.
   before_action :reject_generic_user, only: %i[edit update show_password_form]
 
+  # Each update binds to AD with the submitted current password, so without
+  # a limit anyone holding a session could guess it endlessly, and AD's
+  # lockout would lock the real owner out (NSL-6060). Counted per signed-in
+  # user, like sign-in's per-username limit, and kept below the AD lockout
+  # threshold for the same reason. Counts live in Rails.cache (per app
+  # container) and are separate from sign-in's counts.
+  PER_USER_LIMIT = 5
+  PER_USER_WINDOW = 15.minutes
+
+  rate_limit to: PER_USER_LIMIT, within: PER_USER_WINDOW, only: :update, name: "password-username",
+    by: -> { session[:username].to_s.strip.downcase }, with: -> { too_many_password_attempts }
+
   def edit
     edit_inner
   rescue StandardError => e
@@ -39,6 +51,15 @@ class PasswordsController < ApplicationController
   end
 
   private
+
+  # Runs instead of update once the limit is hit, so AD is not asked.
+  # The log doesn't name the user.
+  def too_many_password_attempts
+    logger.warn("Password change rate limit hit")
+    @password = Password.new
+    @password.error = "Too many password change attempts. Please wait a few minutes and try again."
+    render(:show_password_form, status: :too_many_requests)
+  end
 
   def reject_generic_user
     render(:edit_error) if session[:generic_active_directory_user]
