@@ -26,6 +26,8 @@ class Password < ActiveType::Object
   attribute :username, :string
   attribute :user_cn, :string
 
+  attr_writer :error
+
   def save!
     validate_arguments
     change_password
