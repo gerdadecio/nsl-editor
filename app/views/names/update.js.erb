@@ -5,7 +5,7 @@ $('select#name_name_type_id').focus();
 $('#search-result-details-info-message-container').html('<%= @message %>');
 $('#search-result-details-info-message-container2').html('<%= @message %>');
 <% unless @message.match(/^No change/) %> 
-  $('a#name-<%= @name.id %>').html('<%= escape_javascript(render partial: 'name_link_text', locals: {search_result: @name}) %>');
+  $('a#<%= @name.anchor_id %>').html('<%= escape_javascript(render partial: 'name_link_text', locals: {search_result: @name}) %>');
   $('a#tab-heading').html('<%= @name.full_name %>');
 
   $('input#name-parent-typeahead').val('<%= escape_javascript(@name.parent.try('full_name').try('html_safe')) %>');
