@@ -32,8 +32,8 @@ class ReaderSearchContNamesNameRankMultiValsListTst < ActionDispatch::Integratio
       get search_path, params: { query_target: "name", query_string: "rank: tribus,subgenus,forma" }
     end
     assert_response :success
-    assert_select "a#name-#{tribus.id}", /a_tribus/, "Should see tribus."
-    assert_select "a#name-#{subgenus.id}", true, "Should see subgenus."
-    assert_select "a#name-#{forma.id}", /a_forma/, "Should see forma."
+    assert_select "a#Name-#{tribus.id}", /a_tribus/, "Should see tribus."
+    assert_select "a#Name-#{subgenus.id}", true, "Should see subgenus."
+    assert_select "a#Name-#{forma.id}", /a_forma/, "Should see forma."
   end
 end

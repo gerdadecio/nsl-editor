@@ -15,7 +15,7 @@
        class="show-details-link"
        tabindex="<%= increment_tab_index %>" 
        title="Name record.  Select to show details."
-       id="name-<%= search_result[:id] %>">
+       id="<%= search_result.anchor_id %>">
        <%= render partial: 'name_link_text', locals: {search_result: search_result} %>
     </a>
 

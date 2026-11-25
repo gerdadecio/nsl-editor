@@ -3,4 +3,4 @@
 <% else %>
   $('li.active a.tab').click();
 <% end %>
-$('a#name-<%= @name_tag_name.name.id %>').html('<%= escape_javascript(render partial: 'name_link_text', locals: {search_result: @name_tag_name.name}) %>');
+$('a#<%= @name_tag_name.name.anchor_id %>').html('<%= escape_javascript(render partial: 'name_link_text', locals: {search_result: @name_tag_name.name}) %>');

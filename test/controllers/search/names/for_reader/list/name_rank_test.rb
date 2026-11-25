@@ -30,6 +30,6 @@ class ReaderSearchControllerNamesNameRankListTest < ActionDispatch::IntegrationT
       get search_path, params: { query_target: "name", query_string: "name-rank: tribus" }
     end
     assert_response :success
-    assert_select "a#name-#{tribus.id}", /a_tribus/, "Should see tribus."
+    assert_select "a#Name-#{tribus.id}", /a_tribus/, "Should see tribus."
   end
 end

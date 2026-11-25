@@ -1,0 +1,4 @@
+- :date: 26-November-2026
+  :jira_id: '6065'
+  :description: |-
+    Name search: Fix bug where a name in the search results wasn't updated after an edit, refresh or name tag change if the search showed instances, e.g. with <code>show-instances:</code>

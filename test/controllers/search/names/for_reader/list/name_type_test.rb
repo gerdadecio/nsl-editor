@@ -30,6 +30,6 @@ class ReaderSearchControllerNamesNameTypeListTest < ActionDispatch::IntegrationT
       get search_path, params: { query_target: "name", query_string: "type: common" }
     end
     assert_response :success
-    assert_select "a#name-#{name.id}", true, "Should see argyle apple."
+    assert_select "a#Name-#{name.id}", true, "Should see argyle apple."
   end
 end
