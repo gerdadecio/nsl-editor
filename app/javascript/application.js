@@ -53,7 +53,6 @@ import "load_check_synonymy_report";
 // end of fresh replacements
 import "details_focus_on_field";
 import "utilities_page_load_performance";
-import "jquery-dateformat.min";
 import "new_search";
 import "tabs";
 import "typeahead_bundle";
@@ -72,8 +71,6 @@ import "print_link";
 import Rails from "@rails/ujs";
 
 Rails.start();
-
-console.log($); // ok
 
 if (debugSwitch === true) {
   window.onload = function () {

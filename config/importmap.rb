@@ -51,7 +51,6 @@ pin "tree_markdown", to: "tree/markdown.js", preload: true
 pin "load_check_synonymy_report", preload: true
 pin "search_result_focus", preload: true
 pin "query_options", preload: true
-pin "jquery-dateformat.min", preload: true
 pin "new_search", preload: true
 pin "tabs", preload: true
 pin "typeaheads_send", to: "typeaheads/send.js", preload: true

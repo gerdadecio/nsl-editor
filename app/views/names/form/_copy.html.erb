@@ -6,7 +6,10 @@
        copy_name_form_original_second_parent_id_value: @name.second_parent_id,
        copy_name_form_cultivar_hybrid_value: @name.cultivar_hybrid?,
        copy_name_form_connector_value: @name.name_type.connector,
-       action: "submit->copy-name-form#validate"
+       action: "submit->copy-name-form#validate " \
+               "input->copy-name-form#queuePreview " \
+               "change->copy-name-form#queuePreview " \
+               "autocomplete.change->copy-name-form#queuePreview"
      } %>
 <% end %>
 
