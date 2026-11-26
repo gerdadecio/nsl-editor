@@ -1,4 +1,8 @@
 - :date: 26-November-2026
+  :jira_id: '6063'
+  :description: |-
+    jQuery removal: Remove unused jQuery code and the jQuery date format plugin, and move the hybrid name Copy tab off jQuery. Draft taxonomy dates still show as e.g. "3 weeks ago"
+- :date: 26-November-2026
   :jira_id: '6065'
   :description: |-
     Name search: Fix bug where a name in the search results wasn't updated after an edit, refresh or name tag change if the search showed instances, e.g. with <code>show-instances:</code>
