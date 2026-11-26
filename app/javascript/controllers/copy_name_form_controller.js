@@ -2,9 +2,16 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="copy-name-form"
 //
-// Guards the "copy a hybrid name" form: the parent typeaheads start on the
+// Guards the "copy a hybrid name" form: the parent fields start on the
 // original name's parents, the new name is shown as "first parent x second
 // parent" as they are changed, and the chosen parents are validated on submit.
+//
+// Both parents are stimulus-autocomplete fields (see
+// app/views/names/form/_parent_1.html.erb and _parent_2.html.erb). Their
+// input, change and autocomplete.change events bubble up to the form, where
+// the view's data-action routes them to queuePreview - so Stimulus binds and
+// unbinds the listeners, and this controller needs no connect/disconnect
+// wiring of its own.
 export default class extends Controller {
   static targets = ["preview"]
 
@@ -15,38 +22,14 @@ export default class extends Controller {
     connector: String
   }
 
-  // Namespaced so disconnect() can unbind only our handlers. These cover
-  // the fields clearing their hidden id when the user types again.
-  static PARENT_EVENTS = "input.copyNamePreview change.copyNamePreview"
-
-  // Both parents are stimulus-autocomplete fields (see
-  // app/views/names/form/_parent_1.html.erb and _parent_2.html.erb), which
-  // announce a pick with their own bubbling event. jQuery reads the "." in
-  // the name as a namespace separator, so this one is bound natively - on
-  // this element, the form, which the event reaches on its way up from
-  // either field.
-  static AUTOCOMPLETE_EVENT = "autocomplete.change"
-
   connect() {
-    this.onParentChange = () => setTimeout(() => this.updatePreview(), 0)
-    this.watchParents()
     this.updatePreview()
   }
 
-  disconnect() {
-    window.$("#name-parent-typeahead, #name-second-parent-typeahead")
-      .off(".copyNamePreview")
-    this.element.removeEventListener(this.constructor.AUTOCOMPLETE_EVENT,
-                                     this.onParentChange)
-  }
-
-  // The typeaheads set their hidden id fields in their own handlers for these
-  // events, so update on the next tick rather than racing them.
-  watchParents() {
-    window.$("#name-parent-typeahead, #name-second-parent-typeahead")
-      .on(this.constructor.PARENT_EVENTS, this.onParentChange)
-    this.element.addEventListener(this.constructor.AUTOCOMPLETE_EVENT,
-                                  this.onParentChange)
+  // The autocomplete sets (or clears) the hidden id in its own handler for
+  // these events, so update on the next tick rather than racing it.
+  queuePreview() {
+    setTimeout(() => this.updatePreview(), 0)
   }
 
   // "first parent x second parent", from whichever parents have been chosen.
@@ -64,17 +47,16 @@ export default class extends Controller {
 
   // Only a parent picked from the suggestions counts - free text has no id.
   // The suggestion text is "full name | rank | status", so keep the name.
-  parentName(typeaheadId, hiddenId) {
-    const id = window.$("#" + hiddenId).val()
-    if (!id) return ""
+  parentName(inputId, hiddenId) {
+    if (!this.fieldValue(hiddenId)) return ""
 
-    return window.$("#" + typeaheadId).val().replace(/\|.*/, "").trim()
+    return this.fieldValue(inputId).replace(/\|.*/, "").trim()
   }
 
   // Wired via data-action="submit->copy-name-form#validate"
   validate(event) {
-    const firstParent = document.getElementById("name_parent_id").value
-    const secondParent = document.getElementById("name_second_parent_id").value
+    const firstParent = this.fieldValue("name_parent_id")
+    const secondParent = this.fieldValue("name_second_parent_id")
     let message = null
 
     if (!firstParent) {
@@ -95,8 +77,25 @@ export default class extends Controller {
     if (message) {
       event.preventDefault()
       event.stopImmediatePropagation()
-      window.$("#copy-name-info-message-container").html("").addClass("hidden")
-      window.$("#copy-name-error-message-container").html(message).removeClass("hidden")
+      this.showError(message)
     }
+  }
+
+  showError(message) {
+    const info = document.getElementById("copy-name-info-message-container")
+    const error = document.getElementById("copy-name-error-message-container")
+
+    if (info) {
+      info.replaceChildren()
+      info.classList.add("hidden")
+    }
+    if (error) {
+      error.textContent = message
+      error.classList.remove("hidden")
+    }
+  }
+
+  fieldValue(id) {
+    return document.getElementById(id)?.value ?? ""
   }
 }
