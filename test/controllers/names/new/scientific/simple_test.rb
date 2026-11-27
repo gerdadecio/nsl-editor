@@ -33,6 +33,8 @@ class NamesNewScientificSimpleTest < ActionDispatch::IntegrationTest
     end
     assert_response :success, "Cannot start enter new scientific name"
     assert_select("h4", /New Scientific Name/)
+    assert_select "a.cancel-new-record-link[data-controller='cancel-new-record'][data-action='cancel-new-record#cancel']" \
+                  "[data-element-id='new-name-scientific-123445']"
     assert_select "input" do |inputs|
       inputs.each do |input|
         if /name-parent-typeahead/.match?(input.to_s)

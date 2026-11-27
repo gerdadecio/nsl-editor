@@ -10,7 +10,7 @@
                          class: "btn btn-warning unconfirmed-delete-link",
                          title: "Soft delete the instance.",
                          tabindex: increment_tab_index,
-                         data: {show_this_id: "confirm-or-cancel-link-container"})
+                         data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-container"})
 -%>
 
 <% confirm_delete_link = link_to("Confirm soft delete",
@@ -29,7 +29,7 @@
                                 class: "btn btn-default cancel-link",
                                 title: "Cancel the soft delete.",
                                 tabindex: increment_tab_index,
-                                data: {enable_this_id: 'instance-soft-delete-link',
+                                data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: 'instance-soft-delete-link',
                                         hide_this_id: 'confirm-or-cancel-link-container'})
 -%>
 

@@ -65,7 +65,7 @@
               class: "btn btn-warning unconfirmed-action-link pull-right",
               title: "Copy the name - you will be asked to confirm.",
               tabindex: increment_tab_index,
-              data: {show_this_id: "confirm-or-cancel-copy-name-link-container"})
+              data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-copy-name-link-container"})
     %>
     <div id="confirm-or-cancel-copy-name-link-container"
         class="confirm-or-cancel-container pull-right hidden">
@@ -77,7 +77,7 @@
                   class: "btn btn-default cancel-link",
                   title: "Do not copy the name.",
                   tabindex: increment_tab_index,
-                  data: {enable_this_id: 'copy-name-link',
+                  data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: 'copy-name-link',
                   hide_this_id: "confirm-or-cancel-copy-name-link-container"})
       %>
 

@@ -20,14 +20,11 @@ pin "run_tree_reports", preload: true
 pin "instance_note_edit", preload: true
 pin "add_new_row", preload: true
 pin "menu_ops", preload: true
-pin "unconfirmed_action_link_click", preload: true
-pin "confirm_delete_link_click", preload: true
 pin "name_rank_id_changed", preload: true
 pin "loader_bulk_show_stats_ops", preload: true
 pin "name_delete_form_submit", preload: true
 pin "click_search_result_checkbox", preload: true
 pin "copy_instance_for_name", preload: true
-pin "cancel_link_click", preload: true
 pin "resource_edit", preload: true
 pin "copy_name_form_enter", preload: true
 pin "create_copy_of_name_click", preload: true
@@ -36,7 +33,6 @@ pin "confirm_name_refresh_children_button_click", preload: true
 pin "refresh_page_link_click", preload: true
 pin "copy_instance_link_clicked", preload: true
 pin "show_record_was_deleted", preload: true
-pin "cancel_new_record", preload: true
 pin "position_on_the_right", preload: true
 pin "set_dependents", preload: true
 pin "change_name_category_on_edit_tab", preload: true

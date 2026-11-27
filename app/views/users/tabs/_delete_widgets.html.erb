@@ -7,14 +7,14 @@
                          class: "btn btn-warning unconfirmed-delete-link pull-right",
                          tabindex: increment_tab_index,
                          title: "Delete the user.",
-                         data: {show_this_id: "confirm-or-cancel-link-container"})
+                         data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-container"})
 %>
 <% confirm_delete_link = link_to("Confirm delete",
                                  user_path(@user.id),
                                  class: "btn btn-danger confirm-delete-btn",
                                  tabindex: increment_tab_index,
                                  title: "Confirm you want to delete the user.",
-                                 remote: true, data: { turbo: false },
+                                 remote: true, data: { controller: "confirm-action", action: "confirm-action#confirm", turbo: false },
                                  method: :delete)
 %>
 
@@ -24,7 +24,7 @@
                                 class: "btn btn-default cancel-link",
                                 tabindex: increment_tab_index,
                                 title: "Cancel the delete dialog for the user.",
-                                data: {enable_this_id: 'user-delete-link',
+                                data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: 'user-delete-link',
                                        hide_this_id: 'confirm-or-cancel-link-container'})
 %>
 

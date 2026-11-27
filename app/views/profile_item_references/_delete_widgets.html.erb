@@ -4,7 +4,7 @@
   class: "btn btn-warning unconfirmed-delete-link pull-right xhidden",
   style: "margin-right: 0;",
   title: "Select to delete the profile item reference. A confirmation dialog follows.",
-  data: { show_this_id: "confirm-or-cancel-link-profile-item-reference-container-#{profile_item_reference.profile_item_id_reference_id}" })
+  data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-profile-item-reference-container-#{profile_item_reference.profile_item_id_reference_id}" })
 %>
 
 <%
@@ -16,7 +16,7 @@ confirm_delete_link = link_to("Confirm delete",
                                 class: "btn btn-danger confirm-delete-btn",
                                 style: "margin-top: 3px;margin-bottom: 3px;",
                                 title: "Select to confirm the delete.",
-                                data: {
+                                data: { controller: "confirm-action", action: "confirm-action#confirm",
                                   turbo_method: :delete, # Makes sure the delete method is used
                                   turbo_stream: true # Explicitly indicates that the request expects a Turbo Stream response
                                 })
@@ -28,7 +28,7 @@ confirm_delete_link = link_to("Confirm delete",
                                 class: "btn btn-default cancel-link",
                                 style: "margin-top: 3px;margin-bottom: 3px;",
                                 title: "Select to cancel the delete.",
-                                data: {enable_this_id: "profile-item-reference-delete-link-#{profile_item_reference.profile_item_id_reference_id}",
+                                data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: "profile-item-reference-delete-link-#{profile_item_reference.profile_item_id_reference_id}",
                                        hide_this_id: "confirm-or-cancel-link-profile-item-reference-container-#{profile_item_reference.profile_item_id_reference_id}"})
 %>
 

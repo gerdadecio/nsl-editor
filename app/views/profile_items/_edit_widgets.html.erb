@@ -4,7 +4,7 @@
   class: "btn btn-primary unconfirmed-action-link pull-right xhidden",
   style: "margin-top: 3px;margin-bottom:3px",
   title: "Select to edit the profile item. A confirmation dialog follows.",
-  data: { show_this_id: "confirm-or-cancel-edit-link-profile-item-container-#{profile_item.id}" })
+  data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-edit-link-profile-item-container-#{profile_item.id}" })
 %>
 
 <%
@@ -28,7 +28,7 @@ confirm_edit_link = link_to("Confirm edit",
                                 class: "btn btn-default cancel-link",
                                 style: "margin-top: 3px;margin-bottom: 3px;",
                                 title: "Select to cancel the edit.",
-                                data: {enable_this_id: "profile-item-edit-link-#{profile_item.id}",
+                                data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: "profile-item-edit-link-#{profile_item.id}",
                                        hide_this_id: "confirm-or-cancel-edit-link-profile-item-container-#{profile_item.id}"})
 %>
 

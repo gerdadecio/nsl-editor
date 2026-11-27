@@ -3,7 +3,7 @@
              id: "vote-delete-link",
              title: "Delete the vote.",
              class: "btn btn-warning unconfirmed-delete-link pull-right",
-             data: {show_this_id: "confirm-or-cancel-link-container",
+             data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-container",
              hide_this_id: "vote-delete-link"})
   %>
 
@@ -13,7 +13,7 @@
               delete_name_review_vote_path(vote.loader_name_id, vote.batch_review_id, vote.org_id),
               class: "btn btn-danger confirm-delete-btn",
               title: "Confirm you want to delete the vote.",
-              remote: true, data: { turbo: false },
+              remote: true, data: { controller: "confirm-action", action: "confirm-action#confirm", turbo: false },
               method: :delete)
   %>
 
@@ -22,7 +22,7 @@
               id: "cancel-delete-link",
               class: "btn btn-default cancel-link",
               title: "Cancel delete dialog for the vote.",
-              data: {enable_this_id: 'vote-delete-link',
+              data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: 'vote-delete-link',
                      hide_this_id: 'confirm-or-cancel-link-container'})
   %>
 

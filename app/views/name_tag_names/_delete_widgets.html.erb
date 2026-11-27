@@ -6,7 +6,7 @@
                          class: "btn btn-warning unconfirmed-delete-link pull-right width-10em",
                          title: "Remove the tag if you confirm the action.",
                          tabindex: increment_tab_index,
-                         data: {show_this_id: "confirm-or-cancel-link-container-#{name_tag_name.tag_id}"})
+                         data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-container-#{name_tag_name.tag_id}"})
 %>
 
 <% confirm_delete_link = link_to("Confirm delete",
@@ -14,7 +14,7 @@
                                  class: "btn btn-danger confirm-delete-btn",
                                  title: "Really removes the tag.",
                                  tabindex: increment_tab_index,
-                                 remote: true, data: { turbo: false },
+                                 remote: true, data: { controller: "confirm-action", action: "confirm-action#confirm", turbo: false },
                                  method: :delete)
 %>
 
@@ -24,7 +24,7 @@
                                 class: "btn btn-default cancel-link",
                                 title: "Cancel and end the Remove process.",
                                 tabindex: increment_tab_index,
-                                data: {enable_this_id: "tag-delete-link-#{name_tag_name.tag_id}",
+                                data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: "tag-delete-link-#{name_tag_name.tag_id}",
                                        hide_this_id: "confirm-or-cancel-link-container-#{name_tag_name.tag_id}"})
 %>
 

@@ -36,7 +36,7 @@
         class: "btn btn-warning btn-sm unconfirmed-delete-link resource-btn-sm",
         title: "Delete this resource",
         tabindex: increment_tab_index,
-        data: {
+        data: { controller: "confirm-action", action: "confirm-action#reveal",
           show_this_id: "confirm-or-cancel-link-container-#{name_resource.id}"
         }
       %>
@@ -66,7 +66,7 @@
       class: "btn btn-default btn-sm cancel-link resource-btn-lg",
       title: "Cancel delete",
       tabindex: increment_tab_index,
-      data: {
+      data: { controller: "confirm-action", action: "confirm-action#cancel",
         enable_this_id: "resource-delete-link-#{name_resource.id}",
         hide_this_id: "confirm-or-cancel-link-container-#{name_resource.id}"
       }

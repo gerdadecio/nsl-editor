@@ -5,7 +5,7 @@
                            class: "btn btn-warning unconfirmed-action-link pull-right",
                            title: "Refresh constructed parts of #{@name.full_name}.",
                            tabindex: increment_tab_index,
-                           data: {show_this_id: "confirm-or-cancel-refresh-link-container"})
+                           data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-refresh-link-container"})
   -%>
   <%= refresh_link.html_safe %> 
 
@@ -19,7 +19,7 @@
                class: "btn btn-default cancel-action-link",
                tabindex: increment_tab_index,
                title: "Cancel refresh",
-               data: {enable_this_id: 'name-refresh-link',
+               data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: 'name-refresh-link',
                hide_this_id: 'confirm-or-cancel-refresh-link-container'})
 -%>
 

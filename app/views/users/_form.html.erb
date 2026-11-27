@@ -33,7 +33,7 @@
 
     <div class="form-group align-right">
       <% if @user.new_record? %>
-          <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new user", tabindex: increment_tab_index, data: {element_id: "new-user-#{params[:random_id]}"} %>
+          <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new user", tabindex: increment_tab_index, data: { controller: "cancel-new-record", action: "cancel-new-record#cancel", element_id: "new-user-#{params[:random_id]}"} %>
       <% end %>
       <%= f.submit "Save", id: 'user-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
     </div>

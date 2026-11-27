@@ -25,7 +25,7 @@
                         class: "btn btn-warning unconfirmed-delete-link pull-right",
                         tabindex: increment_tab_index,
                         title: "Delete the batch reviewer.",
-                        data: {show_this_id: "confirm-or-cancel-link-container-#{reviewer.id}"})
+                        data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-container-#{reviewer.id}"})
             %>
 
             <div id="confirm-or-cancel-link-container-<%= reviewer.id %>"
@@ -38,7 +38,7 @@
                                               class: "btn btn-default cancel-link pull-right",
                                               tabindex: increment_tab_index,
                                               title: "Cancel the delete dialog for the batch review period.",
-                                              data: {enable_this_id: "batch-reviewer-delete-link-#{reviewer.id}",
+                                              data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: "batch-reviewer-delete-link-#{reviewer.id}",
                                                      hide_this_id: "confirm-or-cancel-link-container-#{reviewer.id}"})
               %>
               <%= link_to("Remove",

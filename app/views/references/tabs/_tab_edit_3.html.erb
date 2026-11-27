@@ -30,7 +30,7 @@
                               id: "reference-delete-link",
                               title: "Delete the reference.",
                               class: "btn btn-warning unconfirmed-delete-link pull-right",
-                              data: {show_this_id: "confirm-or-cancel-link-container"})
+                              data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-container"})
       %>
       <% confirm_delete_link = link_to("Confirm delete",
                                       reference_path(@reference.id),
@@ -44,7 +44,7 @@
                                       id: "cancel-delete-link",
                                       class: "btn btn-default cancel-link",
                                       title: "Cancel delete dialog for the reference.",
-                                      data: {enable_this_id: 'reference-delete-link',
+                                      data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: 'reference-delete-link',
                                             hide_this_id: 'confirm-or-cancel-link-container'})
       %>
       <% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-container"

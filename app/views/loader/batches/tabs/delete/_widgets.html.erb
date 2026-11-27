@@ -16,7 +16,7 @@
                          class: "btn btn-warning unconfirmed-delete-link pull-right delete-widget",
                          tabindex: increment_tab_index,
                          title: "Delete the loader-batch.",
-                         data: {show_this_id: "confirm-or-cancel-link-container"})
+                         data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-container"})
 %>
 <% confirm_delete_link = link_to("Confirm delete",
                                  loader_batch_path(@loader_batch.id),
@@ -33,7 +33,7 @@
                                 class: "btn btn-default cancel-link delete-widget",
                                 tabindex: increment_tab_index,
                                 title: "Cancel the delete dialog for the loader batch.",
-                                data: {enable_this_id: 'loader-batch-delete-link',
+                                data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: 'loader-batch-delete-link',
                                        hide_this_id: 'confirm-or-cancel-link-container'})
 %>
 

@@ -6,7 +6,7 @@
     class: "btn btn-warning btn-sm unconfirmed-delete-link pull-right",
     style: "",
     title: "Select to delete this role.  You will be asked to confirm.",
-    data: { show_this_id: "confirm-or-cancel-link-product-role-container-#{dom_id(user_product_role)}" })
+    data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-product-role-container-#{dom_id(user_product_role)}" })
   %>
   <%
   # NOTES: Apparently, we need to add the turbo-related data attributes to ajax-driven links.
@@ -29,7 +29,7 @@
                                   class: "btn btn-default btn-sm cancel-link",
                                   style: "",
                                   title: "Select to cancel the delete.",
-                                  data: {enable_this_id: "delete-link-#{dom_id(user_product_role)}",
+                                  data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: "delete-link-#{dom_id(user_product_role)}",
                                         hide_this_id: "confirm-or-cancel-link-product-role-container-#{dom_id(user_product_role)}"})
   %>
 

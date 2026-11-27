@@ -5,7 +5,7 @@
                            class: "btn btn-warning unconfirmed-delete-link pull-right",
                            title: "Delete #{@name.full_name}",
                            tabindex: increment_tab_index,
-                           data: {show_this_id: "confirm-or-cancel-link-container"})
+                           data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-container"})
   -%>
   <%= delete_link.html_safe %> 
 

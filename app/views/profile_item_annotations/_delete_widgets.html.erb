@@ -4,7 +4,7 @@
       id: "annotation-delete-link-#{profile_item_annotation.id}",
       class: "btn btn-default btn-xs unconfirmed-delete-link",
       title: "Delete this annotation. A confirmation step follows.",
-      data: {
+      data: { controller: "confirm-action", action: "confirm-action#reveal",
         show_this_id: "confirm-or-cancel-annotation-container-#{profile_item_annotation.id}",
         hide_this_id: "annotation-delete-link-#{profile_item_annotation.id}",
       }
@@ -17,7 +17,7 @@
         profile_item_annotation_path(profile_item_annotation),
         class: "btn btn-danger btn-xs confirm-delete-btn",
         title: "Select to confirm the delete.",
-        data: {
+        data: { controller: "confirm-action", action: "confirm-action#confirm",
           turbo_method: :delete,
           turbo_stream: true
         } %>
@@ -26,7 +26,7 @@
         '#',
         title: "Select to cancel the delete.",
         class: "btn btn-default btn-xs cancel-link",
-        data: {
+        data: { controller: "confirm-action", action: "confirm-action#cancel",
           hide_this_id: "confirm-or-cancel-annotation-container-#{profile_item_annotation.id}",
           show_this_id: "annotation-delete-link-#{profile_item_annotation.id}",
           enable_this_id: "annotation-delete-link-#{profile_item_annotation.id}",

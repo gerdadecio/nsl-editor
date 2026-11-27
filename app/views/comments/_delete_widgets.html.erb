@@ -5,7 +5,7 @@
                          class: "btn btn-warning unconfirmed-delete-link pull-right",
                          title: "Delete the comment with a confirmation dialog.",
                          tabindex: increment_tab_index,
-                         data: {show_this_id: "confirm-or-cancel-link-container-#{comment.id}"})
+                         data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-link-container-#{comment.id}"})
 %>
 
 <% confirm_delete_link = link_to("Confirm delete",
@@ -13,7 +13,7 @@
                                  class: "btn btn-danger confirm-delete-btn",
                                  tabindex: increment_tab_index,
                                  title: "Confirm you want to delete the comment.",
-                                 remote: true, data: { turbo: false },
+                                 remote: true, data: { controller: "confirm-action", action: "confirm-action#confirm", turbo: false },
                                  method: :delete)
 %>
 
@@ -23,7 +23,7 @@
                                 class: "btn btn-default cancel-link",
                                 tabindex: increment_tab_index,
                                 title: "Do not delete the comment.  Cancel the dialog.",
-                                data: {enable_this_id: "comment-delete-link-#{comment.id}",
+                                data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: "comment-delete-link-#{comment.id}",
                                        hide_this_id: "confirm-or-cancel-link-container-#{comment.id}"})
 %>
 

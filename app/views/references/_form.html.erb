@@ -18,7 +18,7 @@
     <%= link_to 'Cancel','/cancel-new-form',
                  class: "btn btn-primary cancel-new-record-link",
                  title: "Cancel new reference.",
-                 data: {element_id: "new-reference-#{params[:random_id]}", tabindex: increment_tab_index}  %>
+                 data: { controller: "cancel-new-record", action: "cancel-new-record#cancel", element_id: "new-reference-#{params[:random_id]}", tabindex: increment_tab_index}  %>
   <% end %>
   <%= f.submit "Save", id: 'top-save-btn', 
     class: 'btn btn-primary width-5em', 
@@ -209,7 +209,7 @@
     <%= link_to 'Cancel','/cancel-new-form',
                  class: "btn btn-primary cancel-new-record-link",
                  title: "Cancel new reference.",
-                 data: {element_id: "new-reference-#{params[:random_id]}", tabindex: increment_tab_index}  %>
+                 data: { controller: "cancel-new-record", action: "cancel-new-record#cancel", element_id: "new-reference-#{params[:random_id]}", tabindex: increment_tab_index}  %>
   <% end %>
   <%= f.submit "Save", 
     id: 'bottom-save-btn', 

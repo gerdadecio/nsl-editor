@@ -1,0 +1,4 @@
+- :date: 27-November-2026
+  :jira_id: '6069'
+  :description: |-
+    jQuery removal: Move the Delete..., Confirm and Cancel buttons (and the Cancel button on new record forms) off jQuery, and remove unused JavaScript files. The buttons work as before

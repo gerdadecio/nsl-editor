@@ -5,7 +5,7 @@
               class: "btn btn-warning unconfirmed-action-link pull-right",
               title: "Refresh constructed parts of names descended from #{@name.full_name}.",
               tabindex: increment_tab_index,
-              data: {show_this_id: "confirm-or-cancel-refresh-children-link-container"})
+              data: { controller: "confirm-action", action: "confirm-action#reveal", show_this_id: "confirm-or-cancel-refresh-children-link-container"})
   %>
 
   <div class="width-100-percent"> 
@@ -26,7 +26,7 @@
                class: "btn btn-default cancel-action-link",
                tabindex: increment_tab_index,
                title: "Cancel the refresh",
-               data: {enable_this_id: 'name-refresh-children-link',
+               data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: 'name-refresh-children-link',
                hide_this_id: 'confirm-or-cancel-refresh-children-link-container'}) %>
 
     <div id="refresh-children-spinner" class="hidden" </div>

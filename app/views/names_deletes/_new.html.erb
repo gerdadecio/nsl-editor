@@ -4,7 +4,7 @@
                                 class: "btn btn-default cancel-link",
                                 title: 'Pressing this button will cancel the delete',
                                 tabindex: increment_tab_index,
-                                data: {enable_this_id: 'name-delete-link',
+                                data: { controller: "confirm-action", action: "confirm-action#cancel", enable_this_id: 'name-delete-link',
                                        hide_this_id: 'confirm-or-cancel-link-container'})
 -%>
 
